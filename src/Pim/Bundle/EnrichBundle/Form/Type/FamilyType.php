@@ -31,24 +31,30 @@ class FamilyType extends AbstractType
     /** @var AddAttributeAsLabelSubscriber */
     protected $labelSubscriber;
 
+    /** @var string */
+    protected $dataClass;
+
     /**
      * Constructor
      *
      * @param AddAttributeRequirementsSubscriber $requireSubscriber
-     * @param string                             $attributeClass
      * @param DisableFamilyFieldsSubscriber      $fieldsSubscriber
      * @param AddAttributeAsLabelSubscriber      $labelSubscriber
+     * @param string                             $attributeClass
+     * @param string                             $dataClass
      */
     public function __construct(
         AddAttributeRequirementsSubscriber $requireSubscriber,
-        $attributeClass,
         DisableFamilyFieldsSubscriber $fieldsSubscriber,
-        AddAttributeAsLabelSubscriber $labelSubscriber
+        AddAttributeAsLabelSubscriber $labelSubscriber,
+        $attributeClass,
+        $dataClass
     ) {
         $this->requireSubscriber = $requireSubscriber;
         $this->attributeClass    = $attributeClass;
         $this->fieldsSubscriber  = $fieldsSubscriber;
         $this->labelSubscriber   = $labelSubscriber;
+        $this->dataClass         = $dataClass;
     }
 
     /**
@@ -89,12 +95,12 @@ class FamilyType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
                 'property_path'     => 'translations'
-            )
+            ]
         );
 
         return $this;
@@ -109,7 +115,7 @@ class FamilyType extends AbstractType
      */
     protected function addAttributeRequirementsField(FormBuilderInterface $builder)
     {
-        $builder->add('attributeRequirements', 'collection', array('type' => 'pim_enrich_attribute_requirement'));
+        $builder->add('attributeRequirements', 'collection', ['type' => 'pim_enrich_attribute_requirement']);
 
         return $this;
     }
@@ -136,9 +142,9 @@ class FamilyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

@@ -15,6 +15,22 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class AddToVariantGroupType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /** @var string */
+    protected $groupClassName;
+
+    /**
+     * @param string $groupClassName
+     * @param string $dataClass
+     */
+    public function __construct($groupClassName, $dataClass)
+    {
+        $this->groupClassName = $groupClassName;
+        $this->dataClass      = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,15 +39,15 @@ class AddToVariantGroupType extends AbstractType
         $builder->add(
             'group',
             'entity',
-            array(
-                'class'    => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
+            [
+                'class'    => $this->groupClassName,
                 'required' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'choices'  => $options['groups'],
                 'select2'  => true,
                 'empty_value'  => '',
-            )
+            ]
         );
     }
 
@@ -42,8 +58,8 @@ class AddToVariantGroupType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\AddToVariantGroup',
-                'groups' => array()
+                'data_class' => $this->dataClass,
+                'groups' => []
             ]
         );
     }

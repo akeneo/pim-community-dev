@@ -17,6 +17,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class AttributeRequirementType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -45,10 +56,10 @@ class AttributeRequirementType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement',
+            [
+                'data_class'        => $this->dataClass,
                 'keep_non_required' => false,
-            )
+            ]
         );
     }
 

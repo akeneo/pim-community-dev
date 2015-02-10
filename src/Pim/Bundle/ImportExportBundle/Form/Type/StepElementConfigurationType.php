@@ -36,18 +36,18 @@ class StepElementConfigurationType extends AbstractType
                     }
 
                     $config = array_merge(
-                        array(
+                        [
                             'type'    => 'text',
-                            'options' => array(),
-                        ),
+                            'options' => [],
+                        ],
                         $config
                     );
                     $options = array_merge(
-                        array(
+                        [
                             'auto_initialize' => false,
                             'required'        => false,
                             'label'           => ucfirst($field),
-                        ),
+                        ],
                         $config['options']
                     );
 
@@ -63,9 +63,9 @@ class StepElementConfigurationType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
+            [
                 'data_class' => 'Akeneo\\Bundle\\BatchBundle\\Item\\AbstractConfigurableStepElement',
-            )
+            ]
         );
     }
 

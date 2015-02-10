@@ -18,12 +18,17 @@ class ClassifyType extends AbstractType
     /** @var string */
     protected $categoryClass;
 
+    /** @var string */
+    protected $dataClass;
+
     /**
      * @param string $categoryClass
+     * @param string $dataClass
      */
-    public function __construct($categoryClass)
+    public function __construct($categoryClass, $dataClass)
     {
         $this->categoryClass = $categoryClass;
+        $this->dataClass     = $dataClass;
     }
 
     /**
@@ -35,24 +40,24 @@ class ClassifyType extends AbstractType
             ->add(
                 'trees',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => $this->categoryClass,
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
-                )
+                ]
             );
 
         $builder
             ->add(
                 'categories',
                 'oro_entity_identifier',
-                array(
+                [
                     'class'    => $this->categoryClass,
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
-                )
+                ]
             );
     }
 
@@ -63,7 +68,7 @@ class ClassifyType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\Classify',
+                'data_class' => $this->dataClass,
             ]
         );
     }

@@ -12,6 +12,46 @@
 
 ## BC breaks
 - Add a TranslatorInterface argument in MetricType::__construct
+- Change of constructor of `Pim/Bundle/CommentBundle/Form/Type/CommentType` to accept `Pim\Bundle\CommentBundle\Entity` as a string for the third argument
+- Added new constructor to `Pim/Bundle/DataGridBundle/Form/Type/DatagridViewType` to accept `Pim\Bundle\DataGridBundle\Entity\DataGridView` as a string for the first argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AssociationType` to accept `Pim\Bundle\CatalogBundle\Model\Product` as a string for the third argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AssociationType` to accept `Pim\Bundle\CatalogBundle\Entity\AssociationType` as a string for the fourth
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AssociationType` to accept `Pim\Bundle\CatalogBundle\Entity\Group` as a string for the fifth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AssociationType` to accept `Pim\Bundle\CatalogBundle\Model\Association` as a string for the sixth argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/AssociationTypeType` to accept `Pim\Bundle\CatalogBundle\Model\AssociationType` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/AttributeGroupType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeGroup` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/AttributeOptionCreateType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeOption` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/AttributeOptionType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeOption` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/AttributeOptionValueType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/AttributeRequirementType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeRequirement` as a string for the first argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AttributeType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeTranslation` as a string for the third argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AttributeType` to accept `Pim\Bundle\CatalogBundle\Entity\Attribute` as a string for the fourth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AttributeType` to accept `Pim\Bundle\CatalogBundle\Entity\AttributeGroup` as a string for the fifth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AvailableAttributesType` to accept `Pim\Bundle\CatalogBundle\Entity\Attribute` as a string for the third argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/AvailableAttributesType` to accept `Pim\Bundle\CatalogBundle\Model\AvailableAttribute` as a string for the fourth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/CategoryType` to accept `Pim\Bundle\CatalogBundle\Entity\Category` as a string for the first argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/CategoryType` to accept `Pim\Bundle\CatalogBundle\Entity\CategoryTranslation` as a string for the second argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/ChannelType` to accept `Pim\Bundle\CatalogBundle\Entity\Category` as a string for the fourth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/ChannelType` to accept `Pim\Bundle\CatalogBundle\Entity\Channel` as a string for the fifth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/FamilyType` to accept `Pim\Bundle\CatalogBundle\Entity\Attribute` as a string for the fourth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/FamilyType` to accept `Pim\Bundle\CatalogBundle\Entity\Family` as a string for the fifth argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/GroupType` to accept `Pim\Bundle\CatalogBundle\Entity\Attribute` as a string for the second argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/GroupType` to accept `Pim\Bundle\CatalogBundle\Entity\Group` as a string for the third argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/GroupTypeType` to accept `Pim\Bundle\CatalogBundle\Entity\GroupType` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/ImageType` to accept `Pim\Bundle\CatalogBundle\Entity\ProductMedia` as a string for the fist argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/AddToGroupsType` to accept `Pim\Bundle\CatalogBundle\Entity\Group` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/AddToGroupsType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups` as a string for the second argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/AddToVariantGroupType` to accept `Pim\Bundle\CatalogBundle\Entity\Group` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/AddToVariantGroupType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup` as a second for the third argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/ChangeFamilyType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/ChangeStatusType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus` as a string for the first argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/ClassifyType` to accept ` Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify` as a string for the second argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/EditCommonAttributesType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` as a string for the fifth argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/SetAttributeRequirementsType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MediaType` to accept `Pim\Bundle\CatalogBundle\Model\ProductMedia` as a string for the first argument
+- Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MetricType` to accept `Pim\Bundle\CatalogBundle\Model\Metric` as a string for the first argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/PriceType` to accept `Pim\Bundle\CatalogBundle\Model\Price` as a string for the fisrt argument
+
 
 # 1.3.0-RC1 (2015-02-03)
 

@@ -30,16 +30,21 @@ class GroupType extends AbstractType
     /** @var EventSubscriberInterface[] */
     protected $subscribers = [];
 
+    /** @var string */
+    protected $dataClass;
+
     /**
      * Constructor
      *
      * @param ProductRepositoryInterface $productRepository
      * @param string                     $attributeClass
+     * @param string                     $dataClass
      */
-    public function __construct(ProductRepositoryInterface $productRepository, $attributeClass)
+    public function __construct(ProductRepositoryInterface $productRepository, $attributeClass, $dataClass)
     {
         $this->productRepository = $productRepository;
         $this->attributeClass    = $attributeClass;
+        $this->dataClass         = $dataClass;
     }
 
     /**
@@ -70,9 +75,9 @@ class GroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 
@@ -107,7 +112,7 @@ class GroupType extends AbstractType
             ->add(
                 'type',
                 'entity',
-                array(
+                [
                     'class' => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {
                         return $repository->getAllGroupsExceptVariantQB();
@@ -115,7 +120,7 @@ class GroupType extends AbstractType
                     'multiple' => false,
                     'expanded' => false,
                     'select2'  => true
-                )
+                ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
     }
@@ -130,12 +135,12 @@ class GroupType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -152,7 +157,7 @@ class GroupType extends AbstractType
             ->add(
                 'attributes',
                 'entity',
-                array(
+                [
                     'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
@@ -162,7 +167,7 @@ class GroupType extends AbstractType
                     },
                     'help'     => 'pim_enrich.group.axis.help',
                     'select2'  => true
-                )
+                ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
@@ -178,22 +183,22 @@ class GroupType extends AbstractType
             ->add(
                 'appendProducts',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->productRepository,
                     'required'   => false,
                     'mapped'     => false,
                     'multiple'   => true
-                )
+                ]
             )
             ->add(
                 'removeProducts',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->productRepository,
                     'required'   => false,
                     'mapped'     => false,
                     'multiple'   => true
-                )
+                ]
             )
             ->addEventSubscriber(new BindGroupProductsSubscriber($this->productRepository));
     }
