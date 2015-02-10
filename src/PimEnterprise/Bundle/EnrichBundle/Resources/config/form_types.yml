@@ -36,6 +36,8 @@ services:
 
     pim_enrich.form.type.attribute_group:
         class: %pim_enrich.form.type.attribute_group.class%
+        arguments:
+            - %pim_catalog.entity.attribute_group.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_group }
         calls:
@@ -52,11 +54,12 @@ services:
     pim_enrich.form.type.available_attributes:
         class: %pim_enrich.form.type.available_attributes.class%
         arguments:
-            - %pim_catalog.entity.attribute.class%
             - '@pim_catalog.repository.attribute'
             - '@pim_user.context.user'
             - '@translator'
             - '@pimee_security.repository.attribute_group_access'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.available_attributes.class%
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
@@ -75,8 +78,10 @@ services:
         arguments:
             - '@pim_enrich.form.type.product.view'
             - '@pim_catalog.helper.locale'
-            - %pim_catalog.entity.attribute.class%
             - '@pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.locale.class%
+            - %pim_enrich.mass_edit_action.edit_common_attributes.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
 
