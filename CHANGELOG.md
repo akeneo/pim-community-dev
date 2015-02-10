@@ -9,6 +9,7 @@
 - PIM-3394: Improve forgotten password screen
 - PIM-3398: Translate units on metric fields on product edit form
 - PIM-3575: Sort csv column in a determinist way (alphabetically) on export
+- PIM-3752: Fixed the hard coded entry `Select Job` on import/export creation
 
 ## BC breaks
 - Add a TranslatorInterface argument in MetricType::__construct
@@ -50,7 +51,8 @@
 - Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MassEditAction/SetAttributeRequirementsType` to accept `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` as a string for the first argument
 - Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MediaType` to accept `Pim\Bundle\CatalogBundle\Model\ProductMedia` as a string for the first argument
 - Added new constructor to `Pim/Bundle/EnrichBundle/Form/Type/MetricType` to accept `Pim\Bundle\CatalogBundle\Model\Metric` as a string for the first argument
-- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/PriceType` to accept `Pim\Bundle\CatalogBundle\Model\Price` as a string for the fisrt argument
+- Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/PriceType` to accept `Pim\Bundle\CatalogBundle\Model\Price` as a string for the first argument
+- Change of constructor of `Pim/Bundle/ImportExportBundle/Form/Type/JobInstanceType` to accept `Symfony\Component\Translation\TranslatorInterface` as for the second argument
 
 
 # 1.3.0-RC1 (2015-02-03)
