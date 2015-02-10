@@ -107,6 +107,22 @@ interface MetricInterface
     public function getFamily();
 
     /**
+     * Get the product value
+     *
+     * @return ProductValueInterface
+     */
+    public function getValue();
+
+    /**
+     * Set the product value
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return ProductMediaInterface
+     */
+    public function setValue(ProductValueInterface $value);
+
+    /**
      * To string
      *
      * @return string

@@ -49,6 +49,9 @@ abstract class AbstractMetric implements MetricInterface
      */
     protected $family;
 
+    /** @var ProductValueInterface */
+    protected $value;
+
     /**
      * {@inheritdoc}
      */
@@ -155,6 +158,24 @@ abstract class AbstractMetric implements MetricInterface
         $this->family = $family;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue(ProductValueInterface $value)
+    {
+        $this->value = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getValue()
+    {
+        return $this->value;
     }
 
     /**

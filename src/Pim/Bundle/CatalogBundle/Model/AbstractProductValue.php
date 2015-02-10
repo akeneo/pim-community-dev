@@ -521,6 +521,10 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function getMetric()
     {
+        if (is_object($this->metric)) {
+            $this->metric->setValue($this);
+        }
+
         return $this->metric;
     }
 
@@ -529,6 +533,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function setMetric(MetricInterface $metric)
     {
+        $metric->setValue($this);
         $this->metric = $metric;
 
         return $this;
