@@ -13,9 +13,9 @@ namespace Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
 use Akeneo\Bundle\RuleEngineBundle\Event\BulkRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
@@ -31,7 +31,7 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var BaseSavingOptionsResolver */
+    /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
     /** @var string */
@@ -40,14 +40,14 @@ class RuleDefinitionSaver implements SaverInterface, BulkSaverInterface
     /**
      * Constructor
      *
-     * @param ObjectManager             $objectManager
-     * @param BaseSavingOptionsResolver $optionsResolver
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param string                    $ruleDefinitionClass
+     * @param ObjectManager                  $objectManager
+     * @param SavingOptionsResolverInterface $optionsResolver
+     * @param EventDispatcherInterface       $eventDispatcher
+     * @param string                         $ruleDefinitionClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        BaseSavingOptionsResolver $optionsResolver,
+        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
         $ruleDefinitionClass
     ) {
