@@ -61,6 +61,7 @@
 - Update constructor of `PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType` to add a `string` $dataClass argument
 - Update constructor of `PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType` to add a `string` $dataClass argument
 - Update constructor of `PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType` to add a `string` $dataClass argument
+- Change of constructor of `Pim/Bundle/ImportExportBundle/Form/Type/JobInstanceType` to accept `Symfony\Component\Translation\TranslatorInterface` as for the second argument
 
 ## Bug fixes
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
