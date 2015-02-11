@@ -44,8 +44,9 @@ class CompletenessFilterSpec extends ObjectBehavior
         $em->getClassMetadata(false)->willReturn($cm);
         $comparison->__toString()->willReturn('filterCompleteness.ratio = 100');
         $cm->getAssociationMapping('completenesses')->willReturn(['targetEntity' => 'test']);
+        $expr->literal('100')
+            ->willReturn('100');
         $expr->eq('filterCompleteness.ratio', '100')
-            ->shouldBeCalled()
             ->willReturn($comparison);
         $this->setQueryBuilder($qb);
         $qb->leftJoin(
@@ -53,25 +54,25 @@ class CompletenessFilterSpec extends ObjectBehavior
             'filterCompletenessLocale',
             'WITH',
             'filterCompletenessLocale'.'.code = :cLocaleCode'
-        )->shouldBeCalled()->willReturn($qb);
+        )->willReturn($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Channel',
             'filterCompletenessChannel',
             'WITH',
             'filterCompletenessChannel'.'.code = :cScopeCode'
-        )->shouldBeCalled()->willReturn($qb);
+        )->willReturn($qb);
         $qb->leftJoin(
             'test',
             'filterCompleteness',
             'WITH',
             'filterCompleteness.locale = filterCompletenessLocale.id AND filterCompleteness.channel = filterCompletenessChannel.id AND filterCompleteness.product = p.id'
-        )->shouldBeCalled()->willReturn($qb);
-        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled()->willReturn($qb);
-        $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled()->willReturn($qb);
+        )->willReturn($qb);
+        $qb->setParameter('cLocaleCode', Argument::any())->willReturn($qb);
+        $qb->setParameter('cScopeCode', Argument::any())->willReturn($qb);
 
         $qb->andWhere('filterCompleteness.ratio = 100')->shouldBeCalled();
 
-        $this->addFieldFilter('completeness', '=', '100');
+        $this->addFieldFilter('completeness', '=', 100, 'en_US', 'ecommerce');
     }
 
     function it_adds_a_filter_on_a_field_in_the_query(
@@ -88,8 +89,9 @@ class CompletenessFilterSpec extends ObjectBehavior
         $em->getClassMetadata(false)->willReturn($cm);
         $comparison->__toString()->willReturn('filterCompleteness.ratio < 100');
         $cm->getAssociationMapping('completenesses')->willReturn(['targetEntity' => 'test']);
+        $expr->literal('100')
+            ->willReturn('100');
         $expr->lt('filterCompleteness.ratio', '100')
-            ->shouldBeCalled()
             ->willReturn($comparison);
         $this->setQueryBuilder($qb);
         $qb->leftJoin(
@@ -97,25 +99,25 @@ class CompletenessFilterSpec extends ObjectBehavior
             'filterCompletenessLocale',
             'WITH',
             'filterCompletenessLocale'.'.code = :cLocaleCode'
-        )->shouldBeCalled()->willReturn($qb);
+        )->willReturn($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Channel',
             'filterCompletenessChannel',
             'WITH',
             'filterCompletenessChannel'.'.code = :cScopeCode'
-        )->shouldBeCalled()->willReturn($qb);
+        )->willReturn($qb);
         $qb->leftJoin(
             'test',
             'filterCompleteness',
             'WITH',
             'filterCompleteness.locale = filterCompletenessLocale.id AND filterCompleteness.channel = filterCompletenessChannel.id AND filterCompleteness.product = p.id'
-        )->shouldBeCalled()->willReturn($qb);
-        $qb->setParameter('cLocaleCode', Argument::any())->shouldBeCalled()->willReturn($qb);
-        $qb->setParameter('cScopeCode', Argument::any())->shouldBeCalled()->willReturn($qb);
+        )->willReturn($qb);
+        $qb->setParameter('cLocaleCode', Argument::any())->willReturn($qb);
+        $qb->setParameter('cScopeCode', Argument::any())->willReturn($qb);
 
         $qb->andWhere('filterCompleteness.ratio < 100')->shouldBeCalled();
 
-        $this->addFieldFilter('completeness', '<', '100');
+        $this->addFieldFilter('completeness', '<', 100, 'en_US', 'mobile');
     }
 
     function it_checks_if_field_is_supported()
@@ -124,9 +126,9 @@ class CompletenessFilterSpec extends ObjectBehavior
         $this->supportsField('groups')->shouldReturn(false);
     }
 
-    function it_throws_an_exception_if_value_is_not_a_string()
+    function it_throws_an_exception_if_value_is_not_a_integer()
     {
-        $this->shouldThrow(InvalidArgumentException::stringExpected('completeness', 'filter', 'completeness', gettype(123)))
-            ->during('addFieldFilter', ['completeness', '=', 123]);
+        $this->shouldThrow(InvalidArgumentException::numericExpected('completeness', 'filter', 'completeness', gettype('123')))
+            ->during('addFieldFilter', ['completeness', '=', '12z3', 'en_US', 'mobile']);
     }
 }

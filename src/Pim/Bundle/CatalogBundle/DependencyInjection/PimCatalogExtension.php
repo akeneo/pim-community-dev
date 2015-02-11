@@ -23,22 +23,22 @@ class PimCatalogExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('doctrine.yml');
-        $loader->load('context.yml');
-        $loader->load('validators.yml');
-        $loader->load('event_subscribers.yml');
-        $loader->load('managers.yml');
-        $loader->load('savers.yml');
-        $loader->load('removers.yml');
-        $loader->load('builders.yml');
-        $loader->load('helpers.yml');
         $loader->load('attribute_types.yml');
-        $loader->load('factories.yml');
+        $loader->load('builders.yml');
+        $loader->load('context.yml');
+        $loader->load('doctrine.yml');
         $loader->load('entities.yml');
-        $loader->load('repositories.yml');
-        $loader->load('query_builders.yml');
-        $loader->load('updaters.yml');
+        $loader->load('event_subscribers.yml');
+        $loader->load('factories.yml');
+        $loader->load('helpers.yml');
+        $loader->load('managers.yml');
         $loader->load('models.yml');
+        $loader->load('query_builders.yml');
+        $loader->load('removers.yml');
+        $loader->load('repositories.yml');
+        $loader->load('savers.yml');
+        $loader->load('updaters.yml');
+        $loader->load('validators.yml');
 
         $this->loadValidationFiles($container);
         $this->loadStorageDriver($container);
