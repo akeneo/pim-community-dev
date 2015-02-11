@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
@@ -34,7 +35,7 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
         if (UpdateGuesserInterface::ACTION_DELETE === $action) {
-            return $this->guessDeletionUpdates($entity);
+            return $this->guessDeletionUpdates($em, $entity);
         }
 
         $pendings = [];
@@ -45,7 +46,8 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
         } elseif ($entity instanceof ProductMediaInterface) {
             $pendings[] = $entity->getValue()->getEntity();
         } elseif ($entity instanceof ProductPriceInterface || $entity instanceof MetricInterface) {
-            $changeset = $this->filterChangeset($em->getUnitOfWork()->getEntityChangeSet($entity));
+            $unitOfWork = $em->getUnitOfWork();
+            $changeset = $this->filterChangeset($unitOfWork->getEntityChangeSet($entity));
             if (!empty($changeset)) {
                 $pendings[] = $entity->getValue()->getEntity();
             }
@@ -57,17 +59,22 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
     /**
      * Guess product updates related to the deletion of a product price, media or metric
      *
-     * @param object $entity
+     * @param EntityManager $em
+     * @param object        $entity
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface[]
      */
-    protected function guessDeletionUpdates($entity)
+    protected function guessDeletionUpdates(EntityManager $em, $entity)
     {
         $pendings = [];
         if ($entity instanceof ProductPriceInterface
             || $entity instanceof ProductMediaInterface
             || $entity instanceof MetricInterface) {
-            $pendings[] = $entity->getValue()->getEntity();
+            $product = $entity->getValue()->getEntity();
+            $unitOfWork = $em->getUnitOfWork();
+            if ($unitOfWork->getEntityState($product) === UnitOfWork::STATE_MANAGED) {
+                $pendings[] = $product;
+            }
         }
 
         return $pendings;
