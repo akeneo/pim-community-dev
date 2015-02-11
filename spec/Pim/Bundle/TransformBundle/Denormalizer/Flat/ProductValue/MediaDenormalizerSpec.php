@@ -41,7 +41,19 @@ class MediaDenormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization('readme.md', 'pim_catalog_image', 'xml')->shouldBe(false);
     }
 
-    function it_dernomalizes_media($manager, $factory, ProductMediaInterface $media)
+    function it_dernomalizes_existing_media($manager, $factory, ProductMediaInterface $media)
+    {
+        $manager->createFromFilename('preview.jpg', true)->willReturn($media);
+
+        $this->denormalize(
+            'preview.jpg',
+            'pim_catalog_image',
+            'csv',
+            ['use_relative_media_path' => true]
+        )->shouldReturn($media);
+    }
+
+    function it_dernomalizes_new_media($manager, $factory, ProductMediaInterface $media)
     {
         $manager->createFromFilename('preview.jpg', false)->willReturn($media);
 
