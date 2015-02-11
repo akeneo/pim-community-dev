@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -31,8 +31,8 @@ class ProductReverter
     /** @var ManagerRegistry */
     protected $registry;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var SaverInterface */
+    protected $productSaver;
 
     /** @var ValidatorInterface */
     protected $validator;
@@ -40,19 +40,19 @@ class ProductReverter
     /**
      * @param ManagerRegistry       $registry
      * @param DenormalizerInterface $denormalizer
-     * @param ProductManager        $productManager
+     * @param SaverInterface        $productSaver
      * @param ValidatorInterface    $validator
      */
     public function __construct(
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
-        ProductManager $productManager,
+        SaverInterface $productSaver,
         ValidatorInterface $validator
     ) {
-        $this->registry       = $registry;
-        $this->denormalizer   = $denormalizer;
-        $this->productManager = $productManager;
-        $this->validator      = $validator;
+        $this->registry     = $registry;
+        $this->denormalizer = $denormalizer;
+        $this->productSaver = $productSaver;
+        $this->validator    = $validator;
     }
 
     /**
@@ -77,6 +77,6 @@ class ProductReverter
             throw new RevertException('This version can not be restored. Some errors occured during the validation.');
         }
 
-        $this->productManager->save($revertedObject);
+        $this->productSaver->save($revertedObject);
     }
 }

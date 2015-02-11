@@ -7,5 +7,5 @@ services:
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '@pimee_versioning.serializer'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.saver.product'
             - '@validator'
