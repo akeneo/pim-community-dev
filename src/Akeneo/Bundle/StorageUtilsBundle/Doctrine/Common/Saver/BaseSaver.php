@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
@@ -19,20 +20,20 @@ class BaseSaver implements SaverInterface, BulkSaverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var BaseSavingOptionsResolver */
+    /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
     /** @var string */
     protected $savedClass;
 
     /**
-     * @param ObjectManager             $objectManager
-     * @param BaseSavingOptionsResolver $optionsResolver
-     * @param string                    $savedClass
+     * @param ObjectManager                  $objectManager
+     * @param SavingOptionsResolverInterface $optionsResolver
+     * @param string                         $savedClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        BaseSavingOptionsResolver $optionsResolver,
+        SavingOptionsResolverInterface $optionsResolver,
         $savedClass
     ) {
         $this->objectManager = $objectManager;
