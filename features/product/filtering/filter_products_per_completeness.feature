@@ -14,24 +14,10 @@ Feature: Filter products
       | BOOTBL  | boots  |               |                   |      |       |
       | BOOTRXS | boots  | Boot 42 Red   |                   |      |       |
     And I launched the completeness calculator
-
-  Scenario: Successfully filter uncomplete products for default mobile channel
-    Given I am logged in as "Peter"
+    And I am logged in as "Mary"
     And I am on the products page
-    And I filter by "Complete" with value "no"
-    Then the grid should contain 4 elements
-    And I should see products BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
 
-  Scenario: Successfully filter complete products for default mobile channel
-    Given I am logged in as "Peter"
-    And I am on the products page
-    And I filter by "Complete" with value "yes"
-    Then the grid should contain 1 elements
-    And I should see products BOOTBXS
-
-  Scenario: Successfully filter uncomplete products for default tablet channel
-    Given I am logged in as "Mary"
-    And I am on the products page
+  Scenario: Successfully filter uncomplete products
     And I filter by "Complete" with value "no"
     Then the grid should contain 5 elements
     And I should see products BOOTBXS, BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
@@ -39,9 +25,7 @@ Feature: Filter products
     Then the grid should contain 4 elements
     And I should see products BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
 
-  Scenario: Successfully filter complete products for default tablet channel
-    Given I am logged in as "Mary"
-    And I am on the products page
+  Scenario: Successfully filter complete products
     And I filter by "Complete" with value "yes"
     Then the grid should contain 0 elements
     And I filter by "Channel" with value "Mobile"
