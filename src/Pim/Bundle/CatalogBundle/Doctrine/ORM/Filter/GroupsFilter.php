@@ -46,14 +46,14 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
     {
         if (Operators::IS_EMPTY !== $operator) {
             $this->checkValue($field, $value);
+
+            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+                $value = $this->objectIdResolver->getIdsFromCodes('group', $value);
+            }
         }
 
-        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-            $value = $this->objectIdResolver->getIdsFromCodes('group', $value);
-        }
-
-        $rootAlias = $this->qb->getRootAlias();
-        $entityAlias = 'filter' . FieldFilterHelper::getCode($field);
+        $rootAlias   = $this->qb->getRootAlias();
+        $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
         if ($operator === Operators::IN_LIST) {

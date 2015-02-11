@@ -39,10 +39,10 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     {
         $this->checkValue($field, $value, $locale, $scope);
 
-        $alias = 'filterCompleteness';
-        $field = $alias.'.ratio';
-        $util = new CompletenessJoin($this->qb);
-        $util->addJoins($alias, $locale, $scope);
+        $joinAlias = $this->getUniqueAlias('filterCompleteness');
+        $field     = $joinAlias . '.ratio';
+        $util      = new CompletenessJoin($this->qb);
+        $util->addJoins($joinAlias, $locale, $scope);
 
         $this->qb->andWhere($this->prepareCriteriaCondition($field, $operator, $value));
 

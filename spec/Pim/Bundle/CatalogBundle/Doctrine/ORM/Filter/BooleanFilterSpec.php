@@ -53,11 +53,11 @@ class BooleanFilterSpec extends ObjectBehavior
         $qb,
         Expr $expr
     ) {
-        $qb->andWhere("p.enabled = true")->shouldBeCalled()->willReturn($qb);
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->andWhere("p.enabled = true")->willReturn($qb);
+        $qb->expr()->willReturn($expr);
 
-        $expr->eq('p.enabled', true)->shouldBeCalled()->willReturn("p.enabled = true");
-        $expr->literal(true)->shouldBeCalled()->willReturn(true);
+        $expr->eq('p.enabled', true)->willReturn("p.enabled = true");
+        $expr->literal(true)->willReturn(true);
 
         $this->addFieldFilter('enabled', '=', true);
     }
@@ -77,16 +77,16 @@ class BooleanFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
 
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->expr()->willReturn($expr);
         $qb->getRootAlias()->willReturn('p');
-        $expr->eq('filtercode.backend_type', true)->shouldBeCalled()->willReturn("filtercode.backend_type = true");
-        $expr->literal(true)->shouldBeCalled()->willReturn(true);
+        $expr->eq(Argument::any(), true)->willReturn('filtercode.backend_type = true');
+        $expr->literal(true)->willReturn(true);
 
         $qb->innerJoin(
             'p.values',
-            'filtercode',
+            Argument::any(),
             'WITH',
-            'filtercode.attribute = 42 AND filtercode.backend_type = true'
+            Argument::any()
         )->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, '=', true);

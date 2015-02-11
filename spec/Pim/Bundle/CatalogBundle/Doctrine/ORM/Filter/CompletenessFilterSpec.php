@@ -46,26 +46,26 @@ class CompletenessFilterSpec extends ObjectBehavior
         $cm->getAssociationMapping('completenesses')->willReturn(['targetEntity' => 'test']);
         $expr->literal('100')
             ->willReturn('100');
-        $expr->eq('filterCompleteness.ratio', '100')
+        $expr->eq(Argument::any(), '100')
             ->willReturn($comparison);
         $this->setQueryBuilder($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Locale',
-            'filterCompletenessLocale',
+            Argument::any(),
             'WITH',
-            'filterCompletenessLocale'.'.code = :cLocaleCode'
+            Argument::any()
         )->willReturn($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Channel',
-            'filterCompletenessChannel',
+            Argument::any(),
             'WITH',
-            'filterCompletenessChannel'.'.code = :cScopeCode'
+            Argument::any()
         )->willReturn($qb);
         $qb->leftJoin(
             'test',
-            'filterCompleteness',
+            Argument::any(),
             'WITH',
-            'filterCompleteness.locale = filterCompletenessLocale.id AND filterCompleteness.channel = filterCompletenessChannel.id AND filterCompleteness.product = p.id'
+            Argument::any()
         )->willReturn($qb);
         $qb->setParameter('cLocaleCode', Argument::any())->willReturn($qb);
         $qb->setParameter('cScopeCode', Argument::any())->willReturn($qb);
@@ -91,26 +91,26 @@ class CompletenessFilterSpec extends ObjectBehavior
         $cm->getAssociationMapping('completenesses')->willReturn(['targetEntity' => 'test']);
         $expr->literal('100')
             ->willReturn('100');
-        $expr->lt('filterCompleteness.ratio', '100')
+        $expr->lt(Argument::any(), '100')
             ->willReturn($comparison);
         $this->setQueryBuilder($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Locale',
-            'filterCompletenessLocale',
+            Argument::any(),
             'WITH',
-            'filterCompletenessLocale'.'.code = :cLocaleCode'
+            Argument::any()
         )->willReturn($qb);
         $qb->leftJoin(
             'PimCatalogBundle:Channel',
-            'filterCompletenessChannel',
+            Argument::any(),
             'WITH',
-            'filterCompletenessChannel'.'.code = :cScopeCode'
+            Argument::any()
         )->willReturn($qb);
         $qb->leftJoin(
             'test',
-            'filterCompleteness',
+            Argument::any(),
             'WITH',
-            'filterCompleteness.locale = filterCompletenessLocale.id AND filterCompleteness.channel = filterCompletenessChannel.id AND filterCompleteness.product = p.id'
+            Argument::any()
         )->willReturn($qb);
         $qb->setParameter('cLocaleCode', Argument::any())->willReturn($qb);
         $qb->setParameter('cScopeCode', Argument::any())->willReturn($qb);

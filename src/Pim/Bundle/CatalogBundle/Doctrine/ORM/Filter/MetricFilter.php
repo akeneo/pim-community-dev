@@ -96,22 +96,22 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter'.$attribute->getCode();
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
-            $this->qb->getRootAlias().'.values',
+            $this->qb->getRootAlias() . '.values',
             $joinAlias,
             'WITH',
             $condition
         );
 
-        $joinAliasOpt = 'filterM'.$attribute->getCode();
+        $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
         $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
-        $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt);
+        $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasOpt);
         $this->qb->andWhere($condition);
     }
 
@@ -132,22 +132,22 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter'.$attribute->getCode();
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.values',
+            $this->qb->getRootAlias() . '.values',
             $joinAlias,
             'WITH',
             $condition
         );
 
-        $joinAliasOpt = 'filterM'.$attribute->getCode();
+        $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-        $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+        $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasOpt, 'WITH', $condition);
     }
 
     /**

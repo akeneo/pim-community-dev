@@ -18,7 +18,7 @@ interface ObjectIdResolverInterface
      *
      * @return int[]
      */
-    public function getIdsFromCodes($field, $codes);
+    public function getIdsFromCodes($field, array $codes);
 
     /**
      * Add a mapping to the field mapping
