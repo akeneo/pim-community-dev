@@ -4,6 +4,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
 use Akeneo\Component\StorageUtils\Remover\BulkRemoverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 
@@ -19,20 +20,20 @@ class BaseRemover implements RemoverInterface, BulkRemoverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var BaseRemovingOptionsResolver */
+    /** @var RemovingOptionsResolverInterface */
     protected $optionsResolver;
 
     /** @var string */
     protected $removedClass;
 
     /**
-     * @param ObjectManager               $objectManager
-     * @param BaseRemovingOptionsResolver $optionsResolver
-     * @param string                      $removedClass
+     * @param ObjectManager                    $objectManager
+     * @param RemovingOptionsResolverInterface $optionsResolver
+     * @param string                           $removedClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        BaseRemovingOptionsResolver $optionsResolver,
+        RemovingOptionsResolverInterface $optionsResolver,
         $removedClass
     ) {
         $this->objectManager = $objectManager;

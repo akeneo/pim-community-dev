@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -12,14 +13,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseRemovingOptionsResolver
+class BaseRemovingOptionsResolver implements RemovingOptionsResolverInterface
 {
     /**
-     * Resolve options for a single remove
-     *
-     * @param array $options
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function resolveRemoveOptions(array $options)
     {
@@ -33,11 +30,7 @@ class BaseRemovingOptionsResolver
     }
 
     /**
-     * Resolve options for a bulk remove
-     *
-     * @param array $options
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function resolveRemoveAllOptions(array $options)
     {
