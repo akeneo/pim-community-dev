@@ -46,10 +46,10 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
     {
         if (Operators::IS_EMPTY !== $operator) {
             $this->checkValue($field, $value);
-        }
 
-        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-            $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
+            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+                $value = $this->objectIdResolver->getIdsFromCodes('family', $value);
+            }
         }
 
         $rootAlias  = $this->qb->getRootAlias();

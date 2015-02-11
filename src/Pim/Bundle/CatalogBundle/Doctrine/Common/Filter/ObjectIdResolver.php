@@ -31,7 +31,7 @@ class ObjectIdResolver implements ObjectIdResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdsFromCodes($entityName, $codes)
+    public function getIdsFromCodes($entityName, array $codes)
     {
         if (!isset($this->fieldMapping[$entityName])) {
             throw new \InvalidArgumentException(sprintf('The class %s cannot be found', $entityName));
