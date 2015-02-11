@@ -118,7 +118,7 @@ interface MetricInterface
      *
      * @param ProductValueInterface $value
      *
-     * @return ProductMediaInterface
+     * @return MetricInterface
      */
     public function setValue(ProductValueInterface $value);
 

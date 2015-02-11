@@ -129,7 +129,7 @@ interface AttributeOptionInterface extends ReferableInterface
     public function getOptionValue();
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function __toString();
 }

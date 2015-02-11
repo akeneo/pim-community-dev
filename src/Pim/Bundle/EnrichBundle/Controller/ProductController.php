@@ -623,8 +623,7 @@ class ProductController extends AbstractDoctrineController
             'dataLocale'       => $this->getDataLocaleCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
             'channels'         => $channels,
-            'attributesForm'   =>
-                $this->getAvailableAttributesForm($product->getAttributes())->createView(),
+            'attributesForm'   => $this->getAvailableAttributesForm($product->getAttributes())->createView(),
             'product'          => $product,
             'trees'            => $trees,
             'created'          => $this->versionManager->getOldestLogEntry($product),

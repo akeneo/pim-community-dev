@@ -148,12 +148,15 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
             ->getQuery()->execute();
 
         // This block should be in the DQL query, but hard to do.
-        $groupsWithAttributes = array_filter($variantGroups, function ($variantGroup) use ($attributeIds) {
-            $groupAttributeIds = $variantGroup->getAttributeIds();
-            $commonAttributes = array_intersect($groupAttributeIds, $attributeIds);
+        $groupsWithAttributes = array_filter(
+            $variantGroups,
+            function ($variantGroup) use ($attributeIds) {
+                $groupAttributeIds = $variantGroup->getAttributeIds();
+                $commonAttributes = array_intersect($groupAttributeIds, $attributeIds);
 
-            return count($commonAttributes) === count($groupAttributeIds);
-        });
+                return count($commonAttributes) === count($groupAttributeIds);
+            }
+        );
 
         return $groupsWithAttributes;
     }

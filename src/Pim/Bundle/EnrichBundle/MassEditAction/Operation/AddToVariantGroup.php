@@ -41,11 +41,11 @@ class AddToVariantGroup extends ProductMassEditOperation
     protected $validVariantGroups = null;
 
     /**
-     * @param GroupRepositoryInterface              $groupRepository
-     * @param BulkSaverInterface                    $productSaver
-     * @param ProductTemplateUpdaterInterface       $templateUpdater
-     * @param ValidatorInterface                    $validator
-     * @param ProductMassActionRepositoryInterface  $prodMassActionRepo
+     * @param GroupRepositoryInterface             $groupRepository
+     * @param BulkSaverInterface                   $productSaver
+     * @param ProductTemplateUpdaterInterface      $templateUpdater
+     * @param ValidatorInterface                   $validator
+     * @param ProductMassActionRepositoryInterface $prodMassActionRepo
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -204,10 +204,8 @@ class AddToVariantGroup extends ProductMassEditOperation
         $invalidProducts = $this->getInvalidProductsInfos($skippedProducts);
         if ($invalidProducts) {
             $messages[] = [
-                'key'     =>
-                    'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid',
-                'options' =>
-                    ['%products%' => implode(', ', $invalidProducts)]
+                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid',
+                'options' => ['%products%' => implode(', ', $invalidProducts)]
             ];
         }
 

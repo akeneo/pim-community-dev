@@ -271,8 +271,8 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * @param AbstractMassEditOperator  $operator
-     * @param array                     $validationGroups
+     * @param AbstractMassEditOperator $operator
+     * @param array                    $validationGroups
      *
      * @return Form
      */

@@ -55,11 +55,9 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     {
         $productValues = [];
         foreach ($data as $attFieldName => $dataValue) {
-
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
 
             if (null !== $attributeInfos) {
-
                 $attribute = $attributeInfos['attribute'];
                 unset($attributeInfos['attribute']);
 

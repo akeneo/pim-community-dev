@@ -30,7 +30,6 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      *
      * @return ProductInterface
      */
-
     public function setId($id);
     /**
      * Get the identifier of the product

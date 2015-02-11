@@ -22,7 +22,6 @@ class HasVariantAxesValidator extends ConstraintValidator
     public function validate($product, Constraint $constraint)
     {
         if ($product instanceof ProductInterface && null !== $variant = $product->getVariantGroup()) {
-
             $missingAxisCodes = $this->getMissingAxisCodes($product, $variant);
 
             if (count($missingAxisCodes) > 0) {

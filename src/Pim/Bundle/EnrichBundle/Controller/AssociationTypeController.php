@@ -128,8 +128,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             $response = array(
                 'status' => 1,
-                'url' =>
-                    $this->generateUrl('pim_enrich_association_type_edit', array('id' => $associationType->getId()))
+                'url'    => $this->generateUrl('pim_enrich_association_type_edit', ['id' => $associationType->getId()])
             );
 
             return new Response(json_encode($response));
