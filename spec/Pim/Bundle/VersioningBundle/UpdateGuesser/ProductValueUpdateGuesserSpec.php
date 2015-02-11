@@ -34,34 +34,43 @@ class ProductValueUpdateGuesserSpec extends ObjectBehavior
 
     function it_marks_product_as_updated_when_a_product_price_is_removed(
         EntityManager $em,
+        UnitOfWork $unitOfWork,
         ProductInterface $product,
         ProductValueInterface $value,
         ProductPriceInterface $price
     ) {
         $price->getValue()->willReturn($value);
         $value->getEntity()->willReturn($product);
+        $em->getUnitOfWork()->willReturn($unitOfWork);
+        $unitOfWork->getEntityState($product)->willReturn(UnitOfWork::STATE_MANAGED);
         $this->guessUpdates($em, $price, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$product]);
     }
 
     function it_marks_product_as_updated_when_a_product_media_is_removed(
         EntityManager $em,
+        UnitOfWork $unitOfWork,
         ProductInterface $product,
         ProductValueInterface $value,
         ProductMediaInterface $media
     ) {
         $media->getValue()->willReturn($value);
         $value->getEntity()->willReturn($product);
+        $em->getUnitOfWork()->willReturn($unitOfWork);
+        $unitOfWork->getEntityState($product)->willReturn(UnitOfWork::STATE_MANAGED);
         $this->guessUpdates($em, $media, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$product]);
     }
 
     function it_marks_product_as_updated_when_a_product_metric_is_removed(
         EntityManager $em,
+        UnitOfWork $unitOfWork,
         ProductInterface $product,
         ProductValueInterface $value,
         MetricInterface $metric
     ) {
         $metric->getValue()->willReturn($value);
         $value->getEntity()->willReturn($product);
+        $em->getUnitOfWork()->willReturn($unitOfWork);
+        $unitOfWork->getEntityState($product)->willReturn(UnitOfWork::STATE_MANAGED);
         $this->guessUpdates($em, $metric, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$product]);
     }
 
