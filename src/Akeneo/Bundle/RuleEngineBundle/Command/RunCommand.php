@@ -34,7 +34,7 @@ class RunCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:rule:run')
+            ->setName('akeneo:rule:run')
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to run')
             ->addOption('dry-run', null, InputOption::VALUE_NONE, 'Dry run')
             ->addOption('stop-on-error', null, InputOption::VALUE_NONE, 'Stop rules execution on error')
