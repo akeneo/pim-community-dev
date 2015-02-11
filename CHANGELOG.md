@@ -66,7 +66,7 @@
 - Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/CategoryManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
 - Remove interface `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/GroupManager` and remove method `remove` and remove the $eventDispatcher argument
 - Remove interface `SaverInterface` from `Pim/Bundle/CatalogBundle/Manager/ChannelManager` and remove method `save`
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove methods `save` and `remove`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
 - Change of constructor of `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove `CompletenessManager`
 - Change of constructor of `Pim/Bundle/EnrichBundle/Controller/AttributeGroupController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface` as for the fourteenth and fifteenth argument
 - Change of constructor of `Pim/Bundle/EnrichBundle/Controller/CategoryTreeController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\SaverInterface` as for the fourteenth and fifteenth argument
