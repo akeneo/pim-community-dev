@@ -30,7 +30,7 @@ class DebugCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:rule:debug')
+            ->setName('akeneo:rule:debug')
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to display information')
             ->setDescription('Displays rules information.')
         ;

@@ -32,7 +32,7 @@ class DeleteCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:rule:delete')
+            ->setName('akeneo:rule:delete')
             ->addArgument('code', InputArgument::OPTIONAL, 'Code of the rule to delete')
             ->setDescription('Deletes all the rules or only one if a code is provided.')
         ;
