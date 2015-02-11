@@ -5,6 +5,7 @@ parameters:
     pim_catalog.remover.group.class:                 Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\GroupRemover
     pim_catalog.remover.attribute.class:             Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\AttributeRemover
     pim_catalog.remover.family.class:                Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\FamilyRemover
+    pim_catalog.remover.product.class:               Pim\Bundle\CatalogBundle\Doctrine\Common\Remover\ProductRemover
     pim_catalog.remover.base_options_resolver.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver
 
 services:
@@ -23,11 +24,11 @@ services:
             - %pim_catalog.entity.channel.class%
 
     pim_catalog.remover.product:
-        class: %pim_catalog.remover.base.class%
+        class: %pim_catalog.remover.product.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.object_manager.product'
             - '@pim_catalog.remover.base_options_resolver'
-            - %pim_catalog.entity.product.class%
+            - '@event_dispatcher'
 
     pim_catalog.remover.association_type:
         class: %pim_catalog.remover.association_type.class%

@@ -31,10 +31,10 @@ class AttributeManager
     /**
      * Constructor
      *
-     * @param string                   $attributeClass  Attribute class
-     * @param string                   $productClass    Product class
-     * @param ObjectManager            $objectManager   Object manager
-     * @param AttributeTypeRegistry    $registry        Attribute type registry
+     * @param string                $attributeClass Attribute class
+     * @param string                $productClass   Product class
+     * @param ObjectManager         $objectManager  Object manager
+     * @param AttributeTypeRegistry $registry       Attribute type registry
      */
     public function __construct(
         $attributeClass,

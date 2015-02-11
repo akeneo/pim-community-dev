@@ -57,17 +57,12 @@
 - Change of constructor of `Pim/Bundle/EnrichBundle/Form/Type/PriceType` to accept `Pim\Bundle\CatalogBundle\Model\Price` as a string for the first argument
 - Change of constructor of `Pim/Bundle/ImportExportBundle/Form/Type/JobInstanceType` to accept `Symfony\Component\Translation\TranslatorInterface` as for the second argument
 - Change of constructor of `Pim/Bundle/BaseConnectorBundle/Writer/Doctrine/ProductWriter` to accept `Pim\Bundle\CatalogBundle\Manager\MediaManager` as for the first argument instead of `Pim\Bundle\CatalogBundle\Manager\ProductManager`
-- Change of constructor of `Pim/Bundle/BaseConnectorBundle/Writer/Doctrine/ProductWriter` to accept `Pim\Bundle\CatalogBundle\Manager\MediaManager` as for the first argument instead of `Pim\Bundle\CatalogBundle\Manager\ProductManager`
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
-- Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeGroupManager` and remove methods `save`, `remove` and `saveAll`
-- Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeManager` and remove methods `save`, `remove` and `saveAll` and remove the $eventDispatcher argument
-- Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/ProductManager` and remove methods `save`, `remove` and `saveAll`
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeOptionManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/CategoryManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
-- Remove interface `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/GroupManager` and remove method `remove` and remove the $eventDispatcher argument
-- Remove interface `SaverInterface` from `Pim/Bundle/CatalogBundle/Manager/ChannelManager` and remove method `save`
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
-- Change of constructor of `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove `CompletenessManager`
+- Remove methods remove() and removeAll() `Pim/Bundle/CatalogBundle/Manager/ProductManager`
+- Remove method remove() from `Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager` and remove the $eventDispatcher argument from the constructor
+- Remove method remove() from `Pim/Bundle/CatalogBundle/Manager/AttributeManager` and remove the $eventDispatcher argument from the constructor
+- Remove method remove() from `Pim/Bundle/CatalogBundle/Manager/CategoryManager` and remove the $eventDispatcher argument from the constructor
+- Remove method remove() from `Pim/Bundle/CatalogBundle/Manager/GroupManager` and remove the $eventDispatcher argument from the constructor
+- Remove method remove() from `Pim/Bundle/CatalogBundle/Manager/FamilyManager` and remove `CompletenessManager` and $eventDispatcher arguments from the constructor
 - Change of constructor of `Pim/Bundle/EnrichBundle/Controller/AttributeGroupController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface` as for the fourteenth and fifteenth argument
 - Change of constructor of `Pim/Bundle/EnrichBundle/Controller/CategoryTreeController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\SaverInterface` as for the fourteenth and fifteenth argument
 - Change of constructor of `Pim/Bundle/EnrichBundle/Controller/FamilyController` to accept `Akeneo\Component\StorageUtils\Remover\RemoverInterface` and `Akeneo\Component\StorageUtils\Saver\SaverInterface` as for the fourteenth and fifteenth argument
