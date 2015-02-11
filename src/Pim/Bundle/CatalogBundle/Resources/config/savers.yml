@@ -4,6 +4,7 @@ parameters:
     pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
     pim_catalog.saver.product_options_resolver.class:      Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver
     pim_catalog.saver.completeness_options_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver
+    pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.channel.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver
@@ -38,7 +39,8 @@ services:
             - '@pim_catalog.manager.product_template_media'
             - '@pim_catalog.applier.product_template'
             - '@pim_versioning.context.version'
-            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.saver.group_options_resolver'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.saver.family:
         class: %pim_catalog.saver.family.class%
@@ -97,3 +99,6 @@ services:
 
     pim_catalog.saver.completeness_options_resolver:
         class: %pim_catalog.saver.completeness_options_resolver.class%
+
+    pim_catalog.saver.group_options_resolver:
+        class: %pim_catalog.saver.group_options_resolver.class%
