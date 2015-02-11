@@ -62,7 +62,7 @@
 - Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeGroupManager` and remove methods `save`, `remove` and `saveAll`
 - Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeManager` and remove methods `save`, `remove` and `saveAll` and remove the $eventDispatcher argument
 - Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/ProductManager` and remove methods `save`, `remove` and `saveAll`
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeOptionManager` and remove methods `save` and `remove`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeOptionManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
 - Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/CategoryManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
 - Remove interface `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/GroupManager` and remove method `remove` and remove the $eventDispatcher argument
 - Remove interface `SaverInterface` from `Pim/Bundle/CatalogBundle/Manager/ChannelManager` and remove method `save`

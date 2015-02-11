@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Attribute option manager
@@ -21,9 +20,6 @@ class AttributeOptionManager
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var string */
     protected $optionClass;
 
@@ -33,19 +29,16 @@ class AttributeOptionManager
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $optionClass
-     * @param string                   $optionValueClass
+     * @param ObjectManager $objectManager
+     * @param string        $optionClass
+     * @param string        $optionValueClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
         $optionClass,
         $optionValueClass
     ) {
         $this->objectManager    = $objectManager;
-        $this->eventDispatcher  = $eventDispatcher;
         $this->optionClass      = $optionClass;
         $this->optionValueClass = $optionValueClass;
     }
