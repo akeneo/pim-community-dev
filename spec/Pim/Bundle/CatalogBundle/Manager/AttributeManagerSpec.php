@@ -17,15 +17,13 @@ class AttributeManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        AttributeTypeRegistry $registry,
-        EventDispatcherInterface $eventDispatcher
+        AttributeTypeRegistry $registry
     ) {
         $this->beConstructedWith(
             self::ATTRIBUTE_CLASS,
             self::PRODUCT_CLASS,
             $objectManager,
-            $registry,
-            $eventDispatcher
+            $registry
         );
     }
 

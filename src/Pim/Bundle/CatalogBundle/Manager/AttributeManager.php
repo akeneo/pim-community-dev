@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Attribute manager
@@ -29,9 +28,6 @@ class AttributeManager
     /** @var AttributeTypeRegistry */
     protected $registry;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
@@ -39,20 +35,17 @@ class AttributeManager
      * @param string                   $productClass    Product class
      * @param ObjectManager            $objectManager   Object manager
      * @param AttributeTypeRegistry    $registry        Attribute type registry
-     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
      */
     public function __construct(
         $attributeClass,
         $productClass,
         ObjectManager $objectManager,
-        AttributeTypeRegistry $registry,
-        EventDispatcherInterface $eventDispatcher
+        AttributeTypeRegistry $registry
     ) {
         $this->attributeClass  = $attributeClass;
         $this->productClass    = $productClass;
         $this->objectManager   = $objectManager;
         $this->registry        = $registry;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

@@ -72,7 +72,6 @@ services:
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.registry.attribute_type'
-            - '@event_dispatcher'
 
     pim_catalog.manager.attribute_option:
         class: %pim_catalog.manager.attribute_option.class%
