@@ -87,15 +87,51 @@ class GroupHandlerSpec extends ObjectBehavior
         $this->process($group)->shouldReturn(true);
     }
 
-    function it_doesnt_save_a_group_when_form_is_not_valid($form, $request, $saver, GroupInterface $group, ProductInterface $product)
-    {
+    function it_doesnt_save_a_group_when_form_is_not_valid(
+        $form,
+        $request,
+        $saver,
+        GroupInterface $group,
+        ProductInterface $product,
+        GroupTypeInterface $groupType
+    ) {
         $form->setData($group)->shouldBeCalled();
         $request->isMethod('POST')->willReturn(true);
+
         $group->getProducts()->willReturn([$product]);
         $form->submit($request)->shouldBeCalled();
-        $form->isValid()->willReturn(false);
-        $saver->save($group)->shouldNotBeCalled();
 
+        $form->isValid()->willReturn(false);
+        $groupType->isVariant()->willReturn(false);
+        
+        $group->getType()->willReturn($groupType);
+        $saver->save($group)->shouldNotBeCalled();
+        $this->process($group)->shouldReturn(false);
+    }
+
+    function it_reloads_variant_group_products_if_submit_fails(
+        $form,
+        $request,
+        $saver,
+        $repository,
+        GroupInterface $group,
+        ProductInterface $product,
+        GroupTypeInterface $groupType
+    ) {
+        $form->setData($group)->shouldBeCalled();
+        $request->isMethod('POST')->willReturn(true);
+
+        $group->getProducts()->willReturn([$product]);
+        $form->submit($request)->shouldBeCalled();
+
+        $form->isValid()->willReturn(false);
+        $groupType->isVariant()->willReturn(true);
+        $group->getId()->willReturn(123);
+        $repository->findAllForVariantGroup($group)->shouldBeCalled()->willReturn([]);
+        $group->setProducts([])->shouldBeCalled();
+
+        $group->getType()->willReturn($groupType);
+        $saver->save($group)->shouldNotBeCalled();
         $this->process($group)->shouldReturn(false);
     }
 
