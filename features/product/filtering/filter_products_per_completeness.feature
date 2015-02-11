@@ -39,7 +39,7 @@ Feature: Filter products
     Then the grid should contain 4 elements
     And I should see products BOOTWXS, BOOTBS, BOOTBL, BOOTRXS
 
-  Scenario: Successfully filter complete productsfor default tablet channel
+  Scenario: Successfully filter complete products for default tablet channel
     Given I am logged in as "Mary"
     And I am on the products page
     And I filter by "Complete" with value "yes"
