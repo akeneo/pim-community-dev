@@ -25,12 +25,10 @@ class GroupManagerSpec extends ObjectBehavior
 
     function let(
         RegistryInterface $registry,
-        EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
             $registry,
-            $eventDispatcher,
             $productRepository,
             self::GROUP_CLASS,
             self::GROUP_TYPE_CLASS,

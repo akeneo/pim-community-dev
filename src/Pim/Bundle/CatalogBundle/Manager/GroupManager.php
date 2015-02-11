@@ -4,12 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Group manager
@@ -22,9 +19,6 @@ class GroupManager
 {
     /** @var RegistryInterface */
     protected $doctrine;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
 
     /** @var string */
     protected $groupClass;
@@ -45,7 +39,6 @@ class GroupManager
      * Constructor
      *
      * @param RegistryInterface          $doctrine
-     * @param EventDispatcherInterface   $eventDispatcher
      * @param ProductRepositoryInterface $productRepository
      * @param string                     $groupClass
      * @param string                     $groupTypeClass
@@ -54,7 +47,6 @@ class GroupManager
      */
     public function __construct(
         RegistryInterface $doctrine,
-        EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository,
         $groupClass,
         $groupTypeClass,
@@ -62,7 +54,6 @@ class GroupManager
         $attributeClass
     ) {
         $this->doctrine          = $doctrine;
-        $this->eventDispatcher   = $eventDispatcher;
         $this->groupClass        = $groupClass;
         $this->groupTypeClass    = $groupTypeClass;
         $this->productClass      = $productClass;

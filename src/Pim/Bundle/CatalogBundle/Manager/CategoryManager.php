@@ -4,13 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Category manager
@@ -30,8 +24,8 @@ class CategoryManager
     /**
      * Constructor
      *
-     * @param ObjectManager            $om
-     * @param string                   $categoryClass
+     * @param ObjectManager $om
+     * @param string        $categoryClass
      */
     public function __construct(ObjectManager $om, $categoryClass)
     {

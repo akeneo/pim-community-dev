@@ -1,7 +1,6 @@
 <?php
 namespace Akeneo\Component\StorageUtils\Remover;
 
-
 /**
  * Resolve removing options for single or bulk remove
  *
