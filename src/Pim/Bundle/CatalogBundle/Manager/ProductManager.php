@@ -339,6 +339,38 @@ class ProductManager
     }
 
     /**
+     * Remove products
+     *
+     * @param integer[] $ids
+     *
+     * @deprecated will be removed in 1.4, replaced by ProductRemover::removeAll
+     */
+    public function removeAll(array $ids)
+    {
+        $products = $this->getProductRepository()->findByIds($ids);
+        foreach ($products as $product) {
+            $this->remove($product, false);
+        }
+        $this->objectManager->flush();
+    }
+
+    /**
+     * Remove a product
+     *
+     * @param ProductInterface $product
+     * @param boolean          $flush
+     *
+     * @deprecated will be removed in 1.4, replaced by ProductRemover::remove
+     */
+    public function remove(ProductInterface $product, $flush = true)
+    {
+        $this->objectManager->remove($product);
+        if (true === $flush) {
+            $this->objectManager->flush();
+        }
+    }
+
+    /**
      * Return related repository
      *
      * @return ObjectRepository

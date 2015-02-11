@@ -206,6 +206,22 @@ class CategoryManager
     }
 
     /**
+     * Remove a category
+     *
+     * @param CategoryInterface $category
+     *
+     * @deprecated will be removed in 1.4, replaced by CategoryRemover::remove
+     */
+    public function remove(CategoryInterface $category)
+    {
+        foreach ($category->getProducts() as $product) {
+            $product->removeCategory($category);
+        }
+
+        $this->getObjectManager()->remove($category);
+    }
+
+    /**
      * Move a category to another parent
      * If $prevSiblingId is provided, the category will be positioned after this
      * category, otherwise if will be the first child of the parent categpry

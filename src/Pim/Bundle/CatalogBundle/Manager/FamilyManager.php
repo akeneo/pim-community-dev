@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
@@ -51,5 +52,18 @@ class FamilyManager
         return $this->repository->getChoices(
             ['localeCode' => $this->userContext->getCurrentLocaleCode()]
         );
+    }
+
+    /**
+     * Remove a family
+     *
+     * @param FamilyInterface $family
+     *
+     * @deprecated will be removed in 1.4, replaced by FamilyRemover::remove
+     */
+    public function remove(FamilyInterface $family)
+    {
+        $this->objectManager->remove($family);
+        $this->objectManager->flush();
     }
 }
