@@ -14,10 +14,9 @@ class AssociationTypeManagerSpec extends ObjectBehavior
 {
     function let(
         AssociationTypeRepositoryInterface $repository,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        ObjectManager $objectManager
     ) {
-        $this->beConstructedWith($repository, $objectManager, $eventDispatcher);
+        $this->beConstructedWith($repository, $objectManager);
     }
 
     function it_provides_all_association_types($repository)

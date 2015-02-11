@@ -58,7 +58,7 @@
 - Change of constructor of `Pim/Bundle/ImportExportBundle/Form/Type/JobInstanceType` to accept `Symfony\Component\Translation\TranslatorInterface` as for the second argument
 - Change of constructor of `Pim/Bundle/BaseConnectorBundle/Writer/Doctrine/ProductWriter` to accept `Pim\Bundle\CatalogBundle\Manager\MediaManager` as for the first argument instead of `Pim\Bundle\CatalogBundle\Manager\ProductManager`
 - Change of constructor of `Pim/Bundle/BaseConnectorBundle/Writer/Doctrine/ProductWriter` to accept `Pim\Bundle\CatalogBundle\Manager\MediaManager` as for the first argument instead of `Pim\Bundle\CatalogBundle\Manager\ProductManager`
-- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager` and remove methods `save` and `remove`
+- Remove interfaces `SaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager` and remove methods `save` and `remove` and remove the $eventDispatcher argument
 - Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeGroupManager` and remove methods `save`, `remove` and `saveAll`
 - Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/AttributeManager` and remove methods `save`, `remove` and `saveAll`
 - Remove interfaces `SaverInterface`, `BulkSaverInterface` and `RemoverInterface` from `Pim/Bundle/CatalogBundle/Manager/ProductManager` and remove methods `save`, `remove` and `saveAll`

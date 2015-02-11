@@ -4,10 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -27,24 +23,18 @@ class AssociationTypeManager
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
      * @param AssociationTypeRepositoryInterface $repository
      * @param ObjectManager                      $objectManager
-     * @param EventDispatcherInterface           $eventDispatcher
      */
     public function __construct(
         AssociationTypeRepositoryInterface $repository,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        ObjectManager $objectManager
     ) {
         $this->repository      = $repository;
         $this->objectManager   = $objectManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
