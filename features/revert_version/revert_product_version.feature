@@ -357,36 +357,41 @@ Feature: Revert a product to a previous version
       Then the product "marcel" should have the following values:
         | comment |  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3628
+  @jira https://akeneo.atlassian.net/browse/PIM-3760
   Scenario: Successfully revert a pim_catalog_image attribute
     Given the following product:
       | sku     | family |
       | t-shirt | tees   |
-    And the following product values:
-      | product | attribute | value                 |
-      | t-shirt | side_view | %fixtures%/akeneo.jpg |
     Given I am on the "t-shirt" product page
+    And I visit the "Media" group
+    And I attach file "akeneo.jpg" to "Side view"
+    And I visit the "Product information" group
+    And I change the Name to "T-shirt with picture"
+    And I save the product
     And I visit the "Media" group
     When I remove the "Side view" file
     And I save the product
     When I visit the "History" tab
-    When I click on the "Revert to this version" action of the row which contains "sku: t-shirt"
+    When I click on the "Revert to this version" action of the row which contains "T-shirt with picture"
     Then the product "t-shirt" should have the following values:
-      | side_view | %fixtures%/akeneo.jpg |
+      | side_view | akeneo.jpg |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3628
+  @jira https://akeneo.atlassian.net/browse/PIM-3760
   Scenario: Successfully revert a pim_catalog_file attribute
     Given the following product:
       | sku     | family |
       | t-shirt | tees   |
-    And the following product values:
-      | product | attribute | value                       |
-      | t-shirt | datasheet | %fixtures%/bic-core-148.txt |
     Given I am on the "t-shirt" product page
+    And I add available attribute Datasheet
+    And I visit the "Media" group
+    And I attach file "bic-core-148.txt" to "Datasheet"
+    And I visit the "Product information" group
+    And I change the Name to "T-shirt with datasheet"
+    And I save the product
     And I visit the "Media" group
     When I remove the "Datasheet" file
     And I save the product
     When I visit the "History" tab
-    When I click on the "Revert to this version" action of the row which contains "sku: t-shirt"
+    When I click on the "Revert to this version" action of the row which contains "T-shirt with datasheet"
     Then the product "t-shirt" should have the following values:
-      | datasheet | %fixtures%/bic-core-148.txt |
+      | datasheet | bic-core-148.txt |
