@@ -41,7 +41,15 @@ class ProductReverterSpec extends ObjectBehavior
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn('qux');
 
-        $denormalizer->denormalize('bar', 'foo', "csv", ['entity' => 'qux'])->willReturn($product);
+        $denormalizer->denormalize(
+            'bar',
+            'foo',
+            'csv',
+            [
+                'entity' => 'qux',
+                'use_relative_media_path' => true
+            ]
+        )->willReturn($product);
         $saver->save($product)->shouldBeCalled();
 
         $validator->validate($product)->willReturn($violationsList);
@@ -67,7 +75,15 @@ class ProductReverterSpec extends ObjectBehavior
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn('qux');
 
-        $denormalizer->denormalize('bar', 'foo', "csv", ['entity' => 'qux'])->willReturn($product);
+        $denormalizer->denormalize(
+            'bar',
+            'foo',
+            'csv',
+            [
+                'entity' => 'qux',
+                'use_relative_media_path' => true
+            ]
+        )->willReturn($product);
 
         $validator->validate($product)->willReturn($violationsList);
         $violationsList->count()->willReturn(1);

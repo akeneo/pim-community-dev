@@ -69,9 +69,16 @@ class ProductReverter
         $resourceId = $version->getResourceId();
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
-        $revertedObject = $this->denormalizer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
+        $revertedObject = $this->denormalizer->denormalize(
+            $data,
+            $class,
+            'csv',
+            [
+                'entity'                  => $currentObject,
+                'use_relative_media_path' => true
+            ]
+        );
 
-        /** @var \Symfony\Component\Validator\ConstraintViolationList $violationsList */
         $violationsList = $this->validator->validate($revertedObject);
         if ($violationsList->count() > 0) {
             throw new RevertException('This version can not be restored. Some errors occured during the validation.');
