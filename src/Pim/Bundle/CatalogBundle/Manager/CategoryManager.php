@@ -27,21 +27,16 @@ class CategoryManager
     /** @var string */
     protected $categoryClass;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
      * @param ObjectManager            $om
      * @param string                   $categoryClass
-     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(ObjectManager $om, $categoryClass, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ObjectManager $om, $categoryClass)
     {
         $this->om = $om;
         $this->categoryClass = $categoryClass;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

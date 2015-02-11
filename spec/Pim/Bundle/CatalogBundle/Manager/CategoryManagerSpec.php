@@ -17,10 +17,9 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
         CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->beConstructedWith($objectManager, self::CATEGORY_CLASS, $eventDispatcher);
+        $this->beConstructedWith($objectManager, self::CATEGORY_CLASS);
 
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }

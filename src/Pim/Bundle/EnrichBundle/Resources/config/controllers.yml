@@ -62,7 +62,7 @@ services:
             - '@pim_user.context.user'
             - '@oro_security.security_facade'
             - '@pim_catalog.saver.category'
-            - '@pim_catalog.remover.cateogry'
+            - '@pim_catalog.remover.category'
 
     pim_enrich.controller.channel:
         scope: request
