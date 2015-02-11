@@ -64,13 +64,13 @@ class CategoryFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value, $locale = null, $scope = null, $options = [])
     {
+        $categoryIds = $value;
         if ($operator !== Operators::UNCLASSIFIED) {
             $this->checkValue($field, $value);
-        }
 
-        $categoryIds = $value;
-        if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
-            $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
+            if (FieldFilterHelper::getProperty($field) === FieldFilterHelper::CODE_PROPERTY) {
+                $categoryIds = $this->objectIdResolver->getIdsFromCodes('category', $value);
+            }
         }
 
         switch ($operator) {
