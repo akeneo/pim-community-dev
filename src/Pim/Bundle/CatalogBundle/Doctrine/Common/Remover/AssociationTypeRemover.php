@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver;
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
@@ -23,20 +23,20 @@ class AssociationTypeRemover implements RemoverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var BaseRemovingOptionsResolver */
+    /** @var RemovingOptionsResolverInterface */
     protected $optionsResolver;
 
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
-     * @param ObjectManager               $objectManager
-     * @param BaseRemovingOptionsResolver $optionsResolver
-     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ObjectManager                    $objectManager
+     * @param RemovingOptionsResolverInterface $optionsResolver
+     * @param EventDispatcherInterface         $eventDispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
-        BaseRemovingOptionsResolver $optionsResolver,
+        RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->objectManager = $objectManager;

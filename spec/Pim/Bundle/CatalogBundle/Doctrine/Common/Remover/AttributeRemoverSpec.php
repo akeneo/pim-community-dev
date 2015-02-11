@@ -2,7 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver;
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
@@ -14,7 +14,7 @@ class AttributeRemoverSpec extends ObjectBehavior
 {
     function let(
         ObjectManager $objectManager,
-        BaseRemovingOptionsResolver $optionsResolver,
+        RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher);
