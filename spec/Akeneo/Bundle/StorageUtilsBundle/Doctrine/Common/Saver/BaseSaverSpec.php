@@ -2,14 +2,14 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
-use PhpSpec\ObjectBehavior;
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
+use PhpSpec\ObjectBehavior;
 
 class BaseSaverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, BaseSavingOptionsResolver $optionsResolver)
+    function let(ObjectManager $objectManager, SavingOptionsResolverInterface $optionsResolver)
     {
         $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
     }

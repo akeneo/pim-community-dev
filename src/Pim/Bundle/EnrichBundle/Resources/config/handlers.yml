@@ -9,7 +9,7 @@ services:
         arguments:
             - '@pim_enrich.form.attribute'
             - '@request'
-            - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.saver.attribute'
 
     pim_enrich.form.handler.attribute_group:
         class: %pim_enrich.form.handler.base.class%
@@ -17,7 +17,7 @@ services:
         arguments:
             - '@pim_enrich.form.attribute_group'
             - '@request'
-            - '@pim_catalog.manager.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
 
     pim_enrich.form.handler.channel:
         class: %pim_enrich.form.handler.base.class%
@@ -25,7 +25,7 @@ services:
         arguments:
             - '@pim_enrich.form.channel'
             - '@request'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.saver.channel'
 
     pim_enrich.form.handler.group:
         class: %pim_enrich.form.handler.group.class%
@@ -59,7 +59,7 @@ services:
         arguments:
             - '@pim_enrich.form.association_type'
             - '@request'
-            - '@pim_catalog.manager.association_type'
+            - '@pim_catalog.saver.association_type'
 
     pim_enrich.form.handler.family:
         class: %pim_enrich.form.handler.base.class%
@@ -67,4 +67,4 @@ services:
         arguments:
             - '@pim_enrich.form.family'
             - '@request'
-            - '@pim_catalog.manager.family'
+            - '@pim_catalog.saver.family'

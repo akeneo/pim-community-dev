@@ -4,12 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Group manager
@@ -18,13 +14,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupManager implements RemoverInterface
+class GroupManager
 {
     /** @var RegistryInterface */
     protected $doctrine;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
 
     /** @var string */
     protected $groupClass;
@@ -45,7 +38,6 @@ class GroupManager implements RemoverInterface
      * Constructor
      *
      * @param RegistryInterface          $doctrine
-     * @param EventDispatcherInterface   $eventDispatcher
      * @param ProductRepositoryInterface $productRepository
      * @param string                     $groupClass
      * @param string                     $groupTypeClass
@@ -54,7 +46,6 @@ class GroupManager implements RemoverInterface
      */
     public function __construct(
         RegistryInterface $doctrine,
-        EventDispatcherInterface $eventDispatcher,
         ProductRepositoryInterface $productRepository,
         $groupClass,
         $groupTypeClass,
@@ -62,7 +53,6 @@ class GroupManager implements RemoverInterface
         $attributeClass
     ) {
         $this->doctrine          = $doctrine;
-        $this->eventDispatcher   = $eventDispatcher;
         $this->groupClass        = $groupClass;
         $this->groupTypeClass    = $groupTypeClass;
         $this->productClass      = $productClass;
@@ -152,24 +142,17 @@ class GroupManager implements RemoverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Removes a group
+     *
+     * @param GroupInterface $group
+     *
+     * @deprecated will be removed in 1.4, replaced by GroupRemover::remove
      */
-    public function remove($group, array $options = [])
+    public function remove(GroupInterface $group)
     {
-        if (!$group instanceof GroupInterface) {
-            throw new \InvalidArgumentException(
-                sprintf('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "%s" provided.', get_class($group))
-            );
-        }
-
-        $this->eventDispatcher->dispatch(GroupEvents::PRE_REMOVE, new GenericEvent($group));
-
-        $options = array_merge(['flush' => true], $options);
         $em = $this->doctrine->getManager();
         $em->remove($group);
-        if (true === $options['flush']) {
-            $em->flush();
-        }
+        $em->flush();
     }
 
     /**

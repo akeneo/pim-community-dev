@@ -2,14 +2,14 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover;
 
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Remover\BaseRemovingOptionsResolver;
 
 class BaseRemoverSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, BaseRemovingOptionsResolver $optionsResolver)
+    function let(ObjectManager $objectManager, RemovingOptionsResolverInterface $optionsResolver)
     {
         $this->beConstructedWith($objectManager, $optionsResolver, 'Pim\Bundle\CatalogBundle\Model\GroupTypeInterface');
     }

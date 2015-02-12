@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -49,6 +51,12 @@ class AttributeGroupController extends AbstractDoctrineController
     /** @var string */
     protected $attributeClass;
 
+    /** @var BulkSaverInterface */
+    protected $attributeSaver;
+
+    /** @var RemoverInterface */
+    protected $attrGroupRemover;
+
     /**
      * constructor
      *
@@ -65,6 +73,8 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param HandlerInterface         $formHandler
      * @param Form                     $form
      * @param AttributeGroupManager    $manager
+     * @param BulkSaverInterface       $attributeSaver
+     * @param RemoverInterface         $attrGroupRemover
      * @param string                   $attributeClass
      */
     public function __construct(
@@ -81,6 +91,8 @@ class AttributeGroupController extends AbstractDoctrineController
         HandlerInterface $formHandler,
         Form $form,
         AttributeGroupManager $manager,
+        BulkSaverInterface $attributeSaver,
+        RemoverInterface $attrGroupRemover,
         $attributeClass
     ) {
         parent::__construct(
@@ -95,11 +107,13 @@ class AttributeGroupController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->securityFacade = $securityFacade;
-        $this->formHandler    = $formHandler;
-        $this->form           = $form;
-        $this->manager        = $manager;
-        $this->attributeClass = $attributeClass;
+        $this->securityFacade   = $securityFacade;
+        $this->formHandler      = $formHandler;
+        $this->form             = $form;
+        $this->manager          = $manager;
+        $this->attributeClass   = $attributeClass;
+        $this->attributeSaver   = $attributeSaver;
+        $this->attrGroupRemover = $attrGroupRemover;
     }
 
     /**
@@ -136,7 +150,7 @@ class AttributeGroupController extends AbstractDoctrineController
                 $this->eventDispatcher->dispatch(AttributeGroupEvents::POST_CREATE, new GenericEvent($group));
                 $this->addFlash('success', 'flash.attribute group.created');
 
-                return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
+                return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
             }
 
             $form = $this->form->createView();
@@ -149,12 +163,12 @@ class AttributeGroupController extends AbstractDoctrineController
 
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
-        return array(
+        return [
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $form,
             'attributesForm' => $attributesForm,
-        );
+        ];
     }
 
     /**
@@ -173,15 +187,15 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
         }
 
-        return array(
+        return [
             'groups'         => $groups,
             'group'          => $group,
             'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
-        );
+        ];
     }
 
     /**
@@ -209,7 +223,7 @@ class AttributeGroupController extends AbstractDoctrineController
                     $groups[] = $group;
                 }
             }
-            $this->manager->saveAll($groups);
+            $this->attributeSaver->saveAll($groups);
 
             return new Response(1);
         }
@@ -239,7 +253,7 @@ class AttributeGroupController extends AbstractDoctrineController
             throw new DeleteException($this->translator->trans('flash.attribute group.not removed attributes'));
         }
 
-        $this->manager->remove($group);
+        $this->attrGroupRemover->remove($group);
 
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
@@ -264,13 +278,13 @@ class AttributeGroupController extends AbstractDoctrineController
      * @return Form
      */
     protected function getAvailableAttributesForm(
-        array $attributes = array(),
+        array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('excluded_attributes' => $attributes)
+            ['excluded_attributes' => $attributes]
         );
     }
 
@@ -297,7 +311,7 @@ class AttributeGroupController extends AbstractDoctrineController
         $this->manager->addAttributes($group, $availableAttributes->getAttributes());
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
-        return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
+        return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
     }
 
     /**
@@ -329,7 +343,7 @@ class AttributeGroupController extends AbstractDoctrineController
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
+            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
         }
     }
 

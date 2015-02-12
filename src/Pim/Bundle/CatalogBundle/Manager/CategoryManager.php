@@ -4,13 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Category manager
@@ -19,7 +13,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryManager implements SaverInterface, RemoverInterface
+class CategoryManager
 {
     /** @var ObjectManager */
     protected $om;
@@ -27,21 +21,16 @@ class CategoryManager implements SaverInterface, RemoverInterface
     /** @var string */
     protected $categoryClass;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
-     * @param ObjectManager            $om
-     * @param string                   $categoryClass
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param ObjectManager $om
+     * @param string        $categoryClass
      */
-    public function __construct(ObjectManager $om, $categoryClass, EventDispatcherInterface $eventDispatcher)
+    public function __construct(ObjectManager $om, $categoryClass)
     {
         $this->om = $om;
         $this->categoryClass = $categoryClass;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -217,52 +206,19 @@ class CategoryManager implements SaverInterface, RemoverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Remove a category
+     *
+     * @param CategoryInterface $category
+     *
+     * @deprecated will be removed in 1.4, replaced by CategoryRemover::remove
      */
-    public function save($object, array $options = [])
+    public function remove(CategoryInterface $category)
     {
-        if (!$object instanceof CategoryInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
+        foreach ($category->getProducts() as $product) {
+            $product->removeCategory($category);
         }
 
-        $options = array_merge(['flush' => true], $options);
-        $this->getObjectManager()->persist($object);
-        if (true === $options['flush']) {
-            $this->getObjectManager()->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof CategoryInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\CategoryInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $eventName = $object->isRoot() ? CategoryEvents::PRE_REMOVE_TREE : CategoryEvents::PRE_REMOVE_CATEGORY;
-        $this->eventDispatcher->dispatch($eventName, new GenericEvent($object));
-
-        foreach ($object->getProducts() as $product) {
-            $product->removeCategory($object);
-        }
-
-        $this->getObjectManager()->remove($object);
-        if (true === $options['flush']) {
-            $this->getObjectManager()->flush();
-        }
+        $this->getObjectManager()->remove($category);
     }
 
     /**

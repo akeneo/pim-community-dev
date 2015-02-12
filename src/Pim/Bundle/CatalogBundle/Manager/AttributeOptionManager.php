@@ -4,15 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\AttributeOptionEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Attribute option manager
@@ -21,13 +15,10 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionManager implements SaverInterface, RemoverInterface
+class AttributeOptionManager
 {
     /** @var ObjectManager */
     protected $objectManager;
-
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
 
     /** @var string */
     protected $optionClass;
@@ -38,19 +29,16 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $optionClass
-     * @param string                   $optionValueClass
+     * @param ObjectManager $objectManager
+     * @param string        $optionClass
+     * @param string        $optionValueClass
      */
     public function __construct(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
         $optionClass,
         $optionValueClass
     ) {
         $this->objectManager    = $objectManager;
-        $this->eventDispatcher  = $eventDispatcher;
         $this->optionClass      = $optionClass;
         $this->optionValueClass = $optionValueClass;
     }
@@ -96,50 +84,6 @@ class AttributeOptionManager implements SaverInterface, RemoverInterface
     public function getAttributeOptionValueClass()
     {
         return $this->optionValueClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        if (!$object instanceof AttributeOptionInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush($object);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof AttributeOptionInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->eventDispatcher->dispatch(AttributeOptionEvents::PRE_REMOVE, new GenericEvent($object));
-
-        $this->objectManager->remove($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush($object);
-        }
     }
 
     /**

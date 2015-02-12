@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -12,14 +13,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseSavingOptionsResolver
+class BaseSavingOptionsResolver implements SavingOptionsResolverInterface
 {
     /**
-     * Resolve options for a single save
-     *
-     * @param array $options
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function resolveSaveOptions(array $options)
     {
@@ -33,11 +30,7 @@ class BaseSavingOptionsResolver
     }
 
     /**
-     * Resolve options for a bulk save
-     *
-     * @param array $options
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function resolveSaveAllOptions(array $options)
     {

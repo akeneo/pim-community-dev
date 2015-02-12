@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityNotFoundException;
 use FOS\RestBundle\View\View as RestView;
@@ -45,6 +47,12 @@ class AttributeOptionController
     /** @var AttributeOptionManager */
     protected $optionManager;
 
+    /** @var RemoverInterface */
+    protected $optionRemover;
+
+    /** @var SaverInterface */
+    protected $optionSaver;
+
     /**
      * Constructor
      *
@@ -54,6 +62,8 @@ class AttributeOptionController
      * @param ViewHandlerInterface   $viewHandler
      * @param AttributeManager       $attributeManager
      * @param AttributeOptionManager $optionManager
+     * @param SaverInterface         $optionSaver
+     * @param RemoverInterface       $optionRemover
      */
     public function __construct(
         NormalizerInterface $normalizer,
@@ -61,7 +71,9 @@ class AttributeOptionController
         FormFactoryInterface $formFactory,
         ViewHandlerInterface $viewHandler,
         AttributeManager $attributeManager,
-        AttributeOptionManager $optionManager
+        AttributeOptionManager $optionManager,
+        SaverInterface $optionSaver,
+        RemoverInterface $optionRemover
     ) {
         $this->normalizer       = $normalizer;
         $this->entityManager    = $entityManager;
@@ -69,6 +81,8 @@ class AttributeOptionController
         $this->viewHandler      = $viewHandler;
         $this->attributeManager = $attributeManager;
         $this->optionManager    = $optionManager;
+        $this->optionRemover    = $optionRemover;
+        $this->optionSaver      = $optionSaver;
     }
 
     /**
@@ -146,7 +160,7 @@ class AttributeOptionController
         $attributeOption = $this->findAttributeOptionOr404($attributeOptionId);
 
         try {
-            $this->optionManager->remove($attributeOption);
+            $this->optionRemover->remove($attributeOption);
         } catch (\Exception $e) {
             return new JsonResponse(['message' => $e->getMessage()], $e->getCode());
         }
@@ -192,7 +206,7 @@ class AttributeOptionController
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $this->optionManager->save($attributeOption);
+            $this->optionSaver->save($attributeOption);
 
             $option = $this->normalizer->normalize($attributeOption, 'array', ['onlyActivatedLocales' => true]);
 

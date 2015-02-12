@@ -3,14 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Association type manager
@@ -19,7 +13,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeManager implements SaverInterface, RemoverInterface
+class AssociationTypeManager
 {
     /** @var AssociationTypeRepositoryInterface $repository */
     protected $repository;
@@ -27,24 +21,18 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
      * @param AssociationTypeRepositoryInterface $repository
      * @param ObjectManager                      $objectManager
-     * @param EventDispatcherInterface           $eventDispatcher
      */
     public function __construct(
         AssociationTypeRepositoryInterface $repository,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        ObjectManager $objectManager
     ) {
         $this->repository      = $repository;
         $this->objectManager   = $objectManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -58,48 +46,15 @@ class AssociationTypeManager implements SaverInterface, RemoverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Remove an association type
+     *
+     * @param AssociationTypeInterface $associationType
+     *
+     * @deprecated will be removed in 1.4, replaced by AssociationTypeRemover::remove
      */
-    public function save($object, array $options = [])
+    public function remove(AssociationTypeInterface $associationType)
     {
-        if (!$object instanceof AssociationTypeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if ($options['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof AssociationTypeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects an "Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface", "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-        $this->eventDispatcher->dispatch(
-            AssociationTypeEvents::PRE_REMOVE,
-            new GenericEvent($object)
-        );
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->remove($object);
-        if ($options['flush']) {
-            $this->objectManager->flush();
-        }
+        $this->objectManager->remove($associationType);
+        $this->objectManager->flush();
     }
 }

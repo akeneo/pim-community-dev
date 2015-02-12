@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -44,6 +45,9 @@ class GroupController extends AbstractController
     /** @var GroupFactory */
     protected $groupFactory;
 
+    /** @var RemoverInterface */
+    protected $groupRemover;
+
     /**
      * Constructor
      *
@@ -59,6 +63,7 @@ class GroupController extends AbstractController
      * @param HandlerInterface         $groupHandler
      * @param Form                     $groupForm
      * @param GroupFactory             $groupFactory
+     * @param RemoverInterface         $groupRemover
      */
     public function __construct(
         Request $request,
@@ -72,7 +77,8 @@ class GroupController extends AbstractController
         GroupManager $groupManager,
         HandlerInterface $groupHandler,
         Form $groupForm,
-        GroupFactory $groupFactory
+        GroupFactory $groupFactory,
+        RemoverInterface $groupRemover
     ) {
         parent::__construct(
             $request,
@@ -89,6 +95,7 @@ class GroupController extends AbstractController
         $this->groupHandler = $groupHandler;
         $this->groupForm    = $groupForm;
         $this->groupFactory = $groupFactory;
+        $this->groupRemover = $groupRemover;
     }
 
     /**
@@ -102,9 +109,9 @@ class GroupController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'groupTypes' => array_keys($this->groupManager->getTypeChoices(false))
-        );
+        ];
     }
 
     /**
@@ -128,16 +135,16 @@ class GroupController extends AbstractController
 
             $url = $this->generateUrl(
                 'pim_enrich_group_edit',
-                array('id' => $group->getId())
+                ['id' => $group->getId()]
             );
-            $response = array('status' => 1, 'url' => $url);
+            $response = ['status' => 1, 'url' => $url];
 
             return new Response(json_encode($response));
         }
 
-        return array(
+        return [
             'form' => $this->groupForm->createView()
-        );
+        ];
     }
 
     /**
@@ -157,10 +164,10 @@ class GroupController extends AbstractController
             $this->addFlash('success', 'flash.group.updated');
         }
 
-        return array(
+        return [
             'form'         => $this->groupForm->createView(),
             'currentGroup' => $group->getId()
-        );
+        ];
     }
 
     /**
@@ -175,7 +182,7 @@ class GroupController extends AbstractController
      */
     public function removeAction(Group $group)
     {
-        $this->groupManager->remove($group);
+        $this->groupRemover->remove($group);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -215,9 +222,9 @@ class GroupController extends AbstractController
     {
         return $this->render(
             'PimEnrichBundle:Group:_history.html.twig',
-            array(
+            [
                 'group' => $group
-            )
+            ]
         );
     }
 }

@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
@@ -55,10 +58,19 @@ class AttributeController extends AbstractDoctrineController
     protected $measuresConfig;
 
     /** @var array */
-    protected $choiceAttributeTypes = array(
+    protected $choiceAttributeTypes = [
         'pim_catalog_simpleselect',
         'pim_catalog_multiselect'
-    );
+    ];
+
+    /** @var BulkSaverInterface */
+    protected $attributeSaver;
+
+    /** @var RemoverInterface */
+    protected $attributeRemover;
+
+    /** @var SaverInterface */
+    protected $optionSaver;
 
     /**
      * Constructor
@@ -78,6 +90,9 @@ class AttributeController extends AbstractDoctrineController
      * @param AttributeOptionManager   $optionManager
      * @param LocaleManager            $localeManager
      * @param VersionManager           $versionManager
+     * @param BulkSaverInterface       $attributeSaver
+     * @param RemoverInterface         $attributeRemover
+     * @param SaverInterface           $optionSaver
      * @param array                    $measuresConfig
      */
     public function __construct(
@@ -96,6 +111,9 @@ class AttributeController extends AbstractDoctrineController
         AttributeOptionManager $optionManager,
         LocaleManager $localeManager,
         VersionManager $versionManager,
+        BulkSaverInterface $attributeSaver,
+        RemoverInterface $attributeRemover,
+        SaverInterface $optionSaver,
         $measuresConfig
     ) {
         parent::__construct(
@@ -117,6 +135,9 @@ class AttributeController extends AbstractDoctrineController
         $this->localeManager    = $localeManager;
         $this->versionManager   = $versionManager;
         $this->measuresConfig   = $measuresConfig;
+        $this->attributeSaver   = $attributeSaver;
+        $this->attributeRemover = $attributeRemover;
+        $this->optionSaver      = $optionSaver;
     }
 
     /**
@@ -181,17 +202,17 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        return array(
+        return [
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'created'         => $this->versionManager->getOldestLogEntry($attribute),
             'updated'         => $this->versionManager->getNewestLogEntry($attribute),
-        );
+        ];
     }
 
     /**
@@ -219,7 +240,7 @@ class AttributeController extends AbstractDoctrineController
                     $attributes[] = $attribute;
                 }
             }
-            $this->attributeManager->saveAll($attributes);
+            $this->attributeSaver->saveAll($attributes);
 
             return new Response(1);
         }
@@ -242,7 +263,7 @@ class AttributeController extends AbstractDoctrineController
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
         $option = $this->optionManager->createAttributeOption();
@@ -259,23 +280,23 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->optionManager->save($option);
-                $response = array(
+                $this->optionSaver->save($option);
+                $response = [
                     'status' => 1,
-                    'option' => array(
+                    'option' => [
                         'id'    => $option->getId(),
                         'label' => $option->setLocale($dataLocale)->__toString()
-                    )
-                );
+                    ]
+                ];
 
                 return new Response(json_encode($response));
             }
         }
 
-        return array(
+        return [
             'attribute' => $attribute,
             'form'      => $form->createView()
-        );
+        ];
     }
 
     /**
@@ -293,7 +314,7 @@ class AttributeController extends AbstractDoctrineController
         $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($attribute);
 
-        $this->attributeManager->remove($attribute);
+        $this->attributeRemover->remove($attribute);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -328,13 +349,13 @@ class AttributeController extends AbstractDoctrineController
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
-            $messageParameters = array();
+            $messageParameters = [];
         } else {
             $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
                 ->countVariantGroupAxis($attribute);
             if ($groupCount > 0) {
                 $errorMessage = 'flash.attribute.used by groups';
-                $messageParameters = array('%count%' => $groupCount);
+                $messageParameters = ['%count%' => $groupCount];
             }
         }
 

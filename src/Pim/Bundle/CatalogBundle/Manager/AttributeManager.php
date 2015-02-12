@@ -4,15 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
-use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Attribute manager
@@ -21,7 +14,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInterface
+class AttributeManager
 {
     /** @var string */
     protected $attributeClass;
@@ -35,30 +28,24 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
     /** @var AttributeTypeRegistry */
     protected $registry;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
-     * @param string                   $attributeClass  Attribute class
-     * @param string                   $productClass    Product class
-     * @param ObjectManager            $objectManager   Object manager
-     * @param AttributeTypeRegistry    $registry        Attribute type registry
-     * @param EventDispatcherInterface $eventDispatcher Event dispatcher
+     * @param string                $attributeClass Attribute class
+     * @param string                $productClass   Product class
+     * @param ObjectManager         $objectManager  Object manager
+     * @param AttributeTypeRegistry $registry       Attribute type registry
      */
     public function __construct(
         $attributeClass,
         $productClass,
         ObjectManager $objectManager,
-        AttributeTypeRegistry $registry,
-        EventDispatcherInterface $eventDispatcher
+        AttributeTypeRegistry $registry
     ) {
         $this->attributeClass  = $attributeClass;
         $this->productClass    = $productClass;
         $this->objectManager   = $objectManager;
         $this->registry        = $registry;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -111,67 +98,6 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        if (!$object instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->objectManager->persist($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush($object);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveAll(array $objects, array $options = [])
-    {
-        $options = array_merge(['flush' => true], $options);
-        foreach ($objects as $object) {
-            $this->save($object, ['flush' => false]);
-        }
-
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove($object, array $options = [])
-    {
-        if (!$object instanceof AttributeInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\AttributeInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $options = array_merge(['flush' => true], $options);
-        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($object));
-
-        $this->objectManager->remove($object);
-        if (true === $options['flush']) {
-            $this->objectManager->flush();
-        }
-
-        $this->eventDispatcher->dispatch(AttributeEvents::POST_REMOVE, new GenericEvent($object));
-    }
-
-    /**
      * Update attribute option sorting
      *
      * @param AttributeInterface $attribute
@@ -208,5 +134,18 @@ class AttributeManager implements SaverInterface, BulkSaverInterface, RemoverInt
         }
 
         return $attribute;
+    }
+
+    /**
+     * Remove an attribute
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @deprecated will be removed in 1.4, replaced by AttributeRemover::remove
+     */
+    public function remove(AttributeInterface $attribute)
+    {
+        $this->objectManager->remove($attribute);
+        $this->objectManager->flush();
     }
 }

@@ -3,10 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Event\ProductEvent;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
@@ -21,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Product manager
@@ -30,7 +27,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInterface
+class ProductManager
 {
     /** @var array */
     protected $configuration;
@@ -178,7 +175,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         }
 
         $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
-        $this->save($product, $options);
+        $this->productSaver->save($product, $options);
     }
 
     /**
@@ -200,23 +197,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
         }
 
         $options = array_merge(['recalculate' => false, 'schedule' => false], $savingOptions);
-        $this->save($product, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function save($object, array $options = [])
-    {
-        $this->productSaver->save($object, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveAll(array $objects, array $options = [])
-    {
-        $this->productBulkSaver->saveAll($objects, $options);
+        $this->productSaver->save($product, $options);
     }
 
     /**
@@ -229,7 +210,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function saveProduct(ProductInterface $product, array $options = [])
     {
-        $this->save($product, $options);
+        $this->productSaver->save($product, $options);
     }
 
     /**
@@ -242,7 +223,7 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
      */
     public function saveAllProducts(array $products, array $options = [])
     {
-        $this->saveAll($products, $options);
+        $this->productBulkSaver->saveAll($products, $options);
     }
 
     /**
@@ -358,25 +339,33 @@ class ProductManager implements SaverInterface, BulkSaverInterface, RemoverInter
     }
 
     /**
-     * {@inheritdoc}
+     * Remove products
+     *
+     * @param integer[] $ids
+     *
+     * @deprecated will be removed in 1.4, replaced by ProductRemover::removeAll
      */
-    public function remove($object, array $options = [])
+    public function removeAll(array $ids)
     {
-        if (!$object instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
+        $products = $this->getProductRepository()->findByIds($ids);
+        foreach ($products as $product) {
+            $this->remove($product, false);
         }
+        $this->objectManager->flush();
+    }
 
-        $options = array_merge(['flush' => true], $options);
-        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($object));
-        $this->objectManager->remove($object);
-        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($object));
-
-        if (true === $options['flush']) {
+    /**
+     * Remove a product
+     *
+     * @param ProductInterface $product
+     * @param boolean          $flush
+     *
+     * @deprecated will be removed in 1.4, replaced by ProductRemover::remove
+     */
+    public function remove(ProductInterface $product, $flush = true)
+    {
+        $this->objectManager->remove($product);
+        if (true === $flush) {
             $this->objectManager->flush();
         }
     }

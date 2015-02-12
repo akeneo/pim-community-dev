@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Product saver, define custom logic and options for product saving
@@ -25,18 +25,18 @@ class ProductSaver implements SaverInterface, BulkSaverInterface
     /** @var CompletenessManager */
     protected $completenessManager;
 
-    /** @var ProductSavingOptionsResolver */
+    /** @var SavingOptionsResolverInterface */
     protected $optionsResolver;
 
     /**
-     * @param ObjectManager                $om
-     * @param CompletenessManager          $completenessManager
-     * @param ProductSavingOptionsResolver $optionsResolver
+     * @param ObjectManager                  $om
+     * @param CompletenessManager            $completenessManager
+     * @param SavingOptionsResolverInterface $optionsResolver
      */
     public function __construct(
         ObjectManager $om,
         CompletenessManager $completenessManager,
-        ProductSavingOptionsResolver $optionsResolver
+        SavingOptionsResolverInterface $optionsResolver
     ) {
         $this->objectManager       = $om;
         $this->completenessManager = $completenessManager;

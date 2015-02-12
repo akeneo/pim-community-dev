@@ -7,6 +7,11 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class BaseRemovingOptionsResolverSpec extends ObjectBehavior
 {
+    function it_a_removing_options_resolver()
+    {
+        $this->shouldHaveType('Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface');
+    }
+
     function it_resolves_single_remove_options()
     {
         $this

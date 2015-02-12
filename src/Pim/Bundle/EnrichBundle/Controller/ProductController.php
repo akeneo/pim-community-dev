@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -72,6 +73,9 @@ class ProductController extends AbstractDoctrineController
     /** @var SequentialEditManager */
     protected $seqEditManager;
 
+    /** @var RemoverInterface */
+    protected $productRemover;
+
     /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
@@ -117,6 +121,7 @@ class ProductController extends AbstractDoctrineController
      * @param SaverInterface           $productSaver
      * @param MediaManager             $mediaManager
      * @param SequentialEditManager    $seqEditManager
+     * @param RemoverInterface         $productRemover
      */
     public function __construct(
         Request $request,
@@ -136,7 +141,8 @@ class ProductController extends AbstractDoctrineController
         ProductCategoryManager $prodCatManager,
         SaverInterface $productSaver,
         MediaManager $mediaManager,
-        SequentialEditManager $seqEditManager
+        SequentialEditManager $seqEditManager,
+        RemoverInterface $productRemover
     ) {
         parent::__construct(
             $request,
@@ -159,6 +165,7 @@ class ProductController extends AbstractDoctrineController
         $this->productSaver      = $productSaver;
         $this->mediaManager      = $mediaManager;
         $this->seqEditManager    = $seqEditManager;
+        $this->productRemover    = $productRemover;
     }
 
     /**
@@ -174,10 +181,10 @@ class ProductController extends AbstractDoctrineController
     {
         $this->seqEditManager->removeByUser($this->getUser());
 
-        return array(
+        return [
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-        );
+        ];
     }
 
     /**
@@ -209,18 +216,18 @@ class ProductController extends AbstractDoctrineController
                 }
                 $url = $this->generateUrl(
                     'pim_enrich_product_edit',
-                    array('id' => $product->getId(), 'dataLocale' => $dataLocale)
+                    ['id' => $product->getId(), 'dataLocale' => $dataLocale]
                 );
-                $response = array('status' => 1, 'url' => $url);
+                $response = ['status' => 1, 'url' => $url];
 
                 return new Response(json_encode($response));
             }
         }
 
-        return array(
+        return [
             'form'       => $form->createView(),
             'dataLocale' => $this->getDataLocaleCode()
-        );
+        ];
     }
 
     /**
@@ -353,7 +360,7 @@ class ProductController extends AbstractDoctrineController
                 break;
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
-                $params = array();
+                $params = [];
                 break;
             case self::CREATE:
                 $route = 'pim_enrich_product_edit';
@@ -388,9 +395,9 @@ class ProductController extends AbstractDoctrineController
     {
         return $this->render(
             'PimEnrichBundle:Product:_history.html.twig',
-            array(
+            [
                 'product' => $this->findProductOr404($id),
-            )
+            ]
         );
     }
 
@@ -406,7 +413,7 @@ class ProductController extends AbstractDoctrineController
     public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $this->productManager->remove($product);
+        $this->productRemover->remove($product);
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
@@ -442,7 +449,7 @@ class ProductController extends AbstractDoctrineController
         }
         $trees = $this->getFilledTree($parent, $categories);
 
-        return array('trees' => $trees, 'categories' => $categories);
+        return ['trees' => $trees, 'categories' => $categories];
     }
 
     /**
@@ -473,7 +480,7 @@ class ProductController extends AbstractDoctrineController
     /**
      * {@inheritdoc}
      */
-    protected function redirectToRoute($route, $parameters = array(), $status = 302)
+    protected function redirectToRoute($route, $parameters = [], $status = 302)
     {
         if (!isset($parameters['dataLocale'])) {
             $parameters['dataLocale'] = $this->getDataLocaleCode();
@@ -557,13 +564,13 @@ class ProductController extends AbstractDoctrineController
      * @return \Symfony\Component\Form\Form
      */
     protected function getAvailableAttributesForm(
-        array $attributes = array(),
+        array $attributes = [],
         AvailableAttributes $availableAttributes = null
     ) {
         return $this->createForm(
             'pim_available_attributes',
             $availableAttributes ?: new AvailableAttributes(),
-            array('excluded_attributes' => $attributes)
+            ['excluded_attributes' => $attributes]
         );
     }
 
@@ -576,13 +583,13 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getEditFormOptions(ProductInterface $product)
     {
-        return array(
+        return [
             'enable_values'    => $this->securityFacade->isGranted('pim_enrich_product_edit_attributes'),
             'enable_family'    => $this->securityFacade->isGranted('pim_enrich_product_change_family'),
             'enable_state'     => $this->securityFacade->isGranted('pim_enrich_product_change_state'),
             'currentLocale'    => $this->getDataLocaleCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
-        );
+        ];
     }
 
     /**
@@ -594,7 +601,7 @@ class ProductController extends AbstractDoctrineController
      */
     protected function getCreateFormOptions(ProductInterface $product)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -618,7 +625,7 @@ class ProductController extends AbstractDoctrineController
             $this->seqEditManager->findWrap($sequentialEdit, $product);
         }
 
-        $defaultParameters = array(
+        $defaultParameters = [
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocaleCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
@@ -631,7 +638,7 @@ class ProductController extends AbstractDoctrineController
             'locales'          => $this->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin'),
             'sequentialEdit'   => $sequentialEdit
-        );
+        ];
 
         $event = new GenericEvent($this, ['parameters' => $defaultParameters]);
         $this->dispatch(ProductEvents::PRE_RENDER_EDIT, $event);

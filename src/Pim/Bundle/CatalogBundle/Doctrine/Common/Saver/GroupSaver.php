@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
@@ -36,6 +37,9 @@ class GroupSaver implements SaverInterface
     /** @var VersionContext */
     protected $versionContext;
 
+    /** @var SavingOptionsResolverInterface */
+    protected $optionsResolver;
+
     /** @var string */
     protected $productClassName;
 
@@ -45,6 +49,7 @@ class GroupSaver implements SaverInterface
      * @param ProductTemplateMediaManager     $templateMediaManager
      * @param ProductTemplateApplierInterface $productTemplateApplier
      * @param VersionContext                  $versionContext
+     * @param SavingOptionsResolverInterface  $optionsResolver
      * @param string                          $productClassName
      */
     public function __construct(
@@ -53,6 +58,7 @@ class GroupSaver implements SaverInterface
         ProductTemplateMediaManager $templateMediaManager,
         ProductTemplateApplierInterface $productTemplateApplier,
         VersionContext $versionContext,
+        SavingOptionsResolverInterface $optionsResolver,
         $productClassName
     ) {
         $this->objectManager          = $objectManager;
@@ -60,6 +66,7 @@ class GroupSaver implements SaverInterface
         $this->templateMediaManager   = $templateMediaManager;
         $this->productTemplateApplier = $productTemplateApplier;
         $this->versionContext         = $versionContext;
+        $this->optionsResolver        = $optionsResolver;
         $this->productClassName       = $productClassName;
     }
 
@@ -78,13 +85,8 @@ class GroupSaver implements SaverInterface
             );
         }
 
-        $defaultOptions = [
-            'flush' => true,
-            'copy_values_to_products' => false,
-            'add_products' => [],
-            'remove_products' => []
-        ];
-        $options = array_merge($defaultOptions, $options);
+        $options = $this->optionsResolver->resolveSaveOptions($options);
+
         $this->versionContext->addContextInfo(
             sprintf('Comes from variant group %s', $group->getCode()),
             $this->productClassName
