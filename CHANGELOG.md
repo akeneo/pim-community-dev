@@ -1,5 +1,7 @@
 # 1.3.x
 
+# 1.3.0-RC2 (2015-02-12)
+
 ## Bug fixes
 - PIM-1235: Fix information message when trying to delete a category tree used by a channel
 - PIM-3068: Darken navigation arrows in product grid
