@@ -54,12 +54,12 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
-        $joinAlias = 'filter'.$attribute->getCode();
+        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -67,9 +67,9 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
+            $condition .= ' AND ' . $this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $condition

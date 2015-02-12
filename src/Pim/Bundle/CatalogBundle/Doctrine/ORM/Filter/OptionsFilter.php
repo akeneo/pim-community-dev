@@ -80,20 +80,20 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias    = 'filter'.$attribute->getCode();
-        $joinAliasOpt = 'filterO'.$attribute->getCode();
+        $joinAlias    = 'filter' . $attribute->getCode() . uniqid();
+        $joinAliasOpt = 'filterO' . $attribute->getCode() . uniqid();
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
         if (Operators::IS_EMPTY === $operator) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
             );
 
             $this->qb
-                ->leftJoin($joinAlias.'.'.$attribute->getBackendType(), $joinAliasOpt)
+                ->leftJoin($joinAlias . '.' . $attribute->getBackendType(), $joinAliasOpt)
                 ->andWhere($this->qb->expr()->isNull($backendField));
         } else {
             if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
@@ -102,13 +102,13 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
             $this->qb
                 ->innerJoin(
-                    $this->qb->getRootAlias().'.values',
+                    $this->qb->getRootAlias() . '.values',
                     $joinAlias,
                     'WITH',
                     $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
                 )
                 ->innerJoin(
-                    $joinAlias.'.'.$attribute->getBackendType(),
+                    $joinAlias . '.' . $attribute->getBackendType(),
                     $joinAliasOpt,
                     'WITH',
                     $this->qb->expr()->in($backendField, $value)
