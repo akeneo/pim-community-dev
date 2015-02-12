@@ -41,7 +41,9 @@ class CommandContext extends RawMinkContext
         $commandTester = new CommandTester($command);
 
         foreach ($filters->getHash() as $filter) {
-            $commandTester->execute(['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]);
+            $commandTester->execute(
+                ['command' => $command->getName(), '--json-output' => true, 'json_filters' => $filter['filter']]
+            );
 
             $expected = json_decode($filter['result']);
             $actual   = json_decode($commandTester->getDisplay());
