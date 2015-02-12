@@ -1,5 +1,7 @@
 # 1.3.x
 
+# 1.3.0-RC2 (2015-02-12)
+
 ## Bug fixes
 - PIM-3617: Fix scope selection hidden by notification alert on product edit
 - PIM-3526: Fix author in the "proposals to review" widget
