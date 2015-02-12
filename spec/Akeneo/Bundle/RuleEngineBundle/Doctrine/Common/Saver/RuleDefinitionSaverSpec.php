@@ -2,18 +2,18 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Doctrine\Common\Saver;
 
+use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class RuleDefinitionSaverSpec extends ObjectBehavior
 {
     function let(
         EntityManager $entityManager,
-        BaseSavingOptionsResolver $optionsResolver,
+        SavingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->beConstructedWith(
