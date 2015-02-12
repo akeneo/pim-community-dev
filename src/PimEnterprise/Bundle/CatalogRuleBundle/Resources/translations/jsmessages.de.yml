@@ -1,0 +1,12 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Bedingung
+      action.label: Aktion
+      no_rule_yet.label: Bisher keine Regel vorhanden
+  rule:
+    condition:
+      if.label: wenn
+    action:
+      then.label: dann
