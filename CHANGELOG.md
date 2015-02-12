@@ -1,5 +1,12 @@
 # 1.3.x
 
+# 1.3.0-RC3 (2015-02-12)
+
+## Technical improvements
+- PIM-3482: clean composer.json
+
+PIM-3482:
+
 # 1.3.0-RC2 (2015-02-12)
 
 ## Bug fixes
