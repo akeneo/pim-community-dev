@@ -1,9 +1,9 @@
-Feature: Filter on number attributes
+Feature: Filter on price attributes
   In order to filter on products
   As an internal process or any user
-  I need to be able to filter on product by number attributes
+  I need to be able to filter on product by price attributes
 
-  Scenario: Successfully filter on number attributes
+  Scenario: Successfully filter on price attributes
     Given a "footwear" catalog configuration
     And the following products:
       | sku     | price          |
