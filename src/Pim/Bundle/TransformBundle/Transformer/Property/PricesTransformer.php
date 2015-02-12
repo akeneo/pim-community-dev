@@ -62,7 +62,7 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
         foreach (explode(',', $data) as $price) {
             $parts = explode(' ', trim($price));
             if (count($parts) > 1) {
-                $prices[$parts[1]] = $parts[0];
+                $prices[$parts[1]] = (float) $parts[0];
             } else {
                 throw new PropertyTransformerException('Malformed price: "%price%"', array('%price%' => $price));
             }
