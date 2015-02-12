@@ -27,8 +27,11 @@ define(
         var destroyEditor = function(id) {
             var instance = tinymce.get(id);
             if (instance) {
-                tinymce.remove(instance);
                 tinymce.execCommand('mceRemoveControl', true, id);
+                tinymce.remove(instance);
+
+                var $textarea = $('#' + id);
+                $textarea.show();
             }
         };
 
@@ -51,13 +54,27 @@ define(
         return {
             settings: [],
             init: function($el, options) {
-                this.settings[$el.attr('id')] = _.extend(
+
+                var id = $el.attr('id');
+
+                this.settings[id] = _.extend(
                     _.clone(config),
-                    { selector: '#' + $el.attr('id'), readonly: $el.is('[disabled]') },
+                    { selector: '#' + id, readonly: $el.is('[disabled]') },
                     options
                 );
 
-                $el.on('click', _.bind(function() { tinymce.init(this); }, this.settings[$el.attr('id')]));
+                // Avoid to bind several times the 'onClick' action, or tinymce will be instancied
+                // X times on the same element.
+                if ($el.attr('bind-wysiwyg') != '1') {
+
+                    $el.on('click', _.bind(function() {
+                        tinymce.init(this);
+                        tinymce.execCommand('mceFocus', false, id);
+                    }, this.settings[id]));
+
+                    // Mark this textarea as already bind
+                    $el.attr('bind-wysiwyg', '1');
+                }
 
                 return this;
             },
