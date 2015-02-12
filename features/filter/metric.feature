@@ -6,18 +6,18 @@ Feature: Filter on metric attributes
   Scenario: Successfully filter on metric attributes
     Given a "footwear" catalog configuration
     And the following products:
-      | sku     | length        |
-      | BOOTBXS | 12 CENTIMETER |
-      | BOOTWXS | 35 CENTIMETER |
-      | BOOTBS  | 44 CENTIMETER |
-      | BOOTBL  | 0 CENTIMETER  |
-      | BOOTRXS |               |
+      | sku       | length        |
+      | SUSHIROLL | 12 CENTIMETER |
+      | OBELISK   | 35 CENTIMETER |
+      | CASSAVA   | 44 CENTIMETER |
+      | PEN       | 0 CENTIMETER  |
+      | FINGER    |               |
     Then I should get the following results for the given filters:
       | filter                                                                                | result                                     |
-      | [{"field":"length", "operator":"=",     "value": {"data": 44, "unit": "CENTIMETER"}}] | ["BOOTBS"]                                 |
-      | [{"field":"length", "operator":"<",     "value": {"data": 25, "unit": "CENTIMETER"}}] | ["BOOTBL", "BOOTBXS"]                      |
-      | [{"field":"length", "operator":"<=",    "value": {"data": 44, "unit": "CENTIMETER"}}] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTBXS"] |
-      | [{"field":"length", "operator":">=",    "value": {"data": 35, "unit": "CENTIMETER"}}] | ["BOOTBS", "BOOTWXS"]                      |
-      | [{"field":"length", "operator":">",     "value": {"data": 35, "unit": "CENTIMETER"}}] | ["BOOTBS"]                                 |
-      | [{"field":"length", "operator":"<=", "value": {"data": 44, "unit": "CENTIMETER"}}, {"field":"length", "operator":">=", "value": {"data": 12, "unit": "CENTIMETER"}}] | ["BOOTWXS", "BOOTBS", "BOOTBXS"] |
-      | [{"field":"length", "operator":"EMPTY", "value": null}] | ["BOOTRXS"]                              |
+      | [{"field":"length", "operator":"=",     "value": {"data": 44, "unit": "CENTIMETER"}}] | ["CASSAVA"]                                 |
+      | [{"field":"length", "operator":"<",     "value": {"data": 25, "unit": "CENTIMETER"}}] | ["PEN", "SUSHIROLL"]                      |
+      | [{"field":"length", "operator":"<=",    "value": {"data": 44, "unit": "CENTIMETER"}}] | ["OBELISK", "CASSAVA", "PEN", "SUSHIROLL"] |
+      | [{"field":"length", "operator":">=",    "value": {"data": 35, "unit": "CENTIMETER"}}] | ["CASSAVA", "OBELISK"]                      |
+      | [{"field":"length", "operator":">",     "value": {"data": 35, "unit": "CENTIMETER"}}] | ["CASSAVA"]                                 |
+      | [{"field":"length", "operator":"<=", "value": {"data": 44, "unit": "CENTIMETER"}}, {"field":"length", "operator":">=", "value": {"data": 12, "unit": "CENTIMETER"}}] | ["OBELISK", "CASSAVA", "SUSHIROLL"] |
+      | [{"field":"length", "operator":"EMPTY", "value": null}] | ["FINGER" ]                              |

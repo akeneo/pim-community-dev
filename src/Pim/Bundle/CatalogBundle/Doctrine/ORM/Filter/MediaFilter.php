@@ -76,20 +76,20 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function addIsEmptyFilter(AttributeInterface $attribute, $locale, $scope)
     {
         // join on values
-        $joinAlias = 'filter'.$attribute->getCode();
+        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
-            $this->qb->getRootAlias().'.values',
+            $this->qb->getRootAlias() . '.values',
             $joinAlias,
             'WITH',
             $valueCondition
         );
 
         // join on media
-        $joinAliasMedia = 'filterMedia'.$attribute->getCode();
+        $joinAliasMedia = 'filterMedia' . $attribute->getCode() . uniqid();
         $backendType = $attribute->getBackendType();
         $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
-        $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasMedia);
+        $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasMedia);
         $mediaCondition = $this->prepareCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->andWhere($mediaCondition);
     }
@@ -104,21 +104,21 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function addLikeFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
     {
         // join on values
-        $joinAlias = 'filter'.$attribute->getCode();
+        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.values',
+            $this->qb->getRootAlias() . '.values',
             $joinAlias,
             'WITH',
             $valueCondition
         );
 
         // join on media
-        $joinAliasMedia = 'filterMedia'.$attribute->getCode();
+        $joinAliasMedia = 'filterMedia' . $attribute->getCode() . uniqid();
         $backendType = $attribute->getBackendType();
         $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
         $mediaCondition = $this->prepareCondition($backendField, $operator, $value);
-        $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasMedia, 'WITH', $mediaCondition);
+        $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasMedia, 'WITH', $mediaCondition);
     }
 
     /**
@@ -134,19 +134,23 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = 'LIKE';
-                $value    = $value.'%';
+                $value    = $value . '%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = 'LIKE';
-                $value    = '%'.$value;
+                $value    = '%' . $value;
                 break;
             case Operators::CONTAINS:
                 $operator = 'LIKE';
-                $value    = '%'.$value.'%';
+                $value    = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = 'NOT LIKE';
-                $value    = '%'.$value.'%';
+                $value    = '%' . $value . '%';
+                break;
+            case Operators::EQUALS:
+                $operator = 'LIKE';
+                $value    = $value;
                 break;
             default:
                 break;

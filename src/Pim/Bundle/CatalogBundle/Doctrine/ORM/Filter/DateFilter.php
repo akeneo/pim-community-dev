@@ -40,8 +40,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->supportedAttributes = $supportedAttributes;
-        $this->supportedFields = $supportedFields;
-        $this->supportedOperators = $supportedOperators;
+        $this->supportedFields     = $supportedFields;
+        $this->supportedOperators  = $supportedOperators;
     }
 
     /**
@@ -79,7 +79,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
-        $joinAlias = 'filter' . $attribute->getCode();
+        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {
@@ -99,7 +99,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
             );
             $this->qb->andWhere(
                 $this->qb->expr()->orX(
-                    $this->qb->expr()->lt($backendField, $this->getDateLiteralExpr($value[0])),
+                    $this->qb->expr()->lt($backendField, $this->getDateLiteralExpr($value[0], true)),
                     $this->qb->expr()->gt($backendField, $this->getDateLiteralExpr($value[1], true))
                 )
             );
