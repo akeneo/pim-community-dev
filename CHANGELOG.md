@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.27 (2015-02-13)
 
 ## Bug fixes
 - PIM-3779: Fix multiple WYSIWYG on same textarea element
