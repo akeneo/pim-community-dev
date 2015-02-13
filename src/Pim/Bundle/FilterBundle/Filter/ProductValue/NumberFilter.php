@@ -20,7 +20,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 class NumberFilter extends OroNumberFilter
 {
     /**
-     * @var Attribute
+     * @var AttributeInterface
      */
     protected $attribute;
 
