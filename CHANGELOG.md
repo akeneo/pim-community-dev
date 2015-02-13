@@ -275,6 +275,16 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
+# 1.2.27 (2015-02-13)
+
+## Bug fixes
+- PIM-3779: Fix multiple WYSIWYG on same textarea element
+
+# 1.2.26 (2015-02-12)
+
+## Bug fixes
+- PIM-3761: Fix WYSIWYG onClick behaviour, event correctly bind
+
 # 1.2.25 (2015-02-04)
 
 ## Bug fixes
