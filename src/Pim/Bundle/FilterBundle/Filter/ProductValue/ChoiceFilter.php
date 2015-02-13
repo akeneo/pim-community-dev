@@ -108,7 +108,7 @@ class ChoiceFilter extends AjaxChoiceFilter
         $attribute = $this->attributeRepository->findOneByCode($fieldName);
 
         if (!$attribute) {
-            throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
+            throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
         }
 
         return $attribute;
