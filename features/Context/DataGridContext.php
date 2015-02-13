@@ -108,7 +108,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $action
      * @param string $value
      *
-     * @Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=|empty) (\d+[.]?\d*)"$/
+     * @Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*)"$/
      */
     public function iFilterByNumber($filterName, $action, $value)
     {
