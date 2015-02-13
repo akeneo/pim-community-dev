@@ -130,7 +130,7 @@ class NumberFilter extends OroNumberFilter
             $attribute = $this->attributeRepository->findOneByCode($fieldName);
 
             if (!$attribute) {
-                throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
+                throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
             }
 
             $this->attribute = $attribute;
