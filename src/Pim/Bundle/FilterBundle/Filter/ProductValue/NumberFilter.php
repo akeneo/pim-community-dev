@@ -19,9 +19,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class NumberFilter extends OroNumberFilter
 {
-    /**
-     * @var AttributeRepositoryInterface
-     */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /**
