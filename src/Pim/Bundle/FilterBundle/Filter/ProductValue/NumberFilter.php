@@ -20,11 +20,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 class NumberFilter extends OroNumberFilter
 {
     /**
-     * @var AttributeInterface
-     */
-    protected $attribute;
-
-    /**
      * @var AttributeRepositoryInterface
      */
     protected $attributeRepository;
@@ -107,10 +102,10 @@ class NumberFilter extends OroNumberFilter
      */
     public function getMetadata()
     {
-        $this->loadAttribute();
+        $attribute = $this->getAttribute();
         $metadata = parent::getMetadata();
 
-        if (true === $this->attribute->isDecimalsAllowed()) {
+        if (true === $attribute->isDecimalsAllowed()) {
             $metadata['formatterOptions']['decimals'] = 2;
             $metadata['formatterOptions']['grouping'] = true;
         }
@@ -123,17 +118,15 @@ class NumberFilter extends OroNumberFilter
      *
      * @throws \LogicException
      */
-    protected function loadAttribute()
+    protected function getAttribute()
     {
-        if (null === $this->attribute) {
-            $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
-            $attribute = $this->attributeRepository->findOneByCode($fieldName);
+        $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+        $attribute = $this->attributeRepository->findOneByCode($fieldName);
 
-            if (!$attribute) {
-                throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
-            }
-
-            $this->attribute = $attribute;
+        if (!$attribute) {
+            throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
         }
+
+        return $attribute;
     }
 }
