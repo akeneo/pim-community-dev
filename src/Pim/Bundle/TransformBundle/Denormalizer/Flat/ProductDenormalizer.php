@@ -97,23 +97,23 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         if (isset($data[self::FIELD_FAMILY])) {
-            $this->denormalizeFamily($data[self::FIELD_FAMILY], $format, [], $product);
+            $this->denormalizeFamily($data[self::FIELD_FAMILY], $format, $context, $product);
             unset($data[self::FIELD_FAMILY]);
         }
 
         if (isset($data[self::FIELD_CATEGORIES])) {
-            $this->denormalizeCategories($data[self::FIELD_CATEGORIES], $format, [], $product);
+            $this->denormalizeCategories($data[self::FIELD_CATEGORIES], $format, $context, $product);
             unset($data[self::FIELD_CATEGORIES]);
         }
 
         if (isset($data[self::FIELD_GROUPS])) {
-            $this->denormalizeGroups($data[self::FIELD_GROUPS], $format, [], $product);
+            $this->denormalizeGroups($data[self::FIELD_GROUPS], $format, $context, $product);
             unset($data[self::FIELD_GROUPS]);
         }
 
-        $this->denormalizeAssociations($data, $format, [], $product);
+        $this->denormalizeAssociations($data, $format, $context, $product);
 
-        $this->denormalizeValues($data, $format, [], $product);
+        $this->denormalizeValues($data, $format, $context, $product);
 
         return $product;
     }
@@ -215,7 +215,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                         $data[$assocFieldName],
                         $this->associationClass,
                         $format,
-                        ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
+                        [
+                            'entity' => $association,
+                            'association_type_code' => $associationTypeCode,
+                            'part' => $part
+                        ] + $context
                     );
 
                     if (!$product->getAssociationForTypeCode($associationTypeCode)) {
@@ -273,7 +277,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 [
                     'product' => $product,
                     'entity'  => $productValue
-                ] + $attributeInfos
+                ] + $attributeInfos + $context
             );
         }
     }
