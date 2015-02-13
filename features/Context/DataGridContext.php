@@ -105,7 +105,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $filterName
-     * @param string $currency
+     * @param string $action
+     * @param string $value
      *
      * @Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=|empty) (\d+[.]?\d*)"$/
      */
