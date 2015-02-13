@@ -35,7 +35,7 @@ define(
             }
         };
 
-        var isAllreadyRendered = function(id) {
+        var isAlreadyRendered = function(id) {
             for (var i = tinymce.editors.length - 1; i >= 0; i--) {
                 if (tinymce.editors[i].id === id) {
                     return true;
@@ -68,8 +68,10 @@ define(
                 if (!$el.data('bind-wysiwyg')) {
 
                     $el.on('click', _.bind(function() {
-                        tinymce.init(this);
-                        tinymce.execCommand('mceFocus', false, id);
+                        if (!isAlreadyRendered(id)) {
+                            tinymce.init(this);
+                            tinymce.execCommand('mceFocus', false, id);
+                        }
                     }, this.settings[id]));
 
                     // Mark this textarea as already bind
