@@ -180,7 +180,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\LocaleBundle\OroLocaleBundle(),
             new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
             new Oro\Bundle\OrganizationBundle\OroOrganizationBundle(),
-            new Oro\Bundle\PlatformBundle\OroPlatformBundle(),
             new Oro\Bundle\RequireJSBundle\OroRequireJSBundle(),
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
