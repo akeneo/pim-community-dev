@@ -193,7 +193,6 @@ class AppKernel extends Kernel
             //
             // new Oro\Bundle\SearchBundle\OroSearchBundle(),
             // new Oro\Bundle\SoapBundle\OroSoapBundle(),
-            // new Oro\Bundle\TagBundle\OroTagBundle()
         ];
     }
 }
