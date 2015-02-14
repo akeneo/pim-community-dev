@@ -23,12 +23,7 @@ class StatusController extends Controller
     {
         return array(
             'user' => $this->getUser(),
-            'statuses' => $this->get('knp_paginator')->paginate(
-                $this->getUser()->getStatuses(),
-                $this->getRequest()->get('page', 1),
-                $this->getRequest()->get('limit')
-            )
-
+            'statuses' => $this->getUser()->getStatuses(),
         );
     }
 
