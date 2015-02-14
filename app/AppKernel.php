@@ -184,7 +184,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
-            new Oro\Bundle\WindowsBundle\OroWindowsBundle(),
             new Oro\Bundle\DataAuditBundle\OroDataAuditBundle(),
 
             // the following bundles are disabled by the PIM
