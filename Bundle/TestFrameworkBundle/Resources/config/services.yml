@@ -1,2 +1,0 @@
-parameters:
-    test.client.class:         Oro\Bundle\TestFrameworkBundle\Test\Client

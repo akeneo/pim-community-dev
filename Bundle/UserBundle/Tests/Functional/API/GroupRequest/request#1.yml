@@ -1,6 +1,0 @@
-# common test case
-request:
-    name: Group_1_%str%
-    owner: 1
-response:
-    return: true
