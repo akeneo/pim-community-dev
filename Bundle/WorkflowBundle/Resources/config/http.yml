@@ -1,8 +1,0 @@
-parameters:
-    oro_workflow.http.workflow_item_validator.class: Oro\Bundle\WorkflowBundle\Http\WorkflowItemValidator
-
-services:
-    oro_workflow.http.workflow_item_validator:
-        class: %oro_workflow.http.workflow_item_validator.class%
-        arguments:
-            - @oro_workflow.manager

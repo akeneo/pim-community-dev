@@ -1,9 +1,0 @@
-parameters:
-    oro_workflow.entity_binder.class: Oro\Bundle\WorkflowBundle\Model\EntityBinder
-
-services:
-    oro_workflow.entity_binder:
-        class: %oro_workflow.entity_binder.class%
-        arguments:
-            - @oro_workflow.registry
-            - @oro_workflow.doctrine_helper
