@@ -15,8 +15,6 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
@@ -41,7 +39,6 @@ use DateTime;
  * @ORM\Entity()
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Loggable
  * @Config(
  *      routeName="oro_user_index",
  *      routeView="oro_user_view",
@@ -86,7 +83,6 @@ class User implements
      * @ORM\Column(type="string", length=255, unique=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $username;
 
@@ -96,7 +92,6 @@ class User implements
      * @ORM\Column(type="string", length=255, unique=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $email;
 
@@ -108,7 +103,6 @@ class User implements
      * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $namePrefix;
 
@@ -120,7 +114,6 @@ class User implements
      * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $firstName;
 
@@ -132,7 +125,6 @@ class User implements
      * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $middleName;
 
@@ -144,7 +136,6 @@ class User implements
      * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $lastName;
 
@@ -156,7 +147,6 @@ class User implements
      * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
-     * @Oro\Versioned
      */
     protected $nameSuffix;
 
@@ -166,7 +156,6 @@ class User implements
      * @ORM\Column(name="birthday", type="date", nullable=true)
      * @Soap\ComplexType("date", nillable=true)
      * @Type("date")
-     * @Oro\Versioned
      */
     protected $birthday;
 
@@ -195,7 +184,6 @@ class User implements
      * @ORM\Column(type="boolean")
      * @Soap\ComplexType("boolean")
      * @Type("boolean")
-     * @Oro\Versioned
      */
     protected $enabled = true;
 
@@ -282,7 +270,6 @@ class User implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
-     * @Oro\Versioned("getLabel")
      */
     protected $roles;
 
@@ -296,7 +283,6 @@ class User implements
      * )
      * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
-     * @Oro\Versioned("getName")
      */
     protected $groups;
 
@@ -339,7 +325,6 @@ class User implements
      *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      * @Exclude
-     * @Oro\Versioned("getName")
      */
     protected $businessUnits;
 

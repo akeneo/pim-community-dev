@@ -34,6 +34,7 @@ class AuditController extends Controller
      */
     public function auditAction($entity, $id)
     {
+        throw new \LogicException('This action is not useable anymore, the related template has been dropped');
         return [
             'gridName'    => 'audit-log-grid',
             'entityClass' => str_replace('_', '\\', $entity),

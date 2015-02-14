@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
@@ -17,7 +16,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @ORM\Table("oro_business_unit")
  * @ORM\Entity(repositoryClass="Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository")
  * @ORM\HasLifecycleCallbacks()
- * @Oro\Loggable
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Business Unit", "plural_label"="Business Units"},
@@ -50,7 +48,6 @@ class BusinessUnit
      *
      * @ORM\Column(name="name", type="string", length=255)
      * @Soap\ComplexType("string", nillable=false)
-     * @Oro\Versioned
      */
     protected $name;
 
@@ -68,7 +65,6 @@ class BusinessUnit
      *
      * @ORM\Column(name="phone", type="string", length=100, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
      */
     protected $phone;
 
@@ -77,7 +73,6 @@ class BusinessUnit
      *
      * @ORM\Column(name="website", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
      */
     protected $website;
 
@@ -86,7 +81,6 @@ class BusinessUnit
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
      */
     protected $email;
 
@@ -95,7 +89,6 @@ class BusinessUnit
      *
      * @ORM\Column(name="fax", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
-     * @Oro\Versioned
      */
     protected $fax;
 
