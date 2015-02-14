@@ -1,4 +1,0 @@
-css:
-    'full-calendar':
-        - 'bundles/orocalendar/css/calendar.css'
-        - 'bundles/orocalendar/lib/fullcalendar/fullcalendar.css'
