@@ -1,2 +1,0 @@
-bundles:
-    - { name: Oro\Bundle\NotificationBundle\OroNotificationBundle, kernel: true }
