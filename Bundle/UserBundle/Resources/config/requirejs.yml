@@ -1,3 +1,0 @@
-config:
-    paths:
-        'oro/init-user': 'bundles/orouser/js/init-user.js'
