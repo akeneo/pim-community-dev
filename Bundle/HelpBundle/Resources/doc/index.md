@@ -1,3 +1,0 @@
-OroHelpBundle Documentation
-===========================
-
