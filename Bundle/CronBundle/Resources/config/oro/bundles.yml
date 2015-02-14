@@ -1,3 +1,0 @@
-bundles:
-    - JMS\JobQueueBundle\JMSJobQueueBundle
-    - Oro\Bundle\CronBundle\OroCronBundle

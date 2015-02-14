@@ -5,20 +5,12 @@ parameters:
     oro_calendar.listener.entity_subscriber.class:               Oro\Bundle\CalendarBundle\EventListener\EntitySubscriber
     oro_calendar.calendar_connection.manager.api.class:          Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_calendar.calendar_event.manager.api.class:               Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_calendar.reminders_sender.class:                         Oro\Bundle\CalendarBundle\Notification\RemindersSender
     oro_calendar.remind_time_calculator.class:                   Oro\Bundle\CalendarBundle\Notification\RemindTimeCalculator
     oro_calendar.twig.dateformat.class:                          Oro\Bundle\CalendarBundle\Twig\DateFormatExtension
     oro_calendar.provider.calendar_config.class:                 Oro\Bundle\CalendarBundle\Provider\CalendarDateTimeConfigProvider
     oro_calendar.format_converter.date_time.full_calendar.class: Oro\Bundle\CalendarBundle\Converter\FullCalendarDateTimeFormatConverter
 
 services:
-    oro_calendar.reminders_sender:
-        scope: prototype
-        class: %oro_calendar.reminders_sender.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @oro_notification.email_processor
-
     oro_calendar.remind_time_calculator:
         public: false
         class: %oro_calendar.remind_time_calculator.class%
