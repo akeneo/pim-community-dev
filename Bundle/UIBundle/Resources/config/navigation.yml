@@ -23,25 +23,4 @@ oro_menu_config:
 
 oro_titles:
     oro_default:                  Dashboard
-    oro_ui_index:                 Dashboard
-    oro_ui_1column:               Dashboard | One Column
-    oro_ui_grid_without_bar_page: Dashboard | Grid
-    oro_ui_grid_page:             Dashboard | Grid
-    oro_ui_1column_menu:          Dashboard | Menu
-    oro_ui_1column_toolbar:       Dashboard | One Column Toolbar
-    oro_ui_2columns_left:         Dashboard | Two Columns Toolbar Left
-    oro_ui_2columns_right:        Dashboard | Two Columns Toolbar Right
-    oro_ui_3columns:              Dashboard | Three Columns
-    oro_ui_forgot_password:       Forgot Password
-    oro_ui_login:                 Login
-    oro_ui_registration:          Registration
-    oro_ui_404:                   404 Not Found
-    oro_ui_503:                   503 Error
-    oro_ui_form_elements:         Form Elements
-    oro_ui_messages:              Dashboard | Messages
-    oro_ui_buttons:               Dashboard | Buttons
-    oro_ui_tables:                Dashboard | Tables
-    oro_ui_general_elements:      Dashboard | Elements
-    oro_ui_dialog_styled:         Dashboard | Dialog
-    oro_ui_record_edit:           Dashboard | Edit
 
