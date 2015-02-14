@@ -194,7 +194,6 @@ class AppKernel extends Kernel
             // new Oro\Bundle\AddressBundle\OroAddressBundle(),
             // new Oro\Bundle\SearchBundle\OroSearchBundle(),
             // new Oro\Bundle\SoapBundle\OroSoapBundle(),
-            // new Oro\Bundle\SyncBundle\OroSyncBundle(),
             // new Oro\Bundle\TagBundle\OroTagBundle()
         ];
     }
