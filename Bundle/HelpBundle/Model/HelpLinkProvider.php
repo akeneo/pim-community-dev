@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\HelpBundle\Model;
 
-use Oro\Bundle\PlatformBundle\OroPlatformBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -143,7 +142,7 @@ class HelpLinkProvider
             $url .= "?";
         }
 
-        return $url . "v=" . OroPlatformBundle::VERSION;
+        return $url . "v=0.9.0";
     }
 
     /**
