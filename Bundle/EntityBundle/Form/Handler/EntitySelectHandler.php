@@ -15,8 +15,6 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 
-use Oro\Bundle\SearchBundle\Engine\Indexer;
-
 class EntitySelectHandler implements SearchHandlerInterface
 {
     /**

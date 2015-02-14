@@ -8,15 +8,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\SearchBundle\Engine\Indexer;
-
 class SearchHandler implements SearchHandlerInterface
 {
-    /**
-     * @var Indexer
-     */
-    protected $indexer;
-
     /**
      * @var EntityRepository
      */
@@ -52,6 +45,7 @@ class SearchHandler implements SearchHandlerInterface
      */
     public function __construct($entityName, array $properties)
     {
+        throw new \LogicException('This service is not useable anymore');
         $this->entityName = $entityName;
         $this->properties = $properties;
     }
@@ -69,7 +63,7 @@ class SearchHandler implements SearchHandlerInterface
      * @param array $config
      * @throws \RuntimeException
      */
-    public function initSearchIndexer(Indexer $indexer, array $config)
+    public function initSearchIndexer($indexer, array $config)
     {
         $this->indexer = $indexer;
         if (empty($config[$this->entityName]['alias'])) {
