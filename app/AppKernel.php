@@ -191,7 +191,6 @@ class AppKernel extends Kernel
 
             // the following bundles are disabled by the PIM
             //
-            // new Oro\Bundle\AddressBundle\OroAddressBundle(),
             // new Oro\Bundle\SearchBundle\OroSearchBundle(),
             // new Oro\Bundle\SoapBundle\OroSoapBundle(),
             // new Oro\Bundle\TagBundle\OroTagBundle()
