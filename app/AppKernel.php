@@ -193,14 +193,12 @@ class AppKernel extends Kernel
             //
             // new Oro\Bundle\AddressBundle\OroAddressBundle(),
             // new Oro\Bundle\CalendarBundle\OroCalendarBundle(),
-            // new Oro\Bundle\CronBundle\OroCronBundle(),
             // new Oro\Bundle\NotificationBundle\OroNotificationBundle(),
             // new Oro\Bundle\QueryDesignerBundle\OroQueryDesignerBundle(),
             // new Oro\Bundle\SearchBundle\OroSearchBundle(),
             // new Oro\Bundle\SoapBundle\OroSoapBundle(),
             // new Oro\Bundle\SyncBundle\OroSyncBundle(),
-            // new Oro\Bundle\TagBundle\OroTagBundle(),
-            // new Oro\Bundle\WorkflowBundle\OroWorkflowBundle(),
+            // new Oro\Bundle\TagBundle\OroTagBundle()
         ];
     }
 }
