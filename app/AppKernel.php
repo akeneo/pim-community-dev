@@ -176,7 +176,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\FilterBundle\OroFilterBundle(),
             new Oro\Bundle\FormBundle\OroFormBundle(),
             new Oro\Bundle\HelpBundle\OroHelpBundle(),
-            new Oro\Bundle\ImapBundle\OroImapBundle(),
             new Oro\Bundle\InstallerBundle\OroInstallerBundle(),
             new Oro\Bundle\LocaleBundle\OroLocaleBundle(),
             new Oro\Bundle\NavigationBundle\OroNavigationBundle(),
