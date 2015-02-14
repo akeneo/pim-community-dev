@@ -22,9 +22,6 @@ use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
-use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
-use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
-
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
@@ -68,7 +65,6 @@ class User implements
     EntityUploadedImageInterface,
     EmailOwnerInterface,
     EmailHolderInterface,
-    ImapConfigurationOwnerInterface,
     FullNameInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
@@ -346,17 +342,6 @@ class User implements
      * @Oro\Versioned("getName")
      */
     protected $businessUnits;
-
-    /**
-     * @var ImapEmailOrigin
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin", cascade={"all"}
-     * )
-     * @ORM\JoinColumn(name="imap_configuration_id", referencedColumnName="id", onDelete="SET NULL", nullable=true)
-     * @Exclude
-     */
-    protected $imapConfiguration;
 
     /**
      * @var \DateTime $createdAt
@@ -1340,24 +1325,6 @@ class User implements
         if ($this->getBusinessUnits()->contains($businessUnit)) {
             $this->getBusinessUnits()->removeElement($businessUnit);
         }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getImapConfiguration()
-    {
-        return $this->imapConfiguration;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function setImapConfiguration(ImapEmailOrigin $imapConfiguration = null)
-    {
-        $this->imapConfiguration = $imapConfiguration;
 
         return $this;
     }
