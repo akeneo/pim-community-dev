@@ -1,5 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig'] %}
 
 {% set fullname = form.vars.value|oro_format_name|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}

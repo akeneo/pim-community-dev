@@ -29,9 +29,6 @@ use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
-use Oro\Bundle\TagBundle\Entity\Taggable;
-use Oro\Bundle\TagBundle\Entity\Tag;
-
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
@@ -69,7 +66,6 @@ class User implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
-    Taggable,
     EmailOwnerInterface,
     EmailHolderInterface,
     ImapConfigurationOwnerInterface,
@@ -337,12 +333,6 @@ class User implements
      * @ORM\OneToMany(targetEntity="Email", mappedBy="user", orphanRemoval=true, cascade={"persist"})
      */
     protected $emails;
-
-    /**
-     * @var Tag[]
-     *
-     */
-    protected $tags;
 
     /**
      * @var BusinessUnit[]
@@ -1305,34 +1295,6 @@ class User implements
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
         return 'uploads' . $ds . 'users' . $ds . $suffix;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTaggableId()
-    {
-        return $this->getId();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTags()
-    {
-        $this->tags = $this->tags ?: new ArrayCollection();
-
-        return $this->tags;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTags($tags)
-    {
-        $this->tags = $tags;
-
-        return $this;
     }
 
     /**

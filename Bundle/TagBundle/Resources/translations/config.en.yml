@@ -1,4 +1,0 @@
-entity:
-    tag:
-        name:           Tag
-        description:    Show records tagged by this tag

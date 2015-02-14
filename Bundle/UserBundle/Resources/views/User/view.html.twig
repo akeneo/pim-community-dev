@@ -1,5 +1,4 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as Email %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
@@ -79,9 +78,6 @@
     {% set id = 'user-profile' %}
 
     {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
-    {% if resource_granted('oro_tag_view_tag_cloud') %}
-        {% set dataSubBlocks = dataSubBlocks|merge([UI.renderAttribute('Tags'|trans, _tag.renderView(entity))]) %}
-    {% endif %}
 
     {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
 

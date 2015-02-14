@@ -2,18 +2,12 @@
 
 namespace Oro\Bundle\UserBundle\Form\Handler;
 
-use Oro\Bundle\TagBundle\Entity\TagManager;
-use Oro\Bundle\TagBundle\Form\Handler\TagHandlerInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 
-class UserHandler extends AbstractUserHandler implements TagHandlerInterface
+class UserHandler extends AbstractUserHandler
 {
-    /**
-     * @var TagManager
-     */
-    protected $tagManager;
 
     /**
      * @var BusinessUnitManager
@@ -50,20 +44,11 @@ class UserHandler extends AbstractUserHandler implements TagHandlerInterface
     protected function onSuccess(User $user)
     {
         $this->manager->updateUser($user);
-        $this->tagManager->saveTagging($user);
 
         // Reloads the user to reset its username. This is needed when the
         // username or password have been changed to avoid issues with the
         // security layer.
         $this->manager->reloadUser($user);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setTagManager(TagManager $tagManager)
-    {
-        $this->tagManager = $tagManager;
     }
 
     /**
