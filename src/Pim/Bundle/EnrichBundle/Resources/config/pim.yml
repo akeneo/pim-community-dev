@@ -16,7 +16,6 @@ imports:
     - { resource: '@PimEnrichBundle/Resources/config/bundles/liip_imagine.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_entity_extend.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_filter.yml' }
-    - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_help.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_require_js.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_translation.yml' }
     - { resource: '@PimEnrichBundle/Resources/config/bundles/oro_ui.yml' }
