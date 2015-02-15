@@ -11,8 +11,7 @@
     "autoload": {
         "psr-0": {
             "": "src/",
-            "Context": "features/",
-            "OroEmail\\": "app/emails/"
+            "Context": "features/"
         }
     },
     "require": {
