@@ -133,22 +133,17 @@ class AppKernel extends Kernel
     protected function getOroDependencies()
     {
         return [
-            new A2lix\TranslationFormBundle\A2lixTranslationFormBundle(),
             new BeSimple\SoapBundle\BeSimpleSoapBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\RestBundle\FOSRestBundle(),
             new Genemu\Bundle\FormBundle\GenemuFormBundle(),
-            new JDare\ClankBundle\JDareClankBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Nelmio\ApiDocBundle\NelmioApiDocBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
-            new Sylius\Bundle\FlowBundle\SyliusFlowBundle(),
 
             // the following bundles are disabled by the PIM
             //
