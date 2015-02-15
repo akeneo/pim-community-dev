@@ -164,7 +164,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\ConfigBundle\OroConfigBundle(),
             new Oro\Bundle\DataGridBundle\OroDataGridBundle(),
             new Oro\Bundle\DistributionBundle\OroDistributionBundle(),
-            new Oro\Bundle\EmailBundle\OroEmailBundle(),
             new Oro\Bundle\EntityBundle\OroEntityBundle(),
             new Oro\Bundle\EntityConfigBundle\OroEntityConfigBundle(),
             new Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle($this),
