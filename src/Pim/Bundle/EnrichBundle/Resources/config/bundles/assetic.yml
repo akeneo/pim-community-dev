@@ -5,7 +5,6 @@ assetic:
         - OroUserBundle
         - OroFilterBundle
         - OroNavigationBundle
-        - OroEntityExtendBundle
         - OroSecurityBundle
         - PimUIBundle
         - PimCatalogBundle
