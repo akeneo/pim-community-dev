@@ -94,7 +94,7 @@ class RunCommand extends ContainerAwareCommand
             if ($dryRun) {
                 $subjectSet = $runnerRegistry->dryRun($rule);
                 $message = '<info>%d</info> subjects impacted by the rule <info>%s</info>.';
-                $output->writeln(sprintf($message, count($subjectSet->getSubjects()), $rule->getCode()));
+                $output->writeln(sprintf($message, count($subjectSet->getSubjectsCursor()), $rule->getCode()));
                 $output->writeln('');
             } else {
                 $runnerRegistry->run($rule);

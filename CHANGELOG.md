@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.0 - "Strawberry" (2015-02-12)
 
 ## Bug fixes
 - PIM-3760: Fix reverting previous product versions with file/image attributes
@@ -182,7 +182,7 @@
 
 ## BC breaks
 
-# 1.0.0 (2014-08-29)
+# 1.0.0 - "Dandelion" (2014-08-29)
 
 ## Improvements
 
