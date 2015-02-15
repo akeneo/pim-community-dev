@@ -15,9 +15,6 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
-use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
-
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
@@ -60,8 +57,6 @@ class User implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
-    EmailOwnerInterface,
-    EmailHolderInterface,
     FullNameInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';

@@ -5,13 +5,12 @@ namespace Oro\Bundle\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="oro_user_email")
  */
-class Email implements EmailInterface
+class Email
 {
     /**
      * @ORM\Id

@@ -1,6 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroEmailBundle::macros.html.twig' as Email %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
 {% set gridName = 'users-email-grid' %}
@@ -76,10 +75,6 @@
 {% block content_data %}
   <div class="user-profile-cols">
     {% set id = 'user-profile' %}
-
-    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
-
-    {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
 
     {% set dataBlocks = [
         {
@@ -166,26 +161,6 @@
     {#
       EntityExtend fields END
     #}
-
-    {% if resource_granted('oro_email_view') %}
-        {% set dataBlocks = dataBlocks|merge
-            (
-                [{
-                    'title': 'User emails'|trans,
-                    'subblocks': [
-                        {
-                            'title': '',
-                            'useSpan': false,
-                            'data': [
-                                dataGrid.renderGrid(gridName, {userId: entity.id}, { cssClass: 'inner-grid' }),
-                                Email.renderJs()
-                            ]
-                        }
-                    ]
-                }]
-            )
-        %}
-    {% endif %}
 
     {%- set additional_data -%}
         {% placeholder oro_user_view_additional_data %}

@@ -1,7 +1,0 @@
-entity:
-    email_template:
-        name:           Email Template
-        description:    Email template
-    email:
-        name:           Email
-        description:    Email message
