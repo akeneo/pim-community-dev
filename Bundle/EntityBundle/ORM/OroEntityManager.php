@@ -12,9 +12,6 @@ use Doctrine\ORM\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Oro\Bundle\EntityBundle\ORM\Query\FilterCollection;
 
-use Oro\Bundle\EntityExtendBundle\Entity\ProxyEntityInterface;
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-
 class OroEntityManager extends EntityManager
 {
     /**
@@ -51,11 +48,13 @@ class OroEntityManager extends EntityManager
     }
 
     /**
-     * @param \Oro\Bundle\EntityExtendBundle\Extend\ExtendManager $extendManager
+     * @param ExtendManager $extendManager
      * @return $this
      */
     public function setExtendManager($extendManager)
     {
+        throw new \LogicException('This will be dropped, EntityExtendBundle has been dropped');
+
         $this->extendManager = $extendManager;
 
         return $this;
@@ -66,6 +65,8 @@ class OroEntityManager extends EntityManager
      */
     public function getExtendManager()
     {
+        throw new \LogicException('This will be dropped, EntityExtendBundle has been dropped');
+
         return $this->extendManager;
     }
 
