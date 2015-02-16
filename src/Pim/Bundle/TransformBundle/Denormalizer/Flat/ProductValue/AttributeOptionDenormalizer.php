@@ -89,6 +89,6 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     {
         $resolver
             ->setRequired(['value'])
-            ->setOptional(['entity', 'locale_code', 'product', 'scope_code']);
+            ->setOptional(['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path']);
     }
 }
