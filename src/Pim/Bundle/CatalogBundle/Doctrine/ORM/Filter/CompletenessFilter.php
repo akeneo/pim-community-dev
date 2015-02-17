@@ -39,9 +39,9 @@ class CompletenessFilter extends AbstractFilter implements FieldFilterInterface
     {
         $this->checkValue($field, $value, $locale, $scope);
 
-        $joinAlias = 'filterCompleteness' . uniqid();
-        $field = $joinAlias . '.ratio';
-        $util = new CompletenessJoin($this->qb);
+        $joinAlias = uniqid('filterCompleteness', true);
+        $field     = $joinAlias . '.ratio';
+        $util      = new CompletenessJoin($this->qb);
         $util->addJoins($joinAlias, $locale, $scope);
 
         $this->qb->andWhere($this->prepareCriteriaCondition($field, $operator, $value));

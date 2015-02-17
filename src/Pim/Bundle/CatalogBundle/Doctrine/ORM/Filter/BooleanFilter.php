@@ -66,7 +66,7 @@ class BooleanFilter extends AbstractAttributeFilter implements AttributeFilterIn
             );
         }
 
-        $joinAlias    = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias    = uniqid('filter' . $attribute->getCode(), true);
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);

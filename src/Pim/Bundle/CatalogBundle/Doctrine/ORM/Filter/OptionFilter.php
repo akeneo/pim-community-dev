@@ -81,7 +81,7 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($field, $value);
         }
 
-        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias = uniqid('filter' . $attribute->getCode(), true);
 
         // prepare join value condition
         $optionAlias = $joinAlias . '.option';
