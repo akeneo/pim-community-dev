@@ -50,6 +50,20 @@ pim_enrich:
       product.title: Produkte
       property.title: Eigenschaften
       history.title: Historie
+  variant_group:
+    type:
+      VARIANT: Variante
+      X_SELL: Cross-Sell
+      ADDITIONAL: Ergänzend
+      RELATED: Zugehörig
+    tab:
+      product.title: Produkte
+      property.title: Eigenschaften
+      history.title: Historie
+      attribute.title: Attribute
+    info:
+      no_attributes: Diese Variantengruppe hat noch keine Attribute
+      no_attributes_in_selected_locale: Diese Variantengruppe hat in diesem Gebietsschema noch keine Attribute
   completeness:
     progress_bar.title: '%ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)'
     subtitle: '{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte'
@@ -103,6 +117,16 @@ pim_enrich:
       label: Zu Gruppen hinzufügen
       description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
       success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+      no_group: Bis jetzt keine Gruppen vorhanden. Beginnen Sie mit dem Anlegen einer Gruppe.
+    add-to-variant-group:
+      label: Zu einer Variantengruppe hinzufügen
+      description: Bitte wählen Sie die Variantengruppe aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
+      success_flash: Die Produkte wurden erfolgreich zur ausgewählten Variantengruppe hinzugefügt
+      already_in_variant_group_or_not_valid: 'Die folgenden Produkte (%products%) können nicht gruppiert werden, da sie bereits in einer Variantengruppe existieren oder keine Gruppenachse besitzen.'
+      no_variant_group: Bis jetzt keine Variantengruppen vorhanden. Beginnen Sie mit dem Anlegen einer Variantengruppe.
+      no_valid_variant_group: Keine Variantengruppe teilt Attribute mit den ausgewählten Produkten.
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
     set-attribute-requirements:
       label: Attribut-Anforderungen festlegen
       description: Die folgenden Attribut-Anforderungen werden den ausgewählten Produktfamilien zugeordnet
@@ -129,6 +153,7 @@ pim_enrich:
       change_family: Produktfamilie ändern
       change_state: Status eines Produktes ändern
       add_to_groups: Ein Produkt zu Gruppen zuordnen
+      add_to_variant_group: Ein Produkt zu einer Variantengruppe hinzufügen
       mass_edit: Aktionen zur Massenbearbeitung von Produkten
       comment: Produkte kommentieren
       download: Produkt als PDF herunterladen
@@ -177,6 +202,15 @@ pim_enrich:
       edit: Eine Gruppe bearbeiten
       remove: Eine Gruppe entfernen
       history: Gruppenhistorie ansehen
+    variant_group:
+      index: Variantengruppen auflisten
+      create: Eine Variantengruppe anlegen
+      edit: Eine Variantengruppe bearbeiten
+      remove: Eine Variantengruppe löschen
+      history: Die Historie einer Variantengruppe ansehen
+      edit_attributes: Die Attribute von Variantengruppen bearbeiten
+      add_attributes: Attribute zu Variantengruppen hinzufügen
+      remove_attribute: Attribute von Variantengruppen entfernen
     group_type:
       index: Gruppentypen auflisten
       create: Einen Gruppentyp anlegen
@@ -197,9 +231,15 @@ pim_enrich:
     currency: Währungen
     family: Produktfamilien
     group: Gruppen
+    variant_group: Variantengruppen
     group_type: Gruppentypen
     locale: Gebietsschemata
     product: Produkte
+  product_value:
+    tooltip:
+      from_variant:
+        title: Aktualisierung durch eine Variantengruppe
+        content: Dieses Feld wurde durch die folgende Variantengruppe aktualisiert
 attribute:
   title: Attribut
   overview: Attribute Übersicht
@@ -325,6 +365,8 @@ confirmation:
     remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus dieser Produktfamilie entfernen möchten?'
   product:
     remove attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus diesem Produkt entfernen möchten?'
+  variant_group:
+    remove_attribute: 'Sind Sie sicher, dass Sie das Attribut %name% aus dieser Variantengruppe entfernen möchten?'
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -385,6 +427,8 @@ flash:
     created: Variantengruppe erfolgreich angelegt
     updated: Variantengruppe erfolgreich aktualisiert
     removed: Variantengruppe erfolgreich entfernt
+    attributes_added: Attribute erfolgreich zur Variantengruppe hinzugefügt
+    attribute_removed: Attribute erfolgreich aus der Variantengruppe entfernt
   group type:
     created: Gruppentyp erfolgreich angelegt
     updated: Gruppentyp erfolgreich aktualisiert
@@ -635,6 +679,9 @@ pim_enrich.mass_edit_action:
     description: Die ausgewählten Produktattribute werden mit den folgenden Daten für das ausgewählte Gebietsschema bearbeitet.
     empty: Bitte wählen Sie die Attribute aus, welche Sie bearbeiten möchten
     success_flash: Die Produkt-Attribute wurden aktualisiert
+    message.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
+    no_attribute.warning: Für die ausgewählten Produkte gibt es keine gemeinsamen Attribute. Bitte passen Sie Ihre Auswahl an.
+    truncated_by_variant_attribute.warning: 'Einige gemeinsame Attribute der ausgewählten Produkte stammen aus einer Variantengruppe. Diese sind für eine Massenbearbeitung nicht verfügbar: %attributes%.'
   classify:
     label: Zuordnung von Produkten in Kategorien
     description: Die Produkte werden den folgenden Kategorien zugeordnet. Bestehende Zuordnungen bleiben erhalten.
