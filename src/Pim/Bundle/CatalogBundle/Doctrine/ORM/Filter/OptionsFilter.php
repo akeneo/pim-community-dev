@@ -80,8 +80,8 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias    = uniqid('filter' . $attribute->getCode(), true);
-        $joinAliasOpt = uniqid('filterO' . $attribute->getCode(), true);
+        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
+        $joinAliasOpt = $this->getUniqueAlias('filterO' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
         if (Operators::IS_EMPTY === $operator) {

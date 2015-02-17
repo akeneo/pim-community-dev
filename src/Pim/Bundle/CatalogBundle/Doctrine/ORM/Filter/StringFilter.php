@@ -72,7 +72,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {

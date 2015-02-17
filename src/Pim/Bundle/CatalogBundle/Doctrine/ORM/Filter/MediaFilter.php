@@ -76,7 +76,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function addIsEmptyFilter(AttributeInterface $attribute, $locale, $scope)
     {
         // join on values
-        $joinAlias      = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias      = $this->getUniqueAlias('filter' . $attribute->getCode());
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
             $this->qb->getRootAlias() . '.values',
@@ -86,7 +86,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         );
 
         // join on media
-        $joinAliasMedia = uniqid('filterMedia' . $attribute->getCode(), true);
+        $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
         $backendType    = $attribute->getBackendType();
         $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasMedia);
@@ -104,7 +104,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function addLikeFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
     {
         // join on values
-        $joinAlias = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode());
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->innerJoin(
             $this->qb->getRootAlias() . '.values',
@@ -114,7 +114,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         );
 
         // join on media
-        $joinAliasMedia = uniqid('filterMedia' . $attribute->getCode(), true);
+        $joinAliasMedia = $this->getUniqueAlias('filterMedia' . $attribute->getCode());
         $backendType    = $attribute->getBackendType();
         $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
         $mediaCondition = $this->prepareCondition($backendField, $operator, $value);

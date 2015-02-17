@@ -88,7 +88,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -101,7 +101,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         );
 
         // join to price
-        $joinAliasPrice = uniqid('filterP' . $attribute->getCode(), true);
+        $joinAliasPrice = $this->getUniqueAlias('filterP' . $attribute->getCode());
         $priceData      = $joinAlias . '.' . $backendType;
         $this->qb->leftJoin($priceData, $joinAliasPrice);
 
@@ -127,7 +127,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -139,7 +139,7 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
             $condition
         );
 
-        $joinAliasPrice = uniqid('filterP' . $attribute->getCode(), true);
+        $joinAliasPrice = $this->getUniqueAlias('filterP' . $attribute->getCode());
         $condition      = $this->preparePriceCondition($value, $joinAliasPrice, $operator);
 
         $this->qb->innerJoin($joinAlias . '.' .$backendType, $joinAliasPrice, 'WITH', $condition);
