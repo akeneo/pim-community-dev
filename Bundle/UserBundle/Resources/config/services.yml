@@ -1,6 +1,5 @@
 parameters:
     oro_user.manager.class:             Oro\Bundle\UserBundle\Entity\UserManager
-    oro_user.manager.api.class:         Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.status.manager.class:      Oro\Bundle\UserBundle\Entity\Manager\StatusManager
     oro_user.entity.class:              Oro\Bundle\UserBundle\Entity\User
     oro_user.group.entity.class:        Oro\Bundle\UserBundle\Entity\Group
@@ -11,9 +10,7 @@ parameters:
     oro_user.user_menu.builder.class:   Oro\Bundle\UserBundle\Menu\UserMenuBuilder
     oro_user.role.listener.class:       Oro\Bundle\UserBundle\EventListener\RoleListener
     oro_user.role.manager.class:        Oro\Bundle\UserBundle\Entity\Manager\RoleManager
-    oro_user.role.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.group.manager.class:       Oro\Bundle\UserBundle\Entity\Manager\GroupManager
-    oro_user.group.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.entity_with_image.subscriber.class:            Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.autocomplete.user.search_handler:              Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
     oro_user.email.owner.provider.class:                    Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
@@ -25,12 +22,6 @@ services:
     oro_user.manager:
         class:                        %oro_user.manager.class%
         arguments:                    [%oro_user.entity.class%, "@doctrine.orm.entity_manager", "@security.encoder_factory"]
-
-    oro_user.manager.api:
-        class: %oro_user.manager.api.class%
-        arguments:
-            - %oro_user.entity.class%
-            - @doctrine.orm.entity_manager
 
     oro_user.security.provider:
         class:                        %oro_user.security.provider.class%
@@ -75,21 +66,9 @@ services:
         class:                        %oro_user.role.manager.class%
         arguments:                    ["@doctrine.orm.entity_manager"]
 
-    oro_user.role_manager.api:
-        class: %oro_user.role.manager.api.class%
-        arguments:
-            - %oro_user.role.entity.class%
-            - @doctrine.orm.entity_manager
-
     oro_user.group_manager:
         class:                        %oro_user.group.manager.class%
         arguments:                    ["@doctrine.orm.entity_manager"]
-
-    oro_user.group_manager.api:
-        class: %oro_user.group.manager.api.class%
-        arguments:
-            - %oro_user.group.entity.class%
-            - @doctrine.orm.entity_manager
 
     oro_user.entity_with_image.subscriber:
         class: %oro_user.entity_with_image.subscriber.class%

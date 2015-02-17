@@ -2,7 +2,6 @@ parameters:
     oro_organization.type.business_unit.class:                          Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType
     oro_organization.handler.business_unit.class:                       Oro\Bundle\OrganizationBundle\Form\Handler\BusinessUnitHandler
     oro_organization.business_unit.form.type.business_unit.api.class:   Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitApiType
-    oro_organization.business_unit.manager.api.class:                   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_organization.business_unit.entity.class:                        Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
     oro_organization.business_unit.manager.class:                       Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager
     oro_organization.type.ownership_type.class:                         Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType
@@ -32,13 +31,6 @@ services:
         class:                        %oro_organization.type.business_unit.class%
         tags:
             - { name: form.type, alias: oro_business_unit }
-
-    # Business Unit API
-    oro_organization.business_unit.manager.api:
-        class: %oro_organization.business_unit.manager.api.class%
-        arguments:
-            - %oro_organization.business_unit.entity.class%
-            - @doctrine.orm.entity_manager
 
     oro_organization.form.type.business_unit.api:
         class: %oro_organization.business_unit.form.type.business_unit.api.class%

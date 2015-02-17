@@ -9,8 +9,6 @@ use Doctrine\Common\Collections\Collection;
 
 use JMS\Serializer\Annotation\Type;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
@@ -42,7 +40,6 @@ class Role extends BaseRole
      * @ORM\Id
      * @ORM\Column(type="smallint", name="id")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Soap\ComplexType("int", nillable=true)
      * @Type("integer")
      */
     protected $id;
@@ -59,7 +56,6 @@ class Role extends BaseRole
      * @var string
      *
      * @ORM\Column(type="string", length=30)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $label;
@@ -68,7 +64,6 @@ class Role extends BaseRole
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit")
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Soap\ComplexType("string", nillable=true)
      */
     protected $owner;
 

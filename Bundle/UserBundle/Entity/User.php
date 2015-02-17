@@ -13,8 +13,6 @@ use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
 
-use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
-
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
@@ -67,7 +65,6 @@ class User implements
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @Soap\ComplexType("int", nillable=true)
      * @Type("integer")
      */
     protected $id;
@@ -76,7 +73,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $username;
@@ -85,7 +81,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(type="string", length=255, unique=true)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $email;
@@ -96,7 +91,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
      */
     protected $namePrefix;
@@ -107,7 +101,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $firstName;
@@ -118,7 +111,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
      */
     protected $middleName;
@@ -129,7 +121,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string")
      * @Type("string")
      */
     protected $lastName;
@@ -140,7 +131,6 @@ class User implements
      * @var string
      *
      * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
-     * @Soap\ComplexType("string", nillable=true)
      * @Type("string")
      */
     protected $nameSuffix;
@@ -149,7 +139,6 @@ class User implements
      * @var DateTime
      *
      * @ORM\Column(name="birthday", type="date", nullable=true)
-     * @Soap\ComplexType("date", nillable=true)
      * @Type("date")
      */
     protected $birthday;
@@ -177,7 +166,6 @@ class User implements
      * @var boolean
      *
      * @ORM\Column(type="boolean")
-     * @Soap\ComplexType("boolean")
      * @Type("boolean")
      */
     protected $enabled = true;
@@ -207,7 +195,6 @@ class User implements
      *
      * @var string
      *
-     * @Soap\ComplexType("string", nillable=true)
      * @Exclude
      */
     protected $plainPassword;
@@ -234,7 +221,6 @@ class User implements
      * @var DateTime
      *
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
-     * @Soap\ComplexType("dateTime", nillable=true)
      * @Type("dateTime")
      */
     protected $lastLogin;
@@ -251,7 +237,6 @@ class User implements
      * @var BusinessUnit
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", cascade={"persist"})
      * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Soap\ComplexType("string", nillable=true)
      */
     protected $owner;
 
@@ -263,7 +248,6 @@ class User implements
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-     * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
      */
     protected $roles;
@@ -276,7 +260,6 @@ class User implements
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
-     * @Soap\ComplexType("int[]", nillable=true)
      * @Exclude
      */
     protected $groups;
@@ -1331,21 +1314,18 @@ class User implements
     /**
      * @var Pim\Bundle\CatalogBundle\Entity\Locale
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
-     * @Soap\ComplexType("string", nillable=true)
      */
     protected $catalogLocale;
 
     /**
      * @var Pim\Bundle\CatalogBundle\Entity\Channel
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
-     * @Soap\ComplexType("string", nillable=true)
      */
     protected $catalogScope;
 
     /**
      * @var Pim\Bundle\CatalogBundle\Model\CategoryInterface
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface")
-     * @Soap\ComplexType("string", nillable=true)
      */
     protected $defaultTree;
 

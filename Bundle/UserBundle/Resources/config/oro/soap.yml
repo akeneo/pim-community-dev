@@ -1,4 +1,0 @@
-classes:
-    - Oro\Bundle\UserBundle\Controller\Api\Soap\UserController
-    - Oro\Bundle\UserBundle\Controller\Api\Soap\RoleController
-    - Oro\Bundle\UserBundle\Controller\Api\Soap\GroupController

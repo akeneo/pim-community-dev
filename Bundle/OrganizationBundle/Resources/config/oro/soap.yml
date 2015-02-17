@@ -1,2 +1,0 @@
-classes:
-    - Oro\Bundle\OrganizationBundle\Controller\Api\Soap\BusinessUnitController
