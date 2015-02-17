@@ -96,7 +96,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -108,7 +108,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition
         );
 
-        $joinAliasOpt = uniqid('filterM' . $attribute->getCode(), true);
+        $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
         $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasOpt);
@@ -132,7 +132,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias   = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -144,7 +144,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition
         );
 
-        $joinAliasOpt = uniqid('filterM' . $attribute->getCode(), true);
+        $joinAliasOpt = $this->getUniqueAlias('filterM' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
         $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasOpt, 'WITH', $condition);

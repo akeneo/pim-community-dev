@@ -53,7 +53,7 @@ class GroupsFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         $rootAlias   = $this->qb->getRootAlias();
-        $entityAlias = uniqid('filter' . FieldFilterHelper::getCode($field), true);
+        $entityAlias = $this->getUniqueAlias('filter' . FieldFilterHelper::getCode($field));
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
         if ($operator === Operators::IN_LIST) {

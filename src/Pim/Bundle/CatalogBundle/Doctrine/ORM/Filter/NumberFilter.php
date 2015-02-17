@@ -54,7 +54,7 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
             throw InvalidArgumentException::numericExpected($attribute->getCode(), 'filter', 'number', gettype($value));
         }
 
-        $joinAlias    = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {

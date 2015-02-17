@@ -79,7 +79,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
             $value = $this->formatValues($attribute->getCode(), $value);
         }
 
-        $joinAlias    = uniqid('filter' . $attribute->getCode(), true);
+        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {
