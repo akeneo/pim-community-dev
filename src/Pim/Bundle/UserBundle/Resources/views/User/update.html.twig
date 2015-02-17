@@ -72,15 +72,16 @@
 
         {% set buttons %}
             {{ elements.backLink(path('oro_user_index')) }}
-            {% if form.vars.value.id and form.vars.value.id != app.user.id %}
-                {{ elements.deleteLink(
-                    path('oro_api_delete_user', {'id': form.vars.value.id}),
-                    'oro_user_user_delete',
-                    path('oro_user_index'),
-                    'confirmation.remove.user'|trans({ '%name%': fullname }),
-                    'flash.user.removed'|trans
-                ) }}
-            {% endif %}
+
+            {#{% if form.vars.value.id and form.vars.value.id != app.user.id %}#}
+                {#{{ elements.deleteLink(#}
+                    {#path('oro_api_delete_user', {'id': form.vars.value.id}),#}
+                    {#'oro_user_user_delete',#}
+                    {#path('oro_user_index'),#}
+                    {#'confirmation.remove.user'|trans({ '%name%': fullname }),#}
+                    {#'flash.user.removed'|trans#}
+                {#) }}#}
+            {#{% endif %}#}
             {{ elements.submitBtn }}
         {% endset %}
 
