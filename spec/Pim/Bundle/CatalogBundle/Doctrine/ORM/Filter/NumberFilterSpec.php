@@ -43,9 +43,8 @@ class NumberFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filternumber.attribute = 42 AND filternumber.varchar = 12";
 
-        $queryBuilder->innerJoin('p.values', 'filternumber', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($number, '=', 12);
     }
@@ -63,10 +62,9 @@ class NumberFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filternumber.attribute = 42";
 
-        $queryBuilder->leftJoin('p.values', 'filternumber', 'WITH', $condition)->shouldBeCalled();
-        $queryBuilder->andWhere('filternumber.varchar IS NULL')->shouldBeCalled();
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($number, 'EMPTY', 12);
     }
