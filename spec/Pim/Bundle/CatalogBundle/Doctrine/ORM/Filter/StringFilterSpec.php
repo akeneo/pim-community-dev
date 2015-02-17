@@ -47,9 +47,8 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE 'My Sku%'";
 
-        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'STARTS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -67,9 +66,8 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE '%My Sku'";
 
-        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'ENDS WITH', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -87,9 +85,8 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar LIKE '%My Sku%'";
 
-        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'CONTAINS', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -107,9 +104,8 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar NOT LIKE '%My Sku%'";
 
-        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'DOES NOT CONTAIN', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -127,9 +123,8 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42 AND filtersku.varchar = 'My Sku'";
 
-        $queryBuilder->innerJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, '=', 'My Sku', null, null, ['field' => 'sku']);
     }
@@ -147,10 +142,9 @@ class StringFilterSpec extends ObjectBehavior
 
         $queryBuilder->expr()->willReturn(new Expr());
         $queryBuilder->getRootAlias()->willReturn('p');
-        $condition = "filtersku.attribute = 42";
 
-        $queryBuilder->leftJoin('p.values', 'filtersku', 'WITH', $condition)->shouldBeCalled();
-        $queryBuilder->andWhere('filtersku.varchar IS NULL')->shouldBeCalled();
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $queryBuilder->andWhere(Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($sku, 'EMPTY', 'My Sku', null, null, ['field' => 'sku']);
     }

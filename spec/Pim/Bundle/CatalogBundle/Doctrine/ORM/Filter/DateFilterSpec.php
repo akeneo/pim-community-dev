@@ -65,11 +65,11 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_less_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date < '2014-03-15'")->shouldBeCalled()->willReturn($qb);
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->andWhere("p.release_date < '2014-03-15'")->willReturn($qb);
+        $qb->expr()->willReturn($expr);
 
-        $expr->lt('p.release_date', '2014-03-15')->shouldBeCalled()->willReturn("p.release_date < '2014-03-15'")->shouldBeCalledTimes(2);
-        $expr->literal('2014-03-15')->shouldBeCalled()->willReturn('2014-03-15')->shouldBeCalledTimes(2);
+        $expr->lt('p.release_date', '2014-03-15')->willReturn("p.release_date < '2014-03-15'")->shouldBeCalledTimes(2);
+        $expr->literal('2014-03-15')->willReturn('2014-03-15')->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('release_date', '<', '2014-03-15');
         $this->addFieldFilter('release_date', '<', new \Datetime('2014-03-15'));
@@ -77,8 +77,8 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_empty_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
-        $expr->isNull('p.release_date')->shouldBeCalled()->willReturn('p.release_date IS NULL');
+        $qb->expr()->willReturn($expr);
+        $expr->isNull('p.release_date')->willReturn('p.release_date IS NULL');
         $qb->andWhere('p.release_date IS NULL')->shouldBeCalled();
 
         $this->addFieldFilter('release_date', 'EMPTY', '');
@@ -86,14 +86,14 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_greater_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date > '2014-03-15 23:59:59'")->shouldBeCalled()->willReturn($qb);
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->andWhere("p.release_date > '2014-03-15 23:59:59'")->willReturn($qb);
+        $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-15 23:59:59')
             ->shouldBeCalled()
             ->willReturn("p.release_date > '2014-03-15 23:59:59'")
             ->shouldBeCalledTimes(2);
-        $expr->literal('2014-03-15 23:59:59')->shouldBeCalled()->willReturn('2014-03-15 23:59:59')->shouldBeCalledTimes(2);
+        $expr->literal('2014-03-15 23:59:59')->willReturn('2014-03-15 23:59:59')->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('release_date', '>', '2014-03-15');
         $this->addFieldFilter('release_date', '>', new \Datetime('2014-03-15'));
@@ -149,7 +149,7 @@ class DateFilterSpec extends ObjectBehavior
             ->andX("p.release_date > '2014-03-15'", "p.release_date < '2014-03-20 23:59:59'")
             ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'");
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-15')
             ->shouldBeCalledTimes(2)
@@ -160,7 +160,7 @@ class DateFilterSpec extends ObjectBehavior
         $expr->literal('2014-03-15')
             ->shouldBeCalledTimes(2)
             ->willReturn('2014-03-15');
-        $expr->literal('2014-03-20 23:59:59')->shouldBeCalled()->willReturn('2014-03-20 23:59:59')->shouldBeCalledTimes(2);
+        $expr->literal('2014-03-20 23:59:59')->willReturn('2014-03-20 23:59:59')->shouldBeCalledTimes(2);
 
         $this->addFieldFilter('release_date', 'BETWEEN', ['2014-03-15', '2014-03-20']);
         $this->addFieldFilter('release_date', 'BETWEEN', [new \Datetime('2014-03-15'), new \Datetime('2014-03-20')]);
@@ -175,7 +175,7 @@ class DateFilterSpec extends ObjectBehavior
             ->andX("p.release_date > '2014-03-20'", "p.release_date < '2014-03-20 23:59:59'")
             ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'");
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-20')
             ->shouldBeCalledTimes(2)
@@ -203,7 +203,7 @@ class DateFilterSpec extends ObjectBehavior
             ->orX("p.release_date < '2014-03-15'", "p.release_date > '2014-03-20 23:59:59'")
             ->shouldBeCalledTimes(2)
             ->willReturn("p.release_date < '2014-03-15' OR p.release_date > '2014-03-20 23:59:59'");
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->expr()->willReturn($expr);
 
         $expr->lt('p.release_date', '2014-03-15')->shouldBeCalledTimes(2)->willReturn("p.release_date < '2014-03-15'");
         $expr->gt('p.release_date', '2014-03-20 23:59:59')
@@ -235,14 +235,14 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
-        $qb->andWhere(null)->shouldBeCalled()->willReturn($expr);
+        $qb->expr()->willReturn($expr);
+        $qb->andWhere(null)->willReturn($expr);
 
         $qb->leftJoin(
             'p.values',
-            'filtercode',
+            Argument::any(),
             'WITH',
-            'filtercode.attribute = 42'
+            Argument::any()
         )->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null);
@@ -264,19 +264,19 @@ class DateFilterSpec extends ObjectBehavior
         $attribute->getId()->willReturn(42);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $qb->expr()->willReturn($expr);
         $expr->literal('2014-03-15')->willReturn('code');
         $expr->literal('en_US')->willReturn('code');
         $expr->literal('mobile')->willReturn('code');
 
-        $expr->gt('filtercode.backend_type', 'code')->willReturn($comparison)->shouldBeCalledTimes(2);
+        $expr->gt(Argument::any(), 'code')->willReturn($comparison)->shouldBeCalledTimes(2);
         $comparison->__toString()->willReturn();
 
         $qb->innerJoin(
             'p.values',
-            'filtercode',
+            Argument::any(),
             'WITH',
-            'filtercode.attribute = 42 AND '
+            Argument::any()
         )->shouldBeCalledTimes(2);
 
         $this->addAttributeFilter($attribute, '>', '2014-03-15');

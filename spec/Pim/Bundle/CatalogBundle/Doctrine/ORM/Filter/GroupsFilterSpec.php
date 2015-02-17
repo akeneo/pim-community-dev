@@ -2,11 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Prophecy\Argument;
 
 class GroupsFilterSpec extends ObjectBehavior
 {
@@ -30,40 +31,39 @@ class GroupsFilterSpec extends ObjectBehavior
 
     function it_adds_a_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
-        $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
-        $qb->leftJoin('f.groups', 'filtergroups')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filtergroups.id IN (1, 2)')->shouldBeCalled()->willReturn($qb);
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
+        $qb->andWhere('filtergroups.id IN (1, 2)')->willReturn($qb);
 
-        $expr->in('filtergroups.id', [1, 2])->shouldBeCalled()->willReturn('filtergroups.id IN (1, 2)');
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $expr->in(Argument::any(), [1, 2])->willReturn('filtergroups.id IN (1, 2)');
+        $qb->expr()->willReturn($expr);
 
         $this->addFieldFilter('groups', 'IN', [1, 2]);
     }
 
     function it_adds_an_empty_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
-        $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
-        $qb->leftJoin('f.groups', 'filtergroups')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filtergroups.id IS NULL')->shouldBeCalled()->willReturn($qb);
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
+        $qb->andWhere('filtergroups.id IS NULL')->willReturn($qb);
 
-        $expr->isNull('filtergroups.id')->shouldBeCalled()->willReturn('filtergroups.id IS NULL');
-        $qb->expr()->shouldBeCalled()->willReturn($expr);
+        $expr->isNull(Argument::any())->willReturn('filtergroups.id IS NULL');
+        $qb->expr()->willReturn($expr);
 
         $this->addFieldFilter('groups', 'EMPTY', null);
     }
 
     function it_adds_an_not_in_filter_on_a_field_in_the_query($qb, Expr $expr)
     {
-        $qb->getRootAlias()->shouldBeCalled()->willReturn('f');
-        $qb->leftJoin('f.groups', 'filtergroups')->shouldBeCalled()->willReturn($qb);
-        $qb->andWhere('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL')->shouldBeCalled()->willReturn($qb);
+        $qb->getRootAlias()->willReturn('f');
+        $qb->leftJoin('f.groups', Argument::any())->willReturn($qb);
+        $qb->andWhere('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL')->willReturn($qb);
         $qb->expr()->willReturn($expr);
 
-        $expr->notIn('filtergroups'.'.id', [3])->shouldBeCalled()->willReturn('filtergroups.id NOT IN');
-        $expr->isNull('filtergroups.id')->shouldBeCalled()->willReturn('filtergroups.id IS NULL');
+        $expr->notIn(Argument::any(), [3])->willReturn('filtergroups.id NOT IN');
+        $expr->isNull(Argument::any())->willReturn('filtergroups.id IS NULL');
 
         $expr->orX('filtergroups.id NOT IN', 'filtergroups.id IS NULL')
-            ->shouldBeCalled()
             ->willReturn('filtergroups.id NOT IN(3)'.'filtergroups.id IS NULL');
 
         $this->addFieldFilter('groups', 'NOT IN', [3]);

@@ -81,12 +81,29 @@ class NumberFilter extends AbstractAttributeFilter implements AttributeFilterInt
      */
     protected function applyFilter($operator, $value, $field)
     {
-        if (Operators::IS_EMPTY === $operator) {
-            $this->qb->field($field)->exists(false);
-        } elseif (Operators::NOT_IN_LIST === $operator) {
-            $this->qb->field($field)->in($value);
-        } else {
-            $this->qb->field($field)->equals($value);
+
+        switch ($operator) {
+            case Operators::IS_EMPTY:
+                $this->qb->field($field)->exists(false);
+                break;
+            case Operators::NOT_IN_LIST:
+                $this->qb->field($field)->in($value);
+                break;
+            case Operators::EQUALS:
+                $this->qb->field($field)->equals($value);
+                break;
+            case Operators::LOWER_THAN:
+                $this->qb->field($field)->lt($value);
+                break;
+            case Operators::GREATER_THAN:
+                $this->qb->field($field)->gt($value);
+                break;
+            case Operators::LOWER_OR_EQUAL_THAN:
+                $this->qb->field($field)->lte($value);
+                break;
+            case Operators::GREATER_OR_EQUAL_THAN:
+                $this->qb->field($field)->gte($value);
+                break;
         }
     }
 }

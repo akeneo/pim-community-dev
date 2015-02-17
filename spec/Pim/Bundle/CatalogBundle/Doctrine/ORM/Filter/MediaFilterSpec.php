@@ -70,18 +70,18 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
+        $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
 
         $expr->literal('foo%')->willReturn('foo%');
-        $expr->like('filterMediapicture.originalFilename', 'foo%')
+        $expr->like(Argument::any(), 'foo%')
             ->shouldBeCalled()
             ->willReturn('filterMediapicture.originalFilename LIKE foo%');
 
         $qb->innerJoin(
-                'filterpicture.media',
-                'filterMediapicture',
+                Argument::any(),
+                Argument::any(),
                 'WITH',
                 'filterMediapicture.originalFilename LIKE foo%'
             )
@@ -95,18 +95,18 @@ class MediaFilterSpec extends ObjectBehavior
         $attrValidatorHelper->validateLocale($image, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($image, Argument::any())->shouldBeCalled();
 
-        $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
+        $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
 
         $expr->literal('%foo')->willReturn('%foo');
-        $expr->like('filterMediapicture.originalFilename', '%foo')
+        $expr->like(Argument::any(), '%foo')
             ->shouldBeCalled()
             ->willReturn('filterMediapicture.originalFilename LIKE %foo');
 
         $qb->innerJoin(
-                'filterpicture.media',
-                'filterMediapicture',
+                Argument::any(),
+                Argument::any(),
                 'WITH',
                 'filterMediapicture.originalFilename LIKE %foo'
             )
@@ -117,18 +117,18 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_adds_a_contains_filter_on_an_attribute_in_the_query($qb, $expr, $image)
     {
-        $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
+        $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
 
         $expr->literal('%foo%')->willReturn('%foo%');
-        $expr->like('filterMediapicture.originalFilename', '%foo%')
+        $expr->like(Argument::any(), '%foo%')
             ->shouldBeCalled()
             ->willReturn('filterMediapicture.originalFilename LIKE %foo%');
 
         $qb->innerJoin(
-                'filterpicture.media',
-                'filterMediapicture',
+                Argument::any(),
+                Argument::any(),
                 'WITH',
                 'filterMediapicture.originalFilename LIKE %foo%'
             )
@@ -139,17 +139,17 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_adds_a_does_not_contain_filter_on_an_attribute_in_the_query($qb, $expr, $image)
     {
-        $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
+        $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
 
         $expr->literal('%foo%')->willReturn('%foo%');
 
         $qb->innerJoin(
-                'filterpicture.media',
-                'filterMediapicture',
+                Argument::any(),
+                Argument::any(),
                 'WITH',
-                'filterMediapicture.originalFilename NOT LIKE %foo%'
+                Argument::any()
             )
             ->shouldBeCalled();
 
@@ -158,20 +158,19 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_an_attribute_in_the_query($qb, $expr, $image)
     {
-        $qb->innerJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
+        $qb->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
 
         $expr->literal('foo')->willReturn('foo');
-        $expr->eq('filterMediapicture.originalFilename', 'foo')
-            ->shouldBeCalled()
-            ->willReturn('filterMediapicture.originalFilename = "foo"');
+        $expr->like(Argument::any(), 'foo')
+            ->willReturn('filterMediapicture.originalFilename LIKE "foo"');
 
         $qb->innerJoin(
-                'filterpicture.media',
-                'filterMediapicture',
+                Argument::any(),
+                Argument::any(),
                 'WITH',
-                'filterMediapicture.originalFilename = "foo"'
+                'filterMediapicture.originalFilename LIKE "foo"'
             )
             ->shouldBeCalled();
 
@@ -180,14 +179,14 @@ class MediaFilterSpec extends ObjectBehavior
 
     function it_adds_a_empty_filter_on_an_attribute_in_the_query($qb, $expr, $image)
     {
-        $qb->leftJoin('p.values', 'filterpicture', 'WITH', 'filterpicture.attribute = 1')
+        $qb->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())
             ->shouldBeCalled()
             ->willReturn($qb);
 
-        $expr->isNull('filterMediapicture.originalFilename')
+        $expr->isNull(Argument::any())
             ->willReturn('filterMediapicture.originalFilename IS NULL');
 
-        $qb->leftJoin('filterpicture.media', 'filterMediapicture')
+        $qb->leftJoin(Argument::any(), Argument::any())
             ->shouldBeCalled();
 
         $qb->andWhere('filterMediapicture.originalFilename IS NULL')

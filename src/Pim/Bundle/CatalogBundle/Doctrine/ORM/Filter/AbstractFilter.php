@@ -52,6 +52,17 @@ abstract class AbstractFilter implements FilterInterface
     }
 
     /**
+     * Get a unique alias
+     * @param string alias
+     *
+     * @return string
+     */
+    protected function getUniqueAlias($alias)
+    {
+        return uniqid($alias, true);
+    }
+
+    /**
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name

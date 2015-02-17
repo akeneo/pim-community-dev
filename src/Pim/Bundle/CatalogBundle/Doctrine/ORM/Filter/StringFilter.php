@@ -72,12 +72,12 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->checkValue($options['field'], $value);
         }
 
-        $joinAlias = 'filter'.$attribute->getCode();
+        $joinAlias    = $this->getUniqueAlias('filter' . $attribute->getCode());
         $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
         if ($operator === Operators::IS_EMPTY) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope)
@@ -85,10 +85,10 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
         } else {
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
-            $condition .= ' AND '.$this->prepareCondition($backendField, $operator, $value);
+            $condition .= ' AND ' . $this->prepareCondition($backendField, $operator, $value);
 
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.values',
+                $this->qb->getRootAlias() . '.values',
                 $joinAlias,
                 'WITH',
                 $condition
@@ -120,19 +120,23 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
         switch ($operator) {
             case Operators::STARTS_WITH:
                 $operator = 'LIKE';
-                $value    = $value.'%';
+                $value    = $value . '%';
                 break;
             case Operators::ENDS_WITH:
                 $operator = 'LIKE';
-                $value    = '%'.$value;
+                $value    = '%' . $value;
                 break;
             case Operators::CONTAINS:
                 $operator = 'LIKE';
-                $value    = '%'.$value.'%';
+                $value    = '%' . $value . '%';
                 break;
             case Operators::DOES_NOT_CONTAIN:
                 $operator = 'NOT LIKE';
-                $value    = '%'.$value.'%';
+                $value    = '%' . $value . '%';
+                break;
+            case Operators::EQUALS:
+                $operator = 'LIKE';
+                $value    = $value;
                 break;
             default:
                 break;
