@@ -21,3 +21,4 @@ Feature: Filter on category
       | [{"field":"categories.code", "operator":"IN CHILDREN",        "value": ["summer_collection"]}]       | ["BOOTBS", "BOOTRXS", "BOOTWXS"] |
       | [{"field":"categories.code", "operator":"NOT IN CHILDREN",    "value": ["winter_collection"]}]       | ["BOOTBS", "BOOTBL", "BOOTRXS"]  |
       | [{"field":"categories.code", "operator":"NOT IN CHILDREN",    "value": ["winter_collection"]}, {"field":"categories.code", "operator":"IN", "value": ["sandals"]}] | ["BOOTBS"] |
+      | [{"field":"categories.code", "operator":"NOT IN CHILDREN",    "value": ["winter_collection"]}, {"field":"categories.code", "operator":"IN OR UNCLASSIFIED", "value": ["sandals"]}] | ["BOOTBS", "BOOTBL"] |
