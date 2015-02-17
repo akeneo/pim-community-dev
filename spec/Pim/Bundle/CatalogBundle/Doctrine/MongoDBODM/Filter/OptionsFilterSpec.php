@@ -96,13 +96,6 @@ class OptionsFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($attribute, 'NOT IN', ['118', '270'], null, null, ['field' => 'options_code.id']);
     }
 
-    function it_throws_an_exception_if_value_is_not_an_array(AttributeInterface $attribute)
-    {
-        $attribute->getCode()->willReturn('options_code');
-        $this->shouldThrow(InvalidArgumentException::arrayExpected('options_code', 'filter', 'options', gettype('WRONG')))
-            ->during('addAttributeFilter', [$attribute, 'IN', 'WRONG', null, null, ['field' => 'options_code.id']]);
-    }
-
     function it_throws_an_exception_if_the_content_of_value_are_not_numeric(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('options_code');
