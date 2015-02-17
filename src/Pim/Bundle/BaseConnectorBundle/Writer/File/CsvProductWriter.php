@@ -62,7 +62,8 @@ class CsvProductWriter extends CsvWriter
         if (!is_dir(dirname($target))) {
             mkdir(dirname($target), 0777, true);
         }
-        if (copy($media['filePath'], $target)) {
+        if (is_file($media['filePath'])) {
+            copy($media['filePath'], $target);
             $this->writtenFiles[$target] = $media['exportPath'];
         } else {
             $this->stepExecution->addWarning(
