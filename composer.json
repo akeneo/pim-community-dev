@@ -20,7 +20,6 @@
         "akeneo/measure-bundle": "0.2.*",
         "apy/jsfv-bundle": "2.0.1",
         "ass/xmlsecurity": "1.0.0",
-        "besimple/soap": "0.2.2",
         "doctrine/annotations": "1.2.3",
         "doctrine/cache": "1.3.1",
         "doctrine/common": "2.4.2",

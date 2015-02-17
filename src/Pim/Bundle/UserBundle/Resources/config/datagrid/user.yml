@@ -52,11 +52,11 @@ datagrid:
                 route: oro_user_view
                 params:
                     - id
-            delete_link:
-                type: url
-                route: oro_api_delete_user
-                params:
-                    - id
+#            delete_link:
+#                type: url
+#                route: oro_api_delete_user
+#                params:
+#                    - id
         sorters:
             columns:
                 username:
@@ -119,9 +119,9 @@ datagrid:
                 link:          update_link
                 icon:          edit
                 acl_resource:  oro_user_user_update
-            delete:
-                type:          delete
-                label:         Delete
-                link:          delete_link
-                icon:          trash
-                acl_resource:  oro_user_user_delete
+#            delete:
+#                type:          delete
+#                label:         Delete
+#                link:          delete_link
+#                icon:          trash
+#                acl_resource:  oro_user_user_delete

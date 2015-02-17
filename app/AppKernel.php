@@ -133,7 +133,6 @@ class AppKernel extends Kernel
     protected function getOroDependencies()
     {
         return [
-            new BeSimple\SoapBundle\BeSimpleSoapBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
@@ -175,10 +174,6 @@ class AppKernel extends Kernel
             new Oro\Bundle\SecurityBundle\OroSecurityBundle(),
             new Oro\Bundle\TranslationBundle\OroTranslationBundle(),
             new Oro\Bundle\UserBundle\OroUserBundle(),
-
-            // the following bundles are disabled by the PIM
-            //
-            // new Oro\Bundle\SoapBundle\OroSoapBundle(),
         ];
     }
 }

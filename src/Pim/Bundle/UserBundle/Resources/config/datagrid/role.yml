@@ -27,11 +27,11 @@ datagrid:
                 params:
                     - id
 
-            delete_link:
-                type: url
-                route: oro_api_delete_role
-                params:
-                    - id
+#            delete_link:
+#                type: url
+#                route: oro_api_delete_role
+#                params:
+#                    - id
 
         actions:
             update:
@@ -41,12 +41,12 @@ datagrid:
                 icon:          edit
                 acl_resource:  oro_user_role_update
                 rowAction:     true
-            delete:
-                type:          delete
-                label:         Delete
-                link:          delete_link
-                icon:          trash
-                acl_resource:  oro_user_role_remove
+#            delete:
+#                type:          delete
+#                label:         Delete
+#                link:          delete_link
+#                icon:          trash
+#                acl_resource:  oro_user_role_remove
 
         sorters:
             columns:
