@@ -129,6 +129,8 @@ job_execution.summary:
   skip: übersprungen
   create: erstellt
   update: aktualisiert
+  update_products: Aktualisierte Produkte
+  skip_products: Übersprungene Produkte
   displayed: Die ersten Warnungen angezeigt
   charset_validator:
     title: 'Datei Zeichenkodierung:'
