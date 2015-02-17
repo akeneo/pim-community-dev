@@ -76,13 +76,13 @@ class MetricFilterSpec extends ObjectBehavior
         $measureConverter->setFamily('length')->shouldBeCalled();
         $measureConverter->convertBaseToStandard('CENTIMETER', 16)->willReturn(0.16);
 
-        $qb->innerJoin('r.values', 'filtermetric_code', 'WITH', 'filtermetric_code.attribute = 42')->shouldBeCalled();
+        $qb->innerJoin('r.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
         $qb
             ->innerJoin(
-                'filtermetric_code.metric',
-                'filterMmetric_code',
+                Argument::any(),
+                Argument::any(),
                 'WITH',
-                'filterMmetric_code.baseData = 0.16'
+                Argument::any()
             )
             ->shouldBeCalled();
 
@@ -103,9 +103,9 @@ class MetricFilterSpec extends ObjectBehavior
         $qb->getRootAlias()->willReturn('r');
         $qb->expr()->willReturn(new Expr());
 
-        $qb->leftJoin('r.values', 'filtermetric_code', 'WITH', 'filtermetric_code.attribute = 42')->shouldBeCalled();
-        $qb->leftJoin('filtermetric_code.metric', 'filterMmetric_code')->shouldBeCalled();
-        $qb->andWhere('filterMmetric_code.baseData IS NULL')->shouldBeCalled();
+        $qb->leftJoin('r.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
+        $qb->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
+        $qb->andWhere(Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null);
     }
