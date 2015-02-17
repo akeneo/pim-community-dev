@@ -146,7 +146,8 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     public function applyFilterByUnclassified($qb)
     {
         $rootAlias = $qb->getRootAlias();
-        $alias = 'filterCategory' . uniqid();
+        $alias     = uniqid('filterCategory', true);
+
         $qb->leftJoin($rootAlias.'.categories', $alias);
         $qb->andWhere($qb->expr()->isNull($alias . '.id'));
     }
@@ -157,13 +158,14 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
     {
         $rootAlias    = $qb->getRootAlias();
-        $alias        = 'filterCategory' . uniqid();
-        $filterCatIds = 'filterCatIds' . uniqid();
+        $alias        = uniqid('filterCategory', true);
+        $filterCatIds = uniqid('filterCatIds', true);
+
         if ($include) {
             $qb->leftJoin($rootAlias.'.categories', $alias);
             $qb->andWhere($qb->expr()->in($alias.'.id', ':' . $filterCatIds));
         } else {
-            $rootAliasIn = $rootAlias . uniqid();
+            $rootAliasIn = uniqid($rootAlias, true);
             $rootEntity = current($qb->getRootEntities());
             $qbIn = $qb->getEntityManager()->createQueryBuilder();
             $qbIn
@@ -172,7 +174,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
                 ->leftJoin($rootAliasIn . '.categories', $alias)
                 ->where($qbIn->expr()->in($alias . '.id', ':' . $filterCatIds));
 
-            $qb->andWhere($qb->expr()->notIn($rootAlias.'.id', $qbIn->getDQL()));
+            $qb->andWhere($qb->expr()->notIn($rootAlias . '.id', $qbIn->getDQL()));
         }
         $qb->setParameter($filterCatIds, $categoryIds);
     }
@@ -182,16 +184,17 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
     {
-        $rootAlias = $qb->getRootAlias();
-        $alias = 'filterCategory' . uniqid();
-        $filterCatIdsOrUnclassified = 'filterCatIdsOrUnclassified' . uniqid();
+        $rootAlias    = $qb->getRootAlias();
+        $alias        = uniqid('filterCategory', true);
+        $filterCatIds = uniqid('filterCatIdsOrUnclassified', true);
+
         $qb->leftJoin($rootAlias . '.categories', $alias);
         $qb->andWhere(
             $qb->expr()->orX(
-                $qb->expr()->in($alias . '.id', ':' . $filterCatIdsOrUnclassified),
+                $qb->expr()->in($alias . '.id', ':' . $filterCatIds),
                 $qb->expr()->isNull($alias . '.id')
             )
         );
-        $qb->setParameter($filterCatIdsOrUnclassified, $categoryIds);
+        $qb->setParameter($filterCatIds, $categoryIds);
     }
 }

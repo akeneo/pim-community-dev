@@ -96,7 +96,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias   = uniqid('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -108,7 +108,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition
         );
 
-        $joinAliasOpt = 'filterM' . $attribute->getCode() . uniqid();
+        $joinAliasOpt = uniqid('filterM' . $attribute->getCode(), true);
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
         $condition = $this->prepareCriteriaCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasOpt);
@@ -132,7 +132,7 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
         $scope = null
     ) {
         $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias   = uniqid('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -144,9 +144,9 @@ class MetricFilter extends AbstractAttributeFilter implements AttributeFilterInt
             $condition
         );
 
-        $joinAliasOpt = 'filterM' . $attribute->getCode() . uniqid();
+        $joinAliasOpt = uniqid('filterM' . $attribute->getCode(), true);
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        $condition    = $this->prepareCriteriaCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasOpt, 'WITH', $condition);
     }
 

@@ -53,7 +53,7 @@ class FamilyFilter extends AbstractFilter implements FieldFilterInterface
         }
 
         $rootAlias   = $this->qb->getRootAlias();
-        $entityAlias = 'filter' . FieldFilterHelper::getCode($field) . uniqid();
+        $entityAlias = uniqid('filter' . FieldFilterHelper::getCode($field), true);
         $this->qb->leftJoin($rootAlias . '.' . FieldFilterHelper::getCode($field), $entityAlias);
 
         if ($operator === Operators::IN_LIST) {

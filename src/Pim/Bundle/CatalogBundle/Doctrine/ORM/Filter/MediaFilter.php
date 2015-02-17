@@ -76,7 +76,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function addIsEmptyFilter(AttributeInterface $attribute, $locale, $scope)
     {
         // join on values
-        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias      = uniqid('filter' . $attribute->getCode(), true);
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
             $this->qb->getRootAlias() . '.values',
@@ -86,9 +86,9 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         );
 
         // join on media
-        $joinAliasMedia = 'filterMedia' . $attribute->getCode() . uniqid();
-        $backendType = $attribute->getBackendType();
-        $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+        $joinAliasMedia = uniqid('filterMedia' . $attribute->getCode(), true);
+        $backendType    = $attribute->getBackendType();
+        $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
         $this->qb->leftJoin($joinAlias . '.' . $backendType, $joinAliasMedia);
         $mediaCondition = $this->prepareCondition($backendField, Operators::IS_EMPTY, null);
         $this->qb->andWhere($mediaCondition);
@@ -104,7 +104,7 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     protected function addLikeFilter(AttributeInterface $attribute, $operator, $value, $locale, $scope)
     {
         // join on values
-        $joinAlias = 'filter' . $attribute->getCode() . uniqid();
+        $joinAlias = uniqid('filter' . $attribute->getCode(), true);
         $valueCondition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->innerJoin(
             $this->qb->getRootAlias() . '.values',
@@ -114,9 +114,9 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
         );
 
         // join on media
-        $joinAliasMedia = 'filterMedia' . $attribute->getCode() . uniqid();
-        $backendType = $attribute->getBackendType();
-        $backendField = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
+        $joinAliasMedia = uniqid('filterMedia' . $attribute->getCode(), true);
+        $backendType    = $attribute->getBackendType();
+        $backendField   = sprintf('%s.%s', $joinAliasMedia, 'originalFilename');
         $mediaCondition = $this->prepareCondition($backendField, $operator, $value);
         $this->qb->innerJoin($joinAlias . '.' . $backendType, $joinAliasMedia, 'WITH', $mediaCondition);
     }
