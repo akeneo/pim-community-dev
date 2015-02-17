@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-3775: Fix variant group import from an archive
 - PIM-3783: Fix issue with Rest API and MediaNormalizer
+- PIM-3791: Fix fatal error on MongoDB mass pending persister
 
 # 1.3.0 - "Hare Force" (2015-02-12)
 
