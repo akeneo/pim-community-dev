@@ -89,3 +89,6 @@ pim_enrich:
     list:
       delete.label: Löschen
       delete.error: Fehler beim Löschen des Elementes
+    delete:
+      confirm.content: 'Sind Sie sicher, dass Sie {{ itemName }} löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden'
+      confirm.title: '{{ itemName }} löschen'
