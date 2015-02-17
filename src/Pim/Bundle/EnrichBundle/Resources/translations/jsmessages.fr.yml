@@ -89,3 +89,6 @@ pim_enrich:
     list:
       delete.label: Supprimer
       delete.error: "Erreur lors de la suppression de l'élément"
+    delete:
+      confirm.content: "Êtes-vous sûr de que vouloir supprimer  {{ itemName }} ? Il n'est pas possible d'annuler cette action"
+      confirm.title: 'Supprimer {{ itemName }}'
