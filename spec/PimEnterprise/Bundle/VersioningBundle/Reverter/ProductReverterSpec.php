@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
@@ -61,7 +62,6 @@ class ProductReverterSpec extends ObjectBehavior
     function it_throws_an_exception_when_the_product_is_not_valid(
         $registry,
         $denormalizer,
-        $saver,
         $validator,
         Version $version,
         ObjectRepository $repository,
@@ -90,7 +90,33 @@ class ProductReverterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new RevertException('This version can not be restored. Some errors occured during the validation.')
+                new RevertException('This version can not be restored. Some errors occurred during the validation.')
+            )
+            ->during('revert', [$version]);
+    }
+
+    function it_throws_an_exception_if_the_product_is_affected_by_a_variant_group(
+        $registry,
+        Version $version,
+        ObjectRepository $repository,
+        ProductInterface $product,
+        GroupInterface $group
+    ) {
+        $version->getResourceName()->willReturn('foo');
+        $version->getSnapshot()->willReturn('bar');
+        $version->getResourceId()->willReturn('baz');
+        $version->getChangeset()->willReturn(['name' => 'value']);
+
+        $registry->getRepository('foo')->willReturn($repository);
+        $repository->find('baz')->willReturn($product);
+
+        $product->getVariantGroup()->willReturn($group);
+
+        $this
+            ->shouldThrow(
+                new RevertException(
+                    'Product can not be reverted because it belongs to a variant group'
+                )
             )
             ->during('revert', [$version]);
     }

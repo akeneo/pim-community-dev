@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3760: Fix reverting previous product versions with file/image attributes
+- PIM-3765: Do not allow the revert of a product if it has a variant group
 
 # 1.3.0 - "Strawberry" (2015-02-12)
 
