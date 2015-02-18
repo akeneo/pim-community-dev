@@ -7,8 +7,6 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-use Oro\Bundle\EntityConfigBundle\Exception\RuntimeException;
-
 class ServiceLinkPass implements CompilerPassInterface
 {
     const TAG_NAME = 'oro_service_link';
@@ -25,7 +23,7 @@ class ServiceLinkPass implements CompilerPassInterface
             $serviceLinkDef = $container->getDefinition($id);
 
             if (!isset($tag[0]['service'])) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     sprintf("Tag '%s' for service '%s' doesn't have required param 'service'", self::TAG_NAME, $id)
                 );
             }
@@ -44,7 +42,7 @@ class ServiceLinkPass implements CompilerPassInterface
                     $serviceDef->setPublic(true);
                 }
             } elseif (!$isOptional) {
-                throw new RuntimeException(
+                throw new \RuntimeException(
                     sprintf(
                         'Target service "%s" is undefined. The service link "%s" with tag "%s" and tag-service "%s"',
                         $serviceId,

@@ -12,7 +12,6 @@
         "oro/ui-bundle": "dev-master",
         "oro/grid-bundle": "dev-master",
         "oro/navigation-bundle": "dev-master",
-        "oro/data-audit-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
         "oro/user-bundle": "dev-master"
     },

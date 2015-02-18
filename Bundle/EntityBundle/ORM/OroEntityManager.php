@@ -9,7 +9,6 @@ use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMException;
 
-use Doctrine\ORM\ORMInvalidArgumentException;
 use Oro\Bundle\EntityBundle\ORM\Query\FilterCollection;
 
 class OroEntityManager extends EntityManager
@@ -20,13 +19,6 @@ class OroEntityManager extends EntityManager
      * @var FilterCollection
      */
     protected $filterCollection;
-
-    /**
-     * Manager for extend and custom entities
-     *
-     * @var ExtendManager
-     */
-    protected $extendManager;
 
     public static function create($conn, Configuration $config, EventManager $eventManager = null)
     {
@@ -45,46 +37,6 @@ class OroEntityManager extends EntityManager
         }
 
         return new OroEntityManager($conn, $config, $conn->getEventManager());
-    }
-
-    /**
-     * @param ExtendManager $extendManager
-     * @return $this
-     */
-    public function setExtendManager($extendManager)
-    {
-        throw new \LogicException('This will be dropped, EntityExtendBundle has been dropped');
-
-        $this->extendManager = $extendManager;
-
-        return $this;
-    }
-
-    /**
-     * @return ExtendManager
-     */
-    public function getExtendManager()
-    {
-        throw new \LogicException('This will be dropped, EntityExtendBundle has been dropped');
-
-        return $this->extendManager;
-    }
-
-    /**
-     * @param $entity
-     * @return bool
-     */
-    public function isExtendEntity($entity)
-    {
-        return $this->extendManager->isExtend($entity);
-    }
-
-    /**
-     * @param FilterCollection $collection
-     */
-    public function setFilterCollection(FilterCollection $collection)
-    {
-        $this->filterCollection = $collection;
     }
 
     /**

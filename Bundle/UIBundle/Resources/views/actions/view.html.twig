@@ -14,34 +14,7 @@
                 <div class="pull-right user-info-state">
                     <ul class="inline-decorate">
                         {% block pageActions %}
-                            {% if entity.owner is defined and entity.owner %}
-                                {% set ownerType = oro_get_owner_type(entity) %}
-                                <li>
-                                    {{ 'Owner'|trans }}:
-                                    {% if (ownerType == 'USER') %}
-                                        {% if resource_granted('oro_user_user_view') %}
-                                            {% set ownerPath = path('oro_user_view', {'id': entity.owner.id}) %}
-                                            {% set ownerName = entity.owner|oro_format_name %}
-                                        {% endif %}
-                                    {% elseif (ownerType == 'BUSINESS_UNIT') %}
-                                        {% if resource_granted('oro_business_unit_view') %}
-                                            {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
-                                            {% set ownerName = entity.owner.name %}
-                                        {% endif %}
-                                    {% endif %}
-                                    {% if ownerName is defined %}
-                                        {% if ownerPath is defined %}
-                                            <a href="{{ ownerPath }}">{{ ownerName }}</a>
-                                        {% else %}
-                                            {{ ownerName }}
-                                        {% endif %}
-                                    {% endif %}
-                                </li>
-                            {% endif %}
                         {% endblock pageActions %}
-                        {% if (entity is defined and audit_entity_class is defined and resource_granted('oro_dataaudit_history')) %}
-                            {% placeholder change_history_block with {'entity': audit_entity_class, 'id': entity.id, 'title': audit_title|default(entity), 'audit_path': audit_path|default('oro_dataaudit_history') } %}
-                        {% endif %}
                     </ul>
                 </div>
             </div>

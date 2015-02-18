@@ -6,7 +6,6 @@ parameters:
     oro_user.role.entity.class:         Oro\Bundle\UserBundle\Entity\Role
     oro_user.security.provider.class:   Oro\Bundle\UserBundle\Security\UserProvider
     oro_user.security.login.class:      Oro\Bundle\UserBundle\EventListener\LoginSubscriber
-    oro_user.acl.twig.class:            Oro\Bundle\UserBundle\Twig\OroUserExtension
     oro_user.user_menu.builder.class:   Oro\Bundle\UserBundle\Menu\UserMenuBuilder
     oro_user.role.listener.class:       Oro\Bundle\UserBundle\EventListener\RoleListener
     oro_user.role.manager.class:        Oro\Bundle\UserBundle\Entity\Manager\RoleManager
@@ -14,7 +13,6 @@ parameters:
     oro_user.entity_with_image.subscriber.class:            Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.autocomplete.user.search_handler:              Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
     oro_user.email.owner.provider.class:                    Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
-    oro_user.gender_provider.class:                         Oro\Bundle\UserBundle\Provider\GenderProvider
     oro_user.change_password.subscriber.class:              Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
 
@@ -52,12 +50,6 @@ services:
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
 
-    oro_user.twig.user_extension:
-        class:                        %oro_user.acl.twig.class%
-        arguments:                    ["@oro_user.gender_provider"]
-        tags:
-            - { name: twig.extension }
-
     oro_user.status_manager:
         class:                        %oro_user.status.manager.class%
         arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.manager"]
@@ -87,11 +79,6 @@ services:
             - ["username", "namePrefix", "firstName", "middleName", "lastName", "nameSuffix", "email"]
         tags:
             - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user_view }
-
-    oro_user.gender_provider:
-        class: %oro_user.gender_provider.class%
-        arguments:
-            - @translator
 
     oro_user.email.owner.provider:
         class: %oro_user.email.owner.provider.class%

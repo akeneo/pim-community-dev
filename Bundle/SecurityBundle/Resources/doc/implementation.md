@@ -3,36 +3,6 @@ Implementation
 
 Currently, the application has two types of ACL extensions: Actions(Capabilities) and Entities.
 
-**Entity**
-
-Resources, that gives control on entity manipulations (View, Edit, Delete etc.).
-
-To mark an entity as ACL protected, the next config to the @Configurable annotation in entity class should be added:
-
-``` php
-/**
-...
-* @Configurable(
-*  defaultValues={
-    ...
-*      "security"={
-*          "type"="ACL",
-           "permissions"="All"
-*          "group_name"="SomeGroup"
-*      }
-    ...
-*  }
-* )
-...
- */
- class MyEntity
-```
-**permissions** parameter is used is used to specify the access list for the entity. This parameter is optional.
-If it is not specified, or is "All", it is considered that the entity access to all available security permissions.
-
-You can create your list of accesses. For example, the string "VIEW;EDIT" will set the permissions parameters for the entity for viewing and editing.
-
-**group_name** parameter is used to group entities by groups in UI edit page. Now this parameter is not in use.
 
 You can use @Acl and @AclAncestor annotations to protect controller actions.
 

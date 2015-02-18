@@ -1,9 +1,0 @@
-oro_entity_config:
-    security:
-        entity:
-            items:
-                type:
-                    options:
-                        auditable: false
-                permissions: ~
-                group_name: ~

@@ -13,11 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
-
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
@@ -34,22 +30,6 @@ use DateTime;
  * @ORM\Entity()
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
- * @Config(
- *      routeName="oro_user_index",
- *      routeView="oro_user_view",
- *      defaultValues={
- *          "entity"={"icon"="icon-user", "label"="User", "plural_label"="Users"},
- *          "ownership"={
- *              "owner_type"="BUSINESS_UNIT",
- *              "owner_field_name"="owner",
- *              "owner_column_name"="business_unit_owner_id"
- *          },
- *          "security"={
- *              "type"="ACL",
- *              "group_name"=""
- *          }
- *      }
- * )
  */
 class User implements
     AdvancedUserInterface,
@@ -234,13 +214,6 @@ class User implements
     protected $loginCount;
 
     /**
-     * @var BusinessUnit
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", cascade={"persist"})
-     * @ORM\JoinColumn(name="business_unit_owner_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $owner;
-
-    /**
      * @var Role[]
      *
      * @ORM\ManyToMany(targetEntity="Role")
@@ -295,18 +268,6 @@ class User implements
     protected $emails;
 
     /**
-     * @var BusinessUnit[]
-     *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\OrganizationBundle\Entity\BusinessUnit", inversedBy="users")
-     * @ORM\JoinTable(name="oro_user_business_unit",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="business_unit_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
-     * @Exclude
-     */
-    protected $businessUnits;
-
-    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(type="datetime")
@@ -327,7 +288,6 @@ class User implements
         $this->groups          = new ArrayCollection();
         $this->statuses        = new ArrayCollection();
         $this->emails          = new ArrayCollection();
-        $this->businessUnits   = new ArrayCollection();
     }
 
     /**
@@ -1243,72 +1203,6 @@ class User implements
         $suffix = $this->getCreatedAt() ? $this->getCreatedAt()->format('Y-m') : date('Y-m');
 
         return 'uploads' . $ds . 'users' . $ds . $suffix;
-    }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getBusinessUnits()
-    {
-        $this->businessUnits = $this->businessUnits ?: new ArrayCollection();
-
-        return $this->businessUnits;
-    }
-
-    /**
-     * @param ArrayCollection $businessUnits
-     * @return User
-     */
-    public function setBusinessUnits($businessUnits)
-    {
-        $this->businessUnits = $businessUnits;
-
-        return $this;
-    }
-
-    /**
-     * @param  BusinessUnit $businessUnit
-     * @return User
-     */
-    public function addBusinessUnit(BusinessUnit $businessUnit)
-    {
-        if (!$this->getBusinessUnits()->contains($businessUnit)) {
-            $this->getBusinessUnits()->add($businessUnit);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param  BusinessUnit $businessUnit
-     * @return User
-     */
-    public function removeBusinessUnit(BusinessUnit $businessUnit)
-    {
-        if ($this->getBusinessUnits()->contains($businessUnit)) {
-            $this->getBusinessUnits()->removeElement($businessUnit);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return BusinessUnit
-     */
-    public function getOwner()
-    {
-        return $this->owner;
-    }
-
-    /**
-     * @param BusinessUnit $owningBusinessUnit
-     * @return User
-     */
-    public function setOwner($owningBusinessUnit)
-    {
-        $this->owner = $owningBusinessUnit;
-
-        return $this;
     }
 
     /**

@@ -4,7 +4,6 @@
 {% set fullname = form.vars.value|oro_format_name|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 {% set title = form.vars.value.id ? fullname ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
-{% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
 {% else %}
@@ -14,22 +13,6 @@
 {% block head_script %}
     {# TODO: Find a better way to handle such dependencies in https://magecore.atlassian.net/browse/BAP-1971 #}
     {% include 'OroUIBundle:Js:jquery_jstree.config.js.twig' %}
-    <script type="text/javascript">
-        require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
-        function($){
-            $(function() {
-                $('#business_units_tree').jstree({
-                    "checkbox": {
-                        real_checkboxes: true,
-                        real_checkboxes_names: function (n) {
-                            return ['businessUnits[' + n.data('id') + ']', 1]
-                        },
-                        two_state: true
-                    }
-                });
-            });
-        });
-    </script>
 {% endblock %}
 
 {% block navButtons %}
@@ -161,25 +144,6 @@
             ]
         }] ) %}
     {% endif %}
-
-    {% macro businessUnitsTree(form, businessUnits) %}
-        <div id="business_units_tree">
-            {% include 'OroOrganizationBundle:BusinessUnit:businessUnitsTree.html.twig' with {'businessUnits': businessUnits, 'hasId': form.vars.value.id ? true : false} %}
-        </div>
-    {% endmacro %}
-
-    {% set dataBlocks = dataBlocks|merge( [{
-        'title': 'Business Units'|trans,
-        'subblocks': [
-            {
-                'title': '',
-                'useSpan': false,
-                'data': [
-                    _self.businessUnitsTree(form, businessUnits)
-                ]
-            }
-        ]
-    }] ) %}
 
     {% set dataBlocks = dataBlocks|merge([{
         'title': 'Email synchronization settings',

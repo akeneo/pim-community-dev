@@ -28,24 +28,11 @@ class AclHelper
     const ORO_ACL_WALKER = 'Oro\Bundle\SecurityBundle\ORM\Walker\AclWalker';
 
     /**
-     * @var OwnershipConditionDataBuilder
-     */
-    protected $builder;
-
-    /**
      * @var EntityManager
      */
     protected $em;
 
     protected $entityAliases;
-
-    /**
-     * @param $builder
-     */
-    public function __construct(OwnershipConditionDataBuilder $builder)
-    {
-        $this->builder = $builder;
-    }
 
     /**
      * Mark query as acl protected
@@ -239,7 +226,7 @@ class AclHelper
             $this->entityAliases[$join->joinAssociationDeclaration->aliasIdentificationVariable] = $targetEntity;
         }
 
-        $resultData = $this->builder->getAclConditionData($targetEntity, $permission);
+        $resultData = [];
 
         if ($resultData && is_array($resultData)) {
             $entityField = $value = null;
@@ -278,7 +265,7 @@ class AclHelper
         $entityName = $rangeVariableDeclaration->abstractSchemaName;
         $entityAlias = $rangeVariableDeclaration->aliasIdentificationVariable;
 
-        $resultData = $this->builder->getAclConditionData($entityName, $permission);
+        $resultData = [];
 
         if ($resultData === null || !empty($resultData)) {
             $entityField = $value = null;

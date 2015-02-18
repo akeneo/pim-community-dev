@@ -23,38 +23,6 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test resolve method
-     *
-     * @param $gridName
-     * @param $gridDefinition
-     * @param $expect
-     *
-     * @dataProvider resolveProvider
-     */
-    public function testResolve($gridName, $gridDefinition, $expect)
-    {
-        $this->markTestSkipped("TODO Fix");
-
-        if ($gridName == 'test1') {
-            $this->container->expects($this->once())
-                ->method('get')
-                ->with('oro_datagrid.some_class')
-                ->will($this->returnValue(new SomeClass()));
-        }
-
-        if ($gridName == 'test2') {
-            $this->container->expects($this->once())
-                ->method('getParameter')
-                ->with('oro_datagrid.some.class')
-                ->will($this->returnValue('Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\SomeClass'));
-        }
-
-        $gridDefinition = $this->resolver->resolve($gridName, $gridDefinition);
-
-        $this->assertEquals($expect, $gridDefinition['filters']['entityName']['choices']);
-    }
-
-    /**
      * Assert definition empty
      */
     public function testResolveEmpty()

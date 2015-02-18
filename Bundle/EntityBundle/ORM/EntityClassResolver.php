@@ -50,24 +50,6 @@ class EntityClassResolver
     }
 
     /**
-     * Checks whether the given namespace is registered in the Doctrine
-     *
-     * @param string $namespace
-     * @return bool
-     */
-    public function isKnownEntityClassNamespace($namespace)
-    {
-        foreach (array_keys($this->doctrine->getManagers()) as $name) {
-            $namespaces = $this->doctrine->getManager($name)->getConfiguration()->getEntityNamespaces();
-            if (in_array($namespace, $namespaces, true)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Check if given class is real entity class
      *
      * @param string $className

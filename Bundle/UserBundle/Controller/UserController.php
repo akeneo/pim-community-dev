@@ -18,12 +18,9 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 
-use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityConfigBundle\Entity\OptionSetRelation;
-use Oro\Bundle\EntityConfigBundle\Entity\Repository\OptionSetRelationRepository;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 
 class UserController extends Controller
@@ -172,7 +169,6 @@ class UserController extends Controller
 
         return array(
             'form' => $this->get('oro_user.form.user')->createView(),
-            'businessUnits' => $this->getBusinessUnitManager()->getBusinessUnitsTree($entity),
             'editRoute' => $updateRoute
         );
     }
@@ -194,13 +190,5 @@ class UserController extends Controller
         }
 
         return $output;
-    }
-
-    /**
-     * @return BusinessUnitManager
-     */
-    protected function getBusinessUnitManager()
-    {
-        return $this->get('oro_organization.business_unit_manager');
     }
 }

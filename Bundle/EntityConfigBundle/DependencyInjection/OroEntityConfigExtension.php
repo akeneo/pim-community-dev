@@ -18,7 +18,5 @@ class OroEntityConfigExtension extends Extension
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
         $loader      = new Loader\YamlFileLoader($container, $fileLocator);
         $loader->load('services.yml');
-        $loader->load('metadata.yml');
-        $loader->load('form_type.yml');
     }
 }

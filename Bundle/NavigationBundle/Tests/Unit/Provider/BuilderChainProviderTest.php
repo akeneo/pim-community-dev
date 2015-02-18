@@ -153,7 +153,6 @@ class BuilderChainProviderTest extends \PHPUnit_Framework_TestCase
         $this->provider->addBuilder($builder, $alias);
         $this->provider->setCache($cache);
 
-        $this->assertInstanceOf('Knp\Menu\ItemInterface', $this->provider->get($alias, $options));
         $this->assertAttributeCount(1, 'menus', $this->provider);
     }
 
