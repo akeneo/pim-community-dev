@@ -59,7 +59,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function getUniqueAlias($alias)
     {
-        return uniqid($alias, true);
+        return uniqid($alias);
     }
 
     /**
