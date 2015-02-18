@@ -25,7 +25,7 @@ class FileGuesserSpec extends ObjectBehavior
         }
     }
 
-    function it_guess_file_with_maxSize_integer(AttributeInterface $attribute)
+    function it_guesses_file_with_maxSize_integer(AttributeInterface $attribute)
     {
         $attribute->getMaxFileSize()
             ->willReturn(15)
@@ -46,7 +46,7 @@ class FileGuesserSpec extends ObjectBehavior
             ->shouldBe([]);
     }
 
-    function it_guess_file_with_maxSize_float(AttributeInterface $attribute)
+    function it_guesses_file_with_maxSize_float(AttributeInterface $attribute)
     {
         $maxSize = 5.5;
 
@@ -69,7 +69,7 @@ class FileGuesserSpec extends ObjectBehavior
             ->shouldBe([]);
     }
 
-    function it_guess_file_with_maxSize_numeric_string(AttributeInterface $attribute)
+    function it_guesses_file_with_maxSize_numeric_string(AttributeInterface $attribute)
     {
         $maxSize = '15';
 
@@ -105,7 +105,7 @@ class FileGuesserSpec extends ObjectBehavior
             ->shouldBe(intval($maxSize * FileGuesser::KILOBYTE_MULTIPLIER) . 'k');
     }
 
-    function it_guess_file_with_allowed_extensions(AttributeInterface $attribute)
+    function it_guesses_file_with_allowed_extensions(AttributeInterface $attribute)
     {
         $allowedExtensions = ['jpg', 'png'];
 
@@ -127,7 +127,7 @@ class FileGuesserSpec extends ObjectBehavior
             ->shouldBe($allowedExtensions);
     }
 
-    function it_guess_file_with_multiple_options(AttributeInterface $attribute)
+    function it_guesses_file_with_multiple_options(AttributeInterface $attribute)
     {
         $attribute->getMaxFileSize()
             ->willReturn(15)

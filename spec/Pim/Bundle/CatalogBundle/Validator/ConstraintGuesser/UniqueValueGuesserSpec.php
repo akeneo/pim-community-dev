@@ -29,7 +29,7 @@ class UniqueValueGuesserSpec extends ObjectBehavior
         }
     }
 
-    public function it_guess_unique_value(AttributeInterface $attribute)
+    public function it_guesses_unique_value(AttributeInterface $attribute)
     {
         $attribute->getBackendType()
             ->willReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
@@ -55,7 +55,7 @@ class UniqueValueGuesserSpec extends ObjectBehavior
 
     private function dataProviderForSupportedAttributes()
     {
-        return array(
+        return [
             'boolean' => array(AbstractAttributeType::BACKEND_TYPE_BOOLEAN, false),
             'collection' => array(AbstractAttributeType::BACKEND_TYPE_COLLECTION, false),
             'date' => array(AbstractAttributeType::BACKEND_TYPE_DATE, true),
@@ -70,6 +70,6 @@ class UniqueValueGuesserSpec extends ObjectBehavior
             'price' => array(AbstractAttributeType::BACKEND_TYPE_PRICE, false),
             'text' => array(AbstractAttributeType::BACKEND_TYPE_TEXT, false),
             'varchar' => array(AbstractAttributeType::BACKEND_TYPE_VARCHAR, true),
-        );
+        ];
     }
 }

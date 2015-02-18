@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class RegisterAttributeConstraintGuessersPassSpec extends ObjectBehavior
 {
-    public function it_is_a_compiler_ass()
+    public function it_is_a_compiler_pass()
     {
         $this->shouldImplement('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }

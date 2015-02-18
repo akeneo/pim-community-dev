@@ -30,7 +30,7 @@ class RegexGuesserSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    function it_guess_regex(AttributeInterface $attribute)
+    function it_guesses_regex(AttributeInterface $attribute)
     {
         $attribute->getValidationRule()
             ->willReturn('regexp')

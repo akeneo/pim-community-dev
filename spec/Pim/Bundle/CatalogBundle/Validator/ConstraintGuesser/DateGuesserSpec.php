@@ -33,7 +33,7 @@ class DateGuesserSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    function it_guess_date(AttributeInterface $attribute)
+    function it_guesses_date(AttributeInterface $attribute)
     {
         $constraints = $this->guessConstraints($attribute);
 

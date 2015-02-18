@@ -28,7 +28,7 @@ class EmailGuesserSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    public function it_guess_email(AttributeInterface $attribute)
+    public function it_guesses_email(AttributeInterface $attribute)
     {
         $attribute->getValidationRule()
             ->willReturn('email')

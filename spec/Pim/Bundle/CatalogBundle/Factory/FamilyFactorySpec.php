@@ -17,8 +17,7 @@ class FamilyFactorySpec extends ObjectBehavior
         ProductManager $productManager,
         ChannelManager $channelManager,
         AttributeRequirementFactory $factory
-    )
-    {
+    ) {
         $this->beConstructedWith($productManager, $channelManager, $factory);
     }
 
@@ -31,8 +30,7 @@ class FamilyFactorySpec extends ObjectBehavior
         ChannelInterface $ecommerceChannel,
         AttributeRequirementInterface $printRequirement,
         AttributeRequirementInterface $ecommerceRequirement
-    )
-    {
+    ) {
         $productManager->getIdentifierAttribute()
             ->willReturn($identifierAttribute)
             ->shouldBeCalled();

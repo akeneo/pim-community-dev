@@ -35,7 +35,7 @@ class NotBlankGuesserSpec extends ObjectBehavior
             ->shouldReturn(true);
     }
 
-    function it_guess_required(AttributeInterface $attribute)
+    function it_guesses_required(AttributeInterface $attribute)
     {
         $attribute->isRequired()
             ->willReturn(true)

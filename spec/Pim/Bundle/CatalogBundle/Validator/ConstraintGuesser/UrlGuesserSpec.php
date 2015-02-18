@@ -38,7 +38,7 @@ class UrlGuesserSpec extends ObjectBehavior
         $this->supportAttribute($image)->shouldReturn(false);
     }
 
-    function it_guess_url($text)
+    function it_guesses_url($text)
     {
         $text->getValidationRule()->willReturn('url');
         $constraints = $this->guessConstraints($text);

@@ -46,7 +46,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
             ->shouldReturn(false);
     }
 
-    function it_guess_aggregated_guessers_simple(AttributeInterface $attribute)
+    function it_guesses_aggregated_guessers_simple(AttributeInterface $attribute)
     {
         $constraints = $this->guessConstraints($attribute);
 
@@ -64,7 +64,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal');
     }
 
-    function it_guess_aggregated_guessers_without_notDecimal(AttributeInterface $attribute)
+    function it_guesses_aggregated_guessers_without_notDecimal(AttributeInterface $attribute)
     {
         $attribute->isDecimalsAllowed()
             ->willReturn(true);
@@ -84,7 +84,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
     }
 
-    function it_guess_aggregated_guessers_with_range(AttributeInterface $attribute)
+    function it_guesses_aggregated_guessers_with_range(AttributeInterface $attribute)
     {
         $attribute->getNumberMin()
             ->willReturn(5);
@@ -110,7 +110,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Range');
     }
 
-    function it_guess_aggregated_guessers_with_range_without_notDecimal(AttributeInterface $attribute)
+    function it_guesses_aggregated_guessers_with_range_without_notDecimal(AttributeInterface $attribute)
     {
         $attribute->getNumberMin()
             ->willReturn(5);

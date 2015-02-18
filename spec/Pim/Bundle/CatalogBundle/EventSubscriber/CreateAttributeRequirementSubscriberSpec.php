@@ -22,8 +22,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         EntityManagerInterface $entityManager,
         EntityRepository $repository,
         FamilyInterface $family
-    )
-    {
+    ) {
         $this->beConstructedWith($requirementFactory);
 
         $eventArgs->getEntity()
@@ -56,8 +55,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
     public function it_ignores_non_ChannelInterface_entity(
         $eventArgs,
         $entityManager
-    )
-    {
+    ) {
         $eventArgs->getEntity()
             ->willReturn(null)
             ->shouldBeCalled();
@@ -77,8 +75,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $entityManager,
         $repository,
         $family
-    )
-    {
+    ) {
         $eventArgs->getEntityManager()
             ->shouldBeCalled();
 
@@ -107,8 +104,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $entityManager,
         $repository,
         $family
-    )
-    {
+    ) {
         $repository->findAll()
             ->willReturn([$family])
             ->shouldBeCalled();
@@ -132,8 +128,7 @@ class CreateAttributeRequirementSubscriberSpec extends ObjectBehavior
         $family,
         AttributeInterface $attribute,
         AttributeRequirementInterface $attributeRequirement
-    )
-    {
+    ) {
         $family->getAttributes()
             ->willReturn([$attribute])
             ->shouldBeCalled();
