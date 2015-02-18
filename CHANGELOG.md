@@ -1,10 +1,16 @@
 # 1.3.x
 
 ## Bug fixes
-- PIM-3760: Fix reverting previous product versions with file/image attributes
+- PIM-3784: Generate the completeness on selected products before to mass-publish
 - PIM-3765: Do not allow the revert of a product if it has a variant group
 
+## BC breaks
+- Update constructor of `PimEnterprise/Bundle/WorkflowBundle/Publisher/Product/ProductPublisher` to add a `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` $completenessManager argument
+
 # 1.3.0 - "Strawberry" (2015-02-12)
+
+## Bug fixes
+- PIM-3760: Fix reverting previous product versions with file/image attributes
 
 # 1.3.0-RC2 (2015-02-12)
 
