@@ -40,7 +40,7 @@ class ProductIdFilter extends AbstractFilter implements FieldFilterInterface
             throw InvalidArgumentException::expected($field, 'array or numeric value', 'filter', 'productId', $value);
         }
 
-        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $field = current($this->qb->getRootAliases()) . '.' . $field;
         $condition = $this->prepareCriteriaCondition($field, $operator, $value);
         $this->qb->andWhere($condition);
 

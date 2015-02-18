@@ -61,11 +61,9 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => 12, 'currency' => 'EUR'];
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $condition = "filterprice.attribute = 42";
-        $queryBuilder->innerJoin('p.values', 'filterprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
-        $condition = "filterPprice.currency = 'EUR' AND filterPprice.data = 12";
-        $queryBuilder->innerJoin('filterprice.prices', 'filterPprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin(Argument::any(), Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($price, '=', $value);
     }
@@ -91,11 +89,9 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => 12, 'currency' => 'EUR'];
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $condition = "filterprice.attribute = 42";
-        $queryBuilder->innerJoin('p.values', 'filterprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
-        $condition = "filterPprice.currency = 'EUR' AND filterPprice.data > 12";
-        $queryBuilder->innerJoin('filterprice.prices', 'filterPprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin(Argument::any(), Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($price, '>', $value);
     }
@@ -121,11 +117,9 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => 12, 'currency' => 'EUR'];
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $condition = "filterprice.attribute = 42";
-        $queryBuilder->innerJoin('p.values', 'filterprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
-        $condition = "filterPprice.currency = 'EUR' AND filterPprice.data >= 12";
-        $queryBuilder->innerJoin('filterprice.prices', 'filterPprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin(Argument::any(), Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($price, '>=', $value);
     }
@@ -151,11 +145,9 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => 12, 'currency' => 'EUR'];
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $condition = "filterprice.attribute = 42";
-        $queryBuilder->innerJoin('p.values', 'filterprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
-        $condition = "filterPprice.currency = 'EUR' AND filterPprice.data < 12";
-        $queryBuilder->innerJoin('filterprice.prices', 'filterPprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin(Argument::any(), Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($price, '<', $value);
     }
@@ -181,18 +173,16 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => 12, 'currency' => 'EUR'];
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $condition = "filterprice.attribute = 42";
-        $queryBuilder->innerJoin('p.values', 'filterprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
-        $condition = "filterPprice.currency = 'EUR' AND filterPprice.data <= 12";
-        $queryBuilder->innerJoin('filterprice.prices', 'filterPprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->innerJoin(Argument::any(), Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
         $this->addAttributeFilter($price, '<=', $value);
     }
 
     function it_checks_if_attribute_is_supported(AttributeInterface $attribute)
     {
-        $attribute->getAttributeType()->shouldBeCalled()->willReturn('pim_catalog_price_collection');
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
         $this->supportsAttribute($attribute)->shouldReturn(true);
     }
 
@@ -215,17 +205,16 @@ class PriceFilterSpec extends ObjectBehavior
         $value = ['data' => null, 'currency' => 'EUR'];
         $currencyManager->getActiveCodes()->willReturn(['EUR', 'USD']);
 
-        $condition = "filterprice.attribute = 42";
-        $queryBuilder->leftJoin('p.values', 'filterprice', 'WITH', $condition)->shouldBeCalled();
+        $queryBuilder->leftJoin('p.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
 
-        $queryBuilder->leftJoin('filterprice.prices', 'filterPprice')->shouldBeCalled();
+        $queryBuilder->leftJoin(Argument::any(), Argument::any())->shouldBeCalled();
         $queryBuilder->expr()->willReturn($expr);
 
-        $expr->literal('EUR')->shouldBeCalled()->willReturn('EUR');
-        $expr->eq('filterPprice.currency', 'EUR')->willReturn($comparison);
-        $expr->isNull('filterPprice.data')->shouldBeCalled()->willReturn('filterPprice.data IS NULL');
-        $expr->isNull('filterPprice.id')->shouldBeCalled()->willReturn('filterPprice.id IS NULL');
-        $expr->orX(' AND filterPprice.data IS NULL', 'filterPprice.id IS NULL')->shouldBeCalled();
+        $expr->literal('EUR')->willReturn('EUR');
+        $expr->eq(Argument::any(), 'EUR')->willReturn($comparison);
+        $expr->isNull(Argument::any())->willReturn('filterPprice.data IS NULL');
+        $expr->isNull(Argument::any())->willReturn('filterPprice.id IS NULL');
+        $expr->orX(Argument::any(), Argument::any())->shouldBeCalled();
         $queryBuilder->andWhere(null)->shouldBeCalled();
 
         $this->addAttributeFilter($price, 'EMPTY', $value);

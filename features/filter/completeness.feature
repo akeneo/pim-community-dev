@@ -1,5 +1,5 @@
 Feature: Filter on completeness
-  In order filter on products
+  In order to filter on products
   As an internal process or any user
   I need to be able to filter on product by completeness
 
@@ -14,7 +14,7 @@ Feature: Filter on completeness
       | BOOTRXS | boots  | Boot 42 Red   |                   |      |       |
     And I launched the completeness calculator
     Then I should get the following results for the given filters:
-      | filter     | result |
+      | filter                                                                                         | result                                     |
       | [{"field":"completeness", "operator":"=", "value": 100, "locale": "en_US", "scope": "mobile"}] | ["BOOTBXS"]                                |
       | [{"field":"completeness", "operator":"<", "value": 25, "locale": "en_US", "scope": "mobile"}]  | ["BOOTBL"]                                 |
       | [{"field":"completeness", "operator":"<=", "value": 80, "locale": "en_US", "scope": "mobile"}] | ["BOOTWXS", "BOOTBS", "BOOTBL", "BOOTRXS"] |
