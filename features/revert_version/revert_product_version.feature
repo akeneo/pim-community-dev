@@ -395,3 +395,22 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "T-shirt with datasheet"
     Then the product "t-shirt" should have the following values:
       | datasheet | bic-core-148.txt |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3765
+  Scenario: Fail to revert attribute affected by a variant group
+    Given the following product:
+      | sku          | family  | size |
+      | helly-hansen | Jackets | XS   |
+    And the following product groups:
+      | code       | label                | axis | type    |
+      | hh_jackets | Helly Hansen jackets | size | VARIANT |
+    And the following variant group values:
+      | group      | attribute | value | locale | scope |
+      | hh_jackets | name      | a     | en_US  |       |
+    Then I am on the "hh_jackets" variant group page
+    And I check the row "helly-hansen"
+    And I press the "Save" button
+    Then I am on the "helly-hansen" product page
+    And I visit the "History" tab
+    When I click on the "Revert to this version" action of the row which contains "sku: helly-hansen"
+    Then I should see a flash message "Product can not be reverted because it belongs to a variant group"
