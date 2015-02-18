@@ -6,10 +6,12 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator;
 
@@ -19,9 +21,10 @@ class ProductReverterSpec extends ObjectBehavior
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
         SaverInterface $saver,
-        Validator $validator
+        Validator $validator,
+        TranslatorInterface $translator
     ) {
-        $this->beConstructedWith($registry, $denormalizer, $saver, $validator);
+        $this->beConstructedWith($registry, $denormalizer, $saver, $validator, $translator);
     }
 
     function it_reverts_an_entity(
@@ -61,8 +64,8 @@ class ProductReverterSpec extends ObjectBehavior
     function it_throws_an_exception_when_the_product_is_not_valid(
         $registry,
         $denormalizer,
-        $saver,
         $validator,
+        $translator,
         Version $version,
         ObjectRepository $repository,
         ProductInterface $product,
@@ -71,6 +74,9 @@ class ProductReverterSpec extends ObjectBehavior
         $version->getResourceName()->willReturn('foo');
         $version->getSnapshot()->willReturn('bar');
         $version->getResourceId()->willReturn('baz');
+
+        $translator->trans('flash.error.revert.product_has_variant')->willReturn('Product can not be reverted because it belongs to a variant group');
+        $translator->trans('flash.error.revert.product')->willReturn('This version can not be restored. Some errors occurred during the validation.');
 
         $registry->getRepository('foo')->willReturn($repository);
         $repository->find('baz')->willReturn('qux');
@@ -90,7 +96,37 @@ class ProductReverterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                new RevertException('This version can not be restored. Some errors occured during the validation.')
+                new RevertException('This version can not be restored. Some errors occurred during the validation.')
+            )
+            ->during('revert', [$version]);
+    }
+
+    function it_throws_an_exception_if_the_product_is_affected_by_a_variant_group(
+        $registry,
+        $translator,
+        Version $version,
+        ObjectRepository $repository,
+        ProductInterface $product,
+        GroupInterface $group
+    ) {
+        $version->getResourceName()->willReturn('foo');
+        $version->getSnapshot()->willReturn('bar');
+        $version->getResourceId()->willReturn('baz');
+        $version->getChangeset()->willReturn(['name' => 'value']);
+
+        $translator->trans('flash.error.revert.product_has_variant')->willReturn('Product can not be reverted because it belongs to a variant group');
+        $translator->trans('flash.error.revert.product')->willReturn('This version can not be restored. Some errors occurred during the validation.');
+
+        $registry->getRepository('foo')->willReturn($repository);
+        $repository->find('baz')->willReturn($product);
+
+        $product->getVariantGroup()->willReturn($group);
+
+        $this
+            ->shouldThrow(
+                new RevertException(
+                    'Product can not be reverted because it belongs to a variant group'
+                )
             )
             ->during('revert', [$version]);
     }

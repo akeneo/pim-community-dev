@@ -2,9 +2,11 @@
 
 ## Bug fixes
 - PIM-3784: Generate the completeness on selected products before to mass-publish
+- PIM-3765: Do not allow the revert of a product if it has a variant group
 
 ## BC breaks
 - Update constructor of `PimEnterprise/Bundle/WorkflowBundle/Publisher/Product/ProductPublisher` to add a `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` $completenessManager argument
+- Update constructor of `PimEnterprise/Bundle/VersioningBundle/Reverter/ProductReverter` to add a `Symfony\Component\Translation\TranslatorInterface` $translator argument
 
 # 1.3.0 - "Strawberry" (2015-02-12)
 

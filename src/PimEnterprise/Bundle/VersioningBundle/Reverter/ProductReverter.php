@@ -13,9 +13,11 @@ namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -37,22 +39,28 @@ class ProductReverter
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param ManagerRegistry       $registry
      * @param DenormalizerInterface $denormalizer
      * @param SaverInterface        $productSaver
      * @param ValidatorInterface    $validator
+     * @param TranslatorInterface   $translator
      */
     public function __construct(
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
         SaverInterface $productSaver,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        TranslatorInterface $translator
     ) {
         $this->registry     = $registry;
         $this->denormalizer = $denormalizer;
         $this->productSaver = $productSaver;
         $this->validator    = $validator;
+        $this->translator   = $translator;
     }
 
     /**
@@ -69,6 +77,13 @@ class ProductReverter
         $resourceId = $version->getResourceId();
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
+
+        if ($this->isImpactedByVariantGroup($currentObject)) {
+            throw new RevertException(
+                $this->translator->trans('flash.error.revert.product_has_variant')
+            );
+        }
+
         $revertedObject = $this->denormalizer->denormalize(
             $data,
             $class,
@@ -81,9 +96,23 @@ class ProductReverter
 
         $violationsList = $this->validator->validate($revertedObject);
         if ($violationsList->count() > 0) {
-            throw new RevertException('This version can not be restored. Some errors occured during the validation.');
+            throw new RevertException(
+                $this->translator->trans(
+                    'flash.error.revert.product'
+                )
+            );
         }
 
         $this->productSaver->save($revertedObject);
+    }
+
+    /**
+     * @param mixed $object
+     *
+     * @return boolean
+     */
+    protected function isImpactedByVariantGroup($object)
+    {
+        return $object instanceof ProductInterface && null !== $object->getVariantGroup();
     }
 }
