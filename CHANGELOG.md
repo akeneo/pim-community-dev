@@ -1,3 +1,11 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3784: Generate the completeness on selected products before to mass-publish
+
+## BC breaks
+- Update constructor of `PimEnterprise/Bundle/WorkflowBundle/Publisher/Product/ProductPublisher` to add a `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` $completenessManager argument
+
 # 1.3.0 - "Strawberry" (2015-02-12)
 
 ## Bug fixes
