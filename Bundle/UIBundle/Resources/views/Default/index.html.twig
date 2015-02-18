@@ -17,7 +17,7 @@
                 {% endblock %}
                 {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
                 <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/widget-manager', 'jquery.uniform']);
+                    require(['oro/init-layout', 'oro/init-user', 'oro/widget-manager', 'jquery.uniform']);
                 {% if app.debug %}
                     require(['oro/app'], function(app){app.debug = true;});
                 {% endif %}
