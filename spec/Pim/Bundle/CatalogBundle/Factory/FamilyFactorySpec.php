@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Prophecy\Argument;
 
 class FamilyFactorySpec extends ObjectBehavior
 {
@@ -16,7 +17,8 @@ class FamilyFactorySpec extends ObjectBehavior
         ProductManager $productManager,
         ChannelManager $channelManager,
         AttributeRequirementFactory $factory
-    ) {
+    )
+    {
         $this->beConstructedWith($productManager, $channelManager, $factory);
     }
 
@@ -27,25 +29,48 @@ class FamilyFactorySpec extends ObjectBehavior
         AttributeInterface $identifierAttribute,
         ChannelInterface $printChannel,
         ChannelInterface $ecommerceChannel,
-        AttributeRequirementInterface $requirement
-    ) {
+        AttributeRequirementInterface $printRequirement,
+        AttributeRequirementInterface $ecommerceRequirement
+    )
+    {
         $productManager->getIdentifierAttribute()
             ->willReturn($identifierAttribute)
             ->shouldBeCalled();
+
+        $printRequirement->setFamily(Argument::any())
+            ->willReturn(null);
+        $printRequirement->getAttributeCode()
+            ->willReturn('anyCode');
+        $printRequirement->getChannelCode()
+            ->willReturn('print');
+
+        $ecommerceRequirement->setFamily(Argument::any())
+            ->willReturn(null);
+        $ecommerceRequirement->getAttributeCode()
+            ->willReturn('anyCode');
+        $ecommerceRequirement->getChannelCode()
+            ->willReturn('ecommerce');
 
         $channelManager->getChannels()
             ->willReturn([$printChannel, $ecommerceChannel])
             ->shouldBeCalled();
 
         $factory->createAttributeRequirement($identifierAttribute, $printChannel, true)
-            ->willReturn($requirement)
+            ->willReturn($printRequirement)
             ->shouldBeCalled();
 
         $factory->createAttributeRequirement($identifierAttribute, $ecommerceChannel, true)
-            ->willReturn($requirement)
+            ->willReturn($ecommerceRequirement)
             ->shouldBeCalled();
 
-        $this->createFamily()
-            ->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Model\FamilyInterface');
+        $family = $this->createFamily();
+        $family->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\FamilyInterface');
+        $family->getAttributes()->shouldHaveCount(1);
+        $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
+        $family->getAttributeRequirements()->shouldHaveCount(2);
+        $family->getAttributeRequirements()->shouldBeEqualTo([
+            'anyCode_print' => $printRequirement,
+            'anyCode_ecommerce' => $ecommerceRequirement
+        ]);
     }
 }
