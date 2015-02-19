@@ -16,7 +16,7 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_writes_product_data_in_file_and_copy_medias($stepExecution)
     {
-        $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'));
+        $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/product_export_with_non_utf8_characters.csv'));
         $media = ['filePath' => $file->getPathname(), 'exportPath' => 'test.csv'];
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
@@ -26,7 +26,7 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_does_not_copy_not_found_media($stepExecution)
     {
-        $media = ['filePath' => 'not-found.jpg', 'exportPath' => 'test.csv'];
+        $media = ['filePath' => 'not-found.csv', 'exportPath' => 'test.csv'];
 
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
@@ -36,7 +36,7 @@ class CsvProductWriterSpec extends ObjectBehavior
 
     function it_does_not_copy_with_wrong_directory($stepExecution)
     {
-        $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'));
+        $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/product_export_with_non_utf8_characters.csv'));
         $media = ['filePath' => $file->getPathname(), 'exportPath' => null];
 
         $previousReporting = error_reporting();
