@@ -63,20 +63,29 @@ class CsvProductWriter extends CsvWriter
             mkdir(dirname($target), 0777, true);
         }
         if (is_file($media['filePath'])) {
-            if (copy($media['filePath'], $target)) {
-                $this->writtenFiles[$target] = $media['exportPath'];
-            } else {
-                $this->stepExecution->addWarning(
-                    $this->getName(),
-                    'The media has not been copied',
-                    [],
-                    $media
-                );
-            }
+            $this->copyFile($media, $target);
         } else {
             $this->stepExecution->addWarning(
                 $this->getName(),
                 'The media has not been found or is not currently available',
+                [],
+                $media
+            );
+        }
+    }
+
+    /**
+     * @param array  $media
+     * @param string $target
+     */
+    protected function copyFile(array $media, $target)
+    {
+        if (copy($media['filePath'], $target)) {
+            $this->writtenFiles[$target] = $media['exportPath'];
+        } else {
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                'The media has not been copied',
                 [],
                 $media
             );
