@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
@@ -19,7 +16,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class FamilyManager
 {
-    /** @var FamilyRepository */
+    /** @var FamilyRepositoryInterface */
     protected $repository;
 
     /** @var UserContext */
@@ -28,27 +25,21 @@ class FamilyManager
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
-     * @param FamilyRepository         $repository
-     * @param UserContext              $userContext
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
+     * @param FamilyRepositoryInterface $repository
+     * @param UserContext               $userContext
+     * @param ObjectManager             $objectManager
      */
     public function __construct(
-        FamilyRepository $repository,
+        FamilyRepositoryInterface $repository,
         UserContext $userContext,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        ObjectManager $objectManager
     ) {
         $this->repository      = $repository;
         $this->userContext     = $userContext;
         $this->objectManager   = $objectManager;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -66,12 +57,12 @@ class FamilyManager
     /**
      * Remove a family
      *
-     * @param Family $family
+     * @param FamilyInterface $family
+     *
+     * @deprecated will be removed in 1.4, replaced by FamilyRemover::remove
      */
-    public function remove(Family $family)
+    public function remove(FamilyInterface $family)
     {
-        $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new GenericEvent($family));
-
         $this->objectManager->remove($family);
         $this->objectManager->flush();
     }

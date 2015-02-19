@@ -299,12 +299,17 @@ define(
             },
 
             _showField: function (field, first) {
+                var $icons = $(field).find('.icons-container i:not(".validation-tooltip")');
+
                 if (first) {
                     $(field).addClass('first');
+                    $icons.attr('style', 'display: inline !important');
                     this._setFieldFirst(field);
                 } else {
                     $(field).removeClass('first');
+                    $icons.attr('style', 'display: none !important');
                 }
+
                 $(field).show();
             },
 

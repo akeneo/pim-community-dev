@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\Config\FileLocator;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * Base connector bundle extension
@@ -29,7 +29,7 @@ class PimBaseConnectorExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('steps.yml');
 
-        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
         if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
             $loader->load($storageConfig);

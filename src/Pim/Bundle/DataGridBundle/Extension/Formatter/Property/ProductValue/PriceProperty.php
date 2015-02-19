@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
+use Symfony\Component\Intl\Intl;
+
 /**
  * Price field property, able to render price attribute type
  *
@@ -21,7 +23,7 @@ class PriceProperty extends FieldProperty
         $prices = [];
         foreach ($data as $price) {
             if (isset($price['data']) && $price['data'] !== null) {
-                $prices[] = $price['data'].' '.$price['currency'];
+                $prices[] = $price['data'].' '. Intl::getCurrencyBundle()->getCurrencySymbol($price['currency']);
             }
         }
 

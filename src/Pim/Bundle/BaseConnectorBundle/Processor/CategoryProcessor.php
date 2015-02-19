@@ -37,19 +37,19 @@ class CategoryProcessor extends TransformerProcessor
      * @param ImportValidatorInterface   $validator
      * @param TranslatorInterface        $translator
      * @param EntityTransformerInterface $transformer
-     * @param DoctrineCache              $doctrineCache
-     * @param string                     $class
      * @param ManagerRegistry            $managerRegistry
+     * @param string                     $class
+     * @param DoctrineCache              $doctrineCache
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         EntityTransformerInterface $transformer,
-        DoctrineCache $doctrineCache,
+        ManagerRegistry $managerRegistry,
         $class,
-        ManagerRegistry $managerRegistry = null
+        DoctrineCache $doctrineCache
     ) {
-        parent::__construct($validator, $translator, $transformer, $class, $managerRegistry);
+        parent::__construct($validator, $translator, $transformer, $managerRegistry, $class);
         $this->doctrineCache = $doctrineCache;
     }
 

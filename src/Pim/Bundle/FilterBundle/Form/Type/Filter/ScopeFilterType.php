@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Overriding of ChoiceFilterType

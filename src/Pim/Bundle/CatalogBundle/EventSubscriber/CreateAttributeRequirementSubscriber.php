@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * Create attribute requirements for each family attributes after creating a channel
@@ -47,7 +47,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
     {
         $entity = $event->getEntity();
 
-        if (!$entity instanceof Channel) {
+        if (!$entity instanceof ChannelInterface) {
             return;
         }
 

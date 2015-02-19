@@ -2,22 +2,21 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 
 class AssociationTypeManagerSpec extends ObjectBehavior
 {
     function let(
-        AssociationTypeRepository $repository,
-        ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        AssociationTypeRepositoryInterface $repository,
+        ObjectManager $objectManager
     ) {
-        $this->beConstructedWith($repository, $objectManager, $eventDispatcher);
+        $this->beConstructedWith($repository, $objectManager);
     }
 
     function it_provides_all_association_types($repository)
@@ -25,21 +24,5 @@ class AssociationTypeManagerSpec extends ObjectBehavior
         $repository->findAll()->willReturn(['foo', 'bar']);
 
         $this->getAssociationTypes()->shouldReturn(['foo', 'bar']);
-    }
-
-    function it_dispatches_an_event_when_removing_an_association_type(
-        $eventDispatcher,
-        $objectManager,
-        AssociationType $associationType
-    ) {
-        $eventDispatcher->dispatch(
-            AssociationTypeEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($associationType)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-
-        $this->remove($associationType);
     }
 }

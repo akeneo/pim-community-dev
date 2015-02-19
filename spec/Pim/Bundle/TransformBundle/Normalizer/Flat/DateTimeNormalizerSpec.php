@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class DateTimeNormalizerSpec extends ObjectBehavior
 {

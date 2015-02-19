@@ -1,4 +1,6 @@
 parameters:
+    pim_catalog.registry.attribute_type.class:         Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry
+
     pim_catalog.attribute_type.identifier.class:       Pim\Bundle\CatalogBundle\AttributeType\IdentifierType
     pim_catalog.attribute_type.text.class:             Pim\Bundle\CatalogBundle\AttributeType\TextType
     pim_catalog.attribute_type.textarea.class:         Pim\Bundle\CatalogBundle\AttributeType\TextAreaType
@@ -13,6 +15,9 @@ parameters:
     pim_catalog.attribute_type.metric.class:           Pim\Bundle\CatalogBundle\AttributeType\MetricType
 
 services:
+    pim_catalog.registry.attribute_type:
+        class: %pim_catalog.registry.attribute_type.class%
+
     pim_catalog.attributetype.identifier:
         class: %pim_catalog.attribute_type.identifier.class%
         arguments:
@@ -121,5 +126,6 @@ services:
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
             - '@akeneo_measure.manager'
             - '@pim_catalog.factory.metric'
+            - '@translator'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: %pim_catalog.entity.product.class% }

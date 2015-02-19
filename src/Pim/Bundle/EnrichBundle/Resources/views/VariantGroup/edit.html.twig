@@ -1,11 +1,82 @@
-{% include 'PimEnrichBundle:Group:_group.html.twig'
-    with {
-        'indexRoute':  'pim_enrich_variant_group_index',
-        'editRoute':   'pim_enrich_variant_group_edit',
-        'removeRoute': 'pim_enrich_variant_group_remove',
-        'confirmationMessage': 'confirmation.remove.variant group',
-        'removeMessage':       'flash.variant group.removed',
-        'entityType': 'variant group',
-        'title':      'variant group.edit'|trans,
-        'gridName':   'product-variant-group-grid'
-    } %}
+{% set gridName = 'product-variant-group-grid' %}
+{% set locales = form.productTemplate.vars.locales %}
+{% set channels = form.productTemplate.vars.channels %}
+{% set dataLocale = form.productTemplate.vars.currentLocale %}
+
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({ params: { '%group.label%': form.vars.data.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'PimEnrichBundle:VariantGroup:_js-handler.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    {% if resource_granted('pim_enrich_variant_group_add_attributes') %}
+        {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
+            'form': attributesForm,
+            'action': path('pim_enrich_variant_group_add_attributes', {'id': form.vars.data.id})
+        } %}
+    {% endif %}
+
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path('pim_enrich_variant_group_edit', { id: form.vars.value.id, dataLocale: dataLocale }),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'variant group'|trans })
+        }
+    }) }}
+
+        {% set title = 'variant group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('pim_enrich_variant_group_index')) }}
+            {{ elements.deleteLink(
+                path('pim_enrich_variant_group_remove', { id: form.vars.value.id }),
+                'pim_enrich_variant_group_remove',
+                path('pim_enrich_variant_group_index'),
+                'confirmation.remove.variant group'|trans({'%name%': form.vars.value.label}),
+                'flash.variant group.removed'|trans
+            ) }}
+            {{ elements.submitBtn() }}
+        {% endset %}
+
+        {% set left %}
+            <ul class="inline">
+                <li>
+                    {{ 'code'|trans|capitalize }}: {{ form.vars.value.code }}
+                </li>
+                <li>
+                    {{ 'type'|trans|capitalize }}: {{ form.vars.value.type.code }}
+                </li>
+                <li>
+                    {{ 'axis'|trans|capitalize }}:
+                    {% set variantGroupAttributes %}
+                        {% for attribute in form.vars.value.attributes %}
+                            {{ attribute }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    {% endset %}
+                    <span>{{ variantGroupAttributes|capitalize|default('N/A'|trans) }}</span>
+                </li>
+
+                {% if form.vars.data.products|length > 0 %}
+                    <li>{{ 'products'|trans|capitalize }}: {{ form.vars.data.products|length }}</li>
+                {% endif %}
+           </ul>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
+
+        {{ elements.form_navbar(view_element_aliases(form.vars.id ~ '.form_tab')) }}
+
+        <div class="row-fluid tab-content group-edit">
+            {{ elements.form_errors(form) }}
+
+            {{ view_elements(form.vars.id ~ '.form_tab') }}
+        </div>
+        {{ form_end(form) }}
+{% endblock %}

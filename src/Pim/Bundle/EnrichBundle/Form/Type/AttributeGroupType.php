@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type for AttributeGroup form
@@ -20,6 +20,17 @@ class AttributeGroupType extends AbstractType
     /** @var EventSubscriberInterface[] */
     protected $subscribers = [];
 
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -30,12 +41,12 @@ class AttributeGroupType extends AbstractType
             ->add(
                 'label',
                 'pim_translatable_field',
-                array(
+                [
                     'field'             => 'label',
                     'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
                     'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
                     'property_path'     => 'translations'
-                )
+                ]
             )
             ->add('sort_order', 'hidden')
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
@@ -51,9 +62,9 @@ class AttributeGroupType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

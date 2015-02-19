@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Currency entity
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Currency implements ReferableInterface
+class Currency implements CurrencyInterface
 {
     /**
      * @var integer $id
@@ -53,9 +53,7 @@ class Currency implements ReferableInterface
     }
 
     /**
-     * Get id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -77,9 +75,7 @@ class Currency implements ReferableInterface
     }
 
     /**
-     * Get code
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -87,11 +83,7 @@ class Currency implements ReferableInterface
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Currency
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -101,9 +93,7 @@ class Currency implements ReferableInterface
     }
 
     /**
-     * Is activated
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isActivated()
     {
@@ -111,19 +101,17 @@ class Currency implements ReferableInterface
     }
 
     /**
-     * Toggle activation
+     * {@inheritdoc}
      */
     public function toggleActivation()
     {
         $this->activated = !$this->activated;
+
+        return $this;
     }
 
     /**
-     * Set activated
-     *
-     * @param boolean $activated
-     *
-     * @return Currency
+     * {@inheritdoc}
      */
     public function setActivated($activated)
     {

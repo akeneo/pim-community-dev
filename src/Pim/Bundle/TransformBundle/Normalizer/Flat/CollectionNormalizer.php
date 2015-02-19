@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
 /**
  * Normalize a doctrine collection
@@ -40,6 +40,8 @@ class CollectionNormalizer extends SerializerAwareNormalizer implements Normaliz
             if (is_array($normalizedItem)) {
                 foreach ($normalizedItem as $key => $value) {
                     if (array_key_exists($key, $result)) {
+                        // TODO: this breaks product value collection denormalization into csv
+                        // for prices and metric
                         $result[$key] = $result[$key] . ',' . $value;
                     } else {
                         $result = array_merge($result, $normalizedItem);

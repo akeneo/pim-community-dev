@@ -2,29 +2,30 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Form;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\CatalogBundle\Manager\AttributeOptionManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
+use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Attribute controller
@@ -35,43 +36,41 @@ use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
  */
 class AttributeController extends AbstractDoctrineController
 {
-    /**
-     * @var AttributeHandler
-     */
+    /** @var HandlerInterface */
     protected $attributeHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $attributeForm;
 
-    /**
-     * @var AttributeManager
-     */
+    /** @var AttributeManager */
     protected $attributeManager;
 
-    /**
-     * @var LocaleManager
-     */
+    /** @var AttributeOptionManager */
+    protected $optionManager;
+
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $measuresConfig;
 
-    /**
-     * @var array
-     */
-    protected $choiceAttributeTypes = array(
+    /** @var array */
+    protected $choiceAttributeTypes = [
         'pim_catalog_simpleselect',
         'pim_catalog_multiselect'
-    );
+    ];
+
+    /** @var BulkSaverInterface */
+    protected $attributeSaver;
+
+    /** @var RemoverInterface */
+    protected $attributeRemover;
+
+    /** @var SaverInterface */
+    protected $optionSaver;
 
     /**
      * Constructor
@@ -85,11 +84,15 @@ class AttributeController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param AttributeHandler         $attributeHandler
+     * @param HandlerInterface         $attributeHandler
      * @param Form                     $attributeForm
      * @param AttributeManager         $attributeManager
+     * @param AttributeOptionManager   $optionManager
      * @param LocaleManager            $localeManager
      * @param VersionManager           $versionManager
+     * @param BulkSaverInterface       $attributeSaver
+     * @param RemoverInterface         $attributeRemover
+     * @param SaverInterface           $optionSaver
      * @param array                    $measuresConfig
      */
     public function __construct(
@@ -102,11 +105,15 @@ class AttributeController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        AttributeHandler $attributeHandler,
+        HandlerInterface $attributeHandler,
         Form $attributeForm,
         AttributeManager $attributeManager,
+        AttributeOptionManager $optionManager,
         LocaleManager $localeManager,
         VersionManager $versionManager,
+        BulkSaverInterface $attributeSaver,
+        RemoverInterface $attributeRemover,
+        SaverInterface $optionSaver,
         $measuresConfig
     ) {
         parent::__construct(
@@ -124,9 +131,13 @@ class AttributeController extends AbstractDoctrineController
         $this->attributeHandler = $attributeHandler;
         $this->attributeForm    = $attributeForm;
         $this->attributeManager = $attributeManager;
+        $this->optionManager    = $optionManager;
         $this->localeManager    = $localeManager;
         $this->versionManager   = $versionManager;
         $this->measuresConfig   = $measuresConfig;
+        $this->attributeSaver   = $attributeSaver;
+        $this->attributeRemover = $attributeRemover;
+        $this->optionSaver      = $optionSaver;
     }
 
     /**
@@ -168,7 +179,7 @@ class AttributeController extends AbstractDoctrineController
 
         return [
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveLocales(),
+            'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'attributeType'   => $attributeType
@@ -191,21 +202,21 @@ class AttributeController extends AbstractDoctrineController
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
 
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        return array(
+        return [
             'form'            => $this->attributeForm->createView(),
-            'locales'         => $this->localeManager->getActiveLocales(),
+            'locales'         => $this->localeManager->getActiveCodes(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
             'created'         => $this->versionManager->getOldestLogEntry($attribute),
             'updated'         => $this->versionManager->getNewestLogEntry($attribute),
-        );
+        ];
     }
 
     /**
-     * Edit AbstractAttribute sort order
+     * Edit AttributeInterface sort order
      *
      * @param Request $request
      *
@@ -221,14 +232,15 @@ class AttributeController extends AbstractDoctrineController
         $data = $request->request->all();
 
         if (!empty($data)) {
+            $attributes = [];
             foreach ($data as $id => $sort) {
                 $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $this->persist($attribute, false);
+                    $attributes[] = $attribute;
                 }
             }
-            $this->getManagerForClass($this->attributeManager->getAttributeClass())->flush();
+            $this->attributeSaver->saveAll($attributes);
 
             return new Response(1);
         }
@@ -251,12 +263,12 @@ class AttributeController extends AbstractDoctrineController
     {
         $attribute = $this->findAttributeOr404($id);
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
-            return $this->redirectToRoute('pim_enrich_attribute_edit', array('id'=> $attribute->getId()));
+            return $this->redirectToRoute('pim_enrich_attribute_edit', ['id' => $attribute->getId()]);
         }
 
-        $option = $this->attributeManager->createAttributeOption();
+        $option = $this->optionManager->createAttributeOption();
 
-        $optionValue = $this->attributeManager->createAttributeOptionValue();
+        $optionValue = $this->optionManager->createAttributeOptionValue();
         $optionValue->setLocale($dataLocale);
         $optionValue->setValue('');
         $option->addOptionValue($optionValue);
@@ -268,23 +280,23 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->persist($option);
-                $response = array(
+                $this->optionSaver->save($option);
+                $response = [
                     'status' => 1,
-                    'option' => array(
+                    'option' => [
                         'id'    => $option->getId(),
                         'label' => $option->setLocale($dataLocale)->__toString()
-                    )
-                );
+                    ]
+                ];
 
                 return new Response(json_encode($response));
             }
         }
 
-        return array(
+        return [
             'attribute' => $attribute,
             'form'      => $form->createView()
-        );
+        ];
     }
 
     /**
@@ -302,7 +314,7 @@ class AttributeController extends AbstractDoctrineController
         $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($attribute);
 
-        $this->attributeManager->remove($attribute);
+        $this->attributeRemover->remove($attribute);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -316,7 +328,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return AbstractAttribute
+     * @return AttributeInterface
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findAttributeOr404($id)
@@ -327,23 +339,23 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Check if the attribute is removable, otherwise throw an exception or redirect
      *
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
      * @return RedirectResponse|null
      */
-    protected function validateRemoval(AbstractAttribute $attribute)
+    protected function validateRemoval(AttributeInterface $attribute)
     {
         if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
-            $messageParameters = array();
+            $messageParameters = [];
         } else {
             $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
                 ->countVariantGroupAxis($attribute);
             if ($groupCount > 0) {
                 $errorMessage = 'flash.attribute.used by groups';
-                $messageParameters = array('%count%' => $groupCount);
+                $messageParameters = ['%count%' => $groupCount];
             }
         }
 

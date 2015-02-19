@@ -2,16 +2,15 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
-use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Group entity
@@ -24,31 +23,21 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
+class Group implements GroupInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer $id */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string $code */
     protected $code;
 
-    /**
-     * @var GroupType
-     */
+    /** @var GroupTypeInterface */
     protected $type;
 
-    /**
-     * @var ArrayCollection $products
-     */
+    /**  @var ArrayCollection $products */
     protected $products;
 
-    /**
-     * @var ArrayCollection $attributes
-     */
+    /**  @var ArrayCollection $attributes */
     protected $attributes;
 
     /**
@@ -59,10 +48,11 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      */
     protected $locale;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     */
+    /**  @var \Doctrine\Common\Collections\ArrayCollection $translations */
     protected $translations;
+
+    /**  @var ProductTemplateInterface */
+    protected $productTemplate;
 
     /**
      * Constructor
@@ -75,9 +65,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get the id
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -85,9 +73,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get code
-     *
-     * @return string $code
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -95,11 +81,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Set code
-     *
-     * @param string $code
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -109,13 +91,9 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Set group type
-     *
-     * @param GroupType $type
-     *
-     * @return Group
+     * {@inheritdoc}
      */
-    public function setType(GroupType $type)
+    public function setType(GroupTypeInterface $type)
     {
         $this->type = $type;
 
@@ -123,9 +101,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get group type
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function getType()
     {
@@ -205,9 +181,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get label
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getLabel()
     {
@@ -217,11 +191,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function setLabel($label)
     {
@@ -231,11 +201,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Add a product to the collection (if not already existing)
-     *
-     * @param ProductInterface $product
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function addProduct(ProductInterface $product)
     {
@@ -248,11 +214,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Remove a product from the collection
-     *
-     * @param ProductInterface $product
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -263,9 +225,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get products collection
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
+     * {@inheritdoc}
      */
     public function getProducts()
     {
@@ -273,11 +233,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Set a products collection
-     *
-     * @param array $products
-     *
-     * @return Group
+     * {@inheritdoc}
      */
     public function setProducts(array $products)
     {
@@ -287,13 +243,9 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Add attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return Group
+     * {@inheritdoc}
      */
-    public function addAttribute(AbstractAttribute $attribute)
+    public function addAxisAttribute(AttributeInterface $attribute)
     {
         if (!$this->attributes->contains($attribute)) {
             $this->attributes[] = $attribute;
@@ -303,15 +255,17 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Remove attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return Group
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
-    public function removeAttribute(AbstractAttribute $attribute)
+    public function addAttribute(AttributeInterface $attribute)
+    {
+        return $this->addAxisAttribute($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAxisAttribute(AttributeInterface $attribute)
     {
         $this->attributes->removeElement($attribute);
 
@@ -319,19 +273,31 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get attributes
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
-    public function getAttributes()
+    public function removeAttribute(AttributeInterface $attribute)
+    {
+        return $this->removeAxisAttribute($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAxisAttributes()
     {
         return $this->attributes;
     }
 
     /**
-     * Get attribute ids
-     *
-     * @return integer[]
+     * {@inheritdoc}
+     */
+    public function getAttributes()
+    {
+        return $this->getAxisAttributes();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getAttributeIds()
     {
@@ -344,17 +310,28 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Setter for attributes property
-     *
-     * @param AbstractAttribute[] $attributes
-     *
-     * @return Group
+     * {@inheritdoc}
+     */
+    public function setAxisAttributes(array $newAttributes = array())
+    {
+        foreach ($this->attributes as $attribute) {
+            if (!in_array($attribute, $newAttributes)) {
+                $this->removeAxisAttribute($attribute);
+            }
+        }
+        foreach ($newAttributes as $attribute) {
+            $this->addAxisAttribute($attribute);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setAttributes(array $attributes = array())
     {
-        $this->attributes = $attributes;
-
-        return $this;
+        return $this->setAxisAttributes($attributes);
     }
 
     /**
@@ -382,5 +359,23 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     public function getReference()
     {
         return $this->code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductTemplate()
+    {
+        return $this->productTemplate;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProductTemplate(ProductTemplateInterface $productTemplate)
+    {
+        $this->productTemplate = $productTemplate;
+
+        return $this;
     }
 }

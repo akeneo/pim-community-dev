@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Family sorter
@@ -19,32 +18,47 @@ class FamilySorter implements FieldSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * {@inheritdoc}
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function setQueryBuilder($queryBuilder)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        $this->qb = $queryBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function supportsField($field)
     {
-        $field = sprintf(
+        return $field === 'family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
+    {
+        if (null === $locale) {
+            throw new \InvalidArgumentException(
+                'Cannot prepare condition on family sorter without locale'
+            );
+        }
+
+        $fieldLabel = sprintf(
             "%s.%s.label.%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
-            $this->context->getLocaleCode()
+            $locale
         );
-
-        $this->qb->sort($field, $direction);
+        $fieldCode = sprintf(
+            "%s.%s.code",
+            ProductQueryUtility::NORMALIZED_FIELD,
+            $field
+        );
+        $this->qb->sort($fieldLabel, $direction);
+        $this->qb->sort($fieldCode, $direction);
+        $this->qb->sort('_id');
 
         return $this;
     }

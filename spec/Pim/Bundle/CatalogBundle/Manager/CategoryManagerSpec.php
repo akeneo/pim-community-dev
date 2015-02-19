@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -17,10 +17,9 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function let(
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher,
-        CategoryRepository $categoryRepository
+        CategoryRepositoryInterface $categoryRepository
     ) {
-        $this->beConstructedWith($objectManager, self::CATEGORY_CLASS, $eventDispatcher);
+        $this->beConstructedWith($objectManager, self::CATEGORY_CLASS);
 
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
@@ -30,12 +29,12 @@ class CategoryManagerSpec extends ObjectBehavior
         $this->getObjectManager()->shouldReturn($objectManager);
     }
 
-    function it_instanciates_a_category()
+    function it_instantiates_a_category()
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
 
-    function it_instanciates_a_tree(CategoryInterface $tree)
+    function it_instantiates_a_tree(CategoryInterface $tree)
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
@@ -63,45 +62,5 @@ class CategoryManagerSpec extends ObjectBehavior
         $categoryRepository->findOneBy(['code' => 'foo', 'parent' => null])->willReturn($tree);
 
         $this->getTreeByCode('foo')->shouldReturn($tree);
-    }
-
-    function it_dispatches_an_event_when_removing_a_category(
-        $eventDispatcher,
-        $objectManager,
-        CategoryInterface $category,
-        ProductInterface $product1,
-        ProductInterface $product2
-    ) {
-        $category->isRoot()->willReturn(false);
-        $category->getProducts()->willReturn([$product1, $product2]);
-        $product1->removeCategory($category)->shouldBeCalled();
-        $product2->removeCategory($category)->shouldBeCalled();
-
-        $eventDispatcher->dispatch(
-            CategoryEvents::PRE_REMOVE_CATEGORY,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($category)->shouldBeCalled();
-
-        $this->remove($category);
-    }
-
-    function it_dispatches_an_event_when_removing_a_tree(
-        $eventDispatcher,
-        $objectManager,
-        CategoryInterface $tree
-    ) {
-        $tree->isRoot()->willReturn(true);
-        $tree->getProducts()->willReturn([]);
-
-        $eventDispatcher->dispatch(
-            CategoryEvents::PRE_REMOVE_TREE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($tree)->shouldBeCalled();
-
-        $this->remove($tree);
     }
 }

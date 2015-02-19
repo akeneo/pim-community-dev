@@ -3,22 +3,21 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
+use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 class CurrencyManagerSpec extends ObjectBehavior
 {
     function let(
-        CurrencyRepository $repository,
-        Currency $eur,
-        Currency $usd,
-        Currency $gbp
+        CurrencyRepositoryInterface $repository,
+        CurrencyInterface $eur,
+        CurrencyInterface $usd,
+        CurrencyInterface $gbp
     ) {
         $this->beConstructedWith($repository);
         $repository->findBy(array('activated' => true))->willReturn([$eur, $usd]);
         $repository->findBy(array())->willReturn([$eur, $usd, $gbp]);
+        $repository->getActivatedCurrencyCodes()->willReturn(['EUR', 'USD']);
 
         $eur->getCode()->willReturn('EUR');
         $usd->getCode()->willReturn('USD');

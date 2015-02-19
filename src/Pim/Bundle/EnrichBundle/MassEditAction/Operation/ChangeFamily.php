@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class ChangeFamily extends ProductMassEditOperation
 {
-    /** @var Family $family The family to change the product family to */
+    /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
 
     /**
@@ -26,11 +26,11 @@ class ChangeFamily extends ProductMassEditOperation
     }
 
     /**
-     * @param Family $family
+     * @param FamilyInterface $family
      *
      * @return ChangeFamily
      */
-    public function setFamily(Family $family)
+    public function setFamily(FamilyInterface $family)
     {
         $this->family = $family;
 
@@ -38,7 +38,7 @@ class ChangeFamily extends ProductMassEditOperation
     }
 
     /**
-     * @return Family
+     * @return FamilyInterface
      */
     public function getFamily()
     {

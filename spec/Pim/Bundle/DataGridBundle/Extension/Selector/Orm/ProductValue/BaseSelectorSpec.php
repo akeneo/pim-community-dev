@@ -2,10 +2,9 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 
 class BaseSelectorSpec extends ObjectBehavior

@@ -22,5 +22,7 @@ config:
         pim/currencyfield:                  pimenrich/js/pim-currencyfield
         pim/tree/view:                      pimenrich/js/tree-view.jstree
         pim/tree/associate:                 pimenrich/js/tree-associate.jstree
-        pim/tree/mass-associate:            pimenrich/js/tree-mass-associate.jstree
         pim/tree/manage:                    pimenrich/js/tree-manage.jstree
+        pim/attributeoptionview:            pimenrich/js/pim-attributeoptionview
+        pim/item/tableview:                 pimenrich/js/pim-item-tableview
+        pim/item/view:                      pimenrich/js/pim-item-view

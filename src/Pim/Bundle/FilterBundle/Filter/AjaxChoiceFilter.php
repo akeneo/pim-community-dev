@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\FilterBundle\Filter;
 
-use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
 /**
  * Choice filter with asynchronously populated options
@@ -30,10 +32,21 @@ class AjaxChoiceFilter extends ChoiceFilter
     {
         $formView = $this->getForm()->createView();
 
+        $choices = array_map(
+            function (ChoiceView $choice) {
+                return [
+                    'label' => $choice->label,
+                    'value' => $choice->value
+                ];
+            },
+            $formView->vars['choices']
+        );
+
         $defaultMetadata = [
             'name'                     => $this->getName(),
             'label'                    => ucfirst($this->name),
             FilterUtility::ENABLED_KEY => true,
+            'choices'                  => $choices,
         ];
 
         $metadata = array_diff_key(
@@ -49,7 +62,22 @@ class AjaxChoiceFilter extends ChoiceFilter
         $metadata['populateDefault'] = $formView->vars['populate_default'];
         $metadata['choiceUrl']       = $formView->vars['choice_url'];
         $metadata['choiceUrlParams'] = $formView->vars['choice_url_params'];
+        $metadata['emptyChoice']     = $formView->vars['empty_choice'];
 
         return $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function parseData($data)
+    {
+        if (isset($data['type']) && Operators::IS_EMPTY === strtoupper($data['type'])) {
+            $data['value'] = isset($data['value']) ? $data['value'] : null;
+
+            return $data;
+        }
+
+        return parent::parseData($data);
     }
 }

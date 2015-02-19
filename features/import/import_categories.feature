@@ -7,7 +7,7 @@ Feature: Import categories
   Scenario: Successfully import categories
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;parent;label-en_US
     default;;
@@ -31,7 +31,7 @@ Feature: Import categories
   Scenario: Import categories with missing parent
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;parent;label-en_US
     default;;
@@ -62,7 +62,7 @@ Feature: Import categories
   Scenario: Skip categories with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
-    And the following file to import:
+    And the following CSV file to import:
     """
     code;parent;label-en_US
     ;;label US

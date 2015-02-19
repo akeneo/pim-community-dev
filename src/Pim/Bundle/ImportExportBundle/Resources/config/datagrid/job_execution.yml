@@ -6,21 +6,22 @@ datagrid:
             repository_method: createDatagridQueryBuilder
         columns:
             code:
-                label: Code
+                label:     Code
                 data_name: jobCode
             label:
-                label: Label
+                label:     Label
                 data_name: jobLabel
             alias:
                 label:     Job
+                type:      translateable
                 data_name: jobAlias
             date:
-                label: Date
-                data_name: date
+                label:         Date
+                data_name:     date
                 frontend_type: datetime
             status:
-                label: Status
-                type: translateable
+                label:     Status
+                type:      translateable
                 data_name: statusLabel
         properties:
             id: ~

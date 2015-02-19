@@ -2,12 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -48,7 +46,7 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof Metric && ProductNormalizer::FORMAT === $format);
+        return ($data instanceof MetricInterface && ProductNormalizer::FORMAT === $format);
     }
 
     /**
@@ -77,9 +75,9 @@ class MetricNormalizer implements NormalizerInterface
     /**
      * Convert data in standard unit for metrics
      *
-     * @param Metric $metric
+     * @param MetricInterface $metric
      */
-    protected function createMetricBaseValues(Metric $metric)
+    protected function createMetricBaseValues(MetricInterface $metric)
     {
         $baseUnit = $this->manager->getStandardUnitForFamily($metric->getFamily());
         if (is_numeric($metric->getData())) {

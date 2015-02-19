@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TranslationBundle\Tests\Unit\DependencyInjection;
 
+use Pim\Bundle\TranslationBundle\DependencyInjection\PimTranslationExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Pim\Bundle\TranslationBundle\DependencyInjection\PimTranslationExtension;
 
 /**
  * Test related class

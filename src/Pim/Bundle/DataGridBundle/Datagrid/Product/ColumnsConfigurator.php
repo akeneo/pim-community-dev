@@ -119,7 +119,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
         $this->attributesColumns = array();
 
         foreach ($attributes as $attributeCode => $attribute) {
-            $showColumn        = $attribute['useableAsGridColumn'];
             $attributeType     = $attribute['attributeType'];
             $attributeTypeConf = $this->registry->getConfiguration($attributeType);
 
@@ -133,10 +132,13 @@ class ColumnsConfigurator implements ConfiguratorInterface
                 );
             }
 
-            if ($showColumn && $attributeTypeConf && $attributeTypeConf['column']) {
+            if ($attributeTypeConf && $attributeTypeConf['column']) {
                 $columnConfig = $attributeTypeConf['column'];
                 $columnConfig = $columnConfig + array(
-                    'label' => $attribute['label'],
+                    'label'      => $attribute['label'],
+                    'order'      => $attribute['sortOrder'],
+                    'group'      => $attribute['group'],
+                    'groupOrder' => $attribute['groupOrder']
                 );
 
                 if ($attributeType === 'pim_catalog_identifier') {
@@ -171,12 +173,12 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
         if (!empty($userColumns)) {
             $this->displayedColumns = $this->editableColumns  + $this->primaryColumns;
+
             foreach ($userColumns as $column) {
                 if (array_key_exists($column, $this->availableColumns)) {
                     $this->displayedColumns[$column] = $this->availableColumns[$column];
                 }
             }
-
         } else {
             $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
                 + $this->propertiesColumns;

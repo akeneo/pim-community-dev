@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 
 class OperatorRegistrySpec extends ObjectBehavior

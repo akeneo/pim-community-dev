@@ -2,15 +2,16 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Aims to audit data updates on versionable entities
@@ -21,32 +22,23 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  */
 class AddVersionSubscriber implements EventSubscriber
 {
-    /**
-     * Entities to version
-     *
-     * @var object[]
-     */
-    protected $versionableEntities = array();
+    /** @var object[] */
+    protected $versionableEntities = [];
 
-    /**
-     * @var integer[]
-     */
-    protected $versionedEntities = array();
+    /** @var string[] */
+    protected $versionedEntities = [];
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var ChainedUpdateGuesser
-     */
+    /** @var ChainedUpdateGuesser */
     protected $guesser;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $normalizer;
+
+    /** @var VersionContext */
+    protected $versionContext;
 
     /**
      * Constructor
@@ -54,15 +46,18 @@ class AddVersionSubscriber implements EventSubscriber
      * @param VersionManager       $versionManager
      * @param ChainedUpdateGuesser $guesser
      * @param NormalizerInterface  $normalizer
+     * @param VersionContext       $versionContext
      */
     public function __construct(
         VersionManager $versionManager,
         ChainedUpdateGuesser $guesser,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        VersionContext $versionContext
     ) {
         $this->versionManager = $versionManager;
         $this->guesser        = $guesser;
         $this->normalizer     = $normalizer;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -72,7 +67,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array('onFlush', 'postFlush');
+        return ['onFlush', 'postFlush'];
     }
 
     /**
@@ -118,12 +113,13 @@ class AddVersionSubscriber implements EventSubscriber
     protected function processVersionableEntities()
     {
         foreach ($this->versionableEntities as $versionable) {
+            $oid = $this->getObjectHash($versionable);
             $this->createVersion($versionable);
-            $this->versionedEntities[] = spl_object_hash($versionable);
+            $this->versionedEntities[] = $oid;
         }
 
         $versionedCount = count($this->versionableEntities);
-        $this->versionableEntities = array();
+        $this->versionableEntities = [];
 
         if ($versionedCount) {
             $this->versionManager->getObjectManager()->flush();
@@ -195,7 +191,7 @@ class AddVersionSubscriber implements EventSubscriber
      */
     protected function addPendingVersioning($versionable)
     {
-        $oid = spl_object_hash($versionable);
+        $oid = $this->getObjectHash($versionable);
         if (!isset($this->versionableEntities[$oid]) && !in_array($oid, $this->versionedEntities)) {
             $this->versionableEntities[$oid] = $versionable;
         }
@@ -215,5 +211,18 @@ class AddVersionSubscriber implements EventSubscriber
         } else {
             $om->remove($version);
         }
+    }
+
+    /**
+     * Get an object hash, provides different hashes depending on version manager context to allows to log different
+     * versions of a same object during a request
+     *
+     * @param object $object
+     *
+     * @return string
+     */
+    protected function getObjectHash($object)
+    {
+        return sprintf('%s#%s', spl_object_hash($object), sha1($this->versionContext->getContextInfo()));
     }
 }

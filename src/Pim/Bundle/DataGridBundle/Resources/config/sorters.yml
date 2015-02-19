@@ -15,44 +15,32 @@ services:
 
     pim_datagrid.extension.sorter.product.field_sorter:
         class: %pim_datagrid.extension.sorter.product.field_sorter.class%
-        arguments:
-            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_field }
 
     pim_datagrid.extension.sorter.product.value_sorter:
         class: %pim_datagrid.extension.sorter.product.value_sorter.class%
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_value }
 
     pim_datagrid.extension.sorter.product.completeness_sorter:
         class: %pim_datagrid.extension.sorter.product.completeness_sorter.class%
-        arguments:
-            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_completeness }
 
     pim_datagrid.extension.sorter.product.family_sorter:
         class: %pim_datagrid.extension.sorter.product.family_sorter.class%
-        arguments:
-            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_family }
 
     pim_datagrid.extension.sorter.product.is_associated_sorter:
         class: %pim_datagrid.extension.sorter.product.is_associated_sorter.class%
-        arguments:
-            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_is_associated }
 
     pim_datagrid.extension.sorter.product.in_group_sorter:
         class: %pim_datagrid.extension.sorter.product.in_group_sorter.class%
         arguments:
-            - '@pim_catalog.repository.product'
             - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_in_group }

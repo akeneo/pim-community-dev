@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Add context in version data
@@ -18,18 +18,18 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 class AddContextSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var VersionManager
+     * @var VersionContext
      */
-    protected $versionManager;
+    protected $versionContext;
 
     /**
      * Constructor
      *
-     * @param VersionManager $versionManager
+     * @param VersionContext $versionContext
      */
-    public function __construct(VersionManager $versionManager)
+    public function __construct(VersionContext $versionContext)
     {
-        $this->versionManager = $versionManager;
+        $this->versionContext = $versionContext;
     }
 
     /**
@@ -37,9 +37,9 @@ class AddContextSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::BEFORE_JOB_EXECUTION => 'addContext'
-        );
+        ];
     }
 
     /**
@@ -51,7 +51,7 @@ class AddContextSubscriber implements EventSubscriberInterface
     {
         $jobInstance = $event->getJobExecution()->getJobInstance();
         if ($jobInstance->getType() === JobInstance::TYPE_IMPORT) {
-            $this->versionManager->setContext(
+            $this->versionContext->addContextInfo(
                 sprintf('%s "%s"', JobInstance::TYPE_IMPORT, $jobInstance->getCode())
             );
         }

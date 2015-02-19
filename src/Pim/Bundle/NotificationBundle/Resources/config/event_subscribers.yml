@@ -1,0 +1,10 @@
+parameters:
+    pim_notification.event_subscriber.job_execution_notifier.class: Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier
+
+services:
+    pim_notification.event_subscriber.job_execution_notifier:
+        class: %pim_notification.event_subscriber.job_execution_notifier.class%
+        arguments:
+            - '@pim_notification.manager.notification'
+        tags:
+            - { name: kernel.event_subscriber }

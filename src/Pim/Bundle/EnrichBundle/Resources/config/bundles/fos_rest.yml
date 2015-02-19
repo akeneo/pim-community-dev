@@ -18,3 +18,4 @@ fos_rest:
             Pim\Bundle\EnrichBundle\Exception\DeleteException: HTTP_CONFLICT
         messages:
             Pim\Bundle\EnrichBundle\Exception\DeleteException: true
+            Symfony\Component\HttpKernel\Exception\ConflictHttpException: true

@@ -1,0 +1,104 @@
+parameters:
+    pim_catalog.saver.base.class:                          Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pim_catalog.saver.base_options_resolver.class:         Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSavingOptionsResolver
+    pim_catalog.saver.product.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
+    pim_catalog.saver.product_options_resolver.class:      Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver
+    pim_catalog.saver.completeness_options_resolver.class: Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\CompletenessSavingOptionsResolver
+    pim_catalog.saver.group_options_resolver.class:        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSavingOptionsResolver
+    pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
+    pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
+    pim_catalog.saver.channel.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver
+
+services:
+    pim_catalog.saver.group_type:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.group_type.interface%
+
+    pim_catalog.saver.currency:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.currency.interface%
+
+    pim_catalog.saver.product:
+        class: %pim_catalog.saver.product.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.saver.product_options_resolver'
+
+    pim_catalog.saver.group:
+        class: %pim_catalog.saver.group.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.manager.product_template_media'
+            - '@pim_catalog.applier.product_template'
+            - '@pim_versioning.context.version'
+            - '@pim_catalog.saver.group_options_resolver'
+            - %pim_catalog.entity.product.class%
+
+    pim_catalog.saver.family:
+        class: %pim_catalog.saver.family.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.saver.completeness_options_resolver'
+
+    pim_catalog.saver.association_type:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.association_type.interface%
+
+    pim_catalog.saver.attribute_group:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.attribute_group.interface%
+
+    pim_catalog.saver.attribute:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.attribute.interface%
+
+    pim_catalog.saver.attribute_option:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.attribute_option.interface%
+
+    pim_catalog.saver.category:
+        class: %pim_catalog.saver.base.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pim_catalog.model.category.interface%
+
+    pim_catalog.saver.channel:
+        class: %pim_catalog.saver.channel.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.saver.completeness_options_resolver'
+
+    pim_catalog.saver.base_options_resolver:
+        class: %pim_catalog.saver.base_options_resolver.class%
+
+    pim_catalog.saver.product_options_resolver:
+        class: %pim_catalog.saver.product_options_resolver.class%
+
+    pim_catalog.saver.completeness_options_resolver:
+        class: %pim_catalog.saver.completeness_options_resolver.class%
+
+    pim_catalog.saver.group_options_resolver:
+        class: %pim_catalog.saver.group_options_resolver.class%

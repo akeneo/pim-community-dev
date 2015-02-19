@@ -9,7 +9,7 @@ Feature: Import partial product information
     And the following product:
       | sku               | family |
       | caterpillar-boots | boots  |
-    And the following file to import:
+    And the following CSV file to import:
     """
     sku;name-en_US
     caterpillar-boots;"Caterpillar boots"

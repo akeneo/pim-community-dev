@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for category form
@@ -17,19 +17,11 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  */
 class CategoryType extends AbstractType
 {
-    /**
-     * Entity FQCN
-     *
-     * @var string
-     */
-    protected $className;
+    /** @var string Entity FQCN */
+    protected $dataClass;
 
-    /**
-     * Translation entity FQCN
-     *
-     * @var string
-     */
-    protected $translationClassName;
+    /** @var string Translation entity FQCN */
+    protected $translationdataClass;
 
     /** @var EventSubscriberInterface[] */
     protected $subscribers = [];
@@ -37,13 +29,13 @@ class CategoryType extends AbstractType
     /**
      * Constructor
      *
-     * @param string $className
-     * @param string $translationClassName
+     * @param string $dataClass
+     * @param string $translationdataClass
      */
-    public function __construct($className, $translationClassName)
+    public function __construct($dataClass, $translationdataClass)
     {
-        $this->className = $className;
-        $this->translationClassName = $translationClassName;
+        $this->dataClass            = $dataClass;
+        $this->translationdataClass = $translationdataClass;
     }
 
     /**
@@ -74,12 +66,12 @@ class CategoryType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
-                'translation_class' => $this->translationClassName,
-                'entity_class'      => $this->className,
+                'translation_class' => $this->translationdataClass,
+                'entity_class'      => $this->dataClass,
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -89,9 +81,9 @@ class CategoryType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class'  => $this->className
-            )
+            [
+                'data_class'  => $this->dataClass
+            ]
         );
     }
 

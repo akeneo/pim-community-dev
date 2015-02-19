@@ -1,0 +1,17 @@
+{% set fullname = reply.author|oro_format_name|default('N/A') %}
+
+<div class="span1 text-right">
+    <img width="25" src="{{ reply.author.imagePath ? reply.author.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+</div>
+<div class="span11">
+    <div>
+        <span class="author"><strong>{{ fullname }}</strong></span>
+        <span class="date">&nbsp;&#8211;&nbsp;{{ reply.createdAt|date("M jS \\a\\t g:ia") }}</span>
+    </div>
+    <div>
+        <span class="message">{{ reply.body|nl2br }}</span>
+        <span class="comment-buttons pull-right">
+            {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {'comment': reply} %}
+        </span>
+    </div>
+</div>

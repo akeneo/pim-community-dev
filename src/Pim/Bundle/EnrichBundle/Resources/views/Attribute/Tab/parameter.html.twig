@@ -1,0 +1,66 @@
+<div class="tab-pane {{ viewElement.loop.first ? 'active' : '' }}" id="{{ viewElement.alias|replace({' ': '-', '.': '-'})|lower }}">
+    {% spaceless %}
+    {% if elements is not defined %}
+        {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+    {% endif %}
+    {% endspaceless %}
+
+    {% set generalParameters %}
+        {{ form_row(form.code, { 'label': 'Code'|trans }) }}
+        {{ form_row(form.attributeType) }}
+
+        {% if form.scopable is defined %}
+            {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
+        {% endif %}
+
+        {% if form.localizable is defined %}
+            {{ form_row(form.localizable, { 'label': 'Localizable'|trans }) }}
+        {% endif %}
+
+        {% if form.unique is defined %}
+            {{ form_row(form.unique, { 'label': 'Unique value'|trans }) }}
+        {% endif %}
+
+        {% if form.availableLocales is defined %}
+            <div class="control-group">
+                <label class="control-label" for="limitLocales">{{ 'Locale specific'|trans }}</label>
+                <div class="controls">
+                    <div id="limitLocales-switch" class="switch switch-small" data-on-label="{{ 'switch_on'|trans }}" data-off-label="{{ 'switch_off'|trans }}">
+                        <input type="checkbox" name="limitLocales">
+                    </div>
+                </div>
+            </div>
+            {{ form_row(form.availableLocales) }}
+        {% endif %}
+    {% endset %}
+
+    {% set validationParameters %}
+        {% set validationFields = ['dateMin', 'dateMax', 'negativeAllowed', 'decimalsAllowed', 'numberMin',
+        'numberMax', 'maxCharacters', 'wysiwygEnabled', 'metricFamily', 'defaultMetricUnit', 'maxFileSize',
+        'allowedExtensions', 'validationRule', 'validationRegexp', 'minimumInputLength', 'defaultValue', 'sortOrder'] %}
+
+        {% for property in form.vars.value.properties|keys %}
+            {% set validationFields = validationFields|merge([property]) %}
+        {% endfor %}
+
+        {% for field in validationFields %}
+            {% if form[field] is defined %}
+                {{ form_row(form[field]) }}
+            {% endif %}
+        {% endfor %}
+    {% endset %}
+
+    {% set backendParameters %}
+        {{ form_row(form.group, { 'label': 'Attribute group' }) }}
+
+        {{ form_row(form.useableAsGridFilter) }}
+    {% endset %}
+
+    {% set panes = {'pane.accordion.general_parameters': generalParameters} %}
+    {% if validationParameters|trim is not empty %}
+        {% set panes = panes|merge({'pane.accordion.validation_parameters': validationParameters}) %}
+    {% endif %}
+    {% set panes = panes|merge({'pane.accordion.backend_parameters': backendParameters}) %}
+
+    {{ elements.accordion(panes) }}
+</div>

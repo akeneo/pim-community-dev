@@ -2,6 +2,7 @@
 
 namespace Context\Page\Base;
 
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Element\Element;
 
@@ -33,7 +34,7 @@ class Form extends Base
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
                 'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),
                 'Available attributes add button' => array('css' => '.pimmultiselect a.btn:contains("Add")'),
-                'Updates grid'                    => array('css' => '#history table.grid'),
+                'Updates grid'                    => array('css' => '.tab-pane.tab-history table.grid'),
             ),
             $this->elements
         );
@@ -237,102 +238,42 @@ class Form extends Base
      * We have a field "$" embedded inside a "Price" field
      * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
      *
-     * @param string  $labelContent
+     * @param string  $field
      * @param string  $value
      * @param Element $element
      *
      * @return null
      */
-    public function fillField($labelContent, $value, Element $element = null)
+    public function fillField($field, $value, Element $element = null)
     {
-        $subLabelContent = null;
-        if (false !== strpbrk($labelContent, '€$')) {
-            if (false !== strpos($labelContent, ' ')) {
-                list($subLabelContent, $labelContent) = explode(' ', $labelContent);
-            }
-        }
+        $label = $this->extractLabelElement($field, $element);
+        $fieldType = $this->getFieldType($label);
 
-        if ($element) {
-            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
-        } else {
-            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
-        }
-
-        if (null === $label) {
-            return parent::fillField($labelContent, $value);
-        }
-
-        if ($label->hasAttribute('for')) {
-            if (false === strpos($value, ',')) {
-                $for = $label->getAttribute('for');
-                if (0 === strpos($for, 's2id_')) {
-                    // We are playing with a select2 widget
-                    if (null !== $field = $label->getParent()->find('css', 'select')) {
-                        return $field->selectOption($value);
-                    }
-
-                    // Maybe it's an ajax select2?
-                    if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
-                        $link->click();
-
-                        // Wait for the ajax request to finish
-                        $this->getSession()->wait(5000, '!$.active');
-
-                        // Select the value in the displayed dropdown
-                        if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
-                            return $item->click();
-                        }
-                    }
-
-                    throw new \InvalidArgumentException(
-                        sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
-                    );
-                } elseif (preg_match('/_date$/', $for)) {
-                    $this->getSession()->executeScript(
-                        sprintf("$('#%s').val('%s').trigger('change');", $for, $value)
-                    );
-                } else {
-                    $field = $this->find('css', sprintf('#%s', $for));
-                    if ($field->getTagName() === 'select') {
-                        $field->selectOption($value);
-                    } else {
-                        if (strpos($field->getAttribute('class'), 'wysiwyg') !== false) {
-                            $this->getSession()->executeScript(
-                                sprintf("$('#%s').val('%s');", $for, $value)
-                            );
-                        } else {
-                            $field->setValue($value);
-                        }
-                    }
-                }
-            } else {
-                foreach (explode(',', $value) as $value) {
-                    $label->getParent()->find('css', 'input[type="text"]')->click();
-                    $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
-                    $option = $this->find('css', sprintf('li:contains("%s")', trim($value)));
-                    if (!$option) {
-                        throw new \InvalidArgumentException(
-                            sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText())
-                        );
-                    }
-                    $option->click();
-                }
-            }
-        } else {
-            if (!$subLabelContent) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'The "%s" field is compound but the sub label was not provided',
-                        $labelContent
-                    )
-                );
-            }
-
-            // it is a compound field, so let's expand the values
-            $this->expand($label);
-
-            $field = $this->findPriceField($labelContent, $subLabelContent);
-            $field->setValue($value);
+        switch ($fieldType) {
+            case 'multiSelect2':
+                $this->fillMultiSelect2Field($label, $value);
+                break;
+            case 'simpleSelect2':
+                $this->fillSelect2Field($label, $value);
+                break;
+            case 'datepicker':
+                $this->fillDateField($label, $value);
+                break;
+            case 'select':
+                $this->fillSelectField($label, $value);
+                break;
+            case 'wysiwyg':
+                $this->fillWysiwygField($label, $value);
+                break;
+            case 'text':
+                $this->fillTextField($label, $value);
+                break;
+            case 'compound':
+                $this->fillCompoundField($label, $value);
+                break;
+            default:
+                parent::fillField($label->labelContent, $value);
+                break;
         }
     }
 
@@ -433,5 +374,280 @@ class Form extends Base
         }
 
         return $fields[$fieldNum];
+    }
+
+    /**
+     * Extracts and return the label NodeElement, identified by $field content and $element
+     *
+     * @param string    $field
+     * @param Element   $element
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    protected function extractLabelElement($field, $element)
+    {
+        $subLabelContent = null;
+        $labelContent = $field;
+
+        if (false !== strpbrk($field, '€$')) {
+            if (false !== strpos($field, ' ')) {
+                list($subLabelContent, $labelContent) = explode(' ', $field);
+            }
+        }
+
+        if ($element) {
+            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+        } else {
+            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+        }
+
+        if (! $label) {
+            $label = new \stdClass();
+        }
+
+        $label->labelContent = $labelContent;
+        $label->subLabelContent = $subLabelContent;
+
+        return $label;
+    }
+
+    /**
+     * Guesses the type of field identified by $label and returns it.
+     *
+     * Possible identified fields are :
+     * [multiSelect2, simpleSelect2, datepicker, select, wysiwyg, text, compound]
+     *
+     * @param $label
+     *
+     * @return string
+     */
+    protected function getFieldType($label)
+    {
+        if (null === $label || false === $label instanceof NodeElement) {
+            return null;
+        }
+
+        if ($label->hasAttribute('for')) {
+
+            $for = $label->getAttribute('for');
+
+            if (0 === strpos($for, 's2id_')) {
+
+                if ($label->getParent()->find('css', '.select2-container-multi')) {
+                    return 'multiSelect2';
+                } elseif ($label->getParent()->find('css', 'select')) {
+                    return 'select';
+                }
+
+                return 'simpleSelect2';
+            }
+
+            if (1 === preg_match('/_date$/', $for)) {
+                return 'datepicker';
+            }
+
+            $field = $this->find('css', sprintf('#%s', $for));
+
+            if ($field->getTagName() === 'select') {
+                return 'select';
+            }
+
+            if (false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
+                return 'wysiwyg';
+            }
+
+            return 'text';
+        }
+
+        return 'compound';
+    }
+
+    /**
+     * Fills a multivalues Select2 field with $value, identified by its $label.
+     * It deletes existing selected values from field if not present in $value.
+     *
+     * $value can be a string of multiple values. Each value must be separated with comma, eg :
+     * 'Hot, Dry, Fresh'
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function fillMultiSelect2Field($label, $value)
+    {
+        $allValues = explode(',', $value);
+        $selectedValues = $label->getParent()->findAll('css', '.select2-search-choice');
+        $selectedTextValues = array_map(function ($selectedValue) {
+            return $selectedValue->getText();
+        }, $selectedValues);
+
+        // Delete tag from right to left to prevent select2 DOM change
+        $selectedValues = array_reverse($selectedValues);
+
+        foreach ($selectedValues as $selectedValue) {
+            if (false === in_array($selectedValue->getText(), $allValues)) {
+
+                $closeButton = $selectedValue->find('css', 'a');
+
+                if (!$closeButton) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Could not find "%s" close button for "%s"',
+                            trim($selectedValue->getText()),
+                            $label->getText()
+                        )
+                    );
+                }
+
+                $closeButton->click();
+            }
+        }
+
+        // Removing tags in MultiSelect2 drops an "animation" with opacity, we must
+        // wait for it to completly vanish in order to reopen select list
+        $this->getSession()->wait(2000);
+
+        $allValues = array_filter($allValues);
+        if (1 === count($allValues)) {
+            $value = array_shift($allValues);
+            $this->fillSelectField($label, $value);
+        }
+
+        // Fill in remaining values
+        $remainingValues = array_diff($allValues, $selectedTextValues);
+
+        foreach ($remainingValues as $value) {
+            if (trim($value)) {
+                $label->getParent()->find('css', 'input[type="text"]')->click();
+                $this->getSession()->wait(100000, "$('div:contains(\"Searching\")').length == 0");
+
+                $option = $this->find('css', sprintf('li:contains("%s")', trim($value)));
+
+                if (!$option) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Could not find option "%s" for "%s"', trim($value), $label->getText())
+                    );
+                }
+
+                $option->click();
+            }
+        }
+    }
+
+    /**
+     * Fills a simple (unique value) select2 field with $value, identified by its $label.
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function fillSelect2Field($label, $value)
+    {
+        if (trim($value)) {
+
+            if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
+                $link->click();
+
+                $this->getSession()->wait(5000, '!$.active');
+
+                // Select the value in the displayed dropdown
+                if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
+                    return $item->click();
+                }
+            }
+
+            throw new \InvalidArgumentException(
+                sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+            );
+        }
+    }
+
+    /**
+     * Fills a select element with $value, identified by its $label.
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     */
+    protected function fillSelectField($label, $value)
+    {
+        $field = $label->getParent()->find('css', 'select');
+
+        $field->selectOption($value);
+    }
+
+    /**
+     * Fills a Wysiwyg editor element with $value, identified by its $label.
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     */
+    protected function fillWysiwygField($label, $value)
+    {
+        $for = $label->getAttribute('for');
+
+        $this->getSession()->executeScript(
+            sprintf("$('#%s').val('%s');", $for, $value)
+        );
+    }
+
+    /**
+     * Fills a date field element with $value, identified by its $label.
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     */
+    protected function fillDateField($label, $value)
+    {
+        $for = $label->getAttribute('for');
+
+        $this->getSession()->executeScript(
+            sprintf("$('#%s').val('%s').trigger('change');", $for, $value)
+        );
+    }
+
+    /**
+     * Fills a text field element with $value, identified by its $label.
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     */
+    protected function fillTextField($label, $value)
+    {
+        $for = $label->getAttribute('for');
+        $field = $this->find('css', sprintf('#%s', $for));
+
+        $field->setValue($value);
+    }
+
+    /**
+     * Fills a compound field with $value, by passing the $label in reversed order separated
+     * with whitespaces.
+     *
+     * Example:
+     * We have a field "$" embedded inside a "Price" field
+     * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
+     *
+     * @param \Behat\Mink\Element\NodeElement   $label
+     * @param string                            $value
+     *
+     * @throws ElementNotFoundException
+     */
+    protected function fillCompoundField($label, $value)
+    {
+        if (! $label->subLabelContent) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'The "%s" field is compound but the sub label was not provided',
+                    $label->labelContent
+                )
+            );
+        }
+
+        $this->expand($label);
+
+        $field = $this->findPriceField($label->labelContent, $label->subLabelContent);
+        $field->setValue($value);
     }
 }

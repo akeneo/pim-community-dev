@@ -1,47 +1,31 @@
 parameters:
-    pim_enrich.form.handler.attribute.class:        Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler
-    pim_enrich.form.handler.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler
-    pim_enrich.form.handler.family.class:           Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler
-    pim_enrich.form.handler.currency.class:         Pim\Bundle\EnrichBundle\Form\Handler\CurrencyHandler
-    pim_enrich.form.handler.channel.class:          Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler
+    pim_enrich.form.handler.base.class:             Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
     pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
-    pim_enrich.form.handler.group_type.class:       Pim\Bundle\EnrichBundle\Form\Handler\GroupTypeHandler
-    pim_enrich.form.handler.association_type.class: Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler
 
 services:
     pim_enrich.form.handler.attribute:
-        class: %pim_enrich.form.handler.attribute.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.attribute'
             - '@request'
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.saver.attribute'
 
     pim_enrich.form.handler.attribute_group:
-        class: %pim_enrich.form.handler.attribute_group.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.attribute_group'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.attribute_group'
 
     pim_enrich.form.handler.channel:
-        class: %pim_enrich.form.handler.channel.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.channel'
             - '@request'
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
-
-    pim_enrich.form.handler.currency:
-        class: %pim_enrich.form.handler.currency.class%
-        scope: request
-        arguments:
-            - '@pim_enrich.form.currency'
-            - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.channel'
 
     pim_enrich.form.handler.group:
         class: %pim_enrich.form.handler.group.class%
@@ -49,31 +33,38 @@ services:
         arguments:
             - '@pim_enrich.form.group'
             - '@request'
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.product.class%
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.repository.product'
 
+    pim_enrich.form.handler.variant_group:
+        class: %pim_enrich.form.handler.group.class%
+        scope: request
+        arguments:
+            - '@pim_enrich.form.variant_group'
+            - '@request'
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.repository.product'
 
     pim_enrich.form.handler.group_type:
-        class: %pim_enrich.form.handler.group_type.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.group_type'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.group_type'
 
     pim_enrich.form.handler.association_type:
-        class: %pim_enrich.form.handler.association_type.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.association_type'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.association_type'
 
     pim_enrich.form.handler.family:
-        class: %pim_enrich.form.handler.family.class%
+        class: %pim_enrich.form.handler.base.class%
         scope: request
         arguments:
             - '@pim_enrich.form.family'
             - '@request'
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.saver.family'

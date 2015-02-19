@@ -2,16 +2,13 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
-
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
-use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class FamilyTransformerSpec extends ObjectBehavior
 {

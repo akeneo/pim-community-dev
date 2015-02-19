@@ -31,6 +31,12 @@ form.form-signin {
       color: @textColor;
       #gradient .vertical(#f4f4f4, #dcdcdc);
     }
+    .input-request {
+      border-radius: 3px;
+    }
+    #prepended-input-request {
+      width: 458px;
+    }
   }
   button.btn-primary {
     float: none;
@@ -327,11 +333,19 @@ div.btn-group > .has-switch {
 #attribute-buttons {
   float: right;
   margin: 10px;
+  position: relative;
+  top: 4px;
+  margin-top: 0;
 }
-#channel-switcher .dropdown-toggle {
-  border-right: 0;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+#channel-switcher {
+  .dropdown-toggle {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  .icons-holder {
+    width: 40px;
+  }
 }
 
 #comparison-buttons {
@@ -739,12 +753,7 @@ table i {
   left: auto;
 }
 
-.product-edit #attributes {
-  #attribute-buttons {
-    position: relative;
-    top: 4px;
-    margin-top: 0;
-  }
+.product-edit #pim_enrich-product-tab-attribute {
   .select2-container { max-width: 365px;}
   .select2-container { width: 365px!important; } /* important statement come from bap */
 }
@@ -920,6 +929,7 @@ table.comparison .no-label .attribute-field.scopable {
     margin: 0;
     border-radius: 0;
     .remove-upload {
+      float: none;
       border-radius: 0;
     }
   }
@@ -947,7 +957,7 @@ h1 {
 .navbar-extra {
   padding: 10px 7px 10px 12px;
 }
-.navbar-content {
+.navbar-content, .content {
   line-height: 18px;
   .sub-title {
     float: left;
@@ -1000,7 +1010,12 @@ h1 {
   .buffer-small-right {padding-right:10px;}
   .buffer-small-bottom {padding-bottom:10px;}
   .buffer-small-left {padding-left:10px;}
+  .buffer-extra-top {padding-top:50px;}
+  .buffer-extra-right {padding-right:50px;}
+  .buffer-extra-bottom {padding-bottom:50px;}
+  .buffer-extra-left {padding-left:50px;}
   .left-aligned {text-align: left;}
+  .right-aligned {text-align: right;}
 }
 .unspaced {
   margin: 0;
@@ -1126,7 +1141,7 @@ div.dropdown-menu.channel {
 
 .classify .nav-list li a i,
 #association-list .nav-list li a i,
-#categories .nav-list li a i {
+#pim_enrich-product-tab-category .nav-list li a i {
   padding-right: 5px;
   font-size: 16px;
   &.gray {
@@ -1293,7 +1308,7 @@ button.pimmultiselect {
 .attribute-field.scopable>div:not(.first) .controls.metric input {
   height: 21px;
 }
-.product-edit #attributes .metric .select2-container {
+.product-edit #pim_enrich-product-tab-attribute .metric .select2-container {
   width: 160px !important;
 }
 
@@ -1376,22 +1391,111 @@ table#progress-table {
 }
 
 /** datagrid columns configuration ***********************************************************************************/
-.connectedSortable {
-  height: 320px;
-  min-height: 15px;
-  padding: 10px;
-  margin-bottom: 0;
+.column-configurator-modal {
+  width: 90%;
+  left: 5%;
   margin-left: 0;
-  overflow-y: auto;
-  list-style-type: none;
-  border: 1px solid #ccc;
-  &#bucket {
-    border-style: dashed;
+  top: 5%;
+  .modal-body {
+    max-height: inherit;
+    padding: 0;
+    background-color: #edf1f2;
   }
-  li {
-    padding: 5px 0;
+}
+#column-configurator {
+  h4 {
+    height: 52px;
+    line-height: 30px;
+    margin: 0;
+    padding: 10px;
+    color: #999;
+    border-left: 1px solid #e0e7e9;
+    border-bottom: 1px solid #e0e7e9;
+  }
+  i.icon-search {
+    font-size: 18px;
+  }
+  input[type="search"] {
+    width: 80%;
+    border: none;
+    outline: none;
+    margin: 0;
+    background: transparent;
+    font-size: inherit;
+    font-weight: inherit;
+    color: inherit;
+    .box-shadow(inset 0 0 0 transparent);
+    &:focus{
+      .box-shadow(none);
+    }
+  }
+  .span4 {
+    margin-left: 0;
+    width: 100% / 3;
+    &:not(:first-of-type) {
+      background-color: #f6f8f8;
+    }
+    &:last-of-type {
+      background-color: @backgroundColor-white;
+    }
+  }
+  ul {
+    padding: 10px;
+    margin: 0;
+    overflow-y: auto;
+    list-style-type: none;
     font-size: 13px;
-    cursor: pointer;
+    border-left: 1px solid #e0e7e9;
+    li {
+      cursor: pointer;
+      padding: 15px 10px;
+      border: 1px solid #e3eaeb;
+      &:not(:first-of-type) {
+        border-top: none;
+      }
+      &.filtered {
+        display: none;
+      }
+      i {
+        font-size: 15px;
+        color: #ccc;
+        padding-right: 8px;
+      }
+    }
+    &.connected-sortable li {
+      background-color: #f6f8f8;
+      .action i {
+        margin: 0 2px;
+        padding: 3px 8px;
+        color: #666;
+        border: 1px solid #ccc;
+        .border-radius(3px);
+      }
+      &:hover .action i {
+        background-color: @backgroundColor-white;
+        &:hover {
+          background-color: @color-light_grey;
+        }
+      }
+    }
+    &#column-list li .action {
+      display: none;
+    }
+  }
+  .nav-list {
+    .badge-transparent {
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      background: transparent;
+      color: #999;
+      font-size: 14px;
+      text-shadow: initial;
+    }
+    li {
+      &.active {
+        background-color: #e4eaec;
+      }
+    }
   }
 }
 
@@ -1410,15 +1514,16 @@ button.view-button {
   margin-top: -6px;
   font-size: 13px;
   &.hide {
-  display: none;
+    display: none;
   }
 }
 
 /** Role form ********************************************************************************************************/
 div.acl-permission {
-  display: inline-block;
+  display: list-item;
   margin-left: 20px;
   line-height: 40px;
+  list-style: none;
   &>div[id] {
     display: inline-block;
   }

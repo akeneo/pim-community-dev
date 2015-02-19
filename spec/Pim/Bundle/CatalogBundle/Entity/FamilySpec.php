@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class FamilySpec extends ObjectBehavior
 {
-    function it_contains_attributes(AbstractAttribute $sku, AbstractAttribute $name)
+    function it_contains_attributes(AttributeInterface $sku, AttributeInterface $name)
     {
         $this->addAttribute($sku)->shouldReturn($this);
         $this->addAttribute($name)->shouldReturn($this);
@@ -15,7 +15,7 @@ class FamilySpec extends ObjectBehavior
         $this->hasAttribute($name)->shouldReturn(true);
     }
 
-    function it_allows_removing_attributes(AbstractAttribute $name)
+    function it_allows_removing_attributes(AttributeInterface $name)
     {
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $this->addAttribute($name)->shouldReturn($this);
@@ -24,7 +24,7 @@ class FamilySpec extends ObjectBehavior
         $this->hasAttribute($name)->shouldReturn(false);
     }
 
-    function it_throws_an_exception_when_removing_the_identifier_attribute(AbstractAttribute $sku)
+    function it_throws_an_exception_when_removing_the_identifier_attribute(AttributeInterface $sku)
     {
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $this->addAttribute($sku)->shouldReturn($this);
@@ -35,10 +35,10 @@ class FamilySpec extends ObjectBehavior
         $this->hasAttribute($sku)->shouldReturn(true);
     }
 
-    function it_allows_defining_an_attribute_to_use_as_label(AbstractAttribute $name)
+    function it_allows_defining_an_attribute_to_use_as_label(AttributeInterface $name)
     {
         $name->getAttributeType()->willReturn('pim_catalog_text');
-        $this->getAttributeAsLabel()->shouldReturn(null);;
+        $this->getAttributeAsLabel()->shouldReturn(null);
         $this->setAttributeAsLabel($name)->shouldReturn($this);
     }
 }

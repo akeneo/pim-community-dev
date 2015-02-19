@@ -2,16 +2,16 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\EventListener;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Extension\Acceptor;
-use Pim\Bundle\DataGridBundle\Datasource\Datasource;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\DataGridBundle\Extension\Acceptor;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\DataGridBundle\Datasource\Datasource;
+use Prophecy\Argument;
 
 class AddLocaleCodeToGridListenerSpec extends ObjectBehavior
 {

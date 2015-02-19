@@ -2,28 +2,31 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Pim\Bundle\UserBundle\Context\UserContext;
 
 class FamilyManagerSpec extends ObjectBehavior
 {
     function let(
-        FamilyRepository $repository,
+        FamilyRepositoryInterface $repository,
         UserContext $userContext,
         ObjectManager $objectManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        CompletenessManager $completenessManager
     ) {
         $this->beConstructedWith(
             $repository,
             $userContext,
             $objectManager,
-            $eventDispatcher
+            $eventDispatcher,
+            $completenessManager
         );
     }
 
@@ -33,21 +36,5 @@ class FamilyManagerSpec extends ObjectBehavior
         $repository->getChoices(['localeCode' => 'foo'])->willReturn(['foo' => 'foo']);
 
         $this->getChoices()->shouldReturn(['foo' => 'foo']);
-    }
-
-    function it_dispatches_an_event_when_removing_a_family(
-        $eventDispatcher,
-        $objectManager,
-        Family $family
-    ) {
-        $eventDispatcher->dispatch(
-            FamilyEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($family)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-
-        $this->remove($family);
     }
 }

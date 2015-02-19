@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\Processor\CsvSerializer;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Test related class

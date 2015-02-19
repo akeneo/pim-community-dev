@@ -1,0 +1,30 @@
+{% set fullname = comment.author|oro_format_name|default('N/A') %}
+<ol class="comment-thread unstyled" id="comment{{ comment.id }}">
+    <li class="comment-topic">
+        <div class="row-fluid">
+            <div class="span1 text-right">
+                <img width="35" src="{{ comment.author.imagePath ? comment.author.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
+            </div>
+            <div class="span11">
+                <div>
+                    <span class="author"><strong>{{ fullname }}</strong></span>
+                    <span class="date">&nbsp;&#8211;&nbsp;{{ comment.createdAt|date("M jS \\a\\t g:ia") }}</span>
+                </div>
+                <div>
+                    <span class="message">{{ comment.body|nl2br }}</span>
+                    <span class="comment-buttons pull-right">
+                        {% include 'PimCommentBundle:Comment:_buttons.html.twig' with {id: comment.id} %}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </li>
+    <li class="row-fluid comment-reply-action toggle-active">
+        {% include 'PimCommentBundle:Comment:_commentReplyAction.html.twig' %}
+    </li>
+    {% for reply in comment.children %}
+        <li id="comment{{ reply.id }}" class="row-fluid comment-reply">
+            {% include 'PimCommentBundle:Comment:_commentReply.html.twig' with {'reply': reply} %}
+        </li>
+    {%  endfor %}
+</ol>

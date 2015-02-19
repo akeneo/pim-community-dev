@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
  * Prices attribute transformer
@@ -62,7 +62,7 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
         foreach (explode(',', $data) as $price) {
             $parts = explode(' ', trim($price));
             if (count($parts) > 1) {
-                $prices[$parts[1]] = $parts[0];
+                $prices[$parts[1]] = (float) $parts[0];
             } else {
                 throw new PropertyTransformerException('Malformed price: "%price%"', array('%price%' => $price));
             }

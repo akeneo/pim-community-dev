@@ -60,9 +60,19 @@ connector:
                 export:
                     title:     pim_base_connector.jobs.csv_group_export.export.title
                     services:
-                        reader:    pim_base_connector.reader.orm.group
-                        processor: pim_base_connector.processor.csv_serializer.homogeneous
+                        reader:    pim_base_connector.reader.repository.group
+                        processor: pim_base_connector.processor.normalization.csv_group
                         writer:    pim_base_connector.writer.file
+        csv_variant_group_export:
+            title: pim_base_connector.jobs.csv_variant_group_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_variant_group_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.repository.variant_group
+                        processor: pim_base_connector.processor.normalization.csv_variant_group
+                        writer:    pim_base_connector.writer.file.csv_variant_group
 
         csv_product_import:
             title: pim_base_connector.jobs.csv_product_import.title
@@ -158,5 +168,22 @@ connector:
                     title:     pim_base_connector.jobs.csv_group_import.import.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_group
-                        processor: pim_base_connector.processor.group
+                        processor: pim_base_connector.processor.denormalization.csv_group
                         writer:    pim_base_connector.writer.doctrine.group
+        csv_variant_group_import:
+            title: pim_base_connector.jobs.csv_variant_group_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_variant_group_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_variant_group_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_variant_group
+                        processor: pim_base_connector.processor.denormalization.csv_variant_group
+                        writer:    pim_base_connector.writer.doctrine.variant_group
+                    parameters:
+                        batchSize: 1

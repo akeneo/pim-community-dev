@@ -2,25 +2,24 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use Pim\Bundle\VersioningBundle\Model\Version;
-
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\TableNameBuilder;
+use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use Doctrine\DBAL\Connection;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class PendingMassPersisterSpec extends ObjectBehavior
 {
     function let(
         VersionBuilder $versionBuilder,
         VersionManager $versionManager,
+        VersionContext $versionContext,
         NormalizerInterface $normalizer,
         Connection $connection,
         EntityManager $entityManager,
@@ -29,6 +28,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
         $this->beConstructedWith(
             $versionBuilder,
             $versionManager,
+            $versionContext,
             $normalizer,
             'VersionClass',
             $connection,
@@ -44,6 +44,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
         $connection,
         $entityManager,
         $tableNameBuilder,
+        $versionContext,
         ClassMetadata $versionMetadata,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -58,7 +59,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
         $date2->format(\DateTime::ISO8601)->willReturn('2014-07-16T10:20:37+02:00');
 
         $versionManager->getUsername()->willReturn('julia');
-        $versionManager->getContext()->willReturn('CSV Import');
+        $versionContext->getContextInfo()->willReturn('CSV Import');
 
         $normalizedProduct1 = [
             'sku'  => 'sku-001',
@@ -105,13 +106,12 @@ class PendingMassPersisterSpec extends ObjectBehavior
 
         $entityManager->getClassMetadata('VersionClass')->willReturn($versionMetadata);
 
-
         $versionBuilder->createPendingVersion($product1, 'julia', $normalizedProduct1, 'CSV Import')
             ->willReturn($pendingVersion1);
 
         $versionBuilder->createPendingVersion($product2, 'julia', $normalizedProduct2, 'CSV Import')
             ->willReturn($pendingVersion2);
-        
+
         $connection->executeQuery(
             'INSERT INTO version_table'.
             ' (author,changeset,snapshot,resource_name,resource_id,context,logged_at,pending)'.
@@ -135,7 +135,7 @@ class PendingMassPersisterSpec extends ObjectBehavior
                 true
             ]
         )->shouldBeCalled();
-        
+
         $this->persistPendingVersions($products);
     }
 }

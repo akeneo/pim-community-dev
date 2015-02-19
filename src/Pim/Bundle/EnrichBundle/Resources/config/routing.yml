@@ -22,6 +22,10 @@ attribute:
     resource: '@PimEnrichBundle/Resources/config/routing/attribute.yml'
     prefix: /configuration/attribute
 
+attribute_option:
+    resource: '@PimEnrichBundle/Resources/config/routing/attributeoption.yml'
+    prefix: /configuration/attribute_option
+
 categorytree:
     resource: '@PimEnrichBundle/Resources/config/routing/categorytree.yml'
     prefix: /enrich/category-tree
@@ -53,3 +57,7 @@ media:
 grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
+
+sequential_edit:
+    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
+    prefix: /enrich/sequential_edit

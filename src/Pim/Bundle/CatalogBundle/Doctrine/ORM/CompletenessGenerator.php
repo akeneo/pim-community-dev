@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Generate the completeness when Product are in ORM
@@ -69,7 +69,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMissingForChannel(Channel $channel)
+    public function generateMissingForChannel(ChannelInterface $channel)
     {
         $this->generate(array('channelId' => $channel->getId()));
     }
@@ -202,7 +202,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 GROUP BY l.id, c.id, v.id
                 HAVING COUNT(price.data) = COUNT(price.id)
 COMPLETE_PRICES_SQL;
-
     }
 
     /**
@@ -235,7 +234,6 @@ COMPLETE_PRICES_SQL;
                 AND co.locale_id = l.id
             WHERE co.id IS NULL
 MISSING_SQL;
-
     }
 
     /**
@@ -618,7 +616,7 @@ MAIN_SQL;
     /**
      * {@inheritdoc}
      */
-    public function scheduleForFamily(Family $family)
+    public function scheduleForFamily(FamilyInterface $family)
     {
         $sql = '
             DELETE c FROM pim_catalog_completeness c
@@ -636,7 +634,7 @@ MAIN_SQL;
     /**
      * {@inheritdoc}
      */
-    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    public function scheduleForChannelAndLocale(ChannelInterface $channel, LocaleInterface $locale)
     {
         $sql = <<<SQL
             DELETE c FROM pim_catalog_completeness c

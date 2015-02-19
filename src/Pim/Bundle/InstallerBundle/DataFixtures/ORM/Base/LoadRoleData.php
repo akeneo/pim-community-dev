@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM\Base;
 
+use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
+use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
 use Symfony\Component\Yaml\Yaml;
-use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\SecurityBundle\Acl\Persistence\AclManager;
 
 /**
  * Load fixtures for roles
@@ -36,9 +36,9 @@ class LoadRoleData extends AbstractInstallerFixture
         $manager->persist($roleAnonymous);
 
         foreach ($dataRoles['user_roles'] as $code => $dataRole) {
-            $dataRole['role']= $code;
+            $dataRole['role'] = $code;
             $role = $this->buildRole($dataRole);
-            $roles[]= $role;
+            $roles[] = $role;
             $manager->persist($role);
         }
         $manager->flush();

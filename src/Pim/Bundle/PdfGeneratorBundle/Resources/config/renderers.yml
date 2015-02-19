@@ -1,0 +1,17 @@
+parameters:
+    pim_pdf_generator.renderer.product_pdf.class: Pim\Bundle\PdfGeneratorBundle\Renderer\ProductPdfRenderer
+    pim_pdf_generator.renderer.registry.class:    Pim\Bundle\PdfGeneratorBundle\Renderer\RendererRegistry
+
+services:
+    pim_pdf_generator.renderer.product_pdf:
+        class: %pim_pdf_generator.renderer.product_pdf.class%
+        arguments:
+            - '@templating'
+            - 'PimPdfGeneratorBundle:Product:renderPdf.html.twig'
+            - '@pim_pdf_generator.builder.dompdf'
+            - %upload_dir%
+        tags:
+            - { name: pim_pdf_generator.renderer, priority: 80 }
+
+    pim_pdf_generator.renderer.registry:
+        class: %pim_pdf_generator.renderer.registry.class%
