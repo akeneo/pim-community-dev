@@ -75,7 +75,7 @@
         "squizlabs/php_codesniffer": "1.*",
         "pdepend/pdepend": "1.1.*",
         "phpmd/phpmd": "1.*",
-        "behat/behat":  "2.5.4",
+        "behat/behat": "2.5.4",
         "kriswallsmith/buzz": ">=0.5",
         "behat/common-contexts": "1.2.0",
         "behat/gherkin":"2.3.5",
@@ -85,7 +85,7 @@
         "behat/mink-selenium2-driver": "1.2.0",
         "behat/symfony2-extension": "1.1.2",
         "behat/transliterator":"1.0.1",
-        "sensiolabs/behat-page-object-extension": "1.0.x-dev#6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
+        "sensiolabs/behat-page-object-extension": "1.0.1",
         "phpspec/phpspec": "2.1.*",
         "akeneo/phpspec-skip-example-extension": "1.1.*"
     },
