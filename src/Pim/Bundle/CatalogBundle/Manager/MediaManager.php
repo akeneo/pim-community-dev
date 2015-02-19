@@ -259,6 +259,10 @@ class MediaManager
      */
     protected function fileExists(AbstractProductMedia $media)
     {
+        if (null === $media->getFilename()) {
+            return;
+        }
+
         return $this->filesystem->has($media->getFilename());
     }
 

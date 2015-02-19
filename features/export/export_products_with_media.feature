@@ -72,7 +72,7 @@ Feature: Export products with media
     """
     sku;family;groups;categories;color;name-en_US;picture;price-EUR;price-USD;size;enabled
     FLIPFLOP-1R;flipflop;;summer_collection;;;files/FLIPFLOP-1R/picture/akeneo.jpg;;;;1
-    FLIPFLOP-1C;flipflop;;summer_collection;;;files/FLIPFLOP-1C/picture/;;;;1
+    FLIPFLOP-1C;flipflop;;summer_collection;;;;;;;1
     FLIPFLOP-1B;flipflop;;summer_collection;black;"Model 1";;50.00;70.00;45;1
 
     """
