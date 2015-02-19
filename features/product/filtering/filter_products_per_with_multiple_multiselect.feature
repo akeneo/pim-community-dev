@@ -33,25 +33,25 @@ Feature: Filter products
       | POSTIT | Postit | company        | X_SELL  | POST-1, POST-2, POST-3            |
       | EMPTY  | Empty  |                | X_SELL  |                                   |
     And I am logged in as "Mary"
-
-  Scenario: Successfully filter products with the sames attributes
-    Given I am on the products page
+    And I am on the products page
     And I show the filter "Company"
-    And I filter by "Company" with value "Red"
     And I show the filter "Color"
-    And I filter by "Color" with value "Green"
-    Then the grid should contain 3 elements
-    And I should see entities "MUG-2" and "MUG-3" and "MUG-4"
-    And I hide the filter "Company"
-    And I hide the filter "Color"
+
+  # Scenario: Successfully filter products with the sames attributes
+  #   Given I filter by "Company" with value "Red"
+  #   And I should be able to use the following filters:
+  #     | filter | value    | result                 |
+  #     | Color  | green    | MUG-2, MUG-3 and MUG-4 |
+  #     | Color  | is empty | POST-1 and POST-2      |
+  #   And I hide the filter "Company"
+  #   And I hide the filter "Color"
 
   Scenario: Successfully filter product without commons attributes
-    Given I am on the products page
-    And I show the filter "Company"
-    And I filter by "Company" with value "Black"
-    And I show the filter "Color"
-    And I filter by "Color" with value "Green"
-    Then the grid should contain 0 elements
+    Given I filter by "Color" with value "Green"
+    And I should be able to use the following filters:
+      | filter  | value    | result |
+      | Company | White    | MUG-1  |
+      | Company | is empty | MUG-5  |
     And I hide the filter "Company"
     And I hide the filter "Color"
 

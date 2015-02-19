@@ -1,3 +1,5 @@
+# 1.4.x
+
 # 1.3.x
 
 ## Bug fixes
@@ -501,7 +503,7 @@
 - constructor of Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer has changed
 - Pim\Bundle\TransformBundle\Cache\ProductCacheClearer has been renamed Pim\Bundle\TransformBundle\Cache\CacheClearer
 
-# 1.2.0 - "Acrobatty Bunny" (2014-08-28)
+# 1.2.0 (2014-08-28)
 
 ## Improvements
 

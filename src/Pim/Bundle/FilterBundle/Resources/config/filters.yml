@@ -136,6 +136,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_value_number }
 
