@@ -39,9 +39,13 @@ class CsvProductWriterSpec extends ObjectBehavior
         $file = new \SplFileInfo(realpath(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'));
         $media = ['filePath' => $file->getPathname(), 'exportPath' => null];
 
+        $previousReporting = error_reporting();
+        error_reporting(0);
+
         $this->write([['product' => 'my-product', 'media' => [$media]]]);
         $this->getWrittenFiles()->shouldReturn([]);
         $stepExecution->addWarning('csv_product_writer', 'The media has not been copied', [], $media)
             ->shouldBeCalled();
+        error_reporting($previousReporting);
     }
 }
