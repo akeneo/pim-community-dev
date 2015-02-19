@@ -31,6 +31,11 @@ class FamilyFactory
      */
     protected $factory;
 
+    /**
+     * @param ProductManager              $productManager
+     * @param ChannelManager              $channelManager
+     * @param AttributeRequirementFactory $factory
+     */
     public function __construct(
         ProductManager $productManager,
         ChannelManager $channelManager,
@@ -60,6 +65,9 @@ class FamilyFactory
         return $family;
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
+     */
     protected function getChannels()
     {
         return $this->channelManager->getChannels();
