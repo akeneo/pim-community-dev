@@ -96,25 +96,11 @@ oro_menu_config:
             extras:
                 routes: ['/^pim_enrich_group_type_\w+$/']
 
-        oro_tag_list:
-            display: false
-        oro_business_unit_list:
-            display: false
-        oro_email_emailtemplate_list:
-            display: false
         emails:
-            display: false
-        oro_notification_emailnotification_list:
-            display: false
-        entities_list:
             display: false
         oro_cron_job:
             display: false
         system_configuraion:
-            display: false
-        oro_calendar_view_default:
-            display: false
-        audit_list:
             display: false
 
     tree:

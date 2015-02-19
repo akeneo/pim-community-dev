@@ -70,16 +70,13 @@ class LoadUserData extends AbstractInstallerFixture
     protected function buildUser(array $data)
     {
         $user = $this->getUserManager()->createUser();
-        $owner = $this->getOwner($data['owner']);
         $user
             ->setUsername($data['username'])
             ->setPlainPassword($data['password'])
             ->setEmail($data['email'])
             ->setFirstName($data['firstname'])
             ->setLastName($data['lastname'])
-            ->setEnabled($data['enable'])
-            ->setOwner($owner)
-            ->addBusinessUnit($owner);
+            ->setEnabled($data['enable']);
 
         if (!isset($data['roles'])) {
             throw new \Exception(sprintf('user %s must have defined roles', $data['username']));
@@ -109,20 +106,6 @@ class LoadUserData extends AbstractInstallerFixture
         $user->setDefaultTree($tree);
 
         return $user;
-    }
-
-    /**
-     * Get the owner (business unit) from code
-     *
-     * @param string $owner
-     *
-     * @return \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-     */
-    protected function getOwner($owner)
-    {
-        return $this->om
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => $owner));
     }
 
     /**

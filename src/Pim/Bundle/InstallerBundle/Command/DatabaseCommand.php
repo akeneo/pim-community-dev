@@ -97,7 +97,6 @@ class DatabaseCommand extends ContainerAwareCommand
 
         $this->commandExecutor
             ->runCommand('doctrine:schema:create')
-            ->runCommand('oro:entity-config:init')
             ->runCommand(
                 'doctrine:schema:update',
                 array('--force' => true, '--no-interaction' => true)
