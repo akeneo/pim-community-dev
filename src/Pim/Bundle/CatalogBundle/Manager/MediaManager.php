@@ -240,6 +240,10 @@ class MediaManager
      */
     public function getExportPath(ProductMediaInterface $media, $identifier = null)
     {
+        if (null === $this->getFilePath($media)) {
+            return '';
+        }
+
         $value     = $media->getValue();
         $attribute = $value->getAttribute();
 
