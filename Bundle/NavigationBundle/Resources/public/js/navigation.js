@@ -16,7 +16,6 @@ define(function (require) {
     var PagestateView = require('oro/navigation/pagestate/view');
     var PagestateModel = require('oro/navigation/pagestate/model');
     var PageableCollection = require('oro/pageable-collection');
-    var widgetManager = require('oro/widget-manager');
     var _jqueryForm = require('jquery.form');
 
     var Navigation;
@@ -65,7 +64,6 @@ define(function (require) {
          * content - Selector for ajax response content area
          * container - Selector for main content area
          * loadingMask - Selector for loading spinner
-         * searchDropdown - Selector for dropdown with search results
          * menuDropdowns - Selector for 3 dots menu and user dropdowns
          * pinbarHelp - Selector for pinbars help link
          * historyTab - Selector for history 3 dots menu tab
@@ -84,7 +82,6 @@ define(function (require) {
             userMenu:            '#top-page .user-menu',
             container:           '#container',
             loadingMask:         '.hash-loading-mask',
-            searchDropdown:      '#search-div',
             menuDropdowns:       '.pin-menus.dropdown, .nav .dropdown',
             pinbarHelp:          '.pin-bar-empty',
             historyTab:          '#history-content',
@@ -251,7 +248,6 @@ define(function (require) {
                 this.beforeRequest();
                 var cacheData;
                 if (cacheData = this.getCachedData()) {
-                    widgetManager.resetWidgets();
                     this.tempCache = cacheData;
                     this.handleResponse(cacheData, {fromCache: true});
                     this.validatePageCache(cacheData);
@@ -699,17 +695,6 @@ define(function (require) {
             );
 
             /**
-             * Processing links in search result dropdown
-             */
-            mediator.bind(
-                "top_search_request:complete",
-                function () {
-                    this.processClicks($(this.selectorCached.searchDropdown).find(this.selectors.links));
-                },
-                this
-            );
-
-            /**
              * Processing pinbar help link
              */
             mediator.bind(
@@ -1008,7 +993,6 @@ define(function (require) {
          * Hide active dropdowns
          */
         hideActiveDropdowns: function() {
-            this.selectorCached.searchDropdown.removeClass('header-search-focused');
             this.selectorCached.menuDropdowns.removeClass('open');
         },
 

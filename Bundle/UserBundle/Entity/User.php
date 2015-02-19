@@ -15,10 +15,6 @@ use JMS\Serializer\Annotation\Exclude;
 
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 
-use Oro\Bundle\UserBundle\Entity\Status;
-use Oro\Bundle\UserBundle\Entity\Email;
-use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
-
 use DateTime;
 
 /**
@@ -261,13 +257,6 @@ class User implements
     protected $currentStatus;
 
     /**
-     * @var Email[]
-     *
-     * @ORM\OneToMany(targetEntity="Email", mappedBy="user", orphanRemoval=true, cascade={"persist"})
-     */
-    protected $emails;
-
-    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(type="datetime")
@@ -283,11 +272,10 @@ class User implements
 
     public function __construct()
     {
-        $this->salt            = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles           = new ArrayCollection();
-        $this->groups          = new ArrayCollection();
-        $this->statuses        = new ArrayCollection();
-        $this->emails          = new ArrayCollection();
+        $this->salt     = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles    = new ArrayCollection();
+        $this->groups   = new ArrayCollection();
+        $this->statuses = new ArrayCollection();
     }
 
     /**
@@ -343,16 +331,6 @@ class User implements
     public function getClass()
     {
         return 'Oro\Bundle\UserBundle\Entity\User';
-    }
-
-    /**
-     * Get name of field contains the primary email address
-     *
-     * @return string
-     */
-    public function getPrimaryEmailField()
-    {
-        return 'email';
     }
 
     /**
@@ -1144,44 +1122,6 @@ class User implements
     public function setCurrentStatus(Status $status = null)
     {
         $this->currentStatus = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get User Emails
-     *
-     * @return Email[]
-     */
-    public function getEmails()
-    {
-        return $this->emails;
-    }
-
-    /**
-     * Add Email to User
-     *
-     * @param  Email $email
-     * @return User
-     */
-    public function addEmail(Email $email)
-    {
-        $this->emails[] = $email;
-
-        $email->setUser($this);
-
-        return $this;
-    }
-
-    /**
-     * Delete Email from User
-     *
-     * @param  Email $email
-     * @return User
-     */
-    public function removeEmail(Email $email)
-    {
-        $this->emails->removeElement($email);
 
         return $this;
     }

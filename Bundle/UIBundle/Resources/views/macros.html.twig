@@ -25,15 +25,6 @@
 {% endmacro %}
 
 {#
-    Render flexible attribute row
-    Parameters:
-        value - flexible attribute
-#}
-{% macro flexibleAttributeRow(value) %}
-    {{ _self.attibuteRow(value.attribute.label, value.__toString|default('N/A')) }}
-{% endmacro %}
-
-{#
     Render attribute row
     Parameters:
         title - attribute title
@@ -158,50 +149,6 @@
                 title="{{ parameters.title|trans }}"
             {% endif %}
            ><i class="icon-trash"></i>{{ parameters.label|trans -}}
-        </a>
-    </div>
-{% endmacro %}
-
-{#
-    A button with javascript handler
-    Parameters - array:
-        [
-            'aCss' - additional css class for 'a' tag
-            'iCss' - additional css class for 'i' tag
-            'dataId' - data-id parameter
-            'dataUrl' - data-url parameter
-            'dataRedirect' - url to redirect after an operation finished
-            'successMessage' - a message which will be shown after an operation finished
-            'title' - button title
-            'label' - button label
-            'visible' - determined whether the button is visible or not. Defaults to true
-        ]
-#}
-{% macro clientButton(parameters) %}
-    <div class="pull-left btn-group icons-holder">
-        <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined ? parameters.aCss : '' }}"
-            {% if (parameters.id is defined) %}
-            id="{{ parameters.id }}"
-            {% endif %}
-            {% if (parameters.dataId is defined) %}
-            data-id="{{ parameters.dataId }}"
-            {% endif %}
-            {% if (parameters.dataUrl is defined) %}
-            data-url="{{ parameters.dataUrl }}"
-            {% endif %}
-            {% if (parameters.successMessage is defined) %}
-            data-success-message="{{ parameters.successMessage }}"
-            {% endif %}
-            {% if parameters.dataRedirect is defined %}
-            data-redirect="{{ parameters.dataRedirect  }}"
-            {% endif %}
-            {% if (parameters.title is defined) %}
-            title="{{ parameters.title }}"
-            {% endif -%}
-            {% if (parameters.visible is defined and not parameters.visible) %}
-            style="display: none"
-            {% endif -%}
-        ><i class="{{ parameters.iCss is defined ? parameters.iCss : '' }} hide-text">{{ parameters.label }}</i>{{ parameters.label -}}
         </a>
     </div>
 {% endmacro %}
@@ -376,29 +323,6 @@
                     {% endif %}
                 </div>
             {% endif %}
-        </div>
-    </div>
-{% endmacro %}
-
-{#
-    Create collection field block
-    Parameters:
-        field - form collection field
-        label - label of block
-        buttonCaption - Caption of add entity button
-#}
-{% macro collectionField(field, label, buttonCaption) %}
-    <div class="control-group">
-        <label class="control-label">{{ label|trans }}</label>
-        <div class="controls">
-            <div class="row-oro">
-                <div class="collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">
-                    {% for emailField in field.children %}
-                        {{ _self.collection_prototype(emailField) }}
-                    {% endfor %}
-                </div>
-                <a class="btn add-list-item" href="javascript: void(0);">{{ buttonCaption|trans }}</a>
-            </div>
         </div>
     </div>
 {% endmacro %}

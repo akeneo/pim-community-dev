@@ -17,7 +17,7 @@
                 {% endblock %}
                 {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
                 <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/init-user', 'oro/widget-manager', 'jquery.uniform']);
+                    require(['oro/init-layout', 'oro/init-user']);
                 {% if app.debug %}
                     require(['oro/app'], function(app){app.debug = true;});
                 {% endif %}
@@ -74,12 +74,6 @@
                                 {% block user_menu %}
                                     <ul class="nav pull-right user-menu">
                                         {% placeholder user_menu %}
-                                        {# Disabled notification icon till it will be implemented
-                                        {% block notifications %}
-                                        <li class="divider-vertical small-divider"></li>
-                                        <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
-                                        {% endblock notifications %}
-                                        #}
                                     </ul>
                                 {% endblock %}
                             </div>
@@ -143,47 +137,6 @@
                         {% block page_container %}
                             {% block content %}
                                 {% placeholder content_before %}
-                                <div class="container" style="background: #fff">
-                                    <div class="row">
-                                        <div class="span4">
-                                            <hr />
-                                            <h3>Layout pages</h3>
-                                            <ul>
-                                                <li><a href="{{ path('oro_ui_1column') }}">1 column </a></li>
-                                                <li><a href="{{ path('oro_ui_1column_toolbar') }}">1 column with toolbar</a></li>
-                                                <li><a href="{{ path('oro_ui_1column_menu') }}">1 column with menu</a></li>
-                                                <li><a href="{{ path('oro_ui_grid_page') }}">grid page</a></li>
-                                                <li><a href="{{ path('oro_ui_grid_without_bar_page') }}">grid page without bar</a></li>
-                                                <li><a href="{{ path('oro_ui_2columns_left') }}">2 columns - left</a></li>
-                                                <li><a href="{{ path('oro_ui_2columns_right') }}">2 columns - right</a></li>
-                                                <li><a href="{{ path('oro_ui_3columns') }}">3 columns</a></li>
-                                            </ul>
-                                            <h3>Static pages</h3>
-                                            <ul>
-                                                <li><a href="{{ path('oro_ui_forgot_password') }}">Forgot password</a></li>
-                                                <li><a href="{{ path('oro_ui_login') }}">Login page</a></li>
-                                                <li><a href="{{ path('oro_ui_registration') }}">Registration page</a></li>
-                                                <li><a href="{{ path('oro_ui_404') }}">404</a></li>
-                                                <li><a href="{{ path('oro_ui_503') }}">503</a></li>
-                                            </ul>
-                                            <h3>Example pages</h3>
-                                            <ul>
-                                                <li><a href="{{ path('oro_ui_form_elements') }}">Form elements</a></li>
-                                                <li><a href="{{ path('oro_ui_form_horizontal') }}">Form Horizontal</a></li>
-                                                <li><a href="{{ path('oro_ui_messages') }}">System messages</a></li>
-                                                <li><a href="{{ path('oro_ui_title_bar') }}">Entity Title Bar</a></li>
-                                                <li><a href="{{ path('oro_ui_buttons') }}">Buttons</a></li>
-                                                <li><a href="#">Print page</a></li>
-                                                <li><a href="{{ path('oro_ui_tables') }}">Tables</a></li>
-                                                <li><a href="{{ path('oro_ui_general_elements') }}">General elements</a></li>
-                                            </ul>
-                                            <h3>Js use page</h3>
-                                            <ul>
-                                                <li><a href="{{ path('oro_ui_dialog_styled') }}">jQuery Dialog styled</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
                                 {% placeholder content_after %}
                             {% endblock content %}
                         {% endblock page_container %}

@@ -11,11 +11,6 @@
                         {{ button }}
                     {% endfor %}
                 {% endif %}
-                {#
-                    <form class="form-inline search-form configuration-search-form">
-                        <input type="text" id="search" class="span2 search" name="search" value="Find an Option">
-                    </form>
-                #}
             </div>
         </h1>
     </div>
@@ -139,8 +134,6 @@
         'dataBlocks': form_data_blocks(form),
         'hiddenData': form_rest(form)
     } %}
-
-    {% set data = oro_form_process(data, form) %}
 
     <div class="span10 form-container">
         <form id="{{ form.vars.name }}" {{ form_enctype(form) }} action="{{ formAction }}" method="post"

@@ -10,23 +10,9 @@
     display: table-footer-group;
     width: 100%;
 }
-#footer-frame{
-    display: table-row;
-    height: 1%;
-}
 /* other style */
 .checkbox{
     margin: 0;
-}
-.new-row input{
-    clear: both;
-    display: block;
-}
-.simple-page{
-    padding: 75px 0 0;
-}
-.test-box{
-    min-height: 500px;
 }
 .example{
     border: 1px solid #000;
@@ -85,11 +71,6 @@
     float: left;
     height: 44px;
 }
-.clearfix-my:after{
-    content: "";
-    display: block;
-    clear: both;
-}
 
 .form-signin .input-prepend{
     margin-bottom: 10px;
@@ -113,10 +94,6 @@
 }
 .wb{
     background-color: #FFF;
-}
-.scroll-holder{
-    overflow: auto;
-    max-height: 575px;
 }
 #oro_user_group_form_roles{
     height: 67px;

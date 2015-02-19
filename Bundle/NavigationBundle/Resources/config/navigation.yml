@@ -8,8 +8,6 @@ oro_menu_config:
             rootClass: 'nav nav-multilevel oroplatform-menu'
         dots_menu:
             template: 'OroNavigationBundle:Menu:dots_menu.html.twig'
-        shortcuts:
-            template: 'OroNavigationBundle:Menu:shortcuts.html.twig'
         navbar:
             template: 'OroNavigationBundle:Menu:navbar.html.twig'
         dropdown:
@@ -64,9 +62,5 @@ oro_menu_config:
                 favorite: ~
                 mostviewed: ~
 
-        shortcuts:
-            type: shortcuts
-
 oro_titles:
-    oro_shortcut_actionslist: Shortcut Actions List
     oro_pinbar_help: How To Use Pinbar

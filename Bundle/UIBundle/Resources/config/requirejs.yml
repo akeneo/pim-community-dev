@@ -12,9 +12,6 @@ config:
         'jquery.numeric':
             deps:
                 - 'jquery'
-        'jquery.uniform':
-            deps:
-                - 'jquery'
         'jquery.select2':
             deps:
                 - 'jquery'
@@ -69,7 +66,6 @@ config:
         'jquery-outer-html': 'bundles/oroui/lib/outerHTML-2.1.0-min.js'
         'jquery.mousewheel': 'bundles/oroui/lib/jquery/jquery.mousewheel.min.js'
         'jquery.numeric': 'bundles/oroui/lib/jquery/jquery.numeric.js'
-        'jquery.uniform': 'bundles/oroui/lib/jquery/jquery.uniform.min.js'
         'jquery.select2': 'bundles/oroui/lib/jquery/select2.js'
         'jquery.jstree': 'bundles/oroui/lib/jstree/jquery.jstree.js'
         'jstree/jquery.cookie': 'bundles/oroui/lib/jstree/jquery.cookie.js'
@@ -92,7 +88,3 @@ config:
         'oro/modal': 'bundles/oroui/js/modal.js'
         'oro/delete-confirmation': 'bundles/oroui/js/delete-confirmation.js'
         'oro/tools': 'bundles/oroui/js/tools.js'
-        'oro/widget-manager': 'bundles/oroui/js/widget-manager.js'
-        'oro/abstract-widget': 'bundles/oroui/js/widget/abstract-widget.js'
-        'oro/block-widget': 'bundles/oroui/js/widget/block-widget.js'
-        'oro/buttons-widget': 'bundles/oroui/js/widget/buttons-widget.js'

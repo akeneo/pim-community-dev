@@ -38,7 +38,6 @@ require(['jquery', 'routing'],
                         selectDiv.append(selector);
                         selectDiv.show();
                         linkDiv.remove();
-                        $('select').uniform('update');
                     },
                     error: function () {
                         link.show();

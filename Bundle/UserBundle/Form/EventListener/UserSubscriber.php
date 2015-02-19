@@ -42,27 +42,7 @@ class UserSubscriber implements EventSubscriberInterface
     {
         return array(
             FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::PRE_SUBMIT => 'preSubmit',
         );
-    }
-
-    /**
-     * @param FormEvent $event
-     */
-    public function preSubmit(FormEvent $event)
-    {
-        $submittedData = $event->getData();
-
-        if (isset($submittedData['emails'])) {
-            foreach ($submittedData['emails'] as $id => $email) {
-                if (!$email['email']) {
-                    unset($submittedData['emails'][$id]);
-                }
-
-            }
-        }
-
-        $event->setData($submittedData);
     }
 
     public function preSetData(FormEvent $event)

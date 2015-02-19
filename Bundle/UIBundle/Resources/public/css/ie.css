@@ -17,7 +17,6 @@ header .dropdown-menu li > a{
 .navbar-inner,
 #oroplatform-header>.navbar-inner,
 #oroplatform-header .oroplatform-menu>li.dropdown.active>a,
-.ui-dialog .ui-dialog-titlebar-buttonpane,
 .ui-dialog.ui-dialog-normal [class*='ui-dialog-titlebar-']:hover:before,
 .btn-primary {
     filter: none;
@@ -25,30 +24,11 @@ header .dropdown-menu li > a{
 .btn-group{
     display: inline;
 }
-.header-search .dropdown-toggle{
-    border-radius: 4px 0 0 4px;
-}
 .badge{
     border-radius: 6px;
 }
 header .container{
     width: 100%;
-}
-.header-search .btn-search{
-    border: 0 !important;
-    background-position: -2px -61px !important;
-}
-.header-search .btn-search:hover{
-    background-position: -2px -61px !important;
-}
-* +html .header-search .dropdown-menu input[type="text"]{
-    margin-top: -2px !important;
-}
-* +html .header-search .btn .caret{
-    margin-top: 5px;
-}
-* +html .header-search .btn {
-    line-height: 26px;
 }
 * +html .notifications .after{
     background: url("../img/general-sprite.png") no-repeat 0 -106px;
@@ -93,11 +73,6 @@ table.grid{
     top: -5px !important;
     right: -2px;
 }
-#search-div.search-focus .btn-search{
-    height: 28px;
-    position: relative;
-    top: 1px;
-}
 
 .pin-bar .pin-menus{
     margin: 0 -31px 0 0;
@@ -110,15 +85,6 @@ table.grid{
 }
 .filter-list input[type="search"]{
     width: 100px;
-}
-div.uploader input{
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    filter: alpha(opacity=0);
-
-}
-.header-search .btn-search{
-    background:#262d33 url("../img/general-sprite.png") no-repeat 0 -176px;
-    filter: none;
 }
 button.btn.favorite-button,
 button.btn.minimize-button{

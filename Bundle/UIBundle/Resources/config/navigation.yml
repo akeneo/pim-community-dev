@@ -8,18 +8,12 @@ oro_menu_config:
         dots_menu:
             template: 'OroUIBundle:Menu:dots_menu.html.twig'
 
-        shortcuts:
-            template: 'OroUIBundle:Menu:shortcuts.html.twig'
-
     tree:
         application_menu:
             type: application_menu
 
         dots_menu:
             type: dots_menu
-
-        shortcuts:
-            type: shortcuts
 
 oro_titles:
     oro_default:                  Dashboard

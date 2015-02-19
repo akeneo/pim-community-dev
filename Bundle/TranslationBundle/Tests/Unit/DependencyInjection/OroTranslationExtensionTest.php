@@ -13,7 +13,6 @@ class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $expectedDefinitions = array(
         'oro_translation.form.type.translatable_entity',
-        'oro_translation.form.type.jqueryselect2_translatable_entity',
         'oro_translation.controller',
     );
 

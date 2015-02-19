@@ -24,4 +24,3 @@ config:
         'oro/navigation/pinbar/item-view': 'bundles/oronavigation/js/navigation/pinbar/item-view.js'
         'oro/navigation/pinbar/model': 'bundles/oronavigation/js/navigation/pinbar/model.js'
         'oro/navigation/pinbar/view': 'bundles/oronavigation/js/navigation/pinbar/view.js'
-        'oro/navigation/shortcuts/view': 'bundles/oronavigation/js/navigation/shortcuts/view.js'

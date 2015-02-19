@@ -28,7 +28,7 @@ services:
 
     oro_config.twig.config_extension:
         class:                        %oro_config.twig_extension.class%
-        arguments:                    ["@oro_config.global", %oro_config.entities%]
+        arguments:                    ["@oro_config.global"]
         tags:
             - { name: twig.extension }
 

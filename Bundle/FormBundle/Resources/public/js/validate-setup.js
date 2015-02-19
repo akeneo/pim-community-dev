@@ -57,7 +57,7 @@ function($, _, __, tools) {
      */
     function getErrorTarget(element) {
         var $target = $(validationBelongs(element));
-        if ($target.parent().is('.selector, .uploader, .input-append, .input-prepend')) {
+        if ($target.parent().is('.selector, .input-append, .input-prepend')) {
             $target = $target.parent();
         }
         return $target;

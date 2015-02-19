@@ -20,24 +20,11 @@ class OroConfigExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $data = array();
-
-        foreach ($container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-
-            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/entity_output.yml')) {
-                $data = array_merge($data, Yaml::parse(realpath($file)));
-            }
-        }
-
-        $configs[]     = array('entity_output' => $data);
         $configuration = new Configuration();
 
         $this->processConfiguration($configuration, $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
-
-        $container->setParameter('oro_config.entities', $data);
     }
 }

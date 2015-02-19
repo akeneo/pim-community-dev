@@ -8,8 +8,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-use Oro\Bundle\EntityBundle\Exception\RuntimeException;
-
 /**
  * This is the class that loads and manages your bundle configuration
  */

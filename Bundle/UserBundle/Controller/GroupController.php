@@ -4,16 +4,12 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Oro\Bundle\UserBundle\OroUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @Route("/group")
@@ -54,42 +50,6 @@ class GroupController extends Controller
     {
         $this->dispatchGroupEvent(OroUserEvents::PRE_UPDATE_GROUP, $entity);
         return $this->update($entity);
-    }
-
-    /**
-     * Get grid data
-     *
-     * @Route(
-     *      "/grid/{id}",
-     *      name="oro_user_group_user_grid",
-     *      requirements={"id"="\d+"},
-     *      defaults={"id"=0, "_format"="json"}
-     * )
-     * @AclAncestor("oro_user_user_view")
-     */
-    public function gridDataAction(Group $entity = null)
-    {
-        if (!$entity) {
-            $entity = new Group();
-        }
-
-        $datagridView = $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView();
-
-        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
-    }
-
-    /**
-     * @param  Group                    $group
-     * @return GroupUserDatagridManager
-     */
-    protected function getGroupUserDatagridManager(Group $group)
-    {
-        /** @var $result GroupUserDatagridManager */
-        $result = $this->get('oro_user.group_user_datagrid_manager');
-        $result->setGroup($group);
-        $result->getRouteGenerator()->setRouteParameters(array('id' => $group->getId()));
-
-        return $result;
     }
 
     /**
@@ -142,7 +102,6 @@ class GroupController extends Controller
             'form'     => $this->get('oro_user.form.group')->createView(),
         );
     }
-
 
     /**
      * @return EventDispatcherInterface

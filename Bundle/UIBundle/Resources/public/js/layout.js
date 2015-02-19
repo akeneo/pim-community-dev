@@ -98,11 +98,6 @@ define(['jquery', 'oro/translator', 'bootstrap-tooltip', 'jquery-ui', 'jquery-ui
     };
 
     layout.styleForm = function (container) {
-        if ($.isPlainObject($.uniform)) {
-            var elements = $(container).find('input:file, select:not(.select2)');
-            elements.uniform();
-            elements.trigger('uniformInit');
-        }
     };
 
     layout.adjustScrollspy = function () {

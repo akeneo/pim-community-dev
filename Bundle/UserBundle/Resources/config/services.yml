@@ -11,8 +11,6 @@ parameters:
     oro_user.role.manager.class:        Oro\Bundle\UserBundle\Entity\Manager\RoleManager
     oro_user.group.manager.class:       Oro\Bundle\UserBundle\Entity\Manager\GroupManager
     oro_user.entity_with_image.subscriber.class:            Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
-    oro_user.autocomplete.user.search_handler:              Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
-    oro_user.email.owner.provider.class:                    Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
     oro_user.change_password.subscriber.class:              Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
 
@@ -31,11 +29,6 @@ services:
         arguments:                    ["@oro_user.manager"]
         tags:
             - { name: kernel.event_listener, event: security.interactive_login, method: onLogin }
-
-    oro_user.cache:
-        parent: oro.cache.abstract
-        calls:
-            - [ setNamespace, [ "oro_user.cache" ] ]
 
     oro_user.user_menu:
         class:                        %oro_user.user_menu.builder.class%
@@ -69,40 +62,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    # Autocomplete search handler
-    oro_user.autocomplete.user.search_handler:
-        class: %oro_user.autocomplete.user.search_handler%
-        parent: oro_form.autocomplete.full_name.search_handler
-        arguments:
-            - @liip_imagine.cache.manager
-            - %oro_user.entity.class%
-            - ["username", "namePrefix", "firstName", "middleName", "lastName", "nameSuffix", "email"]
-        tags:
-            - { name: oro_form.autocomplete.search_handler, alias: users, acl_resource: oro_user_user_view }
-
-    oro_user.email.owner.provider:
-        class: %oro_user.email.owner.provider.class%
-        tags:
-            - { name: oro_email.owner.provider, order: 1 }
-
     oro_user.change_password.subscriber:
         class: %oro_user.change_password.subscriber.class%
         arguments:
             - @form.factory
             - @security.context
-
-    oro_user.event_listener.role_users_grid_listener:
-        class: %oro_datagrid.event_listener.base_orm_relation.class%
-        arguments:
-          - role_id
-          - @oro_datagrid.datagrid.request_params
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.role-users-grid, method: onBuildAfter }
-
-    oro_user.event_listener.group_users_grid_listener:
-        class: %oro_datagrid.event_listener.base_orm_relation.class%
-        arguments:
-          - group_id
-          - @oro_datagrid.datagrid.request_params
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-users-grid, method: onBuildAfter }

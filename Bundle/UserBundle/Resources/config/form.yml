@@ -6,9 +6,6 @@ parameters:
     oro_user.form.type.group.class:             Oro\Bundle\UserBundle\Form\Type\GroupType
     oro_user.form.type.group.api.class:         Oro\Bundle\UserBundle\Form\Type\GroupApiType
     oro_user.form.type.status.class:            Oro\Bundle\UserBundle\Form\Type\StatusType
-    oro_user.form.type.user_select.class:       Oro\Bundle\UserBundle\Form\Type\UserSelectType
-    oro_user.form.type.user_multiselect.class:  Oro\Bundle\UserBundle\Form\Type\UserMultiSelectType
-    oro_user.form.type.email.class:             Oro\Bundle\UserBundle\Form\Type\EmailType
     oro_user.form.type.change_password.class:   Oro\Bundle\UserBundle\Form\Type\ChangePasswordType
     oro_user.form.handler.user.class:           Oro\Bundle\UserBundle\Form\Handler\UserHandler
     oro_user.form.handler.reset.class:          Oro\Bundle\UserBundle\Form\Handler\ResetHandler
@@ -86,11 +83,6 @@ services:
         tags:
              - { name: form.type, alias: oro_change_password }
 
-    oro_user.form.type.email:
-        class: %oro_user.form.type.email.class%
-        tags:
-             - { name: form.type, alias: oro_user_email }
-
     oro_user.form.type.role.api:
         class:                        %oro_user.form.type.role.api.class%
         tags:
@@ -116,18 +108,6 @@ services:
         class:                        %oro_user.form.type.status.class%
         tags:
             - { name: form.type, alias: oro_user_status }
-
-    oro_user.form.type.user_select:
-        class: %oro_user.form.type.user_select.class%
-        tags:
-            - { name: form.type, alias: oro_user_select }
-
-    oro_user.form.type.user_multiselect:
-        class: %oro_user.form.type.user_multiselect.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-        tags:
-            - { name: form.type, alias: oro_user_multiselect }
 
     oro_user.form.handler.user:
         class:                        %oro_user.form.handler.user.class%

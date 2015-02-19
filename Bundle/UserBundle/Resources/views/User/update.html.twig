@@ -10,11 +10,6 @@
     {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
 {% endif %}
 
-{% block head_script %}
-    {# TODO: Find a better way to handle such dependencies in https://magecore.atlassian.net/browse/BAP-1971 #}
-    {% include 'OroUIBundle:Js:jquery_jstree.config.js.twig' %}
-{% endblock %}
-
 {% block navButtons %}
     {% if form.vars.value.id and resource_granted('oro_user_user_delete') and  form.vars.value.id!=app.user.id %}
         {# {{ UI.deleteButton({
@@ -84,9 +79,7 @@
             {
                 'title': '',
                 'data': [
-                    form_row(form.email),
-                    UI.collectionField(form.emails, 'Additional emails'|trans, 'Add another email'|trans),
-                    form_row(form.tags)
+                    form_row(form.email)
                 ]
             }
         ]
@@ -144,14 +137,6 @@
             ]
         }] ) %}
     {% endif %}
-
-    {% set dataBlocks = dataBlocks|merge([{
-        'title': 'Email synchronization settings',
-        'subblocks': [{
-            'title': '',
-            'data': [form_widget(form.imapConfiguration)]
-        }]
-    }]) %}
 
     {% set data = {
         'formErrors': form_errors(form)? form_errors(form) : null,

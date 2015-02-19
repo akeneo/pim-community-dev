@@ -44,4 +44,3 @@ Following list includes all libraries which are used from OroUIBundle.
     * Mouse Wheel - http://brandonaaron.net/code/mousewheel/docs
     * Numeric - http://www.texotela.co.uk/code/jquery/numeric/
     * Placeholder - http://mths.be/placeholder
-    * Uniform
