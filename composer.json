@@ -29,7 +29,7 @@
         "kriswallsmith/buzz": ">=0.5",
         "behat/common-contexts": "*",
         "behat/gherkin":"2.3.x-dev#c32e15d@dev",
-        "behat/mink":"dev-master#63b8b26@dev",
+        "behat/mink":"dev-master#1125c2fa97d5b3623786bceadccee7b4bc11335d",
         "behat/mink-browserkit-driver":  "*@dev",
         "behat/mink-extension":          "1.3.*@dev",
         "behat/mink-selenium2-driver":   "*@dev",
