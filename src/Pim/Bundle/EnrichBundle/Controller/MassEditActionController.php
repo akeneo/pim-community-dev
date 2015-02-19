@@ -143,20 +143,18 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
+
         try {
             $operator = $this->operatorRegistry->getOperator(
                 $this->request->get('gridName')
             );
-
-            $operator
-                ->setOperationAlias($operationAlias)
-                ->setObjectsToMassEdit($this->getObjects());
+//
+//
+//            $operator
+//                ->setOperationAlias($operationAlias)
+//                ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         $operator->initializeOperation();
