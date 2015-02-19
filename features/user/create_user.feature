@@ -17,7 +17,6 @@ Feature: Create a user
       | Password          | DoeDoe   |
       | Re-enter password | DoeDoe   |
       | Status            | Inactive |
-      | Owner             | Main     |
     And I scroll down
     And I fill in the following information:
       | E-mail | jack@example.com |

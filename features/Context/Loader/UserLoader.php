@@ -81,19 +81,13 @@ class UserLoader extends LoadUserData
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
 
-        $unit = $this->getOwner('Main');
-
         $user
             ->setUsername($username)
             ->setPlainPassword($password)
             ->setFirstname($firstName)
             ->setLastname($lastName)
             ->setEmail($email)
-            ->setApi($api)
-            ->setOwner($unit)
-            ->setBusinessUnits(
-                new ArrayCollection(array($unit))
-            );
+            ->setApi($api);
 
         foreach ($roles as $role) {
             $user->addRole($this->getOrCreateRole($role));

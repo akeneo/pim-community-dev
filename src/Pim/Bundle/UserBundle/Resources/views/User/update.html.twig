@@ -20,16 +20,6 @@
             $(function() {
                 $('.navbar-content.pull-left').css('width', '80%')
 
-                $('#business_units_tree').jstree({
-                    "checkbox": {
-                        real_checkboxes: true,
-                        real_checkboxes_names: function (n) {
-                            return ['businessUnits[' + n.data('id') + ']', 1]
-                        },
-                        two_state: true
-                    }
-                });
-
                 $('#{{ form.vars.id }}').find('select').addClass('select2');
                 initSelect2.init($('#{{ form.vars.id }}'));
 
