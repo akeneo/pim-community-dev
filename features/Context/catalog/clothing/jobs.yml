@@ -120,3 +120,13 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    clothing_mobile_published_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_published_product_export
+        label:     Published product export for mobile
+        type:      export
+        configuration:
+            channel:    mobile
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
