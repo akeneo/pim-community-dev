@@ -24,3 +24,13 @@ Feature: Create a user
     And I select the role "User"
     When I save the user
     Then there should be a "jack" user
+
+  @javascript
+  Scenario: Successfully delete a user
+    Given I am on the users page
+    When I click on the "Delete" action of the row which contains "Julia"
+    Then I should see a confirm dialog with the following content:
+      | title   | Delete Confirmation                        |
+      | content | Are you sure you want to delete this user? |
+    When I confirm the deletion
+    Then I should not see "Julia"

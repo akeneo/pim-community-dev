@@ -1217,7 +1217,6 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getRowsHash() as $rawCode => $value) {
             $infos = $this->getFieldNameBuilder()->extractAttributeFieldNameInfos($rawCode);
 
-            /** @var AttributeInterface $attribute */
             $attribute = $infos['attribute'];
             $attributeCode = $attribute->getCode();
             $localeCode = $infos['locale_code'];
@@ -1240,7 +1239,6 @@ class FixturesContext extends RawMinkContext
                 // in this case, it's a simple string comparison
                 // example: 180.00 EUR, 220.00 USD
 
-                /** @var ProductPriceInterface $price */
                 $price = $productValue->getPrice($priceCurrency);
                 assertEquals($value, $price->getData());
             } elseif ('date' === $attribute->getBackendType()) {
@@ -1326,10 +1324,24 @@ class FixturesContext extends RawMinkContext
      * @param string $userGroupName
      *
      * @return \Oro\Bundle\UserBundle\Entity\Group
+     *
+     * @Then /^there should be a "([^"]+)" user group$/
      */
     public function getUserGroup($userGroupName)
     {
         return $this->getEntityOrException('UserGroup', ['name' => $userGroupName]);
+    }
+
+    /**
+     * @param string $userRoleName
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\Role
+     *
+     * @Then /^there should be a "([^"]+)" user role$/
+     */
+    public function getUserRole($userRoleName)
+    {
+        return $this->getEntityOrException('Role', ['label' => $userRoleName]);
     }
 
     /**
@@ -1372,6 +1384,70 @@ class FixturesContext extends RawMinkContext
     public function getUser($username)
     {
         return $this->getEntityOrException('User', ['username' => $username]);
+    }
+
+    /**
+     * @param string $username
+     * @param string $searchedLabel
+     * @param string $associationType Can be 'group' or 'role'
+     *
+     * @return bool
+     *
+     * @Then /^the user "([^"]+)" should be in the "([^"]+)" (group)$/
+     * @Then /^the user "([^"]+)" should have the "([^"]+)" (role)$/
+     */
+    public function checkUserAssociationExists($username, $searchedLabel = null, $associationType = null)
+    {
+        $userEntity = $this->getEntityOrException('User', ['username' => $username]);
+        if ($searchedLabel && $associationType == 'group' && !$userEntity->hasGroup($searchedLabel)) {
+            throw new \InvalidArgumentException(sprintf("The user %s does not belong to the '%s' group", $username, $searchedLabel));
+        }
+        if ($searchedLabel && $associationType == 'role' && !$userEntity->hasRole($searchedLabel)) {
+            throw new \InvalidArgumentException(sprintf("The user %s does not have the '%s' role", $username, $searchedLabel));
+        }
+        return true;
+    }
+
+    /**
+     * @param string $username
+     * @param string $searchedLabel
+     * @param string $associationType Can be 'group' or 'role'
+     *
+     * @return bool
+     *
+     * @Then /^the user "([^"]+)" should not be in the "([^"]+)" (group)$/
+     * @Then /^the user "([^"]+)" should not have the "([^"]+)" (role)$/
+     */
+    public function checkUserAssociationDoNotExist($username, $searchedLabel = null, $associationType = null)
+    {
+        return !$this->checkUserAssociationExists($username, $searchedLabel, $associationType);
+    }
+
+    /**
+     * @param string $username
+     * @param int    $count
+     * @param string $associationType Can be 'group' or 'role'
+     *
+     * @return bool
+     *
+     * @Then /^the user "([^"]+)" should be in (\d+) (group)s?$/
+     * @Then /^the user "([^"]+)" should(?: still)? have (\d+) (role)s?$/
+     */
+    public function checkUserAssociationsCount($username, $count, $associationType)
+    {
+        $userEntity = $this->getEntityOrException('User', ['username' => $username]);
+        $this->refresh($userEntity);
+        $actualCount = null;
+        if ($associationType == 'group') {
+            $actualCount = count($userEntity->getGroupNames());
+        } elseif ($associationType == 'role') {
+            $actualCount = count($userEntity->getRoles());
+        }
+        if ($actualCount != $count) {
+            throw new \InvalidArgumentException(
+                sprintf("Expected %d %s(s) for %s, found %d", $count, $associationType, $username, $actualCount)
+            );
+        }
     }
 
     /**

@@ -312,6 +312,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I save and close$/
+     */
+    public function iSaveAndClose()
+    {
+        $this->getCurrentPage()->saveAndClose();
+        $this->wait();
+    }
+
+    /**
      * @param string  $attribute
      * @param integer $position
      *
@@ -873,6 +882,9 @@ class WebUser extends RawMinkContext
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['button']));
+            if ($forbiddenPage = $data['forbiddenPage']) {
+                $steps[] = new Step\Then(sprintf('I should not be able to access the %s page', $forbiddenPage));
+            }
         }
         $steps[] = new Step\Then('I reset the "Administrator" rights');
 
