@@ -1,4 +1,4 @@
-# 1.2.*
+# 1.2.28 (2015-02-20)
 
 ## Bug fixes
 - PIM-3790: Fix WYSIWYG on folded scopable elements
