@@ -9,6 +9,7 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
 
+    # Deprecated: This service is deprecated and will be removed in 1.5
     pim_transform.cache.attribute_cache:
         class: %pim_transform.cache.attribute_cache.class%
         arguments:
