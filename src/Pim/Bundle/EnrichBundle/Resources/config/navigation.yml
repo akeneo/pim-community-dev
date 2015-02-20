@@ -96,13 +96,6 @@ oro_menu_config:
             extras:
                 routes: ['/^pim_enrich_group_type_\w+$/']
 
-        emails:
-            display: false
-        oro_cron_job:
-            display: false
-        system_configuraion:
-            display: false
-
     tree:
         application_menu:
             children:

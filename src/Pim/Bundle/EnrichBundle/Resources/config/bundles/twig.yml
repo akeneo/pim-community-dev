@@ -4,7 +4,6 @@ twig:
         resources:
             - 'OroUIBundle:Form:fields.html.twig'
             - 'OroFormBundle:Form:fields.html.twig'
-            - 'OroTranslationBundle:Form:fields.html.twig'
             - 'OroSecurityBundle:Form:fields.html.twig'
             - 'PimUIBundle:Form:pim-fields.html.twig'
     globals:
