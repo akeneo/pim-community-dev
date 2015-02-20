@@ -7,6 +7,7 @@ parameters:
 
     pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
     pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
+    pim_base_connector.reader.file.csv_association.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvAssociationReader
     pim_base_connector.reader.file.csv_category.class: Pim\Bundle\BaseConnectorBundle\Reader\File\CsvCategoryReader
 
     pim_base_connector.reader.file.yaml.class:         Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader
@@ -75,6 +76,12 @@ services:
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.currency.class%
 
+    pim_base_connector.reader.file.csv_association:
+        parent: pim_base_connector.reader.file.csv
+        class: %pim_base_connector.reader.file.csv_association.class%
+        arguments:
+            - '@pim_base_connector.formater.csv'
+
     pim_base_connector.reader.file.csv_variant_group:
         alias: pim_base_connector.reader.file.csv_product
 
@@ -117,5 +124,6 @@ services:
     pim_base_connector.reader.dummy:
         class: %pim_base_connector.reader.dummy.class%
 
+    # Deprecated: This service is deprecated and will be removed in 1.5
     pim_base_connector.reader.cached_association:
         class: %pim_base_connector.reader.cached.class%
