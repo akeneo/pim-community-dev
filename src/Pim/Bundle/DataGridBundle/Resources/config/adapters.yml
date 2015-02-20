@@ -1,0 +1,6 @@
+parameters:
+    pim_datagrid.adapter.oro_to_pim_grid_filter.class: Pim\Bundle\DataGridBundle\Adapter\OroToPimGridFilterAdapter
+
+services:
+    pim_datagrid.adapter.oro_to_pim_grid_filter:
+        class: %pim_datagrid.adapter.oro_to_pim_grid_filter.class%

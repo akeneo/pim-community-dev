@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
@@ -48,6 +49,9 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var array */
     protected $objects;
 
+    /** @var GridFilterAdapterInterface */
+    protected $gridFilterAdapter;
+
     /**
      * Constructor
      *
@@ -63,6 +67,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
+     * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param integer                    $massEditLimit
      */
     public function __construct(
@@ -78,6 +83,7 @@ class MassEditActionController extends AbstractDoctrineController
         OperatorRegistry $operatorRegistry,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
+        GridFilterAdapterInterface $gridFilterAdapter,
         $massEditLimit
     ) {
         parent::__construct(
@@ -96,6 +102,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->massEditLimit = $massEditLimit;
+        $this->gridFilterAdapter = $gridFilterAdapter;
     }
 
     /**
@@ -113,6 +120,9 @@ class MassEditActionController extends AbstractDoctrineController
         if ($this->isExecutable() === false) {
             return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
+
+//        $params = $this->getQueryParams();
+//        $transformedParams = $this->gridFilterAdapter->transform($params);
 
         $form = $this->getOperatorForm($operator);
 
@@ -148,11 +158,11 @@ class MassEditActionController extends AbstractDoctrineController
             $operator = $this->operatorRegistry->getOperator(
                 $this->request->get('gridName')
             );
-//
-//
-//            $operator
-//                ->setOperationAlias($operationAlias)
-//                ->setObjectsToMassEdit($this->getObjects());
+
+        $operator
+            ->setOperationAlias($operationAlias)
+            ->setObjectsToMassEdit($this->getObjects());
+
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
