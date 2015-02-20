@@ -17,7 +17,7 @@ flash:
       error: "Une erreur s'est produite lors de la création de votre réponse."
 comment:
   index:
-    empty: "Aucun commentaire n'existe."
+    empty: Aucun commentaire trouvé.
   placeholder:
     new: Ajouter un nouveau commentaire...
     reply: Répondre à ce commentaire...

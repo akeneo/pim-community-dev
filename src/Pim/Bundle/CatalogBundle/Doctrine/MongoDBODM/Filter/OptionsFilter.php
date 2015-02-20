@@ -85,13 +85,13 @@ class OptionsFilter extends AbstractAttributeFilter implements AttributeFilterIn
 
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'options');
 
+        $value = !is_array($value) ? [$value] : $value;
         if ($operator !== Operators::IS_EMPTY) {
             $this->checkValue($options['field'], $value);
-        }
 
-        $value = !is_array($value) ? [$value] : $value;
-        if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
-            $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+            if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+            }
         }
 
         $mongoField = sprintf(

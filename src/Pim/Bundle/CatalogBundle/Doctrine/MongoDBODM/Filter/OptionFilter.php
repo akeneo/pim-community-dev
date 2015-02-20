@@ -88,10 +88,10 @@ class OptionFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
         if (Operators::IS_EMPTY !== $operator) {
             $this->checkValue($options['field'], $value);
-        }
 
-        if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
-            $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+            if (FieldFilterHelper::getProperty($options['field']) === FieldFilterHelper::CODE_PROPERTY) {
+                $value = $this->objectIdResolver->getIdsFromCodes('option', $value);
+            }
         }
 
         $mongoField = sprintf(

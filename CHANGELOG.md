@@ -1,5 +1,13 @@
 # 1.4.x
 
+# 1.3.x
+
+## Bug fixes
+- PIM-3775: Fix variant group import from an archive
+- PIM-3783: Fix issue with Rest API and MediaNormalizer
+- PIM-3791: Fix fatal error on MongoDB mass pending persister
+- PIM-3757: Fix bugs on product query filter on multiple filter applied at once
+
 # 1.3.0 - "Hare Force" (2015-02-12)
 
 # 1.3.0-RC3 (2015-02-12)

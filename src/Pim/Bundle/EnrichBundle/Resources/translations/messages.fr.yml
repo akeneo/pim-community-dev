@@ -50,6 +50,20 @@ pim_enrich:
       product.title: Produits
       property.title: Propriétés
       history.title: Historique
+  variant_group:
+    type:
+      VARIANT: Variante
+      X_SELL: Vente croisée
+      ADDITIONAL: Complémentaire
+      RELATED: Associé
+    tab:
+      product.title: Produits
+      property.title: Propriétés
+      history.title: Historique
+      attribute.title: Attributs
+    info:
+      no_attributes: "Ce groupe de variantes n'a pas encore d'attributs"
+      no_attributes_in_selected_locale: "Ce groupe de variante n'a pas d'attributs dans cette locale"
   completeness:
     progress_bar.title: '%ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)'
     subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
@@ -103,6 +117,16 @@ pim_enrich:
       label: Ajouter aux groupes
       description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
       success_flash: Les produits ont été ajoutés aux groupes sélectionnés
+      no_group: "Aucun groupe pour l'instant. Veuillez commencer par créer un groupe."
+    add-to-variant-group:
+      label: Ajouter à un groupe de variantes
+      description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
+      success_flash: Les produits ont bien été associés au groupe de variantes sélectionné
+      already_in_variant_group_or_not_valid: "Vous ne pouvez pas associer à ce groupe les produits suivants (%products%). Ils sont peut-être déjà associés à un groupe de variantes ou n'ont pas les bons axes de variation."
+      no_variant_group: "Aucun groupe de variantes pour l'instant. Veuillez commencer par créer un groupe de variantes."
+      no_valid_variant_group: Aucun groupe de variantes ne partage des attributs avec les produits sélectionnés.
+      some_variant_groups_are_skipped:
+        The following variant groups have been skipped because they don't share attributes with selected products: '%groups%'
     set-attribute-requirements:
       label: Choisir les attributs requis
       description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
@@ -129,6 +153,7 @@ pim_enrich:
       change_family: Changer la famille du produit
       change_state: "Changer l'état du produit"
       add_to_groups: Ajouter le produit à des groupes
+      add_to_variant_group: Ajouter le produit à un groupe de variantes
       mass_edit: Actions de modification des produits en masse
       comment: Commenter les produits
       download: Télécharger le produit en PDF
@@ -177,6 +202,15 @@ pim_enrich:
       edit: Modifier un groupe
       remove: Supprimer un groupe
       history: "Afficher l'historique du groupe"
+    variant_group:
+      index: Liste des groupes de variantes
+      create: Créer un groupe de variantes
+      edit: Editer un groupe de variantes
+      remove: Supprimer un groupe de variantes
+      history: "Afficher l'historique des groupes de variantes"
+      edit_attributes: Modifier les attributs des groupes de variantes
+      add_attributes: Ajouter des attributs aux groupes de variantes
+      remove_attribute: Supprimer les attributs dse groupes de variantes
     group_type:
       index: Lister les types de groupe
       create: Créer un type de groupe
@@ -197,9 +231,15 @@ pim_enrich:
     currency: Devises
     family: Familles
     group: Groupes
+    variant_group: Groupes de variantes
     group_type: Types de groupe
     locale: Locales
     product: Produits
+  product_value:
+    tooltip:
+      from_variant:
+        title: Mis à jour par un groupe de variantes
+        content: Ce champ est mis à jour par le groupe de variantes suivant
 attribute:
   title: attribut
   overview: Liste des attributs
@@ -325,6 +365,8 @@ confirmation:
     remove attribute: "Etes vous sûr de vouloir retirer l'attribut %name% de cette famille?"
   product:
     remove attribute: "Etes vous sûr de vouloir retirer l'attribut %name% de ce produit?"
+  variant_group:
+    remove_attribute: "Etes vous sûr de vouloir retirer l'attribut %name% de ce groupe de variantes?"
 flash:
   entity:
     removed: "L'entité a été supprimée"
@@ -385,6 +427,8 @@ flash:
     created: Le groupe de variantes a bien été créé
     updated: Le groupe de variantes a bien été mis à jour
     removed: Le groupe de variantes a bien été supprimé
+    attributes_added: Attributs ajoutés avec succès au groupe de variantes
+    attribute_removed: Attribut supprimé avec succès du groupe de variantes
   group type:
     created: Le type de groupe a bien été créé
     updated: Le type de groupe a bien été mis à jour
@@ -635,6 +679,9 @@ pim_enrich.mass_edit_action:
     description: Les attributs sélectionnés vont être modifiés avec les valeurs suivantes pour la locale choisie.
     empty: Veuillez sélectionner le ou les attribut(s) à modifier
     success_flash: Le(s) attribut(s) ont été mise à jour
+    message.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
+    no_attribute.warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
+    truncated_by_variant_attribute.warning: "Certains attributs des produits sélectionnés sont liés à un groupe de variantes. Ils ne sont pas disponibles pour l'édition en masse : %attributes%."
   classify:
     label: Classer les produits dans des catégories
     description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
@@ -662,7 +709,7 @@ View group: Afficher le groupe
 Products: Produits
 pim_menu:
   tab:
-    collect: Extraire
+    collect: Collecter
     enrich: Enrichir
     settings: Paramètres
     spread: Diffuser

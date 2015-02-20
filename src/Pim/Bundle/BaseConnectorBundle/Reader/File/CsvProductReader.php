@@ -128,8 +128,9 @@ class CsvProductReader extends CsvReader
         foreach ($data as $code => $value) {
             $pos = strpos($code, '-');
             $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
+            $value = trim($value);
 
-            if (in_array($attributeCode, $this->mediaAttributes)) {
+            if (in_array($attributeCode, $this->mediaAttributes) && !empty($value)) {
                 $data[$code] = dirname($this->filePath) . '/' . $value;
             }
         }

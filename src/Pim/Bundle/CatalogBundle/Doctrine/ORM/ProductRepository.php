@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -434,7 +435,7 @@ class ProductRepository extends EntityRepository implements
         $pqb = $this->queryBuilderFactory->create();
         $qb = $pqb->getQueryBuilder();
         $attribute = $this->getIdentifierAttribute();
-        $pqb->addFilter($attribute->getCode(), '=', $identifier);
+        $pqb->addFilter($attribute->getCode(), Operators::EQUALS, $identifier);
         $result = $qb->getQuery()->execute();
 
         return reset($result);

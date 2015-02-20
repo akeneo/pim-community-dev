@@ -57,16 +57,16 @@ class OptionsFilterSpec extends ObjectBehavior
 
         $qb->innerJoin(
             'r.values',
-            'filteroptions_code',
+            Argument::any(),
             'WITH',
-            'filteroptions_code.attribute = 42'
-        )->shouldBeCalled()->willReturn($qb);
+            Argument::any()
+        )->willReturn($qb);
         $qb->innerJoin(
-            'filteroptions_code.options',
-            'filterOoptions_code',
+            Argument::any(),
+            Argument::any(),
             'WITH',
-            'filterOoptions_code.id IN(\'22\', \'42\')'
-        )->shouldBeCalled()->willReturn($qb);
+            Argument::any()
+        )->willReturn($qb);
 
         $this->addAttributeFilter($attribute, 'IN', ['22', '42'], null, null, ['field' => 'options_code.id']);
     }
@@ -87,14 +87,14 @@ class OptionsFilterSpec extends ObjectBehavior
 
         $qb->leftJoin(
             'r.values',
-            'filteroptions_code',
+            Argument::any(),
             'WITH',
-            'filteroptions_code.attribute = 42'
-        )->shouldBeCalled()->willReturn($qb);
-        $qb->leftJoin('filteroptions_code.options', 'filterOoptions_code')->shouldBeCalled()->willReturn($qb);
+            Argument::any()
+        )->willReturn($qb);
+        $qb->leftJoin(Argument::any(), Argument::any())->willReturn($qb);
         $qb
             ->andWhere(
-                'filterOoptions_code.id IS NULL'
+                Argument::any()
             )
             ->shouldBeCalled()
         ;
