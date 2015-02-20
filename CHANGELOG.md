@@ -1,3 +1,8 @@
+# 1.0.x
+
+## Bug fixes
+- PIM-3808: Fix the export of published products
+
 # 1.0.21 (2015-02-20)
 - Update community-edition dependency to 1.2.28 version.
 
