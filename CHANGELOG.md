@@ -1,3 +1,6 @@
+# 1.0.21 (2015-02-20)
+- Update community-edition dependency to 1.2.28 version.
+
 # 1.0.20 (2015-02-13)
 - Update community-edition dependency to 1.2.27 version.
 
