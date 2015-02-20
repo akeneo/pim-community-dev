@@ -105,7 +105,6 @@ class UserLoader extends LoadUserData
         // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
         $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\User');
         $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
-        $this->getUserManager()->getStorageManager()->clear('OroEmail\Cache\OroEmailBundle\Entity\EmailAddressProxy');
     }
 
     /**

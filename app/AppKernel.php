@@ -137,7 +137,6 @@ class AppKernel extends Kernel
             new Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new FOS\RestBundle\FOSRestBundle(),
-            new Genemu\Bundle\FormBundle\GenemuFormBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
