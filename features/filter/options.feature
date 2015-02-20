@@ -13,8 +13,8 @@ Feature: Filter on multi select attributes
       | BOOTBL  | hot, wet           |
       | BOOTRXS |                    |
     Then I should get the following results for the given filters:
-      | filter                                                              | result                |
-      | [{"field":"weather_conditions.code", "operator":"IN",    "value": ["dry"] }]       | ["BOOTBXS", "BOOTWXS"]            |
-      | [{"field":"weather_conditions.code", "operator":"IN",    "value": ["wet", "hot"] }] | ["BOOTBS", "BOOTBL", "BOOTBXS"] |
-      | [{"field":"weather_conditions.code", "operator":"IN", "value": ["wet"] }, {"field":"weather_conditions.code", "operator":"IN", "value": ["hot"] }] | ["BOOTBL"] |
-      | [{"field":"weather_conditions.code", "operator":"EMPTY", "value": null }]         | ["BOOTRXS"]           |
+      | filter                                                                                                                                             | result                          |
+      | [{"field":"weather_conditions.code", "operator":"IN",    "value": ["dry"] }]                                                                       | ["BOOTBXS", "BOOTWXS"]          |
+      | [{"field":"weather_conditions.code", "operator":"IN",    "value": ["wet", "hot"] }]                                                                | ["BOOTBS", "BOOTBL", "BOOTBXS"] |
+      | [{"field":"weather_conditions.code", "operator":"IN", "value": ["wet"] }, {"field":"weather_conditions.code", "operator":"IN", "value": ["hot"] }] | ["BOOTBL"]                      |
+      | [{"field":"weather_conditions.code", "operator":"EMPTY", "value": null }]                                                                          | ["BOOTRXS"]                     |
