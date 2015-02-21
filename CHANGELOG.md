@@ -77,6 +77,20 @@
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
 
+# 1.0.x
+
+## Bug fixes
+- PIM-3808: Fix the export of published products
+
+# 1.0.21 (2015-02-20)
+- Update community-edition dependency to 1.2.28 version.
+
+# 1.0.20 (2015-02-13)
+- Update community-edition dependency to 1.2.27 version.
+
+# 1.0.19 (2015-02-12)
+- Update community-edition dependency to 1.2.26 version.
+
 # 1.0.18 (2015-02-04)
 
 ## Bug fixes
