@@ -17,31 +17,4 @@ class Creation extends CategoryView
      * @var string
      */
     protected $path = '/enrich/category-tree/create';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($session, $pageFactory, $parameters = array())
-    {
-        parent::__construct($session, $pageFactory, $parameters);
-
-        $this->elements = array_merge(
-            $this->elements,
-            array(
-                'Tree select' => array('css' => '#tree_select'),
-            )
-        );
-    }
-
-    /**
-     * @param string $category
-     *
-     * @return CategoryView
-     */
-    public function selectTree($category)
-    {
-        $this->getElement('Tree select')->selectOption($category);
-
-        return $this;
-    }
 }

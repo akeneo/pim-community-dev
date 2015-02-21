@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * Ensure that all attribute requirements are displayed for a family
@@ -22,7 +22,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var Channel[]
+     * @var ChannelInterface[]
      */
     protected $channels;
 
@@ -54,7 +54,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     {
         $family = $event->getData();
 
-        if (null === $family || !$family instanceof Family) {
+        if (null === $family || !$family instanceof FamilyInterface) {
             return;
         }
 
@@ -83,7 +83,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     {
         $family = $event->getData();
 
-        if (null === $family || !$family instanceof Family) {
+        if (null === $family || !$family instanceof FamilyInterface) {
             return;
         }
 
@@ -100,14 +100,17 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
     /**
      * Create attribute requirement entity
      *
-     * @param Channel           $channel
-     * @param AbstractAttribute $attribute
-     * @param Family            $family
+     * @param ChannelInterface   $channel
+     * @param AttributeInterface $attribute
+     * @param FamilyInterface    $family
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     * @return AttributeRequirementInterface
      */
-    protected function createAttributeRequirement(Channel $channel, AbstractAttribute $attribute, Family $family)
-    {
+    protected function createAttributeRequirement(
+        ChannelInterface $channel,
+        AttributeInterface $attribute,
+        FamilyInterface $family
+    ) {
         $requirement = new AttributeRequirement();
         $requirement->setChannel($channel);
         $requirement->setAttribute($attribute);

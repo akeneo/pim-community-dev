@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Guesser
@@ -18,7 +18,7 @@ class RegexGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function supportAttribute(AbstractAttribute $attribute)
+    public function supportAttribute(AttributeInterface $attribute)
     {
         return in_array(
             $attribute->getAttributeType(),
@@ -32,7 +32,7 @@ class RegexGuesser implements ConstraintGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessConstraints(AbstractAttribute $attribute)
+    public function guessConstraints(AttributeInterface $attribute)
     {
         $constraints = array();
 

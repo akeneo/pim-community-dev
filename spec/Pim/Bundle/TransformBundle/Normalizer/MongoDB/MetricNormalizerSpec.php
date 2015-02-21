@@ -2,13 +2,11 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
-
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
  * @require \MongoId

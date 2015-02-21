@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Util;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
-use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 
 /**
  * Fields builder, allows to prepare the field list for a flat file export, should be part of normalizer at some point

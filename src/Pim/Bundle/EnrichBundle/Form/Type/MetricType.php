@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type related to metric entity
@@ -15,13 +15,27 @@ use Symfony\Component\Form\AbstractType;
  */
 class MetricType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $unitOptions['choices'] = array_combine(array_keys($options['units']), array_keys($options['units']));
-        $unitOptions['select2'] = true;
+        $unitOptions = [
+            'choices' => $options['units'],
+            'select2' => true
+        ];
+
         if ($options['default_unit']) {
             $unitOptions['preferred_choices'] = $options['default_unit'];
         }
@@ -30,7 +44,7 @@ class MetricType extends AbstractType
             ->add('id', 'hidden')
             ->add('data', 'pim_number')
             ->add('unit', 'choice', $unitOptions)
-            ->add('family', 'hidden', array('data' => $options['family']));
+            ->add('family', 'hidden', ['data' => $options['family']]);
     }
 
     /**
@@ -39,12 +53,12 @@ class MetricType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Metric',
-                'units'        => array(),
+            [
+                'data_class'   => $this->dataClass,
+                'units'        => [],
                 'default_unit' => null,
                 'family'       => null
-            )
+            ]
         );
     }
 

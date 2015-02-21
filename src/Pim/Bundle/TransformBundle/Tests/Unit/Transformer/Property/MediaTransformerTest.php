@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer;
 use Symfony\Component\HttpFoundation\File\File;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 /**
  * Tests related class
@@ -80,7 +80,55 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     protected function getValue($hasFile, $mediaExists)
     {
         $productValue = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('getMedia', 'setMedia', '__toString', 'setData', 'getData', 'getAttribute', 'getEntity'))
+            ->setMethods(
+                [
+                    'setText',
+                    'setDatetime',
+                    'setInteger',
+                    'setId',
+                    'getOption',
+                    'getMedia',
+                    'getDecimal',
+                    'setDecimal',
+                    'setAttribute',
+                    'addOption',
+                    'getBoolean',
+                    'setOptions',
+                    'setPrices',
+                    'getId',
+                    'setVarchar',
+                    'setBoolean',
+                    'getData',
+                    'getMetric',
+                    'getDate',
+                    'getAttribute',
+                    'getEntity',
+                    'setMedia',
+                    'getPrices',
+                    'getOptions',
+                    'getLocale',
+                    'setMetric',
+                    'addPrice',
+                    'getVarchar',
+                    'removePrice',
+                    'hasData',
+                    'setScope',
+                    'removeOption',
+                    'getText',
+                    'setData',
+                    'setOption',
+                    'getPrice',
+                    'setDate',
+                    'addData',
+                    'setLocale',
+                    'isRemovable',
+                    'getScope',
+                    'getDatetime',
+                    'setEntity',
+                    'getInteger',
+                    '__toString'
+                ]
+            )
             ->getMock();
         if ($hasFile) {
             $productValue

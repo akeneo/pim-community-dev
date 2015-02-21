@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Group manager
@@ -20,9 +19,6 @@ class GroupManager
     /** @var RegistryInterface */
     protected $doctrine;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var string */
     protected $groupClass;
 
@@ -35,36 +31,39 @@ class GroupManager
     /** @var string */
     protected $attributeClass;
 
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
     /**
      * Constructor
      *
-     * @param RegistryInterface        $doctrine
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $groupClass
-     * @param string                   $groupTypeClass
-     * @param string                   $productClass
-     * @param string                   $attributeClass
+     * @param RegistryInterface          $doctrine
+     * @param ProductRepositoryInterface $productRepository
+     * @param string                     $groupClass
+     * @param string                     $groupTypeClass
+     * @param string                     $productClass
+     * @param string                     $attributeClass
      */
     public function __construct(
         RegistryInterface $doctrine,
-        EventDispatcherInterface $eventDispatcher,
+        ProductRepositoryInterface $productRepository,
         $groupClass,
         $groupTypeClass,
         $productClass,
         $attributeClass
     ) {
-        $this->doctrine        = $doctrine;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->groupClass      = $groupClass;
-        $this->groupTypeClass  = $groupTypeClass;
-        $this->productClass    = $productClass;
-        $this->attributeClass  = $attributeClass;
+        $this->doctrine          = $doctrine;
+        $this->groupClass        = $groupClass;
+        $this->groupTypeClass    = $groupTypeClass;
+        $this->productClass      = $productClass;
+        $this->attributeClass    = $attributeClass;
+        $this->productRepository = $productRepository;
     }
 
     /**
      * Get available axis
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface[]
      */
     public function getAvailableAxis()
     {
@@ -80,7 +79,7 @@ class GroupManager
     {
         $attributes = $this->getAvailableAxis();
 
-        $choices = array();
+        $choices = [];
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
         }
@@ -111,9 +110,9 @@ class GroupManager
      */
     public function getTypeChoices($isVariant)
     {
-        $types = $this->getGroupTypeRepository()->findBy(array('variant' => $isVariant));
+        $types = $this->getGroupTypeRepository()->findBy(['variant' => $isVariant]);
 
-        $choices = array();
+        $choices = [];
         foreach ($types as $type) {
             $choices[$type->getId()] = $type->getLabel();
         }
@@ -145,12 +144,12 @@ class GroupManager
     /**
      * Removes a group
      *
-     * @param Group $group
+     * @param GroupInterface $group
+     *
+     * @deprecated will be removed in 1.4, replaced by GroupRemover::remove
      */
-    public function remove(Group $group)
+    public function remove(GroupInterface $group)
     {
-        $this->eventDispatcher->dispatch(GroupEvents::PRE_REMOVE, new GenericEvent($group));
-
         $em = $this->doctrine->getManager();
         $em->remove($group);
         $em->flush();
@@ -159,46 +158,23 @@ class GroupManager
     /**
      * Returns an array containing a limited number of product groups, and the total number of products
      *
-     * @param Group   $group
-     * @param integer $maxResults
+     * @param GroupInterface $group
+     * @param integer        $maxResults
      *
      * @return array
      */
-    public function getProductList(Group $group, $maxResults)
+    public function getProductList(GroupInterface $group, $maxResults)
     {
-        $manager = $this->doctrine->getManager();
-        $products = $manager
-            ->createQueryBuilder()
-            ->select('p')
-            ->from($this->productClass, 'p')
-            ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
-            ->setParameter('group', $group)
-            ->getQuery()
-            ->setMaxResults($maxResults + 1)
-            ->execute();
+        $products = $this->productRepository->getProductsByGroup($group, $maxResults);
+        $count = $this->productRepository->getProductCountByGroup($group);
 
-        $count = count($products);
-        if ($count > $maxResults) {
-            array_pop($products);
-            $count = $manager->createQueryBuilder()
-                ->select('COUNT(p)')
-                ->from($this->productClass, 'p')
-                ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
-                ->setParameter('group', $group)
-                ->getQuery()
-                ->getSingleScalarResult();
-        }
-
-        return array(
-            'products'      => $products,
-            'productCount'  => $count
-        );
+        return ['products' => $products, 'productCount' => $count];
     }
 
     /**
      * Get the attribute repository
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
+
+     * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()
     {

@@ -7,6 +7,7 @@ parameters:
     pim_enrich.controller.locale.class: Pim\Bundle\EnrichBundle\Controller\LocaleController
     pim_enrich.controller.mass_edit_action.class: Pim\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.attribute.class: Pim\Bundle\EnrichBundle\Controller\AttributeController
+    pim_enrich.controller.attribute_option.class: Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
     pim_enrich.controller.product.class: Pim\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.association.class: Pim\Bundle\EnrichBundle\Controller\AssociationController
     pim_enrich.controller.group.class: Pim\Bundle\EnrichBundle\Controller\GroupController
@@ -15,6 +16,10 @@ parameters:
     pim_enrich.controller.variant_group.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupController
     pim_enrich.controller.group_type.class: Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class: Pim\Bundle\EnrichBundle\Controller\CompletenessController
+    pim_enrich.controller.sequential_edit.class: Pim\Bundle\EnrichBundle\Controller\SequentialEditController
+    pim_enrich.controller.product_comment.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentController
+    pim_enrich.controller.product_attribute.class: Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
+    pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
 
 services:
     pim_enrich.controller.abstract:
@@ -44,6 +49,8 @@ services:
             - '@pim_enrich.form.handler.attribute_group'
             - '@pim_enrich.form.attribute_group'
             - '@pim_catalog.manager.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.remover.attribute_group'
             - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.category_tree:
@@ -54,6 +61,8 @@ services:
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
             - '@oro_security.security_facade'
+            - '@pim_catalog.saver.category'
+            - '@pim_catalog.remover.category'
 
     pim_enrich.controller.channel:
         scope: request
@@ -62,11 +71,14 @@ services:
         arguments:
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
+            - '@pim_catalog.remover.channel'
 
     pim_enrich.controller.currency:
         scope: request
         class: %pim_enrich.controller.currency.class%
         parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.saver.currency'
 
     pim_enrich.controller.family:
         scope: request
@@ -76,9 +88,10 @@ services:
             - '@pim_catalog.manager.family'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
-            - '@pim_catalog.manager.completeness'
             - '@pim_enrich.form.handler.family'
             - '@pim_enrich.form.family'
+            - '@pim_catalog.saver.family'
+            - '@pim_catalog.remover.family'
             - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.locale:
@@ -94,10 +107,27 @@ services:
             - '@pim_enrich.form.handler.attribute'
             - '@pim_enrich.form.attribute'
             - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.version'
+            - '@pim_catalog.saver.attribute'
+            - '@pim_catalog.remover.attribute'
+            - '@pim_catalog.saver.attribute_option'
             - %akeneo_measure.measures_config%
             - %pim_catalog.entity.attribute.class%
+
+    pim_enrich.controller.attribute_option:
+        scope: request
+        class: %pim_enrich.controller.attribute_option.class%
+        arguments:
+            - '@pim_internal_api_serializer'
+            - '@doctrine.orm.entity_manager'
+            - '@form.factory'
+            - '@fos_rest.view_handler'
+            - '@pim_catalog.manager.attribute'
+            - '@pim_catalog.manager.attribute_option'
+            - '@pim_catalog.saver.attribute_option'
+            - '@pim_catalog.remover.attribute_option'
 
     pim_enrich.controller.product:
         scope: request
@@ -110,6 +140,10 @@ services:
             - '@pim_versioning.manager.version'
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.product_category'
+            - '@pim_catalog.saver.product'
+            - '@pim_catalog.manager.media'
+            - '@pim_enrich.manager.sequential_edit'
+            - '@pim_catalog.remover.product'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
@@ -127,7 +161,6 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - %mass_edit_limit%
-            - '@pim_catalog.repository.product'
 
     pim_enrich.controller.group:
         scope: request
@@ -137,6 +170,8 @@ services:
             - '@pim_catalog.manager.group'
             - '@pim_enrich.form.handler.group'
             - '@pim_enrich.form.group'
+            - '@pim_catalog.factory.group'
+            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.association_type:
         scope: request
@@ -147,6 +182,7 @@ services:
             - '@pim_catalog.manager.association'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
+            - '@pim_catalog.remover.association_type'
 
     pim_enrich.controller.media:
         scope: request
@@ -160,7 +196,15 @@ services:
     pim_enrich.controller.variant_group:
         scope: request
         class: %pim_enrich.controller.variant_group.class%
-        parent: pim_enrich.controller.group
+        parent: pim_enrich.controller.abstract
+        arguments:
+            - '@pim_catalog.manager.group'
+            - '@pim_enrich.form.handler.variant_group'
+            - '@pim_enrich.form.variant_group'
+            - '@pim_catalog.factory.group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.resolver.variant_group_attributes'
+            - '@pim_catalog.remover.group'
 
     pim_enrich.controller.group_type:
         scope: request
@@ -169,6 +213,7 @@ services:
         arguments:
             - '@pim_enrich.form.handler.group_type'
             - '@pim_enrich.form.group_type'
+            - '@pim_catalog.remover.group_type'
 
     pim_enrich.controller.completeness:
         class: %pim_enrich.controller.completeness.class%
@@ -178,3 +223,44 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_user.context.user'
             - '@templating'
+
+    pim_enrich.controller.sequential_edit:
+        scope: request
+        class: %pim_enrich.controller.sequential_edit.class%
+        arguments:
+            - '@router'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
+            - '@pim_enrich.manager.sequential_edit'
+            - '@pim_user.context.user'
+
+    pim_enrich.controller.product_comment:
+        scope: request
+        class: %pim_enrich.controller.product_comment.class%
+        arguments:
+            - '@templating'
+            - '@security.context'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_comment.manager.comment'
+            - '@pim_comment.builder.comment'
+
+    pim_enrich.controller.product_attribute:
+        scope: request
+        class: %pim_enrich.controller.product_attribute.class%
+        arguments:
+            - '@router'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.attribute'
+
+    pim_enrich.controller.variant_group_attribute:
+        scope: request
+        class: %pim_enrich.controller.variant_group_attribute.class%
+        arguments:
+            - '@router'
+            - '@form.factory'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.saver.group'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.builder.product_template'
+            - '@pim_catalog.resolver.variant_group_attributes'

@@ -2,23 +2,23 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Symfony\Component\Form\Form;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-Use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, UserContext $userContext, CustomAttributeRepository $repository)
     {
-        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass');
+        $this->beConstructedWith($factory, $utility, $userContext, 'attributeOptionClass', $repository);
 
         $this->init(
             'foo',
@@ -42,7 +42,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -60,7 +60,7 @@ class ChoiceFilterSpec extends ObjectBehavior
     ) {
         $collection->count()->willReturn(2);
         $collection->getValues()->willReturn(['foo', 'bar']);
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -75,7 +75,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'NOT IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', 'NOT IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -90,7 +90,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         FilterDatasourceAdapterInterface $datasource,
         $utility
     ) {
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['foo', 'bar'], 'IN')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', 'IN', ['foo', 'bar'])->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -106,12 +106,13 @@ class ChoiceFilterSpec extends ObjectBehavior
      */
     function it_provides_a_choice_filter_form(
         Form $form,
-        AttributeRepository $attributeRepository,
-        AbstractAttribute $attribute,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $attribute,
         $utility,
-        $factory
+        $factory,
+        $repository
     ) {
-        $utility->getAttribute('data_name_key')->willReturn($attribute);
+        $repository->findOneByCode('data_name_key')->willReturn($attribute);
 
         $factory->create(AjaxChoiceFilterType::NAME, [], [
             'csrf_protection' => false,
@@ -121,10 +122,17 @@ class ChoiceFilterSpec extends ObjectBehavior
                 'class' => 'attributeOptionClass',
                 'dataLocale' => null,
                 'collectionId' => null
-            ],
-            'preload_choices' => true
+            ]
         ])->willReturn($form);
 
         $this->getForm()->shouldReturn($form);
+    }
+}
+
+class CustomAttributeRepository extends AttributeRepository
+{
+    function findOneByCode()
+    {
+        return null;
     }
 }

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\EventListener;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\InvalidItemEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Collect invalid items

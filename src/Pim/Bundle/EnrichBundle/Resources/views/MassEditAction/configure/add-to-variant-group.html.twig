@@ -1,0 +1,6 @@
+{% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block formContent %}
+    {{ view_elements('pim_mass_edit.warning') }}
+    {{ form_row(form.operation.group) }}
+{% endblock %}

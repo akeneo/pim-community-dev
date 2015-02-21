@@ -1,5 +1,22 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
 
+{% form_theme form _self %}
+{% block choice_widget_options %}
+    {% spaceless %}
+        {% for group_label, choice in options %}
+            {% if choice is iterable %}
+                <optgroup label="{{ configs.is_translate_group is defined and not configs.is_translate_group ? group_label : group_label|trans({}, translation_domain) }}">
+                    {% set options = choice %}
+                    {{ block('choice_widget_options') }}
+                </optgroup>
+            {% else %}
+                {% set label = choice.data.attributeType is defined  ? choice.data.label : choice.label|trans({}, translation_domain) %}
+                <option {{ block('choice_widget_option_attributes') }} value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>{% if (configs.is_safe is defined and configs.is_safe) %}{{ label|raw }}{% else %}{{ label }}{% endif %}</option>
+            {% endif %}
+        {% endfor %}
+    {% endspaceless %}
+{% endblock choice_widget_options %}
+
 {% block formTitle %}
     <div class="pull-left">
         {{ form_widget(form.operation.locale) }}
@@ -10,11 +27,10 @@
 {% endblock %}
 
 {% block formContent %}
+    {{ view_elements('pim_mass_edit.warning') }}
     {% for groupView in form.operation.vars.groups %}
-
         <div class="group-container hide">
             <h4>{{ groupView.label }}</h4>
-
             {% for attributeView in groupView.attributes %}
                 <div class="attribute-field hide {{ attributeView.classes|default([])|keys|join(' ') }}" data-attribute-id="{{ attributeView.id }}">
                     {% if attributeView.values is defined %}
@@ -36,13 +52,7 @@
                 <hr />
             {% endif %}
         </div>
-
-    {% else %}
-
-        {{ 'pim_enrich.mass_edit_action.edit-common-attributes.empty'|trans }}
-
     {% endfor %}
-
 {% endblock %}
 
 {% block head_script_component %}
@@ -140,6 +150,8 @@
                         $el.multiselect('widget').find('input[value="' + $(this).attr('data-id') + '"]').click();
                         $saveButton.click();
                     });
+
+                    {{ view_elements('pim_enrich_product_mass_edit.after_form_init') }}
                 });
             }
         );

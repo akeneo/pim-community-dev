@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
-use Symfony\Component\Form\FormView;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
+use Symfony\Component\Form\FormView;
 
 /**
  * Custom form view for Product form
@@ -22,7 +23,7 @@ class ProductFormView implements ProductFormViewInterface
      *
      * @var array
      */
-    private $choiceAttributeTypes = array(
+    protected $choiceAttributeTypes = array(
         'pim_catalog_multiselect',
         'pim_catalog_simpleselect'
     );
@@ -30,11 +31,28 @@ class ProductFormView implements ProductFormViewInterface
     /** @var FormView|array */
     protected $view = [];
 
+    /** @var ViewUpdaterRegistry */
+    protected $viewUpdaterRegistry;
+
+    /**
+     * @param ViewUpdaterRegistry $viewUpdaterRegistry
+     */
+    public function __construct(ViewUpdaterRegistry $viewUpdaterRegistry)
+    {
+        $this->viewUpdaterRegistry = $viewUpdaterRegistry;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function getView()
     {
+        foreach ($this->view as $group) {
+            foreach ($group['attributes'] as $attributeView) {
+                $this->updateView($attributeView);
+            }
+        }
+
         return $this->view;
     }
 
@@ -56,27 +74,27 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      */
-    protected function orderGroupAttributes(AttributeGroup $group)
+    protected function orderGroupAttributes(AttributeGroupInterface $group)
     {
         $this->view[$group->getId()]['attributes'] = $this->sortAttributes($this->view[$group->getId()]['attributes']);
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      *
-     * @return boolean
+     * @return bool
      */
-    protected function hasGroup(AttributeGroup $group)
+    protected function hasGroup(AttributeGroupInterface $group)
     {
         return isset($this->view[$group->getId()]);
     }
 
     /**
-     * @param AttributeGroup $group
+     * @param AttributeGroupInterface $group
      */
-    protected function initializeGroup(AttributeGroup $group)
+    protected function initializeGroup(AttributeGroupInterface $group)
     {
         $this->view[$group->getId()] = array(
             'label'      => $group->getLabel(),
@@ -85,11 +103,11 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AbstractAttribute $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */
-    protected function getAttributeClasses(AbstractAttribute $attribute)
+    protected function getAttributeClasses(AttributeInterface $attribute)
     {
         $classes = array();
         if ($attribute->isScopable()) {
@@ -127,13 +145,13 @@ class ProductFormView implements ProductFormViewInterface
     /**
      * Prepare attribute view
      *
-     * @param AbstractAttribute     $attribute
+     * @param AttributeInterface    $attribute
      * @param ProductValueInterface $value
      * @param FormView              $view
      *
      * @return array
      */
-    protected function prepareAttributeView(AbstractAttribute $attribute, ProductValueInterface $value, FormView $view)
+    protected function prepareAttributeView(AttributeInterface $attribute, ProductValueInterface $value, FormView $view)
     {
         $attributeView = array(
             'id'                 => $attribute->getId(),
@@ -164,12 +182,25 @@ class ProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * @param AbstractAttribute $attribute
-     * @param string            $locale
+     * Update the current view with all view updaters
+     * @param array $view
+     */
+    protected function updateView(array $view)
+    {
+        $viewUpdaters = $this->viewUpdaterRegistry->getUpdaters();
+
+        foreach ($viewUpdaters as $viewUpdater) {
+            $viewUpdater->update($view);
+        }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $locale
      *
      * @return ArrayCollection
      */
-    protected function getAttributeValues(AbstractAttribute $attribute, $locale)
+    protected function getAttributeValues(AttributeInterface $attribute, $locale)
     {
         $group = $attribute->getGroup();
         $key = $attribute->getCode();

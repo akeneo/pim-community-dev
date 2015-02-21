@@ -2,16 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\PersistentCollection;
-
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -20,10 +16,10 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 {
     function let(
         DocumentManager $manager,
-        ChannelManager $channelManager,
-        FamilyRepository $familyRepository
+        ChannelRepositoryInterface $channelRepository,
+        FamilyRepositoryInterface $familyRepository
     ) {
-        $this->beConstructedWith($manager, 'pim_product_class', $channelManager, $familyRepository);
+        $this->beConstructedWith($manager, 'pim_product_class', $channelRepository, $familyRepository);
     }
 
     function it_is_a_completeness_generator()

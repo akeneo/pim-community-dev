@@ -2,14 +2,12 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-
-use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-
-use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType;
 
 /**
  * Price filter
@@ -38,11 +36,16 @@ class PriceFilter extends OroNumberFilter
             return;
         }
 
-        $this->util->applyFilterByAttribute(
+        $operator = $this->getOperator($data['type']);
+        $data['data'] = $data['value'];
+        unset($data['value']);
+        unset($data['type']);
+
+        $this->util->applyFilter(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
-            sprintf('%s %s', $data['value'], $data['currency']),
-            $this->getOperator($data['type'])
+            $operator,
+            $data
         );
 
         return true;

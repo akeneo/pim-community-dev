@@ -2,14 +2,15 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Prophecy\Argument;
 
 class VersionManagerSpec extends ObjectBehavior
 {
@@ -17,14 +18,15 @@ class VersionManagerSpec extends ObjectBehavior
         SmartManagerRegistry $registry,
         VersionBuilder $builder,
         ObjectManager $om,
-        VersionRepositoryInterface $repo
+        VersionRepositoryInterface $versionRepository,
+        VersionContext $versionContext
     ) {
-        $this->beConstructedWith($registry, $builder);
+        $this->beConstructedWith($registry, $builder, $versionContext);
 
         $registry->getManagerForClass(Argument::any())->willReturn($om);
-        $registry->getRepository(Argument::any())->willReturn($repo);
-        $repo->findBy(Argument::cetera())->willReturn([]);
-        $repo->getNewestLogEntry(Argument::cetera())->willReturn(null);
+        $registry->getRepository(Argument::any())->willReturn($versionRepository);
+        $versionRepository->findBy(Argument::cetera())->willReturn([]);
+        $versionRepository->getNewestLogEntry(Argument::cetera())->willReturn(null);
     }
 
     function it_is_aware_of_the_versioning_mode()
@@ -34,23 +36,15 @@ class VersionManagerSpec extends ObjectBehavior
         $this->isRealTimeVersioning()->shouldReturn(false);
     }
 
-    function it_is_aware_of_the_versioning_context()
-    {
-        $this->getContext()->shouldReturn(null);
-        $this->setContext('import');
-        $this->getContext()->shouldReturn('import');
-    }
-
-    function it_uses_version_builder_to_build_versions(AbstractProduct $product, $builder)
+    function it_uses_version_builder_to_build_versions($builder, $versionContext, ProductInterface $product)
     {
         $this->setUsername('julia');
-        $this->setContext('spec');
         $this->buildVersion($product);
 
-        $builder->buildVersion($product, 'julia', null, 'spec')->shouldHaveBeenCalled();
+        $builder->buildVersion($product, 'julia', null, null)->shouldHaveBeenCalled();
     }
 
-    function it_builds_versions_for_versionable_entities(AbstractProduct $product, $builder)
+    function it_builds_versions_for_versionable_entities(ProductInterface $product, $builder)
     {
         $builder->buildVersion(Argument::cetera())->willReturn(new Version('foo', 1, 'bar'));
 
@@ -59,7 +53,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
-    function it_creates_pending_versions_when_real_time_versioning_is_disabled(AbstractProduct $product, $builder)
+    function it_creates_pending_versions_when_real_time_versioning_is_disabled(ProductInterface $product, $builder)
     {
         $this->setRealTimeVersioning(false);
         $builder->createPendingVersion(Argument::cetera())->willReturn(new Version('foo', 1, 'bar'));
@@ -71,7 +65,7 @@ class VersionManagerSpec extends ObjectBehavior
         $version->isPending()->shouldReturn(true);
     }
 
-    function it_builds_pending_versions_when_versioning_an_entity(AbstractProduct $product, $builder, $repo)
+    function it_builds_pending_versions_and_last_version_when_versioning_an_entity(ProductInterface $product, $builder, $versionRepository)
     {
         $product->getId()->willReturn(1);
 
@@ -79,13 +73,30 @@ class VersionManagerSpec extends ObjectBehavior
         $pending1->setChangeset(['foo' => 'bar']);
         $pending2 = new Version('Product', 1, 'julia');
         $pending2->setChangeset(['foo' => 'fubar']);
-        $repo->findBy(Argument::cetera())->willReturn([$pending1, $pending2]);
+        $versionRepository->findBy(Argument::cetera())->willReturn([$pending1, $pending2]);
 
-        $builder->buildPendingVersion($pending1, null)->willReturn($pending1);
-        $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2);
-        $builder->buildVersion(Argument::cetera())->willReturn(new Version('Product', 1, 'julia'));
+        $builder->buildPendingVersion($pending1, null)->willReturn($pending1)->shouldBeCalled();
+        $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2)->shouldBeCalled();
+        $builder->buildVersion(Argument::cetera())->willReturn(new Version('Product', 1, 'julia'))->shouldBeCalled();
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(3);
+    }
+
+    function it_builds_pending_versions_for_a_given_entity(ProductInterface $product, $builder, $versionRepository)
+    {
+        $product->getId()->willReturn(1);
+
+        $pending1 = new Version('Product', 1, 'julia');
+        $pending1->setChangeset(['foo' => 'bar']);
+        $pending2 = new Version('Product', 1, 'julia');
+        $pending2->setChangeset(['foo' => 'fubar']);
+        $versionRepository->findBy(Argument::cetera())->willReturn([$pending1, $pending2]);
+
+        $builder->buildPendingVersion($pending1, null)->willReturn($pending1)->shouldBeCalled();
+        $builder->buildPendingVersion($pending2, $pending1)->willReturn($pending2)->shouldBeCalled();
+
+        $versions = $this->buildPendingVersions($product);
+        $versions->shouldHaveCount(2);
     }
 }

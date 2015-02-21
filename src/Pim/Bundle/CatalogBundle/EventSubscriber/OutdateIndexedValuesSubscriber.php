@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Mark the indexed values for the object as outdated once a value has been loaded from the DB
@@ -35,12 +35,12 @@ class OutdateIndexedValuesSubscriber implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
-        if ($object instanceof AbstractProductValue) {
+        if ($object instanceof ProductValueInterface) {
             $product = $object->getEntity();
-            if ($product instanceof AbstractProduct) {
+            if ($product instanceof ProductInterface) {
                 $product->markIndexedValuesOutdated();
             }
-        } elseif ($object instanceof AbstractProduct) {
+        } elseif ($object instanceof ProductInterface) {
             $object->markIndexedValuesOutdated();
         }
     }

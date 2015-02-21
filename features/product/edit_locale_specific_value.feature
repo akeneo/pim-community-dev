@@ -7,8 +7,8 @@ Feature: Edit a locale specific value
   Background:
     Given the "apparel" catalog configuration
     And the following products:
-    | sku    | family   |
-    | tshirt | tshirts  |
+    | sku    | family  |
+    | tshirt | tshirts |
     And I am logged in as "Mary"
     And I am on the "tshirt" product page
 

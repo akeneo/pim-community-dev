@@ -2,12 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
+use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\Association;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * @require \MongoId
@@ -42,7 +42,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_without_product_or_group(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef
     ) {
@@ -67,12 +67,12 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_with_products(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
-        Product $product1,
+        ProductInterface $product1,
         \MongoDBRef $product1Ref,
-        Product $product2,
+        ProductInterface $product2,
         \MongoDBRef $product2Ref
     ) {
         $assocType->getId()->willReturn(8);
@@ -102,11 +102,11 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_with_groups(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
-        Group $group1,
-        Group $group2
+        GroupInterface $group1,
+        GroupInterface $group2
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getProducts()->willReturn([]);
@@ -133,15 +133,15 @@ class AssociationNormalizerSpec extends ObjectBehavior
     function it_normalizes_an_association_with_products_and_groups(
         $mongoFactory,
         Association $assoc,
-        AssociationType $assocType,
+        AssociationTypeInterface $assocType,
         \MongoId $mongoId,
         \MongoDBRef $ownerRef,
-        Product $product1,
+        ProductInterface $product1,
         \MongoDBRef $product1Ref,
-        Product $product2,
+        ProductInterface $product2,
         \MongoDBRef $product2Ref,
-        Group $group1,
-        Group $group2
+        GroupInterface $group1,
+        GroupInterface $group2
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getAssociationType()->willReturn($assocType);

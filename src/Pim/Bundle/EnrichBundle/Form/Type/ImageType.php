@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type linked to Media entity
@@ -15,20 +15,31 @@ use Symfony\Component\Form\AbstractType;
  */
 class ImageType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('file', 'file', array('required' => false))
+            ->add('file', 'file', ['required' => false])
             ->add(
                 'removed',
                 'checkbox',
-                array(
+                [
                     'required' => false,
                     'label'    => 'Remove media',
-                )
+                ]
             )
             ->add('id', 'hidden')
             ->add('copyFrom', 'hidden');
@@ -40,9 +51,9 @@ class ImageType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

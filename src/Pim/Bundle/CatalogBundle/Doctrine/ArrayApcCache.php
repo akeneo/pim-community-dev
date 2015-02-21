@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Cache\ApcCache;
 use Doctrine\Common\Cache\ArrayCache;
+use Doctrine\Common\Cache\Cache;
 
 /**
  * Proxy for ApcCache in http mode and ArrayCache in command line mode
+ *
+ * @deprecated will be removed in 1.4
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

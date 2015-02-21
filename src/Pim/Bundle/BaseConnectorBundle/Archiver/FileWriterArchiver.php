@@ -4,10 +4,10 @@ namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
-use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\ItemStep;
 use Gaufrette\Filesystem;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\ArchivableWriterInterface;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 
 /**
  * Archive job execution files into conventional directories

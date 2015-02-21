@@ -35,7 +35,7 @@ class DatasourceTypes
     /**
      * Oro datasource
      *
-    * @staticvar string
+     * @staticvar string
      */
     const DATASOURCE_ORO = 'orm';
 }

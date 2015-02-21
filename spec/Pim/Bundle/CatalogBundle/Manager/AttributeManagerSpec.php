@@ -2,48 +2,34 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class AttributeManagerSpec extends ObjectBehavior
 {
     const ATTRIBUTE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
     const PRODUCT_CLASS   = 'Pim\Bundle\CatalogBundle\Model\Product';
-    const OPTION_CLASS    = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
-    const OPT_VALUE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue';
 
     function let(
         ObjectManager $objectManager,
-        AttributeTypeFactory $factory,
-        EventDispatcherInterface $eventDispatcher
+        AttributeTypeRegistry $registry
     ) {
         $this->beConstructedWith(
             self::ATTRIBUTE_CLASS,
-            self::OPTION_CLASS,
-            self::OPT_VALUE_CLASS,
             self::PRODUCT_CLASS,
             $objectManager,
-            $factory,
-            $eventDispatcher
+            $registry
         );
     }
 
-    function it_instanciates_an_attribute() {
-        $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
-    }
-
-    function it_instanciates_an_attribute_option() {
-        $this->createAttributeOption()->shouldReturnAnInstanceOf(self::OPTION_CLASS);
-    }
-
-    function it_instanciates_an_attribute_option_value()
+    function it_instantiates_an_attribute()
     {
-        $this->createAttributeOptionValue()->shouldReturnAnInstanceOf(self::OPT_VALUE_CLASS);
+        $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
     }
 
     function it_provides_the_attribute_class_used()
@@ -51,31 +37,10 @@ class AttributeManagerSpec extends ObjectBehavior
         $this->getAttributeClass()->shouldReturn(self::ATTRIBUTE_CLASS);
     }
 
-    function it_provides_the_attribute_option_class_used()
+    function it_provides_the_list_of_attribute_types($registry)
     {
-        $this->getAttributeOptionClass()->shouldReturn(self::OPTION_CLASS);
-    }
-
-    function it_provides_the_list_of_attribute_types($factory)
-    {
-        $factory->getAttributeTypes(self::PRODUCT_CLASS)->willReturn(['foo', 'bar']);
+        $registry->getAliases()->willReturn(['foo', 'bar']);
 
         $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
-    }
-
-    function it_dispatches_an_event_when_removing_an_attribute(
-        $eventDispatcher,
-        $objectManager,
-        AbstractAttribute $attribute
-    ) {
-        $eventDispatcher->dispatch(
-            AttributeEvents::PRE_REMOVE,
-            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-        )->shouldBeCalled();
-
-        $objectManager->remove($attribute)->shouldBeCalled();
-        $objectManager->flush()->shouldBeCalled();
-
-        $this->remove($attribute);
     }
 }

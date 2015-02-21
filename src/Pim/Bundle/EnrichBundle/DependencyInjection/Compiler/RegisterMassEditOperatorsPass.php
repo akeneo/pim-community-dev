@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  * Register mass edit operators

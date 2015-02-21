@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**

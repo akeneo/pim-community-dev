@@ -1,0 +1,12 @@
+Pim\Bundle\CatalogBundle\Entity\ProductTemplate:
+    type: entity
+    table: pim_catalog_product_template
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductTemplateRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        valuesData:
+            type: json_array

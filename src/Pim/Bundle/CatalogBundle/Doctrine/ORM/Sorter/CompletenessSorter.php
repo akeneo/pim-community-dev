@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\CompletenessJoin;
 
 /**
  * Completeness sorter
@@ -16,36 +15,37 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class CompletenessSorter implements FieldSorterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /** @var CatalogContext */
-    protected $context;
-
     /**
-     * Instanciate a sorter
-     *
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * {@inheritdoc}
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function setQueryBuilder($queryBuilder)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        $this->qb = $queryBuilder;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function supportsField($field)
+    {
+        return $field === 'completeness';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction, $locale = null, $scope = null)
     {
         $alias = 'sorterCompleteness';
         $util = new CompletenessJoin($this->qb);
-        $util->addJoins($alias);
+        $util->addJoins($alias, $locale, $scope);
         $this->qb->addOrderBy($alias.'.ratio', $direction);
+
+        $idField = $this->qb->getRootAlias().'.id';
+        $this->qb->addOrderBy($idField);
 
         return $this;
     }

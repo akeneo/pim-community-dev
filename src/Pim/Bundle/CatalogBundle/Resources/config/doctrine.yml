@@ -1,25 +1,16 @@
 parameters:
-    doctrine.orm.cache.apc.class:       Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
-    doctrine.entity_repository.class:   Doctrine\ORM\EntityRepository
-    doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
-    pim_catalog.doctrine.smart_manager_registry.class: Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
-    pim_catalog.doctrine.table_name_builder.class:     Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder
-    pim_catalog.event_subscriber.resolve_target_repository.class: Pim\Bundle\CatalogBundle\EventSubscriber\ResolveTargetRepositorySubscriber
+    # @deprecated: will ne removed in 1.4
+    doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
 
 services:
+    # deprecetad: will be removed in 1.4
     pim_catalog.event_subscriber.resolve_target_repository:
-        class: %pim_catalog.event_subscriber.resolve_target_repository.class%
-        public: false
-        tags:
-            - { name: doctrine.event_subscriber }
+        alias: akeneo_storage_utils.event_subscriber.resolve_target_repository
 
+    # deprecetad: will be removed in 1.4
     pim_catalog.doctrine.smart_manager_registry:
-        class: %pim_catalog.doctrine.smart_manager_registry.class%
-        calls:
-            - [addRegistry, ['@doctrine']]
+        alias: akeneo_storage_utils.doctrine.smart_manager_registry
 
+    # deprecetad: will be removed in 1.4
     pim_catalog.doctrine.table_name_builder:
-        class: %pim_catalog.doctrine.table_name_builder.class%
-        arguments:
-            - '@service_container'
-            - '@pim_catalog.doctrine.smart_manager_registry'
+        alias: akeneo_storage_utils.doctrine.table_name_builder

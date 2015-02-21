@@ -16,7 +16,6 @@ Feature: Edit an attribute group
     And I press the "Save" button
     Then I should see "My sizes"
 
-  @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes
     Given I am on the "media" attribute group page
     When I fill in the following information:

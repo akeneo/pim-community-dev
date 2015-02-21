@@ -60,7 +60,6 @@ class FiltersConfigurator implements ConfiguratorInterface
             }
 
             if ($showFilter && $attributeTypeConf && isset($attributeTypeConf['filter'])) {
-
                 $filterConfig = $attributeTypeConf['filter'];
                 $filterConfig = $filterConfig + array(
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,

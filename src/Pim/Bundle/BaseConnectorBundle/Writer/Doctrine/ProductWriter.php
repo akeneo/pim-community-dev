@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Product writer using ORM method
@@ -23,46 +23,42 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
+    /**  @var MediaManager */
+    protected $mediaManager;
 
-    /**
-     * @var VersionManager
-     */
+    /** @var VersionManager */
     protected $versionManager;
 
-    /**
-     * @var CacheClearer
-     */
+    /** @var CacheClearer */
     protected $cacheClearer;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
-    /**
-     * @var boolean
-     */
+    /** @var boolean */
     protected $realTimeVersioning = true;
+
+    /** @var SaverInterface */
+    protected $productSaver;
 
     /**
      * Constructor
      *
-     * @param ProductManager $productManager
+     * @param MediaManager   $mediaManager
      * @param CacheClearer   $cacheClearer
      * @param VersionManager $versionManager
+     * @param SaverInterface $productSaver
      */
     public function __construct(
-        ProductManager $productManager,
+        MediaManager $mediaManager,
         CacheClearer $cacheClearer,
-        VersionManager $versionManager
+        VersionManager $versionManager,
+        SaverInterface $productSaver
     ) {
-        $this->productManager  = $productManager;
-        $this->cacheClearer    = $cacheClearer;
-        $this->versionManager  = $versionManager;
+        $this->mediaManager   = $mediaManager;
+        $this->cacheClearer   = $cacheClearer;
+        $this->versionManager = $versionManager;
+        $this->productSaver   = $productSaver;
     }
 
     /**
@@ -70,15 +66,15 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'realTimeVersioning' => array(
+        return [
+            'realTimeVersioning' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.realTimeVersioning.label',
                     'help'  => 'pim_base_connector.import.realTimeVersioning.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
@@ -110,8 +106,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         foreach ($items as $item) {
             $this->incrementCount($item);
         }
-        $this->productManager->handleAllMedia($items);
-        $this->productManager->saveAllProducts($items, ['recalculate' => false]);
+        $this->mediaManager->handleAllProductsMedias($items);
+        $this->productSaver->saveAll($items, ['recalculate' => false]);
 
         $this->cacheClearer->clear();
     }

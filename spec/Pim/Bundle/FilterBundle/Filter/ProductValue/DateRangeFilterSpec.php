@@ -2,13 +2,13 @@
 
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormFactoryInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 
 class DateRangeFilterSpec extends ObjectBehavior
@@ -221,7 +221,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData('foo')->shouldReturn(false);
         $this->parseData(0)->shouldReturn(false);
         $this->parseData(true)->shouldReturn(false);
-        $this->parseData(new \StdClass)->shouldReturn(false);
+        $this->parseData(new \StdClass())->shouldReturn(false);
     }
 
     function it_does_not_parse_array_without_value_key()
@@ -270,7 +270,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $utility
-            ->applyFilterByAttribute($datasource, 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')
+            ->applyFilter($datasource, 'data_name_key', 'BETWEEN', array('1987-05-14', '2014-01-23'))
             ->shouldBeCalled();
 
         $this->apply(
@@ -301,11 +301,11 @@ class DateRangeFilterSpec extends ObjectBehavior
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $utility
-            ->applyFilterByAttribute(
+            ->applyFilter(
                 $datasource,
                 'data_name_key',
-                ['from' => '1987-05-14', 'to' => '2014-01-23'],
-                ['from' => '<', 'to' => '>']
+                'NOT BETWEEN',
+                ['1987-05-14', '2014-01-23']
             )
             ->shouldBeCalled();
 
@@ -336,7 +336,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', '2014-01-23', '<')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', '<', '2014-01-23')->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -365,7 +365,7 @@ class DateRangeFilterSpec extends ObjectBehavior
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', '1987-05-14', '>')->shouldBeCalled();
+        $utility->applyFilter($datasource, 'data_name_key', '>', '1987-05-14')->shouldBeCalled();
 
         $this->apply(
             $datasource,

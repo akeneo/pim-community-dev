@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 /**
  * Product file writer
@@ -58,11 +58,11 @@ class ProductWriter extends FileWriter implements ArchivableWriterInterface
     }
 
     /**
-     * @param AbstractProductMedia $media
+     * @param ProductMediaInterface $media
      *
      * @return null
      */
-    protected function copyMedia(AbstractProductMedia $media)
+    protected function copyMedia(ProductMediaInterface $media)
     {
         $result = $this->mediaManager->copy($media, dirname($this->getPath()));
         if ($result === true) {

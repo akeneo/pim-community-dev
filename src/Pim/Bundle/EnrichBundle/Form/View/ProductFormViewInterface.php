@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\View;
 
-use Symfony\Component\Form\FormView;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Form\FormView;
 
 /**
  * Representation of the product form view
