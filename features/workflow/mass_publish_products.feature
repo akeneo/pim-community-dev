@@ -167,3 +167,17 @@ Feature: Publish many products at once
     And I should see "10"
     And I should see "Customs"
     Then I should see "50.00 EUR"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3784
+  Scenario: Successfully publish all products
+    Given I am logged in as "Julia"
+    And I am on the products page
+    And I mass-edit products unionjack
+    When I choose the "Publish products" operation
+    When I press the "Next" button
+    When I press the "Confirm" button
+    And I am on the published index page
+    And I should see product unionjack
+    Then the row "unionjack" should contain:
+      | column   | value |
+      | complete | 22%   |
