@@ -19,7 +19,9 @@
     "require": {
         "akeneo/pim-community-dev": "dev-master",
         "oro/platform": "dev-pim-1.4@dev",
-        "phpspec/php-diff": "1.0.2"
+        "phpspec/php-diff": "1.0.2",
+        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/doctrine-migrations-bundle": "1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
