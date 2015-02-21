@@ -29,7 +29,7 @@ class VariantGroupAttributesResolver
     /**
      * Get non eligible attributes to a product template
      *
-     * @param GroupInterface $group
+     * @param GroupInterface $variantGroup
      *
      * @return AttributeInterface[]
      */

@@ -35,8 +35,8 @@ class ImmutableValidator extends ConstraintValidator
     /**
      * Validate the property
      *
-     * @param Locale     $entity
-     * @param Constraint $constraint
+     * @param \Pim\Bundle\CatalogBundle\Entity\Locale $entity
+     * @param Constraint                              $constraint
      */
     public function validate($entity, Constraint $constraint)
     {
@@ -46,8 +46,8 @@ class ImmutableValidator extends ConstraintValidator
         foreach ($constraint->properties as $property) {
             $originalValue = $accessor->getValue($originalData, sprintf('[%s]', $property));
             if (null !== $originalValue) {
-                $newValue = $accessor->getValue($entity, $property);
-                $isDifferent = $originalValue !== $newValue;
+                $newValue          = $accessor->getValue($entity, $property);
+                $isDifferent       = $originalValue !== $newValue;
                 $isDirtyCollection = ($newValue instanceof PersistentCollection && $newValue->isDirty());
                 if ($isDifferent || $isDirtyCollection) {
                     $this->context->addViolationAt($property, $constraint->message);
