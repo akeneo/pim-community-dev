@@ -14,6 +14,9 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class PendingMassPersisterSpec extends ObjectBehavior
 {
     function it_is_initializable()

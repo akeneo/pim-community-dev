@@ -290,6 +290,12 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
+# 1.2.28 (2015-02-20)
+
+## Bug fixes
+- PIM-3790: Fix WYSIWYG on folded scopable elements
+- PIM-3785: Can not export Products/Published due to null medias
+
 # 1.2.27 (2015-02-13)
 
 ## Bug fixes
@@ -299,6 +305,7 @@
 
 ## Bug fixes
 - PIM-3761: Fix WYSIWYG onClick behaviour, event correctly bind
+- PIM-3632 : Correctly show scopable attribute icons on scope change
 
 # 1.2.25 (2015-02-04)
 
@@ -343,7 +350,7 @@
 - PIM-3558: Fix order of options for multiselect attribute in product versionning and csv product export
 
 ## BC breaks
-- PIM-3558: In the exported product csv file, we apply the sort order defined by the user to sort the options of a multiselect
+- PIM-3558: in the exported product csv file, we apply the sort order defined by the user to sort the options of a multiselect
 
 # 1.2.17 (2014-12-19)
 - PIM-3550: force the version of "doctrine/annotations" to "v1.2.1" to avoid the BC Break introduced with v1.2.2
