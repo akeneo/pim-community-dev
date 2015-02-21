@@ -19,9 +19,6 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class ChoiceFilter extends AjaxChoiceFilter
 {
-    /** @var AttributeInterface */
-    protected $attribute;
-
     /** @var string */
     protected $optionRepoClass;
 
@@ -81,7 +78,7 @@ class ChoiceFilter extends AjaxChoiceFilter
      */
     public function getForm()
     {
-        $this->loadAttribute();
+        $attribute = $this->getAttribute();
 
         $options = array_merge(
             $this->getOr('options', []),
@@ -90,7 +87,7 @@ class ChoiceFilter extends AjaxChoiceFilter
 
         $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
         $options['choice_url']        = 'pim_ui_ajaxentity_list';
-        $options['choice_url_params'] = $this->getChoiceUrlParams();
+        $options['choice_url_params'] = $this->getChoiceUrlParams($attribute);
 
         if (!$this->form) {
             $this->form = $this->formFactory->create($this->getFormType(), [], $options);
@@ -105,29 +102,28 @@ class ChoiceFilter extends AjaxChoiceFilter
      *
      * @throws \LogicException
      */
-    protected function loadAttribute()
+    protected function getAttribute()
     {
-        if (null === $this->attribute) {
-            $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
-            $attribute = $this->attributeRepository->findOneByCode($fieldName);
+        $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+        $attribute = $this->attributeRepository->findOneByCode($fieldName);
 
-            if (!$attribute) {
-                throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
-            }
-
-            $this->attribute = $attribute;
+        if (!$attribute) {
+            throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
         }
+
+        return $attribute;
     }
 
     /**
+     * @param  AttributeInterface $attribute
      * @return array
      */
-    protected function getChoiceUrlParams()
+    protected function getChoiceUrlParams(AttributeInterface $attribute)
     {
         return [
             'class'        => $this->optionRepoClass,
             'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => $this->attribute->getId()
+            'collectionId' => $attribute->getId()
         ];
     }
 }

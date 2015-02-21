@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 
 /**
@@ -159,6 +160,20 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
         );
 
         return $groupsWithAttributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getVariantGroupByProductTemplate(ProductTemplateInterface $productTemplate)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        $qb->innerJoin('g.productTemplate', 'pt')
+            ->where($qb->expr()->eq('pt', ':productTemplate'))
+            ->setParameter(':productTemplate', $productTemplate->getId());
+
+        return $qb->getQuery()->getOneOrNullResult();
     }
 
     /**
