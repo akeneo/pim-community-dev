@@ -1,12 +1,21 @@
 parameters:
     pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\ProductDraftRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
-    pimee_workflow.repository.product_draft_ownership.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\ProductDraftOwnershipRepository
     pimee_workflow.subscriber.synchronize_product_draft_categories.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SynchronizeProductDraftCategoriesSubscriber
 
 services:
     pimee_workflow.object_manager.product_draft:
         alias: doctrine.odm.mongodb.document_manager
+
+    pimee_workflow.repository.product_draft:
+        class: %pimee_workflow.repository.product_draft.class%
+        factory_service: pimee_workflow.object_manager.product_draft
+        factory_method: getRepository
+        arguments: [%pimee_workflow.model.product_draft.class%]
+        calls:
+            - [setCategoryAccessRepository, ['@pimee_security.repository.category_access']]
+        tags:
+            - { name: 'pim_repository' }
 
     pimee_workflow.repository.published_product:
         class: %pimee_workflow.repository.published_product.class%
@@ -14,7 +23,7 @@ services:
         factory_method: getRepository
         arguments: [%pimee_workflow.entity.published_product.class%]
         calls:
-            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+            - [setProductQueryBuilderFactory, ['@pimee_workflow.doctrine.query.published_product_query_factory']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
             - [setFamilyRepository, ['@pim_catalog.repository.family']]
@@ -33,12 +42,6 @@ services:
     pimee_workflow.repository.published_association:
         alias: pimee_workflow.repository.published_product
 
-    pimee_workflow.repository.product_draft_ownership:
-        class: %pimee_workflow.repository.product_draft_ownership.class%
-        arguments:
-            - '@pimee_workflow.repository.product_draft'
-            - '@pimee_security.repository.category_access'
-
     pimee_workflow.repository.published_product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%
         arguments:
@@ -50,7 +53,7 @@ services:
     pimee_workflow.subscriber.synchronize_product_draft_categories:
         class: %pimee_workflow.subscriber.synchronize_product_draft_categories.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@akeneo_storage_utils.doctrine.smart_manager_registry'
             - '%pimee_workflow.model.product_draft.class%'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }

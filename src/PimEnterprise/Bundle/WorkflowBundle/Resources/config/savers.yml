@@ -1,0 +1,34 @@
+parameters:
+    pimee_workflow.saver.product_draft.class:      PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver
+    pimee_workflow.saver.product_delegating.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\DelegatingProductSaver
+
+services:
+    # product working copy saver, we alias the product saver from community edition to make the behavior more explicit
+    pimee_workflow.saver.working_copy_product:
+        alias: pim_catalog.saver.product
+
+    # product draft saver
+    pimee_workflow.saver.product_draft:
+        class: %pimee_workflow.saver.product_draft.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.saver.product_options_resolver'
+            - '@security.context'
+            - '@pimee_workflow.factory.product_draft'
+            - '@pimee_workflow.repository.product_draft'
+            - '@event_dispatcher'
+            - '@pimee_workflow.collector.product_submitted_changes'
+            - '@pimee_workflow.change_set_computer'
+            - %pim_catalog_product_storage_driver%
+            - '@pim_catalog.factory.metric'
+            - '@pim_catalog.factory.media'
+
+    # this product saver delegates to draft or working copy savers depending on user permissions
+    pimee_workflow.saver.product_delegating:
+        class: %pimee_workflow.saver.product_delegating.class%
+        arguments:
+            - '@pimee_workflow.saver.working_copy_product'
+            - '@pimee_workflow.saver.product_draft'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.saver.product_options_resolver'
+            - '@security.context'

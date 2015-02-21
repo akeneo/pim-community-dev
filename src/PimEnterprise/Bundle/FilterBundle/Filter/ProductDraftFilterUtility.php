@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 /**
  * ProductDraft filter utility
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductDraftFilterUtility extends BaseFilterUtility
 {

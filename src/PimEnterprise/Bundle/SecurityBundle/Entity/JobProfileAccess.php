@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Group;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
 
 /**
  * Job profile access entity
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobProfileAccess implements JobProfileAccessInterface
 {

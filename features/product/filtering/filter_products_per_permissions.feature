@@ -21,6 +21,6 @@ Feature: Filter products per permissions
     Then I should see the filter "Permissions"
     And I should be able to use the following filters:
       | filter      | value            | result                                  |
-      | Permissions | Review / publish | owned, unclassified                    |
+      | Permissions | Review / publish | owned, unclassified                     |
       | Permissions | Edit             | owned, editable, unclassified           |
       | Permissions | View             | owned, editable, viewable, unclassified |

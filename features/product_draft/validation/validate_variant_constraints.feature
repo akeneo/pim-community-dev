@@ -10,7 +10,7 @@ Feature:
     And the following products:
       | sku                 | family  | main_color | size | groups     | categories        |
       | black_jackets       | jackets | black      | M    | hm_jackets | summer_collection |
-      | other_black_jackets | jackets | black      |      | hm_jackets | summer_collection |
+      | other_black_jackets | jackets | black      | S    | hm_jackets | summer_collection |
     And I am logged in as "Mary"
     When I am on the "other_black_jackets" product page
     And I visit the "Sizes" group

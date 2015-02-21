@@ -1,4 +1,3 @@
-@javascript
 Feature: Enforce no permissions for a locale
   In order to be able to prevent some users from viewing product data in some locales
   As an administrator
@@ -37,6 +36,7 @@ Feature: Enforce no permissions for a locale
       | English (United States) |       |
       | German (Germany)        |       |
 
+  @javascript
   Scenario: Display product view or edit page depending on user's rights
     Given the following locale accesses:
       | locale | user group | access |

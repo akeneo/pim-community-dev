@@ -1,5 +1,24 @@
 parameters:
     pim_enrich.controller.category_tree.class:    PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController
     pim_enrich.controller.product.class:          PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.sequential_edit.class:  PimEnterprise\Bundle\EnrichBundle\Controller\SequentialEditController
     pim_enrich.controller.mass_edit_action.class: PimEnterprise\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.locale.class:           PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
+
+services:
+    # overriden to add security checks and use a smarter product saver which update draft or working copy
+    pim_enrich.controller.product:
+        scope: request
+        class: %pim_enrich.controller.product.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.category'
+            - '@pim_user.context.user'
+            - '@pim_versioning.manager.version'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.manager.product_category'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_catalog.manager.media'
+            - '@pim_enrich.manager.sequential_edit'
+            - '@pim_catalog.remover.product'

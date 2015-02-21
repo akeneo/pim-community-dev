@@ -1,0 +1,14 @@
+pimee_catalog_rule:
+  attribute:
+    list:
+      code.label: Code
+      condition.label: Condition
+      action.label: Action
+      no_rule_yet.label: "Aucune règle pour l'instant"
+  rule:
+    condition:
+      if.label: Si
+    action:
+      then.label: Alors
+      set_value.label: est modifié dans
+      copy_value.label: est copié dans

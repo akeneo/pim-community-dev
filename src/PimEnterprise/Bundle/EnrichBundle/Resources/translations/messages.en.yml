@@ -29,15 +29,13 @@ locale.permissions:
     edit.help: Allow to edit the product information in this locale (implies the view permission)
     no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
 
-pimee_enrich:
-    acl.product_ownership.title: Ownership
-    groups:
-        label: owner groups
-        empty: none
-
 btn:
     save working copy: Save working copy
     save draft: Save draft
+    save working copy and next: Save working copy and next
+    save draft and next: Save draft and next
+    save working copy and finish: Save working copy and finish
+    save draft and finish: Save draft and finish
     send for approval: Send for approval
     sent for approval: Sent for approval
 
@@ -98,3 +96,20 @@ pim_enrich.mass_edit_action:
 flash.product.updated: Product working copy has been updated
 flash.product_draft.updated: Draft has been successfully saved
 flash.locale.updated: The locale and permissions have been updated
+
+pimee_enrich:
+    attribute_group:
+        tab:
+            permission.title: Permissions
+    product:
+        tab:
+            proposal.title: Proposals
+    category:
+        tab:
+            permission.title: Permissions
+    acl.product_ownership.title: Ownership
+    attributes:
+        empty: none
+    groups:
+        label: owner groups
+        empty: none

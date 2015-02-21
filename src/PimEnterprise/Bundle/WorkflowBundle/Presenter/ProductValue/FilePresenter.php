@@ -11,15 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAware;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 
 /**
  * Present a file value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterface
 {
@@ -34,7 +34,7 @@ class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterfac
     public function supports(ProductValueInterface $value)
     {
         return 'pim_catalog_file' === $value->getAttribute()->getAttributeType()
-            && $value->getData() instanceof AbstractProductMedia;
+            && $value->getData() instanceof ProductMediaInterface;
     }
 
     /**

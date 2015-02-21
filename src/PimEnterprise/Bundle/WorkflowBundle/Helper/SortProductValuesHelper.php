@@ -14,14 +14,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Helper;
 /**
  * Helper for sorting product values
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class SortProductValuesHelper
 {
     /**
      * Sorts the provided values by attribute group and sort order
      *
-     * @param \Pim\Bundle\CatalogBundle\Model\AbstractProductValue[] $values
+     * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
      *
      * @return array
      */

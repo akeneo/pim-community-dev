@@ -11,8 +11,17 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,20 +30,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
 /**
  * Published product controller
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductController extends AbstractController
 {

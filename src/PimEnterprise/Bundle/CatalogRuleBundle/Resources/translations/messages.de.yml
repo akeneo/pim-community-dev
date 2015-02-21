@@ -1,0 +1,23 @@
+pimee_catalog_rule:
+  attribute:
+    tab:
+      rule.title: Regeln
+    grid:
+      is_smart.label: Smart
+    acl:
+      rule.view_permissions: Regeln ansehen
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: 'Die Werten von diesen Attributen können von der/den Regel(n) <strong>%rule%</strong> stammen. Das bedeutet, dass wenn die Bedingungen der Regel gültig sind, Ihre Änderungen überschrieben werden.'
+      loading.title: Lädt...
+    history: 'Angewandte Regel "%rule%"'
+  product_value:
+    tooltip:
+      affected_by.title: 'Von Regel(n) betroffen:'
+  jobs:
+    yml_rule_import:
+      title: Regel-Import in YAML
+      import.title: Regel-Import
+    yml_rule_export:
+      title: Regel-Export in YAML
+      export.title: Regelexport

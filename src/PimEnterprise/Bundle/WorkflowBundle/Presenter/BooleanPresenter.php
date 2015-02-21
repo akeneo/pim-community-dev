@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 /**
  * Present changes on boolean data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class BooleanPresenter extends AbstractProductValuePresenter implements TranslatorAwareInterface
 {

@@ -54,7 +54,6 @@ Feature: Submit a modification on a product draft
     And I change the "ecommerce Number in stock" to "20"
     And I change the "mobile Number in stock" to "40"
     And I change the "print Number in stock" to "50"
-    And I change the "tablet Number in stock" to "200"
     And I save the product
     And I expand the "Number in stock" attribute
     Then the english ecommerce number_in_stock of "my-jacket" should be "2"
@@ -66,9 +65,6 @@ Feature: Submit a modification on a product draft
     And the english print number_in_stock of "my-jacket" should be "5"
     And the field print Number in stock should contain "50"
     And I should see that print Number in stock is a modified value
-    And the english tablet number_in_stock of "my-jacket" should be "20"
-    And the field tablet Number in stock should contain "200"
-    And I should see that tablet Number in stock is a modified value
 
   Scenario: Successfully propose a prices collection attribute change
     When I visit the "Marketing" group
@@ -92,7 +88,7 @@ Feature: Submit a modification on a product draft
     And I should see that Manufacturer is a modified value
 
   Scenario: Successfully propose a multi select attribute change
-    When I change the "Weather conditions" to "Hot, Cold"
+    When I change the "Weather conditions" to "Dry, Wet, Hot, Cold"
     And I save the product
     Then the options "weather_conditions" of product my-jacket should be:
       | value |

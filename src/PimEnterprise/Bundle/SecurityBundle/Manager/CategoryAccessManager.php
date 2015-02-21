@@ -15,16 +15,16 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category access manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccessManager
 {
@@ -129,7 +129,7 @@ class CategoryAccessManager
      * @param Group[]           $viewGroups the view user groups
      * @param Group[]           $editGroups the edit user groups
      * @param Group[]           $ownGroups  the own user groups
-     * @param bool              $flush
+     * @param boolean           $flush      whether to flush the object manager
      */
     public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups, $flush = false)
     {
@@ -371,8 +371,8 @@ class CategoryAccessManager
                 ->setViewProducts($view)
                 ->setEditProducts($edit)
                 ->setOwnProducts($own)
-                ->setUserGroup($group)
-            ;
+                ->setUserGroup($group);
+
             $this->getObjectManager()->persist($access);
         }
         $this->getObjectManager()->flush();
@@ -475,7 +475,7 @@ class CategoryAccessManager
     /**
      * Get category repository
      *
-     * @return CategoryRepository
+     * @return CategoryRepositoryInterface
      */
     protected function getCategoryRepository()
     {

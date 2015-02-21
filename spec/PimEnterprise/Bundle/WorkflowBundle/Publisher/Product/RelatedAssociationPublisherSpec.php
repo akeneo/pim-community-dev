@@ -3,11 +3,10 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -20,7 +19,7 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher');
     }
 
-    function it_should_be_a_publisher()
+    function it_is_a_publisher()
     {
         $this->shouldImplement('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
@@ -38,13 +37,13 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         $associationRepository,
         $publishedAssociationRepository,
         PublishedProductInterface $published,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractProduct $product3,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
         Association $association1,
-        AssociationType $type1,
+        AssociationTypeInterface $type1,
         Association $association3,
-        AssociationType $type3,
+        AssociationTypeInterface $type3,
         PublishedProductAssociation $publishedAssociation
     ) {
         $product1->getId()->willReturn('original1');

@@ -13,7 +13,7 @@ Feature: Validate textarea attributes of a product
       | long_info        | Longinfo        | textarea | no       | 10             | yes             | info  |
       | long_description | Longdescription | textarea | yes      | 10             | yes             | info  |
     And the following family:
-      | code | label-en_US | attributes                                          |
+      | code | label-en_US | attributes                                              |
       | baz  | Baz         | sku, info, long_info, old_description, long_description |
     And the following product:
       | sku | family | categories        |

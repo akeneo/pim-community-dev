@@ -11,14 +11,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 
 /**
  * Present a boolean value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class BooleanPresenter implements ProductValuePresenterInterface, TranslatorAwareInterface
 {

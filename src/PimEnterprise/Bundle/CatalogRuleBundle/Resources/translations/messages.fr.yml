@@ -1,0 +1,28 @@
+pimee_catalog_rule:
+  attribute:
+    tab:
+      rule.title: Règles
+    grid:
+      is_smart.label: Intelligent
+    acl:
+      rule.view_permissions: Voir les règles
+  product:
+    tooltip:
+      product_attribute_affected_by_a_rule.content: "La valeur de cet attribut peut provenir d'une ou plusieurs règles <strong>%rule%</strong>. Cela signifie que - dans le cas ou une règle peut s'appliquer -  vos modifications seront écrasées."
+      variant_attribute_affected_by_a_rule.content: "Les valeurs d'attributs liées à un groupe de variantes sont prioritaires sur les valeurs d'attributs du produit. Cela signifie que chaque valeur d'attribut du groupe de variante remplacera systématiquement la valeur d'attribut du produit. La/les règle(s) <strong>%rule%</strong> ne seront pas appliquées au produit."
+      loading.title: Chargement en cours...
+    history: 'Règle appliquée "%rule%"'
+  product_value:
+    tooltip:
+      affected_by.title: 'Ciblées par une ou plusieurs règles :'
+  jobs:
+    yml_rule_import:
+      title: Import des règles en YAML
+      import.title: Import des règles
+    yml_rule_export:
+      title: Export des règles en YAML
+      export.title: Export des règles
+  steps:
+    product_rule_definition_reader.title: "Lecteur de règles d'import produits"
+    rule_definition_processor.title: "Processeur de règles d'import produits"
+    product_rule_definition_writer.title: "Ecriture des règles d'import produits"

@@ -11,23 +11,19 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Overriden category controller
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryTreeController extends BaseCategoryTreeController
 {
@@ -56,11 +52,11 @@ class CategoryTreeController extends BaseCategoryTreeController
         $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
 
         if (!in_array($context, $allowed)) {
-             throw new AccessDeniedException('You can not access this category');
+            throw new AccessDeniedException('You can not access this category');
         }
 
         if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
-             throw new AccessDeniedException('You can not access this category');
+            throw new AccessDeniedException('You can not access this category');
         } elseif (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }
@@ -82,7 +78,6 @@ class CategoryTreeController extends BaseCategoryTreeController
 
         if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
             return $this->categoryManager->getTrees($this->getUser());
-
         } else {
             return $this->categoryManager->getAccessibleTrees($this->getUser());
         }

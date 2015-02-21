@@ -11,22 +11,22 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 
 /**
  * Present changes on option data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class OptionPresenter extends AbstractProductValuePresenter
 {
-    /** @var AttributeOptionRepository */
+    /** @var AttributeOptionRepositoryInterface */
     protected $repository;
 
     /**
-     * @param AttributeOptionRepository $repository
+     * @param AttributeOptionRepositoryInterface $repository
      */
-    public function __construct(AttributeOptionRepository $repository)
+    public function __construct(AttributeOptionRepositoryInterface $repository)
     {
         $this->repository = $repository;
     }

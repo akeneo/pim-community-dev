@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository;
 /**
  * Overriden product mass action repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductMassActionRepository extends BaseProductMassActionRepository
 {

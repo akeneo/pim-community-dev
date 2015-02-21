@@ -11,22 +11,22 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Edit common attributes of given products
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class EditCommonAttributes extends BaseEditCommonAttributes
 {
@@ -34,35 +34,35 @@ class EditCommonAttributes extends BaseEditCommonAttributes
     protected $securityContext;
 
     /**
-     * @param ProductManager           $productManager
-     * @param UserContext              $userContext
-     * @param CurrencyManager          $currencyManager
-     * @param CatalogContext           $catalogContext
+     * Constructor
+     *
      * @param ProductBuilder           $productBuilder
+     * @param ProductUpdaterInterface  $productUpdater
+     * @param UserContext              $userContext
+     * @param CatalogContext           $catalogContext
      * @param ProductMassActionManager $massActionManager
-     * @param MetricFactory            $metricFactory
+     * @param NormalizerInterface      $normalizer
+     * @param BulkSaverInterface       $productSaver
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
-        ProductManager $productManager,
-        UserContext $userContext,
-        CurrencyManager $currencyManager,
-        CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
+        ProductUpdaterInterface $productUpdater,
+        UserContext $userContext,
+        CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
-        MetricFactory $metricFactory,
-        array $classes,
+        NormalizerInterface $normalizer,
+        BulkSaverInterface $productSaver,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productManager,
-            $userContext,
-            $currencyManager,
-            $catalogContext,
             $productBuilder,
+            $productUpdater,
+            $userContext,
+            $catalogContext,
             $massActionManager,
-            $metricFactory,
-            $classes
+            $normalizer,
+            $productSaver
         );
 
         $this->securityContext = $securityContext;

@@ -3,15 +3,14 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class OptionPresenterSpec extends ObjectBehavior
 {
-    function let(AttributeOptionRepository $repository)
+    function let(AttributeOptionRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
     }
@@ -22,7 +21,7 @@ class OptionPresenterSpec extends ObjectBehavior
     }
 
     function it_supports_change_if_it_has_an_option_key(
-        Model\AbstractProductValue $value
+        Model\ProductValueInterface $value
     ) {
         $this->supports($value, ['option' => '1'])->shouldBe(true);
     }
@@ -30,9 +29,9 @@ class OptionPresenterSpec extends ObjectBehavior
     function it_presents_option_change_using_the_injected_renderer(
         $repository,
         RendererInterface $renderer,
-        Model\AbstractProductValue $value,
-        AttributeOption $blue,
-        AttributeOption $red
+        Model\ProductValueInterface $value,
+        AttributeOptionInterface $blue,
+        AttributeOptionInterface $red
     ) {
         $repository->find('1')->willReturn($blue);
         $value->getData()->willReturn($red);

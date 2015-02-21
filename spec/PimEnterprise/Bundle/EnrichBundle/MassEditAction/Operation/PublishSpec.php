@@ -2,14 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use Prophecy\Argument;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class PublishSpec extends ObjectBehavior
 {
@@ -18,10 +16,8 @@ class PublishSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish');
     }
 
-    function let(
-        PublishedProductManager $manager,
-        SecurityContextInterface $securityContext
-    ) {
+    function let(PublishedProductManager $manager, SecurityContextInterface $securityContext)
+    {
         $this->beConstructedWith($manager, $securityContext);
     }
 
@@ -30,12 +26,11 @@ class PublishSpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pimee_enrich_mass_publish');
     }
 
-    function it_publishes_each_product(ProductInterface $product, SecurityContextInterface $securityContext, PublishedProductManager $manager)
+    function it_publishes_each_product(ProductInterface $foo, ProductInterface $bar, $securityContext, $manager)
     {
-        $this->setObjectsToMassEdit([$product]);
-        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
-        $manager->publishAssociations([$product])->shouldBeCalled();
-        $manager->publish($product, ['with_associations' => false])->shouldBeCalled();
+        $this->setObjectsToMassEdit([$foo, $bar]);
+        $securityContext->isGranted(Attributes::OWN, Argument::any())->willReturn(true);
+        $manager->publishAll([$foo, $bar])->shouldBeCalled();
         $this->perform();
     }
 }

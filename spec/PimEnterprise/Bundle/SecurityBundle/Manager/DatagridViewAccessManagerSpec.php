@@ -3,16 +3,15 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class DatagridViewAccessManagerSpec extends ObjectBehavior
@@ -22,9 +21,9 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Manager\DatagridViewAccessManager');
     }
 
-    public function let(
+    function let(
         AttributeRepository $attributeRepository,
-        CategoryRepository $categoryRepository,
+        CategoryRepositoryInterface $categoryRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,
         CategoryAccessManager $categoryAccessManager,
         DatagridView $view,
@@ -46,8 +45,8 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $user,
         $attributeGroupAccessManager,
         $attributeRepository,
-        Attribute $attribute,
-        AttributeGroup $group
+        AttributeInterface $attribute,
+        AttributeGroupInterface $group
     ) {
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
@@ -61,8 +60,8 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $user,
         $attributeGroupAccessManager,
         $attributeRepository,
-        Attribute $attribute,
-        AttributeGroup $group
+        AttributeInterface $attribute,
+        AttributeGroupInterface $group
     ) {
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn(null);
@@ -97,8 +96,8 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeRepository,
         $categoryRepository,
         $categoryAccessManager,
-        Attribute $attribute,
-        AttributeGroup $group,
+        AttributeInterface $attribute,
+        AttributeGroupInterface $group,
         CategoryInterface $category
     ) {
 

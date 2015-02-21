@@ -1,0 +1,11 @@
+parameters:
+    pimee_pdf_generator.controller.product.class: PimEnterprise\Bundle\PdfGeneratorBundle\Controller\ProductController
+
+services:
+    pimee_pdf_generator.controller.product:
+        scope: request
+        class: %pimee_pdf_generator.controller.product.class%
+        parent: pim_pdf_generator.controller.product
+        arguments:
+            - '@security.context'
+            - '@pim_user.context.user'

@@ -1,4 +1,3 @@
-@javascript
 Feature: Edit a product I have access
   In order to enrich the catalog
   As a product manager
@@ -8,12 +7,12 @@ Feature: Edit a product I have access
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
     And the following categories:
-      | code         | label-en_US   | parent    |
-      | shoes        | Shoes         |           |
-      | vintage      | Vintage       | shoes     |
-      | trendy       | Trendy        | shoes     |
-      | classy       | Classy        | shoes     |
-      | boots        | Boots         |           |
+      | code    | label-en_US | parent |
+      | shoes   | Shoes       |        |
+      | vintage | Vintage     | shoes  |
+      | trendy  | Trendy      | shoes  |
+      | classy  | Classy      | shoes  |
+      | boots   | Boots       |        |
     And the following category accesses:
       | category        | user group | access |
       | 2014_collection | Manager    |        |
@@ -35,6 +34,7 @@ Feature: Edit a product I have access
     Then I should be on the product "rangers" edit page
     Then the product Name should be "My Rangers"
 
+  @javascript
   Scenario: Seeing the edit actions on the product grid
     Given I am on the products page
     And I select the "Boots" tree

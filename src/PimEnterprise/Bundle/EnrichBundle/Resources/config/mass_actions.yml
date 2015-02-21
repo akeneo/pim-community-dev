@@ -1,15 +1,12 @@
 parameters:
-    pim_enrich.mass_edit_action.change_status.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
-    pim_enrich.mass_edit_action.edit_common_attributes.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
-    pim_enrich.mass_edit_action.classify.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
-    pim_enrich.mass_edit_action.change_family.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
-    pim_enrich.mass_edit_action.add_to_groups.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
-    pimee_enrich.mass_edit_action.publish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
-    pimee_enrich.mass_edit_action.unpublish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish
     pimee_enrich.mass_edit_action.operator.published_product.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operator\PublishedProductMassEditOperator
+    pimee_enrich.mass_edit_action.publish.class:                    PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
+    pimee_enrich.mass_edit_action.unpublish.class:                  PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish
+    pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
+    pim_enrich.mass_edit_action.classify.class:                     PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
 
 services:
-
+    # Published product operator
     pimee_enrich.mass_edit_action.operator.published_product:
         public: false
         parent: pim_enrich.mass_edit_action.operator
@@ -19,33 +16,7 @@ services:
         tags:
             - { name: pim_enrich.mass_edit_action_operator, datagrid: published-product-grid }
 
-
-    pim_enrich.mass_edit_action.classify:
-        public: false
-        class: %pim_enrich.mass_edit_action.classify.class%
-        arguments:
-            - '@pim_catalog.manager.category'
-            - '@security.context'
-        tags:
-            -
-                name: pim_enrich.mass_edit_action
-                alias: classify
-                acl: pim_enrich_product_categories_view
-                operator: pim_enrich.mass_edit_action.operator.product
-
-    pimee_enrich.mass_edit_action.publish:
-        public: false
-        class: %pimee_enrich.mass_edit_action.publish.class%
-        arguments:
-            - '@pimee_workflow.manager.published_product'
-            - '@security.context'
-        tags:
-            -
-                name: pim_enrich.mass_edit_action
-                alias: publish
-                acl: pim_enrich_product_edit_attributes
-                operator: pim_enrich.mass_edit_action.operator.product
-
+    # Published products operation
     pimee_enrich.mass_edit_action.unpublish:
         public: false
         class: %pimee_enrich.mass_edit_action.unpublish.class%
@@ -59,22 +30,51 @@ services:
                 acl: pimee_workflow_published_product_index
                 operator: pimee_enrich.mass_edit_action.operator.published_product
 
+    # New products operations
+    pimee_enrich.mass_edit_action.publish:
+        public: false
+        class: %pimee_enrich.mass_edit_action.publish.class%
+        arguments:
+            - '@pimee_workflow.manager.published_product'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: publish
+                acl: pim_enrich_product_edit_attributes
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    # Overriden products operation to deal with product draft or working copy saving depending on permissions
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
-            - '@pim_catalog.manager.product'
-            - '@pim_user.context.user'
-            - '@pim_catalog.manager.currency'
-            - '@pim_catalog.context.catalog'
             - '@pim_catalog.builder.product'
+            - '@pim_catalog.updater.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.context.catalog'
             - '@pim_catalog.manager.product_mass_action'
-            - '@pim_catalog.factory.metric'
-            - {'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
+            - '@pim_serializer'
+            - '@pimee_workflow.saver.product_delegating'
             - '@security.context'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: edit-common-attributes
                 acl: pim_enrich_product_edit_attributes
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    # Overriden products operation to add permission checks when try to classify products
+    pim_enrich.mass_edit_action.classify:
+        public: false
+        class: %pim_enrich.mass_edit_action.classify.class%
+        arguments:
+            - '@pim_catalog.manager.category'
+            - '@pimee_workflow.saver.working_copy_product'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: classify
+                acl: pim_enrich_product_categories_view
                 operator: pim_enrich.mass_edit_action.operator.product
