@@ -70,7 +70,7 @@ define(
                     $el.on('click', _.bind(function() {
                         if (!isAlreadyRendered(id)) {
                             tinymce.init(this);
-                            tinymce.execCommand('mceFocus', false, id);
+                            setTimeout(_.bind(function() {tinymce.execCommand('mceFocus', true, this); }, this), 200);
                         }
                     }, this.settings[id]));
 
