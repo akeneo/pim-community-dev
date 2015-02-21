@@ -50,7 +50,6 @@ class ProductValuesDenormalizer implements DenormalizerInterface
         SmartManagerRegistry $registry,
         $valueClass,
         $attributeClass
-
     ) {
         $this->denormalizer   = $denormalizer;
         $this->registry       = $registry;
