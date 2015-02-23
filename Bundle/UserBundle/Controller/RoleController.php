@@ -4,6 +4,7 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -62,6 +63,38 @@ class RoleController extends Controller
     public function indexAction(Request $request)
     {
         return array();
+    }
+
+    /**
+     * Delete role
+     *
+     * @Route(
+     *      "/delete/{id}",
+     *      name="oro_user_role_delete",
+     *      requirements={"id"="\d+"},
+     *      methods="DELETE"
+     * )
+     * @Acl(
+     *      id="oro_user_role_remove",
+     *      type="entity",
+     *      class="OroUserBundle:Role",
+     *      permission="DELETE"
+     * )
+     */
+    public function deleteAction($id)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $roleClass = $this->container->getParameter('oro_user.role.entity.class');
+        $role = $em->getRepository($roleClass)->find($id);
+
+        if (!$role) {
+            throw $this->createNotFoundException(sprintf('Role with id %d could not be found.', $id));
+        }
+
+        $em->remove($role);
+        $em->flush();
+
+        return new JsonResponse('', 204);
     }
 
     /**

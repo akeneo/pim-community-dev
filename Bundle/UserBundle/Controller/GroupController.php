@@ -6,6 +6,7 @@ use Oro\Bundle\UserBundle\OroUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Entity\Group;
@@ -70,6 +71,38 @@ class GroupController extends Controller
     public function indexAction(Request $request)
     {
         return array();
+    }
+
+    /**
+     * Delete group
+     *
+     * @Route(
+     *      "/delete/{id}",
+     *      name="oro_user_group_delete",
+     *      requirements={"id"="\d+"},
+     *      methods="DELETE"
+     * )
+     * @Acl(
+     *      id="oro_user_group_remove",
+     *      type="entity",
+     *      class="OroUserBundle:Group",
+     *      permission="DELETE"
+     * )
+     */
+    public function deleteAction($id)
+    {
+        $em = $this->get('doctrine.orm.entity_manager');
+        $groupClass = $this->container->getParameter('oro_user.group.entity.class');
+        $group = $em->getRepository($groupClass)->find($id);
+
+        if (!$group) {
+            throw $this->createNotFoundException(sprintf('Group with id %d could not be found.', $id));
+        }
+
+        $em->remove($group);
+        $em->flush();
+
+        return new JsonResponse('', 204);
     }
 
     /**

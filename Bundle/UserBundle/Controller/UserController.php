@@ -137,6 +137,45 @@ class UserController extends Controller
     }
 
     /**
+     * Delete user
+     *
+     * @Route(
+     *      "/delete/{id}",
+     *      name="oro_user_user_delete",
+     *      requirements={"id"="\d+"},
+     *      methods="DELETE"
+     * )
+     * @Acl(
+     *      id="oro_user_user_delete",
+     *      type="entity",
+     *      class="OroUserBundle:User",
+     *      permission="DELETE"
+     * )
+     */
+    public function deleteAction($id)
+    {
+        $securityToken = $this->get('security.context')->getToken();
+        $currentUser = $securityToken ? $securityToken->getUser() : null;
+        if (is_object($currentUser) && $currentUser->getId() != $id) {
+            $em = $this->get('doctrine.orm.entity_manager');
+            $userClass = $this->container->getParameter('oro_user.entity.class');
+            $user = $em->getRepository($userClass)->find($id);
+
+            if (!$user) {
+                throw $this->createNotFoundException(sprintf('User with id %d could not be found.', $id));
+            }
+
+            $em->remove($user);
+            $em->flush();
+
+            return new JsonResponse('', 204);
+        } else {
+
+            return new JsonResponse('', 403);
+        }
+    }
+
+    /**
      * @param User $entity
      * @param string $updateRoute
      * @param array $viewRoute
