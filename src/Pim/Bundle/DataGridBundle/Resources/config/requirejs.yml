@@ -1,4 +1,12 @@
 config:
+    shim:
+        backgrid:
+            deps:
+                - jquery
+                - underscore
+                - backbone
+            exports: Backgrid
+
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
         pim/datagrid/export-action:             pimdatagrid/js/datagrid/action/export-action
@@ -51,3 +59,6 @@ config:
         oro/datagrid-builder:                   pimdatagrid/js/datagrid-builder
         oro/loading-mask:                       pimdatagrid/js/loading-mask
         oro/pageable-collection:                pimdatagrid/js/pageable-collection
+
+        backbone/pageable-collection:           pimdatagrid/lib/backbone-pageable
+        backgrid:                               pimdatagrid/lib/backgrid/backgrid

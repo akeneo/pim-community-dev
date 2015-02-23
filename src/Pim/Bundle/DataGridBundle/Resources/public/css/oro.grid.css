@@ -1,0 +1,62 @@
+table.grid thead th > a,
+table.grid thead th > span {
+    text-transform: uppercase;
+}
+
+table.grid thead th span.caret {
+    display: none;
+    border: none;
+    border-right: 4px solid transparent;
+    border-left: 4px solid transparent;
+}
+.grid thead .btn-group .btn .caret {
+    margin-top:11px;
+}
+table.grid thead tr th.ascending span.caret {
+    margin-top:4px;
+    display: inline-block;
+    border-top:4px solid transparent;
+    border-bottom: 4px solid #000000;
+}
+
+table.grid thead tr th.descending span.caret {
+    display: inline-block;
+    border-bottom:4px solid transparent;
+    border-top: 4px solid #000000;
+}
+
+table.grid tbody tr.row-click-action {
+    cursor: pointer;
+}
+
+.grid-toolbar .pagination ul li input {
+    display: inline;
+    float: left;
+    width: 40px;
+    text-align: center;
+    margin: 0;
+    border-left: none;
+    border-color: #dddddd;
+    border-radius: 0;
+}
+
+.no-data {
+    text-align: center;
+    font-size: 14px;
+    padding: 20px;
+    border-radius:4px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+    border: 1px solid #ddd;
+    background:#f9f9f9;
+    margin:10px 0;
+}
+
+.loading-mask .loading-frame .box {
+    margin: 20px 0;
+}
+
+.loading-mask .loading-frame .box .loading-content {
+    background: #ffffff url('../img/loader.gif') no-repeat center left;
+    padding-left: 30px;
+}
