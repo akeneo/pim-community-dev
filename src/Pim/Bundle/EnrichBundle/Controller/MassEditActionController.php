@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
@@ -17,6 +18,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -43,14 +46,14 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var integer */
-    protected $massEditLimit;
-
     /** @var array */
     protected $objects;
 
     /** @var GridFilterAdapterInterface */
     protected $gridFilterAdapter;
+
+    /** @var string */
+    protected $rootDir;
 
     /**
      * Constructor
@@ -68,7 +71,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
-     * @param integer                    $massEditLimit
+     * @param string                     $rootDir
      */
     public function __construct(
         Request $request,
@@ -84,7 +87,7 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
-        $massEditLimit
+        $rootDir
     ) {
         parent::__construct(
             $request,
@@ -98,11 +101,11 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->operatorRegistry = $operatorRegistry;
-        $this->parametersParser = $parametersParser;
+        $this->operatorRegistry     = $operatorRegistry;
+        $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->massEditLimit = $massEditLimit;
-        $this->gridFilterAdapter = $gridFilterAdapter;
+        $this->gridFilterAdapter    = $gridFilterAdapter;
+        $this->rootDir              = $rootDir;
     }
 
     /**
@@ -117,8 +120,6 @@ class MassEditActionController extends AbstractDoctrineController
             $this->request->get('gridName')
         );
 
-        $pimFilters = $this->gridFilterAdapter->transform($this->request);
-
         $form = $this->getOperatorForm($operator);
 
         if ($this->request->isMethod('POST')) {
@@ -131,12 +132,12 @@ class MassEditActionController extends AbstractDoctrineController
             }
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
             'count' => $this->getObjectCount(),
             'queryParams' => $this->getQueryParams(),
             'operator' => $operator,
-        );
+        ];
     }
 
     /**
@@ -173,12 +174,12 @@ class MassEditActionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
-            array(
+            [
                 'form'         => $form->createView(),
                 'operator'     => $operator,
                 'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
-            )
+            ]
         );
     }
 
@@ -208,7 +209,17 @@ class MassEditActionController extends AbstractDoctrineController
         $form->submit($this->request);
 
         if ($form->isValid()) {
-            $operator->performOperation();
+
+            $jobInstance = new JobInstance();
+            $jobInstance->setType('mass-edit-change-status');
+
+            $pimFilters = $this->gridFilterAdapter->transform($this->request);
+            $pathFinder  = new PhpExecutableFinder();
+
+            $jobInstance->setRawConfiguration(['enable' => (int) $operator->getOperation()->isToEnable(), json_encode($pimFilters)]);
+
+            $this->launchJob($operationAlias, $pathFinder, $pimFilters, $operator);
+
             // Binding does not actually perform the operation, thus form errors can miss some constraints
             foreach ($this->validator->validate($operator) as $violation) {
                 $form->addError(
@@ -234,39 +245,13 @@ class MassEditActionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
-            array(
+            [
                 'form'         => $form->createView(),
                 'operator'     => $operator,
                 'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
-            )
+            ]
         );
-    }
-
-    /**
-     * Check if the mass action is executable
-     *
-     * @return boolean
-     */
-    protected function isExecutable()
-    {
-        return $this->exceedsMassEditLimit() === false;
-    }
-
-    /**
-     * Temporary method to avoid editing too many objects
-     *
-     * @return boolean
-     */
-    protected function exceedsMassEditLimit()
-    {
-        if ($this->getObjectCount() > $this->massEditLimit) {
-            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
-
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -335,5 +320,27 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         return $this->objects;
+    }
+
+    /**
+     * @param $operationAlias
+     * @param $pathFinder
+     * @param $pimFilters
+     * @param $operator
+     */
+    protected function launchJob($operationAlias, $pathFinder, $pimFilters, $operator)
+    {
+        $cmd = sprintf(
+            '%s %s/console pim:mass-edit:%s --env=%s \'%s\' %s >> %s/logs/batch_execute.log 2>&1',
+            $pathFinder->find(),
+            $this->rootDir,
+            $operationAlias,
+            'prod',
+            json_encode($pimFilters),
+            (int) $operator->getOperation()->isToEnable(),
+            $this->rootDir
+        );
+
+        exec($cmd . ' &');
     }
 }

@@ -161,7 +161,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - %mass_edit_limit%
+            - %kernel.root_dir%
 
     pim_enrich.controller.group:
         scope: request

@@ -26,7 +26,7 @@ class MassEditStatusCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('pim:mass-edit:status')
+            ->setName('pim:mass-edit:change-status')
             ->addArgument(
                 'json_filters',
                 InputArgument::REQUIRED

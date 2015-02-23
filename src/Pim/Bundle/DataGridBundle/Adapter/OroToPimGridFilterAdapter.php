@@ -41,6 +41,6 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 
         $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $productIds];
 
-        return $filter;
+        return [$filter];
     }
 }
