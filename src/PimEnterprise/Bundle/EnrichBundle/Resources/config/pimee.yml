@@ -8,8 +8,6 @@ assetic:
         - OroUserBundle
         - OroFilterBundle
         - OroNavigationBundle
-        - OroWindowsBundle
-        - OroEntityExtendBundle
         - OroSecurityBundle
         - PimUIBundle
         - PimCatalogBundle
