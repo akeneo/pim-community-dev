@@ -25,21 +25,6 @@ class MassEditStatusCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $filtersExample = [
-            [
-                'field' => 'sku',
-                'operator' => 'STARTS WITH',
-                'value' => 'Ak'
-            ],
-            [
-                'field' => 'completeness',
-                'operator' => '=',
-                'value' => '100',
-                'locale' => 'en_US',
-                'scope' => 'print'
-            ]
-        ];
-
         $this
             ->setName('pim:mass-edit:status')
             ->addArgument(
@@ -61,21 +46,6 @@ class MassEditStatusCommand extends ContainerAwareCommand
     {
         $filters = json_decode($input->getArgument('json_filters'), true);
         $status  = $input->getArgument('status');
-
-        $filters = [
-            [
-                'field' => 'sku',
-                'operator' => 'STARTS WITH',
-                'value' => 'Ak'
-            ],
-            [
-                'field' => 'completeness',
-                'operator' => '=',
-                'value' => '100',
-                'locale' => 'en_US',
-                'scope' => 'print'
-            ]
-        ];
 
         $products = $this->getProducts($filters);
         $output->writeln("<info>Mass editing status on products<info>");

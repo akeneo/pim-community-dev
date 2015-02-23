@@ -117,12 +117,7 @@ class MassEditActionController extends AbstractDoctrineController
             $this->request->get('gridName')
         );
 
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
-        }
-
-//        $params = $this->getQueryParams();
-//        $transformedParams = $this->gridFilterAdapter->transform($params);
+        $pimFilters = $this->gridFilterAdapter->transform($this->request);
 
         $form = $this->getOperatorForm($operator);
 
@@ -206,10 +201,6 @@ class MassEditActionController extends AbstractDoctrineController
                 ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         $operator->initializeOperation();

@@ -2,37 +2,45 @@
 
 namespace Pim\Bundle\DataGridBundle\Adapter;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * Transform Oro filters into Akeneo PIM filters
+ *
+ * todo: make this class cleaner by transforming for real the oro filters to pim filters
+ *
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 {
-    public function __construct()
-    {
+    /** @var MassActionDispatcher */
+    protected $massActionDispatcher;
 
+    /**
+     * @param MassActionDispatcher $massActionDispatcher
+     */
+    public function __construct(MassActionDispatcher $massActionDispatcher)
+    {
+        $this->massActionDispatcher = $massActionDispatcher;
     }
 
-    public function transform(array $params)
+    /**
+     * {@inheritdoc}
+     */
+    public function transform(Request $request)
     {
-//        $params['gridName']   = $this->request->get('gridName');
-//        $params['actionName'] = $this->request->get('actionName');
-//        $params['values']     = implode(',', $params['values']);
-//        $params['filters']    = json_encode($params['filters']);
-//        $params['dataLocale'] = $this->request->get('dataLocale', null);
+        $products =  $this->massActionDispatcher->dispatch($request);
 
-//        case Operators::IN_LIST:
-//        case Operators::NOT_IN_LIST:
-//        case Operators::IN_CHILDREN_LIST:
-//        case Operators::NOT_IN_CHILDREN_LIST:
-//        case Operators::UNCLASSIFIED:
-//        case Operators::IN_LIST_OR_UNCLASSIFIED:
+        $productIds = [];
+        foreach ($products as $product) {
+            $productIds[] = $product->getId();
+        }
 
-//        Maping  numéro filter
-//        Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType
+        $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $productIds];
 
-        $this->extractFilters($params);
-
-    }
-
-    protected function extractFilters($params)
-    {
-        $filters = json_decode($params['filters']);
+        return $filter;
     }
 }
