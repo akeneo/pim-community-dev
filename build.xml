@@ -425,30 +425,6 @@
           <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
           <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:create-index" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:index" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:reindex" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
     </target>
 
 </project>

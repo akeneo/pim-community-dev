@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * Override OroInstaller command to add PIM custom rules
+ * Installer command to add PIM custom rules
  *
  * @author    Nicolas <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -150,7 +150,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $output->writeln('<info>Updating installed flag.</info>');
 
-        $dumper = $this->getContainer()->get('oro_installer.yaml_persister');
+        $dumper = $this->getContainer()->get('pim_installer.yaml_persister');
         $params = $dumper->parse();
         $params['system']['installed'] = $installed;
         $dumper->dump($params);
