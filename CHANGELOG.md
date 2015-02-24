@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.22 (2015-02-24)
 
 ## Bug fixes
 - PIM-3808: Fix the export of published products
