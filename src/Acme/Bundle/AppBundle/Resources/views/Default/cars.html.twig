@@ -1,0 +1,7 @@
+<h1>All the cars !</h1>
+
+<ul>
+{% for car in cars %}
+    <li>{{ car }} ({{ car.year }})</li>
+{% endfor %}
+</ul>
