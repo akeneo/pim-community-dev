@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.1 (2015-02-24)
 
 ## Bug fixes
 - PIM-3760: Fix reverting previous product versions with file/image attributes
