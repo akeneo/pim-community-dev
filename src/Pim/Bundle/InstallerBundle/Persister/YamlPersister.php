@@ -4,6 +4,13 @@ namespace Pim\Bundle\InstallerBundle\Persister;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Yaml persister, copy/paste from OroPlatform
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class YamlPersister
 {
     /**
@@ -28,6 +35,9 @@ class YamlPersister
         }
     }
 
+    /**
+     * @return array
+     */
     public function parse()
     {
         $data = Yaml::parse($this->paramFile);
@@ -52,6 +62,9 @@ class YamlPersister
         return $parameters;
     }
 
+    /**
+     * @param array $data
+     */
     public function dump(array $data)
     {
         $parameters = array();
