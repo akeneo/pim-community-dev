@@ -5,6 +5,5 @@ services:
     pim_base_connector.formater.csv:
         class: %pim_base_connector.formater.csv.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.association_type.class%
+            - '@pim_transform.builder.field_name'
 

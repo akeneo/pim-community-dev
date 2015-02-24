@@ -16,6 +16,12 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  */
 class FieldNameBuilder
 {
+    const ARRAY_SEPARATOR            = ',';
+    const FIELD_SEPARATOR            = '-';
+    const UNIT_SEPARATOR             = ' ';
+    const GROUP_ASSOCIATION_SUFFIX   = '-groups';
+    const PRODUCT_ASSOCIATION_SUFFIX = '-products';
+
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
@@ -62,8 +68,8 @@ class FieldNameBuilder
         $fieldNames = [];
         $assocTypes = $this->getRepository($this->assocTypeClass)->findAll();
         foreach ($assocTypes as $assocType) {
-            $fieldNames[] = $assocType->getCode().'-groups';
-            $fieldNames[] = $assocType->getCode().'-products';
+            $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
+            $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
         }
 
         return $fieldNames;
@@ -89,7 +95,7 @@ class FieldNameBuilder
      */
     public function extractAttributeFieldNameInfos($fieldName)
     {
-        $explodedFieldName = explode("-", $fieldName);
+        $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
         $attributeCode = $explodedFieldName[0];
         $repository = $this->getRepository($this->attributeClass);
         $attribute = $this->findOneByIdentifier($repository, $attributeCode);
@@ -126,6 +132,8 @@ class FieldNameBuilder
 
         if ('prices' === $attribute->getBackendType()) {
             $info['price_currency'] = array_shift($explodedFieldName);
+        } elseif ('metric' === $attribute->getBackendType()) {
+            $info['metric_unit'] = array_shift($explodedFieldName);
         }
 
         return $info;
@@ -174,30 +182,15 @@ class FieldNameBuilder
         $isScopable = $attribute->isScopable();
         $isPrice = 'prices' === $attribute->getBackendType();
         $isMetric = 'metric' === $attribute->getBackendType();
-        if ($isLocalizable && $isScopable && $isPrice) {
-            $expectedSize = [3, 4];
-        } elseif ($isLocalizable && $isScopable && $isMetric) {
-            $expectedSize = [3, 4];
-        } elseif ($isLocalizable && $isScopable) {
-            $expectedSize = [3];
-        } elseif ($isLocalizable && $isPrice) {
-            $expectedSize = [2, 3];
-        } elseif ($isScopable && $isPrice) {
-            $expectedSize = [2, 3];
-        } elseif ($isLocalizable && $isMetric) {
-            $expectedSize = [2, 3];
-        } elseif ($isScopable && $isMetric) {
-            $expectedSize = [2, 3];
-        } elseif ($isLocalizable) {
-            $expectedSize = [2];
-        } elseif ($isScopable) {
-            $expectedSize = [2];
-        } elseif ($isPrice) {
-            $expectedSize = [1, 2];
-        } elseif ($isMetric) {
-            $expectedSize = [1, 2];
+
+        $expectedSize = 1;
+        $expectedSize = $isLocalizable ? $expectedSize + 1 : $expectedSize;
+        $expectedSize = $isScopable ? $expectedSize + 1 : $expectedSize;
+
+        if ($isMetric || $isPrice) {
+            $expectedSize = [$expectedSize, $expectedSize + 1];
         } else {
-            $expectedSize = [1];
+            $expectedSize = [$expectedSize];
         }
 
         $nbTokens = count($explodedFieldName);
@@ -240,10 +233,10 @@ class FieldNameBuilder
             isset($attributeInfos['locale_code'])
         ) {
             $channelRepository = $this->getRepository($this->channelClass);
-            $localeRepository = $this->getRepository($this->localeClass);
+            $localeRepository  = $this->getRepository($this->localeClass);
 
             $channel = $this->findOneByIdentifier($channelRepository, $attributeInfos['scope_code']);
-            $locale = $this->findOneByIdentifier($localeRepository, $attributeInfos['locale_code']);
+            $locale  = $this->findOneByIdentifier($localeRepository, $attributeInfos['locale_code']);
 
             if ($channel !== null && $locale !== null && !$channel->hasLocale($locale)) {
                 throw new \InvalidArgumentException(
@@ -312,5 +305,46 @@ class FieldNameBuilder
                 );
             }
         }
+    }
+
+    /**
+     * Split a collection in a flat value :
+     *
+     * '10 EUR, 24 USD' => ['10 EUR', '24 USD']
+     *
+     * @param string $value Raw value
+     *
+     * @return array
+     */
+    public static function splitCollection($value)
+    {
+        return '' === $value ? [] : explode(self::ARRAY_SEPARATOR, $value);
+    }
+
+    /**
+     * Split a field name:
+     * 'description-en_US-mobile' => ['description', 'en_US', 'mobile']
+     *
+     * @param string $field Raw field name
+     *
+     * @return array
+     */
+    public static function splitFieldName($field)
+    {
+        return '' === $field ? [] : explode(self::FIELD_SEPARATOR, $field);
+    }
+
+    /**
+     * Split a value with it's unit/currency:
+     * '10 EUR'   => ['10', 'EUR']
+     * '10 METER' => ['10', 'METER']
+     *
+     * @param string $value Raw value
+     *
+     * @return array
+     */
+    public static function splitUnitValue($value)
+    {
+        return '' === $value ? [] : explode(self::UNIT_SEPARATOR, $value);
     }
 }
