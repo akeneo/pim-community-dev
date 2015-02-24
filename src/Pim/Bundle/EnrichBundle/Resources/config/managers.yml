@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.manager.sequential_edit.class: Pim\Bundle\EnrichBundle\Manager\SequentialEditManager
+    pim_enrich.manager.mass_edit_job_manager.class: Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager
 
 services:
     pim_enrich.manager.sequential_edit:
@@ -9,3 +10,13 @@ services:
             - '@pim_enrich.repository.sequential_edit'
             - '@pim_enrich.factory.sequential_edit'
             - '@pim_catalog.manager.product'
+
+    pim_enrich.manager.mass_edit_job_manager:
+        class: %pim_enrich.manager.mass_edit_job_manager.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
+            - '@pim_enrich.mass_edit_action.operator.registry'
+            - '%akeneo_batch.entity.job_execution.class%'
+            - %kernel.root_dir%
+            - %kernel.environment%

@@ -9,6 +9,7 @@ parameters:
     pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
     pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
     pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
+    #TODO: Fix this typo
     pim_entich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
 
 services:

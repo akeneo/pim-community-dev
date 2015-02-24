@@ -10,6 +10,9 @@ use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
+use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -55,6 +58,9 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var string */
     protected $rootDir;
 
+    /** @var MassEditJobManager */
+    protected $massEditJobManager;
+
     /**
      * Constructor
      *
@@ -71,6 +77,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
+     * @param MassEditJobManager         $massEditJobManager
      * @param string                     $rootDir
      */
     public function __construct(
@@ -87,6 +94,7 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
+        MassEditJobManager $massEditJobManager,
         $rootDir
     ) {
         parent::__construct(
@@ -106,6 +114,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->massActionDispatcher = $massActionDispatcher;
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->rootDir              = $rootDir;
+        $this->massEditJobManager   = $massEditJobManager;
     }
 
     /**
@@ -155,9 +164,9 @@ class MassEditActionController extends AbstractDoctrineController
                 $this->request->get('gridName')
             );
 
-        $operator
-            ->setOperationAlias($operationAlias)
-            ->setObjectsToMassEdit($this->getObjects());
+            $operator
+                ->setOperationAlias($operationAlias)
+                ->setObjectsToMassEdit($this->getObjects());
 
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
@@ -210,15 +219,21 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($form->isValid()) {
 
-            $jobInstance = new JobInstance();
-            $jobInstance->setType('mass-edit-change-status');
-
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
-            $pathFinder  = new PhpExecutableFinder();
 
-            $jobInstance->setRawConfiguration(['enable' => (int) $operator->getOperation()->isToEnable(), json_encode($pimFilters)]);
+            $jobInstance = new JobInstance(null, 'mass-edit-change-status');
+            $jobCode = sprintf('%s_%s', $jobInstance->getType(), uniqid());
+            $jobInstance->setCode($jobCode)
+                ->setAlias($jobCode)
+                ->setConnector('')
+                ->setRawConfiguration([
+                    'operationAlias' => $operationAlias,
+                    'gridName'       => $this->request->get('gridName'),
+                    'filters'        => json_encode($pimFilters)
+                ]);
 
-            $this->launchJob($operationAlias, $pathFinder, $pimFilters, $operator);
+            $this->massEditJobManager->save($jobInstance);
+            $this->massEditJobManager->launchJob($jobInstance, $this->getUser());
 
             // Binding does not actually perform the operation, thus form errors can miss some constraints
             foreach ($this->validator->validate($operator) as $violation) {
@@ -320,27 +335,5 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         return $this->objects;
-    }
-
-    /**
-     * @param $operationAlias
-     * @param $pathFinder
-     * @param $pimFilters
-     * @param $operator
-     */
-    protected function launchJob($operationAlias, $pathFinder, $pimFilters, $operator)
-    {
-        $cmd = sprintf(
-            '%s %s/console pim:mass-edit:%s --env=%s \'%s\' %s >> %s/logs/batch_execute.log 2>&1',
-            $pathFinder->find(),
-            $this->rootDir,
-            $operationAlias,
-            'prod',
-            json_encode($pimFilters),
-            (int) $operator->getOperation()->isToEnable(),
-            $this->rootDir
-        );
-
-        exec($cmd . ' &');
     }
 }
