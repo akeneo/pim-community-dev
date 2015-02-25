@@ -12,11 +12,10 @@ config:
         jquery.form:                      pimnavigation/lib/jquery.form
         url:                              pimnavigation/lib/url.min
         oro/navigation:                   pimnavigation/js/navigation
-        oro/oro-navigation:               pimnavigation/js/oro-navigation
         oro/navigation/abstract-view:     pimnavigation/js/navigation/abstract-view
         oro/navigation/collection:        pimnavigation/js/navigation/collection
         oro/navigation/dotmenu/item-view: pimnavigation/js/navigation/dotmenu/item-view
-        oro/navigation/dotmenu/view:      pimnavigation/js/navigation/dotmenu/oro-view
+        oro/navigation/dotmenu/view:      pimnavigation/js/navigation/dotmenu/view
         oro/navigation/favorites/view:    pimnavigation/js/navigation/favorites/view
         oro/navigation/model:             pimnavigation/js/navigation/model
         oro/navigation/pagestate/model:   pimnavigation/js/navigation/pagestate/model

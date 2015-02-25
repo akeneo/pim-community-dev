@@ -10,7 +10,6 @@ config:
     paths:
         jquery.multiselect:                         pimfilter/lib/multiselect/jquery.multiselect
         jquery.multiselect.filter:                  pimfilter/lib/multiselect/jquery.multiselect.filter
-        oro/datafilter/oro-filters-manager:         pimfilter/js/datafilter/oro-filters-manager
         oro/multiselect-decorator:                  pimfilter/js/multiselect-decorator
 
         oro/datafilter/price-filter:                pimfilter/js/datafilter/filter/price-filter
