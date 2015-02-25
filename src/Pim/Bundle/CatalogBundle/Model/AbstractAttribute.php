@@ -151,6 +151,11 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var ArrayCollection */
     protected $translations;
 
+
+    //TODO-CR: put this in the properties
+    /** @var string */
+    protected $referenceData;
+
     /**
      * Constructor
      */
@@ -1011,5 +1016,21 @@ abstract class AbstractAttribute implements AttributeInterface
         $availableLocale = $this->getAvailableLocales();
 
         return !empty($availableLocale);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceData()
+    {
+        return $this->referenceData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReferenceData($referenceData)
+    {
+        $this->referenceData = $referenceData;
     }
 }

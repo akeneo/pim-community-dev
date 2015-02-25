@@ -123,6 +123,10 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             scale: 0
             length: 255
             column: backend_type
+        referenceData:
+            type: string
+            length: 255
+            column: reference_data
         properties:
             type: array
             nullable: true
