@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3665: Remove media even if file not on filesystem
+
 # 1.3.1 (2015-02-24)
 
 ## Bug fixes
