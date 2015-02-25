@@ -84,6 +84,11 @@ Acme\Bundle\AppBundle\Entity\ProductValue:
                 entity_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+        moto:
+            targetEntity: Acme\Bundle\AppBundle\Entity\Moto
+            joinColumn:
+                name: moto_id
+                referencedColumnName: id
     manyToMany:
         options:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
@@ -101,6 +106,21 @@ Acme\Bundle\AppBundle\Entity\ProductValue:
                         referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
+        cars:
+            targetEntity: Acme\Bundle\AppBundle\Entity\Car
+            cascade:
+                - refresh
+            joinTable:
+                name: acme_catalog_product_value_car
+                joinColumns:
+                    value_id:
+                        referencedColumnName: id
+                        nullable: true
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    car_id:
+                        referencedColumnName: id
+                        nullable: false
     oneToOne:
         media:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
