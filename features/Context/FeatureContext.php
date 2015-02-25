@@ -338,6 +338,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * @param PyStringNode $error
+     *
+     * @Then /^I should not see:$/
+     */
+    public function iShouldNotSeeText(PyStringNode $error)
+    {
+        $this->assertSession()->pageTextNotContains((string) $error);
+    }
+
+    /**
      * Execute javascript
      *
      * @param string $script

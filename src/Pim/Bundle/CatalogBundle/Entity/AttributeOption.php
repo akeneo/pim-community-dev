@@ -218,6 +218,16 @@ class AttributeOption implements AttributeOptionInterface
      */
     public function getOptionValue()
     {
-        return $this->getOptionValues()->get($this->getLocale()) ?: $this->getOptionValues()->first();
+        $locale = $this->locale;
+        $values = $this->getOptionValues()->filter(
+            function ($value) use ($locale) {
+                if ($value->getLocale() == $locale) {
+                    return true;
+                }
+            }
+        );
+        $value = $values->first();
+
+        return $value;
     }
 }
