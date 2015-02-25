@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;

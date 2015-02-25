@@ -3,11 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Command;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
-use Pim\Bundle\NotificationBundle\EventSubscriber\JobExecutionNotifier;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

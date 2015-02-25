@@ -11,8 +11,6 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -22,7 +20,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -158,7 +155,6 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-
         try {
             $operator = $this->operatorRegistry->getOperator(
                 $this->request->get('gridName')
@@ -167,7 +163,6 @@ class MassEditActionController extends AbstractDoctrineController
             $operator
                 ->setOperationAlias($operationAlias)
                 ->setObjectsToMassEdit($this->getObjects());
-
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
@@ -218,7 +213,6 @@ class MassEditActionController extends AbstractDoctrineController
         $form->submit($this->request);
 
         if ($form->isValid()) {
-
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
 
             $jobInstance = new JobInstance(null, sprintf('mass-edit-%s', $operationAlias));
