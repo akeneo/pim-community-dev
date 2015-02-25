@@ -2,7 +2,7 @@
 /*jslint browser: true, nomen: true, todo: true, vars: true*/
 /*global define*/
 
-define(['jquery', 'oro/translator', 'bootstrap-tooltip', 'jquery-ui', 'jquery-ui-timepicker'], function ($, __) {
+define(['jquery', 'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'], function ($) {
     'use strict';
 
     // todo: remove this or move somewhere else
@@ -36,7 +36,6 @@ define(['jquery', 'oro/translator', 'bootstrap-tooltip', 'jquery-ui', 'jquery-ui
 
     layout.init = function (container) {
         container = $(container || document.body);
-        this.styleForm(container);
 
         container.find('[data-spy="scroll"]').each(function () {
             var $spy = $(this);
@@ -95,9 +94,6 @@ define(['jquery', 'oro/translator', 'bootstrap-tooltip', 'jquery-ui', 'jquery-ui
             $bar.hide();
             $('#page').show();
         }
-    };
-
-    layout.styleForm = function (container) {
     };
 
     layout.adjustScrollspy = function () {

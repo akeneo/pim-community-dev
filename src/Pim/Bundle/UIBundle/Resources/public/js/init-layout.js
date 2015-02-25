@@ -217,9 +217,6 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             data = $('<div/>').html(widget);
 
         data.children().appendTo(cList);
-        /* temporary solution need add init only for new created row */
-        layout.styleForm(data);
-        /* temporary solution finish */
     });
 
     $(document).on('click', '.removeRow', function (e) {

@@ -1,3 +1,9 @@
+@import "bootstrap_variables";
+@import "bootstrap_mixins";
+@import "variables";
+@import "mixins";
+@import "layout";
+
 // Base
 * {
   -webkit-box-sizing:border-box;
@@ -6,11 +12,30 @@
 }
 body {
   font-family: @baseFontFamily;
+  font-size: @baseFontSize;
   color: @bodyColor;
   margin: 0;
   padding: 0 ;
   min-width: 980px;
   background:#fff;
+}
+.hide-text {
+  &[class^="icon-"],
+  &[class*=" icon-"] {
+   font-family: FontAwesome;
+  }
+}
+h2 {
+  font-size: 27px;
+}
+h3 {
+  font-size: 21px;
+}
+h4 {
+  font-size: 15px;
+}
+h5 {
+  font-size: 12px;
 }
 body.error-page {
   background-color: #eee;

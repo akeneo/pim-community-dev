@@ -21,9 +21,6 @@ config:
         bootstrap:
             deps:
                 - jquery
-        bootstrap-tooltip:
-            deps:
-                - bootstrap
         underscore:
             exports: _
         backbone:
@@ -71,8 +68,7 @@ config:
         jquery.select2:                pimui/lib/jquery/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
         jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
-        bootstrap:                     pimui/lib/bootstrap.min
-        bootstrap-tooltip:             pimui/lib/bootstrap/js/bootstrap-tooltip
+        bootstrap:                     pimui/lib/bootstrap/js/bootstrap
         underscore:                    pimui/lib/underscore
         backbone:                      pimui/lib/backbone
         backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
@@ -93,7 +89,7 @@ config:
 
         jquery-ui-full:            pimui/lib/jquery/jquery-ui-1.10.3.custom.min
         jquery.slimbox:            pimui/js/slimbox2
-        bootstrap.bootstrapswitch: pimui/lib/bootstrap/js/bootstrap.switch
+        bootstrap.bootstrapswitch: pimui/lib/bootstrap_switch/bootstrap.switch
         tinymce:                   pimui/lib/tinymce/tinymce.min
         wysiwyg:                   pimui/js/pim-wysiwyg
         datepicker:                pimui/js/pim-datepicker
