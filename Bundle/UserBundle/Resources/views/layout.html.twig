@@ -1,80 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-    {% block head %}
-    <title>{{ oro_title_render() }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends 'OroUIBundle:Default:index.html.twig' %}
 
-    {% if app.debug %}
-        <script type="text/javascript">localStorage.clear();</script>
-        <link rel="stylesheet/less" media="all" href="{{ asset('bundles/oroui/css/less/main.less') }}" />
-        <script type="text/javascript" src="{{ asset('bundles/oroui/lib/less-1.3.3.min.js') }}"></script>
-        <link rel="stylesheet" media="all" href="{{ asset('bundles/oroui/css/all.css') }}" />
-    {% else %}
-        {% stylesheets
-            'bundles/oroui/css/all.css'
-            'bundles/oroui/css/less/main.less'
+{% block hash_nav %}
+{% endblock %}
 
-            debug=false
-            filter='cssrewrite,lessphp'
-            output='css/oro.user.css'
-        %}
-        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-        {% endstylesheets %}
-    {% endif %}
+{% block header %}
+{% endblock header %}
 
-    {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: false} %}
-    <script type="text/javascript">
-        require(['jquery', 'bootstrap', 'oro/init-layout', 'orouser/js/init-signin'],
-        function($) {
-            $(function() {
-                // emulates 'document ready state' for selenium tests
-                document['page-rendered'] = true;
-            });
-        });
-    </script>
-
-    <!--[if lte IE 9]>
-    <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
-    <script type="text/javascript">
-        require(['jquery', 'bundles/oroui/lib/html5', 'bundles/oroui/lib/jquery/jquery.placeholder'],
-        function($){
-            $(function() {
-                $('input[placeholder], textarea[placeholder]').placeholder();
-            });
-        });
-    </script>
-    <![endif]-->
-    {% endblock %}
-    {% placeholder scripts_after %}
-</head>
-<body class="{% block bodyClass %}{% endblock %}">
-    <div id="page">
-        <div id="top-page">
-            {% set messagesContent %}
-            {% if app.session.flashbag.peekAll|length > 0 %}
-                {% for type, messages in app.session.flashbag.all %}
-                    {% for message in messages %}
-                    <div class="alert{{ type ? ' alert-'~type : '' }}">
-                    {{ message|trans|raw }}
-                    </div>
-                    {% endfor %}
+{% block main %}
+    {% block messages %}
+        {% if app.session.flashbag.peekAll|length > 0 %}
+            {% for type, messages in app.session.flashbag.all %}
+                {% for message in messages %}
+                <div class="alert{{ type ? ' alert-'~type : '' }}">
+                {{ message|trans|raw }}
+                </div>
                 {% endfor %}
-            {% endif %}
-            {% endset %}
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
 
-            {% block messages %}
-                {{ messagesContent }}
-            {% endblock %}
-
-            {% block header %}
-            {% endblock header %}
-
-            {% block main %}
-                {% block content %}
-                {% endblock content %}
-            {% endblock main %}
-        </div>
-    </div>
-</body>
-</html>
+    {% block content %}
+    {% endblock content %}
+{% endblock %}

@@ -1,3 +1,0 @@
-config:
-    paths:
-        'oro/security-access-levels': 'bundles/orosecurity/js/security-access-levels.js'

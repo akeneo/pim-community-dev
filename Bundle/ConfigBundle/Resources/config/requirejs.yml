@@ -1,3 +1,0 @@
-config:
-    paths:
-        'oro/form/state': 'bundles/oroconfig/js/form/state.js'

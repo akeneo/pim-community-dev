@@ -1,9 +1,6 @@
 {% extends 'OroUserBundle::layout.html.twig' %}
 
 {% block bodyClass %}login-page{% endblock %}
-{% block messages %}
-    {% set messagesContent = parent() %}
-{% endblock messages %}
 
 {% block content %}
 <form action="{{ path('oro_user_reset_send_email') }}" method="post" class="form-signin">

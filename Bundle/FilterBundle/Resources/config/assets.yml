@@ -1,5 +1,0 @@
-css:
-  'filters':
-      - 'bundles/orofilter/lib/multiselect/jquery.multiselect.css'
-      - 'bundles/orofilter/lib/multiselect/jquery.multiselect.filter.css'
-      - 'bundles/orofilter/css/oro.filter.css'

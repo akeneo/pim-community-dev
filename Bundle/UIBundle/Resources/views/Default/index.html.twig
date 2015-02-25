@@ -17,16 +17,16 @@
                 {% endblock %}
                 {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
                 <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/init-user']);
+                    require(['jquery', 'bootstrap', 'oro/init-layout', 'oro/init-user', 'pimuser/js/init-signin']);
                 {% if app.debug %}
                     require(['oro/app'], function(app){app.debug = true;});
                 {% endif %}
                 </script>
                 <!--[if lte IE 9]>
-                <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
+                <link href="{{ asset('bundles/pimui/css/ie.css') }}" rel="stylesheet" media="all" />
                 <script type="text/javascript">
-                    require.config({shim: {'oroui/lib/jquery/jquery.placeholder': {deps: ['jquery']}}});
-                    require(['jquery', 'oroui/lib/html5', 'oroui/lib/jquery/jquery.placeholder'],
+                    require.config({shim: {'pimui/lib/jquery/jquery.placeholder': {deps: ['jquery']}}});
+                    require(['jquery', 'pimui/lib/html5', 'pimui/lib/jquery/jquery.placeholder'],
                     function($){
                         $(function() {
                             $('input[placeholder], textarea[placeholder]').placeholder();
