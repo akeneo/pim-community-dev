@@ -2,4 +2,4 @@ css:
   filters:
       - bundles/pimfilter/lib/multiselect/jquery.multiselect.css
       - bundles/pimfilter/lib/multiselect/jquery.multiselect.filter.css
-      - bundles/pimfilter/css/oro.filter.css
+      - bundles/pimfilter/css/filter.less

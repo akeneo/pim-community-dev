@@ -4,4 +4,4 @@ css:
       - bundles/pimdatagrid/lib/backgrid/extensions/paginator/backgrid-paginator.css
       - bundles/pimdatagrid/lib/multiselect/jquery.multiselect.css
       - bundles/pimdatagrid/lib/multiselect/jquery.multiselect.filter.css
-      - bundles/pimdatagrid/css/oro.grid.css
+      - bundles/pimdatagrid/css/grid.less
