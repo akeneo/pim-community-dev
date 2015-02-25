@@ -110,19 +110,6 @@ class UserType extends OroUserType
                 )
             )
             ->add(
-                'emails',
-                'collection',
-                array(
-                    'type'           => 'oro_user_email',
-                    'allow_add'      => true,
-                    'allow_delete'   => true,
-                    'by_reference'   => false,
-                    'prototype'      => true,
-                    'prototype_name' => 'tag__name__',
-                    'label'          => ' '
-                )
-            )
-            ->add(
                 'change_password',
                 'oro_change_password'
             );

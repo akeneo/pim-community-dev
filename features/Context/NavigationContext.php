@@ -583,13 +583,12 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param Product $product
-     *
      * @Given /^I refresh current page$/
      */
     public function iRefreshCurrentPage()
     {
         $this->getMainContext()->reload();
+        $this->wait();
     }
 
     /**

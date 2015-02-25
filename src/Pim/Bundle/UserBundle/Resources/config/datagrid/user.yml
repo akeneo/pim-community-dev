@@ -54,7 +54,7 @@ datagrid:
                     - id
             delete_link:
                 type: url
-                route: oro_api_delete_user
+                route: oro_user_user_delete
                 params:
                     - id
         sorters:

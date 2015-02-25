@@ -2,17 +2,20 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ProductValuesDenormalizerSpec extends ObjectBehavior
 {
-    function let(DenormalizerInterface $denormalizer, CustomAttributeRepository $attributeRepository)
-    {
-        $this->beConstructedWith($denormalizer, $attributeRepository, 'ProductValue');
+    function let(
+        DenormalizerInterface $denormalizer,
+        SmartManagerRegistry $registry
+    ) {
+        $this->beConstructedWith($denormalizer, $registry, 'ProductValue', 'Attribute');
     }
 
     function it_is_initializable()
@@ -33,8 +36,9 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
     }
 
     function it_denormalizes_product_values_from_json(
-        $attributeRepository,
         $denormalizer,
+        $registry,
+        AttributeRepositoryInterface $attributeRepository,
         ProductValueInterface $nameValue,
         ProductValueInterface $colorValue,
         AttributeInterface $name,
@@ -47,10 +51,12 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
             'color' => [
                 ['locale' => 'en_US', 'scope' => 'ecommerce', 'value' => 'red']
             ]
-       ];
+        ];
 
         $attributeRepository->findOneByIdentifier('name')->willReturn($name);
         $attributeRepository->findOneByIdentifier('color')->willReturn($color);
+
+        $registry->getRepository('Attribute')->willReturn($attributeRepository);
 
         $denormalizer
             ->denormalize($data['name'][0], 'ProductValue', 'json', ['attribute' => $name])
@@ -67,12 +73,5 @@ class ProductValuesDenormalizerSpec extends ObjectBehavior
         $values->shouldHaveCount(2);
         $values[0]->shouldBe($nameValue);
         $values[1]->shouldBe($colorValue);
-    }
-}
-
-class CustomAttributeRepository extends AttributeRepository
-{
-    public function findOneByCode()
-    {
     }
 }
