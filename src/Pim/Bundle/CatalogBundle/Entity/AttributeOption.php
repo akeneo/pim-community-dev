@@ -221,7 +221,7 @@ class AttributeOption implements AttributeOptionInterface
         $locale = $this->locale;
         $values = $this->getOptionValues()->filter(
             function ($value) use ($locale) {
-                if ($value->getLocale() == $locale) {
+                if ($value->getLocale() === $locale) {
                     return true;
                 }
             }
