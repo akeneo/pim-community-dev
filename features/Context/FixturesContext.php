@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
-use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -20,18 +19,13 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Model\Media;
-use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
@@ -217,6 +211,7 @@ class FixturesContext extends RawMinkContext
      * @param mixed  $criteria
      *
      * @throws \Exception
+     *
      * @return null|object
      */
     public function findEntity($entityName, $criteria)
@@ -1096,6 +1091,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string       $extension
      * @param PyStringNode $string
      *
      * @Given /^the following ([^"]*) file to import:$/
@@ -1267,7 +1263,7 @@ class FixturesContext extends RawMinkContext
     {
         $family = $this->getProduct($productCode)->getFamily();
         if (!$family) {
-            throw \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
+            throw new \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
         }
         assertEquals($familyCode, $family->getCode());
     }
@@ -1420,6 +1416,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * Unlink all product media
+     *
      * @param string $productName
      *
      * @Given /^I delete "([^"]+)" media from filesystem$/
@@ -1428,9 +1426,9 @@ class FixturesContext extends RawMinkContext
     {
         $product = $this->getProduct($productName);
         $mediaManager = $this->getMediaManager();
-        $medias = $product->getMedia();
-        if (count($medias) == 1) {
-            unlink($mediaManager->getFilePath($medias[0]));
+        $allMedia = $product->getMedia();
+        foreach ($allMedia as $media) {
+            unlink($mediaManager->getFilePath($media));
         }
     }
 
@@ -1465,6 +1463,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $identifier
+     *
      * @Given /^the history of the product "([^"]*)" has been built$/
      */
     public function theHistoryOfTheProductHasBeenBuilt($identifier)
