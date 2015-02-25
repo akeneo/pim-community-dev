@@ -1,5 +1,5 @@
 define(
-    ['underscore', 'oro/datafilter/filters-manager'],
+    ['underscore', 'oro/datafilter/oro-filters-manager'],
     function(_, FiltersManager) {
         'use strict';
 

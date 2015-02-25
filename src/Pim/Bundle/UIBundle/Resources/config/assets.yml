@@ -1,5 +1,13 @@
 css:
-  pim_ui:
-    # - bundles/pimui/css/pim.less
-    - bundles/pimui/css/slimbox2.css
-    - bundles/pimui/css/flags.less
+    UI:
+        - bundles/pimui/css/less/main.less
+        - bundles/pimui/css/all.css
+        - bundles/pimui/lib/jstree/themes/default/style.css
+        - bundles/pimui/css/jquery-ui.grid.css
+        - bundles/pimui/lib/font-awesome/css/font-awesome.css
+    pim_ui:
+        - bundles/pimui/css/pim.less
+        - bundles/pimui/css/slimbox2.css
+        - bundles/pimui/css/flags.less
+    config:
+        - bundles/pimui/css/style.css

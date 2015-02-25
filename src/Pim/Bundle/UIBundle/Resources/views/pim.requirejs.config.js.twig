@@ -1,16 +1,10 @@
 require({
-    paths: {
-        'oro/navigation':             'pimnavigation/js/navigation',
-        'oro/security-access-levels': 'pimuser/js/security-access-levels',
-        'oro/app':                    'pimui/js/app'
-    },
     map: {
         '*': {
             'oro/datagrid/abstract-action':   'pimdatagrid/js/datagrid/action/abstract-action',
             'oro/datagrid/mass-action':       'pimdatagrid/js/datagrid/action/mass-action',
             'oro/datagrid/delete-action':     'pimdatagrid/js/datagrid/action/delete-action',
             'oro/navigation/dotmenu/view':    'pimnavigation/js/navigation/dotmenu/view',
-            'oro/datafilter/filters-manager': 'pimfilter/js/datafilter/filters-manager',
             'oro/datagrid/action-cell':       'pimdatagrid/js/datagrid/cell/action-cell'
         },
         'pimdatagrid/js/datagrid/action/abstract-action': {
@@ -24,9 +18,6 @@ require({
         },
         'pimnavigation/js/navigation/dotmenu/view': {
             'oro/navigation/dotmenu/view': 'oro/navigation/dotmenu/view'
-        },
-        'pimfilter/js/datafilter/filters-manager': {
-            'oro/datafilter/filters-manager': 'pimfilter/js/datafilter/oro-filters-manager'
         }
     }
 });

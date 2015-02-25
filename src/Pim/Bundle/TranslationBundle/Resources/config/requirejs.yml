@@ -1,0 +1,7 @@
+config:
+    shim:
+        translator:
+            exports: Translator
+    paths:
+        translator:     pimtranslation/lib/translator
+        oro/translator: pimtranslation/js/translator

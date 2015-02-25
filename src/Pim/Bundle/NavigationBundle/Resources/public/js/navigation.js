@@ -5,7 +5,7 @@
  * @returns {unresolved}
  */
 define(
-    ['oronavigation/js/navigation', 'oro/messenger'],
+    ['oro/oro-navigation', 'oro/messenger'],
     function(OroNavigation, messenger) {
         'use strict';
 
