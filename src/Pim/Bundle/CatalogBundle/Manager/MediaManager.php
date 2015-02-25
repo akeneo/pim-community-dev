@@ -125,7 +125,7 @@ class MediaManager
                 }
                 $filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename();
                 $this->upload($media, $this->generateFilename($filename, $filenamePrefix));
-            } elseif ($media->isRemoved() && $this->fileExists($media)) {
+            } elseif ($media->isRemoved()) {
                 $this->delete($media);
             }
         } catch (\Exception $e) {
