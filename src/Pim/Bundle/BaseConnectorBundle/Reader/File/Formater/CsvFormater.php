@@ -32,6 +32,7 @@ class CsvFormater
      * Before:
      * [
      *     'description-en_US-mobile': 'My description',
+     *     'name-fr_FR': 'T-shirt super beau',
      *     'price': '10 EUR, 24 USD',
      *     'price-CHF': '20',
      *     'length': '10 CENTIMETER',
@@ -42,33 +43,63 @@ class CsvFormater
      * ]
      *
      * After:
-     * [
-     *     'description' : {
-     *         'locale': 'en_US',
-     *         'scope':  'mobile',
-     *         'data':   'My description'
-     *     },
-     *     'price' : {
-     *         'locale': null,
-     *         'scope':  null,
-     *         'data':   [
-     *             {'data': '10', 'currency': 'EUR'},
-     *             {'data': '24', 'currency': 'USD'},
-     *             {'data': '20', 'currency': 'CHF'}
-     *         ]
-     *     },
-     *     'length' : {
-     *         'locale': 'en_US',
-     *         'scope':  'mobile',
-     *         'data':   {'data': '10', 'unit': 'CENTIMETER'}
-     *     },
-     *     'enabled': '1',
-     *     'categories': ['tshirt', 'men']
-     *     'XSELL': {
-     *         'groups': ['akeneo_tshirt', 'oro_tshirt'],
-     *         'product': ['AKN_TS', 'ORO_TSH']
-     *     }
-     * ]
+     * {
+     *      "name": [{
+     *          "locale": "fr_FR",
+     *          "scope":  null,
+     *          "data":  "T-shirt super beau",
+     *      }],
+     *      "description": [
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "mobile",
+     *               "data":   "My description"
+     *           },
+     *           {
+     *               "locale": "fr_FR",
+     *               "scope":  "mobile",
+     *               "data":   "Ma description mobile"
+     *           },
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "ecommerce",
+     *               "data":   "My description for the website"
+     *           },
+     *      ],
+     *      "price": [
+     *           {
+     *               "locale": null,
+     *               "scope":  ecommerce,
+     *               "data":   [
+     *                   {"data": 10, "currency": "EUR"},
+     *                   {"data": 24, "currency": "USD"},
+     *                   {"data": 20, "currency": "CHF"}
+     *               ]
+     *           }
+     *           {
+     *               "locale": null,
+     *               "scope":  mobile,
+     *               "data":   [
+     *                   {"data": 11, "currency": "EUR"},
+     *                   {"data": 25, "currency": "USD"},
+     *                   {"data": 21, "currency": "CHF"}
+     *               ]
+     *           }
+     *      ],
+     *      "length": [{
+     *          "locale": "en_US",
+     *          "scope":  "mobile",
+     *          "data":   {"data": "10", "unit": "CENTIMETER"}
+     *      }],
+     *      "enabled": "1",
+     *      "categories": ["tshirt", "men"],
+     *      "associations": {
+     *          "XSELL": {
+     *              "groups": ["akeneo_tshirt", "oro_tshirt"],
+     *              "product": ["AKN_TS", "ORO_TSH"]
+     *          }
+     *      }
+     * }
      *
      * @param array $product Representing a flat product
      *
@@ -78,7 +109,7 @@ class CsvFormater
     {
         $result = [];
         foreach ($product as $column => $value) {
-            $value = $this->convertToStructuredField($column, $value);
+            $value  = $this->convertToStructuredField($column, $value);
             $result = $this->addFieldToCollection($result, $value);
         }
 
@@ -100,7 +131,7 @@ class CsvFormater
             $value = FieldNameBuilder::splitCollection($value);
             list($associationTypeCode, $associatedWith) = FieldNameBuilder::splitFieldName($column);
 
-            return [$associationTypeCode => [$associatedWith => $value]];
+            return ['associations' => [$associationTypeCode => [$associatedWith => $value]]];
         } elseif (in_array($column, ['categories', 'groups'])) {
             return [$column => FieldNameBuilder::splitCollection($value)];
         } elseif (in_array($column, ['enabled', 'family'])) {
@@ -136,7 +167,7 @@ class CsvFormater
      * Format the value data of a cell into a structured format
      *
      * prices:      '10 EUR, 24 USD'   => [{'data': '10', 'currency': 'EUR'}, {'data': '24', 'currency': 'USD'}]
-     * metric:      '10 METER'         => {'data': '10', 'unit': 'METER'}
+     * metric:      '10 METER'         => {'data': 10, 'unit': 'METER'}
      * multiselect: 'red, blue, black' => ['red', 'blue', 'black']
      *
      * @param string $value          The value content
@@ -159,6 +190,12 @@ class CsvFormater
                 break;
             case 'pim_catalog_multiselect':
                 $value = FieldNameBuilder::splitCollection($value);
+                break;
+            case 'pim_catalog_boolean':
+                $value = (bool) $value;
+                break;
+            case 'pim_catalog_number':
+                $value = (float) $value;
                 break;
         }
 
@@ -185,7 +222,7 @@ class CsvFormater
             list($value, $currency) = FieldNameBuilder::splitUnitValue($value);
         }
 
-        return ['data' => $value, 'currency' => $currency];
+        return ['data' => (float) $value, 'currency' => $currency];
     }
 
     /**
@@ -208,7 +245,7 @@ class CsvFormater
             list($value, $unit) = FieldNameBuilder::splitUnitValue($value);
         }
 
-        return ['data' => $value, 'unit' => $unit];
+        return ['data' => (float) $value, 'unit' => $unit];
     }
 
     /**
