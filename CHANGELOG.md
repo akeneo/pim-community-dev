@@ -10,6 +10,11 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-3665: Remove media even if file not on filesystem
+
+# 1.3.1 (2015-02-24)
+
+## Bug fixes
 - PIM-3775: Fix variant group import from an archive
 - PIM-3783: Fix issue with Rest API and MediaNormalizer
 - PIM-3791: Fix fatal error on MongoDB mass pending persister
