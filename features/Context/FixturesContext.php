@@ -216,7 +216,8 @@ class FixturesContext extends RawMinkContext
      * @param string $entityName
      * @param mixed  $criteria
      *
-     * @return object|null
+     * @throws \Exception
+     * @return null|object
      */
     public function findEntity($entityName, $criteria)
     {
@@ -235,7 +236,7 @@ class FixturesContext extends RawMinkContext
      * @param string $entityName
      * @param mixed  $criteria
      *
-     * @throws InvalidArgumentException If entity is not found
+     * @throws \InvalidArgumentException If entity is not found
      *
      * @return object
      */
@@ -366,7 +367,7 @@ class FixturesContext extends RawMinkContext
      * @param string $status
      * @param string $sku
      *
-     * @return Product
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
      * @Given /^(?:an|a) (enabled|disabled) "([^"]*)" product$/
      */
@@ -396,6 +397,8 @@ class FixturesContext extends RawMinkContext
      * @param string $entityName
      *
      * @Given /^there is no (.*)$/
+     *
+     * @throws \Exception
      */
     public function thereIsNoEntity($entityName)
     {
@@ -1257,6 +1260,8 @@ class FixturesContext extends RawMinkContext
      * @param string $familyCode
      *
      * @Given /^(?:the )?family of "([^"]*)" should be "([^"]*)"$/
+     *
+     * @throws \Exception
      */
     public function theFamilyOfShouldBe($productCode, $familyCode)
     {
@@ -1304,6 +1309,7 @@ class FixturesContext extends RawMinkContext
      * @param array  $products
      *
      * @Then /^"([^"]*)" group should contain "([^"]*)"$/
+     * @throws \Exception
      */
     public function groupShouldContain($group, $products)
     {
@@ -1343,7 +1349,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\Product
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
      * @throws \InvalidArgumentException
      */
@@ -1411,6 +1417,21 @@ class FixturesContext extends RawMinkContext
             ->setFamily($this->getFamily($family));
 
         $this->flush();
+    }
+
+    /**
+     * @param string $productName
+     *
+     * @Given /^I delete "([^"]+)" media from filesystem$/
+     */
+    public function iDeleteProductMediaFromFilesystem($productName)
+    {
+        $product = $this->getProduct($productName);
+        $mediaManager = $this->getMediaManager();
+        $medias = $product->getMedia();
+        if (count($medias) == 1) {
+            unlink($mediaManager->getFilePath($medias[0]));
+        }
     }
 
     /**
@@ -1524,9 +1545,9 @@ class FixturesContext extends RawMinkContext
      * @param string $locale
      * @param string $scope
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
-     * @return ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
     protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
@@ -1999,7 +2020,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return VersionManager
+     * @return \Pim\Bundle\VersioningBundle\Manager\VersionManager
      */
     protected function getVersionManager()
     {
