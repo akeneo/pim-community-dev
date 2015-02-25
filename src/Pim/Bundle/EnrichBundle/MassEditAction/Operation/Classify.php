@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Batch operation to classify products
@@ -25,12 +27,19 @@ class Classify extends ProductMassEditOperation
     protected $categories;
 
     /**
-     * @param CategoryManager    $categoryManager
-     * @param BulkSaverInterface $productSaver
+     * @param CategoryManager                     $categoryManager
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param PaginatorFactoryInterface           $paginatorFactory
      */
-    public function __construct(CategoryManager $categoryManager, BulkSaverInterface $productSaver)
-    {
-        parent::__construct($productSaver);
+    public function __construct(
+        CategoryManager $categoryManager,
+        BulkSaverInterface $productSaver,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PaginatorFactoryInterface $paginatorFactory
+    ) {
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory);
+
         $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
         $this->categories      = array();

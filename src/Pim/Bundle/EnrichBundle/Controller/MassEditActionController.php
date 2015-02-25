@@ -221,7 +221,7 @@ class MassEditActionController extends AbstractDoctrineController
 
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
 
-            $jobInstance = new JobInstance(null, 'mass-edit-change-status');
+            $jobInstance = new JobInstance(null, sprintf('mass-edit-%s', $operationAlias));
             $jobCode = sprintf('%s_%s', $jobInstance->getType(), uniqid());
             $jobInstance->setCode($jobCode)
                 ->setAlias($jobCode)
@@ -229,7 +229,9 @@ class MassEditActionController extends AbstractDoctrineController
                 ->setRawConfiguration([
                     'operationAlias' => $operationAlias,
                     'gridName'       => $this->request->get('gridName'),
-                    'filters'        => json_encode($pimFilters)
+                    'filters'        => json_encode($pimFilters),
+                    // TODO: $operator->getOperation()->getConfig() : move config export to AbstractMassEditOperation
+                    'config'         => json_encode(['toEnable' => $operator->getOperation()->isToEnable()])
                 ]);
 
             $this->massEditJobManager->save($jobInstance);
