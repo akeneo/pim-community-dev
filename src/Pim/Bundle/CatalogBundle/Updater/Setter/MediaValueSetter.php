@@ -55,33 +55,47 @@ class MediaValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'media');
+        foreach ($products as $product) {
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'media');
         $this->checkData($attribute, $data);
 
         $file = $this->getFileData($attribute, $data);
+        $this->setMedia($product, $attribute, $file, $options['locale'], $options['scope']);
 
-        foreach ($products as $product) {
-            $this->setMedia($attribute, $product, $file, $locale, $scope);
-        }
-
-        $this->mediaManager->handleAllProductsMedias($products);
+        $this->mediaManager->handleProductMedias($product);
     }
 
     /**
      * Set media in the product value
      *
-     * @param AttributeInterface $attribute
      * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param UploadedFile|null  $file
      * @param string|null        $locale
      * @param string|null        $scope
      */
     protected function setMedia(
-        AttributeInterface $attribute,
         ProductInterface $product,
+        AttributeInterface $attribute,
         UploadedFile $file = null,
         $locale = null,
         $scope = null

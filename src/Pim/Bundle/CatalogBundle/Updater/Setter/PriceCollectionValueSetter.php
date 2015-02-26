@@ -40,15 +40,30 @@ class PriceCollectionValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'prices collection');
+        foreach ($products as $product) {
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'prices collection');
         $this->checkData($attribute, $data);
 
-        foreach ($products as $product) {
-            $this->setPrices($attribute, $product, $data, $locale, $scope);
-        }
+        $this->setPrices($product, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
@@ -126,13 +141,13 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     /**
      * Set prices into the product value
      *
-     * @param AttributeInterface $attribute
      * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope
      */
-    protected function setPrices(AttributeInterface $attribute, ProductInterface $product, $data, $locale, $scope)
+    protected function setPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {

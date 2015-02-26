@@ -48,20 +48,35 @@ class MetricValueSetter extends AbstractValueSetter
     /**
      * {@inheritdoc}
      *
+     * @deprecated will be removed in 1.5, use method setAttributeData
+     *
      * setValue( [$products], $weightAttribute,
      *           ['data' => 12, 'unit' => 'KILOGRAM']
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
+        foreach ($products as $product) {
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'metric');
         $this->checkData($attribute, $data);
 
         $unit = $data['unit'];
         $data = $data['data'];
 
-        foreach ($products as $product) {
-            $this->setData($attribute, $product, $data, $unit, $locale, $scope);
-        }
+        $this->setData($product, $attribute, $data, $unit, $options['locale'], $options['$scope']);
     }
 
     /**
@@ -135,16 +150,16 @@ class MetricValueSetter extends AbstractValueSetter
     /**
      * Set the data into the product value
      *
-     * @param AttributeInterface $attribute
      * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $unit
      * @param string             $locale
      * @param string             $scope
      */
     protected function setData(
-        AttributeInterface $attribute,
         ProductInterface $product,
+        AttributeInterface $attribute,
         $data,
         $unit,
         $locale,
