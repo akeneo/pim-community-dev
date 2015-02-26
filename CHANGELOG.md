@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3820: Attribute option translation not well handled on import
+
 # 1.3.1 (2015-02-24)
 
 ## Bug fixes
