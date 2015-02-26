@@ -9,6 +9,7 @@ parameters:
     pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
     pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
     pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
+    #TODO: Fix this typo
     pim_entich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
 
 services:
@@ -46,6 +47,9 @@ services:
         class: %pim_enrich.mass_edit_action.change_status.class%
         arguments:
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.product.paginator'
+            - '@pim_notification.manager.notification'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -64,6 +68,9 @@ services:
             - '@pim_catalog.manager.product_mass_action'
             - '@pim_serializer'
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.product.paginator'
+            - '@pim_notification.manager.notification'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -77,6 +84,9 @@ services:
         arguments:
             - '@pim_catalog.manager.category'
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.product.paginator'
+            - '@pim_notification.manager.notification'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -89,6 +99,9 @@ services:
         class: %pim_enrich.mass_edit_action.change_family.class%
         arguments:
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.product.paginator'
+            - '@pim_notification.manager.notification'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -101,6 +114,9 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.saver.product'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.product.paginator'
+            - '@pim_notification.manager.notification'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -116,6 +132,9 @@ services:
             - '@pim_catalog.updater.product_template'
             - '@validator'
             - '@pim_catalog.repository.product_mass_action'
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_enrich.product.paginator'
+            - '@pim_notification.manager.notification'
         tags:
             -
                 name: pim_enrich.mass_edit_action
