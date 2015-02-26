@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
@@ -50,6 +51,32 @@ class ProductUpdater implements ProductUpdaterInterface
         $setter->setValue($products, $attribute, $data, $locale, $scope);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function set(ProductInterface $product, $field, $data, array $options = [])
+    {
+        $attribute = $this->getAttribute($field);
+
+        if (null === $attribute) {
+            $setter = $this->setterRegistry->getFieldSetter($field);
+            $setter->setFieldData($product, $field, $data, $options);
+        } else {
+            $setter = $this->setterRegistry->getAttributeSetter($attribute);
+            $setter->setAttributeData($product, $attribute, $data, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAll(array $products, $field, $data, array $options = [])
+    {
+        foreach ($products as $product) {
+            $this->set($product, $field, $data, $options);
+        }
     }
 
     /**

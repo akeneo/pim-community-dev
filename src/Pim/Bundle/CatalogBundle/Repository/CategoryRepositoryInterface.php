@@ -9,7 +9,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\RepositoryInterface as TreeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Category repository interface
@@ -21,7 +20,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 interface CategoryRepositoryInterface extends
     TreeRepositoryInterface,
     IdentifiableObjectRepositoryInterface,
-    ReferableEntityRepositoryInterface,
     ObjectRepository
 {
     /**
