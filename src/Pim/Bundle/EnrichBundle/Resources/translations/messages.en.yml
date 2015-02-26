@@ -112,9 +112,10 @@ pim_enrich:
                 fourth: Confirm
 
         change-status:
-            label:         Change status (enable / disable)
-            description:   The selected products will be enabled or disabled.
-            success_flash: Product(s) status have been changed
+            label:          Change status (enable / disable)
+            description:    The selected products will be enabled or disabled.
+            success_flash:  Product(s) status have been changed
+            launched_flash: Product(s) status job is running
 
         edit-common-attributes:
             label:         Edit attributes
