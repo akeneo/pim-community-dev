@@ -92,6 +92,9 @@ class ProductProcessor extends AbstractProcessor
 
         if (false === $product) {
             $product = $this->manager->createProduct();
+            $identifierValue = $this->manager->createProductValue();
+            $identifierValue->setAttribute($this->repository->getIdentifierAttribute());
+            $identifierValue->setData($identifier);
         }
 
         return $product;

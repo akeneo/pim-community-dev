@@ -181,8 +181,8 @@ class CsvFormater
             case 'pim_catalog_price_collection':
                 $value = FieldNameBuilder::splitCollection($value);
 
-                array_map(function ($value) use ($fieldNameInfos) {
-                    return $this->formatPrice($value, $fieldNameInfos);
+                $value = array_map(function ($priceValue) use ($fieldNameInfos) {
+                    return $this->formatPrice($priceValue, $fieldNameInfos);
                 }, $value);
                 break;
             case 'pim_catalog_metric':
@@ -196,6 +196,14 @@ class CsvFormater
                 break;
             case 'pim_catalog_number':
                 $value = (float) $value;
+                break;
+            case 'pim_catalog_image':
+            case 'pim_catalog_file':
+                $value = [
+                    'filePath'         => $value,
+                    'originalFilename' => basename($value)
+                ];
+
                 break;
         }
 
@@ -235,7 +243,7 @@ class CsvFormater
     protected function formatMetric($value, $fieldNameInfos)
     {
         if ('' === $value) {
-            return [];
+            return ['data' => null, 'unit' => null];
         }
 
         //Due to the multi column format for metrics
