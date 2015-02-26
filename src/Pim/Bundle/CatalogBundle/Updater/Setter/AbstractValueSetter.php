@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractValueSetter implements SetterInterface
+abstract class AbstractValueSetter implements AttributeSetterInterface
 {
     /** @var array */
     protected $supportedTypes = [];
@@ -40,7 +40,7 @@ abstract class AbstractValueSetter implements SetterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(AttributeInterface $attribute)
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedTypes);
     }

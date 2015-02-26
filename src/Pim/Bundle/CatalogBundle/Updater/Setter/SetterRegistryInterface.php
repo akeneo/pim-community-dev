@@ -28,6 +28,35 @@ interface SetterRegistryInterface
      * @throws \LogicException
      *
      * @return SetterInterface
+     *
+     * @deprecated will be removed in 1.5, use getAttributeSetter
      */
     public function get(AttributeInterface $attribute);
+
+    /**
+     * Get the setter (field or attribute)
+     *
+     * @param string $code the field or the attribute code
+     *
+     * @return SetterInterface|null
+     */
+    public function getSetter($code);
+
+    /**
+     * Get the field setter
+     *
+     * @param string $field the field
+     *
+     * @return SetterInterface|null
+     */
+    public function getFieldSetter($field);
+
+    /**
+     * Get the attribute setter
+     *
+     * @param AttributeInterface $attribute
+     *
+     * @return SetterInterface|null
+     */
+    public function getAttributeSetter(AttributeInterface $attribute);
 }

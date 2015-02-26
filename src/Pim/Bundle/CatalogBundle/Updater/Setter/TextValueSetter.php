@@ -33,6 +33,8 @@ class TextValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use method set(
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
