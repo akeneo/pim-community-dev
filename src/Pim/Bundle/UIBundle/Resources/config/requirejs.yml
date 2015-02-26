@@ -58,19 +58,19 @@ config:
             jquery-ui-timepicker: jquery-ui-timepicker
 
     paths:
-        text:                          pimui/lib/text
-        json:                          pimui/lib/json2
-        base64:                        pimui/lib/base64
-        jquery:                        pimui/lib/jquery-1.10.2
-        jquery-ui:                     pimui/lib/jquery-ui.min
+        text:                          pimui/lib/text/text
+        json:                          pimui/lib/json2/json2
+        base64:                        pimui/lib/base64/base64
+        jquery:                        pimui/lib/jquery/jquery-1.10.2
+        jquery-ui:                     pimui/lib/jquery-ui/jquery-ui.min
         jquery-ui-timepicker:          pimui/lib/jquery-ui-timepicker-addon
-        jquery.numeric:                pimui/lib/jquery/jquery.numeric
-        jquery.select2:                pimui/lib/jquery/select2
+        jquery.numeric:                pimui/lib/jquery-numeric/jquery.numeric
+        jquery.select2:                pimui/lib/select2/select2
         jquery.jstree:                 pimui/lib/jstree/jquery.jstree
         jstree/jquery.hotkeys:         pimui/lib/jstree/jquery.hotkeys
         bootstrap:                     pimui/lib/bootstrap/js/bootstrap
-        underscore:                    pimui/lib/underscore
-        backbone:                      pimui/lib/backbone
+        underscore:                    pimui/lib/underscore/underscore
+        backbone:                      pimui/lib/backbone/backbone
         backbone/bootstrap-modal:      pimui/lib/backbone.bootstrap-modal
         oro/app:                       pimui/js/app
         oro/error:                     pimui/js/error
@@ -87,9 +87,9 @@ config:
 
         oro/form/state:                pimui/js/form/state.js
 
-        jquery-ui-full:            pimui/lib/jquery/jquery-ui-1.10.3.custom.min
+        jquery-ui-full:            pimui/lib/jquery-ui/jquery-ui-1.10.3.custom.min
         jquery.slimbox:            pimui/js/slimbox2
-        bootstrap.bootstrapswitch: pimui/lib/bootstrap_switch/bootstrap.switch
+        bootstrap.bootstrapswitch: pimui/lib/bootstrap-switch/bootstrap.switch
         tinymce:                   pimui/lib/tinymce/tinymce.min
         wysiwyg:                   pimui/js/pim-wysiwyg
         datepicker:                pimui/js/pim-datepicker

@@ -4,6 +4,8 @@
  *
 /* Group: jstree tree_selector plugin */
 (function ($) {
+    'use strict';
+
     var tree_select_id = "tree_select";
 
     $.jstree.plugin("tree_selector", {
@@ -29,7 +31,7 @@
 
                     var tree_select = $('<select>', {
                         id: tree_select_id,
-                        class: 'input-large'
+                        'class': 'input-large'
                     });
                     tree_select.addClass('jstree-tree-select');
 
@@ -90,7 +92,7 @@
                     return null;
                 }
 
-                root_node = this._prepare_node(
+                var root_node = this._prepare_node(
                     'node_' + root_node_id,
                     selected_tree.text()
                 );
@@ -216,7 +218,7 @@
                 this.switch_tree();
             },
             get_tree_id: function() {
-                root_node = this.get_container_ul().find('li')[0];
+                var root_node = this.get_container_ul().find('li')[0];
 
                 return $(root_node).attr('id');
 

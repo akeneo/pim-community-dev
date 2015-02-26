@@ -12,8 +12,8 @@ config:
 
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
-        jstree/jquery.jstree.tree_selector: pimenrich/js/lib/jstree/jquery.jstree.tree_selector
-        jstree/nested_switch:               pimenrich/js/lib/jstree/jquery.jstree.nested_switch
+        jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
+        jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch
         pim/init:                           pimenrich/js/pim-init
         pim/asynctab:                       pimenrich/js/pim-async-tab
         pim/popinform:                      pimenrich/js/pim-popinform
