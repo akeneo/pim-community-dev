@@ -41,10 +41,27 @@ class SimpleSelectValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'simple select');
+        foreach ($products as $product) {
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'text');
         $this->checkData($attribute, $data);
 
         if (null === $data) {
@@ -65,9 +82,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
             }
         }
 
-        foreach ($products as $product) {
-            $this->setOption($attribute, $product, $option, $locale, $scope);
-        }
+        $this->setOption($product, $attribute, $option, $options['locale'], $options['scope']);
     }
 
     /**
@@ -95,15 +110,15 @@ class SimpleSelectValueSetter extends AbstractValueSetter
     /**
      * Set option into the product value
      *
-     * @param AttributeInterface            $attribute
      * @param ProductInterface              $product
+     * @param AttributeInterface            $attribute
      * @param AttributeOptionInterface|null $option
      * @param string|null                   $locale
      * @param string|null                   $scope
      */
     protected function setOption(
-        AttributeInterface $attribute,
         ProductInterface $product,
+        AttributeInterface $attribute,
         AttributeOptionInterface $option = null,
         $locale = null,
         $scope = null

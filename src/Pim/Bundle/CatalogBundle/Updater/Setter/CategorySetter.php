@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
@@ -29,7 +30,7 @@ class CategorySetter extends AbstractFieldSetter
     /**
      * {@inheritdoc}
      */
-    public function setFieldData($product, $field, $data, $locale = null, $scope = null)
+    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 
@@ -78,13 +79,5 @@ class CategorySetter extends AbstractFieldSetter
                 );
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        return in_array($field, $this->supportedFields);
     }
 }

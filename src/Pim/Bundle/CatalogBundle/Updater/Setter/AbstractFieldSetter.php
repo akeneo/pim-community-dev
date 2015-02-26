@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+
 /**
  * Abstract field setter
  *
@@ -13,6 +15,20 @@ abstract class AbstractFieldSetter implements FieldSetterInterface
 {
     /** @var array */
     protected $supportedFields = [];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(AttributeInterface $attribute)
+    {
+        return false;
+    }
+
+    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
+    {
+        throw new \Exception('This method is not supported for field setters');
+
+    }
 
     /**
      * {@inheritdoc}

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Registry of setters
@@ -51,7 +52,7 @@ class SetterRegistry implements SetterRegistryInterface
     public function get(AttributeInterface $attribute)
     {
 
-        foreach ($this->setters as $setter) {
+        foreach ($this->attributeSetters as $setter) {
             if ($setter->supports($attribute)) {
                 return $setter;
             }
