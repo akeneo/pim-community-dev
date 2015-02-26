@@ -249,7 +249,7 @@ class MassEditActionController extends AbstractDoctrineController
             $operator->finalizeOperation();
             $this->addFlash(
                 'success',
-                sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
+                sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
             );
 
             return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
