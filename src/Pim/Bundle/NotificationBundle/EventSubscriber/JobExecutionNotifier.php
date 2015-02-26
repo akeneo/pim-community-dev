@@ -32,9 +32,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
-        );
+        ];
     }
 
     /**
