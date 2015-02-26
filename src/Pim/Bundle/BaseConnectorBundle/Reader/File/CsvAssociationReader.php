@@ -4,7 +4,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\Formater\CsvFormater;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -19,17 +18,17 @@ use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
  */
 class CsvAssociationReader extends CsvReader
 {
-    /** @var CsvFormater */
-    protected $csvFormater;
+    /** @var FieldNameBuilder */
+    protected $fieldNameBuilder;
 
     /**
      * Constructor
      *
-     * @param CsvFormater $csvFormater
+     * @param FieldNameBuilder $fieldNameBuilder
      */
-    public function __construct(CsvFormater $csvFormater)
+    public function __construct(FieldNameBuilder $fieldNameBuilder)
     {
-        $this->csvFormater = $csvFormater;
+        $this->fieldNameBuilder = $fieldNameBuilder;
     }
 
     /**
@@ -43,7 +42,7 @@ class CsvAssociationReader extends CsvReader
         }
 
         // Get association field names and add associations
-        $assocFieldNames  = $this->csvFormater->getAssociationFieldNames();
+        $assocFieldNames  = $this->fieldNameBuilder->getAssociationFieldNames();
         $associations = [
             'product'      => $data,
             'associations' => []
@@ -51,10 +50,10 @@ class CsvAssociationReader extends CsvReader
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 if (strlen($data[$assocFieldName]) > 0) {
-                    list($assocTypeCode, $part) = explode(CsvFormater::FIELD_SEPARATOR, $assocFieldName);
+                    list($assocTypeCode, $part) = explode(FieldNameBuilder::FIELD_SEPARATOR, $assocFieldName);
 
                     $associations['associations'][] = [
-                        'associated_items'      => explode(CsvFormater::ARRAY_SEPARATOR, $data[$assocFieldName]),
+                        'associated_items'      => explode(FieldNameBuilder::ARRAY_SEPARATOR, $data[$assocFieldName]),
                         'association_type_code' => $assocTypeCode,
                         'item_type'             => $part
                     ];
