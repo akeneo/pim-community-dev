@@ -2,9 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Batch operation to classify products
@@ -25,15 +30,24 @@ class Classify extends ProductMassEditOperation
     protected $categories;
 
     /**
-     * @param CategoryManager    $categoryManager
-     * @param BulkSaverInterface $productSaver
+     * @param CategoryManager                     $categoryManager
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param NotificationManager                 $notificationManager
      */
-    public function __construct(CategoryManager $categoryManager, BulkSaverInterface $productSaver)
-    {
-        parent::__construct($productSaver);
+    public function __construct(
+        CategoryManager $categoryManager,
+        BulkSaverInterface $productSaver,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PaginatorFactoryInterface $paginatorFactory,
+        NotificationManager $notificationManager
+    ) {
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
+
         $this->categoryManager = $categoryManager;
-        $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
-        $this->categories      = array();
+        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
+        $this->categories      = [];
     }
 
     /**
@@ -80,5 +94,25 @@ class Classify extends ProductMassEditOperation
         foreach ($this->categories as $category) {
             $product->addCategory($category);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function readConfiguration()
+    {
+        // TODO: Implement applyConfiguration() method.
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveConfiguration()
+    {
+        // TODO: Implement saveConfiguration() method.
+
+        return $this;
     }
 }
