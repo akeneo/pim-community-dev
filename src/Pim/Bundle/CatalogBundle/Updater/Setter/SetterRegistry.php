@@ -13,22 +13,44 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class SetterRegistry implements SetterRegistryInterface
 {
-    /** @var SetterInterface[] */
-    protected $setters = [];
+    /** @var AttributeSetterInterface[] priorized attribute setters */
+    protected $attributeSetters = [];
+
+    /** @var FieldSorterInterface[] priorized field setters */
+    protected $fieldSetters = [];
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function register(SetterInterface $setter)
     {
-        $this->setters[] = $setter;
+        if ($setter instanceof FieldSetterInterface) {
+            $this->fieldSetters[] = $setter;
+        }
+        if ($setter instanceof AttributeSetterInterface) {
+            $this->attributeSetters[] = $setter;
+        }
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use getAttributeSetter
      */
     public function get(AttributeInterface $attribute)
     {
+
         foreach ($this->setters as $setter) {
             if ($setter->supports($attribute)) {
                 return $setter;
@@ -36,5 +58,52 @@ class SetterRegistry implements SetterRegistryInterface
         }
 
         throw new \LogicException(sprintf('Attribute "%s" is not supported by any setter', $attribute->getCode()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSetter($code)
+    {
+        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+
+        if (null !== $attribute) {
+            return $this->getAttributeSetter($attribute);
+        }
+
+        $setter = $this->getFieldSetter($code);
+        if ($setter) {
+            return $setter;
+        }
+
+        throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldSetter($field)
+    {
+        foreach ($this->fieldFilters as $setter) {
+            if ($setter->supportsField($field)) {
+                return $setter;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeSetter(AttributeInterface $attribute)
+    {
+        foreach ($this->attributeSetters as $setter) {
+            if ($setter->supportsAttribute($attribute)) {
+                return $setter;
+            }
+        }
+
+        return null;
     }
 }
