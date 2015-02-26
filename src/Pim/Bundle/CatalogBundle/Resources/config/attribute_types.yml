@@ -1,18 +1,20 @@
 parameters:
-    pim_catalog.registry.attribute_type.class:         Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry
+    pim_catalog.registry.attribute_type.class:                    Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry
 
-    pim_catalog.attribute_type.identifier.class:       Pim\Bundle\CatalogBundle\AttributeType\IdentifierType
-    pim_catalog.attribute_type.text.class:             Pim\Bundle\CatalogBundle\AttributeType\TextType
-    pim_catalog.attribute_type.textarea.class:         Pim\Bundle\CatalogBundle\AttributeType\TextAreaType
-    pim_catalog.attribute_type.multiselect.class:      Pim\Bundle\CatalogBundle\AttributeType\OptionMultiSelectType
-    pim_catalog.attribute_type.simpleselect.class:     Pim\Bundle\CatalogBundle\AttributeType\OptionSimpleSelectType
-    pim_catalog.attribute_type.price_collection.class: Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType
-    pim_catalog.attribute_type.number.class:           Pim\Bundle\CatalogBundle\AttributeType\NumberType
-    pim_catalog.attribute_type.boolean.class:          Pim\Bundle\CatalogBundle\AttributeType\BooleanType
-    pim_catalog.attribute_type.date.class:             Pim\Bundle\CatalogBundle\AttributeType\DateType
-    pim_catalog.attribute_type.file.class:             Pim\Bundle\CatalogBundle\AttributeType\FileType
-    pim_catalog.attribute_type.image.class:            Pim\Bundle\CatalogBundle\AttributeType\ImageType
-    pim_catalog.attribute_type.metric.class:           Pim\Bundle\CatalogBundle\AttributeType\MetricType
+    pim_catalog.attribute_type.identifier.class:                  Pim\Bundle\CatalogBundle\AttributeType\IdentifierType
+    pim_catalog.attribute_type.text.class:                        Pim\Bundle\CatalogBundle\AttributeType\TextType
+    pim_catalog.attribute_type.textarea.class:                    Pim\Bundle\CatalogBundle\AttributeType\TextAreaType
+    pim_catalog.attribute_type.multiselect.class:                 Pim\Bundle\CatalogBundle\AttributeType\OptionMultiSelectType
+    pim_catalog.attribute_type.simpleselect.class:                Pim\Bundle\CatalogBundle\AttributeType\OptionSimpleSelectType
+    pim_catalog.attribute_type.price_collection.class:            Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType
+    pim_catalog.attribute_type.number.class:                      Pim\Bundle\CatalogBundle\AttributeType\NumberType
+    pim_catalog.attribute_type.boolean.class:                     Pim\Bundle\CatalogBundle\AttributeType\BooleanType
+    pim_catalog.attribute_type.date.class:                        Pim\Bundle\CatalogBundle\AttributeType\DateType
+    pim_catalog.attribute_type.file.class:                        Pim\Bundle\CatalogBundle\AttributeType\FileType
+    pim_catalog.attribute_type.image.class:                       Pim\Bundle\CatalogBundle\AttributeType\ImageType
+    pim_catalog.attribute_type.metric.class:                      Pim\Bundle\CatalogBundle\AttributeType\MetricType
+    pim_catalog.attribute_type.reference_data_simpleselect.class: Pim\Bundle\CatalogBundle\AttributeType\ReferenceDataSimpleSelectType
+    pim_catalog.attribute_type.reference_data_multiselect.class:  Pim\Bundle\CatalogBundle\AttributeType\ReferenceDataMultiSelectType
 
 services:
     pim_catalog.registry.attribute_type:
@@ -129,3 +131,22 @@ services:
             - '@translator'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: %pim_catalog.entity.product.class% }
+
+    pim_catalog.attributetype.reference_data_simpleselect:
+        class: %pim_catalog.attribute_type.reference_data_simpleselect.class%
+        arguments:
+            - option
+            - pim_ajax_entity
+            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_reference_data_simpleselect, entity: %pim_catalog.entity.product.class% }
+
+    pim_catalog.attributetype.reference_data_multiselect:
+        class: %pim_catalog.attribute_type.reference_data_multiselect.class%
+        arguments:
+            - options
+            - pim_ajax_entity
+            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_catalog_reference_data_multiselect, entity: %pim_catalog.entity.product.class% }
+
