@@ -54,4 +54,28 @@ class ChangeStatus extends ProductMassEditOperation
     {
         $product->setEnabled($this->toEnable);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function readConfiguration()
+    {
+        $config = $this->getConfiguration();
+
+        if (isset($config['toEnable'])) {
+            $this->setToEnable($config['toEnable']);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveConfiguration()
+    {
+        $this->setConfiguration(['toEnable' => $this->isToEnable()]);
+
+        return $this;
+    }
 }

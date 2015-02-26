@@ -126,4 +126,24 @@ class AddToGroups extends ProductMassEditOperation
             $group->addProduct($product);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function readConfiguration()
+    {
+        // TODO: Implement applyConfiguration() method.
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveConfiguration()
+    {
+        // TODO: Implement saveConfiguration() method.
+
+        return $this;
+    }
 }

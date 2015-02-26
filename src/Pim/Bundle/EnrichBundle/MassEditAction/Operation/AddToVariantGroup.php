@@ -294,4 +294,24 @@ class AddToVariantGroup extends ProductMassEditOperation
 
         return $validVariantGroups;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function readConfiguration()
+    {
+        // TODO: Implement applyConfiguration() method.
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveConfiguration()
+    {
+        // TODO: Implement saveConfiguration() method.
+
+        return $this;
+    }
 }

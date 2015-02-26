@@ -213,6 +213,8 @@ class MassEditActionController extends AbstractDoctrineController
         $form->submit($this->request);
 
         if ($form->isValid()) {
+
+            $operator->getOperation()->saveConfiguration();
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
 
             $jobInstance = new JobInstance(null, sprintf('mass-edit-%s', $operationAlias));
@@ -224,8 +226,7 @@ class MassEditActionController extends AbstractDoctrineController
                     'operationAlias' => $operationAlias,
                     'gridName'       => $this->request->get('gridName'),
                     'filters'        => json_encode($pimFilters),
-                    // TODO: $operator->getOperation()->getConfig() : move config export to AbstractMassEditOperation
-                    'config'         => json_encode(['toEnable' => $operator->getOperation()->isToEnable()])
+                    'config'         => json_encode($operator->getOperation()->getConfiguration())
                 ]);
 
             $this->massEditJobManager->save($jobInstance);

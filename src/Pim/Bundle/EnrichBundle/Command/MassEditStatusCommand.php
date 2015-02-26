@@ -69,9 +69,11 @@ class MassEditStatusCommand extends ContainerAwareCommand
         $operation = $this->getOperation($jobRawConfiguration);
 
         $filters = json_decode($jobRawConfiguration['filters'], true);
+        $operationConfig = json_decode($jobRawConfiguration['config'], true);
 
         // TODO: Retrieve operation specific configuration
         $operation->setPqbFilters($filters);
+        $operation->setConfiguration($operationConfig);
         $operation->perform();
     }
 

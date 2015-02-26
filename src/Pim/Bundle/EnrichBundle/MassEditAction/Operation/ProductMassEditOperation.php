@@ -30,6 +30,9 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     /** @var PaginatorFactoryInterface */
     protected $paginatorFactory;
 
+    /** @var array */
+    protected $configuration = [];
+
     /**
      * @param BulkSaverInterface                  $productSaver
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -58,6 +61,8 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
      */
     public function perform()
     {
+        $this->readConfiguration();
+
         $cursor = $this->getProducts($this->pqbFilters);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
@@ -141,11 +146,49 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
 
     /**
      * @param array $pqbFilters
+     *
+     * @return $this
      */
     public function setPqbFilters($pqbFilters)
     {
         $this->pqbFilters = $pqbFilters;
+
+        return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @param array $configuration
+     *
+     * @return $this
+     */
+    public function setConfiguration($configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    /**
+     * Read the operation configuration for the specific job
+     *
+     * @return $this
+     */
+    abstract protected function readConfiguration();
+
+    /**
+     * Save the current specific configuration
+     *
+     * @return $this
+     */
+    abstract public function saveConfiguration();
 
     /**
      * Perform operation on the product instance
