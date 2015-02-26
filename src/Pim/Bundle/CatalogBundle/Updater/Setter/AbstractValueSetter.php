@@ -40,6 +40,14 @@ abstract class AbstractValueSetter implements AttributeSetterInterface
     /**
      * {@inheritdoc}
      */
+    public function supports(AttributeInterface $attribute)
+    {
+        return $this->supportsAttribute($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedTypes);
