@@ -2,8 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Base class of product mass edit operations
@@ -17,12 +22,37 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     /** @var BulkSaverInterface */
     protected $productSaver;
 
+    /** @var array */
+    protected $pqbFilters = [];
+
+    /** @var ProductQueryBuilderInterface */
+    protected $pqbFactory;
+
+    /** @var PaginatorFactoryInterface */
+    protected $paginatorFactory;
+
+    /** @var array */
+    protected $configuration = [];
+
+    /** @var NotificationManager */
+    protected $notificationManager;
+
     /**
-     * @param BulkSaverInterface $productSaver
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param NotificationManager                 $notificationManager
      */
-    public function __construct(BulkSaverInterface $productSaver)
-    {
-        $this->productSaver = $productSaver;
+    public function __construct(
+        BulkSaverInterface $productSaver,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PaginatorFactoryInterface $paginatorFactory,
+        NotificationManager $notificationManager
+    ) {
+        $this->productSaver        = $productSaver;
+        $this->pqbFactory          = $pqbFactory;
+        $this->paginatorFactory    = $paginatorFactory;
+        $this->notificationManager = $notificationManager;
     }
 
     /**
@@ -38,24 +68,57 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
      */
     public function perform()
     {
-        foreach ($this->objects as $key => $object) {
-            if (!$object instanceof ProductInterface) {
-                throw new \LogicException(
-                    sprintf(
-                        'Cannot perform mass edit action "%s" on object of type "%s", '.
-                        'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
-                        __CLASS__,
-                        get_class($object)
-                    )
-                );
+        $this->readConfiguration();
+
+        $this->notificationManager->notify(['admin'], 'Mass Edit Started');
+
+        $cursor = $this->getProducts($this->pqbFilters);
+        $paginator = $this->paginatorFactory->createPaginator($cursor);
+
+        foreach ($paginator as $products) {
+            foreach ($products as $product) {
+                if (!$product instanceof ProductInterface) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Cannot perform mass edit action "%s" on object of type "%s", '.
+                            'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
+                            __CLASS__,
+                            get_class($product)
+                        )
+                    );
+                }
+
+                $this->doPerform($product);
             }
 
-            try {
-                $this->doPerform($object);
-            } catch (\RuntimeException $e) {
-                unset($this->objects[$key]);
-            }
+            // TODO: Get the fix of @nidup for cache etc. Why not handle this elsewhere (eg. finalize)
+            $this->productSaver->saveAll($products, $this->getSavingOptions());
         }
+
+        $this->notificationManager->notify(['admin'], sprintf('Mass edit finished'));
+    }
+
+    protected function getProductQueryBuilder()
+    {
+        return $this->pqbFactory->create();
+    }
+
+    protected function getProducts(array $filters)
+    {
+        $productQueryBuilder = $this->getProductQueryBuilder();
+
+        $resolver = new OptionsResolver();
+        $resolver->setRequired(['field', 'operator', 'value']);
+        $resolver->setOptional(['locale', 'scope']);
+        $resolver->setDefaults(['locale' => null, 'scope' => null]);
+
+        foreach ($filters as $filter) {
+            $filter = $resolver->resolve($filter);
+            $context = ['locale' => $filter['locale'], 'scope' => $filter['scope']];
+            $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value'], $context);
+        }
+
+        return $productQueryBuilder->execute();
     }
 
     /**
@@ -83,6 +146,60 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
         $products = $this->getObjectsToMassEdit();
         $this->productSaver->saveAll($products, $this->getSavingOptions());
     }
+
+    /**
+     * @return array
+     */
+    public function getPqbFilters()
+    {
+        return $this->pqbFilters;
+    }
+
+    /**
+     * @param array $pqbFilters
+     *
+     * @return $this
+     */
+    public function setPqbFilters($pqbFilters)
+    {
+        $this->pqbFilters = $pqbFilters;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @param array $configuration
+     *
+     * @return $this
+     */
+    public function setConfiguration($configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
+    }
+
+    /**
+     * Read the operation configuration for the specific job
+     *
+     * @return $this
+     */
+    abstract protected function readConfiguration();
+
+    /**
+     * Save the current specific configuration
+     *
+     * @return $this
+     */
+    abstract public function saveConfiguration();
 
     /**
      * Perform operation on the product instance
