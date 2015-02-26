@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3665: Remove media even if file not on filesystem
+- PIM-3834: add missing cascade detach product -> associations, product -> completenesses
 
 # 1.3.1 (2015-02-24)
 
