@@ -16,6 +16,16 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 interface FieldSetterInterface extends SetterInterface
 {
     /**
+     * Set field data
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field of the product to modify
+     * @param mixed            $data    The data to set
+     * @param array            $options Options passed to the setter
+     */
+    public function setFieldData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
      * Supports the field
      *
      * @param string $field

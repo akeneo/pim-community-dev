@@ -9,6 +9,7 @@ parameters:
     pim_catalog.updater.setter.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\BooleanValueSetter
     pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateValueSetter
     pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberValueSetter
+    pim_catalog.updater.setter.category.class:               Pim\Bundle\CatalogBundle\Updater\Setter\CategorySetter
     pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
     pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectValueSetter
     pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionValueSetter
@@ -90,6 +91,13 @@ services:
     pim_catalog.updater.setter.number_value:
         class: %pim_catalog.updater.setter.number_value.class%
         parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.category:
+        class: %pim_catalog.updater.setter.category.class%
         arguments:
             - ['pim_catalog_number']
         tags:
