@@ -2,12 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -46,15 +50,20 @@ class AddToVariantGroup extends ProductMassEditOperation
      * @param ProductTemplateUpdaterInterface      $templateUpdater
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $prodMassActionRepo
+     * @param ProductQueryBuilderFactoryInterface  $pqbFactory
+     * @param PaginatorFactoryInterface            $paginatorFactory
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
         BulkSaverInterface $productSaver,
         ProductTemplateUpdaterInterface $templateUpdater,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $prodMassActionRepo
+        ProductMassActionRepositoryInterface $prodMassActionRepo,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PaginatorFactoryInterface $paginatorFactory,
+        NotificationManager $notificationManager
     ) {
-        parent::__construct($productSaver);
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
 
         $this->groupRepository = $groupRepository;
         $this->templateUpdater = $templateUpdater;
@@ -287,5 +296,25 @@ class AddToVariantGroup extends ProductMassEditOperation
         }
 
         return $validVariantGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function readConfiguration()
+    {
+        // TODO: Implement applyConfiguration() method.
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveConfiguration()
+    {
+        // TODO: Implement saveConfiguration() method.
+
+        return $this;
     }
 }
