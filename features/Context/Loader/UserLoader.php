@@ -81,19 +81,13 @@ class UserLoader extends LoadUserData
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
 
-        $unit = $this->getOwner('Main');
-
         $user
             ->setUsername($username)
             ->setPlainPassword($password)
             ->setFirstname($firstName)
             ->setLastname($lastName)
             ->setEmail($email)
-            ->setApi($api)
-            ->setOwner($unit)
-            ->setBusinessUnits(
-                new ArrayCollection(array($unit))
-            );
+            ->setApi($api);
 
         foreach ($roles as $role) {
             $user->addRole($this->getOrCreateRole($role));
@@ -111,7 +105,6 @@ class UserLoader extends LoadUserData
         // Following to fix a cascade persist issue on UserApi occuring only during Behat Execution
         $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\User');
         $this->getUserManager()->getStorageManager()->clear('Oro\Bundle\UserBundle\Entity\UserApi');
-        $this->getUserManager()->getStorageManager()->clear('OroEmail\Cache\OroEmailBundle\Entity\EmailAddressProxy');
     }
 
     /**

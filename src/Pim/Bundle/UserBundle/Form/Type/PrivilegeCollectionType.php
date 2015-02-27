@@ -17,13 +17,7 @@ class PrivilegeCollectionType extends OroPrivilegeCollectionType
 {
     /** @var string[] */
     protected $excludedAclPatterns = [
-        'entity:Oro\Bundle\EmailBundle',
-        'entity:Oro\Bundle\OrganizationBundle',
-        'entity:Oro\Bundle\TagBundle',
-        'action:oro_dataaudit',
         'action:oro_entityconfig',
-        'action:oro_search',
-        'action:oro_tag',
     ];
 
     /**

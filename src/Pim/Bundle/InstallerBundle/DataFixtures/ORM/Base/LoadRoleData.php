@@ -78,9 +78,6 @@ class LoadRoleData extends AbstractInstallerFixture
         $label = $data['label'];
         $role = new Role($role);
         $role->setLabel($label);
-        $owner = isset($data['owner']) ? $data['owner'] : 'Main';
-        $owner = $this->getOwner($owner);
-        $role->setOwner($owner);
 
         return $role;
     }
@@ -114,19 +111,5 @@ class LoadRoleData extends AbstractInstallerFixture
     protected function getAclManager()
     {
         return $this->container->get('oro_security.acl.manager');
-    }
-
-    /**
-     * Get the owner (business unit) from code
-     *
-     * @param string $owner
-     *
-     * @return \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-     */
-    protected function getOwner($owner)
-    {
-        return $this->om
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => $owner));
     }
 }

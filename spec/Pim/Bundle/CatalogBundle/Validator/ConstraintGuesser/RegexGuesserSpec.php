@@ -1,0 +1,96 @@
+<?php
+
+namespace spec\Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
+
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+
+class RegexGuesserSpec extends ObjectBehavior
+{
+    function it_is_an_attribute_constraint_guesser()
+    {
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface');
+    }
+
+    function it_enforces_attribute_type(AttributeInterface $attribute)
+    {
+        $attribute->getAttributeType()
+            ->willReturn('pim_catalog_text');
+        $this->supportAttribute($attribute)
+            ->shouldReturn(true);
+
+        $attribute->getAttributeType()
+            ->willReturn('pim_catalog_identifier');
+        $this->supportAttribute($attribute)
+            ->shouldReturn(true);
+
+        $attribute->getAttributeType()
+            ->willReturn('foo');
+        $this->supportAttribute($attribute)
+            ->shouldReturn(false);
+    }
+
+    function it_guesses_regex(AttributeInterface $attribute)
+    {
+        $attribute->getValidationRule()
+            ->willReturn('regexp')
+            ->shouldBeCalled();
+        $attribute->getValidationRegexp()
+            ->willReturn('/.*/')
+            ->shouldBeCalled();
+
+        $constraints = $this->guessConstraints($attribute);
+
+        $constraints->shouldHaveCount(1);
+
+        $constraint = $constraints[0];
+        $constraint->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraints\Regex');
+        $constraint->pattern
+            ->shouldBe('/.*/');
+    }
+
+    function it_does_not_guess_non_regex_rule(AttributeInterface $attribute)
+    {
+        $attribute->getValidationRule()
+            ->willReturn('not_regexp')
+            ->shouldBeCalled();
+        $attribute->getValidationRegexp()
+            ->shouldNotBeCalled();
+
+        $constraints = $this->guessConstraints($attribute);
+
+        $constraints->shouldReturn([]);
+
+        $attribute->getValidationRule()
+            ->willReturn(null)
+            ->shouldBeCalled();
+        $attribute->getValidationRegexp()
+            ->shouldNotBeCalled();
+
+        $constraints = $this->guessConstraints($attribute);
+
+        $constraints->shouldReturn([]);
+    }
+
+    function it_does_not_guess_empty_regex(AttributeInterface $attribute)
+    {
+        $attribute->getValidationRule()
+            ->willReturn('regexp')
+            ->shouldBeCalled();
+        $attribute->getValidationRegexp()
+            ->willReturn('')
+            ->shouldBeCalled();
+
+        $constraints = $this->guessConstraints($attribute);
+
+        $constraints->shouldReturn([]);
+
+        $attribute->getValidationRegexp()
+            ->willReturn(null)
+            ->shouldBeCalled();
+
+        $constraints = $this->guessConstraints($attribute);
+
+        $constraints->shouldReturn([]);
+    }
+}
