@@ -11,6 +11,7 @@
 
 ## Bug fixes
 - PIM-3665: Remove media even if file not on filesystem
+- PIM-2078: Remove the checkmarks in the Categories and Associations
 
 # 1.3.1 (2015-02-24)
 
