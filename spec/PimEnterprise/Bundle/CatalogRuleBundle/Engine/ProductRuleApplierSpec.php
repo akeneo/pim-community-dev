@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver;
@@ -22,15 +23,13 @@ use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
-    const RULE_DEFINITION_CLASS = 'Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition';
-
     function let(
         PaginatorFactoryInterface $paginatorFactory,
         ProductsUpdater $productsUpdater,
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
         EventDispatcherInterface $eventDispatcher,
-        CacheClearer $cacheClearer
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->beConstructedWith(
             $paginatorFactory,
@@ -38,8 +37,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
             $productsValidator,
             $productsSaver,
             $eventDispatcher,
-            $cacheClearer,
-            self::RULE_DEFINITION_CLASS
+            $objectDetacher
         );
     }
 
@@ -86,13 +84,13 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $productsUpdater,
         $productsValidator,
         $productsSaver,
+        $objectDetacher,
         RuleInterface $rule,
         RuleSubjectSetInterface $subjectSet,
         ProductInterface $selectedProduct,
         PaginatorFactoryInterface $paginatorFactory,
         PaginatorInterface $paginator,
-        CursorInterface $cursor,
-        $cacheClearer
+        CursorInterface $cursor
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -125,7 +123,6 @@ class ProductRuleApplierSpec extends ObjectBehavior
 
         $this->apply($rule, $subjectSet);
 
-        $cacheClearer->addNonClearableEntity(self::RULE_DEFINITION_CLASS)->shouldBeCalled();
-        $cacheClearer->clear()->shouldBeCalled();
+        $objectDetacher->detach($selectedProduct)->shouldBeCalled();
     }
 }
