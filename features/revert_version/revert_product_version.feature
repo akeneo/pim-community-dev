@@ -235,7 +235,7 @@ Feature: Revert a product to a previous version
     When I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: t-shirt"
     Then the product "t-shirt" should have the following values:
-      | weather_conditions | Dry, Cold |
+      | weather_conditions | [dry], [cold] |
     Given I am on the "marcel" product page
     And I visit the "Attributes" tab
     Then I add available attributes Weather conditions
@@ -295,7 +295,7 @@ Feature: Revert a product to a previous version
     When I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: t-shirt"
     Then the product "t-shirt" should have the following values:
-      | rating | 4 stars |
+      | rating | [4] |
     Given I am on the "marcel" product page
     And I visit the "Attributes" tab
     And I visit the "Product information" group
