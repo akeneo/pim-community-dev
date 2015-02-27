@@ -48,6 +48,7 @@ function(_, Backbone) {
                 this.$el.append(launcher.render().$el);
             }, this);
 
+            this.$el.find('[data-toggle="tooltip"]').tooltip({container: 'body'});
             return this;
         },
 

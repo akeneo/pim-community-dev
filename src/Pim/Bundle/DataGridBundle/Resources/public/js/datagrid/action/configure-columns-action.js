@@ -211,9 +211,8 @@ define(
 
             template: _.template(
                 '<div class="btn-group">' +
-                    '<a href="javascript:void(0);" class="action btn" title="<%= label %>" id="configure-columns">' +
+                    '<a href="javascript:void(0);" class="action btn" data-toggle="tooltip" title="<%= label %>" id="configure-columns">' +
                         '<i class="icon-<%= icon %>"></i>' +
-                        '<%= label %>' +
                     '</a>' +
                 '</div>'
             ),
@@ -251,7 +250,8 @@ define(
                             icon: this.icon,
                             label: this.label
                         })
-                    );
+                    )
+                    .find('#configure-columns').tooltip({container: 'body'});
                 this.subscribe();
             },
 

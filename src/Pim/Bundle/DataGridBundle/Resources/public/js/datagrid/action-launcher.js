@@ -50,15 +50,15 @@ function($, _, Backbone) {
                 '<%= className ? " " + className : "" %>' +
                 '<%= !enabled ? " disabled" : "" %>' +
                 '"' +
+                ' data-toggle="tooltip" data-placement="top" title="<%= label %>"' +
                 ' <%= attributesTemplate({attributes: attributes}) %>' +
-                ' title="<%= label %>"' +
             '>' +
                 '<% if (icon) { %>' +
                     '<i class="icon-<%= icon %> hide-text"><%= label %></i>' +
                 '<% } else { %>' +
                     '<% if (iconClassName) { %>' +
                         '<i class="<%= iconClassName %>" ' +
-                        ' data-togle="tooltip" data-placement="top" data-original-title="<%= label %>"></i>' +
+                        '></i>' +
                     '<% } %>' +
                 '<% } %>' +
             '</<%= tagName %>>'
