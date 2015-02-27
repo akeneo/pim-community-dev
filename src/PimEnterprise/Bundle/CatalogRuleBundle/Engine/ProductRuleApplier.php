@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator;
@@ -21,7 +22,6 @@ use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 
 /**
  * Applies a rule on products
@@ -45,11 +45,8 @@ class ProductRuleApplier implements ApplierInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var CacheClearer */
-    protected $cacheClearer;
-
-    /** @var string */
-    protected $ruleDefinitionClass;
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
 
     /**
      * @param PaginatorFactoryInterface $paginatorFactory
@@ -57,8 +54,7 @@ class ProductRuleApplier implements ApplierInterface
      * @param ProductsValidator         $productsValidator
      * @param ProductsSaver             $productsSaver
      * @param EventDispatcherInterface  $eventDispatcher
-     * @param CacheClearer              $cacheClearer
-     * @param string                    $ruleDefinitionClass
+     * @param ObjectDetacherInterface   $objectDetacher
      */
     public function __construct(
         PaginatorFactoryInterface $paginatorFactory,
@@ -66,16 +62,14 @@ class ProductRuleApplier implements ApplierInterface
         ProductsValidator $productsValidator,
         ProductsSaver $productsSaver,
         EventDispatcherInterface $eventDispatcher,
-        CacheClearer $cacheClearer,
-        $ruleDefinitionClass
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->paginatorFactory    = $paginatorFactory;
         $this->productsUpdater     = $productsUpdater;
         $this->productsValidator   = $productsValidator;
         $this->productsSaver       = $productsSaver;
         $this->eventDispatcher     = $eventDispatcher;
-        $this->cacheClearer        = $cacheClearer;
-        $this->ruleDefinitionClass = $ruleDefinitionClass;
+        $this->objectDetacher      = $objectDetacher;
     }
 
     /**
@@ -87,16 +81,23 @@ class ProductRuleApplier implements ApplierInterface
 
         $paginator = $this->paginatorFactory->createPaginator($subjectSet->getSubjectsCursor());
 
-        $this->cacheClearer->addNonClearableEntity($this->ruleDefinitionClass);
-
         foreach ($paginator as $productsPage) {
             $this->productsUpdater->update($rule, $productsPage);
             $this->productsValidator->validate($rule, $productsPage);
             $this->productsSaver->save($rule, $productsPage);
-
-            $this->cacheClearer->clear();
+            $this->detachProducts($productsPage);
         }
 
         $this->eventDispatcher->dispatch(RuleEvents::POST_APPLY, new SelectedRuleEvent($rule, $subjectSet));
+    }
+
+    /**
+     * @param array $productsPage
+     */
+    protected function detachProducts(array $productsPage)
+    {
+        foreach ($productsPage as $product) {
+            $this->objectDetacher->detach($product);
+        }
     }
 }

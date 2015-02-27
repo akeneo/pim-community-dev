@@ -1,6 +1,21 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
+# 1.3.2 (2015-02-27)
+
+## Bug fixes
+- PIM-3834: Fix issue, new products are created during the appliance of rules (paginator + cache clearer)
+- PIM-3820: Attribute option translation not well handled on import
+
+## BC breaks
+- Change constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier`, ObjectDetacherInterface replaces CacheClearer and $ruleDefinitionClass arguments
+
+# 1.3.1 (2015-02-24)
+
+## Bug fixes
+- PIM-3760: Fix reverting previous product versions with file/image attributes
 - PIM-3784: Generate the completeness on selected products before to mass-publish
 - PIM-3765: Do not allow the revert of a product if it has a variant group
 
@@ -85,6 +100,11 @@
 - PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.0.x
+
+## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
+# 1.0.22 (2015-02-24)
 
 ## Bug fixes
 - PIM-3808: Fix the export of published products
