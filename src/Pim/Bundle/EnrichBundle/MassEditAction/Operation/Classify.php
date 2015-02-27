@@ -9,8 +9,6 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Batch operation to classify products
@@ -98,22 +96,12 @@ class Classify extends ProductMassEditOperation
     }
 
     /**
-     * {@inheritdoc}
+     * Get the form options to configure the operation
+     *
+     * @return array
      */
-    protected function readConfiguration()
+    public function getFormOptions()
     {
-        // TODO: Implement applyConfiguration() method.
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        // TODO: Implement saveConfiguration() method.
-
-        return $this;
+        return [];
     }
 }

@@ -11,8 +11,6 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -298,25 +296,5 @@ class AddToVariantGroup extends ProductMassEditOperation
         }
 
         return $validVariantGroups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function readConfiguration()
-    {
-        // TODO: Implement applyConfiguration() method.
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        // TODO: Implement saveConfiguration() method.
-
-        return $this;
     }
 }

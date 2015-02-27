@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class ProductMassEditOperation extends AbstractMassEditAction
+abstract class ProductMassEditOperation implements MassEditOperationInterface
 {
     /** @var BulkSaverInterface */
     protected $productSaver;
@@ -32,14 +32,11 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     /** @var PaginatorFactoryInterface */
     protected $paginatorFactory;
 
-    /** @var array */
-    protected $configuration = [];
-
-    /** @var NotificationManager */
-    protected $notificationManager;
-
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
+
+    /** @var array */
+    protected $configuration;
 
     /**
      * @param BulkSaverInterface                  $productSaver
@@ -98,11 +95,19 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
         }
     }
 
+    /**
+     * @return ProductQueryBuilderInterface
+     */
     protected function getProductQueryBuilder()
     {
         return $this->pqbFactory->create();
     }
 
+    /**
+     * @param array $filters
+     *
+     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
+     */
     protected function getProducts(array $filters)
     {
         $productQueryBuilder = $this->getProductQueryBuilder();
@@ -137,14 +142,14 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
 
     /**
      * Finalize the operation
+     *
+     * TODO: to remove
      */
     public function finalize()
     {
         if (null === $this->productSaver) {
             throw new \LogicException('Product saver must be configured');
         }
-        $products = $this->getObjectsToMassEdit();
-        $this->productSaver->saveAll($products, $this->getSavingOptions());
     }
 
     /**
@@ -186,20 +191,6 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
 
         return $this;
     }
-
-    /**
-     * Read the operation configuration for the specific job
-     *
-     * @return $this
-     */
-    abstract protected function readConfiguration();
-
-    /**
-     * Save the current specific configuration
-     *
-     * @return $this
-     */
-    abstract public function saveConfiguration();
 
     /**
      * Perform operation on the product instance
