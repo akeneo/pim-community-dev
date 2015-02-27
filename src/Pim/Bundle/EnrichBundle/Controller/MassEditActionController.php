@@ -52,9 +52,6 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var GridFilterAdapterInterface */
     protected $gridFilterAdapter;
 
-    /** @var string */
-    protected $rootDir;
-
     /** @var MassEditJobManager */
     protected $massEditJobManager;
 
@@ -75,7 +72,6 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param MassEditJobManager         $massEditJobManager
-     * @param string                     $rootDir
      */
     public function __construct(
         Request $request,
@@ -91,8 +87,7 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
-        MassEditJobManager $massEditJobManager,
-        $rootDir
+        MassEditJobManager $massEditJobManager
     ) {
         parent::__construct(
             $request,
@@ -108,9 +103,8 @@ class MassEditActionController extends AbstractDoctrineController
 
         $this->operatorRegistry     = $operatorRegistry;
         $this->parametersParser     = $parametersParser;
-        $this->massActionDispatcher = $massActionDispatcher;
+        $this->massActionDispatcher = $massActionDispatcher; // TODO: to remove
         $this->gridFilterAdapter    = $gridFilterAdapter;
-        $this->rootDir              = $rootDir;
         $this->massEditJobManager   = $massEditJobManager;
     }
 
@@ -161,8 +155,7 @@ class MassEditActionController extends AbstractDoctrineController
             );
 
             $operator
-                ->setOperationAlias($operationAlias)
-                ->setObjectsToMassEdit($this->getObjects());
+                ->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
@@ -202,8 +195,7 @@ class MassEditActionController extends AbstractDoctrineController
             );
 
             $operator
-                ->setOperationAlias($operationAlias)
-                ->setObjectsToMassEdit($this->getObjects());
+                ->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
@@ -219,6 +211,7 @@ class MassEditActionController extends AbstractDoctrineController
 
             $jobInstance = new JobInstance(null, sprintf('mass-edit-%s', $operationAlias));
             $jobCode = sprintf('%s_%s', $jobInstance->getType(), uniqid());
+            $rawConfiguration = json_encode($operator->getOperation()->getConfiguration());
             $jobInstance->setCode($jobCode)
                 ->setAlias($jobCode)
                 ->setConnector('')
@@ -226,11 +219,10 @@ class MassEditActionController extends AbstractDoctrineController
                     'operationAlias' => $operationAlias,
                     'gridName'       => $this->request->get('gridName'),
                     'filters'        => json_encode($pimFilters),
-                    'config'         => json_encode($operator->getOperation()->getConfiguration())
                 ]);
 
             $this->massEditJobManager->save($jobInstance);
-            $this->massEditJobManager->launchJob($jobInstance, $this->getUser());
+            $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
 
             // Binding does not actually perform the operation, thus form errors can miss some constraints
             foreach ($this->validator->validate($operator) as $violation) {

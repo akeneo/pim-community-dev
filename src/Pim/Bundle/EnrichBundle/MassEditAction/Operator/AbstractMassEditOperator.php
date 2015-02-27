@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\InitializableMassEditOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
@@ -39,14 +40,14 @@ abstract class AbstractMassEditOperator
      * @var MassEditOperationInterface[] $operations
      * @Exclude
      */
-    protected $operations = array();
+    protected $operations = [];
 
     /**
      * The default acls for each configured operation, indexed by code
      *
      * @var string[] $acls
      */
-    protected $acls = array();
+    protected $acls = [];
 
     /**
      * @param SecurityFacade $securityFacade
@@ -83,7 +84,7 @@ abstract class AbstractMassEditOperator
      */
     public function getOperationChoices()
     {
-        $choices = array();
+        $choices = [];
 
         foreach (array_keys($this->operations) as $alias) {
             if ($this->isGranted($alias)) {
@@ -102,20 +103,6 @@ abstract class AbstractMassEditOperator
     public function getOperation()
     {
         return $this->operation;
-    }
-
-    /**
-     * Set products to mass edit
-     *
-     * @param array $products
-     *
-     * @return AbstractMassEditOperator
-     */
-    public function setObjectsToMassEdit(array $products)
-    {
-        $this->operation->setObjectsToMassEdit($products);
-
-        return $this;
     }
 
     /**
@@ -159,7 +146,7 @@ abstract class AbstractMassEditOperator
      */
     public function initializeOperation()
     {
-        if ($this->operation) {
+        if ($this->operation && $this->operation instanceof InitializableMassEditOperationInterface) {
             $this->operation->initialize();
         }
     }
