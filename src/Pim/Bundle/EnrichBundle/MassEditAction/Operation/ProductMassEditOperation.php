@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
@@ -37,22 +38,25 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     /** @var NotificationManager */
     protected $notificationManager;
 
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
+
     /**
      * @param BulkSaverInterface                  $productSaver
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param NotificationManager                 $notificationManager
+     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
         BulkSaverInterface $productSaver,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
-        NotificationManager $notificationManager
+        ObjectDetacherInterface $objectDetacher
     ) {
-        $this->productSaver        = $productSaver;
-        $this->pqbFactory          = $pqbFactory;
-        $this->paginatorFactory    = $paginatorFactory;
-        $this->notificationManager = $notificationManager;
+        $this->productSaver     = $productSaver;
+        $this->pqbFactory       = $pqbFactory;
+        $this->paginatorFactory = $paginatorFactory;
+        $this->objectDetacher   = $objectDetacher;
     }
 
     /**
@@ -70,13 +74,11 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     {
         $this->readConfiguration();
 
-        $this->notificationManager->notify(['admin'], 'Mass Edit Started');
-
         $cursor = $this->getProducts($this->pqbFilters);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
-        foreach ($paginator as $products) {
-            foreach ($products as $product) {
+        foreach ($paginator as $productsPage) {
+            foreach ($productsPage as $product) {
                 if (!$product instanceof ProductInterface) {
                     throw new \LogicException(
                         sprintf(
@@ -91,11 +93,9 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
                 $this->doPerform($product);
             }
 
-            // TODO: Get the fix of @nidup for cache etc. Why not handle this elsewhere (eg. finalize)
-            $this->productSaver->saveAll($products, $this->getSavingOptions());
+            $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
+            $this->objectDetacher->detach($productsPage);
         }
-
-        $this->notificationManager->notify(['admin'], sprintf('Mass edit finished'));
     }
 
     protected function getProductQueryBuilder()

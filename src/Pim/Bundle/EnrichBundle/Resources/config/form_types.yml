@@ -366,6 +366,6 @@ services:
     pim_enrich.form.type.set_attribute_requirements:
         class: %pim_enrich.form.type.set_attribute_requirements.class%
         arguments:
-            - %pim_entich.mass_edit_action.set_attribute_requirements.class%
+            - %pim_enrich.mass_edit_action.set_attribute_requirements.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_set_attribute_requirements }
