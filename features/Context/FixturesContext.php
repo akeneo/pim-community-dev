@@ -3,28 +3,17 @@
 namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
-use Pim\Bundle\CommentBundle\Model\CommentInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
@@ -315,7 +304,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return Group
+     * @return Pim\Bundle\CatalogBundle\Model\GroupInterface
      */
     protected function getVariantGroup($code)
     {
@@ -1377,7 +1366,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $username
      *
-     * @return User
+     * @return \Oro\Bundle\UserBundle\Entity\User
      *
      * @Then /^there should be a "([^"]*)" user$/
      */
@@ -1398,29 +1387,13 @@ class FixturesContext extends RawMinkContext
      */
     public function checkUserAssociationExists($username, $searchedLabel = null, $associationType = null)
     {
-        $userEntity = $this->getEntityOrException('User', ['username' => $username]);
-        if ($searchedLabel && $associationType == 'group' && !$userEntity->hasGroup($searchedLabel)) {
+        $user = $this->getUser($username);
+        if ($searchedLabel && $associationType == 'group' && !$user->hasGroup($searchedLabel)) {
             throw new \InvalidArgumentException(sprintf("The user %s does not belong to the '%s' group", $username, $searchedLabel));
         }
-        if ($searchedLabel && $associationType == 'role' && !$userEntity->hasRole($searchedLabel)) {
+        if ($searchedLabel && $associationType == 'role' && !$user->hasRole($searchedLabel)) {
             throw new \InvalidArgumentException(sprintf("The user %s does not have the '%s' role", $username, $searchedLabel));
         }
-        return true;
-    }
-
-    /**
-     * @param string $username
-     * @param string $searchedLabel
-     * @param string $associationType Can be 'group' or 'role'
-     *
-     * @return bool
-     *
-     * @Then /^the user "([^"]+)" should not be in the "([^"]+)" (group)$/
-     * @Then /^the user "([^"]+)" should not have the "([^"]+)" (role)$/
-     */
-    public function checkUserAssociationDoNotExist($username, $searchedLabel = null, $associationType = null)
-    {
-        return !$this->checkUserAssociationExists($username, $searchedLabel, $associationType);
     }
 
     /**
@@ -1435,17 +1408,17 @@ class FixturesContext extends RawMinkContext
      */
     public function checkUserAssociationsCount($username, $count, $associationType)
     {
-        $userEntity = $this->getEntityOrException('User', ['username' => $username]);
-        $this->refresh($userEntity);
+        $user = $this->getUser($username);
+        $this->refresh($user);
         $actualCount = null;
         if ($associationType == 'group') {
-            $actualCount = count($userEntity->getGroupNames());
+            $actualCount = count($user->getGroupNames());
         } elseif ($associationType == 'role') {
-            $actualCount = count($userEntity->getRoles());
+            $actualCount = count($user->getRoles());
         }
         if ($actualCount != $count) {
             throw new \InvalidArgumentException(
-                sprintf("Expected %d %s(s) for %s, found %d", $count, $associationType, $username, $actualCount)
+                sprintf("Expected %d %s(s) for User %s, found %d", $count, $associationType, $username, $actualCount)
             );
         }
     }
@@ -1650,7 +1623,7 @@ class FixturesContext extends RawMinkContext
      * @param string  $label
      * @param boolean $isVariant
      *
-     * @return GroupTypeInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
      */
     protected function createGroupType($code, $label, $isVariant)
     {
@@ -1667,7 +1640,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string|array $data
      *
-     * @return Attribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected function createAttribute($data)
     {
@@ -1743,7 +1716,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return Category
+     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
      */
     protected function createTree($code)
     {
@@ -1753,7 +1726,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param array|string $data
      *
-     * @return Category
+     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
      */
     protected function createCategory($data)
     {
@@ -1889,7 +1862,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param string $code
      *
-     * @return AttributeOptionInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface
      */
     protected function createOption($code)
     {
@@ -1904,7 +1877,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return Family
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
      */
     protected function createFamily($data)
     {
@@ -1924,7 +1897,7 @@ class FixturesContext extends RawMinkContext
      *
      * @param array|string $data
      *
-     * @return AttributeGroupInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface
      */
     protected function createAttributeGroup($data)
     {
@@ -1943,7 +1916,7 @@ class FixturesContext extends RawMinkContext
      * @param array              $data
      * @param CommentInterface[] $comments
      *
-     * @return CommentInterface
+     * @return \Pim\Bundle\CommentBundle\Model\CommentInterface
      */
     protected function createComment(array $data, array $comments)
     {
@@ -2104,7 +2077,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return FieldNameBuilder
+     * @return \Pim\Bundle\TransformBundle\Builder\FieldNameBuilder
      */
     protected function getFieldNameBuilder()
     {

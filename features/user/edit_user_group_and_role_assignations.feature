@@ -14,10 +14,8 @@ Feature: Edit a user groups and roles
     And I check "Redactor"
     And I save the user
     Then I should see "User saved"
-    # 3 groups because of 'all' user_role
     And the user "admin" should be in 3 groups
     And the user "admin" should be in the "Redactor" group
-
     Given I edit the "admin" user
     And I visit the "Groups and Roles" tab
     When I uncheck "IT support"
@@ -25,7 +23,6 @@ Feature: Edit a user groups and roles
     And I save the user
     Then I should see "User saved"
     And the user "admin" should be in 1 group
-
 
   Scenario: Successfully change a user role
     Given I edit the "admin" user
@@ -35,7 +32,6 @@ Feature: Edit a user groups and roles
     Then I should see "User saved"
     And the user "admin" should have 2 roles
     And the user "admin" should have the "ROLE_USER" role
-
     Given I edit the "admin" user
     And I visit the "Groups and Roles" tab
     And I uncheck "Administrator"
@@ -44,4 +40,3 @@ Feature: Edit a user groups and roles
     Then the user "admin" should still have 2 roles
     And the user "admin" should have the "ROLE_ADMINISTRATOR" role
     And the user "admin" should have the "ROLE_USER" role
-

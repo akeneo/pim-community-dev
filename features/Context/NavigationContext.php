@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Context for navigating the website
@@ -441,7 +440,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @param string $name
      *
-     * @return Page
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     public function getPage($name)
     {
@@ -626,13 +625,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iRefreshCurrentPage()
     {
         $this->getMainContext()->reload();
+        $this->wait();
     }
 
     /**
      * @param string $page
      * @param array  $options
      *
-     * @return Page
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     public function openPage($page, array $options = array())
     {
@@ -646,7 +646,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @return Page
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     public function getCurrentPage()
     {

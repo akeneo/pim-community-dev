@@ -1904,7 +1904,6 @@ class WebUser extends RawMinkContext
             try {
                 $author = $this->getFixturesContext()->getUser($data['author']);
                 $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-                /** @var NodeElement $comment */
                 $comment = $this->getCurrentPage()->findComment($data['message'], $authorName);
                 $comments[$data['#']] = $comment;
 
