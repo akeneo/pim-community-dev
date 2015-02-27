@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -33,18 +34,19 @@ class AddToGroups extends ProductMassEditOperation
      * @param BulkSaverInterface                  $productSaver
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
         BulkSaverInterface $productSaver,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
-        NotificationManager $notificationManager
+        ObjectDetacherInterface $objectDetacher
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
 
         $this->groupRepository = $groupRepository;
-        $this->groups = new ArrayCollection();
+        $this->groups          = new ArrayCollection();
     }
 
     /**

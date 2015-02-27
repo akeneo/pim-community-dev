@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -74,7 +75,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param BulkSaverInterface                  $productSaver
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param NotificationManager                 $notificationManager
+     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
         ProductBuilder $productBuilder,
@@ -86,18 +87,18 @@ class EditCommonAttributes extends ProductMassEditOperation
         BulkSaverInterface $productSaver,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
-        NotificationManager $notificationManager
+        ObjectDetacherInterface $objectDetacher
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
 
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->userContext = $userContext;
-        $this->catalogContext = $catalogContext;
-        $this->massActionManager = $massActionManager;
+        $this->productBuilder      = $productBuilder;
+        $this->productUpdater      = $productUpdater;
+        $this->userContext         = $userContext;
+        $this->catalogContext      = $catalogContext;
+        $this->massActionManager   = $massActionManager;
         $this->displayedAttributes = new ArrayCollection();
-        $this->values = new ArrayCollection();
-        $this->normalizer = $normalizer;
+        $this->values              = new ArrayCollection();
+        $this->normalizer          = $normalizer;
     }
 
     /**
