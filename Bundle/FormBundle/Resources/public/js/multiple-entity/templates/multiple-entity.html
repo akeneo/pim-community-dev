@@ -13,7 +13,7 @@
         </div>
         <% } %>
         <div class="pull-left">
-            <h4><a href="<%= link %>" class="entity-info"><%= label %></a></h4>
+            <h4><a href="<%= link %>" class="entity-info"><%= _.escape(label) %></a></h4>
         </div>
         <div class="pull-right">
             <a href="javascript:void(0)" class="remove-btn" title="<%= _.__('Remove') %>"><i class="icon-remove"></i></a>
@@ -23,7 +23,7 @@
         <% _.each(extraData, function(item) { %>
         <% if (!_.isUndefined(item.label)) { %>
             <% if (!item.hasOwnProperty('value') || !item.value) { item.value = _.__('N/A'); } %>
-            <div><%= _.__(item.label) %>: <%= item.value %></div>
+            <div><%= _.escape(_.__(item.label)) %>: <%= _.escape(item.value) %></div>
         <% } %>
         <% }); %>
     </div>

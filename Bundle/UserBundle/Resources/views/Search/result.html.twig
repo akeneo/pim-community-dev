@@ -23,7 +23,7 @@
     {% endblock %}
 {% endif %}
 
-{% set title = entity ? entity|oro_format_name : indexer_item.recordTitle %}
+{% set title = entity ? entity|oro_format_name|escape : indexer_item.recordTitle|escape %}
 {% set entityType = entity_output.name|trans({}, 'config') %}
 
 {% set entityInfo = [

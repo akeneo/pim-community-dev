@@ -42,7 +42,7 @@ class AddressExtension extends \Twig_Extension
      * @param string $newLineSeparator
      * @return string
      */
-    public function format(AddressInterface $address, $country = null, $newLineSeparator = "<br/>")
+    public function format(AddressInterface $address, $country = null, $newLineSeparator = "\n")
     {
         return $this->formatter->format($address, $country, $newLineSeparator);
     }
