@@ -79,4 +79,14 @@ class ChangeStatus extends ProductMassEditOperation
 
         return $this;
     }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
+    }
 }
