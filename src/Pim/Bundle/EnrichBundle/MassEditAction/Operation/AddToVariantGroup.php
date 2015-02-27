@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -52,6 +53,7 @@ class AddToVariantGroup extends ProductMassEditOperation
      * @param ProductMassActionRepositoryInterface $prodMassActionRepo
      * @param ProductQueryBuilderFactoryInterface  $pqbFactory
      * @param PaginatorFactoryInterface            $paginatorFactory
+     * @param ObjectDetacherInterface              $objectDetacher
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -61,13 +63,13 @@ class AddToVariantGroup extends ProductMassEditOperation
         ProductMassActionRepositoryInterface $prodMassActionRepo,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
-        NotificationManager $notificationManager
+        ObjectDetacherInterface $objectDetacher
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
 
-        $this->groupRepository = $groupRepository;
-        $this->templateUpdater = $templateUpdater;
-        $this->validator = $validator;
+        $this->groupRepository       = $groupRepository;
+        $this->templateUpdater       = $templateUpdater;
+        $this->validator             = $validator;
         $this->productMassActionRepo = $prodMassActionRepo;
     }
 
