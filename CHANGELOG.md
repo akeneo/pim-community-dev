@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
 # 1.3.2 (2015-02-27)
 
 ## Bug fixes
@@ -87,6 +92,11 @@
 - PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.0.x
+
+## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
+# 1.0.22 (2015-02-24)
 
 ## Bug fixes
 - PIM-3808: Fix the export of published products
