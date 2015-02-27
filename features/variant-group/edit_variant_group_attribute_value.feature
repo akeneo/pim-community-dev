@@ -67,7 +67,7 @@ Feature: Editing attribute values of a variant group also updates products
     When I change the "Weather conditions" to "Wet, Cold"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | weather_conditions | Wet, Cold |
+      | weather_conditions | [wet], [cold] |
 
   Scenario: Change a pim_catalog_number attribute of a variant group
     When I visit the "Other" group
@@ -88,7 +88,7 @@ Feature: Editing attribute values of a variant group also updates products
     And I change the "Rating" to "5"
     And I save the variant group
     Then the product "boot" should have the following values:
-      | rating | 5 stars |
+      | rating | [5] |
 
   Scenario: Change a pim_catalog_text attribute of a variant group
     When I change the "Name" to "In a galaxy far far away"
