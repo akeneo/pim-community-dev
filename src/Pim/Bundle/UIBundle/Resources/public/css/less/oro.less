@@ -1893,7 +1893,6 @@ textarea {
   border-right: 9px solid transparent;
   content: "";
   display: inline-block;
-  left: 11px;
   position: absolute;
   top: -9px;
 }
@@ -1903,9 +1902,26 @@ textarea {
   border-right: 10px solid transparent;
   content: "";
   display: inline-block;
-  left: 10px;
   position: absolute;
   top: -8px;
+}
+.filter-criteria {
+  &.right-dropdown-menu:before {
+    left: 11px;
+    right: auto;
+  }
+  &.right-dropdown-menu:after {
+    left: 10px;
+    right: auto;
+  }
+  &.left-dropdown-menu:before {
+    left: auto;
+    right: 30px;
+  }
+  &.left-dropdown-menu:after {
+    left: auto;
+    right: 29px;
+  }
 }
 .filter-box .filter-select-oro {
   height: 20px;
