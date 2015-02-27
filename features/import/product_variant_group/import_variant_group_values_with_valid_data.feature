@@ -92,9 +92,9 @@ Feature: Execute an import
     And I should see "Updated 1"
     And I should see "Updated products 6"
     And the product "sandal-white-37" should have the following value:
-      | manufacturer | Converse |
+      | manufacturer | [Converse] |
     And the product "sandal-white-38" should have the following value:
-      | manufacturer | Converse |
+      | manufacturer | [Converse] |
 
   Scenario: Successfully import a csv file of variant group values with multi select
     Given the following CSV file to import:
@@ -112,9 +112,9 @@ Feature: Execute an import
     And I should see "Updated 1"
     And I should see "Updated products 6"
     And the product "sandal-white-37" should have the following value:
-      | weather_conditions | Dry, Wet |
+      | weather_conditions | [dry], [wet] |
     And the product "sandal-white-38" should have the following value:
-      | weather_conditions | Dry, Wet |
+      | weather_conditions | [dry], [wet] |
 
   Scenario: Successfully import a csv file of variant group values with dates
     Given the following CSV file to import:
