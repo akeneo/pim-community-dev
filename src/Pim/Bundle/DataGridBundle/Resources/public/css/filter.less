@@ -23,14 +23,22 @@
       vertical-align: top;
     }
     .filter-criteria {
-      position: absolute;
+      &.left-dropdown-menu {
+        left: auto;
+        float: right;
+        right: 0;
+      }
+      &.right-dropdown-menu {
+        left: 0;
+        float: left;
+        right: auto;
+      }
       font-size: 12px;
       background-color: #ffffff;
       padding: 8px 8px 2px 8px;
       border: 1px solid #d3d3d3;
       display: none;
       z-index: 700;
-      left: 5px;
       select,
       textarea,
       input[type="text"],
@@ -146,11 +154,14 @@
   .date-visual-element {
     width: 80px;
   }
-  .dropdown-menu a {
-    color:#444;
-    &:hover {
-      background:#3875d7;
-      color:#fff;
+
+  .dropdown-menu {
+    a {
+      color:#444;
+      &:hover {
+        background:#3875d7;
+        color:#fff;
+      }
     }
   }
   .datetime-visual-element {

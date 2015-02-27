@@ -401,10 +401,21 @@ function($, _, Backbone, app) {
          * @protected
          */
         _setButtonPressed: function(element, status) {
+            var $element = $(element);
+            var rightOffset = ($(window).width() - ($element.offset().left + $element.outerWidth()));
+
             if (status) {
                 element.parent().addClass(this.buttonActiveClass);
             } else {
                 element.parent().removeClass(this.buttonActiveClass);
+            }
+
+            if (rightOffset < 0) {
+                $element.addClass('left-dropdown-menu');
+                $element.removeClass('right-dropdown-menu');
+            } else {
+                $element.addClass('right-dropdown-menu');
+                $element.removeClass('left-dropdown-menu');
             }
         },
 

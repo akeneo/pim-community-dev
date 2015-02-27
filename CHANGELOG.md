@@ -11,6 +11,7 @@
 
 ## Bug fixes
 - PIM-3665: Remove media even if file not on filesystem
+- PIM-3307: Fix filter dropdown rendering
 
 # 1.3.1 (2015-02-24)
 
