@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Symfony\Component\Form\FormTypeInterface;
+
 /**
  * Operation to execute on a set of products
  *
@@ -24,11 +26,6 @@ interface MassEditOperationInterface
      * @return array
      */
     public function getFormOptions();
-
-    /**
-     * Initialize the operation with the products
-     */
-    public function initialize();
 
     /**
      * Perform an operation on a set of products

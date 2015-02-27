@@ -74,21 +74,23 @@ class MassEditJobManager extends JobManager
     /**
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
+     * @param string        $rawConfiguration
      *
      * @return \Akeneo\Bundle\BatchBundle\Entity\JobExecution
      */
-    public function launchJob(JobInstance $jobInstance, UserInterface $user)
+    public function launchJob(JobInstance $jobInstance, UserInterface $user, $rawConfiguration)
     {
         $jobExecution = $this->create($jobInstance, $user);
         $executionId  = $jobExecution->getId();
         $pathFinder  = new PhpExecutableFinder();
 
         $cmd = sprintf(
-            '%s %s/console pim:mass-edit:run-job --env=%s %s >> %s/logs/batch_execute.log 2>&1',
+            '%s %s/console akeneo:batch:job --env=%s %s --config=\'[%s]\' >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
             $this->rootDir,
             $this->environment,
             $executionId,
+            $rawConfiguration,
             $this->rootDir
         );
 
@@ -97,8 +99,6 @@ class MassEditJobManager extends JobManager
         // the process cloning fail when the parent process, i.e. HTTP request, stops
         // at the same time)
         exec($cmd . ' &');
-
-//        $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
         return $jobExecution;
     }

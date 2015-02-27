@@ -162,7 +162,6 @@ services:
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
             - '@pim_enrich.manager.mass_edit_job_manager'
-            - %kernel.root_dir%
 
     pim_enrich.controller.group:
         scope: request
