@@ -72,7 +72,7 @@ function( _, Backbone, __, addressFormatter) {
                 postal_code: data.postalCode,
                 region: data.state || data.stateText,
                 region_code: data.regionCode
-            });
+            }, null, "\n");
             this.$el.append(this.template(data));
             if (this.model.get('primary')) {
                 this.activate();

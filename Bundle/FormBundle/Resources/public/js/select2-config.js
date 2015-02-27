@@ -88,13 +88,13 @@ function($, _) {
                     return self.highlightSelection(str, query);
                 };
                 if (object._html !== undefined) {
-                    result = object._html;
+                    result = _.escape(object._html);
                 } else if (jsTemplate) {
                     object.highlight = highlight;
                     tpl = _.template(jsTemplate);
                     result = tpl(object);
                 } else {
-                    result = highlight(self.getTitle(object, self.config.properties));
+                    result = highlight(_.escape(self.getTitle(object, self.config.properties)));
                 }
                 return result;
             };

@@ -126,7 +126,7 @@
 #}
 {% macro email_address(emailAddress, emailAddressName, noLink, knownOnly) -%}
     {% macro email_address_text(emailAddress) -%}
-        {{ emailAddress.owner|oro_format_name|default('N/A') }}
+        {{ emailAddress.owner|oro_format_name|default('N/A')|escape }}
     {%- endmacro -%}
     {% macro email_address_link(emailAddress) -%}
         {#- TODO: we need EntityConfig to get view url for an entity -#}
