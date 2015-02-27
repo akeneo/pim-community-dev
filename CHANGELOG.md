@@ -1,3 +1,9 @@
+
+# 1.3.x
+
+## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
 # 1.3.2 (2015-02-27)
 
 ## Bug fixes
@@ -288,6 +294,13 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.x
+
+## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
+# 1.2.29 (2015-02-24)
 
 # 1.2.28 (2015-02-20)
 
