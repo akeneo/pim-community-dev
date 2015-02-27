@@ -8,7 +8,7 @@ css:
     pim_ui:
         - bundles/pimui/css/less/oro.less
         - bundles/pimui/css/all.less
-        - bundles/pimui/css/jquery-ui.grid.css
+        - bundles/pimui/css/jquery-ui.grid.less
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/flags.less
         - bundles/pimui/css/style.less
