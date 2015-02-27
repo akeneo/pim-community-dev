@@ -107,7 +107,6 @@
 
                     <a id="association-link-{{ associationType.id }}" href="#association-tab-{{ associationType.id }}" data-toggle="tab" data-associated-group-ids="{{ associatedGroupIds|join(',') }}">
                         {% set associationCount = currentAssociation.products|length + currentAssociation.groups|length %}
-                        <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
                         {{ associationType.label }} ({{ associationCount }})
                     </a>
                 </li>
