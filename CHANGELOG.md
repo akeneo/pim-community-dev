@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.2 (2015-02-27)
 
 ## Bug fixes
 - PIM-3834: Fix issue, new products are created during the appliance of rules (paginator + cache clearer)
