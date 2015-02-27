@@ -31,11 +31,11 @@ Feature: Add products to a variant group
     Then the product "sandal-white-37" should have the following value:
       | name-en_US   | EN name     |
       | comment      | New comment |
-      | manufacturer | Converse    |
+      | manufacturer | [Converse]  |
     And the product "sandal-white-38" should have the following value:
       | name-en_US   | EN name     |
       | comment      | New comment |
-      | manufacturer | Converse    |
+      | manufacturer | [Converse]  |
     And the product "sandal-white-39" should have the following value:
       | name-en_US | old name |
 
