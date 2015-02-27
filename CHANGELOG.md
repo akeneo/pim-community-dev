@@ -1,7 +1,8 @@
 # 1.3.x
 
 ## Bug fixes
-PIM-3834: Fix issue, new products are created during the appliance of rules (paginator + cache clearer)
+- PIM-3834: Fix issue, new products are created during the appliance of rules (paginator + cache clearer)
+- PIM-3820: Attribute option translation not well handled on import
 
 ## BC breaks
 - Change constructor of `PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier`, ObjectDetacherInterface replaces CacheClearer and $ruleDefinitionClass arguments
