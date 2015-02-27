@@ -9,7 +9,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 
 /**
  * Adds many products to many groups
@@ -129,25 +128,5 @@ class AddToGroups extends ProductMassEditOperation
         foreach ($this->groups as $group) {
             $group->addProduct($product);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function readConfiguration()
-    {
-        // TODO: Implement applyConfiguration() method.
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        // TODO: Implement saveConfiguration() method.
-
-        return $this;
     }
 }

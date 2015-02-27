@@ -1,2 +1,3 @@
 parameters:
-    pim_base_connector.step.validator.class:  Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep
+    pim_base_connector.step.validator.class: Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep
+    pim_base_connector.step.mass_edit.class: Pim\Bundle\BaseConnectorBundle\Step\MassEditStep

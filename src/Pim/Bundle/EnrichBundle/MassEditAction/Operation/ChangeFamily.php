@@ -62,22 +62,12 @@ class ChangeFamily extends ProductMassEditOperation
     }
 
     /**
-     * {@inheritdoc}
+     * Get the form options to configure the operation
+     *
+     * @return array
      */
-    protected function readConfiguration()
+    public function getFormOptions()
     {
-        // TODO: Implement applyConfiguration() method.
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        // TODO: Implement saveConfiguration() method.
-
-        return $this;
+        return [];
     }
 }
