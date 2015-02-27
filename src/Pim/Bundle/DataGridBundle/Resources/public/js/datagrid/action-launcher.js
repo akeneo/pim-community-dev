@@ -57,9 +57,9 @@ function($, _, Backbone) {
                     '<i class="icon-<%= icon %> hide-text"><%= label %></i>' +
                 '<% } else { %>' +
                     '<% if (iconClassName) { %>' +
-                        '<i class="<%= iconClassName %>"></i>' +
+                        '<i class="<%= iconClassName %>" ' +
+                        ' data-togle="tooltip" data-placement="top" data-original-title="<%= label %>"></i>' +
                     '<% } %>' +
-                    ' <%= label %>' +
                 '<% } %>' +
             '</<%= tagName %>>'
         ),
