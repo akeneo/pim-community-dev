@@ -352,9 +352,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeAbleToSortTheRowsBy($columns)
     {
-        $steps = array(
+        $steps = [
             new Step\Then(sprintf('the rows should be sortable by %s', $columns))
-        );
+        ];
         $columns = $this->getMainContext()->listToArray($columns);
 
         foreach ($columns as $column) {
@@ -376,7 +376,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeAbleToUseTheFollowingFilters(TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
@@ -476,6 +476,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should not see group(?: type)?s? (.*)$/
      * @Then /^I should not see association (?:types? )?(.*)$/
      * @Then /^I should not see famil(?:y|ies) (.*)$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -510,12 +512,12 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
         $operator = false;
 
-        $matches = array();
+        $matches = [];
         if (preg_match($datePattern, $value, $matches)) {
             $operator = $matches[1];
             $date     = $matches[2];
             if (5 === count($matches)) {
-                $date = array($date);
+                $date = [$date];
                 $date[] = $matches[4];
             }
             $this->filterByDate($filterName, $date, $operator);
@@ -533,7 +535,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $value    = $matches[2];
             }
 
-            $operators = array(
+            $operators = [
                 'contains'         => Grid::FILTER_CONTAINS,
                 'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
                 'is equal to'      => Grid::FILTER_IS_EQUAL_TO,
@@ -541,7 +543,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 'ends with'        => Grid::FILTER_ENDS_WITH,
                 'empty'            => Grid::FILTER_IS_EMPTY,
                 'in list'          => Grid::FILTER_IN_LIST,
-            );
+            ];
 
             $operator = $operators[$operator];
         }
@@ -612,6 +614,43 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $item
+     *
+     * @Given /^I select the "([^"]*)" quick export$/
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function iSelectQuickExport($item)
+    {
+        $exportContainer = $this
+            ->getCurrentPage()
+            ->find('css', '.grid-toolbar .export-actions-panel');
+
+        if (!$exportContainer) {
+            throw new \InvalidArgumentException('Dropdown button "Export" not found');
+        }
+
+        $exportDropdown = $exportContainer->find('css', 'button.dropdown-toggle');
+
+        if (!$exportDropdown) {
+            throw new \InvalidArgumentException('Dropdown button "Export" not found');
+        }
+
+        $exportDropdown->click();
+
+        $listItem = $exportContainer->find('css', sprintf('li:contains("%s") a', $item));
+        if (!$listItem) {
+            throw new \InvalidArgumentException(sprintf('Item "%s" of dropdown button "Export" not found', $item));
+        }
+
+        $listItem->click();
+
+        $this->wait();
+
+
+    }
+
+    /**
      * @Then /^I reset the grid$/
      */
     public function iResetTheGrid()
@@ -669,7 +708,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $entities
      *
-     * @return Then[]
+     * @return Step\Then[]
      *
      * @When /^I mass-edit (?:products?|families) (.*)$/
      */
@@ -730,7 +769,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $entities
      *
-     * @return Then[]
+     * @return Step\Then[]
      *
      * @When /^I mass-delete products? (.*)$/
      */
@@ -784,7 +823,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param TableNode $table
      *
-     * @return Then[]
+     * @return Step\Then[]
      * @When /^I create the view:$/
      */
     public function iCreateTheView(TableNode $table)
@@ -811,6 +850,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $viewLabel
      *
      * @Then /^I should( not)? see the "([^"]*)" view$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheView($not, $viewLabel)
     {
@@ -884,7 +925,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     protected function filterByDate($filterName, $values, $operator)
     {
         if (!is_array($values)) {
-            $values = array($values, $values);
+            $values = [$values, $values];
         }
 
         $filter = $this->datagrid->getFilter($filterName);

@@ -484,7 +484,7 @@ class Grid extends Index
     {
         $resetBtn = $this
             ->getElement('Grid toolbar')
-            ->find('css', sprintf('a:contains("%s")', 'Reset'));
+            ->find('css', sprintf('a[data-original-title="Reset"]'));
 
         if (!$resetBtn) {
             throw new \InvalidArgumentException('Reset button not found');
@@ -501,7 +501,7 @@ class Grid extends Index
     {
         $refreshBtn = $this
             ->getElement('Grid toolbar')
-            ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+            ->find('css', 'a[data-original-title="Refresh"]');
 
         if (!$refreshBtn) {
             throw new \InvalidArgumentException('Refresh button not found');
