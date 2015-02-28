@@ -281,6 +281,7 @@
             <arg value="${symfony.database.name}_" />
             <arg value="${behat.profile.prefix}-" />
             <arg value="${basedir}/bin/behat ${behat.options}" />
+            <arg value="${behat.features}" />
             <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
             <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />

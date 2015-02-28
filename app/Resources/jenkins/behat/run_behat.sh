@@ -23,11 +23,21 @@ else
     XDEBUG=$2
     DB_PREFIX=$3
     PROFILE_PREFIX=$4
-    BEHAT_CMD=`echo $* | sed -e "s/$CONCURRENCY//" -e "s/$XDEBUG//" -e "s/$DB_PREFIX//" -e "s/$PROFILE_PREFIX//"`
+    BEHAT_OPTIONS=$5
+    BEHAT_FEATURES=$6
+    BEHAT_CMD=`echo $* | sed -e "s/$CONCURRENCY//" -e "s/$XDEBUG//" -e "s/$DB_PREFIX//" -e "s/$PROFILE_PREFIX//" -e "s#$BEHAT_FEATURES##"`
 
     if [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
         echo "Invalid xdebug parameter [$XDEBUG]"
         usage
+    fi
+
+    APP_ROOT=`dirname $0`/../../../..
+
+    if [ $BEHAT_FEATURES == 'all' ] || [ $BEHAT_FEATURES == '' ]; then
+        FEATURES_DIR=$APP_ROOT/features
+    else
+        FEATURES_DIR=$APP_ROOT/features/$BEHAT_FEATURES
     fi
 
     expr $CONCURRENCY + 0 > /dev/null 2>&1
@@ -38,10 +48,6 @@ else
 fi
 
 ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
-
-APP_ROOT=`dirname $0`/../../../..
-
-FEATURES_DIR=$APP_ROOT/features
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
