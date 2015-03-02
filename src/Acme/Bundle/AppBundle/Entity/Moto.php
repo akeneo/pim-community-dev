@@ -2,7 +2,9 @@
 
 namespace Acme\Bundle\AppBundle\Entity;
 
-class Moto
+use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
+
+class Moto implements ReferenceDataInterface
 {
     /**
      * @var int
@@ -101,5 +103,25 @@ class Moto
     public function getYear()
     {
         return $this->year;
+    }
+
+    public function getIdentifier()
+    {
+        return sprintf('%s - %s', $this->brand, $this->model);
+    }
+
+    public function getIdentifierProperties()
+    {
+        return ['brand', 'model'];
+    }
+
+    public function getType()
+    {
+        return 'moto';
+    }
+
+    public function getSortOrder()
+    {
+        return 0;
     }
 }

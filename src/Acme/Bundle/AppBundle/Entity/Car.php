@@ -3,12 +3,12 @@
 namespace Acme\Bundle\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-//use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
+use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
 
 /**
  * Car
  */
-class Car /*implements ReferenceDataInterface*/
+class Car implements ReferenceDataInterface
 {
     /**
      * @var int
@@ -109,7 +109,6 @@ class Car /*implements ReferenceDataInterface*/
         return $this->year;
     }
 
-    /*
     public function getIdentifier()
     {
         return sprintf('%s - %s', $this->brand, $this->model);
@@ -124,5 +123,9 @@ class Car /*implements ReferenceDataInterface*/
     {
         return 'car';
     }
-    */
+
+    public function getSortOrder()
+    {
+        return 0;
+    }
 }
