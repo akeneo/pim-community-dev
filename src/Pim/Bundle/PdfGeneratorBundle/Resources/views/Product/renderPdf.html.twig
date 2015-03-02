@@ -87,7 +87,8 @@
         </div>
         <div class="images">
             {% block images %}
-                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media.filename is not null %}
+                {% for attribute in imageAttributes if product.getValue(attribute.code, locale, scope).media is not null
+                    and product.getValue(attribute.code, locale, scope).media.filename is not null %}
                     <img src="{{ uploadDir }}{{ product.getValue(attribute.code, locale, scope).media.filename }}" />
                 {% endfor %}
             {% endblock %}

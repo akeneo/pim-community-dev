@@ -7,7 +7,7 @@
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
 - Change the constructor of `Pim/Bundle/TransformBundle/Normalizer/Structured/GroupNormalizer`, added `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` as the last argument
 
-# 1.3.x
+# 1.3.3 (2015-03-02)
 
 ## Bug fixes
 - PIM-3837: Fix XSS vulnerability on user form
@@ -303,6 +303,13 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.x
+
+## Bug fixes
+- PIM-3837: Fix XSS vulnerability on user form
+
+# 1.2.29 (2015-02-24)
 
 # 1.2.28 (2015-02-20)
 
