@@ -25,7 +25,9 @@ class AppKernel extends Kernel
      */
     public function registerBundles()
     {
-        $bundles = array();
+        $bundles = [
+            // your app bundles should be registered here
+        ];
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
@@ -34,13 +36,13 @@ class AppKernel extends Kernel
         }
 
         $bundles = array_merge(
-            $bundles,
             $this->getSymfonyBundles(),
             $this->getOroDependencies(),
             $this->getOroBundles(),
             $this->getPimDependenciesBundles(),
             $this->getPimBundles(),
-            $this->getPimEnterpriseBundles()
+            $this->getPimEnterpriseBundles(),
+            $bundles
         );
 
         return $bundles;
