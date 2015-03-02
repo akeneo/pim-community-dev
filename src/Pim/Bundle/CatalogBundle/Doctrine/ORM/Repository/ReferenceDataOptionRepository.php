@@ -7,7 +7,10 @@ use Pim\Bundle\CatalogBundle\Repository\ReferenceDataRepositoryInterface;
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 
 /**
- * Repository for custom referential entities
+ * Repository for reference data entities
+ *
+ * TODO-CR: rename it properly
+ *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -50,17 +53,17 @@ class ReferenceDataOptionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getOptionLabel($customReferential, $dataLocale)
+    public function getOptionLabel($referenceData, $dataLocale)
     {
-        throw new \Exception('TBI');
+        return $referenceData->getIdentifier();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getOptionId($customReferential)
+    public function getOptionId($referenceData)
     {
-        return $customReferential->getId();
+        return $referenceData->getId();
     }
 
     public function getAlias()
