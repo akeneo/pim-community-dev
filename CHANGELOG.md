@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.23 (2015-03-02)
 
 ## Bug fixes
 - PIM-3837: Fix XSS vulnerability on user form
