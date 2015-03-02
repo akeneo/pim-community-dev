@@ -76,7 +76,7 @@ class MetricValueSetter extends AbstractValueSetter
         $unit = $data['unit'];
         $data = $data['data'];
 
-        $this->setData($product, $attribute, $data, $unit, $options['locale'], $options['$scope']);
+        $this->setData($product, $attribute, $data, $unit, $options['locale'], $options['scope']);
     }
 
     /**
