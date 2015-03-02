@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pimdashboard/js/abstract-widget', 'moment'],
+    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'moment'],
     function ($, _, Routing, Navigation, AbstractWidget, moment) {
         'use strict';
 
