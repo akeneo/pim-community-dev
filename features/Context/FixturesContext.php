@@ -762,14 +762,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^I clear the UOW$/
-     */
-    public function iClearTheUOW()
-    {
-        $this->clearUOW();
-    }
-
-    /**
      * @param string $lang
      * @param string $scope
      * @param string $attribute
@@ -1269,7 +1261,7 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        if ($locales) {
+        if (null !== $locales) {
             foreach ($this->listToArray($locales) as $localeCode) {
                 $attribute->addAvailableLocale($this->getLocale($localeCode));
             }

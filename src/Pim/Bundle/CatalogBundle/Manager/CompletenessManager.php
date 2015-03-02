@@ -188,14 +188,14 @@ class CompletenessManager
             $constraint = new ProductValueComplete(array('channel' => $channel));
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
 
-            if (true === $this->isMissingAttribute($localeSpecificCodes, $localeCode, $productValues[$valueCode], $constraint)) {
+            if ($this->isMissingAttribute($localeSpecificCodes, $localeCode, $productValues[$valueCode], $constraint)) {
                 $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
             }
         }
     }
 
     /**
-     * Is missing value for an attribute ?
+     * Is missing attribute
      *
      * @param array                $localeSpecificCodes specific locales for attribute
      * @param string               $localeCode          locale code

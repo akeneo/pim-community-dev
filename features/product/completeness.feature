@@ -79,8 +79,6 @@ Feature: Display the completeness of a product
     And I switch the attribute "[text_en]" requirement in channel "Tablet"
     And I switch the attribute "[info_fr_en]" requirement in channel "Tablet"
     And I save the family
-    # need only in behat scenario for mongo
-    And I clear the UOW
     And I launched the completeness calculator
     And I am on the "sneakers" product page
     When I visit the "Completeness" tab
@@ -109,8 +107,6 @@ Feature: Display the completeness of a product
     And I visit the "Attributes" tab
     And I switch the attribute "[text_en]" requirement in channel "Mobile"
     And I save the family
-    # need only in behat scenario for mongo
-    And I clear the UOW
     And I launched the completeness calculator
     And I am on the "sneakers" product page
     When I visit the "Completeness" tab

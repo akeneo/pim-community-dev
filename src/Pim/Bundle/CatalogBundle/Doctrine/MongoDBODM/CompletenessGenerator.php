@@ -197,19 +197,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats['locales'][$localeCode]['required_count'] = 0;
                 }
 
-                $attribute = $req->getAttribute();
+                if ($this->isLocaleSpecificCodes($localeCode, $localeSpecificCodes)) {
+                    $attribute = $req->getAttribute();
+                    $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
+                    if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
+                        $stats['locales'][$localeCode]['missing_count'] ++;
+                    }
 
-                $localeSpecificCodes = $attribute->getLocaleSpecificCodes();
-                if (!empty($localeSpecificCodes) && !in_array($localeCode, $localeSpecificCodes)) {
-                    continue;
+                    $stats['locales'][$localeCode]['required_count']++;
                 }
-
-                $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
-                if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
-                    $stats['locales'][$localeCode]['missing_count'] ++;
-                }
-
-                $stats['locales'][$localeCode]['required_count']++;
             }
         }
 
@@ -222,6 +218,19 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     public function generateMissing()
     {
         $this->generate();
+    }
+
+    /**
+     * Is locale specific codes
+     *
+     * @param string $localeCode          locale code
+     * @param array  $localeSpecificCodes attribute spcecifics locales
+     *
+     * @return boolean
+     */
+    protected function isLocaleSpecificCodes($localeCode, array $localeSpecificCodes = [])
+    {
+        return (empty($localeSpecificCodes) || in_array($localeCode, $localeSpecificCodes));
     }
 
     /**
