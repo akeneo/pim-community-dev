@@ -3,12 +3,12 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 
 /**
  * Adds many products to many groups
@@ -33,18 +33,19 @@ class AddToGroups extends ProductMassEditOperation
      * @param BulkSaverInterface                  $productSaver
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
         BulkSaverInterface $productSaver,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
-        NotificationManager $notificationManager
+        ObjectDetacherInterface $objectDetacher
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
 
         $this->groupRepository = $groupRepository;
-        $this->groups = new ArrayCollection();
+        $this->groups          = new ArrayCollection();
     }
 
     /**
@@ -127,25 +128,5 @@ class AddToGroups extends ProductMassEditOperation
         foreach ($this->groups as $group) {
             $group->addProduct($product);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function readConfiguration()
-    {
-        // TODO: Implement applyConfiguration() method.
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        // TODO: Implement saveConfiguration() method.
-
-        return $this;
     }
 }

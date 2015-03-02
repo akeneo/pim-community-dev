@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -10,8 +11,6 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -52,6 +51,7 @@ class AddToVariantGroup extends ProductMassEditOperation
      * @param ProductMassActionRepositoryInterface $prodMassActionRepo
      * @param ProductQueryBuilderFactoryInterface  $pqbFactory
      * @param PaginatorFactoryInterface            $paginatorFactory
+     * @param ObjectDetacherInterface              $objectDetacher
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
@@ -61,13 +61,13 @@ class AddToVariantGroup extends ProductMassEditOperation
         ProductMassActionRepositoryInterface $prodMassActionRepo,
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
-        NotificationManager $notificationManager
+        ObjectDetacherInterface $objectDetacher
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $notificationManager);
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
 
-        $this->groupRepository = $groupRepository;
-        $this->templateUpdater = $templateUpdater;
-        $this->validator = $validator;
+        $this->groupRepository       = $groupRepository;
+        $this->templateUpdater       = $templateUpdater;
+        $this->validator             = $validator;
         $this->productMassActionRepo = $prodMassActionRepo;
     }
 
@@ -296,25 +296,5 @@ class AddToVariantGroup extends ProductMassEditOperation
         }
 
         return $validVariantGroups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function readConfiguration()
-    {
-        // TODO: Implement applyConfiguration() method.
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        // TODO: Implement saveConfiguration() method.
-
-        return $this;
     }
 }
