@@ -81,7 +81,7 @@ class MultiSelectValueSetter extends AbstractValueSetter
             $attributeOptions[] = $option;
         }
 
-        $this->setOptions($attribute, $product, $attributeOptions, $options['locale'], $options['scope']);
+        $this->setOptions($product, $attribute, $attributeOptions, $options['locale'], $options['scope']);
     }
 
     /**
