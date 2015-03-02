@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3820: Fix attribute options translation which were not displayed
+
 # 1.3.2 (2015-02-27)
 
 ## Bug fixes
