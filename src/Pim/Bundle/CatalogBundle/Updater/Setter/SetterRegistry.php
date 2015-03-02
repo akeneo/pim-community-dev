@@ -42,6 +42,8 @@ class SetterRegistry implements SetterRegistryInterface
         if ($setter instanceof AttributeSetterInterface) {
             $this->attributeSetters[] = $setter;
         }
+
+        //TODO add an exception if the setter is neither FieldSetterInterface or AttributeSetterInterface
     }
 
     /**
