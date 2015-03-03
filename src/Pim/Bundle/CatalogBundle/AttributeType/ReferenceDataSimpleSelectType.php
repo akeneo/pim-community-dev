@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
  * Reference data simple options (select) attribute type
@@ -15,13 +17,35 @@ use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
  */
 class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
 {
+    /** @var ConfigurationRegistryInterface */
+    protected $referenceDataRegistry;
+
+    /**
+     * Constructor
+     *
+     * @param string                         $backendType the backend type
+     * @param string                         $formType the form type
+     * @param ConstraintGuesserInterface     $constraintGuesser the form type
+     * @param ConfigurationRegistryInterface $registry
+     */
+    public function __construct(
+        $backendType,
+        $formType,
+        ConstraintGuesserInterface $constraintGuesser,
+        ConfigurationRegistryInterface $registry
+    ) {
+        parent::__construct($backendType, $formType, $constraintGuesser);
+        $this->referenceDataRegistry = $registry;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function prepareValueFormName(ProductValueInterface $value)
     {
-        //TODO-CR: remove this hardcode
-        return 'moto';
+        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
+
+        return $referenceDataConf->getName();
     }
 
     /**
@@ -29,9 +53,9 @@ class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
      */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
+        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
         $options           = parent::prepareValueFormOptions($value);
-        //TODO-CR: remove this hardcode
-        $options['class']  = 'Acme\Bundle\AppBundle\Entity\Moto';
+        $options['class']  = $referenceDataConf->getClass();
 
         return $options;
     }
@@ -46,12 +70,7 @@ class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
                 'name' => 'reference_data_name',
                 'fieldType' => 'choice',
                 'options' => [
-                    //TODO-CR: remove this hardcode
-                    'choices' => [
-                        'Acme\Bundle\AppBundle\Entity\Car' => 'Car',
-                        'Acme\Bundle\AppBundle\Entity\Moto' => 'Moto',
-                        'Acme\Bundle\AppBundle\Entity\Truck' => 'Truck'
-                    ],
+                    'choices' => $this->getReferenceDataChoices(),
                     'required' => true,
                     'multiple'    => false,
                     //TODO-CR: should be translatable
@@ -68,5 +87,21 @@ class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
     public function getName()
     {
         return 'pim_catalog_reference_data_simpleselect';
+    }
+
+    /**
+     * @return array
+     */
+    protected function getReferenceDataChoices()
+    {
+        $choices = [];
+
+        foreach ($this->referenceDataRegistry->all() as $configuration) {
+            if (ConfigurationInterface::TYPE_SIMPLE === $configuration->getType()) {
+                $choices[$configuration->getName()] = $configuration->getName();
+            }
+        }
+
+        return $choices;
     }
 }

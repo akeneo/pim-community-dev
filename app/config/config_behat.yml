@@ -34,3 +34,11 @@ assetic:
 
 pim_enrich:
     record_mails: true
+
+pim_reference_data:
+    cars:
+        class: Acme\Bundle\AppBundle\Entity\Car
+        type: multi
+    moto:
+        class: Acme\Bundle\AppBundle\Entity\Moto
+        type: simple

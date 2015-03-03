@@ -28,3 +28,11 @@ swiftmailer:
 
 parameters:
     apy_js_form_validation.yui_js: false
+
+pim_reference_data:
+    cars:
+        class: Acme\Bundle\AppBundle\Entity\Car
+        type: multi
+    moto:
+        class: Acme\Bundle\AppBundle\Entity\Moto
+        type: simple
