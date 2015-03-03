@@ -5,6 +5,13 @@ namespace Acme\Bundle\AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue as PimProductValue;
 
+/**
+ * Acme override of the product value
+ *
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ProductValue extends PimProductValue
 {
     /** @var ArrayCollection */
@@ -13,6 +20,9 @@ class ProductValue extends PimProductValue
     /** @var Moto */
     protected $moto;
 
+    /**
+     * constructor
+     */
     public function __construct()
     {
         parent::__construct();

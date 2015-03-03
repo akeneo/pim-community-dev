@@ -6,10 +6,21 @@ use Pim\Component\ReferenceData\Model\Configuration;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Reference data configuration registry
+ *
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class ConfigurationRegistry implements ConfigurationRegistryInterface
 {
+    /** @var ConfigurationInterface[] */
     protected static $configurations = [];
 
+    /**
+     * {@inheritdoc}
+     */
     public function register(ConfigurationInterface $configuration, $name)
     {
         $configuration->setName($name);
@@ -18,6 +29,9 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function registerRaw(array $rawConfiguration, $name)
     {
         $this->checkRawConfiguration($rawConfiguration);
@@ -29,16 +43,25 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         return $this->register($configuration, $name);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($name)
     {
         return self::$configurations[$name];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function all()
     {
         return self::$configurations;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function unregister($type)
     {
         unset(self::$configurations[$type]);
@@ -46,12 +69,15 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
         return $this;
     }
 
-    protected function checkRawConfiguration(array $configuration)
+    /**
+     * @param array $rawConfiguration
+     */
+    protected function checkRawConfiguration(array $rawConfiguration)
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['class', 'type']);
         $resolver->setAllowedTypes(['class' => 'string', 'type' => 'string' ]);
 
-        $resolver->resolve($configuration);
+        $resolver->resolve($rawConfiguration);
     }
 }

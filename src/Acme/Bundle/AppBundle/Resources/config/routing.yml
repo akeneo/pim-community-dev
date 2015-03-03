@@ -1,3 +1,0 @@
-acme_app_homepage:
-    path:     /cars
-    defaults: { _controller: AcmeAppBundle:Default:index }

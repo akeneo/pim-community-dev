@@ -6,34 +6,30 @@ use Doctrine\ORM\Mapping as ORM;
 use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
 
 /**
- * Car
+ * Acme Car entity (used as multi reference data)
+ *
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Car implements ReferenceDataInterface
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $brand;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $model;
 
-    /**
-     * @var integer
-     */
+    /** @var int */
     protected $year;
 
     /**
      * Get id
      *
-     * @return integer 
+     * @return int 
      */
     public function getId()
     {
@@ -89,7 +85,7 @@ class Car implements ReferenceDataInterface
     /**
      * Set year
      *
-     * @param integer $year
+     * @param int $year
      * @return Car
      */
     public function setYear($year)
@@ -102,7 +98,7 @@ class Car implements ReferenceDataInterface
     /**
      * Get year
      *
-     * @return integer 
+     * @return int 
      */
     public function getYear()
     {

@@ -1,8 +1,3 @@
-acme_app:
-    resource: "@AcmeAppBundle/Resources/config/routing.yml"
-    prefix:   /
-
-
 # PIM
 
 pim_datagrid:
