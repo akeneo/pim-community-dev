@@ -46,6 +46,8 @@ class NumberValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format: "12.0"|"12"|12|12.3
      */
     public function setAttributeData(
         ProductInterface $product,

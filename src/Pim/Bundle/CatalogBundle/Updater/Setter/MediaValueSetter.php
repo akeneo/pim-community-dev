@@ -67,6 +67,12 @@ class MediaValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format :
+     * {
+     *     "originalFilename": "original_filename.extension",
+     *     "filePath": "/current/file/path/original_filename.extension"
+     * }
      */
     public function setAttributeData(
         ProductInterface $product,

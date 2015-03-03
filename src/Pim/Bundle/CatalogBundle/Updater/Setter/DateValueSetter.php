@@ -45,6 +45,8 @@ class DateValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format : "yyyy-mm-dd"
      */
     public function setAttributeData(
         ProductInterface $product,

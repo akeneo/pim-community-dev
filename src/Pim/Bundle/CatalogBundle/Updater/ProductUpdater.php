@@ -58,7 +58,7 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     public function set(ProductInterface $product, $field, $data, array $options = [])
     {
-        $attribute = $this->getAttribute($field);
+        $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
 
         if (null === $attribute) {
             $setter = $this->setterRegistry->getFieldSetter($field);

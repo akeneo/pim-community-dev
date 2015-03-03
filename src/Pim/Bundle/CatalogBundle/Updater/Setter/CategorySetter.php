@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
 /**
@@ -16,11 +16,11 @@ use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 class CategorySetter extends AbstractFieldSetter
 {
     /**
-     * @param ReferableEntityRepositoryInterface $categoryRepository
-     * @param array                              $supportedTypes
+     * @param IdentifiableObjectRepositoryInterface $categoryRepository
+     * @param array                                 $supportedTypes
      */
     public function __construct(
-        ReferableEntityRepositoryInterface $categoryRepository,
+        IdentifiableObjectRepositoryInterface $categoryRepository,
         array $supportedFields
     ) {
         $this->categoryRepository = $categoryRepository;
@@ -29,10 +29,17 @@ class CategorySetter extends AbstractFieldSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format : ["category_code"]
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
+
+        $categories = $product->getCategories();
+        foreach ($categories as $category) {
+            $product->removeCategory($category);
+        }
 
         foreach ($data as $categoryCode) {
             $category = $this->categoryRepository->findOneByIdentifier($categoryCode);

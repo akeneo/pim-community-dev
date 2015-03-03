@@ -87,7 +87,7 @@ class SetterRegistry implements SetterRegistryInterface
      */
     public function getFieldSetter($field)
     {
-        foreach ($this->fieldFilters as $setter) {
+        foreach ($this->fieldSetters as $setter) {
             if ($setter->supportsField($field)) {
                 return $setter;
             }

@@ -62,6 +62,12 @@ class MetricValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format:
+     * {
+     *     "data": "12.0"|"12"|12|12.3,
+     *     "unit": "KILOGRAM"
+     * }
      */
     public function setAttributeData(
         ProductInterface $product,
