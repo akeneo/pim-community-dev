@@ -187,12 +187,3 @@ connector:
                         writer:    pim_base_connector.writer.doctrine.variant_group
                     parameters:
                         batchSize: 1
-        demo_test:
-            title: test
-            type:  mass-edit
-            steps:
-                test:
-                    title: test
-                    class: "%pim_base_connector.step.mass_edit.class%"
-                    services:
-                        ProductMassEditOperation: pim_enrich.mass_edit_action.change_status
