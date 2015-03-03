@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 
 /**
  * Rule definition normalizer for internal api
@@ -45,7 +46,9 @@ class RuleCollectionNormalizer implements NormalizerInterface, SerializerAwareIn
      */
     public function supportsNormalization($data, $format = null)
     {
-        return (is_array($data) || $data instanceof Collection) && in_array($format, $this->supportedFormats);
+        return ((is_array($data) && current($data) instanceof RuleDefinitionInterface) ||
+            ($data instanceof Collection && $data->first() instanceof RuleDefinitionInterface)) &&
+            in_array($format, $this->supportedFormats);
     }
 
     /**
