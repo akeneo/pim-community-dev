@@ -101,13 +101,14 @@ define(
                 .append(
                     '<div class="export-actions-panel btn-group buffer-left">' +
                         '<button href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
-                            '<i class="icon-download-alt"></i>' +
-                            __('pim.grid.mass_action.quick_export.title') +
+                            '<i class="icon-download-alt" data-toggle="tooltip" title="Export"></i>' +
                             '<i class="caret"></i>' +
                         '</button>' +
                         '<ul class="dropdown-menu"></ul>' +
                     '</div>'
-                );
+                )
+                .find('i.icon-download-alt')
+                .tooltip({container: 'body'});
         };
 
         return ExportAction;

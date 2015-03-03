@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Improvements
+- PIM-3287: Appearance of the pagination on the product grid
+
 ## Bug fixes
 - PIM-3771: Create version when modifying variant group attribute
 
