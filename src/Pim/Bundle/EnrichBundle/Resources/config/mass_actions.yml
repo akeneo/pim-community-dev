@@ -1,16 +1,16 @@
 parameters:
-    pim_enrich.mass_edit_action.operator.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry
-    pim_enrich.mass_edit_action.operator.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator
-    pim_enrich.mass_edit_action.operator.product.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator
-    pim_enrich.mass_edit_action.operator.family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator
-    pim_enrich.mass_edit_action.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
-    pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
-    pim_enrich.mass_edit_action.classify.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
-    pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
-    pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
-    pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
+    pim_enrich.mass_edit_action.operator.registry.class:          Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry
+    pim_enrich.mass_edit_action.operator.class:                   Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator
+    pim_enrich.mass_edit_action.operator.product.class:           Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator
+    pim_enrich.mass_edit_action.operator.family.class:            Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator
+    pim_enrich.mass_edit_action.change_status.class:              Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
+    pim_enrich.mass_edit_action.edit_common_attributes.class:     Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
+    pim_enrich.mass_edit_action.classify.class:                   Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+    pim_enrich.mass_edit_action.change_family.class:              Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
+    pim_enrich.mass_edit_action.add_to_groups.class:              Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
+    pim_enrich.mass_edit_action.add_to_variant_group.class:       Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
     pim_enrich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
-    pim_enrich.mass_edit_hander.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\ChangeStatusHandler
+    pim_enrich.mass_edit_handler.change_status.class:             Pim\Bundle\EnrichBundle\MassEditAction\Handler\ChangeStatusHandler
 
 services:
     # Mass edit action operator registry
@@ -158,7 +158,7 @@ services:
                 operator: pim_enrich.mass_edit_action.operator.family
 
     pim_enrich.mass_edit_handler.change_status:
-        class: %pim_enrich.mass_edit_hander.change_status.class%
+        class: %pim_enrich.mass_edit_handler.change_status.class%
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pim_catalog.updater.product'
