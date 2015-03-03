@@ -9,6 +9,7 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -33,10 +34,9 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
 
     /** @var ObjectDetacherInterface */
     protected $objectDetacher;
-    /**
-     * @var PaginatorFactoryInterface
-     */
-    private $paginatorFactory;
+
+    /** @var PaginatorFactoryInterface */
+    protected $paginatorFactory;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
@@ -52,13 +52,16 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
         ObjectDetacherInterface $objectDetacher,
         PaginatorFactoryInterface $paginatorFactory
     ) {
-        $this->pqbFactory     = $pqbFactory;
-        $this->productUpdater = $productUpdater;
-        $this->productSaver   = $productSaver;
-        $this->objectDetacher = $objectDetacher;
+        $this->pqbFactory       = $pqbFactory;
+        $this->productUpdater   = $productUpdater;
+        $this->productSaver     = $productSaver;
+        $this->objectDetacher   = $objectDetacher;
         $this->paginatorFactory = $paginatorFactory;
     }
 
+    /**
+     * @param array $configuration
+     */
     public function execute(array $configuration)
     {
         $cursor = $this->getProducts($configuration['filters']);
@@ -71,10 +74,7 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
             }
 
             $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
-
-            foreach ($productsPage as $product) {
-                $this->objectDetacher->detach($product);
-            }
+            $this->detachProducts($productsPage);
         }
     }
 
@@ -94,6 +94,16 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
         $this->stepExecution = $stepExecution;
 
         return $this;
+    }
+
+    /**
+     * @param array $productsPage
+     */
+    protected function detachProducts(array $productsPage)
+    {
+        foreach ($productsPage as $product) {
+            $this->objectDetacher->detach($product);
+        }
     }
 
     /**
