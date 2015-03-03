@@ -1,0 +1,7 @@
+parameters:
+    pim_reference_data.registry.class: Pim\Component\ReferenceData\ConfigurationRegistry
+
+services:
+    pim_reference_data.registry:
+        class: %pim_reference_data.registry.class%
+
