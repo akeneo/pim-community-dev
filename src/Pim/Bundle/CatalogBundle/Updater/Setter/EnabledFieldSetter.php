@@ -24,6 +24,8 @@ class EnabledFieldSetter extends AbstractFieldSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format : true|false
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {

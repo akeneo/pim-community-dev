@@ -34,6 +34,8 @@ class BooleanValueSetter extends AbstractValueSetter
     /**
      * {@inheritdoc}
      *
+     * Expected data input format : true|false
+     *
      * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)

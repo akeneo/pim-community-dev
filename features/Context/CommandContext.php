@@ -4,7 +4,9 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
+use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -51,6 +53,83 @@ class CommandContext extends RawMinkContext
             sort($actual);
             assertEquals($expected, $actual);
         }
+    }
+
+    /**
+     * @Then /^I should get the following products after apply the following updater to it:$/
+     */
+    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
+    {
+
+        $application = new Application();
+        $application->add(new UpdateProductCommand());
+        $application->add(new GetProductCommand());
+
+        $updateCommand = $application->find('pim:product:update');
+        $updateCommand->setContainer($this->getMainContext()->getContainer());
+        $updateCommandTester = new CommandTester($updateCommand);
+
+        $getCommand = $application->find('pim:product:get');
+        $getCommand->setContainer($this->getMainContext()->getContainer());
+        $getCommandTester = new CommandTester($getCommand);
+
+        foreach ($updates->getHash() as $update) {
+            $updateCommandTester->execute(
+                [
+                    'command'      => $updateCommand->getName(),
+                    'identifier'   => $update['product'],
+                    'json_updates' => $update['actions']
+                ]
+            );
+
+            $getCommandTester->execute(
+                [
+                    'command'      => $getCommand->getName(),
+                    'identifier'   => $update['product']
+                ]
+            );
+
+
+            $expected = json_decode($update['result'], true);
+            $actual   = json_decode($getCommandTester->getDisplay(), true);
+
+            $diff = $this->arrayIntersect($actual, $expected);
+
+            assertEquals(
+                $diff,
+                $expected
+            );
+        }
+    }
+
+    /**
+     * Recursive intersect for nested associative array
+     *
+     * @param array $array1
+     * @param array $array2
+     *
+     * @return array
+     */
+    protected function arrayIntersect($array1, $array2)
+    {
+        $isAssoc = array_keys($array1) !== range(0, count($array1) - 1);
+        foreach ($array1 as $key => $value) {
+            if ($isAssoc) {
+                if (!array_key_exists($key, $array2)) {
+                    unset($array1[$key]);
+                } else {
+                    if (is_array($value)) {
+                        $array1[$key] = $this->arrayIntersect($value, $array2[$key]);
+                    }
+                }
+            } else {
+                if (is_array($value)) {
+                    $array1[$key] = $this->arrayIntersect($value, $array2[$key]);
+                }
+            }
+        }
+
+        return $array1;
     }
 
     /**

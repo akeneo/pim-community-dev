@@ -52,6 +52,18 @@ class PriceCollectionValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format:
+     * [
+     *     {
+     *         "data": "12.0"|"12"|12|12.3,
+     *         "currency": "EUR"
+     *     },
+     *     {
+     *         "data": "12.0"|"12"|12|12.3,
+     *         "currency": "EUR"
+     *     }
+     * ]
      */
     public function setAttributeData(
         ProductInterface $product,

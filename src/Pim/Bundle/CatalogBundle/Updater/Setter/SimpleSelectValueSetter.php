@@ -53,6 +53,8 @@ class SimpleSelectValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format: "option_code"
      */
     public function setAttributeData(
         ProductInterface $product,

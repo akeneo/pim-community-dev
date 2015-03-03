@@ -45,6 +45,8 @@ class TextValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format: "my text to update"
      */
     public function setAttributeData(
         ProductInterface $product,

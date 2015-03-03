@@ -52,6 +52,8 @@ class MultiSelectValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * Expected data input format: ["option_code", "other_option_code"]
      */
     public function setAttributeData(
         ProductInterface $product,
