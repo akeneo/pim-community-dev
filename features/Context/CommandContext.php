@@ -84,20 +84,33 @@ class CommandContext extends RawMinkContext
 
             $getCommandTester->execute(
                 [
-                    'command'      => $getCommand->getName(),
-                    'identifier'   => $update['product']
+                    'command'    => $getCommand->getName(),
+                    'identifier' => $update['product']
                 ]
             );
-
 
             $expected = json_decode($update['result'], true);
             $actual   = json_decode($getCommandTester->getDisplay(), true);
 
+            if (null === $actual) {
+                throw new Exception(sprintf(
+                    'An error occured during the execution of the update command : %s',
+                    $getCommandTester->getDisplay()
+                ));
+            }
+
+            if (null === $expected) {
+                throw new Exception(sprintf(
+                    'Looks like the expected result is not valid json : %s',
+                    $update['result']
+                ));
+            }
+
             $diff = $this->arrayIntersect($actual, $expected);
 
             assertEquals(
-                $diff,
-                $expected
+                $expected,
+                $diff
             );
         }
     }

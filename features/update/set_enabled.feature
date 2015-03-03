@@ -1,9 +1,9 @@
-Feature: Update boolean fields
+Feature: Update enabled fields
   In order to update products
   As an internal process or any user
-  I need to be able to update a boolean field of a product
+  I need to be able to update enabled field of a product
 
-  Scenario: Successfully update a boolean field
+  Scenario: Successfully update enabled field
     Given a "default" catalog configuration
     And the following products:
       | sku      |

@@ -1,16 +1,16 @@
-Feature: Update boolean fields
+Feature: Update date fields
   In order to update products
   As an internal process or any user
-  I need to be able to update a boolean field of a product
+  I need to be able to update a date field of a product
 
-  Scenario: Successfully update a boolean field
+  Scenario: Successfully update a date field
     Given a "default" catalog configuration
     And the following attributes:
-      | code    | type    | localizable | scopable |
+      | code          | type | localizable | scopable |
       | release_date  | date | yes         | no       |
-      | end_date  | date | no         | yes       |
-      | publish_date  | date | yes         | yes       |
-      | creation_date  | date | no         | no       |
+      | end_date      | date | no          | yes      |
+      | publish_date  | date | yes         | yes      |
+      | creation_date | date | no          | no       |
     And the following products:
       | sku     |
       | AKN_MUG |
