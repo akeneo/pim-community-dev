@@ -17,10 +17,20 @@ class ReferenceDataMultiSelectType extends OptionMultiSelectType
     /**
      * {@inheritdoc}
      */
+    public function prepareValueFormName(ProductValueInterface $value)
+    {
+        //TODO-CR: remove this hardcode
+        return 'cars';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
-        $options = parent::prepareValueFormOptions($value);
-        $options['class'] = $value->getAttribute()->getReferenceData();
+        $options           = parent::prepareValueFormOptions($value);
+        //TODO-CR: remove this hardcode
+        $options['class']  = 'Acme\Bundle\AppBundle\Entity\Car';
 
         return $options;
     }
@@ -31,18 +41,19 @@ class ReferenceDataMultiSelectType extends OptionMultiSelectType
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'reference_data' => [
-                'name' => 'reference_data',
+            'reference_data_name' => [
+                'name'      => 'reference_data_name',
                 'fieldType' => 'choice',
-                'options' => [
+                'options'   => [
                     //TODO-CR: remove this hardcode
                     'choices' => [
                         'Acme\Bundle\AppBundle\Entity\Car' => 'Car',
                         'Acme\Bundle\AppBundle\Entity\Moto' => 'Moto',
                         'Acme\Bundle\AppBundle\Entity\Truck' => 'Truck'
                     ],
-                    'required' => true,
-                    'multiple'    => true,
+                    'required'    => true,
+                    'multiple'    => false,
+                    //TODO-CR: should be translatable
                     'empty_value' => 'Choose the reference data type',
                     'select2'     => true
                 ],

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Abstract product value
@@ -250,7 +251,12 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function setData($data)
     {
-        $name = 'set'.ucfirst($this->attribute->getBackendType());
+        $backendType = $this->attribute->getBackendType();
+        if ($this->isBackendTypeReferenceData()) {
+            $backendType = $this->attribute->getReferenceDataName();
+        }
+
+        $name = 'set'.ucfirst($backendType);
 
         return $this->$name($data);
     }
@@ -260,7 +266,12 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function getData()
     {
-        $name = 'get'.ucfirst($this->attribute->getBackendType());
+        $backendType = $this->attribute->getBackendType();
+        if ($this->isBackendTypeReferenceData()) {
+            $backendType = $this->attribute->getReferenceDataName();
+        }
+
+        $name = 'get'.ucfirst($backendType);
 
         return $this->$name();
     }
@@ -271,6 +282,10 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function addData($data)
     {
         $backendType = $this->attribute->getBackendType();
+        if ($this->isBackendTypeReferenceData()) {
+            $backendType = $this->attribute->getReferenceDataName();
+        }
+
         if (substr($backendType, -1, 1) === 's') {
             $backendType = substr($backendType, 0, strlen($backendType) - 1);
         }
@@ -615,5 +630,19 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         return $this->entity->isAttributeRemovable($this->attribute);
+    }
+
+    /**
+     * return bool
+     */
+    protected function isBackendTypeReferenceData()
+    {
+        return in_array(
+            $this->attribute->getBackendType(),
+            [
+                AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
+                AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+            ]
+        );
     }
 }

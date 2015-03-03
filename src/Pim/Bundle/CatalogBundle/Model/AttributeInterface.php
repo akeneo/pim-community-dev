@@ -595,10 +595,10 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * @return string
      */
-    public function getReferenceData();
+    public function getReferenceDataName();
 
     /**
-     * @param string $referenceData
+     * @param string $name
      */
-    public function setReferenceData($referenceData);
+    public function setReferenceDataName($name);
 }

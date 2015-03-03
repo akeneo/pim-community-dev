@@ -18,10 +18,20 @@ class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
     /**
      * {@inheritdoc}
      */
+    public function prepareValueFormName(ProductValueInterface $value)
+    {
+        //TODO-CR: remove this hardcode
+        return 'moto';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
-        $options = parent::prepareValueFormOptions($value);
-        $options['class'] = $value->getAttribute()->getReferenceData();
+        $options           = parent::prepareValueFormOptions($value);
+        //TODO-CR: remove this hardcode
+        $options['class']  = 'Acme\Bundle\AppBundle\Entity\Moto';
 
         return $options;
     }
@@ -32,8 +42,8 @@ class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'reference_data' => [
-                'name' => 'reference_data',
+            'reference_data_name' => [
+                'name' => 'reference_data_name',
                 'fieldType' => 'choice',
                 'options' => [
                     //TODO-CR: remove this hardcode
@@ -44,6 +54,7 @@ class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
                     ],
                     'required' => true,
                     'multiple'    => false,
+                    //TODO-CR: should be translatable
                     'empty_value' => 'Choose the reference data type',
                     'select2'     => true
                 ],

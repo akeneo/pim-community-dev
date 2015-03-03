@@ -154,7 +154,7 @@ abstract class AbstractAttribute implements AttributeInterface
 
     //TODO-CR: put this in the properties
     /** @var string */
-    protected $referenceData;
+    protected $referenceDataName;
 
     /**
      * Constructor
@@ -1021,16 +1021,16 @@ abstract class AbstractAttribute implements AttributeInterface
     /**
      * {@inheritdoc}
      */
-    public function getReferenceData()
+    public function getReferenceDataName()
     {
-        return $this->referenceData;
+        return $this->referenceDataName;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setReferenceData($referenceData)
+    public function setReferenceDataName($name)
     {
-        $this->referenceData = $referenceData;
+        $this->referenceDataName = $name;
     }
 }
