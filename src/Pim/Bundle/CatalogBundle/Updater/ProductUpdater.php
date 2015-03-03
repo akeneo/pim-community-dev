@@ -72,16 +72,6 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function setAll(array $products, $field, $data, array $options = [])
-    {
-        foreach ($products as $product) {
-            $this->set($product, $field, $data, $options);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function copyValue(
         array $products,
         $fromField,
