@@ -46,8 +46,6 @@ class MassEditJobManager
      *
      * @param ObjectManager            $objectManager
      * @param EventDispatcherInterface $eventDispatcher
-     * @param OperatorRegistry         $operatorRegistry
-     * @param NotificationManager      $notificationManager
      * @param string                   $jobExecutionClass
      * @param string                   $rootDir
      * @param string                   $environment
@@ -55,8 +53,6 @@ class MassEditJobManager
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
-        OperatorRegistry $operatorRegistry,
-        NotificationManager $notificationManager,
         $jobExecutionClass,
         $rootDir,
         $environment

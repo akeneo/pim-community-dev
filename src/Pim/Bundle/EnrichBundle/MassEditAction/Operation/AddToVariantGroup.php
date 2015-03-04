@@ -45,54 +45,20 @@ class AddToVariantGroup extends ProductMassEditOperation
 
     /**
      * @param GroupRepositoryInterface             $groupRepository
-     * @param BulkSaverInterface                   $productSaver
      * @param ProductTemplateUpdaterInterface      $templateUpdater
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $prodMassActionRepo
-     * @param ProductQueryBuilderFactoryInterface  $pqbFactory
-     * @param PaginatorFactoryInterface            $paginatorFactory
-     * @param ObjectDetacherInterface              $objectDetacher
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
-        BulkSaverInterface $productSaver,
         ProductTemplateUpdaterInterface $templateUpdater,
         ValidatorInterface $validator,
-        ProductMassActionRepositoryInterface $prodMassActionRepo,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        PaginatorFactoryInterface $paginatorFactory,
-        ObjectDetacherInterface $objectDetacher
+        ProductMassActionRepositoryInterface $prodMassActionRepo
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
-
         $this->groupRepository       = $groupRepository;
         $this->templateUpdater       = $templateUpdater;
         $this->validator             = $validator;
         $this->productMassActionRepo = $prodMassActionRepo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setObjectsToMassEdit(array $products)
-    {
-        $this->objects        = [];
-        $this->skippedObjects = [];
-
-        foreach ($products as $product) {
-            $violations = $this->validator->validate($product, ['pim_catalog_variant_group']);
-
-            if ($product instanceof ProductInterface &&
-                null === $product->getVariantGroup() &&
-                0 === count($violations)
-            ) {
-                $this->objects[] = $product;
-            } else {
-                $this->skippedObjects[] = $product;
-            }
-        }
-
-        return $this;
     }
 
     /**

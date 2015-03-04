@@ -18,27 +18,27 @@ class ChangeStatus extends ProductMassEditOperation
      *
      * @var boolean
      */
-    protected $toEnable = false;
+//    protected $toEnable = false;
 
     /**
      * @param boolean $toEnable
      *
      * @return ChangeStatus
      */
-    public function setToEnable($toEnable)
-    {
-        $this->toEnable = $toEnable;
-
-        return $this;
-    }
+//    public function setToEnable($toEnable)
+//    {
+//        $this->toEnable = $toEnable;
+//
+//        return $this;
+//    }
 
     /**
      * @return boolean
      */
-    public function isToEnable()
-    {
-        return $this->toEnable;
-    }
+//    public function isToEnable()
+//    {
+//        return $this->toEnable;
+//    }
 
     /**
      * {@inheritdoc}
@@ -51,34 +51,10 @@ class ChangeStatus extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(ProductInterface $product)
-    {
-        $product->setEnabled($this->toEnable);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function readConfiguration()
-    {
-        $config = $this->getConfiguration();
-
-        if (isset($config['toEnable'])) {
-            $this->setToEnable($config['toEnable']);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function saveConfiguration()
-    {
-        $this->setConfiguration(['toEnable' => $this->isToEnable()]);
-
-        return $this;
-    }
+//    protected function doPerform(ProductInterface $product)
+//    {
+//        $product->setEnabled($this->toEnable);
+//    }
 
     /**
      * Get the form options to configure the operation
