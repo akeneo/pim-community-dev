@@ -54,7 +54,7 @@ class OperatorRegistry
      *
      * @param string $gridName
      *
-     * @return MassEditActionOperator
+     * @return AbstractMassEditOperator
      */
     public function getOperator($gridName)
     {

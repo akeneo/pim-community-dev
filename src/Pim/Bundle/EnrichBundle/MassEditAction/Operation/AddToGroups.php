@@ -30,20 +30,10 @@ class AddToGroups extends ProductMassEditOperation
 
     /**
      * @param GroupRepositoryInterface            $groupRepository
-     * @param BulkSaverInterface                  $productSaver
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
-        GroupRepositoryInterface $groupRepository,
-        BulkSaverInterface $productSaver,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        PaginatorFactoryInterface $paginatorFactory,
-        ObjectDetacherInterface $objectDetacher
+        GroupRepositoryInterface $groupRepository
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
-
         $this->groupRepository = $groupRepository;
         $this->groups          = new ArrayCollection();
     }
