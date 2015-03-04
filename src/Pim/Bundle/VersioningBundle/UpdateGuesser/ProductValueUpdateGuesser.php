@@ -4,6 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
+use Doctrine\ORM\Proxy\Proxy;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
@@ -72,7 +73,10 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
             || $entity instanceof MetricInterface) {
             $product = $entity->getValue()->getEntity();
             $unitOfWork = $em->getUnitOfWork();
-            if ($unitOfWork->getEntityState($product) === UnitOfWork::STATE_MANAGED) {
+
+            // Enable versionning of a product only if it's managed or if it isn't a Proxy
+            // (if it has been deleted, Doctrine returns always a managed Proxy)
+            if (!$product instanceof Proxy && $unitOfWork->getEntityState($product) === UnitOfWork::STATE_MANAGED) {
                 $pendings[] = $product;
             }
         }

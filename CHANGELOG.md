@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3843: Product deletion raise an exception
+
 # 1.3.3 (2015-03-02)
 
 ## Bug fixes
