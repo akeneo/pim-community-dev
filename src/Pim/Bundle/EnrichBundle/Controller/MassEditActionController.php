@@ -20,6 +20,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -171,20 +172,21 @@ class MassEditActionController extends AbstractDoctrineController
         $gridName = $this->request->get('gridName');
         $itemsName = $this->getItemsName($gridName);
 
-        $form = $this->getOperatorForm($operator);
+        $form = $this->createForm(new MassEditOperatorType());
+        $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-            $form = $this->getOperatorForm($operator);
+//            $form = $this->getOperatorForm($operator);
         }
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
-                'form'         => $form->createView(),
-                'operator'     => $operator,
-                'queryParams'  => $this->getQueryParams(),
-                'itemsName'   => $itemsName
+                'form'           => $form->createView(),
+                'operationAlias' => $operationAlias,
+                'queryParams'    => $this->getQueryParams(),
+                'itemsName'      => $itemsName
             ]
         );
     }
@@ -198,18 +200,13 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        try {
-            $operator = $this->operatorRegistry->getOperator(
-                $this->request->get('gridName')
-            );
+        $operation = $this->operationRegistry->get($operationAlias);
+        $gridName = $this->request->get('gridName');
+        $itemsName = $this->getItemsName($gridName);
 
-            $operator->setOperationAlias($operationAlias);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
-//        $operator->initializeOperation();
-        $form = $this->getOperatorForm($operator, ['Default', 'configureAction']);
+        $form = $this->createForm(new MassEditOperatorType());
+        $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
+//        $form = $this->getOperatorForm($operator, ['Default', 'configureAction']);
         $form->submit($this->request);
 
         if ($form->isValid()) {
@@ -226,16 +223,16 @@ class MassEditActionController extends AbstractDoctrineController
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
 
             // Binding does not actually perform the operation, thus form errors can miss some constraints
-            foreach ($this->validator->validate($operator) as $violation) {
-                $form->addError(
-                    new FormError(
-                        $violation->getMessage(),
-                        $violation->getMessageTemplate(),
-                        $violation->getMessageParameters(),
-                        $violation->getMessagePluralization()
-                    )
-                );
-            }
+//            foreach ($this->validator->validate($operator) as $violation) {
+//                $form->addError(
+//                    new FormError(
+//                        $violation->getMessage(),
+//                        $violation->getMessageTemplate(),
+//                        $violation->getMessageParameters(),
+//                        $violation->getMessagePluralization()
+//                    )
+//                );
+//            }
         }
 
         if ($form->isValid()) {
@@ -252,7 +249,9 @@ class MassEditActionController extends AbstractDoctrineController
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
                 'form'         => $form->createView(),
-                'operator'     => $operator,
+                'operationAlias' => $operationAlias,
+                'itemsName'      => $itemsName,
+//                'operator'     => $operator,
                 'queryParams'  => $this->getQueryParams()
             ]
         );
