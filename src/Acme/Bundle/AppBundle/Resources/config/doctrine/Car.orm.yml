@@ -1,5 +1,5 @@
 Acme\Bundle\AppBundle\Entity\Car:
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ReferenceDataOptionRepository
+    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     type: entity
     table: null
     fields:

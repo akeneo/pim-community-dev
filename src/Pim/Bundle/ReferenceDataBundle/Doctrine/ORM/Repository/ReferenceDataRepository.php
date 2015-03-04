@@ -1,22 +1,22 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
+namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferenceDataRepositoryInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 
 /**
  * Repository for reference data entities
  *
- * TODO-CR: rename it properly
+ * TODO-CR: should not implement OptionRepositoryInterface that comes from the UI
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataOptionRepository extends EntityRepository implements
-    ReferenceDataRepositoryInterface, OptionRepositoryInterface
+class ReferenceDataRepository extends EntityRepository implements
+ ReferenceDataRepositoryInterface, OptionRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -32,6 +32,7 @@ class ReferenceDataOptionRepository extends EntityRepository implements
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
     {
         //TODO-CR: bad, because referential could need parameters for constructors
+        //TODO-CR: maybe we should just rely on a "code" property...
         $referential = new $this->_entityName();
         $referential->getIdentifierProperties();
 
