@@ -73,7 +73,7 @@ class SimpleSelectValueSetter extends AbstractValueSetter
                 ->findOneBy(['code' => $data, 'attribute' => $attribute]);
 
             if (null === $option) {
-                throw InvalidArgumentException::arrayInvalidKey(
+                throw InvalidArgumentException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'code',
                     'The option does not exist',

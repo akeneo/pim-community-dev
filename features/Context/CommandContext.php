@@ -93,14 +93,14 @@ class CommandContext extends RawMinkContext
             $actual   = json_decode($getCommandTester->getDisplay(), true);
 
             if (null === $actual) {
-                throw new Exception(sprintf(
+                throw new \Exception(sprintf(
                     'An error occured during the execution of the update command : %s',
                     $getCommandTester->getDisplay()
                 ));
             }
 
             if (null === $expected) {
-                throw new Exception(sprintf(
+                throw new \Exception(sprintf(
                     'Looks like the expected result is not valid json : %s',
                     $update['result']
                 ));
