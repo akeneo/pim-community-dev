@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
@@ -17,7 +18,7 @@ class CategorySetter extends AbstractFieldSetter
 {
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
-     * @param array                                 $supportedTypes
+     * @param array                                 $supportedFields
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $categoryRepository,
@@ -36,11 +37,7 @@ class CategorySetter extends AbstractFieldSetter
     {
         $this->checkData($field, $data);
 
-        $categories = $product->getCategories();
-        foreach ($categories as $category) {
-            $product->removeCategory($category);
-        }
-
+        $categories = [];
         foreach ($data as $categoryCode) {
             $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
 
@@ -52,8 +49,17 @@ class CategorySetter extends AbstractFieldSetter
                     'category',
                     $categoryCode
                 );
+            } else {
+                $categories[] = $category;
             }
+        }
 
+        $oldCategories = $product->getCategories();
+        foreach ($oldCategories as $category) {
+            $product->removeCategory($category);
+        }
+
+        foreach ($categories as $category) {
             $product->addCategory($category);
         }
     }

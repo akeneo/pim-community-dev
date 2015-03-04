@@ -43,7 +43,7 @@ class SetterRegistry implements SetterRegistryInterface
             $this->attributeSetters[] = $setter;
         }
 
-        //TODO add an exception if the setter is neither FieldSetterInterface or AttributeSetterInterface
+        return null;
     }
 
     /**
@@ -53,7 +53,6 @@ class SetterRegistry implements SetterRegistryInterface
      */
     public function get(AttributeInterface $attribute)
     {
-
         foreach ($this->attributeSetters as $setter) {
             if ($setter->supports($attribute)) {
                 return $setter;
@@ -74,12 +73,7 @@ class SetterRegistry implements SetterRegistryInterface
             return $this->getAttributeSetter($attribute);
         }
 
-        $setter = $this->getFieldSetter($code);
-        if ($setter) {
-            return $setter;
-        }
-
-        throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $code));
+        return $this->getFieldSetter($code);
     }
 
     /**
