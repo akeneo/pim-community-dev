@@ -1,7 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\AttributeType;
+namespace Pim\Bundle\ReferenceDataBundle\AttributeType;
 
+use Pim\Bundle\CatalogBundle\AttributeType\OptionMultiSelectType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
@@ -10,6 +11,8 @@ use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
  * Reference data multi options (select) attribute type
+ *
+ * TODO-CR: do not extend OptionMultiSelectType
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -86,7 +89,7 @@ class ReferenceDataMultiSelectType extends OptionMultiSelectType
      */
     public function getName()
     {
-        return 'pim_catalog_reference_data_multiselect';
+        return 'pim_reference_data_multiselect';
     }
 
     /**

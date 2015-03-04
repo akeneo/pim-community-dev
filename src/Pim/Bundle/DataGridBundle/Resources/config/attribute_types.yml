@@ -149,7 +149,7 @@ parameters:
                     attr:
                         empty_choice: true
         sorter:            ~
-    pim_datagrid.product.attribute_type.pim_catalog_reference_data_simpleselect:
+    pim_datagrid.product.attribute_type.pim_reference_data_simpleselect:
         column:
             type:        product_value_option
             selector:    product_value_option
@@ -162,7 +162,7 @@ parameters:
                     attr:
                         empty_choice: true
         sorter:          product_value
-    pim_datagrid.product.attribute_type.pim_catalog_reference_data_multiselect:
+    pim_datagrid.product.attribute_type.pim_reference_data_multiselect:
         column:
             type:        product_value_options
             selector:    product_value_options
