@@ -30,20 +30,10 @@ class Classify extends ProductMassEditOperation
 
     /**
      * @param CategoryManager                     $categoryManager
-     * @param BulkSaverInterface                  $productSaver
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
-        CategoryManager $categoryManager,
-        BulkSaverInterface $productSaver,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        PaginatorFactoryInterface $paginatorFactory,
-        ObjectDetacherInterface $objectDetacher
+        CategoryManager $categoryManager
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
-
         $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
         $this->categories      = [];

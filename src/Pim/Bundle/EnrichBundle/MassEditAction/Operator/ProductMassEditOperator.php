@@ -24,19 +24,19 @@ class ProductMassEditOperator extends AbstractMassEditOperator
     /**
      * {@inheritdoc}
      */
-    public function getPerformedOperationRedirectionRoute()
-    {
-        return 'pim_enrich_product_index';
-    }
+//    public function getPerformedOperationRedirectionRoute()
+//    {
+//        return 'pim_enrich_product_index';
+//    }
 
     /**
      * {@inheritdoc}
      */
-    public function finalizeOperation()
-    {
-        set_time_limit(0);
-        if ($this->operation instanceof ProductMassEditOperation) {
-            $this->operation->finalize();
-        }
-    }
+//    public function finalizeOperation()
+//    {
+//        set_time_limit(0);
+//        if ($this->operation instanceof ProductMassEditOperation) {
+//            $this->operation->finalize();
+//        }
+//    }
 }

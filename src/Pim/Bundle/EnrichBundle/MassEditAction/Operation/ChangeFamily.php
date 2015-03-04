@@ -18,14 +18,6 @@ class ChangeFamily extends ProductMassEditOperation
     protected $family;
 
     /**
-     * {@inheritdoc}
-     */
-    public function affectsCompleteness()
-    {
-        return true;
-    }
-
-    /**
      * @param FamilyInterface $family
      *
      * @return ChangeFamily

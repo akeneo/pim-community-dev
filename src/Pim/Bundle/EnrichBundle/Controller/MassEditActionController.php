@@ -10,10 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -43,9 +44,6 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
-    /** @var MassActionDispatcher */
-    protected $massActionDispatcher;
-
     /** @var ValidatorInterface */
     protected $validator;
 
@@ -57,6 +55,10 @@ class MassEditActionController extends AbstractDoctrineController
 
     /** @var MassEditJobManager */
     protected $massEditJobManager;
+    /**
+     * @var OperationRegistry
+     */
+    private $operationRegistry;
 
     /** @var DoctrineJobRepository */
     protected $jobManager;
@@ -78,11 +80,11 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ManagerRegistry            $doctrine
      * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param MassEditJobManager         $massEditJobManager
      * @param DoctrineJobRepository      $jobManager
      * @param ConnectorRegistry          $connectorRegistry
+     * @param OperationRegistry          $operationRegistry
      */
     public function __construct(
         Request $request,
@@ -96,11 +98,11 @@ class MassEditActionController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         OperatorRegistry $operatorRegistry,
         MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
         MassEditJobManager $massEditJobManager,
         DoctrineJobRepository $jobManager,
-        ConnectorRegistry $connectorRegistry
+        ConnectorRegistry $connectorRegistry,
+        OperationRegistry $operationRegistry
     ) {
         parent::__construct(
             $request,
@@ -121,6 +123,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->massEditJobManager   = $massEditJobManager;
         $this->jobManager           = $jobManager;
         $this->connectorRegistry    = $connectorRegistry;
+        $this->operationRegistry  = $operationRegistry;
     }
 
     /**
@@ -131,27 +134,27 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction()
     {
-        $operator = $this->operatorRegistry->getOperator(
-            $this->request->get('gridName')
-        );
+        $gridName = $this->request->get('gridName');
+        $itemsName = $this->getItemsName($gridName);
 
-        $form = $this->getOperatorForm($operator);
+        $availableOperations = $this->operationRegistry->getAllByGridName($gridName);
+        $form = $this->getOperationsForm($availableOperations);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
             if ($form->isValid()) {
+                $data = $form->getData();
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
-                    $this->getQueryParams() + ['operationAlias' => $operator->getOperationAlias()]
+                    $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
                 );
             }
         }
 
         return [
-            'form' => $form->createView(),
-            'count' => $this->getObjectCount(),
+            'form'        => $form->createView(),
             'queryParams' => $this->getQueryParams(),
-            'operator' => $operator,
+            'itemsName'   => $itemsName
         ];
     }
 
@@ -164,23 +167,14 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        try {
-            $operator = $this->operatorRegistry->getOperator(
-                $this->request->get('gridName')
-            );
+        $operation = $this->operationRegistry->get($operationAlias);
+        $gridName = $this->request->get('gridName');
+        $itemsName = $this->getItemsName($gridName);
 
-            $operator
-                ->setOperationAlias($operationAlias);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
-        $operator->initializeOperation();
         $form = $this->getOperatorForm($operator);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-            $operator->initializeOperation();
             $form = $this->getOperatorForm($operator);
         }
 
@@ -189,8 +183,8 @@ class MassEditActionController extends AbstractDoctrineController
             [
                 'form'         => $form->createView(),
                 'operator'     => $operator,
-                'productCount' => $this->getObjectCount(),
-                'queryParams'  => $this->getQueryParams()
+                'queryParams'  => $this->getQueryParams(),
+                'itemsName'   => $itemsName
             ]
         );
     }
@@ -209,25 +203,26 @@ class MassEditActionController extends AbstractDoctrineController
                 $this->request->get('gridName')
             );
 
-            $operator
-                ->setOperationAlias($operationAlias);
+            $operator->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $operator->initializeOperation();
+//        $operator->initializeOperation();
         $form = $this->getOperatorForm($operator, ['Default', 'configureAction']);
         $form->submit($this->request);
 
         if ($form->isValid()) {
 
-            $operator->getOperation()->saveConfiguration();
+//            $operator->getOperation()->saveConfiguration();
+            $pimFilters = $this->gridFilterAdapter->transform($this->request);
 
+            $rawConfiguration = json_encode($operator->getOperation()->getConfiguration());
+//            $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
             //TODO: to remove !
             $jobInstance = $this->jobManager->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode('change_status');
             $jobInstance = $this->getJobInstance($jobInstance->getId());
 
-            $rawConfiguration = json_encode($operator->getOperation()->getConfiguration());
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
 
             // Binding does not actually perform the operation, thus form errors can miss some constraints
@@ -244,13 +239,13 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $operator->finalizeOperation();
+//            $operator->finalizeOperation();
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
             );
 
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
+            return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         return $this->render(
@@ -258,7 +253,6 @@ class MassEditActionController extends AbstractDoctrineController
             [
                 'form'         => $form->createView(),
                 'operator'     => $operator,
-                'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
             ]
         );
@@ -324,14 +318,33 @@ class MassEditActionController extends AbstractDoctrineController
         );
     }
 
-    /**
-     * Get the count of objects to perform the mass action on
-     *
-     * @return integer
-     */
-    protected function getObjectCount()
+    protected function getItemsName($gridName)
     {
-        return count($this->getObjects());
+        switch ($gridName) {
+            case 'product-grid':
+                return 'product';
+            case 'family-grid':
+                return 'family';
+            default:
+                return 'item';
+        }
+    }
+
+    protected function getOperationsForm($availableOperations)
+    {
+        $choices = [];
+
+        foreach (array_keys($availableOperations) as $alias) {
+                $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
+        }
+
+        return $this->createForm(
+            new MassEditOperatorType(),
+            null,
+            [
+                'operations' => $choices
+            ]
+        );
     }
 
     /**
@@ -350,27 +363,5 @@ class MassEditActionController extends AbstractDoctrineController
         $params['dataLocale'] = $this->request->get('dataLocale', null);
 
         return $params;
-    }
-
-    /**
-     * Dispatch mass action
-     */
-    protected function dispatchMassAction()
-    {
-        $this->objects = $this->massActionDispatcher->dispatch($this->request);
-    }
-
-    /**
-     * Get products to mass edit
-     *
-     * @return array
-     */
-    protected function getObjects()
-    {
-        if ($this->objects === null) {
-            $this->dispatchMassAction();
-        }
-
-        return $this->objects;
     }
 }

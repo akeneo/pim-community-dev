@@ -16,8 +16,6 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_enrich.mass_edit_action.operator.registry'
-            - '@pim_notification.manager.notification'
             - '%akeneo_batch.entity.job_execution.class%'
             - %kernel.root_dir%
             - %kernel.environment%

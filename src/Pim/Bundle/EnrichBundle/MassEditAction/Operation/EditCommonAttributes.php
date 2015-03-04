@@ -26,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributes extends ProductMassEditOperation implements InitializableMassEditOperationInterface
+class EditCommonAttributes extends ProductMassEditOperation
 {
     /** @var ArrayCollection|ProductValueInterface[] */
     protected $values;
@@ -70,10 +70,6 @@ class EditCommonAttributes extends ProductMassEditOperation implements Initializ
      * @param CatalogContext                      $catalogContext
      * @param ProductMassActionManager            $massActionManager
      * @param NormalizerInterface                 $normalizer
-     * @param BulkSaverInterface                  $productSaver
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param PaginatorFactoryInterface           $paginatorFactory
-     * @param ObjectDetacherInterface             $objectDetacher
      */
     public function __construct(
         ProductBuilder $productBuilder,
@@ -81,14 +77,8 @@ class EditCommonAttributes extends ProductMassEditOperation implements Initializ
         UserContext $userContext,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
-        NormalizerInterface $normalizer,
-        BulkSaverInterface $productSaver,
-        ProductQueryBuilderFactoryInterface $pqbFactory,
-        PaginatorFactoryInterface $paginatorFactory,
-        ObjectDetacherInterface $objectDetacher
+        NormalizerInterface $normalizer
     ) {
-        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
-
         $this->productBuilder      = $productBuilder;
         $this->productUpdater      = $productUpdater;
         $this->userContext         = $userContext;
@@ -222,14 +212,6 @@ class EditCommonAttributes extends ProductMassEditOperation implements Initializ
         foreach ($commonAttributes as $attribute) {
             $this->addValues($attribute, $this->getLocale());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function perform()
-    {
-        parent::perform();
     }
 
     /**
