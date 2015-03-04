@@ -33,8 +33,6 @@ Feature: Remove an attribute from a product
     And the "nike" product has the "scopable_length" attribute
     And I am on the "nike" product page
     When I visit the "Sizes" group
-    # need only for behat. If not, button to remove field is not shown
-    And I refresh current page
     And I remove the "Scopable length" attribute
     Then I should see flash message "Attribute successfully removed from the product"
     And attribute in group "Sizes" should be Size

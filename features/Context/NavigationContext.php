@@ -68,7 +68,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'group types'              => 'GroupType index',
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
+        'user roles creation'      => 'UserRole creation',
         'user groups'              => 'UserGroup index',
+        'user groups creation'     => 'UserGroup creation',
+        'user groups edit'         => 'UserGroup edit',
         'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
@@ -137,7 +140,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      * @param string $not
      * @param string $page
      *
-     * @return null|Then
+     * @return null|Step\Then
      * @Given /^I should( not)? be able to access the ([^"]*) page$/
      */
     public function iShouldNotBeAbleToAccessThePage($not, $page)
@@ -205,6 +208,32 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I edit the "([^"]*)" user group$/
+     */
+    public function iEditTheUserGroup($identifier)
+    {
+        $page = 'UserGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('UserGroup edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $label
+     *
+     * @Given /^I edit the "([^"]+)" user role$/
+     */
+    public function iEditTheUserRole($label)
+    {
+        $page = 'UserRole';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($label);
+        $this->openPage(sprintf('UserRole edit', $page), array('id' => $entity->getId()));
     }
 
     /**
@@ -411,7 +440,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @param string $name
      *
-     * @return Page
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     public function getPage($name)
     {
@@ -500,6 +529,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $expectedAddress = $this->getPage('Role edit')->getUrl(array('id' => $role->getId()));
         $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @Then /^I should be on the user groups edit page$/
+     */
+    public function iShouldBeOnTheUserGroupsEditPage()
+    {
+        $this->assertAddress($this->getPage('UserGroup edit')->getUrl());
     }
 
     /**
@@ -595,7 +632,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      * @param string $page
      * @param array  $options
      *
-     * @return Page
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     public function openPage($page, array $options = array())
     {
@@ -609,7 +646,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @return Page
+     * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
     public function getCurrentPage()
     {
