@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -162,12 +163,19 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     protected function setPrices(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+
+        if (null !== $value) {
+            $product->removeValue($value);
         }
 
+        $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+
+        $currencies = [];
         foreach ($data as $price) {
+            $currencies[] = $price['currency'];
             $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
         }
+
+        $this->productBuilder->removePricesNotInCurrency($value, $currencies);
     }
 }
