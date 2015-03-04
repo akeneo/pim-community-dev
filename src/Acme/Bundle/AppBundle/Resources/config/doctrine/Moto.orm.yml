@@ -8,6 +8,10 @@ Acme\Bundle\AppBundle\Entity\Moto:
             id: true
             generator:
                 strategy: AUTO
+        code:
+            type: string
+            length: 255
+            unique: true
         brand:
             type: string
             length: 255

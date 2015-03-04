@@ -8,10 +8,11 @@ Acme\Bundle\AppBundle\Entity\Car:
             id: true
             generator:
                 strategy: AUTO
-        brand:
+        code:
             type: string
             length: 255
-        model:
+            unique: true
+        name:
             type: string
             length: 255
         year:

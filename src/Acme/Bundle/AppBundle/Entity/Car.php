@@ -2,8 +2,8 @@
 
 namespace Acme\Bundle\AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Model\AbstractReferenceData;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
  * Acme Car entity (used as multi reference data)
@@ -11,75 +11,31 @@ use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * The car label is given by the property "name"
  */
-class Car implements ReferenceDataInterface
+class Car extends AbstractReferenceData implements ReferenceDataInterface
 {
-    /** @var int */
-    protected $id;
-
     /** @var string */
-    protected $brand;
-
-    /** @var string */
-    protected $model;
+    protected $name;
 
     /** @var int */
     protected $year;
 
     /**
-     * Get id
-     *
-     * @return int 
+     * @return string
      */
-    public function getId()
+    public function getName()
     {
-        return $this->id;
+        return $this->name;
     }
 
     /**
-     * Set brand
-     *
-     * @param string $brand
-     * @return Car
+     * @param string $name
      */
-    public function setBrand($brand)
+    public function setName($name)
     {
-        $this->brand = $brand;
-
-        return $this;
-    }
-
-    /**
-     * Get brand
-     *
-     * @return string 
-     */
-    public function getBrand()
-    {
-        return $this->brand;
-    }
-
-    /**
-     * Set model
-     *
-     * @param string $model
-     * @return Car
-     */
-    public function setModel($model)
-    {
-        $this->model = $model;
-
-        return $this;
-    }
-
-    /**
-     * Get model
-     *
-     * @return string 
-     */
-    public function getModel()
-    {
-        return $this->model;
+        $this->name = $name;
     }
 
     /**
@@ -105,21 +61,25 @@ class Car implements ReferenceDataInterface
         return $this->year;
     }
 
-    public function getIdentifier()
+    /**
+     * {@inheritdoc}
+     */
+    public static function getLabelProperties()
     {
-        return sprintf('%s - %s', $this->brand, $this->model);
+        return ['name'];
     }
 
-    public function getIdentifierProperties()
-    {
-        return ['brand', 'model'];
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getType()
     {
         return 'car';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSortOrder()
     {
         return 0;

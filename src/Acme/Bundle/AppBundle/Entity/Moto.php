@@ -2,7 +2,8 @@
 
 namespace Acme\Bundle\AppBundle\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Model\AbstractReferenceData;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
  * Acme Moto entity (used as simple reference data)
@@ -10,12 +11,11 @@ use Pim\Bundle\CatalogBundle\Model\ReferenceDataInterface;
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * The moto label is given by the properties "brand" and "model".
  */
-class Moto implements ReferenceDataInterface
+class Moto extends AbstractReferenceData implements ReferenceDataInterface
 {
-    /** @var int */
-    protected $id;
-
     /** @var string */
     protected $brand;
 
@@ -24,16 +24,6 @@ class Moto implements ReferenceDataInterface
 
     /** @var int */
     protected $year;
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set brand
@@ -104,21 +94,25 @@ class Moto implements ReferenceDataInterface
         return $this->year;
     }
 
-    public function getIdentifier()
-    {
-        return sprintf('%s - %s', $this->brand, $this->model);
-    }
-
-    public function getIdentifierProperties()
+    /**
+     * {@inheritdoc}
+     */
+    public static function getLabelProperties()
     {
         return ['brand', 'model'];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getType()
     {
         return 'moto';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSortOrder()
     {
         return 0;
