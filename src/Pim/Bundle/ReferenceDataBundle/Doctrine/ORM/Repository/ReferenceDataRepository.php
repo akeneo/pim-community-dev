@@ -19,6 +19,8 @@ class ReferenceDataRepository extends EntityRepository implements
  ReferenceDataRepositoryInterface, OptionRepositoryInterface
 {
     /**
+     * TODO-CR: should be renamed or dropped if unsed
+     *
      * {@inheritdoc}
      */
     public function getOption($id, $collectionId = null, array $options = array())
@@ -27,24 +29,28 @@ class ReferenceDataRepository extends EntityRepository implements
     }
 
     /**
+     * TODO-CR: should be renamed
+     *
      * {@inheritdoc}
      */
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
     {
-        //TODO-CR: bad, because referential could need parameters for constructors
-        //TODO-CR: maybe we should just rely on a "code" property...
-        $referential = new $this->_entityName();
-        $referential->getIdentifierProperties();
+        $labelProperties = $this->getReferenceDataLabelProperties();
 
-        $identifiers = array_map(
+        $labels = array_map(
             function ($property) {
                 return $this->getAlias() . '.' . $property;
             },
-            $referential->getIdentifierProperties()
+            $labelProperties
         );
 
+        $labelSelectExpr = $labels[0];
+        if (count($labelProperties) > 1) {
+            $labelSelectExpr = sprintf('CONCAT(%s)', implode(", ' - ', ", $labels));
+        }
+
         $qb = $this->createQueryBuilder('cr');
-        $qb->select(sprintf('%s.id as id, CONCAT(%s) as text', $this->getAlias(), implode(", ' - ', ", $identifiers)));
+        $qb->select(sprintf('%s.id as id, %s as text', $this->getAlias(), $labelSelectExpr));
 
         return [
             'results' => $qb->getQuery()->getArrayResult(),
@@ -52,14 +58,26 @@ class ReferenceDataRepository extends EntityRepository implements
     }
 
     /**
+     * TODO-CR: should be dropped
+     *
      * {@inheritdoc}
      */
     public function getOptionLabel($referenceData, $dataLocale)
     {
-        return $referenceData->getIdentifier();
+        $labelsProperties = $this->getReferenceDataLabelProperties();
+        $labels = [];
+
+        foreach ($labelsProperties as $property) {
+            $getter = 'get' . ucfirst($property);
+            $labels [] = $referenceData->$getter();
+        }
+
+        return implode(' - ', $labels);
     }
 
     /**
+     * TODO-CR: should be dropped
+     *
      * {@inheritdoc}
      */
     public function getOptionId($referenceData)
@@ -70,5 +88,17 @@ class ReferenceDataRepository extends EntityRepository implements
     public function getAlias()
     {
         return 'cr';
+    }
+
+    /**
+     * The list of label properties of the reference data
+     *
+     * @return array
+     */
+    private function getReferenceDataLabelProperties()
+    {
+        $referenceDataClass = $this->_entityName;
+
+        return $referenceDataClass::getLabelProperties();
     }
 }
