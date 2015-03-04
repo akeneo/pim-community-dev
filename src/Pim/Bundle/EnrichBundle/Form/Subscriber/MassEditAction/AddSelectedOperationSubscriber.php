@@ -31,18 +31,18 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        $data = $event->getData();
-        $form = $event->getForm();
-
-        if (null === $data) {
-            return;
-        }
-
-        $operation = $data->getOperation();
-        if ($operation instanceof MassEditOperationInterface) {
-            $form
-                ->remove('operationAlias')
-                ->add('operation', $operation->getFormType(), $operation->getFormOptions());
-        }
+//        $data = $event->getData();
+//        $form = $event->getForm();
+//
+//        if (null === $data) {
+//            return;
+//        }
+//
+//        $operation = $data->getOperation();
+//        if ($operation instanceof MassEditOperationInterface) {
+//            $form
+//                ->remove('operationAlias')
+//                ->add('operation', $operation->getFormType(), $operation->getFormOptions());
+//        }
     }
 }

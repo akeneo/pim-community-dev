@@ -26,9 +26,4 @@ interface MassEditOperationInterface
      * @return array
      */
     public function getFormOptions();
-
-    /**
-     * Perform an operation on a set of products
-     */
-    public function perform();
 }
