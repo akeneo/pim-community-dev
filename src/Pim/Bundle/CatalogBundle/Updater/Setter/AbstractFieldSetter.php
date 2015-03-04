@@ -16,14 +16,6 @@ abstract class AbstractFieldSetter implements FieldSetterInterface
     /** @var array */
     protected $supportedFields = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(AttributeInterface $attribute)
-    {
-        return false;
-    }
-
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
         throw new \Exception('This method is not supported for field setters');
@@ -36,5 +28,15 @@ abstract class AbstractFieldSetter implements FieldSetterInterface
     public function supportsField($field)
     {
         return in_array($field, $this->supportedFields);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use methods from FieldSetterInterface and AttributeSetterInterface
+     */
+    public function supports(AttributeInterface $attribute)
+    {
+        return false;
     }
 }

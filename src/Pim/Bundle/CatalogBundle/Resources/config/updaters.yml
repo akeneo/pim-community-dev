@@ -9,8 +9,8 @@ parameters:
     pim_catalog.updater.setter.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\BooleanValueSetter
     pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateValueSetter
     pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberValueSetter
-    pim_catalog.updater.setter.category.class:               Pim\Bundle\CatalogBundle\Updater\Setter\CategorySetter
-    pim_catalog.updater.setter.enabled.class:                Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
+    pim_catalog.updater.setter.category_field.class:               Pim\Bundle\CatalogBundle\Updater\Setter\CategorySetter
+    pim_catalog.updater.setter.enabled_field.class:                Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
     pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectValueSetter
     pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionValueSetter
@@ -97,16 +97,16 @@ services:
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
-    pim_catalog.updater.setter.category:
-        class: %pim_catalog.updater.setter.category.class%
+    pim_catalog.updater.setter.category_field:
+        class: %pim_catalog.updater.setter.category_field.class%
         arguments:
             - '@pim_catalog.repository.category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
-    pim_catalog.updater.setter.enabled:
-        class: %pim_catalog.updater.setter.enabled.class%
+    pim_catalog.updater.setter.enabled_field:
+        class: %pim_catalog.updater.setter.enabled_field.class%
         arguments:
             - ['enabled']
         tags:

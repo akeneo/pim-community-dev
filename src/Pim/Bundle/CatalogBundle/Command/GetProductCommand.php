@@ -39,7 +39,7 @@ class GetProductCommand extends ContainerAwareCommand
     {
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
-        if (!$product) {
+        if (null !== $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
             return;
@@ -53,7 +53,7 @@ class GetProductCommand extends ContainerAwareCommand
     /**
      * @param string $identifier
      *
-     * @return ProductInterface
+     * @return ProductInterface|null
      */
     protected function getProduct($identifier)
     {
