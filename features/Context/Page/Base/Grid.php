@@ -802,6 +802,33 @@ class Grid extends Index
     }
 
     /**
+     * @param string $filterName The name of the number filter
+     * @param string $action     Type of filtering (>, >=, etc.)
+     * @param double $value      Value to filter
+     */
+    public function filterPerNumber($filterName, $action, $value)
+    {
+        $filter = $this->getFilter($filterName);
+        if (!$filter) {
+            throw new \InvalidArgumentException("Could not find filter for $filterName.");
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $criteriaElt->fillField('value', $value);
+
+        $buttons = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
+        $actionButton = array_shift($buttons);
+
+        // Open the dropdown menu with action list and click on $action line
+        $actionButton->click();
+        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
+
+        $filter->find('css', 'button.filter-update')->click();
+    }
+
+    /**
      * Open the column configuration popin
      * @return null
      */

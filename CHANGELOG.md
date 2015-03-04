@@ -1,3 +1,12 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-3771: Create version when modifying variant group attribute
+
+## BC breaks
+- Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
+- Change the constructor of `Pim/Bundle/TransformBundle/Normalizer/Structured/GroupNormalizer`, added `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` as the last argument
+
 # 1.3.3 (2015-03-02)
 
 ## Bug fixes
@@ -10,6 +19,7 @@
 - PIM-3834: add missing cascade detach product -> associations, product -> completenesses
 - PIM-3820: Attribute option translation not well handled on import
 - PIM-3762: Fix the bug on image not well displayed on pdf export
+- PIM-3307: Fix filter dropdown rendering
 
 # 1.3.1 (2015-02-24)
 

@@ -103,8 +103,8 @@ class MediaFilter extends AbstractAttributeFilter implements AttributeFilterInte
     }
 
     /**
-     * @param AttributeInterface $attribute the attribute
-     * @param string             $joinAlias the join alias
+     * @param AttributeInterface $attribute      the attribute
+     * @param string             $joinAlias      the join alias
      * @param string             $joinAliasMedia the join alias
      */
     protected function addMediaLeftJoin(AttributeInterface $attribute, $joinAlias, $joinAliasMedia)

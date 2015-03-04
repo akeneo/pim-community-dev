@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Factory;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 /**
  * Family factory
@@ -31,8 +32,6 @@ class FamilyFactory
     protected $factory;
 
     /**
-     * Constructor
-     *
      * @param ProductManager              $productManager
      * @param ChannelManager              $channelManager
      * @param AttributeRequirementFactory $factory
@@ -48,9 +47,7 @@ class FamilyFactory
     }
 
     /**
-     * Create and configure a family intance
-     *
-     * @return Family
+     * @return FamilyInterface
      */
     public function createFamily()
     {
@@ -69,8 +66,6 @@ class FamilyFactory
     }
 
     /**
-     * Get the PIM channels
-     *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
      */
     protected function getChannels()

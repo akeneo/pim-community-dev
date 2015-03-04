@@ -28,7 +28,7 @@ datagrid:
 
             delete_link:
                 type: url
-                route: oro_api_delete_group
+                route: oro_user_group_delete
                 params:
                     - id
 

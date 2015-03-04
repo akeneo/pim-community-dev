@@ -40,7 +40,7 @@
     {% endif %}
     {% if resource_granted('oro_user_user_delete') and entity.id!=app.user.id %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_user', {'id': entity.id}),
+            'dataUrl': path('oro_user_user_delete', {'id': entity.id}),
             'dataRedirect': path('oro_user_index'),
             'aCss': 'no-hash remove-button',
             'id': 'btn-remove-user',
@@ -89,7 +89,7 @@
   <div class="user-profile-cols">
     {% set id = 'user-profile' %}
 
-    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: 'Primary'|trans}, entity.emails|length ? {data: entity.emails, field:'email'} : {})] %}
+    {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
 
     {% set dataBlocks = [
         {

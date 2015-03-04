@@ -39,7 +39,7 @@ class GroupNormalizer extends Structured\GroupNormalizer
         }
 
         $valuesData = $group->getProductTemplate()->getValuesData();
-        $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
+        $values = $this->valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'json');
 
         $normalizedValues = [];
         foreach ($values as $value) {
