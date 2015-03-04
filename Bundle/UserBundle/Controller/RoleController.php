@@ -92,6 +92,12 @@ class RoleController extends Controller
         }
 
         $em->remove($role);
+
+        $aclSidManager = $this->get('oro_security.acl.sid_manager');
+        if ($aclSidManager->isAclEnabled()) {
+            $aclSidManager->deleteSid($aclSidManager->getSid($role));
+        }
+
         $em->flush();
 
         return new JsonResponse('', 204);

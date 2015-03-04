@@ -172,12 +172,12 @@
 {% endmacro %}
 
 {% macro saveAndCloseButton(label = 'Save and Close') %}
-    {{ _self.buttonType({'type': 'submit', 'class': 'btn-success', 'label': label}) }}
+    {{ _self.buttonType({'type': 'submit', 'class': 'btn-primary', 'label': label}) }}
 {% endmacro %}
 
 {% macro saveAndStayButton(acl = '', label = 'Save') %}
     {% if acl is empty or resource_granted(acl) %}
-    {{ _self.buttonType({'type': 'button', 'class': 'btn-success', 'label': label, 'action': 'save_and_stay'}) }}
+    {{ _self.buttonType({'type': 'button', 'class': 'btn-primary', 'label': label, 'action': 'save_and_stay'}) }}
     {% endif %}
 {% endmacro %}
 
