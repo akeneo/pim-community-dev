@@ -150,11 +150,13 @@ a.select2-choice {
   &:hover {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 4%));
     .box-shadow(inset 0 1px 0 0 @btnInfoBackgroundLight);
+    color: #fff;
   }
   &:active,
   &:focus {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 10%));
     .box-shadow(inset 0 1px 4px 0 darken(@btnInfoBackgroundLight, 10%));
+    color: #fff;
   }
   &.disabled {
     background-color: lighten(@btnInfoBackgroundLight, 10%);
@@ -666,12 +668,6 @@ div.ui-dialog {
   }
 }
 
-#sortable_options {
-  th {
-    text-align: center;
-  }
-}
-
 /* Sortable table */
 table.ui-sortable, tbody.ui-sortable {
   td.handle {
@@ -927,13 +923,6 @@ h1 {
   font-weight: normal;
   line-height: 33px;
   color: @textColor + #555;
-}
-.page-title {
-  padding: 10px 7px 10px 12px;
-  h1 {
-    margin: 0;
-    line-height: 33px;
-  }
 }
 
 .navbar-extra {

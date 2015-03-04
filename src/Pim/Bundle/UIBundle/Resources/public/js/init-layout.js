@@ -206,21 +206,4 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             return false;
         });
     });
-
-    /* ============================================================
-     * from form/collection.js'
-     * ============================================================ */
-    $(document).on('click', '.add-list-item', function (e) {
-        e.preventDefault();
-        var cList  = $(this).siblings('.collection-fields-list'),
-            widget = cList.attr('data-prototype').replace(/__name__/g, cList.children().length),
-            data = $('<div/>').html(widget);
-
-        data.children().appendTo(cList);
-    });
-
-    $(document).on('click', '.removeRow', function (e) {
-        e.preventDefault();
-        $(this).parents('*[data-content]').remove();
-    });
 });
