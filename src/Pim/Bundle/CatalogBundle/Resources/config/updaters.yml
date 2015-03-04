@@ -1,0 +1,248 @@
+parameters:
+    pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
+    pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
+
+    pim_catalog.updater.setter.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Setter\AbstractValueSetter
+    pim_catalog.updater.setter.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\TextValueSetter
+    pim_catalog.updater.setter.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\MetricValueSetter
+    pim_catalog.updater.setter.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\BooleanValueSetter
+    pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateValueSetter
+    pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberValueSetter
+    pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
+    pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectValueSetter
+    pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionValueSetter
+    pim_catalog.updater.setter.media_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\MediaValueSetter
+
+    pim_catalog.updater.copier.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier
+    pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
+    pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.textarea_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.image_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\MediaValueCopier
+    pim_catalog.updater.copier.file_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\MediaValueCopier
+    pim_catalog.updater.copier.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\MetricValueCopier
+    pim_catalog.updater.copier.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
+    pim_catalog.updater.copier.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectValueCopier
+    pim_catalog.updater.copier.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionValueCopier
+
+services:
+    pim_catalog.updater.product:
+        class: %pim_catalog.updater.product.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+            - @pim_catalog.updater.setter.registry
+            - @pim_catalog.updater.copier.registry
+
+    pim_catalog.updater.product_template:
+        class: %pim_catalog.updater.product_template.class%
+        arguments:
+            - @pim_catalog.updater.product
+
+    pim_catalog.updater.setter.registry:
+        class: %pim_catalog.updater.setter.registry.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+
+    pim_catalog.updater.setter.abstract:
+        class: %pim_catalog.updater.setter.abstract.class%
+        public: false
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.validator.helper.attribute
+
+    pim_catalog.updater.setter.text_value:
+        class: %pim_catalog.updater.setter.text_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_text', 'pim_catalog_textarea']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.metric_value:
+        class: %pim_catalog.updater.setter.metric_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - @pim_catalog.factory.metric
+            - @akeneo_measure.manager
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.boolean_value:
+        class: %pim_catalog.updater.setter.boolean_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.date_value:
+        class: %pim_catalog.updater.setter.date_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.number_value:
+        class: %pim_catalog.updater.setter.number_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.multiselect_value:
+        class: %pim_catalog.updater.setter.multiselect_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - @pim_catalog.repository.attribute_option
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.price_collection_value:
+        class: %pim_catalog.updater.setter.price_collection_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - @pim_catalog.manager.currency
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.simpleselect_value:
+        class: %pim_catalog.updater.setter.simpleselect_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - @pim_catalog.repository.attribute_option
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.media_value:
+        class: %pim_catalog.updater.setter.media_value.class%
+        parent: pim_catalog.updater.setter.abstract
+        arguments:
+            - @pim_catalog.manager.media
+            - @pim_catalog.factory.media
+            - ['pim_catalog_file', 'pim_catalog_image']
+            - %upload_dir%
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.copier.abstract:
+        class: %pim_catalog.updater.copier.abstract.class%
+        public: false
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.validator.helper.attribute
+
+    pim_catalog.updater.copier.registry:
+        class: %pim_catalog.updater.copier.registry.class%
+
+    pim_catalog.updater.copier.text_value:
+        class: %pim_catalog.updater.copier.text_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_text']
+            - ['pim_catalog_text']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.image_value:
+        class: %pim_catalog.updater.copier.image_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - @pim_catalog.manager.media
+            - @pim_catalog.factory.media
+            - ['pim_catalog_image']
+            - ['pim_catalog_image']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.file_value:
+        class: %pim_catalog.updater.copier.file_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - @pim_catalog.manager.media
+            - @pim_catalog.factory.media
+            - ['pim_catalog_file']
+            - ['pim_catalog_file']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.textarea_value:
+        class: %pim_catalog.updater.copier.textarea_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_textarea']
+            - ['pim_catalog_textarea']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.boolean_value:
+        class: %pim_catalog.updater.copier.boolean_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_boolean']
+            - ['pim_catalog_boolean']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.number_value:
+        class: %pim_catalog.updater.copier.number_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_number']
+            - ['pim_catalog_number']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.date_value:
+        class: %pim_catalog.updater.copier.date_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_date']
+            - ['pim_catalog_date']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.metric_value:
+        class: %pim_catalog.updater.copier.metric_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - @pim_catalog.factory.metric
+            - ['pim_catalog_metric']
+            - ['pim_catalog_metric']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.simpleselect_value:
+        class: %pim_catalog.updater.copier.simpleselect_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_simpleselect']
+            - ['pim_catalog_simpleselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.multiselect_value:
+        class: %pim_catalog.updater.copier.multiselect_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_multiselect']
+            - ['pim_catalog_multiselect']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.price_collection_value:
+        class: %pim_catalog.updater.copier.price_collection_value.class%
+        parent: pim_catalog.updater.copier.abstract
+        arguments:
+            - ['pim_catalog_price_collection']
+            - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }

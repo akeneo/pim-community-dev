@@ -25,7 +25,7 @@ class CompletenessWidget extends Element
      */
     public function getChannelCompleteness($channel)
     {
-        $cell = $this->find('css', sprintf('tr:contains("%s") td:nth-child(3)', $channel));
+        $cell = $this->find('css', sprintf('tr:contains("%s") td>b', $channel));
         if (!$cell) {
             throw new \InvalidArgumentException(sprintf('Could not find channel "%s"', $channel));
         }
@@ -43,13 +43,15 @@ class CompletenessWidget extends Element
      */
     public function getLocalizedChannelCompleteness($channel, $locale)
     {
-        $cell = $this->find('css', sprintf('tr:contains("%s")[data-channel="%s"] td:nth-child(3)', $locale, $channel));
-        if (!$cell) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find locale "%s" for channel "%s"', $locale, $channel)
-            );
+        $cells = $this->findAll('css', sprintf('tr:contains("%s")[data-channel="%s"] td', $locale, $channel));
+        foreach ($cells as $cell) {
+            if (false !== strpos($cell->getText(), '%')) {
+                return $cell->getText();
+            }
         }
 
-        return $cell->getText();
+        throw new \InvalidArgumentException(
+            sprintf('Could not find locale "%s" for channel "%s"', $locale, $channel)
+        );
     }
 }

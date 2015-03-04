@@ -3,10 +3,10 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Symfony\Component\Form\FormInterface;
 
 class AddSelectedOperationSubscriberSpec extends ObjectBehavior

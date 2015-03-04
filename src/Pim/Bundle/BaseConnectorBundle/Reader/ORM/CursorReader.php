@@ -2,17 +2,17 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
-use Doctrine\ORM\AbstractQuery;
-
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-
+use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\BaseConnectorBundle\Exception\ORMReaderException;
 
 /**
  * ORM cursor reader
+ *
+ * @deprecated, will be removed in 1.4
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type of the SetAttributeRequirements operation
@@ -15,6 +15,17 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class SetAttributeRequirementsType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -41,7 +52,7 @@ class SetAttributeRequirementsType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\SetAttributeRequirements',
+                'data_class' => $this->dataClass,
             ]
         );
     }

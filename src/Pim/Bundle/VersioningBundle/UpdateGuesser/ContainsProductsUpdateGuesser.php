@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
@@ -33,12 +33,11 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
     {
         $pendings = array();
 
-        if ($entity instanceof Group) {
+        if ($entity instanceof GroupInterface) {
             $products = $entity->getProducts();
             foreach ($products as $product) {
                 $pendings[] = $product;
             }
-
         } elseif ($entity instanceof CategoryInterface) {
             $products = $entity->getProducts();
             foreach ($products as $product) {

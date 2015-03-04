@@ -2,11 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 class ScopableSubscriberSpec extends ObjectBehavior
 {
@@ -28,7 +27,7 @@ class ScopableSubscriberSpec extends ObjectBehavior
     function it_configures_the_product_scope(
         CatalogContext $context,
         LifecycleEventArgs $args,
-        AbstractProduct $product
+        ProductInterface $product
     ) {
         $args->getObject()->willReturn($product);
         $context->hasScopeCode()->willReturn(true);

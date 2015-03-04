@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\UserBundle\Form\Type;
 
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\UserBundle\Form\Type\UserType as OroUserType;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
+use Oro\Bundle\UserBundle\Form\Type\UserType as OroUserType;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Overriden user form to add a custom subscriber
@@ -122,7 +122,6 @@ class UserType extends OroUserType
                     'label'          => ' '
                 )
             )
-            ->add('imapConfiguration', 'oro_imap_configuration')
             ->add(
                 'change_password',
                 'oro_change_password'

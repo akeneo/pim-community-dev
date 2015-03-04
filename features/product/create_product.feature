@@ -19,7 +19,7 @@ Feature: Product creation
     And I fill in the following information in the popin:
       | SKU | caterpillar_1 |
     And I press the "Save" button in the popin
-    Then I should see "Family: N/A"
+    Then I should be on the product "caterpillar_1" edit page
     And I should see "caterpillar_1"
 
   Scenario: Fail to create a product with an already used code

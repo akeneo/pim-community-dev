@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.form.type.product.class:                        Pim\Bundle\EnrichBundle\Form\Type\ProductType
+    pim_enrich.form.type.product_template.class:               Pim\Bundle\EnrichBundle\Form\Type\ProductTemplateType
     pim_enrich.form.type.product_edit.class:                   Pim\Bundle\EnrichBundle\Form\Type\ProductEditType
     pim_enrich.form.type.product_create.class:                 Pim\Bundle\EnrichBundle\Form\Type\ProductCreateType
     pim_enrich.form.type.product.view.class:                   Pim\Bundle\EnrichBundle\Form\View\ProductFormView
@@ -14,6 +15,7 @@ parameters:
     pim_enrich.form.type.currency.class:         Pim\Bundle\EnrichBundle\Form\Type\CurrencyType
     pim_enrich.form.type.channel.class:          Pim\Bundle\EnrichBundle\Form\Type\ChannelType
     pim_enrich.form.type.group.class:            Pim\Bundle\EnrichBundle\Form\Type\GroupType
+    pim_enrich.form.type.variant_group.class:    Pim\Bundle\EnrichBundle\Form\Type\VariantGroupType
     pim_enrich.form.type.family.class:           Pim\Bundle\EnrichBundle\Form\Type\FamilyType
     pim_enrich.form.type.category.class:         Pim\Bundle\EnrichBundle\Form\Type\CategoryType
     pim_enrich.form.type.group_type.class:       Pim\Bundle\EnrichBundle\Form\Type\GroupTypeType
@@ -39,6 +41,7 @@ parameters:
 
     pim_enrich.form.type.edit_common_attributes.class:     Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pim_enrich.form.type.add_to_groups.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
+    pim_enrich.form.type.add_to_variant_group.class:       Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToVariantGroupType
     pim_enrich.form.type.change_family.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType
     pim_enrich.form.type.change_status.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
     pim_enrich.form.type.classify.class:                   Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
@@ -48,11 +51,24 @@ services:
     pim_enrich.form.type.product.view:
         public: false
         class: %pim_enrich.form.type.product.view.class%
+        arguments:
+            - @pim_enrich.form.view.view_updater.registry
 
     pim_enrich.form.type.product:
         class: %pim_enrich.form.type.product.class%
         tags:
             - { name: form.type, alias: pim_product }
+
+    pim_enrich.form.type.product_template:
+        class: %pim_enrich.form.type.product_template.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_enrich.form.subscriber.transform_product_template_values'
+            - '@pim_user.context.user'
+            - '@pim_catalog.manager.channel'
+            -  %pim_catalog.entity.product_template.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_product_template }
 
     pim_enrich.form.type.product_edit:
         class: %pim_enrich.form.type.product_edit.class%
@@ -82,27 +98,37 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_attribute }
         arguments:
-            - %pim_catalog.entity.attribute.class%
             - '@pim_catalog.manager.attribute'
             - '@pim_enrich.form.subscriber.attribute'
+            - %pim_catalog.entity.attribute_translation.class%
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.attribute_group.class%
 
     pim_enrich.form.type.attribute_option:
         class: %pim_enrich.form.type.attribute_option.class%
+        arguments:
+            - %pim_catalog.entity.attribute_option.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_option }
 
     pim_enrich.form.type.attribute_option_value:
         class: %pim_enrich.form.type.attribute_option_value.class%
+        arguments:
+            - %pim_catalog.entity.attribute_option_value.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_option_value }
 
     pim_enrich.form.type.attribute_option_create:
         class: %pim_enrich.form.type.attribute_option_create.class%
+        arguments:
+            - %pim_catalog.entity.attribute_option.class%
         tags:
             - { name: form.type, alias: pim_attribute_option_create }
 
     pim_enrich.form.type.attribute_group:
         class: %pim_enrich.form.type.attribute_group.class%
+        arguments:
+            - %pim_catalog.entity.attribute_group.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_group }
         calls:
@@ -114,12 +140,15 @@ services:
             - { name: form.type, alias: pim_enrich_family }
         arguments:
             - '@pim_enrich.form.subscriber.attribute_requirements'
-            - %pim_catalog.entity.attribute.class%
             - '@pim_enrich.form.subscriber.family_disable_fields_subscriber'
             - '@pim_enrich.form.subscriber.family_attribute_label_subscriber'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.family.class%
 
     pim_enrich.form.type.attribute_requirement:
         class: %pim_enrich.form.type.attribute_requirement.class%
+        arguments:
+            - %pim_catalog.entity.attribute_requirement.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_requirement }
 
@@ -130,6 +159,8 @@ services:
 
     pim_enrich.form.type.price:
         class: %pim_enrich.form.type.product_value_price.class%
+        arguments:
+            - %pim_catalog.entity.product_price.class%
         tags:
             - { name: form.type, alias: pim_enrich_price }
 
@@ -140,11 +171,15 @@ services:
 
     pim_enrich.form.type.metric:
         class: %pim_enrich.form.type.product_value_metric.class%
+        arguments:
+            - %pim_catalog.entity.metric.class%
         tags:
             - { name: form.type, alias: pim_enrich_metric }
 
     pim_enrich.form.type.media:
         class: %pim_enrich.form.type.product_value_media.class%
+        arguments:
+            - %pim_catalog.entity.product_media.class%
         tags:
             - { name: form.type, alias: pim_enrich_media }
 
@@ -163,6 +198,7 @@ services:
             - '@pim_catalog.helper.locale'
             - '@pim_enrich.provider.colors'
             - %pim_catalog.entity.category.class%
+            - %pim_catalog.entity.channel.class%
         tags:
             - { name: form.type, alias: pim_enrich_channel }
 
@@ -183,37 +219,55 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.group.class%
         tags:
             - { name: form.type, alias: pim_enrich_group }
 
+    pim_enrich.form.type.variant_group:
+        class: %pim_enrich.form.type.variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.group.class%
+        calls:
+            - [addEventSubscriber, ['@pim_enrich.form.subscriber.add_variant_group_template']]
+        tags:
+            - { name: form.type, alias: pim_enrich_variant_group }
+
     pim_enrich.form.type.group_type:
         class: %pim_enrich.form.type.group_type.class%
+        arguments:
+            - %pim_catalog.entity.group_type.class%
         tags:
             - { name: form.type, alias: pim_enrich_group_type }
 
     pim_enrich.form.type.association_type:
         class: %pim_enrich.form.type.association_type.class%
+        arguments:
+            - %pim_catalog.entity.association_type.class%
         tags:
             - { name: form.type, alias: pim_enrich_association_type }
 
     pim_enrich.form.type.available_attributes:
         class: %pim_enrich.form.type.available_attributes.class%
         arguments:
-            - %pim_catalog.entity.attribute.class%
             - '@pim_catalog.repository.attribute'
             - '@pim_user.context.user'
             - '@translator'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.available_attributes.class%
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
     pim_enrich.form.type.association:
         class: %pim_enrich.form.type.association.class%
         arguments:
-            - %pim_catalog.entity.product.class%
             - '@pim_catalog.repository.product'
             - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.association_type.class%
             - %pim_catalog.entity.group.class%
+            - %pim_catalog.entity.association.class%
         tags:
             - { name: form.type, alias: pim_enrich_association }
 
@@ -228,6 +282,8 @@ services:
 
     pim_enrich.form.type.image:
         class: %pim_enrich.form.type.image.class%
+        arguments:
+            - %pim_catalog.entity.product_media.class%
         tags:
             - { name: form.type, alias: pim_enrich_image }
 
@@ -264,21 +320,38 @@ services:
             - '@pim_enrich.form.type.product.view'
             - '@pim_catalog.helper.locale'
             - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.locale.class%
+            - %pim_enrich.mass_edit_action.edit_common_attributes.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
 
     pim_enrich.form.type.add_to_groups:
         class: %pim_enrich.form.type.add_to_groups.class%
+        arguments:
+            - %pim_catalog.entity.group.class%
+            - %pim_enrich.mass_edit_action.add_to_groups.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_add_to_groups }
 
+    pim_enrich.form.type.add_to_variant_group:
+        class: %pim_enrich.form.type.add_to_variant_group.class%
+        arguments:
+            - %pim_catalog.entity.group.class%
+            - %pim_enrich.mass_edit_action.add_to_variant_group.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_add_to_variant_group }
+
     pim_enrich.form.type.change_family:
         class: %pim_enrich.form.type.change_family.class%
+        arguments:
+            - %pim_enrich.mass_edit_action.change_family.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_change_family }
 
     pim_enrich.form.type.change_status:
         class: %pim_enrich.form.type.change_status.class%
+        arguments:
+            - %pim_enrich.mass_edit_action.change_status.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_change_status }
 
@@ -286,10 +359,13 @@ services:
         class: %pim_enrich.form.type.classify.class%
         arguments:
             - %pim_catalog.entity.category.class%
+            - %pim_enrich.mass_edit_action.classify.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_classify }
 
     pim_enrich.form.type.set_attribute_requirements:
         class: %pim_enrich.form.type.set_attribute_requirements.class%
+        arguments:
+            - %pim_entich.mass_edit_action.set_attribute_requirements.class%
         tags:
             - { name: form.type, alias: pim_enrich_mass_set_attribute_requirements }

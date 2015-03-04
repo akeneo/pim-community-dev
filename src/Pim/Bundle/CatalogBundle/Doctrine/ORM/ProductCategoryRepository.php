@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 /**
  * Product category repository
@@ -16,6 +15,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated will be moved to Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository in 1.4
  */
 class ProductCategoryRepository implements ProductCategoryRepositoryInterface
 {
@@ -133,7 +134,6 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
         if ($include) {
             $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
-
         } else {
             $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
@@ -146,9 +146,10 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     public function applyFilterByUnclassified($qb)
     {
         $rootAlias = $qb->getRootAlias();
-        $alias = 'filterCategory'.md5(microtime());
+        $alias     = uniqid('filterCategory');
+
         $qb->leftJoin($rootAlias.'.categories', $alias);
-        $qb->andWhere($qb->expr()->isNull($alias.'.id'));
+        $qb->andWhere($qb->expr()->isNull($alias . '.id'));
     }
 
     /**
@@ -156,25 +157,26 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true)
     {
-        $rootAlias = $qb->getRootAlias();
-        $alias = 'filterCategory'.md5(microtime());
+        $rootAlias    = $qb->getRootAlias();
+        $alias        = uniqid('filterCategory');
+        $filterCatIds = uniqid('filterCatIds');
+
         if ($include) {
             $qb->leftJoin($rootAlias.'.categories', $alias);
-            $qb->andWhere($qb->expr()->in($alias.'.id', ':filterCatIds'));
+            $qb->andWhere($qb->expr()->in($alias.'.id', ':' . $filterCatIds));
         } else {
-            $rootAliasIn = $rootAlias.'2';
+            $rootAliasIn = uniqid($rootAlias);
             $rootEntity = current($qb->getRootEntities());
             $qbIn = $qb->getEntityManager()->createQueryBuilder();
             $qbIn
                 ->select($rootAliasIn.'.id')
-                ->from($rootEntity, $rootAliasIn, $rootAliasIn.'.id')
-                ->leftJoin($rootAliasIn.'.categories', $alias)
-                ->where($qbIn->expr()->in($alias.'.id', ':filterCatIds'))
-            ;
+                ->from($rootEntity, $rootAliasIn, $rootAliasIn . '.id')
+                ->leftJoin($rootAliasIn . '.categories', $alias)
+                ->where($qbIn->expr()->in($alias . '.id', ':' . $filterCatIds));
 
-            $qb->andWhere($qb->expr()->notIn($rootAlias.'.id', $qbIn->getDQL()));
+            $qb->andWhere($qb->expr()->notIn($rootAlias . '.id', $qbIn->getDQL()));
         }
-        $qb->setParameter('filterCatIds', $categoryIds);
+        $qb->setParameter($filterCatIds, $categoryIds);
     }
 
     /**
@@ -182,15 +184,17 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
     {
-        $rootAlias = $qb->getRootAlias();
-        $alias = 'filterCategory'.md5(microtime());
-        $qb->leftJoin($rootAlias.'.categories', $alias);
+        $rootAlias    = $qb->getRootAlias();
+        $alias        = uniqid('filterCategory');
+        $filterCatIds = uniqid('filterCatIdsOrUnclassified');
+
+        $qb->leftJoin($rootAlias . '.categories', $alias);
         $qb->andWhere(
             $qb->expr()->orX(
-                $qb->expr()->in($alias.'.id', ':filterCatIdsOrUnclassified'),
-                $qb->expr()->isNull($alias.'.id')
+                $qb->expr()->in($alias . '.id', ':' . $filterCatIds),
+                $qb->expr()->isNull($alias . '.id')
             )
         );
-        $qb->setParameter('filterCatIdsOrUnclassified', $categoryIds);
+        $qb->setParameter($filterCatIds, $categoryIds);
     }
 }

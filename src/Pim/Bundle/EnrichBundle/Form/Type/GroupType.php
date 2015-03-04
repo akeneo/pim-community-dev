@@ -2,14 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
 /**
  * Type for group form
@@ -20,26 +21,30 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
  */
 class GroupType extends AbstractType
 {
-    /**
-     * @var ProductRepositoryInterface
-     */
+    /** @var ProductRepositoryInterface */
     protected $productRepository;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
+
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
+
+    /** @var string */
+    protected $dataClass;
 
     /**
      * Constructor
      *
      * @param ProductRepositoryInterface $productRepository
      * @param string                     $attributeClass
+     * @param string                     $dataClass
      */
-    public function __construct(ProductRepositoryInterface $productRepository, $attributeClass)
+    public function __construct(ProductRepositoryInterface $productRepository, $attributeClass, $dataClass)
     {
         $this->productRepository = $productRepository;
         $this->attributeClass    = $attributeClass;
+        $this->dataClass         = $dataClass;
     }
 
     /**
@@ -58,6 +63,40 @@ class GroupType extends AbstractType
         $this->addAttributesField($builder);
 
         $this->addProductsField($builder);
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => $this->dataClass,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_enrich_group';
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 
     /**
@@ -73,18 +112,15 @@ class GroupType extends AbstractType
             ->add(
                 'type',
                 'entity',
-                array(
+                [
                     'class' => 'PimCatalogBundle:GroupType',
                     'query_builder' => function (EntityRepository $repository) {
-                        return $repository
-                            ->buildAll()
-                            ->andWhere('group_type.code != :variant')
-                            ->setParameter('variant', 'VARIANT');
+                        return $repository->getAllGroupsExceptVariantQB();
                     },
                     'multiple' => false,
                     'expanded' => false,
                     'select2'  => true
-                )
+                ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
     }
@@ -99,12 +135,12 @@ class GroupType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Group',
                 'property_path'     => 'translations'
-            )
+            ]
         );
     }
 
@@ -121,17 +157,17 @@ class GroupType extends AbstractType
             ->add(
                 'attributes',
                 'entity',
-                array(
+                [
                     'label'    => 'Axis',
                     'required' => true,
                     'multiple' => true,
                     'class'    => $this->attributeClass,
-                    'query_builder' => function (AttributeRepository $repository) {
+                    'query_builder' => function (AttributeRepositoryInterface $repository) {
                         return $repository->findAllAxisQB();
                     },
                     'help'     => 'pim_enrich.group.axis.help',
                     'select2'  => true
-                )
+                ]
             )
             ->addEventSubscriber(new DisableFieldSubscriber('attributes'));
     }
@@ -147,43 +183,23 @@ class GroupType extends AbstractType
             ->add(
                 'appendProducts',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->productRepository,
                     'required'   => false,
                     'mapped'     => false,
                     'multiple'   => true
-                )
+                ]
             )
             ->add(
                 'removeProducts',
                 'pim_object_identifier',
-                array(
+                [
                     'repository' => $this->productRepository,
                     'required'   => false,
                     'mapped'     => false,
                     'multiple'   => true
-                )
+                ]
             )
             ->addEventSubscriber(new BindGroupProductsSubscriber($this->productRepository));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Group'
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_enrich_group';
     }
 }

@@ -7,12 +7,12 @@ Feature: Execute a job
   Background:
     Given the "footwear" catalog configuration
     And the following product groups:
-      | code  | label     | attributes | type    |
-      | CROSS | Bag Cross |            | VARIANT |
+      | code  | label     | axis | type    |
+      | CROSS | Bag Cross |      | VARIANT |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;CROSS;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -38,7 +38,7 @@ Feature: Execute a job
     And the english tablet description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
   Scenario: Successfully import a csv file of products with associations
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
       SKU-001;boots;CROSS;winter_boots;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -58,7 +58,7 @@ Feature: Execute a job
 
   @pim-2445
   Scenario: Successfully skip associations of invalid product
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-tablet
       SKU-001;boots;CROSS;unknown,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -71,7 +71,7 @@ Feature: Execute a job
     Then there should be 0 product
 
   Scenario: Successfully ignore duplicate unique data
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -89,9 +89,9 @@ Feature: Execute a job
 
   Scenario: Successfully update an existing product
     Given the following product:
-      | sku     | name-en_US   |
-      | SKU-001 | FooBar |
-    And the following file to import:
+      | sku     | name-en_US |
+      | SKU-001 | FooBar     |
+    And the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -106,7 +106,7 @@ Feature: Execute a job
     And the english tablet description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
   Scenario: Successfully import products through file upload
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-tablet
       SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
@@ -128,7 +128,7 @@ Feature: Execute a job
     Then there should be 10 products
 
   Scenario: Successfully import products prices
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;price
       SKU-001;"100 EUR, 90 USD"
@@ -147,9 +147,9 @@ Feature: Execute a job
 
   Scenario: Successfully update existing products prices
     Given the following product:
-      | sku     | price           |
+      | sku     | price            |
       | SKU-001 | 100 EUR, 150 USD |
-    And the following file to import:
+    And the following CSV file to import:
       """
       sku;price
       SKU-001;"100 EUR, 90 USD"
@@ -164,7 +164,7 @@ Feature: Execute a job
       | price | 100.00 EUR, 90.00 USD |
 
   Scenario: Successfully import products metrics
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;length
       SKU-001;4000 CENTIMETER
@@ -179,7 +179,7 @@ Feature: Execute a job
       | length | 4000.0000 CENTIMETER |
 
   Scenario: Successfully import products metrics splitting the data and unit
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;length;length-unit
       SKU-001;4000;CENTIMETER
@@ -200,7 +200,7 @@ Feature: Execute a job
       | locale_specific_attribute | text | yes         | en_US            |
     Then I am on the Attribute index page
     And I add the "french" locale to the "mobile" channel
-    Given the following file to import:
+    Given the following CSV file to import:
       """
       sku;locale_specific_attribute-fr_FR
       SKU-001;test value

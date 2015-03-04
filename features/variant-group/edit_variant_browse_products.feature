@@ -11,9 +11,9 @@ Feature: Edit a variant group adding/removing products
       | mug       | Mug         |
       | furniture | Furniture   |
     And the following attributes:
-      | code  | label | type         | useableAsGridColumn | useableAsGridFilter |
-      | color | Color | simpleselect | 1                   | 1                   |
-      | size  | Size  | simpleselect | 1                   | 1                   |
+      | code  | label | type         | useableAsGridFilter |
+      | color | Color | simpleselect | 1                   |
+      | size  | Size  | simpleselect | 1                   |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following products:
@@ -23,7 +23,7 @@ Feature: Edit a variant group adding/removing products
       | MUG_3  | mug       |       | S    |
       | POSTIT | furniture | Blue  | M    |
     And the following product groups:
-      | code   | label      | attributes  | type    |
+      | code   | label      | axis        | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "Julia"

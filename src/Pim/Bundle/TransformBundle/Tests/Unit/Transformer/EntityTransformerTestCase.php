@@ -64,12 +64,12 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
     {
         if ($referable) {
             $this->repository = $this
-                ->getMock('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
+                ->getMock('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
             $this->repository->expects($this->any())
-                ->method('getReferenceProperties')
+                ->method('getIdentifierProperties')
                 ->will($this->returnValue(array('code')));
         } else {
-            $this->repository = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Doctrine\EntityRepository')
+            $this->repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
                 ->disableOriginalConstructor()
                 ->getMock();
         }

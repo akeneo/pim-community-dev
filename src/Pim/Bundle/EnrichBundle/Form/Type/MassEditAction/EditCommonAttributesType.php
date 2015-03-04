@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Form type of the EditCommonAttributes operation
@@ -19,34 +19,40 @@ use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
  */
 class EditCommonAttributesType extends AbstractType
 {
-    /**
-     * @var ProductFormViewInterface $productFormView
-     */
+    /** @var ProductFormViewInterface $productFormView */
     protected $productFormView;
 
-    /**
-     * @var LocaleHelper $localeHelper
-     */
+    /** @var LocaleHelper $localeHelper */
     protected $localeHelper;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
+
+    /** @var string */
+    protected $localeClassName;
+
+    /** @var string */
+    protected $dataClass;
 
     /**
      * @param ProductFormViewInterface $productFormView
      * @param LocaleHelper             $localeHelper
      * @param string                   $attributeClass
+     * @param string                   $localeClassName
+     * @param string                   $dataClass
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
         LocaleHelper $localeHelper,
-        $attributeClass
+        $attributeClass,
+        $localeClassName,
+        $dataClass
     ) {
         $this->productFormView = $productFormView;
         $this->localeHelper    = $localeHelper;
         $this->attributeClass  = $attributeClass;
+        $this->localeClassName = $localeClassName;
+        $this->dataClass       = $dataClass;
     }
 
     /**
@@ -58,38 +64,38 @@ class EditCommonAttributesType extends AbstractType
             ->add(
                 'values',
                 'pim_enrich_localized_collection',
-                array(
+                [
                     'type' => 'pim_product_value',
                     'allow_add'          => false,
                     'allow_delete'       => true,
                     'by_reference'       => false,
                     'cascade_validation' => true,
                     'currentLocale'      => $options['current_locale']
-                )
+                ]
             )
             ->add(
                 'locale',
                 'entity',
-                array(
+                [
                     'choices' => $options['locales'],
-                    'class'   => 'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
+                    'class'   => $this->localeClassName,
                     'select2' => true,
-                    'attr'    => array(
+                    'attr'    => [
                         'class' => 'operation-param',
-                    )
-                )
+                    ]
+                ]
             )
             ->add(
                 'displayedAttributes',
                 'entity',
-                array(
+                [
                     'class'    => $this->attributeClass,
                     'choices'  => $options['common_attributes'],
                     'required' => false,
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'group.label',
-                )
+                ]
             );
     }
 
@@ -112,10 +118,10 @@ class EditCommonAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
+                'data_class' => $this->dataClass,
                 'locales' => [],
                 'common_attributes' => [],
-                'current_locale'    => null,
+                'current_locale'    => null
             ]
         );
     }

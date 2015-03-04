@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -37,7 +37,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
      * @param CatalogContext    $catalogContext The catalog context
      * @param UserContext       $userContext    User context
      * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
-    */
+     */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,
@@ -68,6 +68,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
 
         $dataLocale = $this->getLocale($queryParameters);
         $queryParameters['dataLocale'] = $dataLocale;
+        // TODO : strange that we need to set it here, would expect from the datasource
         $this->catalogContext->setLocaleCode($dataLocale);
 
         $dataScope = $this->getScope();

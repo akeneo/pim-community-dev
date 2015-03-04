@@ -5,8 +5,6 @@ Pim\Bundle\CatalogBundle\Model\ProductMedia:
             id: true
         filename:
             type: string
-        filePath:
-            type: string
         originalFilename:
             type: string
         mimeType:

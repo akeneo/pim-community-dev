@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class UniqueValue extends Constraint
 {
+    /** @var string */
     public $message = 'This value is already set on another product.';
 
     /**
@@ -21,5 +22,13 @@ class UniqueValue extends Constraint
     public function validatedBy()
     {
         return 'pim_unique_value_validator';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTargets()
+    {
+        return self::CLASS_CONSTRAINT;
     }
 }

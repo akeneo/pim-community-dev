@@ -2,14 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Constraint;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Validator for unique variant group axis values constraint
+ * Validator for unique variant group axes values constraint.
+ * This validator should be called after HasVariantAxesValidator, once we know that the
+ * product has all the axes of the variant.
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,9 +19,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /**
-     * @var ProductManager $manager
-     */
+    /** @var ProductManager $manager */
     protected $manager;
 
     /**
@@ -39,7 +39,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof Group && $entity->getType()->isVariant()) {
+        if ($entity instanceof GroupInterface && $entity->getType()->isVariant()) {
             $this->validateVariantGroup($entity, $constraint);
         } elseif ($entity instanceof ProductInterface) {
             $this->validateProduct($entity, $constraint);
@@ -49,10 +49,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate variant group
      *
-     * @param Group      $variantGroup
-     * @param Constraint $constraint
+     * @param GroupInterface $variantGroup
+     * @param Constraint     $constraint
      */
-    protected function validateVariantGroup(Group $variantGroup, Constraint $constraint)
+    protected function validateVariantGroup(GroupInterface $variantGroup, Constraint $constraint)
     {
         $existingCombinations = array();
 
@@ -62,7 +62,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
         }
         foreach ($products as $product) {
             $values = array();
-            foreach ($variantGroup->getAttributes() as $attribute) {
+            foreach ($variantGroup->getAxisAttributes() as $attribute) {
                 $code = $attribute->getCode();
                 $option = $product->getValue($code) ? (string) $product->getValue($code)->getOption() : '';
                 $values[] = sprintf('%s: %s', $code, $option);
@@ -80,21 +80,21 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate product
      *
-     * @param ProductInterface $entity
+     * @param ProductInterface $product
      * @param Constraint       $constraint
      *
      * @return null
      */
-    protected function validateProduct(ProductInterface $entity, Constraint $constraint)
+    protected function validateProduct(ProductInterface $product, Constraint $constraint)
     {
-        if (null === $entity->getGroups()) {
+        if (null === $product->getGroups()) {
             return;
         }
 
-        foreach ($entity->getGroups() as $variantGroup) {
+        foreach ($product->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $criteria = $this->prepareQueryCriterias($variantGroup, $entity);
-                $matchingProducts = $this->getMatchingProducts($variantGroup, $entity, $criteria);
+                $criteria = $this->prepareQueryCriterias($variantGroup, $product);
+                $matchingProducts = $this->getMatchingProducts($variantGroup, $product, $criteria);
                 if (count($matchingProducts) !== 0) {
                     $values = array();
                     foreach ($criteria as $item) {
@@ -113,20 +113,23 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Prepare query criteria for variant group
      *
-     * @param Group            $variantGroup
-     * @param ProductInterface $entity
+     * @param GroupInterface   $variantGroup
+     * @param ProductInterface $product
      *
      * @return array
      */
-    protected function prepareQueryCriterias(Group $variantGroup, ProductInterface $entity)
+    protected function prepareQueryCriterias(GroupInterface $variantGroup, ProductInterface $product)
     {
         $criteria = array();
-        foreach ($variantGroup->getAttributes() as $attribute) {
-            $value = $entity->getValue($attribute->getCode());
-            $criteria[] = array(
-                'attribute' => $attribute,
-                'option'    => $value ? $value->getOption() : null,
-            );
+        foreach ($variantGroup->getAxisAttributes() as $attribute) {
+            $value = $product->getValue($attribute->getCode());
+            // we don't add criteria when option is null, as this check is performed by HasVariantAxesValidator
+            if (null !== $value && null !== $value->getOption()) {
+                $criteria[] = [
+                    'attribute' => $attribute,
+                    'option'    => $value->getOption(),
+                ];
+            }
         }
 
         return $criteria;
@@ -135,14 +138,17 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Get matching products
      *
-     * @param Group            $variantGroup the variant group
+     * @param GroupInterface   $variantGroup the variant group
      * @param ProductInterface $entity       the product
      * @param array            $criteria     query criterias
      *
      * @return ProductInterface[]
      */
-    protected function getMatchingProducts(Group $variantGroup, ProductInterface $entity = null, array $criteria = [])
-    {
+    protected function getMatchingProducts(
+        GroupInterface $variantGroup,
+        ProductInterface $entity = null,
+        array $criteria = []
+    ) {
         if (!$variantGroup->getId()) {
             return [];
         }

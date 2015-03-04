@@ -2,19 +2,18 @@
 
 namespace Pim\Bundle\JsFormValidationBundle\Generator;
 
+use APY\JsFormValidationBundle\Generator\FieldsConstraints;
+use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFormValidationScriptGenerator;
+use APY\JsFormValidationBundle\Generator\GettersLibraries;
+use APY\JsFormValidationBundle\Generator\PostProcessEvent;
+use APY\JsFormValidationBundle\Generator\PreProcessEvent;
+use APY\JsFormValidationBundle\JsfvEvents;
+use Assetic\Asset\AssetCollection;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\MetadataFactoryInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Validator\Constraint;
-use Assetic\Asset\AssetCollection;
-
-use APY\JsFormValidationBundle\Generator\PostProcessEvent;
-use APY\JsFormValidationBundle\JsfvEvents;
-use APY\JsFormValidationBundle\Generator\PreProcessEvent;
-use APY\JsFormValidationBundle\Generator\FieldsConstraints;
-use APY\JsFormValidationBundle\Generator\GettersLibraries;
-use APY\JsFormValidationBundle\Generator\FormValidationScriptGenerator as BaseFormValidationScriptGenerator;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 
 /**
  * Override the form validation script generator to generate an inline script

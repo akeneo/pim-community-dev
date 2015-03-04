@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for family form
@@ -26,29 +26,35 @@ class FamilyType extends AbstractType
     protected $requireSubscriber;
 
     /** @var DisableFamilyFieldsSubscriber */
-    protected $disablePropertiesSubscriber;
+    protected $fieldsSubscriber;
 
     /** @var AddAttributeAsLabelSubscriber */
-    protected $attributeAsLabelSubscriber;
+    protected $labelSubscriber;
+
+    /** @var string */
+    protected $dataClass;
 
     /**
      * Constructor
      *
      * @param AddAttributeRequirementsSubscriber $requireSubscriber
+     * @param DisableFamilyFieldsSubscriber      $fieldsSubscriber
+     * @param AddAttributeAsLabelSubscriber      $labelSubscriber
      * @param string                             $attributeClass
-     * @param DisableFamilyFieldsSubscriber      $disableSubscriber
-     * @param AddAttributeAsLabelSubscriber      $attributeAsLabelSubscriber
+     * @param string                             $dataClass
      */
     public function __construct(
         AddAttributeRequirementsSubscriber $requireSubscriber,
+        DisableFamilyFieldsSubscriber $fieldsSubscriber,
+        AddAttributeAsLabelSubscriber $labelSubscriber,
         $attributeClass,
-        DisableFamilyFieldsSubscriber $disableSubscriber,
-        AddAttributeAsLabelSubscriber $attributeAsLabelSubscriber
+        $dataClass
     ) {
         $this->requireSubscriber = $requireSubscriber;
         $this->attributeClass    = $attributeClass;
-        $this->disablePropertiesSubscriber = $disableSubscriber;
-        $this->attributeAsLabelSubscriber = $attributeAsLabelSubscriber;
+        $this->fieldsSubscriber  = $fieldsSubscriber;
+        $this->labelSubscriber   = $labelSubscriber;
+        $this->dataClass         = $dataClass;
     }
 
     /**
@@ -89,12 +95,12 @@ class FamilyType extends AbstractType
         $builder->add(
             'label',
             'pim_translatable_field',
-            array(
+            [
                 'field'             => 'label',
                 'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
                 'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
                 'property_path'     => 'translations'
-            )
+            ]
         );
 
         return $this;
@@ -109,7 +115,7 @@ class FamilyType extends AbstractType
      */
     protected function addAttributeRequirementsField(FormBuilderInterface $builder)
     {
-        $builder->add('attributeRequirements', 'collection', array('type' => 'pim_enrich_attribute_requirement'));
+        $builder->add('attributeRequirements', 'collection', ['type' => 'pim_enrich_attribute_requirement']);
 
         return $this;
     }
@@ -124,8 +130,8 @@ class FamilyType extends AbstractType
     protected function addEventSubscribers(FormBuilderInterface $builder)
     {
         $builder
-            ->addEventSubscriber($this->disablePropertiesSubscriber)
-            ->addEventSubscriber($this->attributeAsLabelSubscriber)
+            ->addEventSubscriber($this->fieldsSubscriber)
+            ->addEventSubscriber($this->labelSubscriber)
             ->addEventSubscriber($this->requireSubscriber)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
@@ -136,9 +142,9 @@ class FamilyType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

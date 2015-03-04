@@ -3,10 +3,9 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
@@ -29,29 +28,20 @@ class CsvProductReader extends CsvReader
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
 
-    /** @var array */
-    protected $locales = [];
-
-    /** @var array */
-    protected $channels = [];
-
-    /** @var array */
-    protected $currencies = [];
-
-    /** @var ChannelRepository */
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var CurrencyRepository */
+    /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
     /**
      * Constructor
      *
      * @param EntityManager    $entityManager
-     * @param FieldNameBuilder $fieldNameBuilder,
+     * @param FieldNameBuilder $fieldNameBuilder
      * @param string           $attributeClass
      * @param string           $channelClass
      * @param string           $localeClass
@@ -59,27 +49,20 @@ class CsvProductReader extends CsvReader
      */
     public function __construct(
         EntityManager $entityManager,
+        FieldNameBuilder $fieldNameBuilder,
         $attributeClass,
-        FieldNameBuilder $fieldNameBuilder = null,
-        $channelClass = null,
-        $localeClass = null,
-        $currencyClass = null
+        $channelClass,
+        $localeClass,
+        $currencyClass
     ) {
         $this->fieldNameBuilder = $fieldNameBuilder;
 
-        /** @var AttributeRepository $attributeRepository */
         $attributeRepository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
 
-        if (null !== $channelClass) {
-            $this->channelRepository = $entityManager->getRepository($channelClass);
-        }
-        if (null !== $localeClass) {
-            $this->localeRepository = $entityManager->getRepository($localeClass);
-        }
-        if (null !== $currencyClass) {
-            $this->currencyRepository = $entityManager->getRepository($currencyClass);
-        }
+        $this->channelRepository = $entityManager->getRepository($channelClass);
+        $this->localeRepository = $entityManager->getRepository($localeClass);
+        $this->currencyRepository = $entityManager->getRepository($currencyClass);
     }
 
     /**
@@ -145,8 +128,9 @@ class CsvProductReader extends CsvReader
         foreach ($data as $code => $value) {
             $pos = strpos($code, '-');
             $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
+            $value = trim($value);
 
-            if (in_array($attributeCode, $this->mediaAttributes)) {
+            if (in_array($attributeCode, $this->mediaAttributes) && !empty($value)) {
                 $data[$code] = dirname($this->filePath) . '/' . $value;
             }
         }
@@ -161,19 +145,7 @@ class CsvProductReader extends CsvReader
     {
         parent::initializeRead();
 
-        if (null !== $this->channelRepository) {
-            $this->channels = $this->channelRepository->getChannelCodes();
-        }
-        if (null !== $this->localeRepository) {
-            $this->locales = $this->localeRepository->getActivatedLocaleCodes();
-        }
-        if (null !== $this->channelRepository) {
-            $this->currencies = $this->currencyRepository->getActivatedCurrencyCodes();
-        }
-
-        if (null !== $this->fieldNameBuilder) {
-            $this->checkAttributesInHeader();
-        }
+        $this->checkAttributesInHeader();
     }
 
     /**
@@ -183,19 +155,23 @@ class CsvProductReader extends CsvReader
      */
     protected function checkAttributesInHeader()
     {
+        $channels = $this->channelRepository->getChannelCodes();
+        $locales = $this->localeRepository->getActivatedLocaleCodes();
+        $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
+
         foreach ($this->fieldNames as $fieldName) {
             if (null !== $info = $this->fieldNameBuilder->extractAttributeFieldNameInfos($fieldName)) {
                 $locale = $info['locale_code'];
                 $channel = $info['scope_code'];
                 $currency = isset($info['price_currency']) ? $info['price_currency'] : null;
 
-                if (null !== $locale && !in_array($locale, $this->locales)) {
+                if (null !== $locale && !in_array($locale, $locales)) {
                     throw new \LogicException(sprintf('Locale %s does not exist.', $locale));
                 }
-                if (null !== $channel && !in_array($channel, $this->channels)) {
+                if (null !== $channel && !in_array($channel, $channels)) {
                     throw new \LogicException(sprintf('Channel %s does not exist.', $channel));
                 }
-                if (null !== $currency && !in_array($currency, $this->currencies)) {
+                if (null !== $currency && !in_array($currency, $currencies)) {
                     throw new \LogicException(sprintf('Currency %s does not exist.', $currency));
                 }
             }

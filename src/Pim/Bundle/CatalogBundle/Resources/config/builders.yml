@@ -1,12 +1,21 @@
 parameters:
-    pim_catalog.builder.product.class: Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+    pim_catalog.builder.product.class:          Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+    pim_catalog.builder.product_template.class: Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilder
 
 services:
     pim_catalog.builder.product:
         class: %pim_catalog.builder.product.class%
         arguments:
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.currency'
             - {'product': %pim_catalog.entity.product.class%, 'product_value': %pim_catalog.entity.product_value.class%, 'product_price': %pim_catalog.entity.product_price.class%}
+
+    pim_catalog.builder.product_template:
+        class: %pim_catalog.builder.product_template.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_serializer'
+            - '@pim_catalog.builder.product'
+            - %pim_catalog.entity.product_template.class%
+            - %pim_catalog.entity.product.class%

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type for option value attribute form
@@ -15,6 +15,17 @@ use Symfony\Component\Form\AbstractType;
  */
 class AttributeOptionValueType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -51,7 +62,7 @@ class AttributeOptionValueType extends AbstractType
      */
     protected function addFieldValue(FormBuilderInterface $builder)
     {
-        $builder->add('value', null, array('required' => false));
+        $builder->add('value', null, ['required' => false]);
     }
 
     /**
@@ -60,9 +71,9 @@ class AttributeOptionValueType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue'
-            )
+            [
+                'data_class' => $this->dataClass,
+            ]
         );
     }
 

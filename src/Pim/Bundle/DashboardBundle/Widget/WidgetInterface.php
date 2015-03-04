@@ -12,6 +12,13 @@ namespace Pim\Bundle\DashboardBundle\Widget;
 interface WidgetInterface
 {
     /**
+     * Get the alias of the widget
+     *
+     * @return string
+     */
+    public function getAlias();
+
+    /**
      * Get the template reference
      *
      * ie.: bundle:module:template.format.engine
@@ -26,4 +33,11 @@ interface WidgetInterface
      * @return array
      */
     public function getParameters();
+
+    /**
+     * Get the widget data
+     *
+     * @return mixed
+     */
+    public function getData();
 }

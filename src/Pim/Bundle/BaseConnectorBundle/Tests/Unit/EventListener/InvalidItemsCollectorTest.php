@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Tests\Unit\EventListener;
 
-use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
+use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 
 /**
  * Test related class

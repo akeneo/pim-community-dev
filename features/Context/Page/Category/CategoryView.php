@@ -26,6 +26,7 @@ abstract class CategoryView extends Form
             $this->elements,
             array(
                 'Category tree'    => array('css' => '#tree'),
+                'Tree select'      => array('css' => '#tree_select'),
                 'Right click menu' => array('css' => '#vakata-contextmenu'),
             )
         );
@@ -46,6 +47,18 @@ abstract class CategoryView extends Form
         }
 
         return $elt;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return CategoryView
+     */
+    public function selectTree($category)
+    {
+        $this->getElement('Tree select')->selectOption($category);
+
+        return $this;
     }
 
     /**

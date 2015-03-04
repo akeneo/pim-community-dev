@@ -1,0 +1,3 @@
+parameters:
+    akeneo_storage_utils.doctrine.orm.cursor.class:         Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor
+    akeneo_storage_utils.doctrine.orm.cursor_factory.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory

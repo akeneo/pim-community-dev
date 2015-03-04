@@ -1,0 +1,22 @@
+parameters:
+    pim_catalog.model.product.interface:                Pim\Bundle\CatalogBundle\Model\ProductInterface
+    pim_catalog.model.product_value.interface:          Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+    pim_catalog.model.association.interface:            Pim\Bundle\CatalogBundle\Model\AssociationInterface
+    pim_catalog.model.completeness.interface:           Pim\Bundle\CatalogBundle\Model\CompletenessInterface
+    pim_catalog.model.association_type.interface:       Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface
+    pim_catalog.model.category.interface:               Pim\Bundle\CatalogBundle\Model\CategoryInterface
+    pim_catalog.model.group.interface:                  Pim\Bundle\CatalogBundle\Model\GroupInterface
+    pim_catalog.model.group_type.interface:             Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
+    pim_catalog.model.attribute.interface:              Pim\Bundle\CatalogBundle\Model\AttributeInterface
+    pim_catalog.model.attribute_group.interface:        Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface
+    pim_catalog.model.attribute_option.interface:       Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface
+    pim_catalog.model.attribute_option_value.interface: Pim\Bundle\CatalogBundle\Model\AttributeOptionValueInterface
+    pim_catalog.model.attribute_requirement.interface:  Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface
+    pim_catalog.model.family.interface:                 Pim\Bundle\CatalogBundle\Model\FamilyInterface
+    pim_catalog.model.channel.interface:                Pim\Bundle\CatalogBundle\Model\ChannelInterface
+    pim_catalog.model.currency.interface:               Pim\Bundle\CatalogBundle\Model\CurrencyInterface
+    pim_catalog.model.locale.interface:                 Pim\Bundle\CatalogBundle\Model\LocaleInterface
+    pim_catalog.model.metric.interface:                 Pim\Bundle\CatalogBundle\Model\MetricInterface
+    pim_catalog.model.product_media.interface:          Pim\Bundle\CatalogBundle\Model\ProductMediaInterface
+    pim_catalog.model.product_price.interface:          Pim\Bundle\CatalogBundle\Model\ProductPriceInterface
+    pim_catalog.model.product_template.interface:       Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface

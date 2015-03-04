@@ -1,0 +1,23 @@
+parameters:
+    pim_enrich.normalizer.attribute_option_value_collection.class: Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueCollectionNormalizer
+    pim_enrich.normalizer.attribute_option.class:                  Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionNormalizer
+    pim_enrich.normalizer.attribute_option_value.class:            Pim\Bundle\EnrichBundle\Normalizer\AttributeOptionValueNormalizer
+
+services:
+   pim_enrich.normalizer.attribute_option_value_collection:
+        class: %pim_enrich.normalizer.attribute_option_value_collection.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+   pim_enrich.normalizer.attribute_option:
+        class: %pim_enrich.normalizer.attribute_option.class%
+        arguments:
+            - @pim_catalog.manager.locale
+            - @pim_catalog.manager.attribute_option
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+   pim_enrich.normalizer.attribute_option_value:
+        class: %pim_enrich.normalizer.attribute_option_value.class%
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }

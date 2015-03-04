@@ -1,4 +1,4 @@
-@javascript @info More user-friendly validation to be done in the scope of @jira https://akeneo.atlassian.net/browse/PIM-2029
+@info More user-friendly validation to be done in the scope of @jira https://akeneo.atlassian.net/browse/PIM-2029
 Feature: Validate file attributes of a product
   In order to keep my data consistent
   As a regular user

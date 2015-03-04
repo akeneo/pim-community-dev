@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Type for option attribute form
@@ -15,6 +15,17 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class AttributeOptionType extends AbstractType
 {
+    /** @var string */
+    protected $dataClass;
+
+    /**
+     * @param string $dataClass
+     */
+    public function __construct($dataClass)
+    {
+        $this->dataClass = $dataClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,19 +33,14 @@ class AttributeOptionType extends AbstractType
     {
         $this->addFieldId($builder);
 
-        $this->addFieldSortOrder($builder);
-
-        $this->addFieldTranslatable($builder);
-
         $this->addFieldOptionValues($builder);
 
         $this->addFieldCode($builder);
-
-        $this->addFieldIsDefault($builder);
     }
 
     /**
      * Add field id to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldId(FormBuilderInterface $builder)
@@ -43,34 +49,18 @@ class AttributeOptionType extends AbstractType
     }
 
     /**
-     * Add field sort_order to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldSortOrder(FormBuilderInterface $builder)
-    {
-        $builder->add('sort_order', 'integer', array('required' => false));
-    }
-
-    /**
-     * Add field translatable to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldTranslatable(FormBuilderInterface $builder)
-    {
-        $builder->add('translatable', null, array('required' => false));
-    }
-
-    /**
      * Add option code
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
-        $builder->add('code', 'text', array('required' => true));
+        $builder->add('code', 'text', ['required' => true]);
     }
 
     /**
      * Add options values to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldOptionValues(FormBuilderInterface $builder)
@@ -78,22 +68,13 @@ class AttributeOptionType extends AbstractType
         $builder->add(
             'optionValues',
             'collection',
-            array(
+            [
                 'type'         => 'pim_enrich_attribute_option_value',
                 'allow_add'    => true,
                 'allow_delete' => true,
-                'by_reference' => false
-            )
+                'by_reference' => false,
+            ]
         );
-    }
-
-    /**
-     * Add isDefault field to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldIsDefault(FormBuilderInterface $builder)
-    {
-        $builder->add('default', 'hidden');
     }
 
     /**
@@ -102,9 +83,10 @@ class AttributeOptionType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption'
-            )
+            [
+                'data_class'      => $this->dataClass,
+                'csrf_protection' => false
+            ]
         );
     }
 

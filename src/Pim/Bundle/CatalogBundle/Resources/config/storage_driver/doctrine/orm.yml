@@ -1,13 +1,37 @@
 parameters:
-    pim_catalog.repository.association.class:                      Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
-    pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
-    pim_catalog.repository.completeness.class:                     Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRepository
-    pim_catalog.repository.product_mass_action.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository
-    pim_catalog.repository.product_category.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductCategoryRepository
-    pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
+    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
+    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
+    pim_catalog.repository.completeness.class:                       Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRepository
+    pim_catalog.repository.product_mass_action.class:                Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository
+    pim_catalog.repository.product_category.class:                   Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductCategoryRepository
+    pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
     pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
-    pim_catalog.doctrine.product_query_builder.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder
+
+    pim_catalog.doctrine.query.filter.product_id.class:   Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\ProductIdFilter
+    pim_catalog.doctrine.query.filter.number.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\NumberFilter
+    pim_catalog.doctrine.query.filter.string.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\StringFilter
+    pim_catalog.doctrine.query.filter.boolean.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BooleanFilter
+    pim_catalog.doctrine.query.filter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\FamilyFilter
+    pim_catalog.doctrine.query.filter.groups.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\GroupsFilter
+    pim_catalog.doctrine.query.filter.date.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter
+    pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter
+    pim_catalog.doctrine.query.filter.price.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter
+    pim_catalog.doctrine.query.filter.metric.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter
+    pim_catalog.doctrine.query.filter.option.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionFilter
+    pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter
+    pim_catalog.doctrine.query.filter.media.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MediaFilter
+
+    pim_catalog.doctrine.query.cursor.class:               Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor
+    pim_catalog.doctrine.cursor_factory.product.class:     Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\CursorFactory
+    pim_catalog.factory.product_cursor.page_size:          1000
+
+    pim_catalog.doctrine.query.sorter.base.class:          Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter
+    pim_catalog.doctrine.query.sorter.entity.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter
+    pim_catalog.doctrine.query.sorter.family.class:        Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter
+    pim_catalog.doctrine.query.sorter.completeness.class:  Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter
+    pim_catalog.doctrine.query.sorter.in_group.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter
+    pim_catalog.doctrine.query.sorter.is_associated.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\IsAssociatedSorter
 
 services:
     pim_catalog.object_manager.product:
@@ -37,7 +61,7 @@ services:
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
         calls:
-            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+            - [setProductQueryBuilderFactory, ['@pim_catalog.query.product_query_builder_factory']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
         tags:
             - { name: 'pim_repository' }
@@ -72,3 +96,40 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
+
+    # PQB filters
+    pim_catalog.doctrine.query.filter.family:
+        class: %pim_catalog.doctrine.query.filter.family.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['family.id', 'family.code']
+            - ['IN', 'NOT IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
+
+    pim_catalog.doctrine.query.filter.groups:
+        class: %pim_catalog.doctrine.query.filter.groups.class%
+        arguments:
+            - '@pim_catalog.doctrine.query.filter.object_id_resolver'
+            - ['groups.id', 'groups.code']
+            - ['IN', 'NOT IN', 'EMPTY']
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
+
+    # PQB sorters
+    pim_catalog.doctrine.query.sorter.entity:
+        class: %pim_catalog.doctrine.query.sorter.entity.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.is_associated:
+        class: %pim_catalog.doctrine.query.sorter.is_associated.class%
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.factory.product_cursor:
+        class: %pim_catalog.doctrine.cursor_factory.product.class%
+        arguments:
+            - %pim_catalog.doctrine.query.cursor.class%
+            - @pim_catalog.object_manager.product
+            - %pim_catalog.factory.product_cursor.page_size%

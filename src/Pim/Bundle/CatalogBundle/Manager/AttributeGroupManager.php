@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 
 /**
  * Attribute group manager
@@ -16,39 +16,33 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class AttributeGroupManager
 {
-    /**
-     * @var AttributeGroupRepository
-     */
+    /** @var AttributeGroupRepositoryInterface */
     protected $repository;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $objectManager;
 
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager Object manager
-     * @param AttributeGroupRepository $repository    Repository
+     * @param ObjectManager                     $objectManager Object manager
+     * @param AttributeGroupRepositoryInterface $repository    Repository
      */
-    public function __construct(ObjectManager $objectManager, AttributeGroupRepository $repository)
+    public function __construct(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
     {
-        $this->repository = $repository;
+        $this->repository    = $repository;
         $this->objectManager = $objectManager;
     }
 
     /**
      * Remove an attribute from a group and link it to the default group
      *
-     * @param AttributeGroup    $group
-     * @param AbstractAttribute $attribute
+     * @param AttributeGroupInterface $group
+     * @param AttributeInterface      $attribute
      *
      * @throws \LogicException
-     *
-     * @return AbstractAttribute
      */
-    public function removeAttribute(AttributeGroup $group, AbstractAttribute $attribute)
+    public function removeAttribute(AttributeGroupInterface $group, AttributeInterface $attribute)
     {
         if (null === $default = $this->repository->findDefaultAttributeGroup()) {
             throw new \LogicException('The default attribute group should exist.');
@@ -59,6 +53,26 @@ class AttributeGroupManager
 
         $this->objectManager->persist($group);
         $this->objectManager->persist($attribute);
+        $this->objectManager->flush();
+    }
+
+    /**
+     * Add attributes to a group
+     *
+     * @param AttributeGroupInterface $group
+     * @param AttributeInterface[]    $attributes
+     */
+    public function addAttributes(AttributeGroupInterface $group, $attributes)
+    {
+        $maxOrder = $group->getMaxAttributeSortOrder();
+        foreach ($attributes as $attribute) {
+            $maxOrder++;
+            $attribute->setSortOrder($maxOrder);
+            $group->addAttribute($attribute);
+            $this->objectManager->persist($attribute);
+        }
+
+        $this->objectManager->persist($group);
         $this->objectManager->flush();
     }
 }

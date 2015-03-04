@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -13,6 +14,17 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 abstract class ProductMassEditOperation extends AbstractMassEditAction
 {
+    /** @var BulkSaverInterface */
+    protected $productSaver;
+
+    /**
+     * @param BulkSaverInterface $productSaver
+     */
+    public function __construct(BulkSaverInterface $productSaver)
+    {
+        $this->productSaver = $productSaver;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -58,6 +70,18 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
             'flush'       => true,
             'schedule'    => $this->affectsCompleteness()
         ];
+    }
+
+    /**
+     * Finalize the operation
+     */
+    public function finalize()
+    {
+        if (null === $this->productSaver) {
+            throw new \LogicException('Product saver must be configured');
+        }
+        $products = $this->getObjectsToMassEdit();
+        $this->productSaver->saveAll($products, $this->getSavingOptions());
     }
 
     /**
