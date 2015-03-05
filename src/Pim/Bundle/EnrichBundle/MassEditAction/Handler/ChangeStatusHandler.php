@@ -71,7 +71,9 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
             foreach ($productsPage as $product) {
                 // Todo: Use $this->productUpdater->setValue($product, 'enable', $configuration['data']);
                 $product->setEnabled($configuration['data']);
+                $this->stepExecution->incrementSummaryInfo('mass-edited');
             }
+
 
             $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
             $this->detachProducts($productsPage);
