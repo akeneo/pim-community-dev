@@ -164,18 +164,17 @@ class PriceCollectionValueSetter extends AbstractValueSetter
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
 
-        if (null !== $value) {
-            $product->removeValue($value);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        } else {
+            $prices = $value->getPrices();
+            foreach ($prices as $price) {
+                $price->setData(null);
+            }
         }
 
-        $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-
-        $currencies = [];
         foreach ($data as $price) {
-            $currencies[] = $price['currency'];
             $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
         }
-
-        $this->productBuilder->removePricesNotInCurrency($value, $currencies);
     }
 }
