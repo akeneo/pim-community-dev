@@ -27,6 +27,7 @@ class MassEditChangeStatusStep extends AbstractStep
      */
     protected function doExecute(StepExecution $stepExecution)
     {
+        $this->handler->setStepExecution($stepExecution);
         $this->handler->execute($this->configuration);
     }
 
