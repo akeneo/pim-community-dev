@@ -115,8 +115,12 @@ class JobExecutionNotifier implements EventSubscriberInterface
             sprintf('pim_mass_edit.notification.%s.%s', $type, $status),
             $status,
             [
+                'route'         => sprintf('pim_%s_execution_show', $type),
+                'routeParams'   => [
+                    'id' => $jobExecution->getId()
+                ],
                 'messageParams' => [
-                    '%label%'   => $jobExecution->getJobInstance()->getLabel()
+                    '%label%' => $jobExecution->getJobInstance()->getLabel()
                 ]
             ]
         );
