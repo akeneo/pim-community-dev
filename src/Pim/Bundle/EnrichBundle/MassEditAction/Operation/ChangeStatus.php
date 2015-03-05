@@ -11,34 +11,44 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeStatus extends ProductMassEditOperation
+class ChangeStatus extends AbstractMassEditOperation implements
+    ConfigurableOperationInterface,
+    BatchableOperationInterface
 {
     /**
      * Whether or not to enable products
      *
      * @var boolean
      */
-//    protected $toEnable = false;
+    protected $toEnable = false;
 
     /**
      * @param boolean $toEnable
      *
      * @return ChangeStatus
      */
-//    public function setToEnable($toEnable)
-//    {
-//        $this->toEnable = $toEnable;
-//
-//        return $this;
-//    }
+    public function setToEnable($toEnable)
+    {
+        $this->toEnable = $toEnable;
+
+        return $this;
+    }
 
     /**
      * @return boolean
      */
-//    public function isToEnable()
-//    {
-//        return $this->toEnable;
-//    }
+    public function isToEnable()
+    {
+        return $this->toEnable;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'change-status';
+    }
 
     /**
      * {@inheritdoc}
@@ -51,18 +61,27 @@ class ChangeStatus extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-//    protected function doPerform(ProductInterface $product)
-//    {
-//        $product->setEnabled($this->toEnable);
-//    }
-
-    /**
-     * Get the form options to configure the operation
-     *
-     * @return array
-     */
     public function getFormOptions()
     {
         return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsName()
+    {
+        return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchConfig()
+    {
+        return addslashes(json_encode([
+            'filters' => $this->getFilters(),
+            'actions' => $this->getActions()
+        ]));
     }
 }

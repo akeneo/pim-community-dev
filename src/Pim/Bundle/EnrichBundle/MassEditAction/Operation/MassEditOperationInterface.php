@@ -13,17 +13,13 @@ use Symfony\Component\Form\FormTypeInterface;
  */
 interface MassEditOperationInterface
 {
-    /**
-     * Get the form type to use in order to configure the operation
-     *
-     * @return string|FormTypeInterface
-     */
-    public function getFormType();
+    public function getAlias();
 
-    /**
-     * Get the form options to configure the operation
-     *
-     * @return array
-     */
-    public function getFormOptions();
+    public function getFilters();
+
+    public function setFilters(array $filters);
+
+    public function getActions();
+
+    public function setActions(array $actions);
 }
