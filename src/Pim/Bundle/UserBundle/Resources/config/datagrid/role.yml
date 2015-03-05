@@ -3,7 +3,7 @@ datagrid:
         options:
             entityHint: role
         source:
-            acl_resource: oro_user_role_view
+            acl_resource: pim_user_role_index
             type: orm
             query:
                 select:
@@ -39,14 +39,14 @@ datagrid:
                 label:         Update
                 link:          update_link
                 icon:          edit
-                acl_resource:  oro_user_role_update
+                acl_resource:  pim_user_role_edit
                 rowAction:     true
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  oro_user_role_remove
+                acl_resource:  pim_user_role_remove
 
         sorters:
             columns:
