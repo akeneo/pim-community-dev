@@ -74,6 +74,11 @@ class ChangeStatus extends AbstractMassEditOperation implements
         return 'product';
     }
 
+    public function getActions()
+    {
+        return $this->isToEnable();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -81,7 +86,7 @@ class ChangeStatus extends AbstractMassEditOperation implements
     {
         return addslashes(json_encode([
             'filters' => $this->getFilters(),
-            'actions' => $this->getActions()
+            'data' => $this->getActions()
         ]));
     }
 }
