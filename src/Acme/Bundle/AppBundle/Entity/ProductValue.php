@@ -15,10 +15,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue as PimProductValue;
 class ProductValue extends PimProductValue
 {
     /** @var ArrayCollection */
-    protected $cars;
+    protected $fabrics;
 
-    /** @var Moto */
-    protected $moto;
+    /** @var Color */
+    protected $color;
 
     /**
      * constructor
@@ -26,54 +26,54 @@ class ProductValue extends PimProductValue
     public function __construct()
     {
         parent::__construct();
-        $this->cars = new ArrayCollection();
+        $this->fabrics = new ArrayCollection();
     }
 
     /**
      * @return ArrayCollection
      */
-    public function getCars()
+    public function getFabrics()
     {
-        return $this->cars;
+        return $this->fabrics;
     }
 
     /**
-     * @param ArrayCollection $cars
+     * @param ArrayCollection $fabrics
      */
-    public function setCars(ArrayCollection $cars)
+    public function setFabrics(ArrayCollection $fabrics)
     {
-        $this->cars = $cars;
+        $this->fabrics = $fabrics;
     }
 
     /**
-     * @param Car $car
+     * @param Fabric $fabric
      */
-    public function addCar(Car $car)
+    public function addFabric(Fabric $fabric)
     {
-        $this->cars->add($car);
+        $this->fabrics->add($fabric);
     }
 
     /**
-     * @param Car $car
+     * @param Fabric $fabric
      */
-    public function removeCar(Car $car)
+    public function removeFabric(Fabric $fabric)
     {
-        $this->cars->removeElement($car);
+        $this->fabrics->removeElement($fabric);
     }
 
     /**
-     * @return Moto
+     * @return Color
      */
-    public function getMoto()
+    public function getColor()
     {
-        return $this->moto;
+        return $this->color;
     }
 
     /**
-     * @param Moto $moto
+     * @param Color $color
      */
-    public function setMoto($moto)
+    public function setColor($color)
     {
-        $this->moto = $moto;
+        $this->color = $color;
     }
 }

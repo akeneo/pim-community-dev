@@ -1,4 +1,4 @@
-Acme\Bundle\AppBundle\Entity\Moto:
+Acme\Bundle\AppBundle\Entity\Fabric:
     repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     type: entity
     table: null
@@ -12,12 +12,10 @@ Acme\Bundle\AppBundle\Entity\Moto:
             type: string
             length: 255
             unique: true
-        brand:
+        name:
             type: string
             length: 255
-        model:
+        alternativeName:
             type: string
             length: 255
-        year:
-            type: integer
     lifecycleCallbacks: {  }

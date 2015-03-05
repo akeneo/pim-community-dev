@@ -84,10 +84,10 @@ Acme\Bundle\AppBundle\Entity\ProductValue:
                 entity_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-        moto:
-            targetEntity: Acme\Bundle\AppBundle\Entity\Moto
+        color:
+            targetEntity: Acme\Bundle\AppBundle\Entity\Color
             joinColumn:
-                name: moto_id
+                name: color_id
                 referencedColumnName: id
     manyToMany:
         options:
@@ -106,19 +106,19 @@ Acme\Bundle\AppBundle\Entity\ProductValue:
                         referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
-        cars:
-            targetEntity: Acme\Bundle\AppBundle\Entity\Car
+        fabrics:
+            targetEntity: Acme\Bundle\AppBundle\Entity\Fabric
             cascade:
                 - refresh
             joinTable:
-                name: acme_catalog_product_value_car
+                name: acme_catalog_product_value_fabric
                 joinColumns:
                     value_id:
                         referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
                 inverseJoinColumns:
-                    car_id:
+                    fabric_id:
                         referencedColumnName: id
                         nullable: false
     oneToOne:

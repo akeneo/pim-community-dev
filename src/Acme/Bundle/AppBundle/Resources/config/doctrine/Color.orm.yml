@@ -1,4 +1,4 @@
-Acme\Bundle\AppBundle\Entity\Car:
+Acme\Bundle\AppBundle\Entity\Color:
     repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     type: entity
     table: null
@@ -15,6 +15,23 @@ Acme\Bundle\AppBundle\Entity\Car:
         name:
             type: string
             length: 255
-        year:
+        hex:
+            type: string
+            length: 255
+        red:
+            type: integer
+        green:
+            type: integer
+        blue:
+            type: integer
+        hue:
+            type: integer
+        hslSaturation:
+            type: integer
+        light:
+            type: integer
+        hsvSaturation:
+            type: integer
+        value:
             type: integer
     lifecycleCallbacks: {  }

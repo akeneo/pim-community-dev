@@ -20,9 +20,9 @@ assetic:
     use_controller: false
 
 pim_reference_data:
-    cars:
-        class: Acme\Bundle\AppBundle\Entity\Car
+    fabrics:
+        class: Acme\Bundle\AppBundle\Entity\Fabric
         type: multi
-    moto:
-        class: Acme\Bundle\AppBundle\Entity\Moto
+    color:
+        class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
