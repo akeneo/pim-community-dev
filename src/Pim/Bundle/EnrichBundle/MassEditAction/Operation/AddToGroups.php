@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToGroups extends ProductMassEditOperation
+class AddToGroups extends AbstractMassEditOperation
 {
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
@@ -118,5 +118,13 @@ class AddToGroups extends ProductMassEditOperation
         foreach ($this->groups as $group) {
             $group->addProduct($product);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'add-to-groups';
     }
 }

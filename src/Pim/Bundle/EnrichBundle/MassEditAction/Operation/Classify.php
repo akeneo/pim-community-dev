@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Classify extends ProductMassEditOperation
+class Classify extends AbstractMassEditOperation
 {
     /** @var CategoryManager $categoryManager */
     protected $categoryManager;
@@ -93,5 +93,13 @@ class Classify extends ProductMassEditOperation
     public function getFormOptions()
     {
         return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'classify';
     }
 }
