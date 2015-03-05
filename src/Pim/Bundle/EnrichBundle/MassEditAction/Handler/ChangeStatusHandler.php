@@ -66,11 +66,17 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
     {
         $cursor = $this->getProducts($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
+        $actions = $configuration['actions'];
+        $action = $actions[0];
 
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
-                // Todo: Use $this->productUpdater->setValue($product, 'enable', $configuration['data']);
-                $product->setEnabled($configuration['data']);
+                // TODO: Use this :
+//                foreach ($actions as $action) {
+//                    $this->productUpdater->setValue($product, $action['field'], $action['value']);
+//                }
+
+                $product->setEnabled($action['value']);
                 $this->stepExecution->incrementSummaryInfo('mass_edited');
             }
 
