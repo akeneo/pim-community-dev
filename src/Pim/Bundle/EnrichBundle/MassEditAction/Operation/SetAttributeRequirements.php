@@ -129,4 +129,14 @@ class SetAttributeRequirements extends FamilyMassEditOperation implements Initia
             );
         }
     }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
+    }
 }

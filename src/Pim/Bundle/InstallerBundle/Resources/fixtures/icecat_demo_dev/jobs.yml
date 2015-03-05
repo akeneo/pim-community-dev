@@ -157,4 +157,4 @@ jobs:
         connector: Akeneo Mass Edit Connector
         alias:     change_status
         label:     change_status
-        type:      mass-edit
+        type:      mass_edit
