@@ -195,7 +195,10 @@ class MassEditActionController extends AbstractDoctrineController
 
             $rawConfiguration = $operation->getBatchConfig();
             //TODO: to remove !
-            $jobInstance = $this->jobManager->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode('change_status');
+            $jobCode = $operation->getBatchJobCode();
+            $jobInstance = $this->jobManager->getJobManager()
+                ->getRepository('AkeneoBatchBundle:JobInstance')
+                ->findOneByCode($jobCode);
             $jobInstance = $this->getJobInstance($jobInstance->getId());
 
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
