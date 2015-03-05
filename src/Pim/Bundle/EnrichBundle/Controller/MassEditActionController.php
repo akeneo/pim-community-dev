@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
@@ -55,6 +58,12 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassEditJobManager */
     protected $massEditJobManager;
 
+    /** @var DoctrineJobRepository */
+    protected $jobManager;
+
+    /** @var ConnectorRegistry */
+    protected $connectorRegistry;
+
     /**
      * Constructor
      *
@@ -72,6 +81,8 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param MassEditJobManager         $massEditJobManager
+     * @param DoctrineJobRepository      $jobManager
+     * @param ConnectorRegistry          $connectorRegistry
      */
     public function __construct(
         Request $request,
@@ -87,7 +98,9 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
-        MassEditJobManager $massEditJobManager
+        MassEditJobManager $massEditJobManager,
+        DoctrineJobRepository $jobManager,
+        ConnectorRegistry $connectorRegistry
     ) {
         parent::__construct(
             $request,
@@ -106,6 +119,8 @@ class MassEditActionController extends AbstractDoctrineController
         $this->massActionDispatcher = $massActionDispatcher; // TODO: to remove
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->massEditJobManager   = $massEditJobManager;
+        $this->jobManager           = $jobManager;
+        $this->connectorRegistry    = $connectorRegistry;
     }
 
     /**
@@ -207,21 +222,12 @@ class MassEditActionController extends AbstractDoctrineController
         if ($form->isValid()) {
 
             $operator->getOperation()->saveConfiguration();
-            $pimFilters = $this->gridFilterAdapter->transform($this->request);
 
-            $jobInstance = new JobInstance(null, sprintf('mass-edit-%s', $operationAlias));
-            $jobCode = sprintf('%s_%s', $jobInstance->getType(), uniqid());
+            //TODO: to remove !
+            $jobInstance = $this->jobManager->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode('change_status');
+            $jobInstance = $this->getJobInstance($jobInstance->getId());
+
             $rawConfiguration = json_encode($operator->getOperation()->getConfiguration());
-            $jobInstance->setCode($jobCode)
-                ->setAlias($jobCode)
-                ->setConnector('')
-                ->setRawConfiguration([
-                    'operationAlias' => $operationAlias,
-                    'gridName'       => $this->request->get('gridName'),
-                    'filters'        => json_encode($pimFilters),
-                ]);
-
-            $this->massEditJobManager->save($jobInstance);
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
 
             // Binding does not actually perform the operation, thus form errors can miss some constraints
@@ -256,6 +262,48 @@ class MassEditActionController extends AbstractDoctrineController
                 'queryParams'  => $this->getQueryParams()
             ]
         );
+    }
+
+    /**
+     * Get a job instance
+     *
+     * @param integer $id
+     * @param boolean $checkStatus
+     *
+     * @return Job|RedirectResponse
+     *
+     * @throws NotFoundHttpException
+     */
+    protected function getJobInstance($id, $checkStatus = true)
+    {
+        $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
+
+        // Fixme: should look at the job execution to see the status of a job instance execution
+        if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
+            throw $this->createNotFoundException(
+                sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
+            );
+        }
+
+        $job = $this->connectorRegistry->getJob($jobInstance);
+
+        if (!$job) {
+            throw $this->createNotFoundException(
+                sprintf(
+                    'The following %s does not exist anymore. Please check configuration:<br />' .
+                    'Connector: %s<br />' .
+                    'Type: %s<br />' .
+                    'Alias: %s',
+                    $this->getJobType(),
+                    $jobInstance->getConnector(),
+                    $jobInstance->getType(),
+                    $jobInstance->getAlias()
+                )
+            );
+        }
+        $jobInstance->setJob($job);
+
+        return $jobInstance;
     }
 
     /**
