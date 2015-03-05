@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Symfony\Component\Form\FormTypeInterface;
-
 /**
- * Operation to execute on a set of products
+ * Operation to execute on a set of items
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

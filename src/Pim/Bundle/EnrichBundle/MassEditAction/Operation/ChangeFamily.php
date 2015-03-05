@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Batch operation to change the family of products
@@ -12,7 +11,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeFamily extends AbstractMassEditOperation
+class ChangeFamily extends AbstractMassEditOperation implements
+    ConfigurableOperationInterface,
+    BatchableOperationInterface
 {
     /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
@@ -48,16 +49,6 @@ class ChangeFamily extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(ProductInterface $product)
-    {
-        $product->setFamily($this->family);
-    }
-
-    /**
-     * Get the form options to configure the operation
-     *
-     * @return array
-     */
     public function getFormOptions()
     {
         return [];
@@ -69,5 +60,45 @@ class ChangeFamily extends AbstractMassEditOperation
     public function getAlias()
     {
         return 'change-family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        return [
+            [
+                'field' => 'family',
+                'value' => $this->getFamily()->getId()
+            ]
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchConfig()
+    {
+        return addslashes(json_encode([
+            'filters' => $this->getFilters(),
+            'actions' => $this->getActions()
+        ]));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'change_family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsName()
+    {
+        return 'product';
     }
 }

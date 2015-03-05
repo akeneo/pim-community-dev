@@ -15,4 +15,11 @@ interface BatchableOperationInterface
      * @return string
      */
     public function getBatchConfig();
+
+    /**
+     * Get the code of the JobInstance
+     *
+     * @return string
+     */
+    public function getBatchJobCode();
 }
