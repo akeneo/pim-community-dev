@@ -6,17 +6,13 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
-use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -47,9 +43,6 @@ class MassEditActionController extends AbstractDoctrineController
 
     /** @var ValidatorInterface */
     protected $validator;
-
-    /** @var array */
-    protected $objects;
 
     /** @var GridFilterAdapterInterface */
     protected $gridFilterAdapter;
@@ -117,13 +110,12 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->operatorRegistry     = $operatorRegistry;
-        $this->parametersParser     = $parametersParser;
-        $this->massActionDispatcher = $massActionDispatcher; // TODO: to remove
-        $this->gridFilterAdapter    = $gridFilterAdapter;
-        $this->massEditJobManager   = $massEditJobManager;
-        $this->jobManager           = $jobManager;
-        $this->connectorRegistry    = $connectorRegistry;
+        $this->operatorRegistry   = $operatorRegistry;
+        $this->parametersParser   = $parametersParser;
+        $this->gridFilterAdapter  = $gridFilterAdapter;
+        $this->massEditJobManager = $massEditJobManager;
+        $this->jobManager         = $jobManager;
+        $this->connectorRegistry  = $connectorRegistry;
         $this->operationRegistry  = $operationRegistry;
     }
 
@@ -214,7 +206,6 @@ class MassEditActionController extends AbstractDoctrineController
             $operation->setFilters($pimFilters);
 
             $rawConfiguration = $operation->getBatchConfig();
-//            $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
             //TODO: to remove !
             $jobInstance = $this->jobManager->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode('change_status');
             $jobInstance = $this->getJobInstance($jobInstance->getId());
