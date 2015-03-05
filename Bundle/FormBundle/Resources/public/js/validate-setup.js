@@ -139,7 +139,7 @@ function($, _, __, tools) {
 
     $.validator.setDefaults({
         errorElement: 'span',
-        errorClass: 'validation-faled',
+        errorClass: 'validation-failed',
         errorPlacement: function (label, $el) {
             label.insertAfter(getErrorTarget($el));
         },

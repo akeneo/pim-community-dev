@@ -5,13 +5,11 @@ parameters:
     oro_user.form.type.role.api.class:          Oro\Bundle\UserBundle\Form\Type\RoleApiType
     oro_user.form.type.group.class:             Oro\Bundle\UserBundle\Form\Type\GroupType
     oro_user.form.type.group.api.class:         Oro\Bundle\UserBundle\Form\Type\GroupApiType
-    oro_user.form.type.status.class:            Oro\Bundle\UserBundle\Form\Type\StatusType
     oro_user.form.type.change_password.class:   Oro\Bundle\UserBundle\Form\Type\ChangePasswordType
     oro_user.form.handler.user.class:           Oro\Bundle\UserBundle\Form\Handler\UserHandler
     oro_user.form.handler.reset.class:          Oro\Bundle\UserBundle\Form\Handler\ResetHandler
     oro_user.form.handler.role.class:           Oro\Bundle\UserBundle\Form\Handler\RoleHandler
     oro_user.form.handler.group.class:          Oro\Bundle\UserBundle\Form\Handler\GroupHandler
-    oro_user.form.handler.status.class:         Oro\Bundle\UserBundle\Form\Handler\StatusHandler
     oro_user.form.handler.acl_role.class:       Oro\Bundle\UserBundle\Form\Handler\AclRoleHandler
 
 services:
@@ -57,12 +55,6 @@ services:
         factory_service:              form.factory
         arguments:                    ["oro_user_reset_form", "oro_user_reset", null, { validation_groups: [ResetPassword, Default] }]
 
-    oro_user.form.status:
-        class:                        Symfony\Component\Form\Form
-        factory_method:               createNamed
-        factory_service:              form.factory
-        arguments:                    ["oro_user_status_form", "oro_user_status", null]
-
     oro_user.form.type.user:
         scope: request
         class:                        %oro_user.form.type.user.class%
@@ -104,11 +96,6 @@ services:
         tags:
             - { name: form.type, alias: oro_user_reset }
 
-    oro_user.form.type.status:
-        class:                        %oro_user.form.type.status.class%
-        tags:
-            - { name: form.type, alias: oro_user_status }
-
     oro_user.form.handler.user:
         class:                        %oro_user.form.handler.user.class%
         scope:                        request
@@ -142,11 +129,6 @@ services:
         class:                        %oro_user.form.handler.reset.class%
         scope:                        request
         arguments:                    ["@oro_user.form.reset", "@request", "@oro_user.manager"]
-
-    oro_user.form.handler.status:
-        class:                        %oro_user.form.handler.status.class%
-        scope:                        request
-        arguments:                    ["@oro_user.form.status", "@request", "@doctrine.orm.entity_manager", "@oro_user.manager"]
 
     oro_user.form.handler.acl_role:
         class:                        %oro_user.form.handler.acl_role.class%

@@ -118,7 +118,6 @@ So for displaying our grid we have to add following code to template:
      {{ dataGrid.renderGrid('acme-demo-datagrid') }}
 {% endblock %}
 ```
-**Note:** _if your template extends OroUIBundle:actions:index.html.twig template macros will be already imported and just set variable `gridName` make grid renered_
 
 Actions, mass actions, toolbar, pagers, grid views and other functionality are explained on [advanced grid configuration](./advanced_grid_configuration.md) page.
 

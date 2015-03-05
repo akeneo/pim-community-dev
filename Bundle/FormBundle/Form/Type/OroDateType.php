@@ -11,7 +11,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry;
 use Oro\Bundle\LocaleBundle\Converter\IntlDateTimeFormatConverter;
-use Oro\Bundle\UIBundle\Converter\JqueryUiDateTimeFormatConverter;
 
 class OroDateType extends AbstractType
 {

@@ -1,29 +1,3 @@
-{% macro collection_prototype(widget) %}
-    {% if 'prototype' in widget.vars|keys %}
-        {% set form = widget.vars.prototype %}
-        {% set name = widget.vars.prototype.vars.name %}
-    {% else %}
-        {% set form = widget %}
-        {% set name = widget.vars.full_name %}
-    {% endif %}
-
-    <div data-content="{{ name }}">
-        <div class="row-oro oro-multiselect-holder">
-            {{ form_errors(form) }}
-            {% if form.children|length  %}
-                {% for child in form %}
-                    {{ form_errors(child) }}
-                    {{ form_widget(child) }}
-                {% endfor %}
-            {% else %}
-                {{ form_widget(form) }}
-            {% endif %}
-            {{ form_rest(form) }}
-            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
-        </div>
-    </div>
-{% endmacro %}
-
 {#
     Render attribute row
     Parameters:
@@ -88,26 +62,6 @@
             {{ parameters.label|trans }}
         </a>
     </div>
-{% endmacro %}
-
-{#
-    Create 'add' button
-    Parameters - array:
-        [
-            'path' - button url
-            'aClass' - additional button class
-            'title' - button title
-            'label' - button label
-        ]
-#}
-{% macro addButton(parameters) %}
-    <a href="{{ parameters.path }}"
-       class="btn btn-primary pull-right {{ parameters.aClass is defined? parameters.aClass : '' }}"
-       {% if parameters.title is defined %}
-            title="{{ parameters.title|trans }}">
-       {% endif %}
-       {{ parameters.label|trans }}
-    </a>
 {% endmacro %}
 
 {#
@@ -325,15 +279,6 @@
             {% endif %}
         </div>
     </div>
-{% endmacro %}
-
-{#
-    Render data grid div
-    Parameters:
-        gridId - datagrid div id
-#}
-{% macro gridBlock(gridId) %}
-    <div id="{{ gridId }}"></div>
 {% endmacro %}
 
 {#

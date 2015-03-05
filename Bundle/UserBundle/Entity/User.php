@@ -241,22 +241,6 @@ class User implements
     protected $api;
 
     /**
-     * @var Status[]
-     *
-     * @ORM\OneToMany(targetEntity="Status", mappedBy="user")
-     * @ORM\OrderBy({"createdAt" = "DESC"})
-     */
-    protected $statuses;
-
-    /**
-     * @var Status
-     *
-     * @ORM\OneToOne(targetEntity="Status")
-     * @ORM\JoinColumn(name="status_id", referencedColumnName="id", nullable=true)
-     */
-    protected $currentStatus;
-
-    /**
      * @var \DateTime $createdAt
      *
      * @ORM\Column(type="datetime")
@@ -272,10 +256,9 @@ class User implements
 
     public function __construct()
     {
-        $this->salt     = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
-        $this->roles    = new ArrayCollection();
-        $this->groups   = new ArrayCollection();
-        $this->statuses = new ArrayCollection();
+        $this->salt   = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->roles  = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -1078,52 +1061,6 @@ class User implements
     public function isCredentialsNonExpired()
     {
         return true;
-    }
-
-    /**
-     * Get User Statuses
-     *
-     * @return Status[]
-     */
-    public function getStatuses()
-    {
-        return $this->statuses;
-    }
-
-    /**
-     * Add Status to User
-     *
-     * @param  Status $status
-     * @return User
-     */
-    public function addStatus(Status $status)
-    {
-        $this->statuses[] = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get Current Status
-     *
-     * @return Status
-     */
-    public function getCurrentStatus()
-    {
-        return $this->currentStatus;
-    }
-
-    /**
-     * Set User Current Status
-     *
-     * @param  Status $status
-     * @return User
-     */
-    public function setCurrentStatus(Status $status = null)
-    {
-        $this->currentStatus = $status;
-
-        return $this;
     }
 
     /**

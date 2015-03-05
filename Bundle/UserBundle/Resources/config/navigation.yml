@@ -90,8 +90,6 @@ oro_titles:
     oro_user_role_index: ~
 
     oro_user_security_login: Login
-    oro_user_status_list: "User Status"
-    oro_user_status_create: "Add Status"
 
     oro_user_reset_reset: Password Reset
     oro_user_reset_request: Forgot Password

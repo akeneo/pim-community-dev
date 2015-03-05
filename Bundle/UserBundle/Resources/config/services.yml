@@ -1,6 +1,5 @@
 parameters:
     oro_user.manager.class:             Oro\Bundle\UserBundle\Entity\UserManager
-    oro_user.status.manager.class:      Oro\Bundle\UserBundle\Entity\Manager\StatusManager
     oro_user.entity.class:              Oro\Bundle\UserBundle\Entity\User
     oro_user.group.entity.class:        Oro\Bundle\UserBundle\Entity\Group
     oro_user.role.entity.class:         Oro\Bundle\UserBundle\Entity\Role
@@ -32,8 +31,6 @@ services:
 
     oro_user.user_menu:
         class:                        %oro_user.user_menu.builder.class%
-        arguments:
-            - @security.context
         tags:
             - { name: oro_menu.builder, alias: usermenu }
 
@@ -42,10 +39,6 @@ services:
         arguments:                    ["@oro_security.link.sid_manager"]
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
-
-    oro_user.status_manager:
-        class:                        %oro_user.status.manager.class%
-        arguments:                    ["@doctrine.orm.entity_manager", "@oro_user.manager"]
 
     oro_user.role_manager:
         class:                        %oro_user.role.manager.class%
