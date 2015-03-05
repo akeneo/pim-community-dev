@@ -169,8 +169,7 @@ class MassEditActionController extends AbstractDoctrineController
     public function configureAction($operationAlias)
     {
         $operation = $this->operationRegistry->get($operationAlias);
-        $gridName = $this->request->get('gridName');
-        $itemsName = $this->getItemsName($gridName);
+        $itemsName = $operation->getItemsName();
 
         $form = $this->createForm(new MassEditOperatorType());
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
@@ -201,8 +200,7 @@ class MassEditActionController extends AbstractDoctrineController
     public function performAction($operationAlias)
     {
         $operation = $this->operationRegistry->get($operationAlias);
-        $gridName = $this->request->get('gridName');
-        $itemsName = $this->getItemsName($gridName);
+        $itemsName = $operation->getItemsName();
 
         $form = $this->createForm(new MassEditOperatorType());
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
@@ -213,8 +211,9 @@ class MassEditActionController extends AbstractDoctrineController
 
 //            $operator->getOperation()->saveConfiguration();
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
+            $operation->setFilters($pimFilters);
 
-            $rawConfiguration = json_encode($operator->getOperation()->getConfiguration());
+            $rawConfiguration = $operation->getBatchConfig();
 //            $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
             //TODO: to remove !
             $jobInstance = $this->jobManager->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode('change_status');
