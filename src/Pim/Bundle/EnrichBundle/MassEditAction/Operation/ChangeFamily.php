@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeFamily extends ProductMassEditOperation
+class ChangeFamily extends AbstractMassEditOperation
 {
     /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
@@ -61,5 +61,13 @@ class ChangeFamily extends ProductMassEditOperation
     public function getFormOptions()
     {
         return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'change-family';
     }
 }
