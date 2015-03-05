@@ -2,9 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 
 /**
  * Batch operation to classify products
@@ -25,15 +29,24 @@ class Classify extends ProductMassEditOperation
     protected $categories;
 
     /**
-     * @param CategoryManager    $categoryManager
-     * @param BulkSaverInterface $productSaver
+     * @param CategoryManager                     $categoryManager
+     * @param BulkSaverInterface                  $productSaver
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
+     * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param ObjectDetacherInterface             $objectDetacher
      */
-    public function __construct(CategoryManager $categoryManager, BulkSaverInterface $productSaver)
-    {
-        parent::__construct($productSaver);
+    public function __construct(
+        CategoryManager $categoryManager,
+        BulkSaverInterface $productSaver,
+        ProductQueryBuilderFactoryInterface $pqbFactory,
+        PaginatorFactoryInterface $paginatorFactory,
+        ObjectDetacherInterface $objectDetacher
+    ) {
+        parent::__construct($productSaver, $pqbFactory, $paginatorFactory, $objectDetacher);
+
         $this->categoryManager = $categoryManager;
-        $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
-        $this->categories      = array();
+        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
+        $this->categories      = [];
     }
 
     /**
@@ -80,5 +93,15 @@ class Classify extends ProductMassEditOperation
         foreach ($this->categories as $category) {
             $product->addCategory($category);
         }
+    }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
     }
 }

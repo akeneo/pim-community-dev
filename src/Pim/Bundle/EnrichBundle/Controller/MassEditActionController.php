@@ -2,12 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
+use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -16,6 +22,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -42,11 +49,20 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var integer */
-    protected $massEditLimit;
-
     /** @var array */
     protected $objects;
+
+    /** @var GridFilterAdapterInterface */
+    protected $gridFilterAdapter;
+
+    /** @var MassEditJobManager */
+    protected $massEditJobManager;
+
+    /** @var DoctrineJobRepository */
+    protected $jobManager;
+
+    /** @var ConnectorRegistry */
+    protected $connectorRegistry;
 
     /**
      * Constructor
@@ -63,7 +79,10 @@ class MassEditActionController extends AbstractDoctrineController
      * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
-     * @param integer                    $massEditLimit
+     * @param GridFilterAdapterInterface $gridFilterAdapter
+     * @param MassEditJobManager         $massEditJobManager
+     * @param DoctrineJobRepository      $jobManager
+     * @param ConnectorRegistry          $connectorRegistry
      */
     public function __construct(
         Request $request,
@@ -78,7 +97,10 @@ class MassEditActionController extends AbstractDoctrineController
         OperatorRegistry $operatorRegistry,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
-        $massEditLimit
+        GridFilterAdapterInterface $gridFilterAdapter,
+        MassEditJobManager $massEditJobManager,
+        DoctrineJobRepository $jobManager,
+        ConnectorRegistry $connectorRegistry
     ) {
         parent::__construct(
             $request,
@@ -92,10 +114,13 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->operatorRegistry = $operatorRegistry;
-        $this->parametersParser = $parametersParser;
-        $this->massActionDispatcher = $massActionDispatcher;
-        $this->massEditLimit = $massEditLimit;
+        $this->operatorRegistry     = $operatorRegistry;
+        $this->parametersParser     = $parametersParser;
+        $this->massActionDispatcher = $massActionDispatcher; // TODO: to remove
+        $this->gridFilterAdapter    = $gridFilterAdapter;
+        $this->massEditJobManager   = $massEditJobManager;
+        $this->jobManager           = $jobManager;
+        $this->connectorRegistry    = $connectorRegistry;
     }
 
     /**
@@ -110,10 +135,6 @@ class MassEditActionController extends AbstractDoctrineController
             $this->request->get('gridName')
         );
 
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
-        }
-
         $form = $this->getOperatorForm($operator);
 
         if ($this->request->isMethod('POST')) {
@@ -126,12 +147,12 @@ class MassEditActionController extends AbstractDoctrineController
             }
         }
 
-        return array(
+        return [
             'form' => $form->createView(),
             'count' => $this->getObjectCount(),
             'queryParams' => $this->getQueryParams(),
             'operator' => $operator,
-        );
+        ];
     }
 
     /**
@@ -149,14 +170,9 @@ class MassEditActionController extends AbstractDoctrineController
             );
 
             $operator
-                ->setOperationAlias($operationAlias)
-                ->setObjectsToMassEdit($this->getObjects());
+                ->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         $operator->initializeOperation();
@@ -170,12 +186,12 @@ class MassEditActionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
-            array(
+            [
                 'form'         => $form->createView(),
                 'operator'     => $operator,
                 'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
-            )
+            ]
         );
     }
 
@@ -194,14 +210,9 @@ class MassEditActionController extends AbstractDoctrineController
             );
 
             $operator
-                ->setOperationAlias($operationAlias)
-                ->setObjectsToMassEdit($this->getObjects());
+                ->setOperationAlias($operationAlias);
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         $operator->initializeOperation();
@@ -209,7 +220,16 @@ class MassEditActionController extends AbstractDoctrineController
         $form->submit($this->request);
 
         if ($form->isValid()) {
-            $operator->performOperation();
+
+            $operator->getOperation()->saveConfiguration();
+
+            //TODO: to remove !
+            $jobInstance = $this->jobManager->getJobManager()->getRepository('AkeneoBatchBundle:JobInstance')->findOneByCode('change_status');
+            $jobInstance = $this->getJobInstance($jobInstance->getId());
+
+            $rawConfiguration = json_encode($operator->getOperation()->getConfiguration());
+            $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
+
             // Binding does not actually perform the operation, thus form errors can miss some constraints
             foreach ($this->validator->validate($operator) as $violation) {
                 $form->addError(
@@ -227,7 +247,7 @@ class MassEditActionController extends AbstractDoctrineController
             $operator->finalizeOperation();
             $this->addFlash(
                 'success',
-                sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
+                sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
             );
 
             return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
@@ -235,39 +255,55 @@ class MassEditActionController extends AbstractDoctrineController
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
-            array(
+            [
                 'form'         => $form->createView(),
                 'operator'     => $operator,
                 'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
-            )
+            ]
         );
     }
 
     /**
-     * Check if the mass action is executable
+     * Get a job instance
      *
-     * @return boolean
-     */
-    protected function isExecutable()
-    {
-        return $this->exceedsMassEditLimit() === false;
-    }
-
-    /**
-     * Temporary method to avoid editing too many objects
+     * @param integer $id
+     * @param boolean $checkStatus
      *
-     * @return boolean
+     * @return Job|RedirectResponse
+     *
+     * @throws NotFoundHttpException
      */
-    protected function exceedsMassEditLimit()
+    protected function getJobInstance($id, $checkStatus = true)
     {
-        if ($this->getObjectCount() > $this->massEditLimit) {
-            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
+        $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
 
-            return true;
+        // Fixme: should look at the job execution to see the status of a job instance execution
+        if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
+            throw $this->createNotFoundException(
+                sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
+            );
         }
 
-        return false;
+        $job = $this->connectorRegistry->getJob($jobInstance);
+
+        if (!$job) {
+            throw $this->createNotFoundException(
+                sprintf(
+                    'The following %s does not exist anymore. Please check configuration:<br />' .
+                    'Connector: %s<br />' .
+                    'Type: %s<br />' .
+                    'Alias: %s',
+                    $this->getJobType(),
+                    $jobInstance->getConnector(),
+                    $jobInstance->getType(),
+                    $jobInstance->getAlias()
+                )
+            );
+        }
+        $jobInstance->setJob($job);
+
+        return $jobInstance;
     }
 
     /**

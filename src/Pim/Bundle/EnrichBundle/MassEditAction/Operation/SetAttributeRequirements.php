@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetAttributeRequirements extends FamilyMassEditOperation
+class SetAttributeRequirements extends FamilyMassEditOperation implements InitializableMassEditOperationInterface
 {
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
@@ -128,5 +128,15 @@ class SetAttributeRequirements extends FamilyMassEditOperation
                 )
             );
         }
+    }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
     }
 }

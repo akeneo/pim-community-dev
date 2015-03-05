@@ -160,7 +160,10 @@ services:
             - '@pim_enrich.mass_edit_action.operator.registry'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.extension.mass_action.dispatcher'
-            - %mass_edit_limit%
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_enrich.manager.mass_edit_job_manager'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.connectors'
 
     pim_enrich.controller.group:
         scope: request

@@ -60,4 +60,14 @@ class ChangeFamily extends ProductMassEditOperation
     {
         $product->setFamily($this->family);
     }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
+    }
 }
