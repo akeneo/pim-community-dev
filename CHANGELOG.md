@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+PIM-3806: delete an attribute from a product template
+
 # 1.3.1 (2015-02-24)
 
 ## Bug fixes
@@ -30,6 +35,7 @@
 - PIM-3753: Fix completeness filter
 
 ## BC breaks
+- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover' to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
 - Add a TranslatorInterface argument in MetricType::__construct
 - Change of constructor of `Pim/Bundle/CommentBundle/Form/Type/CommentType` to accept `Pim\Bundle\CommentBundle\Entity` as a string for the third argument
 - Added new constructor to `Pim/Bundle/DataGridBundle/Form/Type/DatagridViewType` to accept `Pim\Bundle\DataGridBundle\Entity\DataGridView` as a string for the first argument
