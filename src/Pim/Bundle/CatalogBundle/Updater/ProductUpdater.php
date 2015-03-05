@@ -62,9 +62,17 @@ class ProductUpdater implements ProductUpdaterInterface
 
         if (null === $attribute) {
             $setter = $this->setterRegistry->getFieldSetter($field);
+
+            if (null === $setter) {
+                throw new \LogicException(sprintf('No setter found for field "%s"', $field));
+            }
             $setter->setFieldData($product, $field, $data, $options);
         } else {
             $setter = $this->setterRegistry->getAttributeSetter($attribute);
+
+            if (null === $setter) {
+                throw new \LogicException(sprintf('No setter found for attribute "%s"', $attribute->getCode()));
+            }
             $setter->setAttributeData($product, $attribute, $data, $options);
         }
     }
