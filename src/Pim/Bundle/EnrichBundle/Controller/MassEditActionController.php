@@ -201,7 +201,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($form->isValid()) {
 
-//            $operator->getOperation()->saveConfiguration();
+            $operation = $form->getData()['operation'];
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
             $operation->setFilters($pimFilters);
 
