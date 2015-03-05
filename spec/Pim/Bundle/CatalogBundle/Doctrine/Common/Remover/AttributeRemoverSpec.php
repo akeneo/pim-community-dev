@@ -7,6 +7,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
+use Pim\Bundle\CatalogBundle\Entity\ProductTemplate;
+use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -15,9 +18,11 @@ class AttributeRemoverSpec extends ObjectBehavior
     function let(
         ObjectManager $objectManager,
         RemovingOptionsResolverInterface $optionsResolver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ProductTemplateBuilderInterface $productTemplateBuilder,
+        ProductTemplateRepositoryInterface $productTemplateRepository
     ) {
-        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher);
+        $this->beConstructedWith($objectManager, $optionsResolver, $eventDispatcher, $productTemplateBuilder, $productTemplateRepository);
     }
 
     function it_is_a_remover()
@@ -29,7 +34,9 @@ class AttributeRemoverSpec extends ObjectBehavior
         $eventDispatcher,
         $objectManager,
         $optionsResolver,
-        AttributeInterface $attribute
+        AttributeInterface $attribute,
+        ProductTemplateBuilderInterface $productTemplateBuilder,
+        ProductTemplateRepositoryInterface $productTemplateRepository
     ) {
         $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
         $eventDispatcher->dispatch(
@@ -44,6 +51,63 @@ class AttributeRemoverSpec extends ObjectBehavior
             AttributeEvents::POST_REMOVE,
             Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
         )->shouldBeCalled();
+
+        $objectManager->getRepository('Pim\CatalogBundle\Entity\ProductTemplate')->willReturn($productTemplateRepository);
+        $productTemplateRepository->findAll()->willReturn([]);
+
+        $this->remove($attribute);
+    }
+
+    function it_removes_an_empty_product_template_if_attribute_has_been_deleted(
+        $eventDispatcher,
+        $objectManager,
+        $optionsResolver,
+        AttributeInterface $attribute,
+        ProductTemplateBuilderInterface $productTemplateBuilder,
+        ProductTemplateRepositoryInterface $productTemplateRepository,
+        ProductTemplate $productTemplate
+    ) {
+        $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
+
+        $objectManager->remove($attribute)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+
+        $attribute->getCode()->willReturn('test');
+
+        $productTemplate->getValuesData()->willReturn(['test']);
+        $productTemplateRepository->findAll()->willReturn([$productTemplate]);
+        $productTemplate->hasValueForAttribute($attribute)->willReturn(true);
+        $productTemplateBuilder->removeAttribute($productTemplate, $attribute)->shouldBeCalled();
+        $productTemplate->getAttributeCodes()->willReturn([]);
+        $objectManager->remove($productTemplate)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+
+        $this->remove($attribute);
+    }
+
+    function it_updates_a_product_template_if_attribute_has_been_deleted(
+        $eventDispatcher,
+        $objectManager,
+        $optionsResolver,
+        AttributeInterface $attribute,
+        ProductTemplateBuilderInterface $productTemplateBuilder,
+        ProductTemplateRepositoryInterface $productTemplateRepository,
+        ProductTemplate $productTemplate
+    ) {
+        $optionsResolver->resolveRemoveOptions([])->willReturn(['flush' => true]);
+
+        $objectManager->remove($attribute)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+
+        $attribute->getCode()->willReturn('test');
+
+        $productTemplate->getValuesData()->willReturn(['test', 'test2']);
+        $productTemplateRepository->findAll()->willReturn([$productTemplate]);
+        $productTemplate->hasValueForAttribute($attribute)->willReturn(true);
+        $productTemplateBuilder->removeAttribute($productTemplate, $attribute)->shouldBeCalled();
+        $productTemplate->getAttributeCodes()->willReturn(['test2']);
+        $objectManager->persist($productTemplate)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
 
         $this->remove($attribute);
     }

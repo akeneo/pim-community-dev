@@ -60,3 +60,18 @@ Feature: Add attributes to a variant group
      | Name | bar |
     And I save the variant group
     Then the english Name of "boot" should be "bar"
+
+  @javascript
+  Scenario: Remove an attribute which is linked to a variant group
+    Given the following products:
+      | sku  | groups            | color | size |
+      | boot | caterpillar_boots | black | 39   |
+    And I am on the "caterpillar_boots" variant group page
+    When I visit the "Attributes" tab
+    And I add available attribute Name
+    And I add available attribute Description
+    Then I am on the attributes page
+    When I click on the "Delete" action of the row which contains "Name"
+    And I confirm the deletion
+    Then I am on the "caterpillar_boots" variant group page
+    And I should not see available attribute Name in group "Product information"
