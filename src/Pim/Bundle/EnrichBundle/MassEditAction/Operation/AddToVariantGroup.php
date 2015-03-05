@@ -20,7 +20,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToVariantGroup extends ProductMassEditOperation
+class AddToVariantGroup extends AbstractMassEditOperation
 {
     /** @var array */
     protected $skippedObjects = [];
@@ -262,5 +262,13 @@ class AddToVariantGroup extends ProductMassEditOperation
         }
 
         return $validVariantGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'add-to-variant-group';
     }
 }
