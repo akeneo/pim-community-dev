@@ -5,7 +5,7 @@
     {% spaceless %}
         {% for group_label, choice in options %}
             {% if choice is iterable %}
-                <optgroup label="{{ configs.is_translate_group is defined and not configs.is_translate_group ? group_label : group_label|trans({}, translation_domain) }}">
+                <optgroup label="{{ group_label|trans({}, translation_domain) }}">
                     {% set options = choice %}
                     {{ block('choice_widget_options') }}
                 </optgroup>
