@@ -26,12 +26,6 @@ class MassEditJobManager
     /** @var string */
     protected $environment;
 
-    /** @var OperatorRegistry */
-    protected $operatorRegistry;
-
-    /** @var NotificationManager */
-    protected $notificationManager;
-
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -57,10 +51,8 @@ class MassEditJobManager
         $rootDir,
         $environment
     ) {
-        $this->operatorRegistry    = $operatorRegistry;
         $this->rootDir             = $rootDir;
         $this->environment         = $environment;
-        $this->notificationManager = $notificationManager;
         $this->eventDispatcher     = $eventDispatcher;
         $this->jobExecutionClass   = $jobExecutionClass;
         $this->objectManager       = $objectManager;
@@ -80,13 +72,12 @@ class MassEditJobManager
         $pathFinder   = new PhpExecutableFinder();
 
         $cmd = sprintf(
-            '%s %s/console akeneo:batch:job --env=%s change_status %s --config="{\"filters\":[{\"field\":\"id\",\"operator\":\"IN\",\"value\":[\"1\", \"2\"]}],\"data\":true}" >> %s/logs/batch_execute.log 2>&1',
+            '%s %s/console akeneo:batch:job --env=%s change_status %s --config="%s" >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
             $this->rootDir,
             $this->environment,
             $executionId,
-//            $executionId,
-//            $rawConfiguration,
+            $rawConfiguration,
             $this->rootDir
         );
 
