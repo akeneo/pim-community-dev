@@ -29,13 +29,6 @@ interface ReferenceDataInterface
     public function setCode($code);
 
     /**
-     * TODO-CR: used only by the ReferenceDataRepository to be able to have an array of [id => label]
-     *
-     * @return array
-     */
-    public static function getLabelProperties();
-
-    /**
      * @return string
      */
     public function getType();

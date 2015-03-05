@@ -19,7 +19,7 @@ class ReferenceDataRepository extends EntityRepository implements
  ReferenceDataRepositoryInterface, OptionRepositoryInterface
 {
     /**
-     * TODO-CR: should be renamed or dropped if unsed
+     * TODO-CR: should be renamed or dropped if unused
      *
      * {@inheritdoc}
      */
@@ -35,22 +35,8 @@ class ReferenceDataRepository extends EntityRepository implements
      */
     public function getOptions($dataLocale, $collectionId = null, $search = '', array $options = array())
     {
-        $labelProperties = $this->getReferenceDataLabelProperties();
-
-        $labels = array_map(
-            function ($property) {
-                return $this->getAlias() . '.' . $property;
-            },
-            $labelProperties
-        );
-
-        $labelSelectExpr = $labels[0];
-        if (count($labelProperties) > 1) {
-            $labelSelectExpr = sprintf('CONCAT(%s)', implode(", ' - ', ", $labels));
-        }
-
         $qb = $this->createQueryBuilder('cr');
-        $qb->select(sprintf('%s.id as id, %s as text', $this->getAlias(), $labelSelectExpr));
+        $qb->select(sprintf('%s.id as id, %s.code as text', $this->getAlias(), $this->getAlias()));
 
         return [
             'results' => $qb->getQuery()->getArrayResult(),
@@ -64,15 +50,7 @@ class ReferenceDataRepository extends EntityRepository implements
      */
     public function getOptionLabel($referenceData, $dataLocale)
     {
-        $labelsProperties = $this->getReferenceDataLabelProperties();
-        $labels = [];
-
-        foreach ($labelsProperties as $property) {
-            $getter = 'get' . ucfirst($property);
-            $labels [] = $referenceData->$getter();
-        }
-
-        return implode(' - ', $labels);
+        return '[' . $referenceData->getCode() . ']';
     }
 
     /**
@@ -88,17 +66,5 @@ class ReferenceDataRepository extends EntityRepository implements
     public function getAlias()
     {
         return 'cr';
-    }
-
-    /**
-     * The list of label properties of the reference data
-     *
-     * @return array
-     */
-    private function getReferenceDataLabelProperties()
-    {
-        $referenceDataClass = $this->_entityName;
-
-        return $referenceDataClass::getLabelProperties();
     }
 }

@@ -97,14 +97,6 @@ class Moto extends AbstractReferenceData implements ReferenceDataInterface
     /**
      * {@inheritdoc}
      */
-    public static function getLabelProperties()
-    {
-        return ['brand', 'model'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return 'moto';

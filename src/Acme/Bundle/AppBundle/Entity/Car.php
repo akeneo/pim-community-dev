@@ -64,14 +64,6 @@ class Car extends AbstractReferenceData implements ReferenceDataInterface
     /**
      * {@inheritdoc}
      */
-    public static function getLabelProperties()
-    {
-        return ['name'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getType()
     {
         return 'car';
