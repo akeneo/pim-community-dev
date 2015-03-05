@@ -3,7 +3,7 @@ connector:
     jobs:
         change_status:
             title: change_status
-            type:  mass-edit
+            type:  mass_edit
             steps:
                 perform:
                     title: change_status
