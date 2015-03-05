@@ -8,59 +8,69 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
 /**
- * Sets the category field
+ * Sets the group field
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategorySetter extends AbstractFieldSetter
+class GroupFieldSetter extends AbstractFieldSetter
 {
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param array                                 $supportedFields
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $categoryRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
         array $supportedFields
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->supportedFields    = $supportedFields;
+        $this->groupRepository = $groupRepository;
+        $this->supportedFields = $supportedFields;
     }
 
     /**
      * {@inheritdoc}
      *
-     * Expected data input format : ["category_code"]
+     * Expected data input format : ["group_code"]
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 
-        $categories = [];
-        foreach ($data as $categoryCode) {
-            $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        $groups = [];
+        foreach ($data as $groupCode) {
+            $group = $this->groupRepository->findOneByIdentifier($groupCode);
 
-            if (null === $category) {
+            if (null === $group) {
                 throw InvalidArgumentException::expected(
                     $field,
-                    'existing category code',
+                    'existing group code',
                     'setter',
-                    'category',
-                    $categoryCode
+                    'group',
+                    $groupCode
+                );
+            } elseif ($group->getType()->isVariant()) {
+                throw InvalidArgumentException::expected(
+                    $field,
+                    'non variant group code',
+                    'setter',
+                    'group',
+                    $groupCode
                 );
             } else {
-                $categories[] = $category;
+                $groups[] = $group;
             }
         }
 
-        $oldCategories = $product->getCategories();
-        foreach ($oldCategories as $category) {
-            $product->removeCategory($category);
+        $oldGroups = $product->getGroups();
+        foreach ($oldGroups as $group) {
+            if (!$group->getType()->isVariant()) {
+                $product->removeGroup($group);
+            }
         }
 
-        foreach ($categories as $category) {
-            $product->addCategory($category);
+        foreach ($groups as $group) {
+            $product->addGroup($group);
         }
     }
 
@@ -76,7 +86,7 @@ class CategorySetter extends AbstractFieldSetter
             throw InvalidArgumentException::arrayExpected(
                 $field,
                 'setter',
-                'category',
+                'group',
                 gettype($data)
             );
         }
@@ -87,7 +97,7 @@ class CategorySetter extends AbstractFieldSetter
                     $field,
                     $key,
                     'setter',
-                    'category',
+                    'group',
                     gettype($value)
                 );
             }
