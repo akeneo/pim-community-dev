@@ -35,9 +35,6 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class MassEditActionController extends AbstractDoctrineController
 {
-    /** @var AbstractMassEditOperator */
-    protected $operator;
-
     /** @var MassActionParametersParser */
     protected $parametersParser;
 
@@ -49,10 +46,6 @@ class MassEditActionController extends AbstractDoctrineController
 
     /** @var MassEditJobManager */
     protected $massEditJobManager;
-    /**
-     * @var OperationRegistry
-     */
-    private $operationRegistry;
 
     /** @var DoctrineJobRepository */
     protected $jobManager;
@@ -72,7 +65,6 @@ class MassEditActionController extends AbstractDoctrineController
      * @param TranslatorInterface        $translator
      * @param EventDispatcherInterface   $eventDispatcher
      * @param ManagerRegistry            $doctrine
-     * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param MassEditJobManager         $massEditJobManager
@@ -90,7 +82,6 @@ class MassEditActionController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        OperatorRegistry $operatorRegistry,
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
         MassEditJobManager $massEditJobManager,
@@ -110,7 +101,6 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->operatorRegistry   = $operatorRegistry;
         $this->parametersParser   = $parametersParser;
         $this->gridFilterAdapter  = $gridFilterAdapter;
         $this->massEditJobManager = $massEditJobManager;
@@ -168,7 +158,6 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-//            $form = $this->getOperatorForm($operator);
         }
 
         return $this->render(
@@ -196,7 +185,6 @@ class MassEditActionController extends AbstractDoctrineController
 
         $form = $this->createForm(new MassEditOperatorType());
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
-//        $form = $this->getOperatorForm($operator, ['Default', 'configureAction']);
         $form->submit($this->request);
 
         if ($form->isValid()) {
@@ -226,7 +214,6 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-//            $operator->finalizeOperation();
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
@@ -241,7 +228,6 @@ class MassEditActionController extends AbstractDoctrineController
                 'form'         => $form->createView(),
                 'operationAlias' => $operationAlias,
                 'itemsName'      => $itemsName,
-//                'operator'     => $operator,
                 'queryParams'  => $this->getQueryParams()
             ]
         );
@@ -287,24 +273,6 @@ class MassEditActionController extends AbstractDoctrineController
         $jobInstance->setJob($job);
 
         return $jobInstance;
-    }
-
-    /**
-     * @param AbstractMassEditOperator $operator
-     * @param array                    $validationGroups
-     *
-     * @return Form
-     */
-    protected function getOperatorForm(AbstractMassEditOperator $operator, array $validationGroups = [])
-    {
-        return $this->createForm(
-            new MassEditOperatorType(),
-            $operator,
-            [
-                'operations' => $operator->getOperationChoices(),
-                'validation_groups' => $validationGroups
-            ]
-        );
     }
 
     protected function getItemsName($gridName)
