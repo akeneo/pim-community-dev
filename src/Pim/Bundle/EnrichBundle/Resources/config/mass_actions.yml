@@ -11,7 +11,7 @@ parameters:
     pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
     pim_enrich.mass_edit_action.add_to_variant_group.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup
     pim_enrich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
-    pim_enrich.mass_edit_handler.change_status.class:             Pim\Bundle\EnrichBundle\MassEditAction\Handler\ChangeStatusHandler
+    pim_enrich.mass_edit_handler.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\ChangeStatusHandler
 
 services:
     # Mass edit action operator registry
