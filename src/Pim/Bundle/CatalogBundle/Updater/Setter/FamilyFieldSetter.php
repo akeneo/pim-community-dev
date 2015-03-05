@@ -8,67 +8,49 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
 /**
- * Sets the variant group field
+ * Sets the family field
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupFieldSetter extends AbstractFieldSetter
+class FamilyFieldSetter extends AbstractFieldSetter
 {
     /**
-     * @param IdentifiableObjectRepositoryInterface $groupRepository
+     * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param array                                 $supportedFields
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $groupRepository,
+        IdentifiableObjectRepositoryInterface $familyRepository,
         array $supportedFields
     ) {
-        $this->groupRepository = $groupRepository;
-        $this->supportedFields = $supportedFields;
+        $this->familyRepository = $familyRepository;
+        $this->supportedFields  = $supportedFields;
     }
 
     /**
      * {@inheritdoc}
      *
-     * Expected data input format : "variant_group_code"
+     * Expected data input format : "family_code"
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 
         if (null !== $data) {
-            $variantGroup = $this->groupRepository->findOneByIdentifier($data);
-            if (null === $variantGroup) {
+            $family = $this->familyRepository->findOneByIdentifier($data);
+            if (null === $family) {
                 throw InvalidArgumentException::expected(
                     $field,
-                    'existing variant group code',
+                    'existing family code',
                     'setter',
-                    'group',
+                    'family',
                     $data
                 );
             }
-
-            if (!$variantGroup->getType()->isVariant()) {
-                throw InvalidArgumentException::expected(
-                    $field,
-                    'variant group code',
-                    'setter',
-                    'group',
-                    $data
-                );
-            }
-        }
-
-        $existingGroups = $product->getGroups();
-        foreach ($existingGroups as $group) {
-            if ($group->getType()->isVariant()) {
-                $product->removeGroup($group);
-            }
-        }
-
-        if (null !== $data) {
-            $product->addGroup($variantGroup);
+            $product->setFamily($family);
+        } else {
+            $product->setFamily(null);
         }
     }
 
@@ -84,7 +66,7 @@ class VariantGroupFieldSetter extends AbstractFieldSetter
             throw InvalidArgumentException::stringExpected(
                 $field,
                 'setter',
-                'variant group',
+                'family',
                 gettype($data)
             );
         }

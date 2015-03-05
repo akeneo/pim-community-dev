@@ -12,6 +12,7 @@ parameters:
     pim_catalog.updater.setter.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Setter\CategoryFieldSetter
     pim_catalog.updater.setter.group_field.class:            Pim\Bundle\CatalogBundle\Updater\Setter\GroupFieldSetter
     pim_catalog.updater.setter.variant_group_field.class:    Pim\Bundle\CatalogBundle\Updater\Setter\VariantGroupFieldSetter
+    pim_catalog.updater.setter.family_field.class:           Pim\Bundle\CatalogBundle\Updater\Setter\FamilyFieldSetter
     pim_catalog.updater.setter.enabled_field.class:          Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
     pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectValueSetter
     pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectValueSetter
@@ -120,6 +121,14 @@ services:
         arguments:
             - '@pim_catalog.repository.group'
             - ['variant_group']
+        tags:
+            - { name: 'pim_catalog.updater.setter' }
+
+    pim_catalog.updater.setter.family_field:
+        class: %pim_catalog.updater.setter.family_field.class%
+        arguments:
+            - '@pim_catalog.repository.family'
+            - ['family']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

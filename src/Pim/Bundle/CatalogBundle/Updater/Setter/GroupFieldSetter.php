@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 class GroupFieldSetter extends AbstractFieldSetter
 {
     /**
-     * @param IdentifiableObjectRepositoryInterface $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param array                                 $supportedFields
      */
     public function __construct(
