@@ -908,3 +908,8 @@ oro.locale:
 
 # Datagrid
 Selected products successfully deleted: Selected products successfully deleted
+
+job_execution.summary:
+    mass_edited: Mass edited
+    skip:        skipped
+    skip_products: skipped products
