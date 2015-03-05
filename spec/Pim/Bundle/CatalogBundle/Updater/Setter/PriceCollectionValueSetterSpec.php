@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -51,7 +52,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $currencyManager,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductValueInterface $priceValue
+        ProductValueInterface $priceValue,
+        ProductPriceInterface $price
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
@@ -59,6 +61,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
+        $priceValue->getPrices()->willReturn([$price]);
+        $price->setData(null)->shouldBeCalled();
 
         $data = [['data' => 123.2, 'currency' => 'EUR']];
         $this->setValue([$product], $attribute, $data, 'fr_FR', 'mobile');
@@ -69,7 +73,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $currencyManager,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductValueInterface $priceValue
+        ProductValueInterface $priceValue,
+        ProductPriceInterface $price
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
@@ -77,6 +82,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('price');
         $product->getValue('price', 'fr_FR', 'mobile')->willReturn($priceValue);
+        $priceValue->getPrices()->willReturn([$price]);
+        $price->setData(null)->shouldBeCalled();
 
         $data = [['data' => 123.2, 'currency' => 'EUR']];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -298,7 +305,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductValue $productValue
+        ProductValue $productValue,
+        ProductPriceInterface $price
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -315,6 +323,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $productValue->getPrices()->willReturn([$price]);
+        $price->setData(null)->shouldBeCalled();
 
         $products = [$product1, $product2, $product3];
 
@@ -329,7 +339,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
-        ProductValue $productValue
+        ProductValue $productValue,
+        ProductPriceInterface $price
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
@@ -346,6 +357,8 @@ class PriceCollectionValueSetterSpec extends ObjectBehavior
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $productValue->getPrices()->willReturn([$price]);
+        $price->setData(null)->shouldBeCalled();
 
         $builder->addPriceForCurrencyWithData($productValue, 'EUR', 123.2)->shouldBeCalled();
         $this->setattributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
