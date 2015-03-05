@@ -136,7 +136,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidArgumentException::arrayInvalidKey(
+                InvalidArgumentException::validEntityCodeExpected(
                     'attributeCode',
                     'code',
                     'The option does not exist',
@@ -158,7 +158,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(
-                InvalidArgumentException::arrayInvalidKey(
+                InvalidArgumentException::validEntityCodeExpected(
                     'attributeCode',
                     'code',
                     'The option does not exist',
