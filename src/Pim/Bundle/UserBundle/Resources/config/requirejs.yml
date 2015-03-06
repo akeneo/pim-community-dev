@@ -1,4 +1,3 @@
 config:
     paths:
-        oro/security-access-levels: pimuser/js/security-access-levels
-        oro/init-user:              pimuser/js/init-user
+        oro/init-user: pimuser/js/init-user

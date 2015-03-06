@@ -460,3 +460,15 @@
     {% set attr = attr|merge({ class: 'hide' }) %}
     {{ block('checkbox_widget') }}
 {% endblock %}
+
+{% block oro_acl_label_widget %}
+    <strong>{{ value|trans }}</strong>
+{% endblock %}
+
+{% block oro_acl_collection_widget %}
+    {% for child in form %}
+        <div class="security-row">
+            {{ form_widget(child) }}
+        </div>
+    {% endfor %}
+{% endblock %}
