@@ -29,15 +29,6 @@ class AclVoterTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo(1))
             ->will($this->returnValue(AccessLevel::LOCAL_LEVEL));
 
-        $isGrantedObserver = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $voter->addOneShotIsGrantedObserver($isGrantedObserver);
-
-        $isGrantedObserver->expects($this->once())
-            ->method('setAccessLevel')
-            ->with($this->equalTo(AccessLevel::LOCAL_LEVEL));
-
         $selector->expects($this->exactly(2))
             ->method('select')
             ->with($this->identicalTo($object))
@@ -55,7 +46,6 @@ class AclVoterTest extends \PHPUnit_Framework_TestCase
                         $inVoteToken = $voter->getSecurityToken();
                         $inVoteObject = $voter->getObject();
                         $inVoteExtension = $voter->getAclExtension();
-                        $voter->setTriggeredMask(1);
 
                         return null;
                     }
@@ -75,8 +65,5 @@ class AclVoterTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($token === $inVoteToken);
         $this->assertTrue($object === $inVoteObject);
         $this->assertTrue($extension === $inVoteExtension);
-
-        // call the vote method one more time to ensure that OneShotIsGrantedObserver was removed from the voter
-        $voter->vote($token, $object, array('test'));
     }
 }

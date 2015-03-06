@@ -72,20 +72,6 @@ class SecurityFacade
             );
         }
 
-        // check class level ACL
-        if ($isGranted && ($annotation === null || !$annotation->getIgnoreClassAcl())) {
-            $annotation = $this->annotationProvider->findAnnotation($class);
-            if ($annotation !== null) {
-                $this->logger->debug(
-                    sprintf('Check an access using "%s" ACL annotation.', $annotation->getId())
-                );
-                $isGranted = $this->securityContext->isGranted(
-                    $annotation->getPermission(),
-                    $this->objectIdentityFactory->get($annotation)
-                );
-            }
-        }
-
         return $isGranted;
     }
 

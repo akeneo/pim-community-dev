@@ -5,6 +5,7 @@ oro_menu_config:
             extras:
                 description: 'System configuration'
             route: 'oro_config_configuration_system'
+            aclResourceId: oro_config_system
 
     tree:
         application_menu:

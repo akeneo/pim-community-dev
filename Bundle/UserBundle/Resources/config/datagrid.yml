@@ -4,7 +4,7 @@ datagrid:
         options:
             entityHint: user
         source:
-            acl_resource: oro_user_user_view
+            acl_resource: pim_user_user_index
             type: orm
             query:
                 select:
@@ -111,26 +111,26 @@ datagrid:
                 label:         View
                 link:          view_link
                 icon:          user
-                acl_resource:  oro_user_user_view
+                acl_resource:  pim_user_user_index
                 rowAction:     true
             update:
                 type:          navigate
                 label:         Update
                 link:          update_link
                 icon:          edit
-                acl_resource:  oro_user_user_update
+                acl_resource:  pim_user_user_edit
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  oro_user_user_delete
+                acl_resource:  pim_user_user_remove
 
     groups-grid:
         options:
             entityHint: group
         source:
-            acl_resource: oro_user_group_view
+            acl_resource: pim_user_group_index
             type: orm
             query:
                 select:
@@ -165,14 +165,14 @@ datagrid:
                 label:         Update
                 link:          update_link
                 icon:          edit
-                acl_resource:  oro_user_group_update
+                acl_resource:  pim_user_group_edit
                 rowAction:     true
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  oro_user_group_remove
+                acl_resource:  pim_user_group_remove
 
         sorters:
             columns:
@@ -191,7 +191,7 @@ datagrid:
         options:
             entityHint: role
         source:
-            acl_resource: oro_user_role_view
+            acl_resource: pim_user_role_index
             type: orm
             query:
                 select:
@@ -227,14 +227,14 @@ datagrid:
                 label:         Update
                 link:          update_link
                 icon:          edit
-                acl_resource:  oro_user_role_update
+                acl_resource:  pim_user_role_edit
                 rowAction:     true
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  oro_user_role_remove
+                acl_resource:  pim_user_role_remove
 
         sorters:
             columns:

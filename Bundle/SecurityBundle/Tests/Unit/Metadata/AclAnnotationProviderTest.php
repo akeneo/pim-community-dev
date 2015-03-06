@@ -84,12 +84,6 @@ class AclAnnotationProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->provider->hasAnnotation('SomeClass', 'SomeMethod'));
         $this->assertFalse($this->provider->hasAnnotation('SomeClass', 'UnknownMethod'));
         $this->assertFalse($this->provider->hasAnnotation('UnknownClass', 'SomeMethod'));
-
-        $this->assertTrue($this->provider->isProtectedClass('SomeClass'));
-        $this->assertFalse($this->provider->isProtectedClass('UnknownClass'));
-        $this->assertTrue($this->provider->isProtectedMethod('SomeClass', 'SomeMethod'));
-        $this->assertFalse($this->provider->isProtectedMethod('SomeClass', 'UnknownMethod'));
-        $this->assertFalse($this->provider->isProtectedMethod('UnknownClass', 'SomeMethod'));
     }
 
     public function testCache()

@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
@@ -28,12 +27,7 @@ class UserController extends Controller
     /**
      * @Route("/view/{id}", name="oro_user_view", requirements={"id"="\d+"})
      * @Template
-     * @Acl(
-     *      id="oro_user_user_view",
-     *      type="entity",
-     *      class="OroUserBundle:User",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("pim_user_user_index")
      */
     public function viewAction(User $user)
     {
@@ -64,7 +58,7 @@ class UserController extends Controller
 
     /**
      * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
-     * @AclAncestor("oro_user_user_update")
+     * @AclAncestor("pim_user_user_edit")
      */
     public function apigenAction(User $user)
     {
@@ -90,12 +84,7 @@ class UserController extends Controller
      *
      * @Route("/create", name="oro_user_create")
      * @Template("OroUserBundle:User:update.html.twig")
-     * @Acl(
-     *      id="oro_user_user_create",
-     *      type="entity",
-     *      class="OroUserBundle:User",
-     *      permission="CREATE"
-     * )
+     * @AclAncestor("pim_user_user_create")
      */
     public function createAction()
     {
@@ -109,12 +98,7 @@ class UserController extends Controller
      *
      * @Route("/update/{id}", name="oro_user_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
-     * @Acl(
-     *      id="oro_user_user_update",
-     *      type="entity",
-     *      class="OroUserBundle:User",
-     *      permission="EDIT"
-     * )
+     * @AclAncestor("pim_user_user_edit")
      */
     public function updateAction(User $entity)
     {
@@ -129,7 +113,7 @@ class UserController extends Controller
      *      defaults={"_format" = "html"}
      * )
      * @Template
-     * @AclAncestor("oro_user_user_view")
+     * @AclAncestor("pim_user_user_index")
      */
     public function indexAction()
     {
@@ -145,12 +129,7 @@ class UserController extends Controller
      *      requirements={"id"="\d+"},
      *      methods="DELETE"
      * )
-     * @Acl(
-     *      id="oro_user_user_delete",
-     *      type="entity",
-     *      class="OroUserBundle:User",
-     *      permission="DELETE"
-     * )
+     * @AclAncestor("pim_user_user_remove")
      */
     public function deleteAction($id)
     {

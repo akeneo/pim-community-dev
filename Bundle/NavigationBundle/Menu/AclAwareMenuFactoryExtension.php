@@ -7,7 +7,6 @@ use Knp\Menu\Factory;
 use Knp\Menu\ItemInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
 {
@@ -15,8 +14,6 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
      * ACL Aware MenuFactory constants
      */
     const ACL_RESOURCE_ID_KEY = 'aclResourceId';
-    const ROUTE_CONTROLLER_KEY = '_controller';
-    const CONTROLLER_ACTION_DELIMITER = '::';
     const DEFAULT_ACL_POLICY = true;
     /**#@-*/
 
@@ -110,25 +107,10 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
                 $isAllowed = $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]];
             } else {
                 if ($needCheck) {
-                    $isAllowed =  $this->securityFacade->isGranted($options[self::ACL_RESOURCE_ID_KEY]);
+                    $isAllowed = $this->securityFacade->isGranted($options[self::ACL_RESOURCE_ID_KEY]);
                 }
 
                 $this->aclCache[$options[self::ACL_RESOURCE_ID_KEY]] = $isAllowed;
-            }
-        } else {
-            $routeInfo = $this->getRouteInfo($options);
-            if ($routeInfo) {
-                if (array_key_exists($routeInfo['key'], $this->aclCache)) {
-                    $isAllowed = $this->aclCache[$routeInfo['key']];
-                } else {
-                    if ($needCheck) {
-                        $isAllowed = $this->securityFacade->isClassMethodGranted(
-                            $routeInfo['controller'],
-                            $routeInfo['action']
-                        );
-                    }
-                    $this->aclCache[$routeInfo['key']] = $isAllowed;
-                }
             }
         }
 
@@ -180,91 +162,6 @@ class AclAwareMenuFactoryExtension implements Factory\ExtensionInterface
                 $options
             );
         }
-    }
-
-    /**
-     * Get route information based on MenuItem options
-     *
-     * @param  array         $options
-     * @return array|boolean
-     */
-    protected function getRouteInfo(array $options = array())
-    {
-        $key = null;
-        $cacheKey = null;
-        $hasInCache = false;
-        if (array_key_exists('route', $options)) {
-            if ($this->cache) {
-                $cacheKey = $this->getCacheKey('route_acl', $options['route']);
-                if ($this->cache->contains($cacheKey)) {
-                    $key = $this->cache->fetch($cacheKey);
-                    $hasInCache = true;
-                }
-            }
-            if (!$hasInCache) {
-                $key = $this->getRouteInfoByRouteName($options['route']);
-            }
-        } elseif (array_key_exists('uri', $options)) {
-            if ($this->cache) {
-                $cacheKey = $this->getCacheKey('uri_acl', $options['uri']);
-                if ($this->cache->contains($cacheKey)) {
-                    $key = $this->cache->fetch($cacheKey);
-                    $hasInCache = true;
-                }
-            }
-            if (!$hasInCache) {
-                $key = $this->getRouteInfoByUri($options['uri']);
-            }
-        }
-
-        if ($this->cache && !$hasInCache) {
-            $this->cache->save($cacheKey, $key);
-        }
-
-        $info = explode(self::CONTROLLER_ACTION_DELIMITER, $key);
-        if (count($info) == 2) {
-            return array(
-                'controller' => $info[0],
-                'action' => $info[1],
-                'key' => $key
-            );
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Get route info by route name
-     *
-     * @param $routeName
-     * @return string|null
-     */
-    protected function getRouteInfoByRouteName($routeName)
-    {
-        $route = $this->router->getRouteCollection()->get($routeName);
-        if ($route) {
-            return $route->getDefault(self::ROUTE_CONTROLLER_KEY);
-        }
-
-        return null;
-    }
-
-    /**
-     * Get route info by uri
-     *
-     * @param  string      $uri
-     * @return null|string
-     */
-    protected function getRouteInfoByUri($uri)
-    {
-        try {
-            $routeInfo = $this->router->match($uri);
-
-            return $routeInfo[self::ROUTE_CONTROLLER_KEY];
-        } catch (ResourceNotFoundException $e) {
-        }
-
-        return null;
     }
 
     /**

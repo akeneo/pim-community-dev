@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures;
 
-use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 use Oro\Bundle\SecurityBundle\Acl\Domain\PermissionGrantingStrategyContextInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
@@ -17,11 +16,6 @@ class PermissionGrantingStrategyContext implements PermissionGrantingStrategyCon
     private $object = null;
 
     private $token = null;
-
-    /**
-     * @var OneShotIsGrantedObserver
-     */
-    protected $oneShotIsGrantedObserver;
 
     public function __construct(AclExtensionSelector $selector)
     {
@@ -51,14 +45,5 @@ class PermissionGrantingStrategyContext implements PermissionGrantingStrategyCon
     public function getAclExtension()
     {
         return $this->extensionSelector->select($this->object);
-    }
-
-    public function addOneShotIsGrantedObserver(OneShotIsGrantedObserver $observer)
-    {
-        $this->oneShotIsGrantedObserver = $observer;
-    }
-
-    public function setTriggeredMask($mask)
-    {
     }
 }

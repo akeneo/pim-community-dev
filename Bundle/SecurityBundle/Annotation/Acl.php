@@ -14,11 +14,6 @@ class Acl implements \Serializable
     private $id;
 
     /**
-     * @var bool
-     */
-    private $ignoreClassAcl;
-
-    /**
      * @var string
      */
     private $type;
@@ -67,7 +62,6 @@ class Acl implements \Serializable
             throw new \InvalidArgumentException(sprintf('ACL type must not be empty. Id: %s.', $this->id));
         }
 
-        $this->ignoreClassAcl = isset($data['ignore_class_acl']) ? (bool) $data['ignore_class_acl'] : false;
         $this->permission = isset($data['permission']) ? $data['permission'] : '';
         $this->class = isset($data['class']) ? $data['class'] : '';
         $this->group = isset($data['group_name']) ? $data['group_name'] : '';
@@ -82,20 +76,6 @@ class Acl implements \Serializable
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Indicates whether a class level ACL annotation should be ignored or not.
-     *
-     * This attribute can be used in ACL annotations declared on method level only.
-     * A default value for this attribute is false. It means that both method and
-     * class level ACLs is checked to decide whether an access is granted or not.
-     *
-     * @return bool
-     */
-    public function getIgnoreClassAcl()
-    {
-        return $this->ignoreClassAcl;
     }
 
     /**
@@ -169,7 +149,6 @@ class Acl implements \Serializable
                 $this->type,
                 $this->class,
                 $this->permission,
-                $this->ignoreClassAcl,
                 $this->group,
                 $this->label
             )
@@ -186,7 +165,6 @@ class Acl implements \Serializable
             $this->type,
             $this->class,
             $this->permission,
-            $this->ignoreClassAcl,
             $this->group,
             $this->label
             ) = unserialize($serialized);

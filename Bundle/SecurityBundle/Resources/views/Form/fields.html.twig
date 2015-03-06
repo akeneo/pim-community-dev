@@ -31,32 +31,11 @@
 {% endblock %}
 
 {% block oro_acl_collection_widget %}
-    {% if privileges_config.view_type == 'grid' %}
-        <table class="table table-striped acl-table">
-            <tbody>
-            <tr>
-                <th>
-                    &nbsp;
-                </th>
-                {% set width = ((100/(privileges_config['permissions']|length + 1))-1)|number_format(0) %}
-                {% for field in privileges_config['permissions'] %}
-                    <th width="{{ width }}%">
-                        {{ field|trans }}
-                    </th>
-                {% endfor %}
-            </tr>
-            {% for child in form %}
-                {{ form_widget(child) }}
-            {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        {% for child in form %}
-            <div class="security-row">
-                {{ form_widget(child) }}
-            </div>
-        {% endfor %}
-    {% endif %}
+    {% for child in form %}
+        <div class="security-row">
+            {{ form_widget(child) }}
+        </div>
+    {% endfor %}
 {% endblock %}
 
 {% block oro_acl_privilege_widget %}

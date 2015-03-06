@@ -4,34 +4,8 @@ Implementation
 Currently, the application has two types of ACL extensions: Actions(Capabilities) and Entities.
 
 
-You can use @Acl and @AclAncestor annotations to protect controller actions.
+You can use @AclAncestor annotation to protect controller actions.
 
- - Using @Acl annotation:
-
-``` php
-use Oro\Bundle\SecurityBundle\Annotation\Acl; #required for Acl annotation
-...
-/**
- * @Acl(
- *      id="myentity_view",
- *      type="entity",
- *      class="MyBundle:MyEntity",
- *      permission="VIEW"
- * )
- */
-public function viewAction()
-```
-This means that the view action is executable if VIEW premission is granted to MyEntity
-
- - Using acl.yml file from MyBundle/Resource/config/acl.yml:
-
-``` yml
-myentity_view:
-    type: entity
-    class: MyBundle:MyEntity
-    permission="VIEW"
-```
-Than it can be used in @AclAncestor annotation
 ``` php
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor; #required for AclAncestor annotation
 ...
@@ -50,24 +24,6 @@ $this->securityFacade->isGranted('myentity_view')
  **Capabilities**:
 
 Additional resources that are not related to an entity, e.g. Configuration, Search etc.
-
-There are 2 ways to declare capability permissions:
-
- - Using @Acl annotation:
-
-``` php
-use Oro\Bundle\SecurityBundle\Annotation\Acl; #required for Acl annotation
-...
-/**
-* @Acl(
-*      id="can_do_something",
-*      type="action",
-*      label="Do something",
-*      group_name="Some Group"
-* )
-*/
-public function somethingAction()
-```
 
  - Using acl.yml file from MyBundle/Resource/config/acl.yml:
 

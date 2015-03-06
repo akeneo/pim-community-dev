@@ -33,11 +33,4 @@ interface PermissionGrantingStrategyContextInterface
      * @return AclExtensionInterface
      */
     public function getAclExtension();
-
-    /**
-     * Sets a mask was used to decide whether the access to a resource is granted or denied.
-     *
-     * @param int $mask
-     */
-    public function setTriggeredMask($mask);
 }

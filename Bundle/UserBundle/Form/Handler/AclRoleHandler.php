@@ -151,17 +151,11 @@ class AclRoleHandler
 
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $sortedPrivileges = $this->filterPrivileges($privileges, $config['types']);
-            if ($config['fix_values'] || !$config['show_default']) {
+            if (!$config['show_default']) {
                 foreach ($sortedPrivileges as $sortedPrivilege) {
-                    if (!$config['show_default']
-                        && $sortedPrivilege->getIdentity()->getName() == AclPrivilegeRepository::ROOT_PRIVILEGE_NAME) {
+                    if ($sortedPrivilege->getIdentity()->getName() == AclPrivilegeRepository::ROOT_PRIVILEGE_NAME) {
                         $sortedPrivileges->removeElement($sortedPrivilege);
                         continue;
-                    }
-                    if ($config['fix_values']) {
-                        foreach ($sortedPrivilege->getPermissions() as $permission) {
-                            $permission->setAccessLevel((bool)$permission->getAccessLevel());
-                        }
                     }
                 }
             }
@@ -178,9 +172,6 @@ class AclRoleHandler
         $formPrivileges = array();
         foreach ($this->privilegeConfig as $fieldName => $config) {
             $privileges = $this->form->get($fieldName)->getData();
-            if ($config['fix_values']) {
-                $this->fxPrivilegeValue($privileges, $config['default_value']);
-            }
             $formPrivileges = array_merge($formPrivileges, $privileges);
         }
 
@@ -202,19 +193,6 @@ class AclRoleHandler
                 return in_array($entry->getExtensionKey(), $rootIds);
             }
         );
-    }
-
-    /**
-     * @param ArrayCollection|array $privileges
-     * @param $value
-     */
-    protected function fxPrivilegeValue($privileges, $value)
-    {
-        foreach ($privileges as $privilege) {
-            foreach ($privilege->getPermissions() as $permission) {
-                $permission->setAccessLevel($permission->getAccessLevel() ? $value : 0);
-            }
-        }
     }
 
     /**

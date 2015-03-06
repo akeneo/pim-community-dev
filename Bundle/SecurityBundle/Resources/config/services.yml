@@ -36,8 +36,6 @@ parameters:
 
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 
-    oro_security.acl_helper.class:                             Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper
-
 services:
     oro_security.security_facade:
         class: %oro_security.security_facade.class%
@@ -235,6 +233,3 @@ services:
             - @oro_security.security_facade
         tags:
             - { name: twig.extension }
-
-    oro_security.acl_helper:
-        class: %oro_security.acl_helper.class%

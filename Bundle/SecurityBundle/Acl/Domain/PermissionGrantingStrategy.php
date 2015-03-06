@@ -216,8 +216,6 @@ class PermissionGrantingStrategy implements PermissionGrantingStrategyInterface
         if ($triggeredAce === null) {
             // ACE was not found
             return null;
-        } else {
-            $this->getContext()->setTriggeredMask($triggeredMask);
         }
 
         if (!$administrativeMode && null !== $this->auditLogger) {

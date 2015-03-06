@@ -10,7 +10,6 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrmDatasource implements DatasourceInterface
 {
@@ -22,13 +21,9 @@ class OrmDatasource implements DatasourceInterface
     /** @var EntityManager */
     protected $em;
 
-    /** @var AclHelper */
-    protected $aclHelper;
-
-    public function __construct(EntityManager $em, AclHelper $aclHelper)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -49,9 +44,7 @@ class OrmDatasource implements DatasourceInterface
      */
     public function getResults()
     {
-        $query = $this->aclHelper->apply($this->qb->getQuery());
-
-        $results = $query->execute();
+        $results = $this->qb->getQuery()->execute();
         $rows    = [];
         foreach ($results as $result) {
             $rows[] = new ResultRecord($result);

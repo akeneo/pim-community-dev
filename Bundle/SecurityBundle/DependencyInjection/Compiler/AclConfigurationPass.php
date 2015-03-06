@@ -39,18 +39,7 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
-        $this->configureParamConverter($container);
     }
-
-    protected function configureParamConverter(ContainerBuilder $container)
-    {
-        if ($container->hasDefinition(self::DOCTRINE_CONVERTER)) {
-            $paramConverterDef = $container->getDefinition(self::DOCTRINE_CONVERTER);
-            $paramConverterDef->setClass(self::DOCTRINE_CONVERTER_CLASS);
-            $paramConverterDef->addArgument(new Reference(self::SECURITY_FACADE_SERVICE));
-        }
-    }
-
 
     /**
      * @param ContainerBuilder $container

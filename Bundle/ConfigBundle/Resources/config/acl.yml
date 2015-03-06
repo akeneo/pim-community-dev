@@ -1,0 +1,4 @@
+oro_config_system:
+    type: action
+    label: System configuration
+    group_name: ~

@@ -18,6 +18,7 @@ class UserMenuBuilder implements BuilderInterface
             'Logout',
             array(
                 'route' => 'oro_user_security_logout',
+                'check_access' => false,
                 'linkAttributes' => array(
                     'class' => 'no-hash'
                 )

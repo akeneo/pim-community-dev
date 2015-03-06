@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 /**
  * @Route("/role")
@@ -16,12 +16,7 @@ use Oro\Bundle\SecurityBundle\Annotation\Acl;
 class RoleController extends Controller
 {
     /**
-     * @Acl(
-     *      id="oro_user_role_create",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="CREATE"
-     * )
+     * @AclAncestor("pim_user_role_create")
      * @Route("/create", name="oro_user_role_create")
      * @Template("OroUserBundle:Role:update.html.twig")
      */
@@ -31,12 +26,7 @@ class RoleController extends Controller
     }
 
     /**
-     * @Acl(
-     *      id="oro_user_role_update",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="EDIT"
-     * )
+     * @AclAncestor("pim_user_role_edit")
      * @Route("/update/{id}", name="oro_user_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      */
@@ -52,12 +42,7 @@ class RoleController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
-     * @Acl(
-     *      id="oro_user_role_view",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="VIEW"
-     * )
+     * @AclAncestor("pim_user_role_index")
      * @Template
      */
     public function indexAction(Request $request)
@@ -74,12 +59,7 @@ class RoleController extends Controller
      *      requirements={"id"="\d+"},
      *      methods="DELETE"
      * )
-     * @Acl(
-     *      id="oro_user_role_remove",
-     *      type="entity",
-     *      class="OroUserBundle:Role",
-     *      permission="DELETE"
-     * )
+     * @AclAncestor("pim_user_role_remove")
      */
     public function deleteAction($id)
     {

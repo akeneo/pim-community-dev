@@ -50,28 +50,17 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->scalarNode('field_type')->end()
-                            ->booleanNode('fix_values')->end()
                             ->scalarNode('default_value')->end()
                             ->booleanNode('show_default')->end()
                         ->end()
                     ->end()
                     ->defaultValue(
                         array(
-                            'entity'=>array(
-                                'label' => 'Entity',
-                                'view_type' => 'grid',
-                                'types' => array('entity'),
-                                'field_type' => 'oro_acl_access_level_selector',
-                                'fix_values' => false,
-                                'default_value' => 5,
-                                'show_default' => true,
-                            ),
                             'action'=>array(
                                 'label' => 'Capabilities',
                                 'view_type' => 'list',
                                 'types' => array('action'),
                                 'field_type' => 'oro_acl_access_level_selector',
-                                'fix_values' => false,
                                 'default_value' => 1,
                                 'show_default' => false,
                             )
