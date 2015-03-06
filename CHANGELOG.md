@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.24 (2015-03-06)
 
 ## Bug fixes
 - PIM-3658: Mass publish time are exponential and not linear
