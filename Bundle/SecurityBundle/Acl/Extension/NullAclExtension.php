@@ -156,12 +156,4 @@ final class NullAclExtension implements AclExtensionInterface
     {
         return true;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAccessLevelNames($object)
-    {
-        return array();
-    }
 }

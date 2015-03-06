@@ -2,7 +2,6 @@ parameters:
     oro_locale.settings.class: Oro\Bundle\LocaleBundle\Model\LocaleSettings
     oro_locale.calendar.class: Oro\Bundle\LocaleBundle\Model\Calendar
     oro_locale.calendar_factory.class: Oro\Bundle\LocaleBundle\Model\CalendarFactory
-    oro_locale.form.type.name_format.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
 
     oro_locale.format_converter.date_time.registry.class: Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry
     oro_locale.format_converter.date_time.intl.class: Oro\Bundle\LocaleBundle\Converter\IntlDateTimeFormatConverter
@@ -56,13 +55,6 @@ services:
             - @service_container
 
     # Form types
-    oro_locale.form.type.name_format:
-        class: %oro_locale.form.type.name_format.class%
-        arguments:
-            - @oro_locale.formatter.name
-        tags:
-            - { name: form.type, alias: "oro_name_format" }
-
     oro_locale.form.type.country:
         class: %oro_locale.form.type.country.class%
         tags:

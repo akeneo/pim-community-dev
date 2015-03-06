@@ -79,23 +79,4 @@ final class AccessLevel
 
         return null;
     }
-
-    /**
-     * Get array with access levels from $minLevel to the System level + None level
-     *
-     * @param int $minLevel The min level to find names from. The default value is BASIC_LEVEL
-     * @return array
-     *   key = access level code,
-     *   value = access level name
-     */
-    public static function getAccessLevelNames($minLevel = self::BASIC_LEVEL)
-    {
-        $names = [self::NONE_LEVEL_NAME];
-        for ($level = $minLevel; $level <= self::SYSTEM_LEVEL; $level++) {
-            $name = self::getAccessLevelName($level);
-            $names[$level] = $name;
-        }
-
-        return $names;
-    }
 }

@@ -60,7 +60,7 @@ class Configuration implements ConfigurationInterface
                                 'label' => 'Capabilities',
                                 'view_type' => 'list',
                                 'types' => array('action'),
-                                'field_type' => 'oro_acl_access_level_selector',
+                                'field_type' => 'pim_acl_access_level_selector',
                                 'default_value' => 1,
                                 'show_default' => false,
                             )

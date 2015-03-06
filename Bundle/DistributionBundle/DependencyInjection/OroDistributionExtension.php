@@ -24,26 +24,7 @@ class OroDistributionExtension extends Extension
 
         $loader->load('services.yml');
 
-        $this->mergeAsseticBundles($container);
         $this->mergeTwigResources($container);
-    }
-
-    protected function mergeAsseticBundles(ContainerBuilder $container)
-    {
-        $data = array();
-
-        foreach ($container->getParameter('kernel.bundles') as $bundle) {
-            $reflection = new \ReflectionClass($bundle);
-
-            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/oro/assetic.yml')) {
-                $data = array_merge($data, Yaml::parse(realpath($file))['bundles']);
-            }
-        }
-
-        $container->setParameter(
-            'assetic.bundles',
-            array_unique(array_merge((array) $container->getParameter('assetic.bundles'), $data))
-        );
     }
 
     protected function mergeTwigResources(ContainerBuilder $container)

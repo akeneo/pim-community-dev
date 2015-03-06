@@ -97,18 +97,15 @@ class GroupController extends Controller
                 $this->get('translator')->trans('oro.user.controller.group.message.saved')
             );
 
-            if (!$this->getRequest()->get('_widgetContainer')) {
-
-                return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route' => 'oro_user_group_update',
-                        'parameters' => array('id' => $entity->getId()),
-                    ),
-                    array(
-                        'route' => 'oro_user_group_index',
-                    )
-                );
-            }
+            return $this->get('oro_ui.router')->actionRedirect(
+                array(
+                    'route' => 'oro_user_group_update',
+                    'parameters' => array('id' => $entity->getId()),
+                ),
+                array(
+                    'route' => 'oro_user_group_index',
+                )
+            );
         }
 
         return array(

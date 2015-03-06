@@ -17,7 +17,6 @@ parameters:
     oro_security.acl.object_identity_retrieval_strategy.class: Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityRetrievalStrategy
     oro_security.acl.object_id_accessor.class:                 Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor
 
-    oro_security.type.oro_acl_access_level_selector.class:     Oro\Bundle\SecurityBundle\Form\Type\AclAccessLevelSelectorType
     oro_security.type.oro_acl_label.class:                     Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
 
     oro_security.action_metadata_provider.class:               Oro\Bundle\SecurityBundle\Metadata\ActionMetadataProvider
@@ -135,11 +134,6 @@ services:
     oro_security.acl.object_id_accessor:
         public: false
         class: %oro_security.acl.object_id_accessor.class%
-
-    oro_security.form.type.oro_acl_access_level_selector:
-        class: %oro_security.type.oro_acl_access_level_selector.class%
-        tags:
-            - { name: form.type, alias: oro_acl_access_level_selector }
 
     oro_security.form.type.object_label_type:
         class: %oro_security.type.oro_acl_label.class%

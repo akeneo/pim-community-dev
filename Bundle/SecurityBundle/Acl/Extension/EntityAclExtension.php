@@ -119,23 +119,6 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
-    public function getAccessLevelNames($object)
-    {
-        if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
-            $minLevel = AccessLevel::BASIC_LEVEL;
-        } else {
-            return array(
-                AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_NAME,
-                AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
-            );
-        }
-
-        return AccessLevel::getAccessLevelNames($minLevel);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supports($type, $id)
     {
         if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {

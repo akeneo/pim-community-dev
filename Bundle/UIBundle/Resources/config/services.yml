@@ -4,7 +4,6 @@ parameters:
     oro_ui.twig.md5.class:               Oro\Bundle\UIBundle\Twig\Md5Extension
     oro_ui.router.class:                 Oro\Bundle\UIBundle\Route\Router
     oro_ui.twig.date.class:              Oro\Bundle\UIBundle\Twig\DateExtension
-    oro_ui.view.listener.class:          Oro\Bundle\UIBundle\EventListener\TemplateListener
 
     oro_ui.format_converter.date_time.jquery_ui.class: Oro\Bundle\UIBundle\Converter\JqueryUiDateTimeFormatConverter
 
@@ -38,13 +37,6 @@ services:
             - @translator
         tags:
             - { name: twig.extension }
-
-    oro_ui.view.listener:
-        class: %oro_ui.view.listener.class%
-        arguments:
-            - @service_container
-        tags:
-            - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
 
     oro_ui.format_converter.date_time.jquery_ui:
         class: %oro_ui.format_converter.date_time.jquery_ui.class%

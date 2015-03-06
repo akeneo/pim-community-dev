@@ -95,19 +95,6 @@ class AclManager extends AbstractAclManager
     }
 
     /**
-     * Get access levels list for object.
-     *
-     * @param $object
-     * @return array
-     */
-    public function getAccessLevels($object)
-    {
-        $extension = $this->getExtensionSelector()->select($object);
-
-        return $extension->getAccessLevelNames($object);
-    }
-
-    /**
      * Indicates whether ACL based security is enabled or not
      *
      * @return bool
