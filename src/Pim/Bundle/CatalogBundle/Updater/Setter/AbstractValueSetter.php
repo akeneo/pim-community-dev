@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Abstract setter
@@ -25,6 +26,9 @@ abstract class AbstractValueSetter implements AttributeSetterInterface
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var OptionResolver */
+    protected $resolver;
+
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
@@ -35,6 +39,17 @@ abstract class AbstractValueSetter implements AttributeSetterInterface
     ) {
         $this->productBuilder = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports(AttributeInterface $attribute)
+    {
+        return $this->supportsAttribute($attribute);
     }
 
     /**
@@ -68,5 +83,14 @@ abstract class AbstractValueSetter implements AttributeSetterInterface
                 $type
             );
         }
+    }
+
+    /**
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['locale', 'scope']);
     }
 }

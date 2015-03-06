@@ -34,12 +34,58 @@ class TextValueSetter extends AbstractValueSetter
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, use method set(
+     * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'text');
+        foreach ($products as $product) {
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+    }
 
+    /**
+     * {@inheritdoc}
+     *
+     * Expected data input format: "my text to update"
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'text');
+        $this->checkData($attribute, $data);
+
+        $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
+    }
+
+    /**
+     * Set the data into the product value
+     *
+     * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     * @param string             $locale
+     * @param string             $scope
+     */
+    protected function setData(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
+    {
+        $value = $product->getValue($attribute->getCode(), $locale, $scope);
+        if (null === $value) {
+            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
+        }
+        $value->setData($data);
+    }
+
+    /**
+     * Check data input
+     * @param  AttributeInterface $attribute
+     * @param  mixed              $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
         if (null !== $data && !is_string($data)) {
             throw InvalidArgumentException::stringExpected(
                 $attribute->getCode(),
@@ -48,27 +94,5 @@ class TextValueSetter extends AbstractValueSetter
                 gettype($data)
             );
         }
-
-        foreach ($products as $product) {
-            $this->setData($attribute, $product, $data, $locale, $scope);
-        }
-    }
-
-    /**
-     * Set the data into the product value
-     *
-     * @param AttributeInterface $attribute
-     * @param ProductInterface   $product
-     * @param mixed              $data
-     * @param string             $locale
-     * @param string             $scope
-     */
-    protected function setData(AttributeInterface $attribute, ProductInterface $product, $data, $locale, $scope)
-    {
-        $value = $product->getValue($attribute->getCode(), $locale, $scope);
-        if (null === $value) {
-            $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
-        }
-        $value->setData($data);
     }
 }

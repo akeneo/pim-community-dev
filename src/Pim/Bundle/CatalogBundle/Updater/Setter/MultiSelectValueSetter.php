@@ -40,10 +40,29 @@ class MultiSelectValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'multi select');
+        foreach ($products as $product) {
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Expected data input format: ["option_code", "other_option_code"]
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi select');
         $this->checkData($attribute, $data);
 
         $attributeOptions = [];
@@ -64,9 +83,7 @@ class MultiSelectValueSetter extends AbstractValueSetter
             $attributeOptions[] = $option;
         }
 
-        foreach ($products as $product) {
-            $this->setOptions($attribute, $product, $attributeOptions, $locale, $scope);
-        }
+        $this->setOptions($product, $attribute, $attributeOptions, $options['locale'], $options['scope']);
     }
 
     /**
@@ -102,15 +119,15 @@ class MultiSelectValueSetter extends AbstractValueSetter
     /**
      * Set options into the product value
      *
-     * @param AttributeInterface $attribute
      * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param array              $attributeOptions
      * @param string             $locale
      * @param string             $scope
      */
     protected function setOptions(
-        AttributeInterface $attribute,
         ProductInterface $product,
+        AttributeInterface $attribute,
         $attributeOptions,
         $locale,
         $scope

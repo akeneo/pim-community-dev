@@ -2,16 +2,6 @@
 
 {% block head %}
     {{ parent() }}
-    <link rel="stylesheet" media="all" href="{{ asset('/css/oro.css') }}" />
-    {% stylesheets
-        'bundles/pimui/css/pim.less'
-
-        debug=false
-        filter='cssrewrite,lessphp'
-        output='css/pim_all.css'
-    %}
-        <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endstylesheets %}
     <script type="text/javascript">
         if (sessionStorage) {
             sessionStorage.clear()

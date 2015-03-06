@@ -16,6 +16,21 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 interface AttributeSetterInterface extends SetterInterface
 {
     /**
+     * Set attribute data
+     *
+     * @param ProductInterface   $product   The product to modify
+     * @param AttributeInterface $attribute The attribute of the product to modify
+     * @param mixed              $data      The data to set
+     * @param array              $options   Options passed to the setter
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    );
+
+    /**
      * Supports the attribute
      *
      * @param AttributeInterface $attribute

@@ -16,21 +16,6 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 interface SetterInterface
 {
     /**
-     * Set the data in product
-     *
-     * @param ProductInterface $product
-     * @param string           $field
-     * @param mixed            $data
-     * @param array            $options
-     *
-     * @throws InvalidArgumentException
-     * @throws \RuntimeException
-     *
-     * TODO: what API for this one??
-     */
-    public function set(ProductInterface $product, $field, $data, $options = []);
-
-    /**
      * Set the value in products
      *
      * @param ProductInterface[] $products

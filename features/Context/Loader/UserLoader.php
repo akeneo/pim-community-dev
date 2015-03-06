@@ -4,7 +4,6 @@ namespace Context\Loader;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use Symfony\Component\Yaml\Yaml;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;

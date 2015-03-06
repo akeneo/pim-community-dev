@@ -4,8 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\AbstractValueSetter;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -122,6 +123,11 @@ class AbstractValueSetterSpec extends ObjectBehavior
 class ConcreteValueSetter extends AbstractValueSetter
 {
     function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
+    {
+        // needs to be implemented
+    }
+
+    function setAttributeData(ProductInterface $product, AttributeInterface $attribute, $data, array $options = [])
     {
         // needs to be implemented
     }

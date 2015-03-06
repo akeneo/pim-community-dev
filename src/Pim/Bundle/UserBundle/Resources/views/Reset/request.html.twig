@@ -1,18 +1,5 @@
 {% extends 'OroUserBundle::layout.html.twig' %}
 
-{% block head %}
-    {{ parent() }}
-    {% stylesheets
-        'bundles/pimui/css/pim.less'
-
-        debug=false
-        filter='cssrewrite,lessphp'
-        output='css/pim_all.css'
-    %}
-    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
-    {% endstylesheets %}
-{% endblock %}
-
 {% block bodyClass %}login-page{% endblock %}
 
 {% block content %}

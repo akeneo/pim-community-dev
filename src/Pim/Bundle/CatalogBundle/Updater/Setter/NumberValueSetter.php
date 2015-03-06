@@ -34,39 +34,61 @@ class NumberValueSetter extends AbstractValueSetter
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, use method setAttributeData
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
-        if (null === $this->productBuilder) {
-            throw new \RuntimeException('The product builder should be set.');
-        }
-
-        $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
-
-        if (!is_numeric($data) && null !== $data) {
-            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number', gettype($data));
-        }
-
         foreach ($products as $product) {
-            $this->setData($attribute, $product, $data, $locale, $scope);
+            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * Expected data input format: "12.0"|"12"|12|12.3
+     */
+    public function setAttributeData(
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        $data,
+        array $options = []
+    ) {
+        $this->resolver->resolve($options);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'number');
+        $this->checkData($attribute, $data);
+
+        $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }
 
     /**
      * Set data into product value
      *
-     * @param AttributeInterface $attribute
      * @param ProductInterface   $product
+     * @param AttributeInterface $attribute
      * @param mixed              $data
      * @param string             $locale
      * @param string             $scope
      */
-    protected function setData(AttributeInterface $attribute, ProductInterface $product, $data, $locale, $scope)
+    protected function setData(ProductInterface $product, AttributeInterface $attribute, $data, $locale, $scope)
     {
         $value = $product->getValue($attribute->getCode(), $locale, $scope);
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
         $value->setData($data);
+    }
+
+    /**
+     * Check data input
+     * @param  AttributeInterface $attribute
+     * @param  mixed              $data
+     */
+    protected function checkData(AttributeInterface $attribute, $data)
+    {
+        if (!is_numeric($data) && null !== $data) {
+            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number', gettype($data));
+        }
     }
 }

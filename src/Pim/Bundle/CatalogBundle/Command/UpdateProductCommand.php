@@ -62,7 +62,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
-        if (!$product) {
+        if (false === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
             return;
@@ -125,12 +125,12 @@ class UpdateProductCommand extends ContainerAwareCommand
         );
         $resolver->setDefaults(
             [
-                'locale' => null,
-                'scope' => null,
+                'locale'      => null,
+                'scope'       => null,
                 'from_locale' => null,
-                'to_locale' => null,
-                'from_scope' => null,
-                'to_scope' => null
+                'to_locale'   => null,
+                'from_scope'  => null,
+                'to_scope'    => null
             ]
         );
 
@@ -151,12 +151,12 @@ class UpdateProductCommand extends ContainerAwareCommand
     protected function applySetValue(ProductInterface $product, array $update)
     {
         $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        $updater->setValue(
-            [$product],
+
+        $updater->set(
+            $product,
             $update['field'],
             $update['value'],
-            $update['locale'],
-            $update['scope']
+            ['locale' => $update['locale'], 'scope' => $update['scope']]
         );
     }
 

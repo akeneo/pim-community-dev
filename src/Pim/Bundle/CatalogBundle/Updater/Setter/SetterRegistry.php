@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Registry of setters
@@ -41,6 +42,8 @@ class SetterRegistry implements SetterRegistryInterface
         if ($setter instanceof AttributeSetterInterface) {
             $this->attributeSetters[] = $setter;
         }
+
+        return null;
     }
 
     /**
@@ -50,8 +53,7 @@ class SetterRegistry implements SetterRegistryInterface
      */
     public function get(AttributeInterface $attribute)
     {
-
-        foreach ($this->setters as $setter) {
+        foreach ($this->attributeSetters as $setter) {
             if ($setter->supports($attribute)) {
                 return $setter;
             }
@@ -71,12 +73,7 @@ class SetterRegistry implements SetterRegistryInterface
             return $this->getAttributeSetter($attribute);
         }
 
-        $setter = $this->getFieldSetter($code);
-        if ($setter) {
-            return $setter;
-        }
-
-        throw new \LogicException(sprintf('Field "%s" is not supported by any setter', $code));
+        return $this->getFieldSetter($code);
     }
 
     /**
@@ -84,7 +81,7 @@ class SetterRegistry implements SetterRegistryInterface
      */
     public function getFieldSetter($field)
     {
-        foreach ($this->fieldFilters as $setter) {
+        foreach ($this->fieldSetters as $setter) {
             if ($setter->supportsField($field)) {
                 return $setter;
             }
