@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\User\UserInterface;

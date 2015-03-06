@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;

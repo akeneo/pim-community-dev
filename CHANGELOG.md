@@ -1,3 +1,17 @@
+# 1.4.x
+
+## BC Breaks
+- Move Pim/PimEnterprise/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepositorySpec.php
+- Move Pim/PimEnterprise/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepository.php
+- Move Pim/PimEnterprise/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/AttributeRepository.php
+- Move Pim/PimEnterprise/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/ProductMassActionRepository.php
+- Move Pim/PimEnterprise/Bundle/WorkflowBundle/Doctrine/MongoDBODM/ProductDraftRepository.php
+- Move Pim/PimEnterprise/Bundle/WorkflowBundle/Doctrine/MongoDBODM/PublishedProductRepository.php
+- Move Pim/PimEnterprise/Bundle/WorkflowBundle/Doctrine/ORM/{ → Repository}/ProductDraftRepository.php
+- Move Pim/PimEnterprise/Bundle/WorkflowBundle/Doctrine/ORM/{ → Repository}/PublishedAssociationRepository.php
+- Move Pim/PimEnterprise/Bundle/WorkflowBundle/Doctrine/ORM/{ → Repository}/PublishedProductRepository.php
+- Move Pim/PimEnterprise/Bundle/WorkflowBundle/Doctrine/ORM/{ → Repository}/PublishedAssociationRepositorySpec.php
+
 # 1.3.x
 
 ## Bug fixes

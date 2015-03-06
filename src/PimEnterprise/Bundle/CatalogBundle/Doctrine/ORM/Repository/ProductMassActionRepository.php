@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM;
+namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductMassActionRepository as BaseProductMassActionRepository;
-use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository\PublishedProductRepository;
 
 /**
  * Overriden product mass action repository
@@ -27,20 +26,17 @@ class ProductMassActionRepository extends BaseProductMassActionRepository
     protected $publishedRepository;
 
     /**
-     * @param DocumentManager            $dm
-     * @param string                     $documentName
-     * @param FamilyRepositoryInterface  $familyRepository
+     * @param EntityManager              $em
+     * @param string                     $entityName
      * @param PublishedProductRepository $publishedRepository
      */
     public function __construct(
-        DocumentManager $dm,
-        $documentName,
-        FamilyRepositoryInterface $familyRepository,
+        EntityManager $em,
+        $entityName,
         PublishedProductRepository $publishedRepository
     ) {
-        $this->dm = $dm;
-        $this->documentName = $documentName;
-        $this->familyRepository = $familyRepository;
+        parent::__construct($em, $entityName);
+
         $this->publishedRepository = $publishedRepository;
     }
 
