@@ -3,7 +3,6 @@
 namespace Context;
 
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CommentBundle\Entity\Comment;
 use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -12,9 +11,12 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
@@ -304,7 +306,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return Pim\Bundle\CatalogBundle\Model\GroupInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\GroupInterface
      */
     protected function getVariantGroup($code)
     {
@@ -1389,10 +1391,14 @@ class FixturesContext extends RawMinkContext
     {
         $user = $this->getUser($username);
         if ($searchedLabel && $associationType == 'group' && !$user->hasGroup($searchedLabel)) {
-            throw new \InvalidArgumentException(sprintf("The user %s does not belong to the '%s' group", $username, $searchedLabel));
+            throw new \InvalidArgumentException(
+                sprintf("The user %s does not belong to the '%s' group", $username, $searchedLabel)
+            );
         }
         if ($searchedLabel && $associationType == 'role' && !$user->hasRole($searchedLabel)) {
-            throw new \InvalidArgumentException(sprintf("The user %s does not have the '%s' role", $username, $searchedLabel));
+            throw new \InvalidArgumentException(
+                sprintf("The user %s does not have the '%s' role", $username, $searchedLabel)
+            );
         }
     }
 
