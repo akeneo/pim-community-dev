@@ -46,7 +46,7 @@ class GroupFieldSetter extends AbstractFieldSetter
                     $field,
                     'existing group code',
                     'setter',
-                    'group',
+                    'groups',
                     $groupCode
                 );
             } elseif ($group->getType()->isVariant()) {
@@ -54,7 +54,7 @@ class GroupFieldSetter extends AbstractFieldSetter
                     $field,
                     'non variant group code',
                     'setter',
-                    'group',
+                    'groups',
                     $groupCode
                 );
             } else {
@@ -86,7 +86,7 @@ class GroupFieldSetter extends AbstractFieldSetter
             throw InvalidArgumentException::arrayExpected(
                 $field,
                 'setter',
-                'group',
+                'groups',
                 gettype($data)
             );
         }
@@ -97,7 +97,7 @@ class GroupFieldSetter extends AbstractFieldSetter
                     $field,
                     $key,
                     'setter',
-                    'group',
+                    'groups',
                     gettype($value)
                 );
             }
