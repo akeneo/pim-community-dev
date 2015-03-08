@@ -40,9 +40,6 @@ a:focus {
 table.grid {
   margin-bottom: 20px;
 }
-.grid-container {
-  overflow: visible;
-}
 .filter-box {
   select.filter-select-oro {
     width: 100px;
@@ -191,12 +188,6 @@ a.back-link i {
   }
 }
 
-#sequentialEdit {
-    font-weight: bold;
-    .progress .bar {
-        #gradient .horizontal(@color-purple_light, @color-purple_dark);
-    }
-}
 hr.small {
     margin: 4px 0;
 }
@@ -325,10 +316,6 @@ span.link-label {
   opacity: 0;
 }
 
-.btn-mini {
-  padding: 0 6px;
-}
-
 .diff {
   list-style-type: none;
   .file {
@@ -354,10 +341,13 @@ span.link-label {
 }
 
 #sequentialEdit {
+  font-weight: bold;
   margin:6px;
-
   .progress {
     margin-bottom: 0px;
+    .bar {
+        #gradient .horizontal(@color-purple_light, @color-purple_dark);
+    }
   }
 
   [class*="span"] {
@@ -404,7 +394,7 @@ span.link-label {
 #oroplatform-header .nav #header-notification-widget {
   ul.dropdown-menu {
     width: auto;
-    margin: -3px -1px 0 0 !important;
+    margin: -3px -1px 0 0;
     padding-top: 1px;
     padding-bottom: 0;
     ol.scroll-menu {

@@ -22,12 +22,10 @@
                     this.data.tree_selector.no_tree_message = settings.no_tree_message;
                     this.data.tree_selector.preselect_node_id = settings.preselect_node_id;
 
-
                     var tree_toolbar = $('<div>', {
-                        id: 'tree_toolbar'
+                        id: 'tree_toolbar',
+                        'class': 'jstree-tree-toolbar'
                     });
-                    // The class option can be used above as class is a reserved word
-                    tree_toolbar.addClass('jstree-tree-toolbar');
 
                     var tree_select = $('<select>', {
                         id: tree_select_id,

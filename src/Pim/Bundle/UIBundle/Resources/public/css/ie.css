@@ -30,13 +30,6 @@ header .dropdown-menu li > a{
 header .container{
     width: 100%;
 }
-* +html .notifications .after{
-    background: url("../img/general-sprite.png") no-repeat 0 -106px;
-    width: 14px;
-    height: 14px;
-    float: left;
-    margin: 4px 10px 0 0;
-}
 * +html button.btn{
     padding-top: 0;
     line-height: 25px;

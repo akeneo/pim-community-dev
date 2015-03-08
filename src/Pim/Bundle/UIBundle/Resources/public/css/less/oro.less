@@ -105,19 +105,7 @@ a:focus {
   height: 22px;
   line-height: 20px;
   font-size: 11px;
-}
-.btn-primary {
-  .border-radius(4px);
-  border: 1px solid;
-  color: #fff;
-  font-weight: bold;
-  &:hover {
-    color: #fff;
-  }
-  &:active,
-  &:focus {
-    color: #fff;
-  }
+  padding: 0 6px;
 }
 .btn .caret {
   margin-top: 13px;
@@ -333,13 +321,6 @@ select {
 .input-large {
   width: 235px;
 }
-.navbar .small-divider {
-  background: url("../../img/vertical-divider-general.gif") repeat-y;
-  height: 22px;
-  margin: 10px 7px 0 0;
-  border: 0;
-  width: 2px;
-}
 .extra-list {
   margin: 0;
   padding: 0;
@@ -456,9 +437,6 @@ select {
             }
             &:last-child > a { border-bottom:none; }
           }
-        }
-        &.tabbable {
-          background-color: #ecf1f9;
         }
         > .tab-content {
           border-left: 1px solid darken(#ecf1f9,8%);
@@ -580,11 +558,6 @@ select {
 .icons-holder [class*=" icon-"] {
   margin: 0 -3px;
 }
-.icons-small button.btn {
-  height: 24px;
-  padding: 0 9px;
-  line-height: 20px;
-}
 .nav > li > a:focus {
   background-color: #7a95b5;
 }
@@ -701,7 +674,7 @@ select {
     margin-bottom: 14px;
   }
   .pagination {
-    margin: 0 0 20px;
+    margin: 0;
     > ul {
       > li {
         a {
@@ -756,8 +729,7 @@ select {
   width: 100%;
   position: relative;
   margin-top: 10px;
-  overflow-x: auto;
-  overflow-y: visible;
+  overflow: visible;
   .table-bordered {
     border-left:1px solid #ddd;
     td,
@@ -842,19 +814,16 @@ select {
 }
 .navbar-extra {
   padding: 10px 0;
-}
-.navbar-extra .btn {
-  padding: 0 11px;
-}
-.navbar-extra .icons-holder a {
-  height: 24px;
-  line-height: 24px;
+  .btn {
+    padding: 0 11px;
+  }
+  .icons-holder a {
+    height: 24px;
+    line-height: 24px;
+  }
 }
 .icons-holder .icons-holder-text [class^="icon-"] {
   margin-right: 5px;
-}
-.grid-toolbar .pagination {
-  margin: 0;
 }
 .navigation {
   position: relative;
@@ -913,10 +882,9 @@ select {
 }
 .grid .dropdown-menu {
   padding: 5px 0 0;
-
-}
-.grid .dropdown-menu > li {
-  margin: 0;
+  & > li {
+    margin: 0;
+  }
 }
 
 .modal {
@@ -1280,14 +1248,13 @@ textarea {
 .scrollspy-title {
   border:1px solid #e5e5e5;
   border-width:1px 0;
-  margin:0 -20px 0px -20px;
-  background:#fafafa;
-  padding:4px 20px;
+  margin: 0 0 0px -20px;
   color:lighten(@bodyColor,20%);
   font-size:13px;
   font-weight:normal;
   text-shadow:0 1px 0 #fff;
   line-height:18px;
+  padding: 10px;
 }
 .scrollspy-nav-target {
   height: 20px;
@@ -1304,13 +1271,15 @@ textarea {
 .oro-clearfix {
   width: 100%;
 }
-.horizontal .oro-clearfix input[type="checkbox"],
-.horizontal .oro-clearfix input[type="radio"] {
-  float: left;
-  margin: 3px 10px 0 0;
-}
-.horizontal .oro-clearfix .label {
-  float: left;
+.horizontal .oro-clearfix {
+  input[type="checkbox"],
+  input[type="radio"] {
+    float: left;
+    margin: 3px 10px 0 0;
+  }
+  label {
+    float: left;
+  }
 }
 .controls .horizontal {
   padding-top: 5px;
@@ -1351,24 +1320,24 @@ textarea {
 }
 .filter-box .filter-item .filter-criteria {
   top: 125%;
-}
-.filter-box .filter-item .filter-criteria:before {
-  border-bottom: 9px solid rgba(0, 0, 0, 0.2);
-  border-left: 9px solid transparent;
-  border-right: 9px solid transparent;
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: -9px;
-}
-.filter-box .filter-item .filter-criteria:after {
-  border-bottom: 10px solid #FFFFFF;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  content: "";
-  display: inline-block;
-  position: absolute;
-  top: -8px;
+  &:before {
+    border-bottom: 9px solid rgba(0, 0, 0, 0.2);
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: -9px;
+  }
+  &:after {
+    border-bottom: 10px solid #FFFFFF;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: -8px;
+  }
 }
 .filter-criteria {
   &.right-dropdown-menu:before {
@@ -1392,19 +1361,6 @@ textarea {
   height: 20px;
   line-height: 20px;
   width: 85px; /* need for flexible width at filter grid */
-}
-.filter-box .filter-criteria .selector {
-  width: auto;
-}
-.filter-item div.selector {
-  height: 20px;
-  line-height: 20px;
-  margin: 0 0 7px;
-  float: right;
-}
-.filter-item div.selector span {
-  line-height: 20px;
-  height: 20px;
 }
 .filter-box .filter-item .divider {
   background: none;
@@ -1437,91 +1393,10 @@ textarea {
 .top-messages {
   margin-bottom: 0;
 }
-/* custom form elements */
-.selector,
-.selector * {
-  margin: 0;
-  padding: 0;
-}
-
-/* Select */
 
 select {
   height: 26px;
   line-height: 26px;
-}
-div.selector {
-  line-height: 28px;
-  height: 28px;
-  position: relative;
-  width: 235px;
-  font-size: 12px;
-  border: 1px solid #ddd;
-  #gradient > .vertical(#ffffff, #f3f3f3);
-  padding: 0;
-  margin: 0;
-}
-
-div.selector span {
-  height: 28px;
-  display: block;
-  line-height: 28px;
-  .box-sizing(border-box);
-  padding: 0 5px;
-  &:after {
-    float:right;
-    margin:2px 2px 0 0;
-    display:inline-block;
-    font:15px 'FontAwesome';
-    content: "\f0dd";
-  }
-}
-
-div.selector select {
-  position: absolute;
-  top: 0px;
-  left: -2px;
-  opacity: 0;
-  z-index: 700;
-  padding: 0 5px;
-}
-
-div.selector:active,
-div.selector.active {
-  background-position: -483px -156px;
-}
-
-div.selector:active span,
-div.selector.active span {
-}
-
-div.selector.focus, div.selector.hover, div.selector:hover {
-  background-position: -483px -182px;
-}
-
-div.selector.focus span,
-div.selector.hover span,
-div.selector:hover span {
-}
-
-div.selector.focus:active,
-div.selector.focus.active,
-div.selector:hover:active,
-div.selector.active:hover {
-  background-position: -483px -208px;
-}
-
-div.selector.focus:active span,
-div.selector:hover:active span,
-div.selector.active:hover span,
-div.selector.focus.active span {
-}
-
-div.selector.disabled span {
-  color:#aaa;
-  &:after {
-    color:#ddd;
-  }
 }
 
 .responsive-section {
@@ -1548,8 +1423,7 @@ h5.user-fiedset {
 
 input:focus:invalid:focus,
 textarea:focus:invalid:focus,
-select:focus:invalid:focus,
-div.selector.focus {
+select:focus:invalid:focus {
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   outline: thin dotted \9;
@@ -1643,10 +1517,6 @@ div.selector.focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(211, 33, 33, 0.6);
   color: #555;
 }
-.validation-error div.selector {
-  display: inline-block;
-  vertical-align: middle;
-}
 
 .validation-tooltip {
   font-size:0;
@@ -1730,12 +1600,6 @@ button.filter-update {
   top: -3px;
 }
 
-#users-grid #loading-wrapper {
-  z-index: 888;
-}
-#users-grid #loading-frame {
-  z-index: 889;
-}
 .form-horizontal .control-group {
   margin: 0;
   max-width:700px;
@@ -1833,13 +1697,6 @@ button.filter-update {
     color: #fff;
     .border-radius( 5px 5px 0 0);
     #gradient > .vertical(#47505a, #353d45);
-    .divider-vertical {
-      float: left;
-      background: url("../../img/vertical-divider.png") no-repeat;
-      width: 2px;
-      height: 28px;
-      margin: 0 10px 0;
-    }
     .oro-title {
       float: left;
       font-size: 22px;
