@@ -56,7 +56,7 @@ function(_, messenger, __, Modal, AbstractAction) {
                 values: idValues.join(',')
             };
 
-            params = this.getExtraParameters(params, collection.state)
+            params = this.getExtraParameters(params, collection.state);
             params = collection.processFiltersParams(params, null, 'filters');
 
             var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();
@@ -77,9 +77,9 @@ function(_, messenger, __, Modal, AbstractAction) {
         getExtraParameters: function(params, state) {
             params[this.datagrid.name] = {};
 
-            if (state != undefined) {
-                params[this.datagrid.name]['_parameters'] = this.getActiveSorters(state);
-                params[this.datagrid.name]['_sort_by']    = this.getActiveColumns(state);
+            if (state !== undefined) {
+                params[this.datagrid.name]._parameters = this.getActiveSorters(state);
+                params[this.datagrid.name]._sort_by    = this.getActiveColumns(state);
             }
 
             return params;
@@ -94,8 +94,8 @@ function(_, messenger, __, Modal, AbstractAction) {
         getActiveSorters: function(state) {
             var result = {};
 
-            if (state.parameters != undefined) {
-                result['view'] = {
+            if (state.parameters !== undefined && state.parameters.view !== undefined) {
+                result.view = {
                     columns: state.parameters.view.columns
                 };
             }
@@ -112,7 +112,7 @@ function(_, messenger, __, Modal, AbstractAction) {
         getActiveColumns: function(state) {
             var result = {};
 
-            if (state.sorters != undefined) {
+            if (state.sorters !== undefined) {
                 for (var sorterKey in state.sorters) {
                     result[sorterKey] = state.sorters[sorterKey] === 1 ? 'DESC' : 'ASC';
                 }
