@@ -313,7 +313,7 @@ define(
                             DatagridState.set(this.gridName, 'columns', values.join(','));
                             modal.close();
                             var url = window.location.hash;
-                            Backbone.history.navigate(url.substr(0, url.length -1));
+                            Backbone.history.fragment = new Date().getTime();
                             Backbone.history.navigate(url, true);
                         }
                     }, this));

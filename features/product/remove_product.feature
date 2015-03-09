@@ -5,21 +5,30 @@ Feature: Remove a product
   I need to be able to remove a product
 
   Background:
-    Given the "default" catalog configuration
-    And a "CD player" product
+    Given the "footwear" catalog configuration
+    And the following family:
+      | code       | attributes                                                       |
+      | high_heels | sku, name, description, price, rating, size, color, manufacturer |
+    And the following attributes:
+      | code        | label       | type   | metric family | default metric unit | families                 |
+      | weight      | Weight      | metric | Weight        | GRAM                | boots, sneakers, sandals |
+      | heel_height | Heel Height | metric | Length        | CENTIMETER          | high_heels               |
+    And the following products:
+      | sku       | family     |
+      | boots     | high_heels |
     And I am logged in as "Julia"
 
   Scenario: Successfully delete a product from the grid
     Given I am on the products page
-    Then I should see products CD player
-    When I click on the "Delete the product" action of the row which contains "CD player"
+    Then I should see products boots
+    When I click on the "Delete the product" action of the row which contains "boots"
     Then I should see "Delete confirmation"
     And I confirm the removal
     Then I should not see product CD player
 
   Scenario: Successfully delete a product from the edit form
-    Given I am on the "CD player" product page
+    Given I am on the "boots" product page
     And I press the "Delete" button
     Then I should see "Delete confirmation"
     And I confirm the removal
-    Then I should not see product CD player
+    Then I should not see product boots

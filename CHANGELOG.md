@@ -6,6 +6,18 @@
 ## BC breaks
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
 - Change the constructor of `Pim/Bundle/TransformBundle/Normalizer/Structured/GroupNormalizer`, added `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` as the last argument
+- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
+
+# 1.3.x
+
+## Bug fixes
+- PIM-3806: Delete an attribute from a product template
+- PIM-3843: Product deletion raise an exception
+- PIM-3786: Attribute type should not be blank for import
+- PIM-3437: Fix applying datagrid views and columns when not using hash navigation
+
+## BC breaks
+- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
 
 # 1.3.3 (2015-03-02)
 
@@ -303,6 +315,14 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.x
+
+## Bug fixes
+- PIM-3786: Attribute type should not be blank for import
+- PIM-3437: Fix applying datagrid views and columns when not using hash navigation
+
+# 1.2.31 (2015-03-06)
 
 # 1.2.30 (2015-03-02)
 
