@@ -4,20 +4,6 @@
 {% set fullname = entity|oro_format_name|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery'],
-            function ($) {
-                $(function() {
-                    $('#container .navigation .span9').removeClass('span9').addClass('span10');
-                });
-            }
-        );
-    </script>
-{% endblock %}
-
 {% macro api_data_block(user) %}
 <div class="horizontal">
     <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
@@ -43,7 +29,6 @@
             'dataUrl': path('oro_user_user_delete', {'id': entity.id}),
             'dataRedirect': path('oro_user_index'),
             'aCss': 'no-hash remove-button',
-            'id': 'btn-remove-user',
             'dataId': entity.id,
             'dataMessage': 'Are you sure you want to delete this user?'|trans,
             'successMessage': 'User deleted'|trans,
