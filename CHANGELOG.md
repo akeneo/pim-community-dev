@@ -5,6 +5,7 @@
 - PIM-3843: Product deletion raise an exception
 - PIM-3786: Attribute type should not be blank for import
 - PIM-3437: Fix applying datagrid views and columns when not using hash navigation
+- PIM-3849: Fix mass delete complete products on different scope
 
 # 1.3.3 (2015-03-02)
 
