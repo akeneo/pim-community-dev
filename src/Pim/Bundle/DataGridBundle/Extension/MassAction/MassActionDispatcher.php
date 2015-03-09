@@ -75,10 +75,10 @@ class MassActionDispatcher
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
+        $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
         $datagridName = $request->get('gridName');
         $datagrid   = $this->manager->getDatagrid($datagridName);
         $massAction = $this->getMassActionByName($actionName, $datagrid);
-        $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         return $this->performMassAction($datagrid, $massAction, $inset, $values);
     }
