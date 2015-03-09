@@ -1,6 +1,7 @@
 # 1.4.x
 
 ## Bug fixes
+- PIM-3874: clicking a category gives an error with only "list categories" permission 
 - PIM-3771: Create version when modifying variant group attribute
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
 
