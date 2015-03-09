@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3771: Create version when modifying variant group attribute
+- PIM-3437: Fix applying datagrid views and columns when not using hash navigation
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
