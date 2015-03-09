@@ -36,6 +36,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_multiselect
                 - pim_catalog_simpleselect
     properties:
+        attributeType:
+            - NotBlank: ~
         code:
             - NotBlank: ~
             - Regex:
