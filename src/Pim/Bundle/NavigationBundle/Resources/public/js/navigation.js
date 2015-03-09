@@ -52,7 +52,6 @@ define(function (require) {
         selectors: {
             links:               'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
             scrollLinks:         'a[href^=#]',
-            content:             '#content',
             userMenu:            '#top-page .user-menu',
             container:           '#container',
             loadingMask:         '.hash-loading-mask',
