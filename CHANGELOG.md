@@ -301,6 +301,13 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
+# 1.2.x
+
+## Bug fixes
+- PIM-3786: Attribute type should not be blank for import
+
+# 1.2.31 (2015-03-06)
+
 # 1.2.30 (2015-03-02)
 
 ## Bug fixes

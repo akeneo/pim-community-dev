@@ -22,6 +22,8 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 - pim_catalog_price_collection
                 - pim_catalog_metric
     properties:
+        attributeType:
+            - NotBlank: ~
         code:
             - NotBlank: ~
             - Regex:
