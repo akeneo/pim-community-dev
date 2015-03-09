@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-3806: Delete an attribute from a product template
 - PIM-3843: Product deletion raise an exception
+- PIM-3786: Attribute type should not be blank for import
 
 # 1.3.3 (2015-03-02)
 
