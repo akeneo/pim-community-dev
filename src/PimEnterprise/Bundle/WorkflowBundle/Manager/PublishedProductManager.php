@@ -147,6 +147,7 @@ class PublishedProductManager
             $this->getObjectManager()->flush();
         }
 
+        $this->getObjectManager()->refresh($product);
         $published = $this->publisher->publish($product, $publishOptions);
         $this->getObjectManager()->persist($published);
         $this->getObjectManager()->flush();
