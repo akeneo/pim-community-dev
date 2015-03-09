@@ -125,3 +125,20 @@ Feature: Import attributes
     And I wait for the "footwear_attribute_import" job to finish
     Then I should see "skipped 1"
     And I should see "code: This value should not be blank"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3786
+  Scenario: Skip attributes with empty type
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And the following file to import:
+    """
+    type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
+    ;shortname;Shortname;info;0;1;1;1;0;;;
+      """
+    And the following job "footwear_attribute_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_attribute_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_attribute_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "attributeType: This value should not be blank."
