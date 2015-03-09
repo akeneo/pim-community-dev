@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
+    ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
      'pim/saveformstate', 'pim/asynctab', 'pim/ui'],
-    function ($, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI) {
+    function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI) {
         'use strict';
         var initialized = false;
         return function() {
@@ -102,9 +102,7 @@ define(
                                     var navigation = Navigation.getInstance();
                                     var targetUrl = '#url=' + $el.attr('data-redirect-url');
                                     // If already on the desired page, make sure it is refreshed
-                                    if (targetUrl === window.location.hash) {
-                                        navigation.navigate(targetUrl.substr(0, targetUrl.length -1));
-                                    }
+                                    Backbone.history.fragment = new Date().getTime();
                                     navigation.navigate(targetUrl, { trigger: true });
                                     navigation.addFlashMessage('success', $el.attr('data-success-message'));
                                 },
