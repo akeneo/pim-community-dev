@@ -52,9 +52,8 @@ function(_, Backbone, Navigation, DotmenuView) {
          * @return {*}
          */
         getItemForPage: function(url, excludeGridParams) {
-            url = this.cleanupUrl(url);
             return this.options.collection.filter(_.bind(function (item) {
-                var itemUrl = this.cleanupUrl(item.get('url'));
+                var itemUrl = item.get('url');
                 if (!_.isUndefined(excludeGridParams) && excludeGridParams) {
                     itemUrl = itemUrl.split('#g')[0];
                     url = url.split('#g')[0];
@@ -76,13 +75,6 @@ function(_, Backbone, Navigation, DotmenuView) {
                 url = window.location.pathname + window.location.search + window.location.hash;
             }
             return {url: url};
-        },
-
-        cleanupUrl: function(url) {
-            if (url) {
-                url = url.replace(/(\?|&)restore=1/ig, '');
-            }
-            return url;
         },
 
         /**
