@@ -7,7 +7,7 @@
 {% set pageTitle = 'Configuration' %}
 
 {% block content %}
-    {{ configUI.renderTitleAndSearch(pageTitle, []) }}
+    {{ configUI.renderTitle(pageTitle, []) }}
     {{ configUI.renderScrollData(data, form, activeGroup, activeSubGroup) }}
 
     <script type="text/javascript">

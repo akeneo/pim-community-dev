@@ -4,8 +4,8 @@
 {% block page_container %}
     {% block content %}
         <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
-              method="post" class="scrollable-substructure">
-            <div class="navigation clearfix navbar-extra navbar-extra-right">
+              method="post" class="unspaced">
+            <div class="navigation clearfix navbar-extra">
                 <div class="row">
                     <div class="pull-right">
                         <div class="pull-right">
@@ -18,15 +18,15 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="span9">
+                    <div class="span10">
                         {% block pageHeader %}
-                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
+                            <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %}">
                                 {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
                                     <div class="visual">
                                         <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/pimui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
                                     </div>
                                 {% endif %}
-                                <div class="customer-content pull-left">
+                                <div class="pull-left">
                                     <div class="clearfix">
                                         {% block breadcrumbs %}
                                             <div class="pull-left">

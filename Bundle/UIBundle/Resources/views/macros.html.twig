@@ -256,7 +256,7 @@
     </div>
     <div class="clearfix">
         {% if data.formErrors is defined and data.formErrors | length%}
-            <div class="customer-info-actions container-fluid well-small alert-wrap">
+            <div class="customer-info-actions container-fluid alert-wrap">
                 <div class="alert alert-error">
                     <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
                     {{ data.formErrors|raw }}
