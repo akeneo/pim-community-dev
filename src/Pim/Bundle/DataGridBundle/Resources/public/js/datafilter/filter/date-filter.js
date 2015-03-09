@@ -344,7 +344,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 this.trigger('update');
             }
         },
-        
+
         /**
          * @inheritDoc
          */

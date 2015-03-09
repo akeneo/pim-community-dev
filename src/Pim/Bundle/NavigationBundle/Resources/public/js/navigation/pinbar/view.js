@@ -102,7 +102,7 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
                 if (changeLocation) {
                     url = item.get('url');
                 }
-                if (this.cleanupUrl(url) != this.cleanupUrl(this.getCurrentPageItemData().url)) {
+                if (url != this.getCurrentPageItemData().url) {
                     navigation = Navigation.getInstance();
                     if (navigation && changeLocation) {
                         navigation.setLocation(url, {useCache: true});
@@ -168,7 +168,6 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
                 }, this);
             } else {
                 var newItem = this.getNewItemData(Backbone.$(e.currentTarget));
-                newItem.url = this.cleanupUrl(newItem.url);
                 var currentItem = new PinbarModel(newItem);
                 this.options.collection.unshift(currentItem);
                 this.handleItemStateChange(currentItem);

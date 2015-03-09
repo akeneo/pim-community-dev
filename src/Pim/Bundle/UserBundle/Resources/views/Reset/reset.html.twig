@@ -1,4 +1,4 @@
-{% extends 'OroUserBundle::layout.html.twig' %}
+{% extends 'PimUserBundle::layout.html.twig' %}
 
 {% block bodyClass %}login-page{% endblock %}
 
@@ -17,7 +17,7 @@
             {{ form_widget(form._token) }}
             <div class="form-row">
                 <a href="{{ path('oro_user_security_login') }}" class="btn btn-large extra-btn-large">{{ 'Cancel'|trans }}</a>
-                <button type="submit" class="btn btn-large extra-submit btn-primary">{{ 'Reset'|trans }}</button>
+                <button type="submit" class="btn btn-large pull-right btn-primary">{{ 'Reset'|trans }}</button>
             </div>
         </fieldset>
     </form>

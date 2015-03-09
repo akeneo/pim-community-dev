@@ -87,14 +87,7 @@ function($, _, Backbone, app, Navigation, mediator, error) {
             } else {
                 url = window.location.pathname;
             }
-            return this.cleanupUrl(modelUrl) == this.cleanupUrl(url);
-        },
-
-        cleanupUrl: function(url) {
-            if (url) {
-                url = url.replace(/(\?|&)restore=1/ig, '');
-            }
-            return url;
+            return modelUrl == url;
         },
 
         setActiveItem: function() {
