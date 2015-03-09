@@ -17,11 +17,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
             '<div class="grid-toolbar">' +
                 '<div class="pull-left">' +
                     '<div class="mass-actions-panel btn-group icons-holder"></div>' +
-                    '<div class="btn-group icons-holder" style="display: none;">' +
-                        '<button class="btn"><i class="icon-edit hide-text"><%- _.__("edit") %></i></button>' +
-                        '<button class="btn"><i class="icon-copy hide-text"><%- _.__("copy") %></i></button>' +
-                        '<button class="btn"><i class="icon-trash hide-text"><%- _.__("remove") %></i></button>' +
-                    '</div>' +
                 '</div>' +
                 '<div class="pull-right">' +
                     '<div class="actions-panel pull-right form-horizontal"></div>' +
