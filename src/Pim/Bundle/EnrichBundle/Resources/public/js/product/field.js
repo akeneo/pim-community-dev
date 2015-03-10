@@ -27,8 +27,8 @@ define(['backbone', 'underscore'], function (Backbone, _) {
             this.$el.empty();
 
             var value = this.getCurrentValue();
-
             this.$el.html(this.template({label: this.attribute.label, value: value, config: config}));
+            this.delegateEvents();
 
             return this;
         },
@@ -45,6 +45,10 @@ define(['backbone', 'underscore'], function (Backbone, _) {
             this.context = context;
         },
         validate: function()
+        {
+            return true;
+        },
+        complete: function()
         {
             return true;
         },
@@ -89,7 +93,13 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         },
         setCurrentValue: function(data)
         {
-            this.getCurrentValue().value = data;
+            var value = this.getCurrentValue();
+
+            if (null === value.value) {
+                this.model.get('values').push(value);
+            }
+
+            value.value = data;
         }
     });
 });

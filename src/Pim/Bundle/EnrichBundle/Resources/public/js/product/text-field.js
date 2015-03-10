@@ -12,7 +12,6 @@ define(['pim/field', 'underscore'], function (Field, _) {
         updateModel: function (event) {
             var data = event.currentTarget.value;
             this.setCurrentValue(data);
-            console.log(this.model.attributes);
         }
     });
 });
