@@ -284,3 +284,35 @@ attributes:
         group: other
         useableAsGridFilter: true
         sortOrder:           30
+    heel_color:
+        labels:
+            en_US: Heel color
+        type:  pim_reference_data_simpleselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           30
+        reference_data_name: color
+    sole_color:
+        labels:
+            en_US: Sole color
+        type:  pim_reference_data_simpleselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           35
+        reference_data_name: color
+    sole_fabric:
+        labels:
+            en_US: Sole fabric
+        type:  pim_reference_data_multiselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           40
+        reference_data_name: fabrics
+    lace_fabric:
+        labels:
+            en_US: Lace fabric
+        type:  pim_reference_data_multiselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           45
+        reference_data_name: fabrics

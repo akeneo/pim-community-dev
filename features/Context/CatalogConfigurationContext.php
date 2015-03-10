@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
@@ -110,6 +111,9 @@ class CatalogConfigurationContext extends RawMinkContext
             }
             $this->runLoader($loader, $file);
         }
+
+        $referenceDataLoader = new ReferenceDataLoader();
+        $referenceDataLoader->load($this->getEntityManager());
     }
 
     /**
