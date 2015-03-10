@@ -51,6 +51,7 @@ define(
                         text: submitButton,
                         'class': 'btn btn-primary',
                         click: function () {
+                            showLoadingMask();
                             $.ajax({
                                 url: url,
                                 type: 'post',
@@ -86,6 +87,9 @@ define(
                                 $(this).find('button.btn-primary:eq(0)').click();
                             }
                         });
+                    },
+                    close: function(event, ui) {
+                        $(this).remove();
                     }
                 });
 
@@ -103,6 +107,7 @@ define(
             }
 
             function processResponse(data) {
+                loadingMask.hide();
                 if (isJSON(data)) {
                     data = $.parseJSON(data);
                     destroyDialog();
