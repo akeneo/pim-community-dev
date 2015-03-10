@@ -15,10 +15,6 @@ $('.from-smart[data-async-content]').on('mouseover', function () {
         var message = "{{ viewElement.alias|trans|capitalize|raw }}";
         message = message.replace('%rule%', codes.join(', '));
 
-        $this.attr('data-content', message);
-
-        if ($('.popover').length) {
-            $this.popover('show');
-        }
+        $this.attr('data-content', message).data('popover').setContent();
     });
 });
