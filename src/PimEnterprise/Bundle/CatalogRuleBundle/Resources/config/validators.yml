@@ -30,5 +30,6 @@ services:
         class: %pimee_catalog_rule.validator.product_rule.value_action.class%
         arguments:
             - '@pim_catalog.updater.product'
+            - @pim_catalog.manager.product
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_value_action_validator }
