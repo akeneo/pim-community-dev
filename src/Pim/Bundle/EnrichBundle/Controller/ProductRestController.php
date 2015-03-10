@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Product controller
@@ -13,33 +15,19 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ProductRestController
 {
+    protected $productRepository;
+    protected $normalizer;
+
+    public function __construct(ProductRepositoryInterface $productRepository, NormalizerInterface $normalizer)
+    {
+        $this->productRepository = $productRepository;
+        $this->normalizer        = $normalizer;
+    }
+
     public function getAction($id)
     {
-        return new JsonResponse(json_decode('{
-            "family":null,
-            "groups":[],
-            "categories":["2014_collection"],
-            "enabled":true,
-            "associations":[],
-            "values": {
-                "sku":[
-                    {"locale":null,"scope":null,"value":"sandals"}
-                ],
-                "name":[
-                    {"locale":"en_US","scope":null,"value":"My sandals"}
-                ],
-                "description":[
-                    {"locale":"en_US","scope":"mobile","value":"My great sandals"},
-                    {"locale":"en_US","scope":"tablet","value":"My great new sandals"}
-                ],
-                "price":[
-                    {"locale":null,"scope":null,"value":[
-                        {"data":"20.00","currency":"EUR"},
-                        {"data":"30.00","currency":"USD"}
-                    ]}
-                ]
-            },
-            "resource":"{baseUrl}/api/rest/products/sandals"
-        }', true));
+        $product = $this->productRepository->findOneById($id);
+
+        return new JsonResponse($this->normalizer->normalize($product, 'json'));
     }
 }
