@@ -1,6 +1,7 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-3814: "Affected by rules" info on attribute doesn't disappear
 - PIM-3820: Fix attribute options translation which were not displayed
 
 # 1.3.3 (2015-03-02)

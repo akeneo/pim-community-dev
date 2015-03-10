@@ -4,8 +4,6 @@ $('.from-smart[data-async-content]').on('mouseover', function () {
     var url = $this.data('async-content');
 
     $this.attr('data-content', '{{ "pimee_catalog_rule.product.tooltip.loading.title"|trans }}');
-    $this.popover({'html': true});
-    $this.popover('show');
 
     $this.off('mouseover');
     $.get(url, function (data) {
@@ -17,9 +15,10 @@ $('.from-smart[data-async-content]').on('mouseover', function () {
         var message = "{{ viewElement.alias|trans|capitalize|raw }}";
         message = message.replace('%rule%', codes.join(', '));
 
-        $this.attr('data-content', message)
-            .popover('destroy')
-            .popover({'html': true})
-            .popover('show');
+        $this.attr('data-content', message);
+
+        if ($('.popover').length) {
+            $this.popover('show');
+        }
     });
 });
