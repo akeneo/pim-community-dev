@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
- * Sets a value in many products
+ * Sets a data in a product field
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -26,6 +26,8 @@ interface SetterInterface
      *
      * @throws InvalidArgumentException
      * @throws \RuntimeException
+     *
+     * @deprecated will be removed in 1.5, use methods from FieldSetterInterface and AttributeSetterInterface
      */
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null);
 
@@ -35,6 +37,8 @@ interface SetterInterface
      * @param AttributeInterface $attribute
      *
      * @return boolean
+     *
+     * @deprecated will be removed in 1.5, use methods from FieldSetterInterface and AttributeSetterInterface
      */
     public function supports(AttributeInterface $attribute);
 }

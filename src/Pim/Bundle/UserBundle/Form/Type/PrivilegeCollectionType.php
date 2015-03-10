@@ -3,8 +3,6 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Oro\Bundle\SecurityBundle\Form\Type\PrivilegeCollectionType as OroPrivilegeCollectionType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 
 /**
  * Overriden PrivilegeCollectionType to remove unused ACLs

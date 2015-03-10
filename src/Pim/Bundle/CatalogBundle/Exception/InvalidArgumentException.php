@@ -216,6 +216,23 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
+     * @param string $name
+     * @param string $key
+     * @param string $because
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function validEntityCodeExpected($name, $key, $because, $action, $type, $data)
+    {
+        $err = 'Attribute or field "%s" expects a valid %s. %s, "%s" given (for %s %s).';
+
+        return new self(sprintf($err, $name, $key, $because, $data, $action, $type));
+    }
+
+    /**
      * @param string $attribute
      * @param string $key
      * @param string $action

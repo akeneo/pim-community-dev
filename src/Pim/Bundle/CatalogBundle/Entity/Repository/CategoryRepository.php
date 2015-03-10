@@ -10,7 +10,6 @@ use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Category repository
@@ -23,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  */
 class CategoryRepository extends NestedTreeRepository implements
     IdentifiableObjectRepositoryInterface,
-    ReferableEntityRepositoryInterface,
     CategoryRepositoryInterface
 {
     /**

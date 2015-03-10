@@ -3,9 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Abstract setter
@@ -14,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractValueSetter implements SetterInterface
+abstract class AbstractValueSetter implements AttributeSetterInterface
 {
     /** @var array */
     protected $supportedTypes = [];
@@ -24,6 +25,9 @@ abstract class AbstractValueSetter implements SetterInterface
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
+
+    /** @var OptionResolver */
+    protected $resolver;
 
     /**
      * @param ProductBuilderInterface  $productBuilder
@@ -35,12 +39,23 @@ abstract class AbstractValueSetter implements SetterInterface
     ) {
         $this->productBuilder = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
      * {@inheritdoc}
      */
     public function supports(AttributeInterface $attribute)
+    {
+        return $this->supportsAttribute($attribute);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AttributeInterface $attribute)
     {
         return in_array($attribute->getAttributeType(), $this->supportedTypes);
     }
@@ -68,5 +83,14 @@ abstract class AbstractValueSetter implements SetterInterface
                 $type
             );
         }
+    }
+
+    /**
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['locale', 'scope']);
     }
 }

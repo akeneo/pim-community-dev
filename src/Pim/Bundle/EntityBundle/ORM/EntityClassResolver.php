@@ -42,7 +42,6 @@ class EntityClassResolver
         $parts = explode(':', $entityName);
         if (count($parts) <= 1) {
             // The given entity name is not in bundle:entity format. Suppose that it is the full class name
-
             return $entityName;
         } elseif (count($parts) > 2) {
             throw new \InvalidArgumentException(

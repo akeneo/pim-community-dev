@@ -48,4 +48,14 @@ interface ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     );
+
+    /**
+     * Set field value on a product
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field to modify
+     * @param mixed            $data    The data to set
+     * @param array            $options Options to pass to the setter
+     */
+    public function set(ProductInterface $product, $field, $data, array $options = []);
 }
