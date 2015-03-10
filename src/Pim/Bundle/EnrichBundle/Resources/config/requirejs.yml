@@ -28,4 +28,6 @@ config:
         pim/item/view:                      pimenrich/js/pim-item-view
         pim/product-edit-form:              pimenrich/js/product/edit-form
         pim/field-manager:                  pimenrich/js/product/field-manager
+        pim/field:                          pimenrich/js/product/field
         pim/text-field:                     pimenrich/js/product/text-field
+        pim/price-field:                    pimenrich/js/product/price-field

@@ -1,31 +1,18 @@
 "use strict";
 
-define(['underscore'], function (_) {
-    return {
-        attribute: null,
-        data: null,
-        template: _.template('<label><%= label %></label><input type="text" value="<%= value %>">'),
-        init: function(attribute)
-        {
-            this.attribute = attribute;
-
-            return this;
+define(['pim/field', 'underscore'], function (Field, _) {
+    return Field.extend({
+        template: _.template([
+            '<label><%= label %></label>',
+            '<input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value %>"/>'
+        ].join('')),
+        events: {
+            'change input': 'updateModel'
         },
-        render: function()
-        {
-            return this.template({label: this.attribute.label, value: this.data[0].value});
-        },
-        getData: function()
-        {
-            return this.data;
-        },
-        setData: function(data)
-        {
-            this.data = data;
-        },
-        validate: function()
-        {
-            return true;
+        updateModel: function (event) {
+            var data = event.currentTarget.value;
+            this.setCurrentValue(data);
+            console.log(this.model.attributes);
         }
-    };
+    });
 });
