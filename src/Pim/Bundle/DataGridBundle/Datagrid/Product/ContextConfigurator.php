@@ -317,13 +317,25 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getCurrentScopeCode()
     {
         $filterValues = $this->requestParams->get('_filter');
-        if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
-            return $filterValues['scope']['value'];
-        } else {
-            $channel = $this->userContext->getUser()->getCatalogScope();
+        $currentScopeCode = null;
 
-            return $channel->getCode();
+        if (isset($filterValues['scope']['value'])) {
+            $currentScopeCode = $filterValues['scope']['value'];
         }
+
+        if (null === $currentScopeCode) {
+            $requestFilters = $this->request->get('filters');
+            if (isset($requestFilters['scope']['value'])) {
+                $currentScopeCode = $requestFilters['scope']['value'];
+            }
+        }
+
+        if (null === $currentScopeCode) {
+            $channel = $this->userContext->getUser()->getCatalogScope();
+            $currentScopeCode = $channel->getCode();
+        }
+
+        return $currentScopeCode;
     }
 
     /**
