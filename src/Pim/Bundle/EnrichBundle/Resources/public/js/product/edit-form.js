@@ -37,6 +37,16 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
                     'code': 'en_US',
                     'label': 'English'
                 }
+            ],
+            'channels': [
+                {
+                    'code': 'mobile',
+                    'label': 'Mobile'
+                },
+                {
+                    'code': 'tablet',
+                    'label': 'Tablet'
+                }
             ]
         },
         template: _.template([
@@ -45,9 +55,17 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
                     '<option value="<%= locale.code %>" <%= state.locale === locale.code ? "selected" : "" %>><%= locale.label %></option>',
                 '<% }); %>',
             '</select>',
+            '<select id="scope">',
+                '<% _.each(config.channels, function (scope) { %>',
+                    '<option value="<%= scope.code %>" <%= state.scope === scope.code ? "selected" : "" %>><%= scope.label %></option>',
+                '<% }); %>',
+            '</select>',
+            '<button id="get-data">get data</button>'
         ].join('')),
         events: {
-            'change #locale': 'changeLocale'
+            'change #locale': 'changeLocale',
+            'change #scope': 'changeScope',
+            'click #get-data': 'getData'
         },
         initialize: function () {
             this.listenTo(this.model, 'change', this.render);
@@ -76,14 +94,16 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
 
         },
         changeScope: function (event) {
-
+            this.model.set('scope', event.currentTarget.value);
         },
         getData: function () {
             var fields = FieldManager.getFields();
-
-            _.each(fields, function(field) {
-                console.log(field.getData());
+            var values = {};
+            _.each(fields, function(field, key) {
+                values[key] = field.getData();
             });
+
+            console.log(values);
         }
     });
 
