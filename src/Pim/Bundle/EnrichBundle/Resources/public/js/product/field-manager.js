@@ -1,6 +1,6 @@
 "use strict";
 
-define(['pim/text-field', 'pim/price-field'], function (TextField, PriceField) {
+define(['pim/text-field', 'pim/price-field', 'routing'], function (TextField, PriceField, Routing) {
     return {
         fields: {},
         attributes: null,
@@ -21,7 +21,6 @@ define(['pim/text-field', 'pim/price-field'], function (TextField, PriceField) {
                 }
 
                 this.fields[attributeCode] = field;
-                console.log(field);
                 promise.resolve(this.fields[attributeCode]);
             }, this));
 
@@ -33,6 +32,8 @@ define(['pim/text-field', 'pim/price-field'], function (TextField, PriceField) {
         getAttribute: function(attributeCode)
         {
             var promise = new $.Deferred();
+
+            //If we never called the backend we call it and set the promise
             if (null === this.attributesPromise) {
                 this.attributesPromise = $.ajax(
                     Routing.generate('pim_enrich_attribute_rest_index'),
@@ -42,6 +43,8 @@ define(['pim/text-field', 'pim/price-field'], function (TextField, PriceField) {
                 ).promise();
             }
 
+            //If attributes are not initialized we have to wait for the promise to be resolved
+            //and if not we directly resolve
             if (null === this.attributes) {
                 this.attributesPromise.done(_.bind(function(data) {
                     this.attributes = data;
