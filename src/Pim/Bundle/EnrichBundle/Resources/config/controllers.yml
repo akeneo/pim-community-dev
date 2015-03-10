@@ -20,6 +20,7 @@ parameters:
     pim_enrich.controller.product_comment.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentController
     pim_enrich.controller.product_attribute.class: Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
+    pim_enrich.controller.product_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -264,3 +265,6 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.builder.product_template'
             - '@pim_catalog.resolver.variant_group_attributes'
+
+    pim_enrich.controller.product_rest:
+        class: %pim_enrich.controller.product_rest.class%

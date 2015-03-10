@@ -26,3 +26,6 @@ config:
         pim/attributeoptionview:            pimenrich/js/pim-attributeoptionview
         pim/item/tableview:                 pimenrich/js/pim-item-tableview
         pim/item/view:                      pimenrich/js/pim-item-view
+        pim/product-edit-form:              pimenrich/js/product/edit-form
+        pim/field-manager:                  pimenrich/js/product/field-manager
+        pim/text-field:                     pimenrich/js/product/text-field
