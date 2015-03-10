@@ -76,7 +76,7 @@ class StringFilter extends OroStringFilter
      */
     protected function getOperator($type)
     {
-        $operatorTypes = array(
+        $operatorTypes = [
             TextFilterType::TYPE_CONTAINS     => 'LIKE',
             TextFilterType::TYPE_NOT_CONTAINS => 'NOT LIKE',
             TextFilterType::TYPE_EQUAL        => 'LIKE',
@@ -84,7 +84,7 @@ class StringFilter extends OroStringFilter
             TextFilterType::TYPE_ENDS_WITH    => 'LIKE',
             FilterType::TYPE_EMPTY            => 'EMPTY',
             FilterType::TYPE_IN_LIST          => 'IN',
-        );
+        ];
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
     }
