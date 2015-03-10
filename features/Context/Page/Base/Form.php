@@ -49,6 +49,14 @@ class Form extends Base
     }
 
     /**
+     * Press the save button
+     */
+    public function saveAndClose()
+    {
+        $this->pressButton('Save and close');
+    }
+
+    /**
      * Visit the specified tab
      * @param string $tab
      */

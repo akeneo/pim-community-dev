@@ -1,0 +1,9 @@
+parameters:
+    pim_installer.yaml_persister.class: Pim\Bundle\InstallerBundle\Persister\YamlPersister
+
+services:
+    pim_installer.yaml_persister:
+        class: %pim_installer.yaml_persister.class%
+        arguments:
+            - %kernel.root_dir%/config
+            - %kernel.environment%

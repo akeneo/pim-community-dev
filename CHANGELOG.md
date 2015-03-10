@@ -1,3 +1,14 @@
+# 1.4.x
+
+## Bug fixes
+- PIM-3771: Create version when modifying variant group attribute
+- PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
+
+## BC breaks
+- Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
+- Change the constructor of `Pim/Bundle/TransformBundle/Normalizer/Structured/GroupNormalizer`, added `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` as the last argument
+- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
+
 # 1.3.x
 
 ## Bug fixes
@@ -7,6 +18,9 @@
 - PIM-3437: Fix applying datagrid views and columns when not using hash navigation
 - PIM-3817: Fix error when mass editing after refreshing the grid
 - PIM-3849, PIM-3880: Fix bad completeness scope on mass edit actions
+
+## BC breaks
+- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
 
 # 1.3.3 (2015-03-02)
 
@@ -20,6 +34,7 @@
 - PIM-3834: add missing cascade detach product -> associations, product -> completenesses
 - PIM-3820: Attribute option translation not well handled on import
 - PIM-3762: Fix the bug on image not well displayed on pdf export
+- PIM-3307: Fix filter dropdown rendering
 
 # 1.3.1 (2015-02-24)
 
@@ -53,7 +68,6 @@
 - PIM-3753: Fix completeness filter
 
 ## BC breaks
-- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
 - Add a TranslatorInterface argument in MetricType::__construct
 - Change of constructor of `Pim/Bundle/CommentBundle/Form/Type/CommentType` to accept `Pim\Bundle\CommentBundle\Entity` as a string for the third argument
 - Added new constructor to `Pim/Bundle/DataGridBundle/Form/Type/DatagridViewType` to accept `Pim\Bundle\DataGridBundle\Entity\DataGridView` as a string for the first argument

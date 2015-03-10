@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'pim/initselect2', 'wysiwyg', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    ['jquery', 'pim/initselect2', 'wysiwyg', 'bootstrap', 'bootstrap.bootstrapswitch'],
     function ($, initSelect2, wysiwyg) {
         'use strict';
 

@@ -36,7 +36,7 @@ Requirements
 Installation instructions
 -------------------------
 To install Akeneo PIM for a PIM project or for evaluation, please follow:
-http://docs.akeneo.com/latest/installation/installation_workstation.html
+http://docs.akeneo.com/latest/developer_guide/installation/installation_workstation.html
 
 The following installation overview is for contributing to Akeneo PIM, not for project purpose.
 

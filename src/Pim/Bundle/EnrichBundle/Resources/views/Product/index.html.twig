@@ -50,8 +50,11 @@
 
     {{ elements.page_header(title, buttons, subtitle) }}
 
-    <div class="row-fluid has-sidebar">
-        <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
+    {% set categoriesGranted = resource_granted('pim_enrich_category_list') %}
+    <div class="row-fluid {{ categoriesGranted ? 'has-sidebar': '' }}">
+        {% if categoriesGranted %}
+            <div id="tree" data-datalocale="{{ dataLocale.code }}" data-relatedentity="product"></div>
+        {% endif %}
         <div id="product-grid">
             {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }) }}
         </div>
