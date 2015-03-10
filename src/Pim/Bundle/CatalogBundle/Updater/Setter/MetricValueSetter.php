@@ -54,6 +54,7 @@ class MetricValueSetter extends AbstractValueSetter
     public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'metric');
+
         $this->checkData($attribute, $data);
 
         $unit = $data['unit'];
@@ -94,6 +95,10 @@ class MetricValueSetter extends AbstractValueSetter
                 'metric',
                 print_r($data, true)
             );
+        }
+
+        if (null === $data['data'] && null === $data['unit']) {
+            return;
         }
 
         if (!is_numeric($data['data']) && null !== $data['data']) {
@@ -157,6 +162,10 @@ class MetricValueSetter extends AbstractValueSetter
 
         if (null === $metric = $value->getMetric()) {
             $metric = $this->metricFactory->createMetric($attribute->getMetricFamily());
+        }
+
+        if (null === $unit) {
+            $unit = $attribute->getDefaultMetricUnit();
         }
 
         $value->setMetric($metric);

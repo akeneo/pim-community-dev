@@ -1,0 +1,114 @@
+<?php
+
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
+
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+
+/**
+ * Product import processor
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class ProductAssociationProcessor extends AbstractProcessor
+{
+    /** @var ProductManager */
+    protected $manager;
+
+    /** @var string */
+    protected $format;
+
+    /**
+     * @param IdentifiableObjectRepositoryInterface $repository       repository to search the object in
+     * @param DenormalizerInterface                 $denormalizer     denormalizer used to transform array to object
+     * @param ValidatorInterface                    $validator        validator of the object
+     * @param ObjectDetacherInterface               $detacher         detacher to remove it from UOW when skip
+     * @param ProductManager                        $manager          product manager
+     * @param FieldNameBuilder                      $fieldNameBuilder product manager
+     * @param string                                $class            class of the object to instanciate in case if need
+     * @param string                                $format           format use to denormalize
+     */
+    public function __construct(
+        IdentifiableObjectRepositoryInterface $repository,
+        DenormalizerInterface $denormalizer,
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
+        ProductManager $manager,
+        FieldNameBuilder $fieldNameBuilder,
+        $class,
+        $productClass,
+        $format
+    ) {
+        parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
+
+        $this->manager          = $manager;
+        $this->fieldNameBuilder = $fieldNameBuilder;
+        $this->format           = $format;
+        $this->productClass     = $productClass;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function process($item)
+    {
+        $identifier = $item['product'][$this->repository->getIdentifierProperties()[0]];
+        $product    = $this->findOrCreateProduct($identifier);
+
+        foreach ($product->getAssociations() as $association) {
+            foreach ($association->getGroups() as $group) {
+                $association->removeGroup($group);
+            }
+
+            foreach ($association->getProducts() as $prod) {
+                $association->removeProduct($prod);
+            }
+        }
+
+        $associations = [];
+        foreach ($item['associations'] as $itemAssociation) {
+            $association = $product->getAssociationForTypeCode($itemAssociation['association_type_code']);
+
+            $association = $this->denormalizer->denormalize(
+                $itemAssociation['associated_items'],
+                $this->class,
+                $this->format,
+                [
+                    'entity'                => $association,
+                    'association_type_code' => $itemAssociation['association_type_code'],
+                    'part'                  => $itemAssociation['item_type']
+                ]
+            );
+
+            if (null !== $association) {
+                $association->setOwner($product);
+
+                $violations = $this->validator->validate($association);
+
+                if (count($violations) === 0) {
+                    $associations[] = $association;
+                }
+            }
+        }
+
+        return $associations;
+    }
+
+    public function findOrCreateProduct($identifier)
+    {
+        $product = $this->repository->findOneByIdentifier($identifier);
+
+        if (false === $product) {
+            $product = $this->manager->createProduct();
+        }
+
+        return $product;
+    }
+}
