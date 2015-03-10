@@ -73,16 +73,30 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
         render: function () {
             this.$el.html(this.template({config: this.config, 'state': this.model.toJSON()}));
 
+            var fieldPromisses = [];
             _.each(this.model.get('product').values, _.bind(function (value, attributeCode) {
-                var field = FieldManager.getField(attributeCode);
+                var promise = new $.Deferred();
 
-                field.setData(value);
-                field.setContext({
-                    'locale': this.model.get('locale'),
-                    'scope': this.model.get('scope')
-                });
+                FieldManager.getField(attributeCode).done(_.bind(function(field) {
+                    field.setData(value);
+                    field.setContext({
+                        'locale': this.model.get('locale'),
+                        'scope': this.model.get('scope')
+                    });
 
-                this.$el.append(field.render().$el);
+                    promise.resolve(field);
+                }, this));
+
+                fieldPromisses.push(promise.promise());
+            }, this));
+
+            $.when(fieldPromisses).done(_.bind(function(promises) {
+                _.each(promises, _.bind(function(promise) {
+                    promise.done(_.bind(function(field) {
+                        this.$el.append(field.render().$el);
+                    }, this));
+
+                }, this));
             }, this));
 
             return this;
@@ -108,7 +122,6 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
     });
 
     $(function() {
-
         productManager.get(1).done(function(data) {
             var formState = new FormState({'product': data});
             var formView  = new FormView({'model': formState});

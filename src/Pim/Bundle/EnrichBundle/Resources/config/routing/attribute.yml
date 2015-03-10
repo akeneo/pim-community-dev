@@ -31,3 +31,15 @@ pim_enrich_attribute_create_option:
     defaults: { _controller: pim_enrich.controller.attribute:createOptionAction }
     requirements:
         id: \d+
+
+pim_enrich_attribute_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.attribute_rest:indexAction }
+    methods: [GET]
+
+pim_enrich_attribute_rest_get:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.attribute_rest:getAction }
+    requirements:
+        id: \d+
+    methods: [GET]

@@ -3,55 +3,56 @@
 define(['pim/text-field', 'pim/price-field'], function (TextField, PriceField) {
     return {
         fields: {},
+        attributes: null,
+        attributesPromise: null,
         getField: function (attributeCode) {
+            var promise = new $.Deferred();
+
             if (this.fields[attributeCode]) {
-                return this.fields[attributeCode];
+                promise.resolve(this.fields[attributeCode]);
             }
 
-            var attribute = {
-                'name': {
-                    'code': attributeCode,
-                    'label': attributeCode,
-                    'type': 'pim_catalog_text',
-                    'localizable': true,
-                    'scopable': false
-                },
-                'description': {
-                    'code': attributeCode,
-                    'label': attributeCode,
-                    'type': 'pim_catalog_text',
-                    'localizable': true,
-                    'scopable': true
-                },
-                'price': {
-                    'code': attributeCode,
-                    'label': attributeCode,
-                    'type': 'pim_catalog_prices',
-                    'localizable': false,
-                    'scopable': false
-                },
-                'sku': {
-                    'code': attributeCode,
-                    'label': attributeCode,
-                    'type': 'pim_catalog_identifier',
-                    'localizable': false,
-                    'scopable': false
+            this.getAttribute(attributeCode).done(_.bind(function(attribute) {
+                var field = null;
+                if (attributeCode === 'price') {
+                    field = new PriceField(attribute);
+                } else {
+                    field = new TextField(attribute);
                 }
-            };
 
-            var field = null;
-            if (attributeCode === 'price') {
-                field = new PriceField(attribute[attributeCode]);
-            } else {
-                field = new TextField(attribute[attributeCode]);
-            }
+                this.fields[attributeCode] = field;
+                console.log(field);
+                promise.resolve(this.fields[attributeCode]);
+            }, this));
 
-            this.fields[attributeCode] = field;
-
-            return field;
+            return promise.promise();
         },
         getFields: function() {
             return this.fields;
+        },
+        getAttribute: function(attributeCode)
+        {
+            var promise = new $.Deferred();
+            if (null === this.attributesPromise) {
+                this.attributesPromise = $.ajax(
+                    Routing.generate('pim_enrich_attribute_rest_index'),
+                    {
+                        method: 'GET'
+                    }
+                ).promise();
+            }
+
+            if (null === this.attributes) {
+                this.attributesPromise.done(_.bind(function(data) {
+                    this.attributes = data;
+
+                    promise.resolve(this.attributes[attributeCode]);
+                }, this));
+            } else {
+                promise.resolve(this.attributes[attributeCode]);
+            }
+
+            return promise.promise();
         }
     };
 });
