@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;

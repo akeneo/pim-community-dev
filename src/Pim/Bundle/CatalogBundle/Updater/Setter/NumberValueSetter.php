@@ -82,8 +82,8 @@ class NumberValueSetter extends AbstractValueSetter
 
     /**
      * Check data input
-     * @param  AttributeInterface $attribute
-     * @param  mixed              $data
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {

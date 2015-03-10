@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
 /**
  * Sets the variant group field
