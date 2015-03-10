@@ -47,3 +47,16 @@ Feature: Define user rights
       | Remove an attribute         | "color" attribute                        | Delete                  |                          |
       | Remove an export profile    | "footwear_option_export" export job edit | Delete                  |                          |
       | Remove an import profile    | "footwear_group_import" import job edit  | Delete                  |                          |
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3758
+  Scenario: Successfully remove and add the List categories right
+    Given I am on the "Administrator" role page
+    When I remove rights to List categories
+    And I save the role
+    And I wait 10 seconds
+    Then I am on the products page
+    And I should not see "2014 Collection"
+    Then I reset the "Administrator" rights
+    And I wait 10 seconds
+    And I am on the products page
+    And I should see "2014 Collection"
