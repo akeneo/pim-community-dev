@@ -26,7 +26,7 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         {
             this.$el.empty();
             var value = this.getCurrentValue();
-            this.$el.html(this.template({label: this.attribute.label['en_US'], value: value, config: config}));
+            this.$el.html(this.template({label: this.attribute.label.en_US, value: value, config: config}));
             this.delegateEvents();
 
             return this;

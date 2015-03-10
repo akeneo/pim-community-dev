@@ -83,6 +83,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
                         'locale': this.model.get('locale'),
                         'scope': this.model.get('scope')
                     });
+                    field.render();
 
                     promise.resolve(field);
                 }, this));
@@ -93,7 +94,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
             $.when(fieldPromisses).done(_.bind(function(promises) {
                 _.each(promises, _.bind(function(promise) {
                     promise.done(_.bind(function(field) {
-                        this.$el.append(field.render().$el);
+                        this.$el.append(field.$el);
                     }, this));
 
                 }, this));
