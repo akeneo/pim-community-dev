@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
@@ -27,13 +29,19 @@ class ValueActionValidator extends ConstraintValidator
     /** @var ProductUpdaterInterface */
     protected $factory;
 
+    /** @var ProductManager */
+    protected $productManager;
+
     /**
      * @param ProductUpdaterInterface $factory
+     * @param ProductManager          $productManager
      */
     public function __construct(
-        ProductUpdaterInterface $factory
+        ProductUpdaterInterface $factory,
+        ProductManager $productManager
     ) {
         $this->factory = $factory;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -57,8 +65,9 @@ class ValueActionValidator extends ConstraintValidator
     protected function validateSetValue(ProductSetValueActionInterface $action, Constraint $constraint)
     {
         try {
+            $fakeProduct = $this->createProduct();
             $this->factory->setValue(
-                [],
+                [$fakeProduct],
                 $action->getField(),
                 $action->getValue(),
                 $action->getLocale(),
@@ -79,8 +88,9 @@ class ValueActionValidator extends ConstraintValidator
     protected function validateCopyValue(ProductCopyValueActionInterface $action, Constraint $constraint)
     {
         try {
+            $fakeProduct = $this->createProduct();
             $this->factory->copyValue(
-                [],
+                [$fakeProduct],
                 $action->getFromField(),
                 $action->getToField(),
                 $action->getFromLocale(),
@@ -94,5 +104,25 @@ class ValueActionValidator extends ConstraintValidator
                 [ '%message%' => $e->getMessage() ]
             );
         }
+    }
+
+    /**
+     * Create a fake product to allow validation
+     *
+     * @deprecated 1.4 temporary method to fix the validation during import of rules and allow to move on backend
+     * process tasks will be cleaned up with PIM-3818
+     *
+     * @return ProductInterface
+     */
+    protected function createProduct()
+    {
+        $product = $this->productManager->createProduct();
+        $attribute = $this->productManager->getIdentifierAttribute();
+        $value = $this->productManager->createProductValue();
+        $value->setAttribute($attribute);
+        $value->setData('FAKE_SKU_FOR_RULES');
+        $product->addValue($value);
+
+        return $product;
     }
 }
