@@ -1,0 +1,46 @@
+@javascript
+Feature: Display the product history
+  In order to know by who, when and what changes have been made to a product with reference data
+  As a product manager
+  I need to have access to a product history
+
+  Background:
+    Given a "default" catalog configuration
+    And the following products:
+      | sku     |
+      | sandals |
+    And the following attributes:
+      | code    | type                        | reference_data_name |
+      | color   | reference_data_simpleselect | color               |
+      | fabrics | reference_data_multiselect  | fabrics             |
+    And I am logged in as "Julia"
+
+  Scenario: Add an available "simple select" reference data to a product
+    Given I am on the "sandals" product page
+    And I add available attribute color
+    And I fill in the following information:
+     | color | FHVZ69123 |
+    Then I save the product
+    And I visit the "History" tab
+    And I should see history:
+      | version | property | value     |
+      | 2       | color    | FHVZ69123 |
+    When I visit the "Attributes" tab
+    And I fill in the following information:
+     | color | IVPK83294 |
+    Then I save the product
+    And I visit the "History" tab
+    And I should see history:
+      | version | property | value     |
+      | 3       | color    | IVPK83294 |
+
+  Scenario: Add an available "multi select" reference data to a product
+    Given I am on the "sandals" product page
+    And I add available attribute fabrics
+    And I fill in the following information:
+     | fabrics | TNF58521, EWA88348 |
+    Then I save the product
+    And I visit the "History" tab
+    And I should see history:
+      | version | property | value             |
+      | 2       | fabrics  | TNF58521,EWA88348 |

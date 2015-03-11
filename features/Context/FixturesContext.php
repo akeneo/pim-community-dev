@@ -35,18 +35,20 @@ class FixturesContext extends RawMinkContext
     ];
 
     protected $attributeTypes = [
-        'text'         => 'pim_catalog_text',
-        'number'       => 'pim_catalog_number',
-        'textarea'     => 'pim_catalog_textarea',
-        'identifier'   => 'pim_catalog_identifier',
-        'metric'       => 'pim_catalog_metric',
-        'prices'       => 'pim_catalog_price_collection',
-        'image'        => 'pim_catalog_image',
-        'file'         => 'pim_catalog_file',
-        'multiselect'  => 'pim_catalog_multiselect',
-        'simpleselect' => 'pim_catalog_simpleselect',
-        'date'         => 'pim_catalog_date',
-        'boolean'      => 'pim_catalog_boolean',
+        'text'                        => 'pim_catalog_text',
+        'number'                      => 'pim_catalog_number',
+        'textarea'                    => 'pim_catalog_textarea',
+        'identifier'                  => 'pim_catalog_identifier',
+        'metric'                      => 'pim_catalog_metric',
+        'prices'                      => 'pim_catalog_price_collection',
+        'image'                       => 'pim_catalog_image',
+        'file'                        => 'pim_catalog_file',
+        'multiselect'                 => 'pim_catalog_multiselect',
+        'simpleselect'                => 'pim_catalog_simpleselect',
+        'date'                        => 'pim_catalog_date',
+        'boolean'                     => 'pim_catalog_boolean',
+        'reference_data_simpleselect' => 'pim_reference_data_simpleselect',
+        'reference_data_multiselect'  => 'pim_reference_data_multiselect',
     ];
 
     protected $entities = [
