@@ -121,7 +121,7 @@ pim_enrich:
             label:         Edit attributes
             description:   The selected product's attributes will be edited with following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
-            success_flash: Product(s) attribute(s) have been updated
+            success_flash: The job updating product(s) status is currently running
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
         classify:
@@ -133,6 +133,7 @@ pim_enrich:
             label:         Change the family of products
             description:   The family of the selected products will be changed to the chosen family
             success_flash: The family of selected product(s) has been successfully changed
+            launched_flash: The job updating product(s) family is currently running
 
         add-to-groups:
             label:         Add to groups
