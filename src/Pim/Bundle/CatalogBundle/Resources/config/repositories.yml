@@ -10,7 +10,7 @@ parameters:
     pim_catalog.repository.group.class:            Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupRepository
     pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\LocaleRepository
-    pim_catalog.repository.product_template.class: Pim\Bundle\CatalogBundle\Entity\Repository\ProductTemplateRepository
+    pim_catalog.repository.product_template.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductTemplateRepository
     pim_catalog.repository.product_value.class:    Doctrine\ORM\EntityRepository
 
 services:
