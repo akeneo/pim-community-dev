@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
@@ -29,19 +29,19 @@ class ValueActionValidator extends ConstraintValidator
     /** @var ProductUpdaterInterface */
     protected $factory;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /**
      * @param ProductUpdaterInterface $factory
-     * @param ProductManager          $productManager
+     * @param ProductBuilderInterface $productBuilder
      */
     public function __construct(
         ProductUpdaterInterface $factory,
-        ProductManager $productManager
+        ProductBuilderInterface $productBuilder
     ) {
         $this->factory = $factory;
-        $this->productManager = $productManager;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -109,19 +109,11 @@ class ValueActionValidator extends ConstraintValidator
     /**
      * Create a fake product to allow validation
      *
-     * @deprecated 1.4 temporary method to fix the validation during import of rules and allow to move on backend
-     * process tasks will be cleaned up with PIM-3818
-     *
      * @return ProductInterface
      */
     protected function createProduct()
     {
-        $product = $this->productManager->createProduct();
-        $attribute = $this->productManager->getIdentifierAttribute();
-        $value = $this->productManager->createProductValue();
-        $value->setAttribute($attribute);
-        $value->setData('FAKE_SKU_FOR_RULES');
-        $product->addValue($value);
+        $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_RULE_VALIDATION');
 
         return $product;
     }
