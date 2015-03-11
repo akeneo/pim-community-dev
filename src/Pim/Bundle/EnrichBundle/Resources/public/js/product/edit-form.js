@@ -1,12 +1,13 @@
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/attribute-group-manager', 'pim/attribute-manager', 'text!pim/template/product/form'], function($, _, Backbone, Routing, FieldManager, AttributeGroupManager, AttributeManager, formTemplate) {
+define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/config-manager', 'pim/attribute-manager', 'text!pim/template/product/form'], function($, _, Backbone, Routing, FieldManager, ConfigManager, AttributeManager, formTemplate) {
     var FormState = Backbone.Model.extend({
         defaults: {
             'locale': 'en_US',
             'scope':  'mobile',
             'currentTab': null,
             'attributeGroup': 'marketing',
+            'activeAttributeGroups': {},
             'translationMode': false,
             'panel': null
         }
@@ -26,28 +27,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
     var FormView = Backbone.View.extend({
         tagname: 'div',
         model: FormState,
-        config: {
-            'locales': [
-                {
-                    'code': 'fr_FR',
-                    'label': 'French'
-                },
-                {
-                    'code': 'en_US',
-                    'label': 'English'
-                }
-            ],
-            'channels': [
-                {
-                    'code': 'mobile',
-                    'label': 'Mobile'
-                },
-                {
-                    'code': 'tablet',
-                    'label': 'Tablet'
-                }
-            ]
-        },
+        config: {},
         template: _.template(formTemplate),
         events: {
             'change #locale': 'changeLocale',
@@ -60,26 +40,29 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             this.listenTo(this.model, 'change', this.render);
         },
         render: function () {
-            var configPromises = [];
+            var promises = [];
 
 
-            AttributeGroupManager.getAttributeGroups().done(_.bind(function(groups) {
-                this.config.attributeGroups = groups;
+            ConfigManager.getConfig().done(_.bind(function(config) {
+                this.config = config;
             }, this));
 
-            AttributeManager.getAttributes().done(_.bind(function(attributes) {
-                this.config.attributes = attributes;
-            }, this));
+            AttributeManager.getAttributeGroupsForProduct(this.model.get('product'))
+                .done(_.bind(function(activeAttributeGroups) {
+                    this.model.set('activeAttributeGroups', activeAttributeGroups);
+                }, this));
 
-            configPromises.push(AttributeGroupManager.getAttributeGroups());
-            configPromises.push(AttributeManager.getAttributes());
+            promises.push(AttributeManager.getAttributeGroupsForProduct(this.model.get('product')));
+            promises.push(ConfigManager.getConfig());
 
-            $.when.apply($, configPromises).done(_.bind(function() {
+            $.when.apply($, promises).done(_.bind(function() {
+                var product = this.model.get('product');
+
                 this.$el.html(this.template({config: this.config, 'state': this.model.toJSON()}));
 
                 var values = {};
-                _.each(this.model.get('product').values, _.bind(function(value, attributeCode) {
-                    if (-1 !== this.config.attributeGroups[this.model.get('attributeGroup')].attributes.indexOf(attributeCode)) {
+                _.each(product.values, _.bind(function(value, attributeCode) {
+                    if (-1 !== this.config.attributegroups[this.model.get('attributeGroup')].attributes.indexOf(attributeCode)) {
                         values[attributeCode] = value;
                     }
                 }, this));
@@ -147,8 +130,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
     });
 
     $(function() {
-        productManager.get(100).done(function(data) {
-            var formState = new FormState({'product': data});
+        productManager.get(100).done(function(product) {
+            var formState = new FormState({'product': product});
             var formView  = new FormView({'model': formState});
             $('#product-edit-form').append(formView.render().$el);
         });

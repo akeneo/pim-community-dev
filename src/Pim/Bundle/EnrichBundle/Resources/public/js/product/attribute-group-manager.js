@@ -1,35 +1,33 @@
 "use strict";
 
-define(['routing'], function (Routing) {
+define(['routing', 'pim/config-manager'], function (Routing, ConfigManager) {
     return {
-        fields: {},
-        attributeGroups: null,
-        attributeGroupsPromise: null,
-        getAttributeGroups: function()
+        getAttributeGroupsForProduct: function(product)
         {
             var promise = new $.Deferred();
 
-            //If we never called the backend we call it and set the promise
-            if (null === this.attributeGroupsPromise) {
-                this.attributeGroupsPromise = $.ajax(
-                    Routing.generate('pim_enrich_attributegroup_rest_index'),
-                    {
-                        method: 'GET'
+            $.when(
+                ConfigManager.getEntityList('attributegroups'),
+                this.getAttributesForProduct(product)
+            ).done(_.bind(function(attributeGroups, productAttributes) {
+                var activeAttributeGroups = {};
+                _.each(attributeGroups, function(attributeGroup) {
+                    if (_.intersection(attributeGroup.attributes, productAttributes).length > 0) {
+                        activeAttributeGroups[attributeGroup.code] = attributeGroup;
                     }
-                ).promise();
-            }
+                });
 
-            //If attributeGroups are not initialized we have to wait for the promise to be resolved
-            //and if not we directly resolve
-            if (null === this.attributeGroups) {
-                this.attributeGroupsPromise.done(_.bind(function(data) {
-                    this.attributeGroups = data;
+                promise.resolve(activeAttributeGroups);
+            }, this));
 
-                    promise.resolve(this.attributeGroups);
-                }, this));
-            } else {
-                promise.resolve(this.attributeGroups);
-            }
+            return promise.promise();
+        },
+        getAttributesForProduct: function(product) {
+            var promise = new $.Deferred();
+
+            ConfigManager.getEntityList('families').done(_.bind(function (families) {
+                promise.resolve(!product.family ? _.keys(product.values) : families[product.family].attributes);
+            }, this));
 
             return promise.promise();
         }

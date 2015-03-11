@@ -30,6 +30,9 @@ config:
         pim/field-manager:                  pimenrich/js/product/field-manager
         pim/attribute-manager:              pimenrich/js/product/attribute-manager
         pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
+        pim/config-manager:                 pimenrich/js/product/config-manager
+
+        # Fields
         pim/field:                          pimenrich/js/product/field/field
         pim/boolean-field:                  pimenrich/js/product/field/boolean-field
         pim/date-field:                     pimenrich/js/product/field/date-field

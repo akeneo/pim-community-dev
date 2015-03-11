@@ -20,7 +20,7 @@
 
 <div class="tabbable tabs-left">
     <ul class="nav nav-tabs">
-        <% _.each(config.attributeGroups, function (attributeGroup) { %>
+        <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>
             <li data-attribute-group="<%= attributeGroup.code %>" class="<%= state.attributeGroup === attributeGroup.code ? 'active' : '' %>">
                 <a><%= attributeGroup.label.en_US %></a>
             </li>

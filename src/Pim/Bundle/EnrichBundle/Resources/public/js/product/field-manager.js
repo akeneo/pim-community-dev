@@ -1,7 +1,7 @@
 "use strict";
 
 define([
-        'pim/attribute-manager',
+        'pim/config-manager',
         'pim/boolean-field',
         'pim/date-field',
         'pim/media-field',
@@ -14,7 +14,7 @@ define([
         'pim/textarea-field'
     ],
     function (
-        AttributeManager,
+        ConfigManager,
         BooleanField,
         DateField,
         MediaField,
@@ -37,7 +37,7 @@ define([
                 return promise.promise();
             }
 
-            AttributeManager.getAttribute(attributeCode).done(_.bind(function(attribute) {
+            ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function(attribute) {
                 var field = this.getFieldForAttribute(attribute);
 
                 this.fields[attributeCode] = field;
@@ -62,7 +62,8 @@ define([
                     return new BooleanField(attribute);
                 case 'pim_catalog_date':
                     return new DateField(attribute);
-                case 'pim_catalog_media':
+                case 'pim_catalog_file':
+                case 'pim_catalog_image':
                     return new MediaField(attribute);
                 case 'pim_catalog_metric':
                     return new MetricField(attribute);

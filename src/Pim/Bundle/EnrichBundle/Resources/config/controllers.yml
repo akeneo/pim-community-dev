@@ -23,6 +23,7 @@ parameters:
     pim_enrich.controller.product_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductRestController
     pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
     pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
+    pim_enrich.controller.family_rest.class: Pim\Bundle\EnrichBundle\Controller\FamilyRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -284,4 +285,10 @@ services:
         class: %pim_enrich.controller.attribute_group_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute_group'
+            - '@pim_serializer'
+
+    pim_enrich.controller.family_rest:
+        class: %pim_enrich.controller.family_rest.class%
+        arguments:
+            - '@pim_catalog.repository.family'
             - '@pim_serializer'
