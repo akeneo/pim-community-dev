@@ -7,6 +7,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\Formater\CsvFormater;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -45,7 +46,7 @@ class ProductProcessor extends AbstractProcessor
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        DenormalizerInterface $denormalizer,
+        DenormalizerInterface $denormalizer, // TODO: useless here, except if embed the updater or setter registry?
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         ProductManager $manager,
@@ -56,10 +57,10 @@ class ProductProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
 
-        $this->manager        = $manager;
+        $this->manager        = $manager; // TODO: should be builder
         $this->csvFormater    = $csvFormater;
         $this->productUpdater = $productUpdater;
-        $this->format         = $format;
+        $this->format         = $format; // TODO: useless?
     }
 
     /**
@@ -67,30 +68,31 @@ class ProductProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $item = $this->csvFormater->convertToStructured($item);
-        $identifier = $item[$this->repository->getIdentifierProperties()[0]][0]['data'];
-        $product    = $this->findOrCreateProduct($identifier);
+        $convertedItem = $this->csvFormater->convertToStructured($item);
+        $identifierProperty = $this->repository->getIdentifierProperties();
+        $identifier = $convertedItem[$identifierProperty[0]][0]['data'];
+        unset($convertedItem[$this->repository->getIdentifierProperties()[0]]);
+        unset($convertedItem['associations']);
 
-        unset($item[$this->repository->getIdentifierProperties()[0]]);
-        unset($item['associations']);
-        unset($item['family']);
-        unset($item['categories']);
-        unset($item['enabled']);
-
-        foreach ($item as $field => $values) {
-            foreach ($values as $value) {
-                $this->productUpdater->setValue([$product], $field, $value['data'], $value['locale'], $value['scope']);
-            }
-        }
+        $product = $this->findOrCreateProduct($identifier);
+        $this->updateProduct($product, $convertedItem);
+        $this->validateProduct($product, $item);
 
         return $product;
     }
 
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     */
     public function findOrCreateProduct($identifier)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
 
         if (false === $product) {
+            // TODO: use the builder for this kind of stuff, legacy and abusive manager uses,
+            // cf rule action validation too
             $product = $this->manager->createProduct();
             $identifierValue = $this->manager->createProductValue();
             $identifierValue->setAttribute($this->repository->getIdentifierAttribute());
@@ -98,5 +100,37 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $item
+     */
+    protected function updateProduct(ProductInterface $product, array $item)
+    {
+        foreach ($item as $field => $values) {
+            if (in_array($field, ['enabled', 'categories', 'groups', 'family'])) {
+                $this->productUpdater->set($product, $field, $values, []);
+            } else {
+                foreach ($values as $value) {
+                    $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+                    // TODO: use registry and not updater?
+                    $this->productUpdater->set($product, $field, $value['data'], $options);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $item
+     */
+    protected function validateProduct(ProductInterface $product, array $item)
+    {
+        $violations = $this->validator->validate($product);
+        if ($violations->count() !== 0) {
+            $this->detachObject($product);
+            $this->skipItemWithConstraintViolations($item, $violations);
+        }
     }
 }
