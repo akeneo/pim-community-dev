@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.4 (2015-03-11)
 
 ## Bug fixes
 - PIM-3806: Delete an attribute from a product template
@@ -305,7 +305,7 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
-# 1.2.x
+# 1.2.32 (2015-03-11)
 
 ## Bug fixes
 - PIM-3786: Attribute type should not be blank for import
