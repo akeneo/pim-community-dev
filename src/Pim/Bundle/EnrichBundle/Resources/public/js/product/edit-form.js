@@ -106,7 +106,6 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                     var $productValuesPanel = this.$('#product-values');
 
                     _.each(arguments, _.bind(function(field) {
-                        console.log(field);
                         $productValuesPanel.append(field.$el);
                     }, this));
                 }, this));

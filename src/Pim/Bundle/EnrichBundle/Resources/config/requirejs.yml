@@ -28,11 +28,29 @@ config:
         pim/item/view:                      pimenrich/js/pim-item-view
         pim/product-edit-form:              pimenrich/js/product/edit-form
         pim/field-manager:                  pimenrich/js/product/field-manager
-        pim/field:                          pimenrich/js/product/field
-        pim/text-field:                     pimenrich/js/product/text-field
-        pim/price-field:                    pimenrich/js/product/price-field
         pim/attribute-manager:              pimenrich/js/product/attribute-manager
         pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
+        pim/field:                          pimenrich/js/product/field/field
+        pim/boolean-field:                  pimenrich/js/product/field/boolean-field
+        pim/date-field:                     pimenrich/js/product/field/date-field
+        pim/media-field:                    pimenrich/js/product/field/media-field
+        pim/metric-field:                   pimenrich/js/product/field/metric-field
+        pim/multi-select-field:             pimenrich/js/product/field/multi-select-field
+        pim/number-field:                   pimenrich/js/product/field/number-field
+        pim/price-collection-field:         pimenrich/js/product/field/price-collection-field
+        pim/simple-select-field:            pimenrich/js/product/field/simple-select-field
+        pim/text-field:                     pimenrich/js/product/field/text-field
+        pim/textarea-field:                     pimenrich/js/product/field/textarea-field
 
         # Templates
-        pim/template/product/form:        pimenrich/templates/product/form.html
+        pim/template/product/form:                   pimenrich/templates/product/form.html
+        pim/template/product/field/boolean:          pimenrich/templates/product/field/boolean.html
+        pim/template/product/field/date:             pimenrich/templates/product/field/date.html
+        pim/template/product/field/media:            pimenrich/templates/product/field/media.html
+        pim/template/product/field/metric:           pimenrich/templates/product/field/metric.html
+        pim/template/product/field/multi-select:     pimenrich/templates/product/field/multi-select.html
+        pim/template/product/field/number:           pimenrich/templates/product/field/number.html
+        pim/template/product/field/price-collection: pimenrich/templates/product/field/price-collection.html
+        pim/template/product/field/simple-select:    pimenrich/templates/product/field/simple-select.html
+        pim/template/product/field/text:             pimenrich/templates/product/field/text.html
+        pim/template/product/field/textarea:         pimenrich/templates/product/field/textarea.html
