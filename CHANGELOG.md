@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.32 (2015-03-11)
 
 ## Bug fixes
 - PIM-3786: Attribute type should not be blank for import
