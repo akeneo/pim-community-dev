@@ -1,0 +1,68 @@
+#product-edit-form{
+	padding: 40px;
+	width: 500px;
+}
+select,textarea, input[type]{
+	.border-radius (0);
+    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.04);
+    font-size: 12px;
+    color: #4A4A4A;
+    margin-bottom: 20px;
+    min-width: 400px;
+    width: 100%;
+    min-height: 30px;
+    .box-sizing();
+}
+
+label{
+	font-size: 12px;
+	color: #9B9B9B;
+	font-weight: normal;
+}
+
+.form-required label{
+	color: #4A4A4A;
+	font-weight: bold;
+	&:after{
+		content: " (required) ";
+	}
+}
+.form-price{
+	input[type]{
+		min-width: 80px;
+		max-width: 100px;
+		position:relative;
+	}
+}
+
+.input-append .add-on:last-child{
+	
+	box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.04);
+	.border-radius(0);
+	font-size: 11px;
+	color: #9B9B9B;
+	box-sizing: border-box;
+     -webkit-box-sizing:border-box;
+     -moz-box-sizing: border-box;
+}
+
+.form-localized{
+	float: right;
+}
+
+.form-disabled{
+	select,textarea, input[type]{
+		background: #DDDDDD;
+		color: #9B9B9B;
+		box-shadow: inset 0px 2px 2px 0px rgba(0,0,0,0.13);
+	}
+	.input-icon{
+		position: relative;
+		i{
+			position: absolute;
+			color: #9B9B9B;
+			right: 10px;
+			top:10px;
+		}
+	}
+}
