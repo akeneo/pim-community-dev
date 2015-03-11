@@ -39,6 +39,7 @@ parameters:
 
     pim_enrich.form.type.object_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType
 
+    pim_enrich.form.type.choose_action.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType
     pim_enrich.form.type.edit_common_attributes.class:     Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pim_enrich.form.type.add_to_groups.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
     pim_enrich.form.type.add_to_variant_group.class:       Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToVariantGroupType
@@ -314,6 +315,9 @@ services:
             - { name: form.type, alias: pim_enrich_options }
 
     # Mass edit form types
+    pim_enrich.form.type.choose_action:
+        class: %pim_enrich.form.type.choose_action.class%
+
     pim_enrich.form.type.edit_common_attributes:
         class: %pim_enrich.form.type.edit_common_attributes.class%
         arguments:
