@@ -1,4 +1,8 @@
+# 1.0.25 (2015-03-11)
+- Update community-edition dependency to 1.2.32 version.
+
 # 1.0.24 (2015-03-06)
+- Update community-edition dependency to 1.2.31 version.
 
 ## Bug fixes
 - PIM-3658: Mass publish time are exponential and not linear
