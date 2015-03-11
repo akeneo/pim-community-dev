@@ -17,6 +17,7 @@
 - PIM-3786: Attribute type should not be blank for import
 - PIM-3437: Fix applying datagrid views and columns when not using hash navigation
 - PIM-3817: Fix error when mass editing after refreshing the grid
+- PIM-3849, PIM-3880: Fix bad completeness scope on mass edit actions
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
