@@ -92,13 +92,15 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         },
         setCurrentValue: function(data)
         {
+            var values = this.model.get('values');
             var value = this.getCurrentValue();
 
             if (null === value.value) {
-                this.model.get('values').push(value);
+                values.push(value);
             }
 
             value.value = data;
+            this.model.set('values', values);
         }
     });
 });

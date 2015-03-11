@@ -10,6 +10,8 @@ define(['pim/text-field', 'pim/price-field', 'routing'], function (TextField, Pr
 
             if (this.fields[attributeCode]) {
                 promise.resolve(this.fields[attributeCode]);
+
+                return promise.promise();
             }
 
             this.getAttribute(attributeCode).done(_.bind(function(attribute) {
