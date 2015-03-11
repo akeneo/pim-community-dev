@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 /**
- * Batch operation to change products status
+ * Mass edit operation to change products status
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -72,6 +72,9 @@ class ChangeStatus extends AbstractMassEditOperation implements
         return 'product';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getActions()
     {
         return [
@@ -98,6 +101,6 @@ class ChangeStatus extends AbstractMassEditOperation implements
      */
     public function getBatchJobCode()
     {
-        return 'change_status';
+        return 'update_product';
     }
 }

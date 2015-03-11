@@ -1,21 +1,12 @@
 connector:
     name: Akeneo Mass Edit Connector
     jobs:
-        change_status:
-            title: change_status
+        update_product:
+            title: update_product
             type:  mass_edit
             steps:
                 perform:
-                    title: change_status
-                    class: "%pim_base_connector.step.mass_edit_change_status.class%"
+                    title: update_product
+                    class: "%pim_base_connector.step.mass_edit_update_product.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.change_status
-        change_family:
-            title: change_family
-            type:  mass_edit
-            steps:
-                perform:
-                    title: change_family
-                    class: "%pim_base_connector.step.mass_edit_change_status.class%"
-                    services:
-                        handler: pim_enrich.mass_edit_handler.change_status
+                        handler: pim_enrich.mass_edit_handler.update_product
