@@ -62,7 +62,7 @@ services:
         class: %pim_catalog.updater.setter.text_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - ['pim_catalog_text', 'pim_catalog_textarea']
+            - ['pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_identifier']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 

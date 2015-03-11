@@ -1,6 +1,6 @@
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/config-manager', 'pim/attribute-manager', 'text!pim/template/product/form'], function($, _, Backbone, Routing, FieldManager, ConfigManager, AttributeManager, formTemplate) {
+define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/config-manager', 'pim/attribute-manager', 'text!pim/template/product/form', 'oro/navigation', 'oro/loading-mask'], function($, _, Backbone, Routing, FieldManager, ConfigManager, AttributeManager, formTemplate, Navigation, LoadingMask) {
     var FormState = Backbone.Model.extend({
         defaults: {
             'locale': 'en_US',
@@ -21,6 +21,14 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                     method: 'GET'
                 }
             ).promise();
+        },
+        save: function (id, data) {
+            return $.ajax({
+                type: 'POST',
+                url: Routing.generate('pim_enrich_product_rest_get', {id: id}),
+                contentType: 'application/json',
+                data: JSON.stringify(data)
+            }).promise();
         }
     };
 
@@ -34,7 +42,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             'change #scope': 'changeScope',
             'click .nav-tabs li': 'changeAttributeGroup',
             'click #add-attribute button': 'addAttribute',
-            'click #get-data': 'getData'
+            'click #get-data': 'getData',
+            'click #save': 'save'
         },
         initialize: function () {
             this.listenTo(this.model, 'change', this.render);
@@ -131,7 +140,25 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                 values[key] = field.getData();
             });
 
-            console.log(values);
+            return {
+                values: values,
+                enabled: Math.floor(Math.random()*10) >= 5
+            };
+        },
+        save: function() {
+            var loadingMask = new LoadingMask();
+            var navigation = Navigation.getInstance();
+            loadingMask.render().$el.appendTo(this.$el).show();
+            productManager.save(100, this.getData()).done(function() {
+                navigation.addFlashMessage('success', 'Product saved');
+                navigation.afterRequest();
+            }).fail(function(response) {
+                console.log('Errors:', response.responseJSON);
+                navigation.addFlashMessage('error', 'Error saving product');
+                navigation.afterRequest();
+            }).always(function() {
+                loadingMask.hide().$el.remove();
+            });
         }
     });
 
