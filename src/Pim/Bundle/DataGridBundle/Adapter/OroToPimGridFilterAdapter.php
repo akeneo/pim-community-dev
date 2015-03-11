@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Transform Oro filters into Akeneo PIM filters
  *
- * todo: make this class cleaner by transforming for real the oro filters to pim filters
+ * todo: make this class cleaner and faster by transforming for real the oro filters to pim filters
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -34,12 +34,12 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
     {
         $products =  $this->massActionDispatcher->dispatch($request);
 
-        $productIds = [];
+        $objectIds = [];
         foreach ($products as $product) {
-            $productIds[] = $product->getId();
+            $objectIds[] = $product->getId();
         }
 
-        $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $productIds];
+        $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $objectIds];
 
         return [$filter];
     }
