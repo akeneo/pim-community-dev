@@ -2,7 +2,7 @@
 
 {% block content %}
     {% set title = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_title')|trans %}
-    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_subtitle') %}
+    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.page_subtitle')|transchoice(productCount) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
@@ -22,7 +22,7 @@
 
         <div class="row offset1 span12 buffer-top confirmation hide">
             <div class="alert alert-info">
-                {{ ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.confirm') }}
+                {{ ('pim_enrich.mass_edit_action.' ~ itemsName ~ '.confirm')|transchoice(productCount) }}
             </div>
         </div>
 
