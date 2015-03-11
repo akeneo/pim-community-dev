@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 /**
- * Batch operation to change the family of products
+ * Mass edit operation to change the family of products
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -57,6 +57,14 @@ class ChangeFamily extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
+    public function getItemsName()
+    {
+        return 'product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAlias()
     {
         return 'change-family';
@@ -70,7 +78,7 @@ class ChangeFamily extends AbstractMassEditOperation implements
         return [
             [
                 'field' => 'family',
-                'value' => $this->getFamily()->getId()
+                'value' => $this->getFamily()->getCode()
             ]
         ];
     }
@@ -91,14 +99,6 @@ class ChangeFamily extends AbstractMassEditOperation implements
      */
     public function getBatchJobCode()
     {
-        return 'change_family';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getItemsName()
-    {
-        return 'product';
+        return 'update_product';
     }
 }
