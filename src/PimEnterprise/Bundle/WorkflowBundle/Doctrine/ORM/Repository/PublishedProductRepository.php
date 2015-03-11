@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;

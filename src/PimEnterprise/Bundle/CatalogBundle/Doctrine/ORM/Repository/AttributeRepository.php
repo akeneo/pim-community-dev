@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\CatalogBundle\Entity\Repository;
+namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository as BaseAttributeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository as BaseAttributeRepository;
 
 /**
  * Override attribute repository

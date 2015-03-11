@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
