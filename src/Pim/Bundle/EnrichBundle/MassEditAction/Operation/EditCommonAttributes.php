@@ -298,12 +298,12 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         $messages = [];
 
-        $variantAttributeCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
+        $variantAttrCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
         $rootMessageKey = 'pim_enrich.mass_edit_action.edit-common-attributes';
-        if (count($variantAttributeCodes) > 0) {
+        if (count($variantAttrCodes) > 0) {
             $messages[] = [
                 'key'     => $rootMessageKey.'.truncated_by_variant_attribute.warning',
-                'options' => ['%attributes%' => implode(', ', $variantAttributeCodes)]
+                'options' => ['%attributes%' => implode(', ', $variantAttrCodes)]
             ];
         }
 

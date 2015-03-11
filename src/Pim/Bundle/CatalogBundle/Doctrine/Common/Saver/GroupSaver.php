@@ -32,7 +32,7 @@ class GroupSaver implements SaverInterface
     protected $templateMediaManager;
 
     /** @var ProductTemplateApplierInterface */
-    protected $productTemplateApplier;
+    protected $productTplApplier;
 
     /** @var VersionContext */
     protected $versionContext;
@@ -47,7 +47,7 @@ class GroupSaver implements SaverInterface
      * @param ObjectManager                   $objectManager
      * @param BulkSaverInterface              $productSaver
      * @param ProductTemplateMediaManager     $templateMediaManager
-     * @param ProductTemplateApplierInterface $productTemplateApplier
+     * @param ProductTemplateApplierInterface $productTplApplier
      * @param VersionContext                  $versionContext
      * @param SavingOptionsResolverInterface  $optionsResolver
      * @param string                          $productClassName
@@ -56,7 +56,7 @@ class GroupSaver implements SaverInterface
         ObjectManager $objectManager,
         BulkSaverInterface $productSaver,
         ProductTemplateMediaManager $templateMediaManager,
-        ProductTemplateApplierInterface $productTemplateApplier,
+        ProductTemplateApplierInterface $productTplApplier,
         VersionContext $versionContext,
         SavingOptionsResolverInterface $optionsResolver,
         $productClassName
@@ -64,7 +64,7 @@ class GroupSaver implements SaverInterface
         $this->objectManager          = $objectManager;
         $this->productSaver           = $productSaver;
         $this->templateMediaManager   = $templateMediaManager;
-        $this->productTemplateApplier = $productTemplateApplier;
+        $this->productTplApplier      = $productTplApplier;
         $this->versionContext         = $versionContext;
         $this->optionsResolver        = $optionsResolver;
         $this->productClassName       = $productClassName;
@@ -141,6 +141,6 @@ class GroupSaver implements SaverInterface
     {
         $template = $group->getProductTemplate();
         $products = $group->getProducts()->toArray();
-        $this->productTemplateApplier->apply($template, $products);
+        $this->productTplApplier->apply($template, $products);
     }
 }

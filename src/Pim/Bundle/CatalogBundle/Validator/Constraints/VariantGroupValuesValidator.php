@@ -50,19 +50,19 @@ class VariantGroupValuesValidator extends ConstraintValidator
         $template = $variantGroup->getProductTemplate();
         $valuesData = $template->getValuesData();
 
-        $forbiddenAttributeCodes = $this->attributeRepository->findUniqueAttributeCodes();
+        $forbiddenAttrCodes = $this->attributeRepository->findUniqueAttributeCodes();
         foreach ($variantGroup->getAxisAttributes() as $axisAttribute) {
-            $forbiddenAttributeCodes[] = $axisAttribute->getCode();
+            $forbiddenAttrCodes[] = $axisAttribute->getCode();
         }
 
-        $invalidAttributeCodes = array_intersect($forbiddenAttributeCodes, array_keys($valuesData));
+        $invalidAttrCodes = array_intersect($forbiddenAttrCodes, array_keys($valuesData));
 
-        if (count($invalidAttributeCodes) > 0) {
+        if (count($invalidAttrCodes) > 0) {
             $this->context->addViolation(
                 $constraint->message,
                 array(
                     '%group%'      => $variantGroup->getCode(),
-                    '%attributes%' => $this->formatValues($invalidAttributeCodes)
+                    '%attributes%' => $this->formatValues($invalidAttrCodes)
                 )
             );
         }
