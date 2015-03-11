@@ -1,0 +1,32 @@
+<select id="locale">
+    <% _.each(config.locales, function (locale) { %>
+        <option value="<%= locale.code %>" <%= state.locale === locale.code ? "selected" : "" %>><%= locale.label %></option>
+    <% }); %>
+</select>
+<select id="scope">
+    <% _.each(config.channels ,function (scope) { %>
+        <option value="<%= scope.code %>" <%= state.scope === scope.code ? "selected" : "" %>><%= scope.label %></option>
+    <% }); %>
+</select>
+<button id="get-data">get data</button>
+<div id="add-attribute">
+    <select>
+        <% _.each(config.attributes, function (attribute) { %>
+            <option value="<%= attribute.code %>"><%= attribute.label.en_US %></option>
+        <% }); %>
+    </select>
+    <button>Add attribute</button>
+</div>
+
+<div class="tabbable tabs-left">
+    <ul class="nav nav-tabs">
+        <% _.each(config.attributeGroups, function (attributeGroup) { %>
+            <li data-attribute-group="<%= attributeGroup.code %>" class="<%= state.attributeGroup === attributeGroup.code ? 'active' : '' %>">
+                <a><%= attributeGroup.label.en_US %></a>
+            </li>
+        <% }); %>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="product-values"></div>
+    </div>
+</div>

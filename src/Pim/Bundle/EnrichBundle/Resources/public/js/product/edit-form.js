@@ -118,7 +118,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             this.model.set('locale', event.currentTarget.value);
         },
         changeAttributeGroup: function (event) {
-            this.model.set('attributeGroup', $(event.currentTarget).data['attribute-group']);
+            this.model.set('attributeGroup', event.currentTarget.dataset.attributeGroup);
         },
         changeScope: function (event) {
             this.model.set('scope', event.currentTarget.value);
