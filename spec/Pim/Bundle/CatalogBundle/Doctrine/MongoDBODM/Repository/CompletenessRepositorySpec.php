@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Doctrine\MongoDB\Cursor;
 use Doctrine\MongoDB\Query\Query;
@@ -8,7 +8,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;

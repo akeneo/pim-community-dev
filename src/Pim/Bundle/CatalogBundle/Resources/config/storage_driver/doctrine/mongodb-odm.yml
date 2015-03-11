@@ -1,8 +1,8 @@
 parameters:
-    pim_catalog.repository.product.class:                   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
-    pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessRepository
-    pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductMassActionRepository
-    pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductCategoryRepository
+    pim_catalog.repository.product.class:                   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductRepository
+    pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\CompletenessRepository
+    pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository
+    pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger

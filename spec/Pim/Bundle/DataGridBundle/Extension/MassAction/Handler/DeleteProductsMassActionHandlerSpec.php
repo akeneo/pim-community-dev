@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
@@ -28,7 +28,7 @@ class DeleteProductsMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         DeleteMassAction $massAction,
         ActionConfiguration $options,
-        ProductMassActionRepository $massActionRepo
+        ProductMassActionRepositoryInterface $massActionRepo
     ) {
         $this->beConstructedWith(
             $hydrator,
