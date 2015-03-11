@@ -153,13 +153,8 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/option.csv
-    change_status:
+    update_product:
         connector: Akeneo Mass Edit Connector
-        alias:     change_status
-        label:     change_status
-        type:      mass_edit
-    change_family:
-        connector: Akeneo Mass Edit Connector
-        alias:     change_family
-        label:     change_family
+        alias:     update_product
+        label:     update_product
         type:      mass_edit
