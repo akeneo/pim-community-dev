@@ -17,7 +17,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -117,8 +116,9 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction()
     {
-        $gridName = $this->request->get('gridName');
-        $itemsName = $this->getItemsName($gridName);
+        $gridName     = $this->request->get('gridName');
+        $objectsCount = $this->request->get('objectsCount');
+        $itemsName    = $this->getItemsName($gridName);
 
         $availableOperations = $this->operationRegistry->getAllByGridName($gridName);
         $form = $this->getOperationsForm($availableOperations);
@@ -136,6 +136,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         return [
             'form'        => $form->createView(),
+            'count'       => $objectsCount,
             'queryParams' => $this->getQueryParams(),
             'itemsName'   => $itemsName
         ];
@@ -150,8 +151,9 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        $operation = $this->operationRegistry->get($operationAlias);
-        $itemsName = $operation->getItemsName();
+        $operation    = $this->operationRegistry->get($operationAlias);
+        $itemsName    = $operation->getItemsName();
+        $productCount = $this->request->get('objectsCount');
 
         $form = $this->createForm(new MassEditOperatorType());
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
@@ -166,7 +168,8 @@ class MassEditActionController extends AbstractDoctrineController
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
                 'queryParams'    => $this->getQueryParams(),
-                'itemsName'      => $itemsName
+                'productCount'   => $productCount,
+                'itemsName'      => $itemsName,
             ]
         );
     }
@@ -180,8 +183,9 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        $operation = $this->operationRegistry->get($operationAlias);
-        $itemsName = $operation->getItemsName();
+        $operation    = $this->operationRegistry->get($operationAlias);
+        $itemsName    = $operation->getItemsName();
+        $productCount = $this->request->get('objectsCount');
 
         $form = $this->createForm(new MassEditOperatorType());
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
@@ -228,10 +232,11 @@ class MassEditActionController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             [
-                'form'         => $form->createView(),
+                'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
                 'itemsName'      => $itemsName,
-                'queryParams'  => $this->getQueryParams()
+                'productCount'   => $productCount,
+                'queryParams'    => $this->getQueryParams()
             ]
         );
     }
@@ -278,6 +283,11 @@ class MassEditActionController extends AbstractDoctrineController
         return $jobInstance;
     }
 
+    /**
+     * @param string $gridName
+     *
+     * @return string
+     */
     protected function getItemsName($gridName)
     {
         switch ($gridName) {
@@ -290,7 +300,12 @@ class MassEditActionController extends AbstractDoctrineController
         }
     }
 
-    protected function getOperationsForm($availableOperations)
+    /**
+     * @param array $availableOperations
+     *
+     * @return Form
+     */
+    protected function getOperationsForm(array $availableOperations)
     {
         $choices = [];
 
@@ -316,11 +331,12 @@ class MassEditActionController extends AbstractDoctrineController
     {
         $params = $this->parametersParser->parse($this->request);
 
-        $params['gridName']   = $this->request->get('gridName');
-        $params['actionName'] = $this->request->get('actionName');
-        $params['values']     = implode(',', $params['values']);
-        $params['filters']    = json_encode($params['filters']);
-        $params['dataLocale'] = $this->request->get('dataLocale', null);
+        $params['gridName']     = $this->request->get('gridName');
+        $params['actionName']   = $this->request->get('actionName');
+        $params['values']       = implode(',', $params['values']);
+        $params['filters']      = json_encode($params['filters']);
+        $params['dataLocale']   = $this->request->get('dataLocale', null);
+        $params['objectsCount'] = $this->request->get('objectsCount');
 
         return $params;
     }
