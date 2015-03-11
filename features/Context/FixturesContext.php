@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Acme\Bundle\AppBundle\Entity\Color;
+use Acme\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
 use Behat\Gherkin\Node\TableNode;
@@ -18,6 +20,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
  * A context for creating entities
@@ -889,6 +892,24 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->flush();
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $referenceData
+     *
+     * @Given /^the following "([^"]*)" attribute reference data: (.*)$/
+     */
+    public function theFollowingAttributeReferenceData($attribute, $referenceData)
+    {
+        $attribute = $this->getAttribute(strtolower($attribute));
+        $referenceDataName = $attribute->getReferenceDataName();
+
+        foreach ($this->listToArray($referenceData) as $code) {
+            $this->createReferenceData($referenceDataName, $code);
+        }
+
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -1879,6 +1900,77 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $type
+     * @param string $code
+     *
+     * @return ReferenceDataInterface
+     */
+    protected function createReferenceData($type, $code)
+    {
+        switch ($type) {
+            case 'color':
+            case 'colors':
+                $referenceData = $this->createColorReferenceData($code);
+                break;
+            case 'fabric':
+            case 'fabrics':
+                $referenceData = $this->createFabricReferenceData($code);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Unknow reference data type "%s".', $type));
+        }
+
+        $this->getEntityManager()->persist($referenceData);
+
+        return $referenceData;
+    }
+
+    /**
+     * @param $code
+     *
+     * @return Color
+     */
+    protected function createColorReferenceData($code)
+    {
+        $configuration = $this->getReferenceDataRegistry()->get('color');
+        $class = $configuration->getClass();
+
+        /** @var Color $color */
+        $color = new $class();
+        $color->setCode($code);
+        $color->setName($code);
+        $color->setHex('#' . strtolower($code));
+        $color->setRed(rand(0, 100));
+        $color->setGreen(rand(0, 100));
+        $color->setBlue(rand(0, 100));
+        $color->setHue(rand(0, 100));
+        $color->setHslSaturation(rand(0, 100));
+        $color->setLight(rand(0, 100));
+        $color->setHsvSaturation(rand(0, 100));
+        $color->setValue(rand(0, 100));
+
+        return $color;
+    }
+
+    /**
+     * @param $code
+     *
+     * @return Fabric
+     */
+    protected function createFabricReferenceData($code)
+    {
+        $configuration = $this->getReferenceDataRegistry()->get('fabrics');
+        $class = $configuration->getClass();
+
+        /** @var Fabric $fabric */
+        $fabric = new $class();
+        $fabric->setCode($code);
+        $fabric->setName($code);
+
+        return $fabric;
+    }
+
+    /**
      * Create a family
      *
      * @param array|string $data
@@ -2088,6 +2180,14 @@ class FixturesContext extends RawMinkContext
     protected function getFieldNameBuilder()
     {
         return $this->getContainer()->get('pim_transform.builder.field_name');
+    }
+
+    /**
+     * @return \Pim\Component\ReferenceData\ConfigurationRegistryInterface
+     */
+    protected function getReferenceDataRegistry()
+    {
+        return $this->getContainer()->get('pim_reference_data.registry');
     }
 
     /**
