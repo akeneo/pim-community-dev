@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -9,10 +10,12 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductBuilderSpec extends ObjectBehavior
 {
@@ -21,9 +24,11 @@ class ProductBuilderSpec extends ObjectBehavior
     const PRICE_CLASS   = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
 
     function let(
+        AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
-        CurrencyRepositoryInterface $currencyRepository
+        CurrencyRepositoryInterface $currencyRepository,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $entityConfig = array(
             'product' => self::PRODUCT_CLASS,
@@ -32,11 +37,21 @@ class ProductBuilderSpec extends ObjectBehavior
         );
 
         $this->beConstructedWith(
+            $attributeRepository,
             $channelRepository,
             $localeRepository,
             $currencyRepository,
+            $eventDispatcher,
             $entityConfig
         );
+    }
+
+    function it_creates_product($attributeRepository, $eventDispatcher, AttributeInterface $skuAttribute)
+    {
+        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
+
+        $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
     function it_adds_missing_product_values_from_family_on_new_product(
