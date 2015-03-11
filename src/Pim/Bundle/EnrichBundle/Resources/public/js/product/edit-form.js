@@ -51,8 +51,13 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                 .done(_.bind(function(activeAttributeGroups) {
                     this.model.set('activeAttributeGroups', activeAttributeGroups);
                 }, this));
+            AttributeManager.getOptionalAttributes(this.model.get('product'))
+                .done(_.bind(function(optionalAttributes) {
+                    this.model.set('optionalAttributes', optionalAttributes);
+                }, this));
 
             promises.push(AttributeManager.getAttributeGroupsForProduct(this.model.get('product')));
+            promises.push(AttributeManager.getOptionalAttributes(this.model.get('product')));
             promises.push(ConfigManager.getConfig());
 
             $.when.apply($, promises).done(_.bind(function() {
@@ -110,6 +115,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             var product = this.model.get('product');
 
             if (product.values[attributeCode]) {
+                this.model.trigger('change');
                 return;
             }
 

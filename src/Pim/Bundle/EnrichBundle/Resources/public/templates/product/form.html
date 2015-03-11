@@ -9,15 +9,16 @@
     <% }); %>
 </select>
 <button id="get-data">get data</button>
-<div id="add-attribute">
-    <select>
-        <% _.each(config.attributes, function (attribute) { %>
-            <option value="<%= attribute.code %>"><%= attribute.label.en_US %></option>
-        <% }); %>
-    </select>
-    <button>Add attribute</button>
-</div>
-
+<% if (state.optionalAttributes.length) { %>
+    <div id="add-attribute">
+        <select>
+            <% _.each(state.optionalAttributes, function (attribute) { %>
+                <option value="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></option>
+            <% }); %>
+        </select>
+        <button>Add attribute</button>
+    </div>
+<% } %>
 <div class="tabbable tabs-left">
     <ul class="nav nav-tabs">
         <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>

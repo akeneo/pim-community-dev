@@ -9,7 +9,7 @@ define(['pim/config-manager'], function (ConfigManager) {
             $.when(
                 ConfigManager.getEntityList('attributegroups'),
                 this.getAttributesForProduct(product)
-            ).done(_.bind(function(attributeGroups, productAttributes) {
+            ).done(function(attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};
                 _.each(attributeGroups, function(attributeGroup) {
                     if (_.intersection(attributeGroup.attributes, productAttributes).length > 0) {
@@ -18,16 +18,30 @@ define(['pim/config-manager'], function (ConfigManager) {
                 });
 
                 promise.resolve(activeAttributeGroups);
-            }, this));
+            });
 
             return promise.promise();
         },
         getAttributesForProduct: function(product) {
             var promise = new $.Deferred();
 
-            ConfigManager.getEntityList('families').done(_.bind(function (families) {
-                promise.resolve(!product.family ? _.keys(product.values) : families[product.family].attributes);
-            }, this));
+            ConfigManager.getEntityList('families').done(function (families) {
+                promise.resolve(
+                    !product.family ?
+                    _.keys(product.values) :
+                    _.union(_.keys(product.values), families[product.family].attributes)
+                );
+            });
+
+            return promise.promise();
+        },
+        getOptionalAttributes: function(product) {
+            var promise = new $.Deferred();
+
+            $.when(ConfigManager.getEntityList('attributes'), this.getAttributesForProduct(product))
+                .done(function(attributes, productAttributes) {
+                    promise.resolve(_.difference(_.keys(attributes), productAttributes));
+                });
 
             return promise.promise();
         }
