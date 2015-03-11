@@ -12,6 +12,7 @@ use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -53,6 +54,9 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ConnectorRegistry */
     protected $connectorRegistry;
 
+    /** @var MassEditFormResolver */
+    protected $massEditFormResolver;
+
     /**
      * Constructor
      *
@@ -71,6 +75,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param DoctrineJobRepository      $jobManager
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistry          $operationRegistry
+     * @param MassEditFormResolver       $massEditFormResolver
      */
     public function __construct(
         Request $request,
@@ -87,7 +92,8 @@ class MassEditActionController extends AbstractDoctrineController
         MassEditJobManager $massEditJobManager,
         DoctrineJobRepository $jobManager,
         ConnectorRegistry $connectorRegistry,
-        OperationRegistry $operationRegistry
+        OperationRegistry $operationRegistry,
+        MassEditFormResolver $massEditFormResolver
     ) {
         parent::__construct(
             $request,
@@ -101,12 +107,13 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->parametersParser   = $parametersParser;
-        $this->gridFilterAdapter  = $gridFilterAdapter;
-        $this->massEditJobManager = $massEditJobManager;
-        $this->jobManager         = $jobManager;
-        $this->connectorRegistry  = $connectorRegistry;
-        $this->operationRegistry  = $operationRegistry;
+        $this->parametersParser     = $parametersParser;
+        $this->gridFilterAdapter    = $gridFilterAdapter;
+        $this->massEditJobManager   = $massEditJobManager;
+        $this->jobManager           = $jobManager;
+        $this->connectorRegistry    = $connectorRegistry;
+        $this->operationRegistry    = $operationRegistry;
+        $this->massEditFormResolver = $massEditFormResolver;
     }
 
     /**
@@ -121,8 +128,7 @@ class MassEditActionController extends AbstractDoctrineController
         $objectsCount = $this->request->get('objectsCount');
         $itemsName    = $this->getItemsName($gridName);
 
-        $availableOperations = $this->operationRegistry->getAllByGridName($gridName);
-        $form = $this->getOperationsForm($availableOperations);
+        $form = $this->massEditFormResolver->getAvailableOperationsForm($gridName);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
