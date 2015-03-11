@@ -22,6 +22,7 @@ parameters:
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
     pim_enrich.controller.product_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductRestController
     pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
+    pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -277,4 +278,10 @@ services:
         class: %pim_enrich.controller.attribute_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_serializer'
+
+    pim_enrich.controller.attribute_group_rest:
+        class: %pim_enrich.controller.attribute_group_rest.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'

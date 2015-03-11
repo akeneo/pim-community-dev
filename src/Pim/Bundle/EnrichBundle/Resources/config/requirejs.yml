@@ -31,3 +31,5 @@ config:
         pim/field:                          pimenrich/js/product/field
         pim/text-field:                     pimenrich/js/product/text-field
         pim/price-field:                    pimenrich/js/product/price-field
+        pim/attribute-manager:              pimenrich/js/product/attribute-manager
+        pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager

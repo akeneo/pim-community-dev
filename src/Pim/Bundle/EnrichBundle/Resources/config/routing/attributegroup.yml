@@ -38,3 +38,15 @@ pim_enrich_attributegroup_removeattribute:
         groupId: \d+
         attributeId: \d+
     methods: [DELETE]
+
+pim_enrich_attributegroup_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.attribute_group_rest:indexAction }
+    methods: [GET]
+
+pim_enrich_attributegroup_rest_get:
+    path: /rest/{id}
+    defaults: { _controller: pim_enrich.controller.attribute_group_rest:getAction }
+    requirements:
+        id: \d+
+    methods: [GET]

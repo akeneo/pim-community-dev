@@ -1,12 +1,12 @@
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], function($, _, Backbone, Routing, FieldManager) {
+define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/attribute-group-manager'], function($, _, Backbone, Routing, FieldManager, AttributeGroupManager) {
     var FormState = Backbone.Model.extend({
         defaults: {
             'locale': 'en_US',
             'scope':  'mobile',
             'currentTab': null,
-            'currentAttributeGroup': null,
+            'attributeGroup': 'marketing',
             'translationMode': false,
             'panel': null
         }
@@ -60,43 +60,63 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
                     '<option value="<%= scope.code %>" <%= state.scope === scope.code ? "selected" : "" %>><%= scope.label %></option>',
                 '<% }); %>',
             '</select>',
+            '<select id="attribute-group">',
+                '<% _.each(config.attributeGroups, function (attributeGroup) { %>',
+                    '<option value="<%= attributeGroup.code %>" <%= state.attributeGroup === attributeGroup.code ? "selected" : "" %>><%= attributeGroup.label.en_US %></option>',
+                '<% }); %>',
+            '</select>',
             '<button id="get-data">get data</button>'
         ].join('')),
         events: {
             'change #locale': 'changeLocale',
             'change #scope': 'changeScope',
+            'change #attribute-group': 'changeAttributeGroup',
             'click #get-data': 'getData'
         },
         initialize: function () {
             this.listenTo(this.model, 'change', this.render);
         },
         render: function () {
-            this.$el.html(this.template({config: this.config, 'state': this.model.toJSON()}));
+            AttributeGroupManager.getAttributeGroups().done(_.bind(function(groups) {
+                this.config.attributeGroups = groups;
 
-            var fieldPromisses = [];
-            _.each(this.model.get('product').values, _.bind(function (value, attributeCode) {
-                var promise = new $.Deferred();
+                this.$el.html(this.template({config: this.config, 'state': this.model.toJSON()}));
 
-                FieldManager.getField(attributeCode).done(_.bind(function(field) {
-                    field.setData(value);
-                    field.setContext({
-                        'locale': this.model.get('locale'),
-                        'scope': this.model.get('scope')
-                    });
-                    field.render();
-
-                    promise.resolve(field);
+                var values = {};
+                _.each(this.model.get('product').values, _.bind(function(value, attributeCode) {
+                    if (-1 !== groups[this.model.get('attributeGroup')].attributes.indexOf(attributeCode)) {
+                        values[attributeCode] = value;
+                    }
                 }, this));
 
-                fieldPromisses.push(promise.promise());
-            }, this));
 
-            $.when(fieldPromisses).done(_.bind(function(promises) {
-                _.each(promises, _.bind(function(promise) {
-                    promise.done(_.bind(function(field) {
-                        this.$el.append(field.$el);
+                var fieldPromisses = [];
+                _.each(values, _.bind(function (value, attributeCode) {
+                    var promise = new $.Deferred();
+
+
+
+                    FieldManager.getField(attributeCode).done(_.bind(function(field) {
+                        field.setData(value);
+                        field.setContext({
+                            'locale': this.model.get('locale'),
+                            'scope': this.model.get('scope')
+                        });
+                        field.render();
+
+                        promise.resolve(field);
                     }, this));
 
+                    fieldPromisses.push(promise.promise());
+                }, this));
+
+                $.when(fieldPromisses).done(_.bind(function(promises) {
+                    _.each(promises, _.bind(function(promise) {
+                        promise.done(_.bind(function(field) {
+                            this.$el.append(field.$el);
+                        }, this));
+
+                    }, this));
                 }, this));
             }, this));
 
@@ -106,7 +126,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager'], fun
             this.model.set('locale', event.currentTarget.value);
         },
         changeAttributeGroup: function (event) {
-
+            this.model.set('attributeGroup', event.currentTarget.value);
         },
         changeScope: function (event) {
             this.model.set('scope', event.currentTarget.value);
