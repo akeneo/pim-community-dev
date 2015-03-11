@@ -10,7 +10,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry;
@@ -134,6 +133,7 @@ class MassEditActionController extends AbstractDoctrineController
             $form->submit($this->request);
             if ($form->isValid()) {
                 $data = $form->getData();
+
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
                     $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
@@ -162,8 +162,7 @@ class MassEditActionController extends AbstractDoctrineController
         $itemsName    = $operation->getItemsName();
         $productCount = $this->request->get('objectsCount');
 
-        $form = $this->createForm(new MassEditOperatorType());
-        $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
+        $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
@@ -194,8 +193,7 @@ class MassEditActionController extends AbstractDoctrineController
         $itemsName    = $operation->getItemsName();
         $productCount = $this->request->get('objectsCount');
 
-        $form = $this->createForm(new MassEditOperatorType());
-        $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
+        $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
         $form->submit($this->request);
 
         if ($form->isValid()) {
@@ -309,28 +307,6 @@ class MassEditActionController extends AbstractDoctrineController
             default:
                 return 'item';
         }
-    }
-
-    /**
-     * @param array $availableOperations
-     *
-     * @return Form
-     */
-    protected function getOperationsForm(array $availableOperations)
-    {
-        $choices = [];
-
-        foreach (array_keys($availableOperations) as $alias) {
-            $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
-        }
-
-        return $this->createForm(
-            new MassEditOperatorType(),
-            null,
-            [
-                'operations' => $choices
-            ]
-        );
     }
 
     /**

@@ -28,6 +28,7 @@ services:
         arguments:
             - '@pim_enrich.mass_edit_action.operation.registry'
             - '@form.factory'
+            - '@pim_enrich.form.type.choose_action'
 
     # Mass edit action operators
     pim_enrich.mass_edit_action.operator:

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -19,14 +19,24 @@ class MassEditFormResolver
     /** @var FormFactoryInterface */
     protected $formFactory;
 
+    /** @var MassEditChooseActionType */
+    protected $chooseActionFormType;
+
     /**
-     * @param OperationRegistry    $operationRegistry
-     * @param FormFactoryInterface $formFactory
+     * Constructor.
+     *
+     * @param OperationRegistry        $operationRegistry
+     * @param FormFactoryInterface     $formFactory
+     * @param MassEditChooseActionType $chooseActionFormType
      */
-    public function __construct(OperationRegistry $operationRegistry, FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        OperationRegistry $operationRegistry,
+        FormFactoryInterface $formFactory,
+        MassEditChooseActionType $chooseActionFormType
+    ) {
         $this->operationRegistry = $operationRegistry;
         $this->formFactory = $formFactory;
+        $this->chooseActionFormType = $chooseActionFormType;
     }
 
     /**
@@ -46,7 +56,7 @@ class MassEditFormResolver
             $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
         }
 
-        return $this->createForm(new MassEditOperatorType(), null, ['operations' => $choices]);
+        return $this->createForm($this->chooseActionFormType, null, ['operations' => $choices]);
     }
 
     /**
@@ -67,7 +77,7 @@ class MassEditFormResolver
             ));
         }
 
-        $form = $this->createForm(new MassEditOperatorType());
+        $form = $this->createForm($this->chooseActionFormType);
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
 
         return $form;
@@ -82,7 +92,7 @@ class MassEditFormResolver
      *
      * @return \Symfony\Component\Form\Form
      */
-    protected function createForm($type, $data = null, array $options = array())
+    protected function createForm($type, $data = null, array $options = [])
     {
         return $this->formFactory->create($type, $data, $options);
     }
