@@ -156,5 +156,5 @@ jobs:
     update_product:
         connector: Akeneo Mass Edit Connector
         alias:     update_product
-        label:     update_product
+        label:     Mass update products
         type:      mass_edit
