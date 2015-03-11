@@ -8,6 +8,16 @@ define(['routing'], function (Routing) {
         {
             var promise = new $.Deferred();
 
+            this.getAttributes().done(function(attributes) {
+                promise.resolve(attributes[attributeCode]);
+            });
+
+            return promise.promise();
+        },
+        getAttributes: function()
+        {
+            var promise = new $.Deferred();
+
             //If we never called the backend we call it and set the promise
             if (null === this.attributesPromise) {
                 this.attributesPromise = $.ajax(
@@ -24,10 +34,10 @@ define(['routing'], function (Routing) {
                 this.attributesPromise.done(_.bind(function(data) {
                     this.attributes = data;
 
-                    promise.resolve(this.attributes[attributeCode]);
+                    promise.resolve(this.attributes);
                 }, this));
             } else {
-                promise.resolve(this.attributes[attributeCode]);
+                promise.resolve(this.attributes);
             }
 
             return promise.promise();

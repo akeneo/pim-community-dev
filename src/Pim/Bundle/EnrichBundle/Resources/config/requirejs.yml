@@ -33,3 +33,6 @@ config:
         pim/price-field:                    pimenrich/js/product/price-field
         pim/attribute-manager:              pimenrich/js/product/attribute-manager
         pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
+
+        # Templates
+        pim/template/product/form:        pimenrich/templates/product/form.html
