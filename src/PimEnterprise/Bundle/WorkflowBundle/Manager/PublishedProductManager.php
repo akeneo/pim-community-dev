@@ -150,7 +150,7 @@ class PublishedProductManager
         $this->getObjectManager()->refresh($product);
         $published = $this->publisher->publish($product, $publishOptions);
         $this->getObjectManager()->persist($published);
-        $this->getObjectManager()->flush();
+        $this->getObjectManager()->flush($published);
 
         $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
 
