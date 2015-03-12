@@ -1,6 +1,23 @@
 <div class="boolean-field">
-    <label><%= label %></label>
+    <header>
+    <header>
+        <label><%= label %></label>
+        <span class="field-info">
+            <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
+            <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
+        </span>
+    </header>
+        <span class="field-info">
+            <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
+            <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
+        </span>
+    </header>
     <div class="switch switch-small" data-on-label="Yes" data-off-label="No">
         <input type="checkbox" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= value.value ? 'checked' : '' %>>
     </div>
+    <footer>
+        <div class="field-info">
+
+        </div>
+    </footer>
 </div>

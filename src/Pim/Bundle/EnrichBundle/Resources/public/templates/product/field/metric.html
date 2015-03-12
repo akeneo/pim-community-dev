@@ -1,9 +1,20 @@
 <div class="metric-field">
-    <label><%= label %></label>
+    <header>
+        <label><%= label %></label>
+        <span class="field-info">
+            <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
+            <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
+        </span>
+    </header>
     <input type="text" class="data" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value.data %>"/>
     <select class="unit select-field" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>">
         <% _.each(_.keys(config.measures[attribute.metric_family].units), function(unit) { %>
             <option value="<%= unit %>"<% if (value.value.unit === unit) { %> selected<% } %>><%= unit %></option>
         <% }); %>
     </select>
+    <footer>
+        <div class="field-info">
+
+        </div>
+    </footer>
 </div>
