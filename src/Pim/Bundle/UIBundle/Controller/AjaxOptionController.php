@@ -49,7 +49,6 @@ class AjaxOptionController
             $collectionId = $attribute->getId();
         } else {
             $collectionId = $query->get('collectionId');
-
         }
 
         $choices = $this->doctrine->getRepository($query->get('class'))

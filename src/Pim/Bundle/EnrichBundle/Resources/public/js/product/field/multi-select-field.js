@@ -22,6 +22,13 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select
                             'options': {'type': 'code'}
                         }
                     ),
+                    initSelection: function(element, callback) {
+                        var id = $(element).val();
+                        if (id !== "") {
+                            callback({'id': id, 'text': id});
+                        }
+                    },
+                    val: this.getCurrentValue(),
                     cache: true,
                     data: function(term) {
                         return {search: term};
