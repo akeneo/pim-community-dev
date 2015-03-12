@@ -11,6 +11,9 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'b
 
             this.$('.switch').bootstrapSwitch();
         },
+        getEmptyData: function() {
+            return false;
+        },
         updateModel: function (event) {
             var data = event.currentTarget.value;
             this.setCurrentValue(data);

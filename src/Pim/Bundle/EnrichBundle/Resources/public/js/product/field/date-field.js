@@ -10,8 +10,7 @@ define(
     function (
         Field,
         _,
-        fieldTemplate,
-        datepicker
+        fieldTemplate
     ) {
         return Field.extend({
             template: _.template(fieldTemplate),

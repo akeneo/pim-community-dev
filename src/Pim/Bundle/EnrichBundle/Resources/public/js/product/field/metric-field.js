@@ -11,19 +11,17 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jq
 
             this.$('.unit').select2('destroy').select2({});
         },
-        setValues: function(values) {
-            if (values.length === 0) {
-                var emptyValue = this.createEmptyValue();
-                emptyValue.value = {'data': null, 'unit': 'Kilogram'};
-                values.push(emptyValue);
-            }
-
-            Field.prototype.setValues.apply(this, [values]);
+        getEmptyData: function() {
+            return {
+                'data': null,
+                'unit': this.attribute.default_metric_unit
+            };
         },
         updateModel: function () {
+            var data = this.$('.data').val();
             this.setCurrentValue({
                 unit: this.$('.unit option:selected').val(),
-                data: this.$('.data').val()
+                data: '' !== data ? data : null
             });
         }
     });

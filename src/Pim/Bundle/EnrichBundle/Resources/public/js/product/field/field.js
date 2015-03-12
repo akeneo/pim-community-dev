@@ -98,10 +98,13 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         },
         createEmptyValue: function() {
             return {
-                value: null,
+                value: this.getEmptyData(),
                 locale: this.attribute.localizable ? this.context.locale : null,
                 scope: this.attribute.scopable ? this.context.scope : null
             };
+        },
+        getEmptyData: function() {
+            return null;
         },
         setCurrentValue: function(value)
         {
