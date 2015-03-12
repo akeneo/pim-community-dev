@@ -42,13 +42,14 @@ class AjaxOptionController
         $query = $request->query;
 
         if (null === $query->get('collectionId') && $query->get('class') === 'PimCatalogBundle:AttributeOption') {
-            $code =$query->get('collectionCode');
+            $code = $query->get('collectionCode');
 
             $attribute = $this->doctrine->getRepository('PimCatalogBundle:Attribute')->findOneByIdentifier($code);
 
             $collectionId = $attribute->getId();
         } else {
             $collectionId = $query->get('collectionId');
+
         }
 
         $choices = $this->doctrine->getRepository($query->get('class'))

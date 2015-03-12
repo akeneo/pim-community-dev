@@ -18,7 +18,8 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/simple-selec
                         {
                             'class': 'PimCatalogBundle:AttributeOption',
                             'dataLocale': 'en_US',
-                            'collectionCode': this.attribute.code
+                            'collectionCode': this.attribute.code,
+                            'options': {'type': 'code'}
                         }
                     ),
                     cache: true,

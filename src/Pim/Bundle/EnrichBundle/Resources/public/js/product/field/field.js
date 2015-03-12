@@ -103,16 +103,12 @@ define(['backbone', 'underscore'], function (Backbone, _) {
                 scope: this.attribute.scopable ? this.context.scope : null
             };
         },
-        setCurrentValue: function(data)
+        setCurrentValue: function(value)
         {
             var values = this.model.get('values');
-            var value = this.getCurrentValue();
+            var productValue = this.getCurrentValue();
 
-            if (null === value.value) {
-                values.push(value);
-            }
-
-            value.value = data;
+            productValue.value = value;
             this.model.set('values', values);
         }
     });

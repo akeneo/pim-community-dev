@@ -150,10 +150,13 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             var loadingMask = new LoadingMask();
             var navigation = Navigation.getInstance();
             loadingMask.render().$el.appendTo(this.$el).show();
-            productManager.save(100, this.getData()).done(function() {
+            productManager.save(100, this.getData()).done(_.bind(function(product) {
                 navigation.addFlashMessage('success', 'Product saved');
                 navigation.afterRequest();
-            }).fail(function(response) {
+
+                this.model.set('product', product);
+                this.model.trigger('change');
+            }, this)).fail(function(response) {
                 console.log('Errors:', response.responseJSON);
                 navigation.addFlashMessage('error', 'Error saving product');
                 navigation.afterRequest();

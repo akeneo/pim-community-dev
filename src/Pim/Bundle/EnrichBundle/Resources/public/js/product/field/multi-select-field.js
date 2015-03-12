@@ -18,7 +18,8 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select
                         {
                             'class': 'PimCatalogBundle:AttributeOption',
                             'dataLocale': 'en_US',
-                            'collectionCode': this.attribute.code
+                            'collectionCode': this.attribute.code,
+                            'options': {'type': 'code'}
                         }
                     ),
                     cache: true,
@@ -33,7 +34,7 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select
             });
         },
         updateModel: function (event) {
-            var data = event.currentTarget.value;
+            var data = event.currentTarget.value.split(',');
             this.setCurrentValue(data);
         }
     });
