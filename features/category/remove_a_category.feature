@@ -28,6 +28,7 @@ Feature: Remove a category
     And I should see flash message "Category successfully removed"
     And I should not see "Winter collection"
 
+  @unstable
   Scenario: Remove a category with products linked
     Given I am on the "winter_boots" category page
     When I press the "Delete" button
