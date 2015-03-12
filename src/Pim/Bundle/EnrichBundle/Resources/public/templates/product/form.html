@@ -1,6 +1,6 @@
 <select id="locale">
-    <% _.each(config.locales, function (locale) { %>
-        <option value="<%= locale.code %>" <%= state.locale === locale.code ? "selected" : "" %>><%= locale.label %></option>
+    <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
+        <option value="<%= locale %>" <%= state.locale === locale ? "selected" : "" %>><%= locale %></option>
     <% }); %>
 </select>
 <select id="scope">

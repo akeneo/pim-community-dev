@@ -4,8 +4,7 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jq
     return Field.extend({
         template: _.template(fieldTemplate),
         events: {
-            'change .data': 'updateModel',
-            'change .unit': 'updateModel'
+            'change .data, .unit': 'updateModel'
         },
         render: function() {
             Field.prototype.render.apply(this, arguments);
@@ -21,15 +20,11 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jq
 
             Field.prototype.setValues.apply(this, [values]);
         },
-        updateModel: function (event) {
-            var $field = $(event.currentTarget).parents('.metric-field');
-
-            var data = {
-                'data': $field.find('.data').val(),
-                'unit': $field.find('.unit option:selected').val()
-            };
-
-            this.setCurrentValue(data);
+        updateModel: function () {
+            this.setCurrentValue({
+                unit: this.$('.unit option:selected').val(),
+                data: this.$('.data').val()
+            });
         }
     });
 });

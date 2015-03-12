@@ -91,6 +91,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                             'locale': this.model.get('locale'),
                             'scope': this.model.get('scope')
                         });
+                        field.setConfig(this.config);
                         field.render();
 
                         promise.resolve(field);

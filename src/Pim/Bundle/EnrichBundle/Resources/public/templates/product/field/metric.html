@@ -2,12 +2,8 @@
     <label><%= label %></label>
     <input type="text" class="data" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value.data %>"/>
     <select class="unit select-field" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>">
-        <option>Kilogram</option>
-        <option>Milligram</option>
-        <option>Gram</option>
-        <option>Ton</option>
-        <option>Grain</option>
-        <option>Denier</option>
-        <option>Once</option>
+        <% _.each(_.keys(config.measures[attribute.metric_family].units), function(unit) { %>
+            <option value="<%= unit %>"<% if (value.value.unit === unit) { %> selected<% } %>><%= unit %></option>
+        <% }); %>
     </select>
 </div>

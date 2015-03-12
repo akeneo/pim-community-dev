@@ -1,18 +1,13 @@
 "use strict";
 
 define(['backbone', 'underscore'], function (Backbone, _) {
-    var config = {
-        'locales': ['fr_FR', 'en_US'],
-        'channels': ['ecommerce', 'mobile'],
-        'currencies': ['EUR', 'USD']
-    };
-
     var FieldModel = Backbone.Model.extend({});
 
     return Backbone.View.extend({
         tagName: 'div',
         attribute: null,
         context: {},
+        config: {},
         model: FieldModel,
         template: function() { throw new Error('You should implement your field template'); },
         initialize: function(attribute)
@@ -26,7 +21,14 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         {
             this.$el.empty();
             var value = this.getCurrentValue();
-            this.$el.html(this.template({label: this.attribute.label.en_US, value: value, config: config}));
+            this.$el.html(
+                this.template({
+                    label: this.attribute.label[this.context.locale],
+                    value: value,
+                    config: this.config,
+                    attribute: this.attribute
+                })
+            );
             this.delegateEvents();
 
             return this;
@@ -46,6 +48,10 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         setContext: function(context)
         {
             this.context = context;
+        },
+        setConfig: function(config)
+        {
+            this.config = config;
         },
         validate: function()
         {
