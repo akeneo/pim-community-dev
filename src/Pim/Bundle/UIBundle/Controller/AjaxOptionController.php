@@ -40,10 +40,21 @@ class AjaxOptionController
     public function listAction(Request $request)
     {
         $query = $request->query;
+
+        if (null === $query->get('collectionId') && $query->get('class') === 'PimCatalogBundle:AttributeOption') {
+            $code =$query->get('collectionCode');
+
+            $attribute = $this->doctrine->getRepository('PimCatalogBundle:Attribute')->findOneByIdentifier($code);
+
+            $collectionId = $attribute->getId();
+        } else {
+            $collectionId = $query->get('collectionId');
+        }
+
         $choices = $this->doctrine->getRepository($query->get('class'))
             ->getOptions(
                 $query->get('dataLocale'),
-                $query->get('collectionId'),
+                $collectionId,
                 $query->get('search'),
                 $query->get('options', array())
             );

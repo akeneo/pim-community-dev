@@ -1,6 +1,6 @@
 "use strict";
 
-define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select', 'jquery.select2'], function (Field, _, fieldTemplate) {
+define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select', 'routing', 'jquery.select2'], function (Field, _, fieldTemplate, Routing) {
     return Field.extend({
         template: _.template(fieldTemplate),
         events: {
@@ -9,25 +9,28 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select
         render: function() {
             Field.prototype.render.apply(this, arguments);
 
+            var $elem = this.$('input.select-field');
 
-            // setTimeout(_.bind(function() {
-                var $elem = this.$('input');
-
-                $elem.select2({
-                    ajax: {
-                        url: '/app_dev.php' + $elem.attr('data-url'),
-                        cache: true,
-                        data: function(term) {
-                            return {search: term};
-                        },
-                        results: function(data) {
-                            return data;
+            $elem.select2('destroy').select2({
+                ajax: {
+                    url: Routing.generate(
+                        'pim_ui_ajaxentity_list',
+                        {
+                            'class': 'PimCatalogBundle:AttributeOption',
+                            'dataLocale': 'en_US',
+                            'collectionCode': this.attribute.code
                         }
+                    ),
+                    cache: true,
+                    data: function(term) {
+                        return {search: term};
                     },
-                    placeholder: 'choose an option'
-                }
-                );
-            // }, this), 0);
+                    results: function(data) {
+                        return data;
+                    }
+                },
+                multiple: true
+            });
         },
         updateModel: function (event) {
             var data = event.currentTarget.value;

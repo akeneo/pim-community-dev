@@ -9,9 +9,7 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jq
         render: function() {
             Field.prototype.render.apply(this, arguments);
 
-            setTimeout(_.bind(function() {
-                this.$('.unit').select2();
-            }, this), 0);
+            this.$('.unit').select2('destroy').select2({});
         },
         updateModel: function (event) {
             var data = event.currentTarget.value;
