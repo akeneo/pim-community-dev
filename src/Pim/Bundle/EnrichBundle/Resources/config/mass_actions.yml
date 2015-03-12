@@ -1,8 +1,7 @@
 parameters:
     pim_enrich.mass_edit_action.operator.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry
-    pim_enrich.mass_edit_action.operation.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry
+    pim_enrich.mass_edit_action.operation.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistry
     pim_enrich.mass_edit_action.operator.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator
-    pim_enrich.mass_edit_action.operator.product.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator
     pim_enrich.mass_edit_action.operator.family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator
     pim_enrich.mass_edit_action.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
     pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
@@ -37,13 +36,6 @@ services:
         class: %pim_enrich.mass_edit_action.operator.class%
         arguments:
             - '@oro_security.security_facade'
-
-    pim_enrich.mass_edit_action.operator.product:
-        public: false
-        parent: pim_enrich.mass_edit_action.operator
-        class: %pim_enrich.mass_edit_action.operator.product.class%
-        tags:
-            - { name: pim_enrich.mass_edit_action_operator, datagrid: product-grid }
 
     pim_enrich.mass_edit_action.operator.family:
         public: false
