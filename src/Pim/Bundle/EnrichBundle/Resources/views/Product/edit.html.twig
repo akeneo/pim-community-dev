@@ -6,6 +6,80 @@
 {% endblock %}
 
 {% block content %}
+
+<div id="product-edit-form">
+	<div class="input-prepend btn-icon-prepend btn-white">
+        <span class="add-on"><i class="icon-check"></i></span>
+        <a class="btn">Button</a>
+    </div>
+	
+	<div class="input-prepend btn-icon-prepend btn-green">
+        <span class="add-on"><i class="icon-check"></i></span>
+        <a class="btn">Button</a>
+    </div>
+    
+    <div class="input-prepend btn-icon-prepend btn-blue">
+        <span class="add-on"><i class="icon-check"></i></span>
+        <a class="btn">Button</a>
+    </div>
+    
+	<div class="form-field text-field required-field">
+		<label>SKU (required)</label>
+		<input type="text" data-locale="" data-scope="" value="1468131">
+	</div>
+	
+	
+	<div class="form-field text-field disabled-field">
+		<label>Name</label>
+		<div class="input-icon">
+		    <i class="icon-lock"></i>
+			<input type="text" data-locale="" data-scope="" value="Canon HV30 High Definition Camcorder" disabled>
+		</div>
+	</div>
+	
+	
+	<div class="form-field textarea-field">
+		<label><span>Description</span> <span class="form-field-locale"> <i class="icon-globe"></i> Localized value</span></label>
+		<textarea>Featuring Canon’s exclusive SuperRange Optical Image Stabilizer to stabilize a wide range of movements, a built-in video light to easily shoot in dark settings, and the new 2.7-inch multi-angle Vivid LCD acreen to view from various angles with true color representation and contrast, your shooting possibilities are now boundless. Beyond that, you can capture amazing HD detail and color reproduction while achieving critical focus with Instant AF. Create the look and feel of Hollywood movies with the 24p Cinema Mode or choose 30p Progressive Mode to capture fast action with optimization for the web. With HD and SD recording modes, you can make the move to HD while retaining compatibility with standard definition equipment. The HV30 is easy to use and delivers the high level of performance you’ve come to expect from a Canon camcorder.</textarea>
+		<div class="field-infos-rules"><i class="icon-code-fork"></i> Affected by rule(s) : <span>rules_name</span></div>
+		<div class="field-warning"><i class="icon-exclamation-triangle"></i> If the conditions of the rule are valid, your modification will be overridden</div>
+	</div>
+	
+	
+	<div class="form-field price-collection-field">
+		<label>Price</label>		
+		<div class="input-append">
+			<input type="text" data-locale="" data-scope="" value="644.95" class="form-price-dollar">
+  			<span class="add-on">$ USD</span>
+  		</div>
+  		<div class="input-append">
+			<input type="text" data-locale="" data-scope="" value="608.34" class="form-price-euro">
+  			<span class="add-on">€ EUR</span>
+  		</div>
+	</div>
+	
+	<div class="form-field single-select-field">
+	    <label>Single select</label>
+    	<select class="select2">
+            <option value="Layn Manwoody">Layn Manwoody</option>
+            <option value="Braedon Hasty">Braedon Hasty</option>
+            <option value="Julan Brax">Julan Brax</option>
+        </select>
+	</div>
+	
+	<div class="form-field single-select-field">
+	    <label>Multiple select</label>
+    	<select class="select2" multiple="multiple">
+            <option value="Layn Manwoody">Layn Manwoody</option>
+            <option value="Braedon Hasty">Braedon Hasty</option>
+            <option value="Julan Brax">Julan Brax</option>
+            <option value="Brodin Sapner">Brodin Sapner</option>
+            <option value="Sibas Tully">Sibas Tully</option>
+        </select>
+	</div>
+</div>
+
+{#
 <div id="product-edit-form">
 
 </div>
@@ -13,5 +87,6 @@
 <script>
     require(['pim/product-edit-form'], function() {});
 </script>
+#}
 
 {% endblock %}
