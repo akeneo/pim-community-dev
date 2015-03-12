@@ -80,6 +80,28 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
+    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution($event, $user, $manager, $jobInstance, $jobExecution)
+    {
+        $manager
+            ->notify(
+                [$user],
+                'pim_mass_edit.notification.mass_edit.success',
+                'success',
+                [
+                    'route' => 'pim_mass_edit_execution_show',
+                    'routeParams' => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Foo mass edit']
+                ]
+            )
+            ->shouldBeCalled();
+
+        $jobInstance->getType()->willReturn('mass_edit');
+        $jobInstance->getLabel()->willReturn('Foo mass edit');
+        $event->getJobExecution()->willReturn($jobExecution);
+
+        $this->afterJobExecution($event);
+    }
+
     function it_notifies_a_user_of_the_completion_of_job_execution_which_has_encountered_a_warning(
         $event,
         $warnings,
