@@ -5,7 +5,7 @@ Feature: Change status of many products at once
   I need to be able to change the status of many products at once
 
   Background:
-    Given the "default" catalog configuration
+    Given the "apparel" catalog configuration
     And I am logged in as "Julia"
 
   Scenario: Enable many products at once
