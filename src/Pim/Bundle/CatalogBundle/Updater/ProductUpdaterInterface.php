@@ -23,6 +23,8 @@ interface ProductUpdaterInterface
      * @param string             $scope
      *
      * @return ProductUpdaterInterface
+     *
+     * @deprecated will be removed in 1.5, please use set(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
@@ -50,7 +52,7 @@ interface ProductUpdaterInterface
     );
 
     /**
-     * Set field value on a product
+     * Sets a data in a product field (erase the current data)
      *
      * @param ProductInterface $product The product to modify
      * @param string           $field   The field to modify
@@ -58,4 +60,14 @@ interface ProductUpdaterInterface
      * @param array            $options Options to pass to the setter
      */
     public function set(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
+     * Adds a data in a product field (complete the current data)
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field to complete
+     * @param mixed            $data    The data to add
+     * @param array            $options Options to pass to the setter
+     */
+    public function addData(ProductInterface $product, $field, $data, array $options = []);
 }
