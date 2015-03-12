@@ -1,2 +1,4 @@
-<label><%= label %></label>
-<input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value %>"/>
+<div class="date-field">
+    <label><%= label %></label>
+    <input type="text" class="datepicker" data-date-format="yyyy-mm-dd" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value %>"/>
+</div>

@@ -1,2 +1,6 @@
-<label><%= label %></label>
-<input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value %>"/>
+<div class="boolean-field">
+    <label><%= label %></label>
+    <div class="switch switch-small" data-on-label="Yes" data-off-label="No">
+        <input type="checkbox" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= value.value ? 'checked' : '' %>>
+    </div>
+</div>

@@ -1,2 +1,13 @@
-<label><%= label %></label>
-<input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value %>"/>
+<div class="metric-field">
+    <label><%= label %></label>
+    <input type="text" class="data" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value %>"/>
+    <select class="unit select2" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>">
+        <option>Kilogram</option>
+        <option>Milligram</option>
+        <option>Gram</option>
+        <option>Ton</option>
+        <option>Grain</option>
+        <option>Denier</option>
+        <option>Once</option>
+    </select>
+</div>
