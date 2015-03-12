@@ -160,3 +160,13 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    change_status:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_status
+        label:     change_status
+        type:      mass_edit
+    change_family:
+        connector: Akeneo Mass Edit Connector
+        alias:     change_family
+        label:     change_family
+        type:      mass_edit
