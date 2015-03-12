@@ -12,7 +12,7 @@ use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
-use Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -73,7 +73,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassEditJobManager         $massEditJobManager
      * @param DoctrineJobRepository      $jobManager
      * @param ConnectorRegistry          $connectorRegistry
-     * @param OperationRegistry          $operationRegistry
+     * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver
      */
     public function __construct(
@@ -91,7 +91,7 @@ class MassEditActionController extends AbstractDoctrineController
         MassEditJobManager $massEditJobManager,
         DoctrineJobRepository $jobManager,
         ConnectorRegistry $connectorRegistry,
-        OperationRegistry $operationRegistry,
+        OperationRegistryInterface $operationRegistry,
         MassEditFormResolver $massEditFormResolver
     ) {
         parent::__construct(
