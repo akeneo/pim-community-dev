@@ -79,7 +79,7 @@ class ChangeStatus extends AbstractMassEditOperation implements
     {
         return [
             [
-                'field' => 'enable',
+                'field' => 'enabled',
                 'value' => $this->isToEnable()
             ]
         ];
