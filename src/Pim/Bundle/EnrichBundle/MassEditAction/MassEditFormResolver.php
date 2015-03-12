@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -13,7 +14,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class MassEditFormResolver
 {
-    /** @var OperationRegistry */
+    /** @var OperationRegistryInterface */
     protected $operationRegistry;
 
     /** @var FormFactoryInterface */
@@ -25,12 +26,12 @@ class MassEditFormResolver
     /**
      * Constructor.
      *
-     * @param OperationRegistry        $operationRegistry
-     * @param FormFactoryInterface     $formFactory
-     * @param MassEditChooseActionType $chooseActionFormType
+     * @param OperationRegistryInterface $operationRegistry
+     * @param FormFactoryInterface       $formFactory
+     * @param MassEditChooseActionType   $chooseActionFormType
      */
     public function __construct(
-        OperationRegistry $operationRegistry,
+        OperationRegistryInterface $operationRegistry,
         FormFactoryInterface $formFactory,
         MassEditChooseActionType $chooseActionFormType
     ) {

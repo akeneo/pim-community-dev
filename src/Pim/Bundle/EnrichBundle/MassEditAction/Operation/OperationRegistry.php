@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 
 /**
  * Registry of mass edit actions indexed by gridName alias
@@ -11,7 +12,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OperationRegistry
+class OperationRegistry implements OperationRegistryInterface
 {
     /** @var MassEditOperationInterface[] */
     protected $operations = [];
@@ -19,6 +20,9 @@ class OperationRegistry
     /** @var MassEditOperationInterface[] */
     protected $gridOperations = [];
 
+    /**
+     * {@inheritdoc}
+     */
     public function register(MassEditOperationInterface $operation, $operationAlias, $acl = null, $gridName = null)
     {
         if (isset($this->operations[$operationAlias])) {
@@ -38,6 +42,9 @@ class OperationRegistry
         $this->operations[$operationAlias] = $operation;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function get($operationAlias)
     {
         if (!isset($this->operations[$operationAlias])) {
@@ -49,6 +56,9 @@ class OperationRegistry
         return $this->operations[$operationAlias];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAllByGridName($gridName)
     {
         if (!isset($this->gridOperations[$gridName])) {
