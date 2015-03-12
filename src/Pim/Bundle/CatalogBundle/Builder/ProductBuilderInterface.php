@@ -17,6 +17,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 interface ProductBuilderInterface
 {
     /**
+     * @param string $identifier
+     *
+     * @return ProductInterface
+     */
+    public function createProduct($identifier = null);
+
+    /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels

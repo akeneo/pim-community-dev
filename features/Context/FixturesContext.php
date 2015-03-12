@@ -279,7 +279,7 @@ class FixturesContext extends RawMinkContext
         $this->getProductBuilder()->addMissingProductValues($product);
         $this->getProductManager()->handleMedia($product);
 
-        $this->getProductManager()->saveProduct($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
 
         return $product;
     }
@@ -2048,6 +2048,14 @@ class FixturesContext extends RawMinkContext
     protected function getProductBuilder()
     {
         return $this->getContainer()->get('pim_catalog.builder.product');
+    }
+
+    /**
+     * @return Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver
+     */
+    protected function getProductSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product');
     }
 
     /**

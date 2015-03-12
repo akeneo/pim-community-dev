@@ -144,6 +144,7 @@ services:
             - '@pim_catalog.manager.media'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
+            - '@pim_catalog.builder.product'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%

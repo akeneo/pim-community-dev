@@ -47,7 +47,7 @@ services:
     pim_catalog.validator.constraint.single_identifier:
         class: %pim_catalog.validator.constraint.single_identifier.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 

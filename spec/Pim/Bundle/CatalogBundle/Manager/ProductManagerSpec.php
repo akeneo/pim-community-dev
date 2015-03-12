@@ -72,21 +72,18 @@ class ProductManagerSpec extends ObjectBehavior
         $this->getAttributeOptionRepository()->shouldReturn($attributeOptionRepository);
     }
 
-    function it_creates_a_product()
+    function it_creates_a_product($builder)
     {
-        $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
-    }
+        $builder->createProduct()->shouldBeCalled();
 
-    function it_creates_a_product_value()
-    {
-        $this->createProductValue()->shouldReturnAnInstanceOf(self::VALUE_CLASS);
+        $this->createProduct();
     }
 
     function it_provides_the_identifier_attribute(AttributeRepositoryInterface $attributeRepository, AttributeInterface $sku)
     {
-        $attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier'])->willReturn($sku);
+        $attributeRepository->getIdentifier()->shouldBeCalled();
 
-        $this->getIdentifierAttribute()->shouldReturn($sku);
+        $this->getIdentifierAttribute();
     }
 
     function it_checks_value_existence(ProductRepositoryInterface $productRepository, ProductValueInterface $value)
