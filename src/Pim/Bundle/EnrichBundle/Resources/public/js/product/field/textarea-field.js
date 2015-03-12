@@ -4,7 +4,7 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/textarea'], 
     return Field.extend({
         template: _.template(fieldTemplate),
         events: {
-            'change input': 'updateModel'
+            'change textarea': 'updateModel'
         },
         updateModel: function (event) {
             var data = event.currentTarget.value;
