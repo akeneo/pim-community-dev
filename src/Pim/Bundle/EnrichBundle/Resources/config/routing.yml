@@ -61,3 +61,7 @@ grouptype:
 sequential_edit:
     resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
     prefix: /enrich/sequential_edit
+
+measures:
+    resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
+    prefix: /configuration/measures

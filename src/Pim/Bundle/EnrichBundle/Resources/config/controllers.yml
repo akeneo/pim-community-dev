@@ -24,6 +24,8 @@ parameters:
     pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
     pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
     pim_enrich.controller.family_rest.class: Pim\Bundle\EnrichBundle\Controller\FamilyRestController
+    pim_enrich.controller.channel_rest.class: Pim\Bundle\EnrichBundle\Controller\ChannelRestController
+    pim_enrich.controller.measures_rest.class: Pim\Bundle\EnrichBundle\Controller\MeasuresRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -295,3 +297,14 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_serializer'
+
+    pim_enrich.controller.channel_rest:
+        class: %pim_enrich.controller.channel_rest.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_serializer'
+
+    pim_enrich.controller.measures_rest:
+        class: %pim_enrich.controller.measures_rest.class%
+        arguments:
+            - %akeneo_measure.measures_config%
