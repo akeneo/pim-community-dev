@@ -7,7 +7,7 @@ services:
         class: %pim_reference_data.attribute_type.simpleselect.class%
         arguments:
             - reference_data_option
-            - pim_ajax_entity
+            - pim_ajax_reference_data
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
             - '@pim_reference_data.registry'
         tags:
@@ -17,7 +17,7 @@ services:
         class: %pim_reference_data.attribute_type.multiselect.class%
         arguments:
             - reference_data_options
-            - pim_ajax_entity
+            - pim_ajax_reference_data
             - '@pim_catalog.validator.constraint_guesser.chained_attribute'
             - '@pim_reference_data.registry'
         tags:

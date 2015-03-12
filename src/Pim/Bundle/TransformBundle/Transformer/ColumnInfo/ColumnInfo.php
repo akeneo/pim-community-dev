@@ -167,4 +167,14 @@ class ColumnInfo implements ColumnInfoInterface
     {
         return $this->attribute;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPropertyPath($propertyPath)
+    {
+        $this->propertyPath = $propertyPath;
+
+        return $this;
+    }
 }

@@ -18,4 +18,5 @@ Acme\Bundle\AppBundle\Entity\Fabric:
         alternativeName:
             type: string
             length: 255
+            nullable: true
     lifecycleCallbacks: {  }
