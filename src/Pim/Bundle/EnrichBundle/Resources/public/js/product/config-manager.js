@@ -12,23 +12,15 @@ define(['routing'], function (Routing) {
                     'code': 'en_US',
                     'label': 'English'
                 }
-            ],
-            'channels': [
-                {
-                    'code': 'mobile',
-                    'label': 'Mobile'
-                },
-                {
-                    'code': 'tablet',
-                    'label': 'Tablet'
-                }
             ]
         },
         promises: {},
         urls: {
             'attributegroups': 'pim_enrich_attributegroup_rest_index',
             'attributes': 'pim_enrich_attribute_rest_index',
-            'families': 'pim_enrich_family_rest_index'
+            'families': 'pim_enrich_family_rest_index',
+            'channels': 'pim_enrich_channel_rest_index',
+            'measures': 'pim_enrich_measures_rest_index'
         },
         getEntityList: function(entityType)
         {
@@ -74,7 +66,9 @@ define(['routing'], function (Routing) {
 
             $.when(
                 this.getEntityList('attributegroups'),
-                this.getEntityList('attributes')
+                this.getEntityList('attributes'),
+                this.getEntityList('channels'),
+                this.getEntityList('measures')
             ).done(_.bind(function() {
                 promise.resolve(this.entities);
             }, this));
