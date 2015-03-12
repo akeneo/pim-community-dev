@@ -1,4 +1,5 @@
 <div class="price-collection-field">
+<<<<<<< HEAD
     <header>
         <label><%= label %></label>
         <span class="field-info">
@@ -8,13 +9,17 @@
     </header>
     <% if (!value.value) { %>
         <% _.each(config.currency, function (currency) { %>
-            <span><%= currency %></span>
-            <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= currency %>" value="">
+            <div class="input-append">
+                <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= currency %>" value="">
+                <span class="add-on"><%= price.currency %></span>
+            </div>
         <% }) %>
     <% } else { %>
         <% _.each(value.value, function (price) { %>
-            <span><%= price.currency %></span>
-            <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= price.currency %>" value="<%= price.data %>">
+            <div class="input-append">
+                <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= price.currency %>" value="<%= price.data %>">
+                <span class="add-on"><%= price.currency %></span>
+            </div>
         <% }) %>
     <% } %>
     <footer>

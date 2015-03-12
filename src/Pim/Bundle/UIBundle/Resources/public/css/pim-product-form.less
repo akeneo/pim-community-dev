@@ -1,100 +1,44 @@
 #product-edit-form{
     padding: 40px;
-    width: 500px;
+
 }
-.form-field{
-    margin-bottom: 20px;
+.text-field,
+.textarea-field,
+.price-collection-field,
+.number-field,
+.date-field,
+.metric-field{
     label{
 	    font-size: 12px;
 	    color: #9B9B9B;
 	    font-weight: normal;
     }
-    &.required-field label{
-	    color: #4A4A4A;
-	    font-weight: bold;
-    }
-	input, 
-	textarea, 
-	select, 
-	.select2-container{
+    input, 
+	textarea{
         box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
         font-size: 12px;
         color: #4A4A4A;
-        min-width: 400px;
-        width: 100%;
         min-height: 30px;
         .border-radius (0);
         .box-sizing();
     }
-    .select2-container{
-        background-image:none;
-        background-color: white;
-        .select2-choice{ line-height: 30px; }
-        .select2-choices{
-            .select2-search-choice{
-                .border-radius (0);
-                background-image:none;
-                background-color: white;
-                line-height: 22px;
-                border: 1px solid #ccc;
-                div{ margin-left: 14px; }
-            }
-            .select2-search-choice-close{
-                line-height: 28px;
-                border-right: solid 1px #ccc;
-                width: 28px;
-                height: 28px;
-                top:0;
-                left: 0;
-                text-align: center;
-                &:hover{ background: #F0F0F0 !important; }
-            }
-        }
-        .select2-input{ min-width: 20px; }
+}
+.text-field > input{
+    max-width: 400px;
+}
+.textarea-field > textarea{
+    width: 100%;
+}
+.price-collection-field{
+    input{
+        min-width: 80px;
+        max-width: 100px;
     }
-    &.price-collection-field{
-    	input{
-    		min-width: 80px;
-    		max-width: 100px;
-    	}
-    	.input-append .add-on:last-child{	
-    	    box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
-            font-size: 11px;
-            color: #9B9B9B;
-            .border-radius(0);
-            .box-sizing();
-        }
-    }
-    &.disabled-field{
-    	input, 
-    	textarea, 
-    	select{
-    		background-color: #DDDDDD;
-    		color: #9B9B9B;
-    		box-shadow: inset 0px 2px 2px 0 rgba(0, 0, 0, 0.13);
-    	}
-    	.input-icon{
-    		position: relative;
-    		i{
-    			position: absolute;
-    			color: #9B9B9B;
-    			right: 10px;
-    			top: 10px;
-    		}
-    	}
-    }
-    .form-field-locale{
-        color: #4A4A4A;
-        font-size: 11px;
-        i{ font-size: 13px; }
-    }
-    .field-infos-rules{
+    .input-append .add-on{	
+        box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
         font-size: 11px;
         color: #9B9B9B;
-        i, span{ color: #4A4A4A; }
-    }
-    .field-warning{
-        font-size: 11px;
-        color: #D0021B;
-    }
+        .border-radius(0);
+        .box-sizing();
+    }    
 }
