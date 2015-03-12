@@ -38,10 +38,10 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
         config: {},
         template: _.template(formTemplate),
         events: {
-            'change #locale': 'changeLocale',
-            'change #scope': 'changeScope',
+            'click #current-locale li a': 'changeLocale',
+            'click #current-scope li a': 'changeScope',
             'click .nav-tabs li': 'changeAttributeGroup',
-            'click #add-attribute button': 'addAttribute',
+            'click #add-attribute li a': 'addAttribute',
             'click #get-data': 'getData',
             'click #save': 'save'
         },
@@ -112,16 +112,16 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             return this;
         },
         changeLocale: function (event) {
-            this.model.set('locale', event.currentTarget.value);
+            this.model.set('locale', event.currentTarget.dataset.locale);
         },
         changeAttributeGroup: function (event) {
             this.model.set('attributeGroup', event.currentTarget.dataset.attributeGroup);
         },
         changeScope: function (event) {
-            this.model.set('scope', event.currentTarget.value);
+            this.model.set('scope', event.currentTarget.dataset.scope);
         },
         addAttribute: function(event) {
-            var attributeCode = $(event.currentTarget).parent().children('select').val();
+            var attributeCode = event.currentTarget.dataset.attribute;
             var product = this.model.get('product');
 
             if (product.values[attributeCode]) {
@@ -140,7 +140,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             _.each(fields, function(field, key) {
                 values[key] = field.getData();
             });
-
+            console.log(values);
             return {
                 values: values,
                 enabled: Math.floor(Math.random()*10) >= 5

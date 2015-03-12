@@ -1,34 +1,65 @@
-<select id="locale">
-    <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
-        <option value="<%= locale %>" <%= state.locale === locale ? "selected" : "" %>><%= locale %></option>
-    <% }); %>
-</select>
-<select id="scope">
-    <% _.each(config.channels ,function (scope) { %>
-        <option value="<%= scope.code %>" <%= state.scope === scope.code ? "selected" : "" %>><%= scope.label %></option>
-    <% }); %>
-</select>
-<button id="get-data">get data</button>
-<button id="save">save</button>
-<% if (state.optionalAttributes.length) { %>
-    <div id="add-attribute">
-        <select>
-            <% _.each(state.optionalAttributes, function (attribute) { %>
-                <option value="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></option>
+<header>
+    <div class="btn-group" id="current-locale">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <%= state.locale %>
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
+                <li><a data-locale="<%= locale %>"><%= locale %></a></li>
             <% }); %>
-        </select>
-        <button>Add attribute</button>
+        </ul>
     </div>
-<% } %>
-<div class="tabbable tabs-left">
+    <button class="btn pull-right" id="get-data">get data</button>
+    <button class="btn pull-right" id="save">save</button>
+</header>
+
+<div class="tabbable tabs-top">
     <ul class="nav nav-tabs">
-        <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>
-            <li data-attribute-group="<%= attributeGroup.code %>" class="<%= state.attributeGroup === attributeGroup.code ? 'active' : '' %>">
-                <a><%= attributeGroup.label.en_US %></a>
-            </li>
-        <% }); %>
+        <li class="active">
+            <a>Attributes</a>
+        </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active" id="product-values"></div>
+        <div class="tab-pane active" id="product-attributes">
+            <header>
+                <% if (state.optionalAttributes.length) { %>
+                    <div class="btn-group pull-right" id="add-attribute">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            Add an attribute
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <% _.each(state.optionalAttributes, function (attribute) { %>
+                                <li><a data-attribute="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></a></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                <% } %>
+                <div class="btn-group pull-right" id="current-scope">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        <%= state.scope %>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <% _.each(config.channels ,function (scope) { %>
+                            <li><a data-scope="<%= scope.code %>"><%= scope.label %></a></li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </header>
+            <div class="tabbable tabs-left">
+                <ul class="nav nav-tabs">
+                    <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>
+                        <li data-attribute-group="<%= attributeGroup.code %>" class="<%= state.attributeGroup === attributeGroup.code ? 'active' : '' %>">
+                            <a><%= attributeGroup.label.en_US %></a>
+                        </li>
+                    <% }); %>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="product-values"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
