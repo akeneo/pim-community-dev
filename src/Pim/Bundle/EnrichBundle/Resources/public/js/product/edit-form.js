@@ -86,7 +86,7 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                     var promise = new $.Deferred();
 
                     FieldManager.getField(attributeCode).done(_.bind(function(field) {
-                        field.setData(value);
+                        field.setValues(value);
                         field.setContext({
                             'locale': this.model.get('locale'),
                             'scope': this.model.get('scope')

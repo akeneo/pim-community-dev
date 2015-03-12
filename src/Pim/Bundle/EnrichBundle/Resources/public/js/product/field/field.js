@@ -35,9 +35,13 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         {
             return this.model.get('values');
         },
-        setData: function(data)
+        setValues: function(values)
         {
-            this.model.set('values', data);
+            if (values.length === 0) {
+                values.push(this.createEmptyValue());
+            }
+
+            this.model.set('values', values);
         },
         setContext: function(context)
         {
@@ -81,14 +85,17 @@ define(['backbone', 'underscore'], function (Backbone, _) {
             })[0];
 
             if (!value) {
-                value = {
-                    value: null,
-                    locale: this.attribute.localizable ? this.context.locale : null,
-                    scope: this.attribute.scopable ? this.context.scope : null
-                };
+                value = this.createEmptyValue();
             }
 
             return value;
+        },
+        createEmptyValue: function() {
+            return {
+                value: null,
+                locale: this.attribute.localizable ? this.context.locale : null,
+                scope: this.attribute.scopable ? this.context.scope : null
+            };
         },
         setCurrentValue: function(data)
         {

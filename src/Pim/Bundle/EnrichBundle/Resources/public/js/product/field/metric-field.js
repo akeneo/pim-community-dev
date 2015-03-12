@@ -4,15 +4,31 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jq
     return Field.extend({
         template: _.template(fieldTemplate),
         events: {
-            'change input': 'updateModel'
+            'change .data': 'updateModel',
+            'change .unit': 'updateModel'
         },
         render: function() {
             Field.prototype.render.apply(this, arguments);
 
             this.$('.unit').select2('destroy').select2({});
         },
+        setValues: function(values) {
+            if (values.length === 0) {
+                var emptyValue = this.createEmptyValue();
+                emptyValue.value = {'data': null, 'unit': 'Kilogram'};
+                values.push(emptyValue);
+            }
+
+            Field.prototype.setValues.apply(this, [values]);
+        },
         updateModel: function (event) {
-            var data = event.currentTarget.value;
+            var $field = $(event.currentTarget).parents('.metric-field');
+
+            var data = {
+                'data': $field.find('.data').val(),
+                'unit': $field.find('.unit option:selected').val()
+            };
+
             this.setCurrentValue(data);
         }
     });
