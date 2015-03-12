@@ -55,7 +55,7 @@
         "monolog/monolog": "1.10.0",
         "mtdowling/cron-expression": "1.0.3",
         "nelmio/api-doc-bundle": "2.4.4",
-        "oro/platform": "0.9.1",
+        "oro/platform": "0.9.2",
         "sensio/distribution-bundle": "2.3.7",
         "sensio/framework-extra-bundle": "2.3.4",
         "sensio/generator-bundle": "2.3.5",
