@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Job execution notifier
@@ -72,19 +73,19 @@ class JobExecutionNotifier implements EventSubscriberInterface
         // TODO: maybe create a registry or something similar to load routes ?
 
         if (JobInstance::TYPE_EXPORT === $type || JobInstance::TYPE_IMPORT === $type) {
-            $this->generateExportImportNotify($user, $jobExecution, $type, $status);
+            $this->generateExportImportNotify($jobExecution, $user, $type, $status);
         } elseif ('mass_edit' === $type) { //TODO: move this status in job instance const
-            $this->generateMassEditNotify($user, $jobExecution, $type, $status);
+            $this->generateMassEditNotify($jobExecution, $user, $type, $status);
         }
     }
 
     /**
-     * @param $user
-     * @param $jobExecution
-     * @param $type
-     * @param $status
+     * @param JobExecution         $jobExecution
+     * @param string|UserInterface $user
+     * @param string               $type
+     * @param string               $status
      */
-    protected function generateExportImportNotify($user, $jobExecution, $type, $status)
+    protected function generateExportImportNotify(JobExecution $jobExecution, $user, $type, $status)
     {
         $this->manager->notify(
             [$user],
@@ -103,12 +104,12 @@ class JobExecutionNotifier implements EventSubscriberInterface
     }
 
     /**
-     * @param $user
-     * @param $jobExecution
-     * @param $type
-     * @param $status
+     * @param JobExecution         $jobExecution
+     * @param string|UserInterface $user
+     * @param string               $type
+     * @param string               $status
      */
-    protected function generateMassEditNotify($user, $jobExecution, $type, $status)
+    protected function generateMassEditNotify(JobExecution $jobExecution, $user, $type, $status)
     {
         $this->manager->notify(
             [$user],

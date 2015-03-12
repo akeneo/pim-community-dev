@@ -909,6 +909,12 @@ oro.locale:
 # Datagrid
 Selected products successfully deleted: Selected products successfully deleted
 
+pim_mass_edit:
+    notification:
+        mass_edit:
+            success: Mass edit finished
+            error:   Mass edit failed
+
 job_execution.summary:
     mass_edited: Mass edited
     skip:        skipped
