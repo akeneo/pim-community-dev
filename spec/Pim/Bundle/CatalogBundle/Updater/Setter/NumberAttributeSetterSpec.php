@@ -12,11 +12,11 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class BooleanValueSetterSpec extends ObjectBehavior
+class NumberAttributeSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beConstructedWith($builder, $attrValidatorHelper, ['pim_catalog_boolean']);
+        $this->beConstructedWith($builder, $attrValidatorHelper, ['pim_catalog_number']);
     }
 
     function it_is_a_setter()
@@ -24,13 +24,13 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface');
     }
 
-    function it_supports_boolean_attributes(
-        AttributeInterface $booleanAttribute,
+    function it_supports_number_attributes(
+        AttributeInterface $numberAttribute,
         AttributeInterface $textareaAttribute
     ) {
-        $booleanAttribute->getAttributeType()->willReturn('pim_catalog_boolean');
-        $this->supports($booleanAttribute)->shouldReturn(true);
-        $this->supportsAttribute($booleanAttribute)->shouldReturn(true);
+        $numberAttribute->getAttributeType()->willReturn('pim_catalog_number');
+        $this->supports($numberAttribute)->shouldReturn(true);
+        $this->supportsAttribute($numberAttribute)->shouldReturn(true);
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $this->supports($textareaAttribute)->shouldReturn(false);
@@ -41,61 +41,61 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $attrValidatorHelper,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductValueInterface $booleanValue
+        ProductValueInterface $numberValue
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $attribute->getCode()->willReturn('displayable');
-        $product->getValue('displayable', 'fr_FR', 'mobile')->willReturn($booleanValue);
-        $booleanValue->setData(true)->shouldBeCalled();
+        $attribute->getCode()->willReturn('response_to_universe');
+        $product->getValue('response_to_universe', 'fr_FR', 'mobile')->willReturn($numberValue);
+        $numberValue->setData(42)->shouldBeCalled();
 
-        $this->setValue([$product], $attribute, true, 'fr_FR', 'mobile');
+        $this->setValue([$product], $attribute, 42, 'fr_FR', 'mobile');
     }
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
         $attrValidatorHelper,
         AttributeInterface $attribute,
         ProductInterface $product,
-        ProductValueInterface $booleanValue
+        ProductValueInterface $numberValue
     ) {
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $attribute->getCode()->willReturn('displayable');
-        $product->getValue('displayable', 'fr_FR', 'mobile')->willReturn($booleanValue);
-        $booleanValue->setData(true)->shouldBeCalled();
+        $attribute->getCode()->willReturn('response_to_universe');
+        $product->getValue('response_to_universe', 'fr_FR', 'mobile')->willReturn($numberValue);
+        $numberValue->setData(42)->shouldBeCalled();
 
-        $this->setAttributeData($product, $attribute, true, ['locale' => 'fr_FR', 'scope' => 'mobile']);
+        $this->setAttributeData($product, $attribute, 42, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_boolean(
+    function it_throws_an_error_if_data_is_not_a_number_or_null(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 'not a boolean';
+        $data = 'not a number';
 
         $this->shouldThrow(
-            InvalidArgumentException::booleanExpected('attributeCode', 'setter', 'boolean', gettype($data))
+            InvalidArgumentException::numericExpected('attributeCode', 'setter', 'number', gettype($data))
         )->during('setValue', [[$product], $attribute, $data, 'fr_FR', 'mobile']);
     }
 
-    function it_throws_an_error_if_attribute_data_is_not_a_boolean(
+    function it_throws_an_error_if_attribute_data_is_not_a_number_or_null(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
         $attribute->getCode()->willReturn('attributeCode');
 
-        $data = 'not a boolean';
+        $data = 'not a number';
 
         $this->shouldThrow(
-            InvalidArgumentException::booleanExpected('attributeCode', 'setter', 'boolean', gettype($data))
+            InvalidArgumentException::numericExpected('attributeCode', 'setter', 'number', gettype($data))
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_sets_boolean_value_to_a_product_value(
+    function it_sets_number_value_to_a_product_value(
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -105,7 +105,7 @@ class BooleanValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = true;
+        $data = 44;
 
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData($data)->shouldBeCalled();
@@ -123,7 +123,7 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $this->setValue($products, $attribute, $data, $locale, $scope);
     }
 
-    function it_sets_attribute_data_boolean_value_to_a_product_value(
+    function it_sets_number_value_to_a_product_attribute_data_value(
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -133,7 +133,7 @@ class BooleanValueSetterSpec extends ObjectBehavior
     ) {
         $locale = 'fr_FR';
         $scope = 'mobile';
-        $data = true;
+        $data = 44;
 
         $attribute->getCode()->willReturn('attributeCode');
         $productValue->setData($data)->shouldBeCalled();
@@ -145,6 +145,8 @@ class BooleanValueSetterSpec extends ObjectBehavior
         $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+
+        $products = [$product1, $product2, $product3];
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);

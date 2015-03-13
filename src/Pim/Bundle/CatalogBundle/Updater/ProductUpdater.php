@@ -51,19 +51,6 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
-    {
-        $attribute = $this->getAttribute($field);
-        // TODO clean deprecated
-        $setter = $this->setterRegistry->get($attribute);
-        $setter->setValue($products, $attribute, $data, $locale, $scope);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setData(ProductInterface $product, $field, $data, array $options = [])
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
@@ -107,6 +94,18 @@ class ProductUpdater implements ProductUpdaterInterface
         } else {
             $adder->addFieldData($product, $field, $data, $options);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
+    {
+        foreach ($products as $product) {
+            $this->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+
+        return $this;
     }
 
     /**

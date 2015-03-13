@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class SimpleSelectValueSetterSpec extends ObjectBehavior
+class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,

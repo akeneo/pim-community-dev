@@ -44,7 +44,7 @@ interface ProductUpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use set(
+     * @deprecated will be removed in 1.5, please use setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 

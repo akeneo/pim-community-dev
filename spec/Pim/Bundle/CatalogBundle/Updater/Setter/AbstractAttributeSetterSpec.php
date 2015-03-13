@@ -14,7 +14,7 @@ class AbstractAttributeSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Setter\ConcreteValueSetter');
+        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Setter\ConcreteAttributeSetter');
         $this->beConstructedWith($productBuilder, $attrValidatorHelper);
     }
 
@@ -120,7 +120,7 @@ class AbstractAttributeSetterSpec extends ObjectBehavior
     }
 }
 
-class ConcreteValueSetter extends AbstractAttributeSetter
+class ConcreteAttributeSetter extends AbstractAttributeSetter
 {
     function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {

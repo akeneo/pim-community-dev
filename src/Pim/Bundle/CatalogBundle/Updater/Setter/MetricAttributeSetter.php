@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricValueSetter extends AbstractAttributeSetter
+class MetricAttributeSetter extends AbstractAttributeSetter
 {
     /** @var MetricFactory */
     protected $metricFactory;

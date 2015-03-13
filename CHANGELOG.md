@@ -36,6 +36,15 @@
 - Remove ProductManager, add AttributeRepositoryInterface in arguments of the constructor of Pim/Bundle/CatalogBundle/Validator/Constraints/SingleIdentifierAttributeValidator
 - Move Pim/Bundle/CatalogBundle/Updater/Setter/AbstractValueSetter.php → Pim/Bundle/CatalogBundle/Updater/Setter/AbstractAttributeSetter
 - Remove AttributeRepositoryInterface argument from constructor of Pim/Bundle/CatalogBundle/Updater/Setter/SetterRegistryInterface, remove method get(
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/BooleanValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/BooleanAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/DateValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/DateAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MediaValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MediaAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MetricValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MetricAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/NumberValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/NumberAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/TextValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/TextAttributeSetter
 
 # 1.3.x
 

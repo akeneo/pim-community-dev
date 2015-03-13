@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class MediaValueSetterSpec extends ObjectBehavior
+class MediaAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
@@ -40,7 +40,7 @@ class MediaValueSetterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\Setter\MediaValueSetter');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\Setter\MediaAttributeSetter');
     }
 
     function it_supports_media_attributes(
