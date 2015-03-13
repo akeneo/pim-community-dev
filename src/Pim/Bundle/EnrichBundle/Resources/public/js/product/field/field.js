@@ -6,15 +6,17 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
     return Backbone.View.extend({
         tagName: 'div',
         attribute: null,
-        type: 'text',
+        fieldType: 'text',
         context: {},
         config: {},
         model: FieldModel,
         template: _.template(fieldTemplate),
+        infoElements: {},
         initialize: function(attribute)
         {
-            this.attribute = attribute;
-            this.model = new FieldModel();
+            this.attribute    = attribute;
+            this.model        = new FieldModel();
+            this.infoElements = {};
 
             return this;
         },
@@ -23,12 +25,13 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
             this.$el.empty();
             var value = this.getCurrentValue();
             var templateContext = {
-                type: this.type,
+                type: this.fieldType,
                 label: this.attribute.label[this.context.locale],
                 value: value,
                 config: this.config,
                 context: this.context,
-                attribute: this.attribute
+                attribute: this.attribute,
+                info: this.infoElements
             };
 
             this.$el.html(this.template(templateContext));
@@ -59,6 +62,17 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         setConfig: function(config)
         {
             this.config = config;
+        },
+        addInfo: function(position, code, element) {
+            if (!(position in this.infoElements)) {
+                this.infoElements[position] = {};
+            }
+            this.infoElements[position][code] = element;
+
+            this.render();
+        },
+        removeInfo: function(position, code) {
+            delete this.infoElements[position][code];
         },
         validate: function()
         {

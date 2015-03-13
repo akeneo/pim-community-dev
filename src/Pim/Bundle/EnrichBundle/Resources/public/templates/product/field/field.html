@@ -1,4 +1,4 @@
-<div class="<%= type %>-field">
+<div class="<%= type %>-field form-field">
     <header>
         <label><%= label %></label>
         <span class="field-info pull-right">
@@ -11,7 +11,7 @@
     </div>
     <footer>
         <div class="field-info">
-
+            <% _.each(info['footer'], function(element) { %><%= element.html() %><% }) %>
         </div>
     </footer>
 </div>

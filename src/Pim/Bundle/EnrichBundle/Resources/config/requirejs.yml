@@ -31,6 +31,7 @@ config:
         pim/attribute-manager:              pimenrich/js/product/attribute-manager
         pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
         pim/config-manager:                 pimenrich/js/product/config-manager
+        pim/variant-group-manager:                 pimenrich/js/product/variant-group-manager
 
         # Fields
         pim/field:                          pimenrich/js/product/field/field

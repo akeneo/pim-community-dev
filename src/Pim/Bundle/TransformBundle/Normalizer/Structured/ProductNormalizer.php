@@ -27,6 +27,9 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
     const FIELD_GROUPS = 'groups';
 
     /** @staticvar string */
+    const FIELD_VARIANT_GROUP = 'variant_group';
+
+    /** @staticvar string */
     const FIELD_CATEGORY = 'categories';
 
     /** @staticvar string */
@@ -66,10 +69,13 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
         $context['entity'] = 'product';
         $data = [];
 
-        $data[self::FIELD_FAMILY]   = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS]   = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
-        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : [];
-        $data[self::FIELD_ENABLED]  = $product->isEnabled();
+        $data[self::FIELD_FAMILY]        = $product->getFamily() ? $product->getFamily()->getCode() : null;
+        $data[self::FIELD_GROUPS]        = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
+        $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
+        $data[self::FIELD_CATEGORY]      = $product->getCategoryCodes() ?
+            explode(',', $product->getCategoryCodes()) :
+            [];
+        $data[self::FIELD_ENABLED]       = $product->isEnabled();
 
         $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
 

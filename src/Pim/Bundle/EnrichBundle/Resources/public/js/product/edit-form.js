@@ -1,6 +1,6 @@
 "use strict";
 
-define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/config-manager', 'pim/attribute-manager', 'text!pim/template/product/form', 'oro/navigation', 'oro/loading-mask'], function($, _, Backbone, Routing, FieldManager, ConfigManager, AttributeManager, formTemplate, Navigation, LoadingMask) {
+define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim/config-manager', 'pim/attribute-manager', 'pim/variant-group-manager', 'text!pim/template/product/form', 'oro/navigation', 'oro/loading-mask'], function($, _, Backbone, Routing, FieldManager, ConfigManager, AttributeManager, VariantGroupManager, formTemplate, Navigation, LoadingMask) {
     var FormState = Backbone.Model.extend({
         defaults: {
             'locale': 'en_US',
@@ -86,6 +86,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                 field.setValues(value);
                 field.render();
 
+                this.addVariantInfos(product, field);
+
                 promise.resolve(field);
             }, this));
 
@@ -136,6 +138,21 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
         },
         changeScope: function (event) {
             this.model.set('scope', event.currentTarget.dataset.scope);
+        },
+        addVariantInfos: function(product, field) {
+
+
+            VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
+                if (_.contains(_.keys(variantGroup.values), field.attribute.code)) {
+
+                    var $element = $(
+                        '<div><i class="icon-lock"></i>Updated by variant group: ' +
+                            variantGroup.label[this.model.get('locale')] +
+                        '</div>'
+                    );
+                    field.addInfo('footer', 'coming_from_variant_group', $element);
+                }
+            }, this));
         },
         addAttribute: function(event) {
             var attributeCode = event.currentTarget.dataset.attribute;

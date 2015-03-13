@@ -97,4 +97,4 @@ pim_enrich_product_rest_post:
     defaults: { _controller: pim_enrich.controller.product_rest:postAction }
     requirements:
         id: '[0-9a-f]+'
-    methods: [POSt]
+    methods: [POST]
