@@ -249,4 +249,20 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         return $qb->getQuery()->count();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('values.attribute')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
+    }
 }

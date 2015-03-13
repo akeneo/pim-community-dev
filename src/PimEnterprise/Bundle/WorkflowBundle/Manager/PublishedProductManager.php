@@ -209,6 +209,14 @@ class PublishedProductManager
     }
 
     /**
+     * @return PublishedProductRepositoryInterface
+     */
+    public function getProductRepository()
+    {
+        return $this->repository;
+    }
+
+    /**
      * Dispatch a published product event
      *
      * @param string                    $name
