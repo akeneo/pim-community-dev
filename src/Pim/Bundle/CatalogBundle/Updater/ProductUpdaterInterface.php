@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Update many products at a time
+ * Provides basic operations to update a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

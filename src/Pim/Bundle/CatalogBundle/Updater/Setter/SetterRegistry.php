@@ -16,7 +16,7 @@ class SetterRegistry implements SetterRegistryInterface
     /** @var AttributeSetterInterface[] priorized attribute setters */
     protected $attributeSetters = [];
 
-    /** @var FieldSorterInterface[] priorized field setters */
+    /** @var FieldSetterInterface[] priorized field setters */
     protected $fieldSetters = [];
 
     /**

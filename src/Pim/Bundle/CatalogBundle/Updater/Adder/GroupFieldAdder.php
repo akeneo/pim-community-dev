@@ -15,6 +15,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class GroupFieldAdder extends AbstractFieldAdder
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $groupRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param array                                 $supportedFields
