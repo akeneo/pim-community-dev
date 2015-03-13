@@ -17,30 +17,10 @@ interface SetterRegistryInterface
      * Register a setter
      *
      * @param SetterInterface $setter
+     *
+     * @return SetterRegistryInterface
      */
     public function register(SetterInterface $setter);
-
-    /**
-     * Fetch the setter which supports the attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @throws \LogicException
-     *
-     * @return SetterInterface
-     *
-     * @deprecated will be removed in 1.5, use getAttributeSetter
-     */
-    public function get(AttributeInterface $attribute);
-
-    /**
-     * Get the setter (field or attribute)
-     *
-     * @param string $code the field or the attribute code
-     *
-     * @return SetterInterface|null
-     */
-    public function getSetter($code);
 
     /**
      * Get the field setter

@@ -57,8 +57,6 @@ services:
     # Setters
     pim_catalog.updater.setter.registry:
         class: %pim_catalog.updater.setter.registry.class%
-        arguments:
-            - @pim_catalog.repository.attribute
 
     pim_catalog.updater.setter.abstract:
         class: %pim_catalog.updater.setter.abstract.class%

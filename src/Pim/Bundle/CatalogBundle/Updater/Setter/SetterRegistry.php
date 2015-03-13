@@ -20,17 +20,6 @@ class SetterRegistry implements SetterRegistryInterface
     /** @var FieldSorterInterface[] priorized field setters */
     protected $fieldSetters = [];
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /**
-     * @param AttributeRepositoryInterface $attributeRepository
-     */
-    public function __construct(AttributeRepositoryInterface $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -43,37 +32,7 @@ class SetterRegistry implements SetterRegistryInterface
             $this->attributeSetters[] = $setter;
         }
 
-        return null;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, use getAttributeSetter
-     */
-    public function get(AttributeInterface $attribute)
-    {
-        foreach ($this->attributeSetters as $setter) {
-            if ($setter->supports($attribute)) {
-                return $setter;
-            }
-        }
-
-        throw new \LogicException(sprintf('Attribute "%s" is not supported by any setter', $attribute->getCode()));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSetter($code)
-    {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
-
-        if (null !== $attribute) {
-            return $this->getAttributeSetter($attribute);
-        }
-
-        return $this->getFieldSetter($code);
+        return $this;
     }
 
     /**
