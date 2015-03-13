@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
-
 /**
  * Registry of mass edit actions indexed by gridName alias
  *
