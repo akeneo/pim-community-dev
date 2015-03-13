@@ -159,7 +159,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     protected function applySetData(ProductInterface $product, array $update)
     {
         $updater = $this->getUpdater();
-        $updater->set(
+        $updater->setData(
             $product,
             $update['field'],
             $update['value'],

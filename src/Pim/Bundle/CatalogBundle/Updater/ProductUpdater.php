@@ -64,7 +64,7 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function set(ProductInterface $product, $field, $data, array $options = [])
+    public function setData(ProductInterface $product, $field, $data, array $options = [])
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
 

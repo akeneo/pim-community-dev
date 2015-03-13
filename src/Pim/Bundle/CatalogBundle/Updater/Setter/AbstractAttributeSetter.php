@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractValueSetter implements AttributeSetterInterface
+abstract class AbstractAttributeSetter implements AttributeSetterInterface
 {
     /** @var array */
     protected $supportedTypes = [];

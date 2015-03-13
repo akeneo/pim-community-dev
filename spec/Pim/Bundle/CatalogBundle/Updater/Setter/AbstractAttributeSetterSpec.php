@@ -7,10 +7,10 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\AbstractValueSetter;
+use Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
-class AbstractValueSetterSpec extends ObjectBehavior
+class AbstractAttributeSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
@@ -120,7 +120,7 @@ class AbstractValueSetterSpec extends ObjectBehavior
     }
 }
 
-class ConcreteValueSetter extends AbstractValueSetter
+class ConcreteValueSetter extends AbstractAttributeSetter
 {
     function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
     {

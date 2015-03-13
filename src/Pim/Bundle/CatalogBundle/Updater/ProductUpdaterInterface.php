@@ -14,6 +14,26 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 interface ProductUpdaterInterface
 {
     /**
+     * Sets a data in a product field (erase the current data)
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field to modify
+     * @param mixed            $data    The data to set
+     * @param array            $options Options to pass to the setter
+     */
+    public function setData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
+     * Adds a data in a product field (complete the current data)
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field to complete
+     * @param mixed            $data    The data to add
+     * @param array            $options Options to pass to the setter
+     */
+    public function addData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
      * Set the data in values of many products
      *
      * @param ProductInterface[] $products
@@ -50,24 +70,4 @@ interface ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     );
-
-    /**
-     * Sets a data in a product field (erase the current data)
-     *
-     * @param ProductInterface $product The product to modify
-     * @param string           $field   The field to modify
-     * @param mixed            $data    The data to set
-     * @param array            $options Options to pass to the setter
-     */
-    public function set(ProductInterface $product, $field, $data, array $options = []);
-
-    /**
-     * Adds a data in a product field (complete the current data)
-     *
-     * @param ProductInterface $product The product to modify
-     * @param string           $field   The field to complete
-     * @param mixed            $data    The data to add
-     * @param array            $options Options to pass to the setter
-     */
-    public function addData(ProductInterface $product, $field, $data, array $options = []);
 }
