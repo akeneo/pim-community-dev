@@ -3,6 +3,7 @@
 define(['pim/field', 'underscore', 'text!pim/template/product/field/textarea'], function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
+        fieldType: 'textarea',
         events: {
             'change textarea': 'updateModel'
         },

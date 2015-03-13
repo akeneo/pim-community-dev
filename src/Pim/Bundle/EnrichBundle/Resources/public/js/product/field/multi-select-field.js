@@ -3,6 +3,7 @@
 define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select', 'routing', 'jquery.select2'], function (Field, _, fieldTemplate, Routing) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
+        fieldType: 'multi-select',
         events: {
             'change input': 'updateModel'
         },

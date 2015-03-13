@@ -3,6 +3,7 @@
 define(['pim/field', 'underscore', 'text!pim/template/product/field/text'], function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
+        fieldType: 'text',
         events: {
             'change input': 'updateModel'
         },

@@ -3,6 +3,7 @@
 define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jquery.select2'], function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
+        fieldType: 'metric',
         events: {
             'change .data, .unit': 'updateModel'
         },

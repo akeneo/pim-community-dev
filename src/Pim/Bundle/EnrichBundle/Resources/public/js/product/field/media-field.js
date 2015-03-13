@@ -3,6 +3,7 @@
 define(['pim/field', 'underscore', 'text!pim/template/product/field/media'], function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
+        fieldType: 'media',
         events: {
             'change input': 'updateModel'
         },
