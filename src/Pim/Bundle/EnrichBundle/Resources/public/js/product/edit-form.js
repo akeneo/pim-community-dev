@@ -140,10 +140,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             this.model.set('scope', event.currentTarget.dataset.scope);
         },
         addVariantInfos: function(product, field) {
-
-
             VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
-                if (_.contains(_.keys(variantGroup.values), field.attribute.code)) {
+                if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
 
                     var $element = $(
                         '<div><i class="icon-lock"></i>Updated by variant group: ' +
