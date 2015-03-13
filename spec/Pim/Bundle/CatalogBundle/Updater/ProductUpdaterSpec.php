@@ -6,6 +6,10 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Adder\AdderInterface;
+use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Adder\AttributeAdderInterface;
+use Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface;
@@ -17,9 +21,10 @@ class ProductUpdaterSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         SetterRegistryInterface $setterRegistry,
-        CopierRegistryInterface $copierRegistry
+        CopierRegistryInterface $copierRegistry,
+        AdderRegistryInterface $adderRegistry
     ) {
-        $this->beConstructedWith($attributeRepository, $setterRegistry, $copierRegistry);
+        $this->beConstructedWith($attributeRepository, $setterRegistry, $copierRegistry, $adderRegistry);
     }
 
     function it_is_initializable()
@@ -71,6 +76,37 @@ class ProductUpdaterSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->copyValue($products, 'from_field', 'to_field', 'from_locale', 'to_locale', 'from_scope', 'to_scope');
+    }
+
+    function it_adds_a_data_to_a_product_attribute(
+        $adderRegistry,
+        $attributeRepository,
+        ProductInterface $product,
+        AttributeInterface $attribute,
+        AttributeAdderInterface $adder
+    ) {
+        $attributeRepository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $adderRegistry->getAttributeAdder($attribute)->willReturn($adder);
+        $adder
+            ->addAttributeData($product, $attribute, 'my name', [])
+            ->shouldBeCalled();
+
+        $this->addData($product, 'name', 'my name', []);
+    }
+
+    function it_adds_a_data_to_a_product_field(
+        $adderRegistry,
+        $attributeRepository,
+        ProductInterface $product,
+        FieldAdderInterface $adder
+    ) {
+        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
+        $adderRegistry->getFieldAdder('category')->willReturn($adder);
+        $adder
+            ->addFieldData($product, 'category', 'tshirt', [])
+            ->shouldBeCalled();
+
+        $this->addData($product, 'category', 'tshirt', []);
     }
 
     function it_throws_an_exception_when_it_copies_an_unknown_field($attributeRepository, ProductInterface $product)

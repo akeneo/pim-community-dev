@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
@@ -26,19 +27,25 @@ class ProductUpdater implements ProductUpdaterInterface
     /** @var CopierRegistryInterface */
     protected $copierRegistry;
 
+    /** @var AdderRegistryInterface */
+    protected $adderRegistry;
+
     /**
      * @param AttributeRepositoryInterface $repository
      * @param SetterRegistryInterface      $setterRegistry
      * @param CopierRegistryInterface      $copierRegistry
+     * @param AdderRegistryInterface       $adderRegistry
      */
     public function __construct(
         AttributeRepositoryInterface $repository,
         SetterRegistryInterface $setterRegistry,
-        CopierRegistryInterface $copierRegistry
+        CopierRegistryInterface $copierRegistry,
+        AdderRegistryInterface $adderRegistry
     ) {
         $this->attributeRepository = $repository;
         $this->setterRegistry = $setterRegistry;
         $this->copierRegistry = $copierRegistry;
+        $this->adderRegistry = $adderRegistry;
     }
 
     /**
@@ -47,6 +54,7 @@ class ProductUpdater implements ProductUpdaterInterface
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
         $attribute = $this->getAttribute($field);
+        // TODO clean deprecated
         $setter = $this->setterRegistry->get($attribute);
         $setter->setValue($products, $attribute, $data, $locale, $scope);
 
@@ -74,6 +82,30 @@ class ProductUpdater implements ProductUpdaterInterface
                 throw new \LogicException(sprintf('No setter found for attribute "%s"', $attribute->getCode()));
             }
             $setter->setAttributeData($product, $attribute, $data, $options);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addData(ProductInterface $product, $field, $data, array $options = [])
+    {
+        $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
+
+        if (null !== $attribute) {
+            $adder = $this->adderRegistry->getAttributeAdder($attribute);
+        } else {
+            $adder = $this->adderRegistry->getFieldAdder($field);
+        }
+
+        if (null === $adder) {
+            throw new \LogicException(sprintf('No adder found for field "%s"', $field));
+        }
+
+        if (null !== $attribute) {
+            $adder->addAttributeData($product, $attribute, $data, $options);
+        } else {
+            $adder->addFieldData($product, $field, $data, $options);
         }
     }
 

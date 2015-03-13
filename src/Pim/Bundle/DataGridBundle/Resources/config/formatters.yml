@@ -97,4 +97,3 @@ services:
             - '@translator'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: job_name }
-

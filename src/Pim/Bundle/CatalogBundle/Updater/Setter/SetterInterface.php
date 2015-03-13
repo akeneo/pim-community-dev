@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
- * Sets a data in a product field
+ * Sets a data in a product field (erase the current data)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
