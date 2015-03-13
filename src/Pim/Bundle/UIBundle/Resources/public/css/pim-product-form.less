@@ -1,14 +1,36 @@
-#product-edit-form {
-    padding: 40px;
+
+.tab-content {
+    margin: 0 15px;
+}
+
+#product-attributes > header {
+
+    height: 44px;
+    border: solid 1px #E5E5E5;
+    border-top: none;
+    padding: 8px;
 
 }
 
-.form-field { 
+#product-values {
+    margin: 40px 20px;
+}
+
+.form-field {
+
     margin-bottom: 20px;
+    max-width: 400px;
+    
     label {
         font-size: 12px;
         color: @color-form-label;
         font-weight: normal;
+        display: inline-block;
+    }
+    
+    .field-info {
+        float: right;
+        color: @color-form-info;
     }
     
     input, 
@@ -17,25 +39,28 @@
         font-size: 12px;
         color: @color-form-input;
         min-height: 30px;
+        margin-bottom: 0;
+        width: 100%;
         .border-radius (0);
         .box-sizing();
     }
-    
+
     &.text-field > input {
-        max-width: 400px;
-    }
-    
-    &.textarea-field > textarea {
         width: 100%;
     }
-    
+
+    &.textarea-field {
+        max-width: 100%;
+        textarea { width: 100%; }
+    }
+
     &.price-collection-field {
-    
+
         input {
             min-width: 80px;
             max-width: 100px;
         }
-        
+
         .input-append .add-on {  
             box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
             font-size: 11px;
@@ -43,29 +68,33 @@
             .border-radius(0);
             .box-sizing();
         }
-    
+
     }
     
+    &.metric-field{
+
+        input{ width: 300px; }
+
+    }
+
     &.boolean-field {
-        
+
         .switch {
             .border-radius(0);
             .box-sizing();
             border-color:#CCC;
-            
+
             .switch-left, .switch-right, .switch-small {
-                
                 .border-radius(0);
                 background-image: none;
                 background-color: white;
                 text-shadow:none;
-                
             }
-            
+
             .switch-left{ background-color: #7EC500; }
-            
+
             .switch-right{ background-color: #F0F0F0; }
-            
+
         }
         
     }
@@ -81,22 +110,22 @@
         .box-sizing();
         max-width: 400px;
         display: block;
-        
+
         .select2-choice { line-height: 30px; }
-        
+
         .select2-choices {
-            
+
             .select2-search-choice {
                 .border-radius (0);
                 background-image:none;
                 background-color: white;
                 line-height: 22px;
                 border: 1px solid #ccc;
-                
+
                 div { margin:0 6px 0 18px; }
-                
+
             }
-            
+
             .select2-search-choice-close {
                 line-height: 28px;
                 border-right: solid 1px #ccc;
@@ -105,18 +134,28 @@
                 top:0;
                 left: 0;
                 text-align: center;
-                
+
                 &:hover { background: #F0F0F0 !important; }
-                
+
             }
-            
+
         }
-        
+
         .select2-input { min-width: 20px; }
-        
+
         &.unit{
-            display: inline-block;    
+            display: inline-block;
+            width: 100px;
+            margin-left: -5px;
         }
+
+        .select2-search-choice-close{ margin-top: 0 }
+
     }
 
+}
+
+.select2-search input {
+    .border-radius (0);
+    .box-sizing();
 }
