@@ -46,6 +46,12 @@ class BatchCommand extends ContainerAwareCommand
                 null,
                 InputOption::VALUE_REQUIRED,
                 'The email to notify at the end of the job execution'
+            )
+            ->addOption(
+                'no-log',
+                null,
+                InputOption::VALUE_NONE,
+                'Don\'t display logs'
             );
     }
 
@@ -54,8 +60,8 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $noDebug = $input->getOption('no-debug');
-        if (!$noDebug) {
+        $noLog = $input->getOption('no-log');
+        if (!$noLog) {
             $logger = $this->getContainer()->get('monolog.logger.batch');
             // Fixme: Use ConsoleHandler available on next Symfony version (2.4 ?)
             $logger->pushHandler(new StreamHandler('php://stdout'));

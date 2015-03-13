@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+0.4.0
+-----
+
+### Improvements
+
+ - The `--no-log` option is now used instead of the console related `--no-debug` option
+
 0.3.5
 -----
 
