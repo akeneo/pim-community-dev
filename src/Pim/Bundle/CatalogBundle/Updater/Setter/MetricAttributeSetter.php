@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricValueSetter extends AbstractValueSetter
+class MetricAttributeSetter extends AbstractAttributeSetter
 {
     /** @var MetricFactory */
     protected $metricFactory;
@@ -43,21 +43,6 @@ class MetricValueSetter extends AbstractValueSetter
         $this->metricFactory = $metricFactory;
         $this->measureManager = $measureManager;
         $this->supportedTypes = $supportedTypes;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, use method setAttributeData
-     *
-     * setValue( [$products], $weightAttribute,
-     *           ['data' => 12, 'unit' => 'KILOGRAM']
-     */
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
     }
 
     /**

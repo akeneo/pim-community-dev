@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
 /**
- * Update many products at a time
+ * Provides basic operations to update a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -51,37 +51,24 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
-    {
-        $attribute = $this->getAttribute($field);
-        // TODO clean deprecated
-        $setter = $this->setterRegistry->get($attribute);
-        $setter->setValue($products, $attribute, $data, $locale, $scope);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function set(ProductInterface $product, $field, $data, array $options = [])
+    public function setData(ProductInterface $product, $field, $data, array $options = [])
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
 
-        if (null === $attribute) {
-            $setter = $this->setterRegistry->getFieldSetter($field);
-
-            if (null === $setter) {
-                throw new \LogicException(sprintf('No setter found for field "%s"', $field));
-            }
-            $setter->setFieldData($product, $field, $data, $options);
-        } else {
+        if (null !== $attribute) {
             $setter = $this->setterRegistry->getAttributeSetter($attribute);
+        } else {
+            $setter = $this->setterRegistry->getFieldSetter($field);
+        }
 
-            if (null === $setter) {
-                throw new \LogicException(sprintf('No setter found for attribute "%s"', $attribute->getCode()));
-            }
+        if (null === $setter) {
+            throw new \LogicException(sprintf('No setter found for field "%s"', $field));
+        }
+
+        if (null !== $attribute) {
             $setter->setAttributeData($product, $attribute, $data, $options);
+        } else {
+            $setter->setFieldData($product, $field, $data, $options);
         }
     }
 
@@ -107,6 +94,18 @@ class ProductUpdater implements ProductUpdaterInterface
         } else {
             $adder->addFieldData($product, $field, $data, $options);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
+    {
+        foreach ($products as $product) {
+            $this->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+
+        return $this;
     }
 
     /**

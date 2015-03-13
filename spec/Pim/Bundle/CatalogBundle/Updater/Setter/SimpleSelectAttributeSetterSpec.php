@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class SimpleSelectValueSetterSpec extends ObjectBehavior
+class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
@@ -38,37 +38,10 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         AttributeInterface $textareaAttribute
     ) {
         $simpleSelectAttribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
-        $this->supports($simpleSelectAttribute)->shouldReturn(true);
         $this->supportsAttribute($simpleSelectAttribute)->shouldReturn(true);
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($textareaAttribute)->shouldReturn(false);
         $this->supportsAttribute($textareaAttribute)->shouldReturn(false);
-    }
-
-    function it_checks_locale_and_scope_when_setting_a_value(
-        $attrValidatorHelper,
-        $attrOptionRepository,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $optionValue,
-        AttributeOptionInterface $attributeOption
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $attributeOption->getCode()->willReturn('red');
-        $attribute->getCode()->willReturn('color');
-        $attrOptionRepository
-            ->findOneBy(['code' => 'red', 'attribute' => $attribute])
-            ->shouldBeCalledTimes(1)
-            ->willReturn($attributeOption);
-
-        $product->getValue('color', 'fr_FR', 'mobile')->willReturn($optionValue);
-        $optionValue->getOption()->willReturn($attributeOption);
-        $optionValue->setOption($attributeOption)->shouldBeCalled();
-
-        $this->setValue([$product], $attribute, 'red', 'fr_FR', 'mobile');
     }
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
@@ -96,21 +69,6 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, 'red', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_string_or_null(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = ['some', 'random', 'stuff'];
-
-        $this
-            ->shouldThrow(
-                InvalidArgumentException::stringExpected('attributeCode', 'setter', 'simple select', gettype($data))
-            )
-            ->duringSetValue([$product], $attribute, $data, 'fr_FR', 'mobile');
-    }
-
     function it_throws_an_error_if_attribute_data_is_not_a_string_or_null(
         AttributeInterface $attribute,
         ProductInterface $product
@@ -126,29 +84,7 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
             ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_the_option_doesnt_exist(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 'unknown code';
-
-        $this
-            ->shouldThrow(
-                InvalidArgumentException::validEntityCodeExpected(
-                    'attributeCode',
-                    'code',
-                    'The option does not exist',
-                    'setter',
-                    'simple select',
-                    $data
-                )
-            )
-            ->duringSetValue([$product], $attribute, $data, 'fr_FR', 'mobile');
-    }
-
-    function it_throws_an_error_if_the_attribute_data_option_doesnt_exist(
+    function it_throws_an_error_if_the_attribute_data_option_does_not_exist(
         AttributeInterface $attribute,
         ProductInterface $product
     ) {
@@ -168,41 +104,6 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
                 )
             )
             ->duringSetAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_sets_simpleselect_option_to_a_product_value(
-        $builder,
-        $attrOptionRepository,
-        AttributeInterface $attribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
-        ProductValueInterface $productValue,
-        AttributeOptionInterface $attributeOption
-    ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $attributeOption->getCode()->willReturn('attributeOptionCode');
-
-        $attrOptionRepository
-            ->findOneBy(['code' => 'attributeOptionCode', 'attribute' => $attribute])
-            ->shouldBeCalledTimes(3)
-            ->willReturn($attributeOption);
-
-        $productValue->setOption($attributeOption)->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
-
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-
-        $this->setValue([$product1, $product2, $product3], $attribute, 'attributeOptionCode', $locale, $scope);
     }
 
     function it_sets_attribute_data_simpleselect_option_to_a_product_value(
@@ -240,20 +141,6 @@ class SimpleSelectValueSetterSpec extends ObjectBehavior
         $this->setAttributeData($product1, $attribute, 'red', ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, 'red', ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product3, $attribute, 'red', ['locale' => $locale, 'scope' => $scope]);
-    }
-
-    function it_allows_setting_option_to_null(
-        ProductInterface $product,
-        AttributeInterface $attribute,
-        ProductValueInterface $value
-    ) {
-        $attribute->getCode()->willReturn('choice');
-
-        $product->getValue('choice', null, null)->shouldBeCalled()->willReturn($value);
-
-        $value->setOption(null)->shouldBeCalled();
-
-        $this->setValue([$product], $attribute, null);
     }
 
     function it_allows_setting_attribute_data_option_to_null(

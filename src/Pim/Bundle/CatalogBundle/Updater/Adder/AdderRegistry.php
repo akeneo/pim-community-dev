@@ -16,7 +16,7 @@ class AdderRegistry implements AdderRegistryInterface
     /** @var AttributeAdderInterface[] priorized attribute adders */
     protected $attributeAdders = [];
 
-    /** @var FieldSorterInterface[] priorized field adders */
+    /** @var FieldAdderInterface[] priorized field adders */
     protected $fieldAdders = [];
 
     /**

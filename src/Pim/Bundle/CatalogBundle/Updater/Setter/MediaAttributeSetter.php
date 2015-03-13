@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaValueSetter extends AbstractValueSetter
+class MediaAttributeSetter extends AbstractAttributeSetter
 {
     /** @var MediaManager */
     protected $mediaManager;
@@ -51,18 +51,6 @@ class MediaValueSetter extends AbstractValueSetter
         $this->mediaFactory   = $mediaFactory;
         $this->supportedTypes = $supportedTypes;
         $this->uploadDir      = $uploadDir;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, use method setAttributeData
-     */
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
     }
 
     /**

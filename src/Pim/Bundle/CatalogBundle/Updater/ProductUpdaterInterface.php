@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Update many products at a time
+ * Provides basic operations to update a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -13,6 +13,26 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 interface ProductUpdaterInterface
 {
+    /**
+     * Sets a data in a product field (erase the current data)
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field to modify
+     * @param mixed            $data    The data to set
+     * @param array            $options Options to pass to the setter
+     */
+    public function setData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
+     * Adds a data in a product field (complete the current data)
+     *
+     * @param ProductInterface $product The product to modify
+     * @param string           $field   The field to complete
+     * @param mixed            $data    The data to add
+     * @param array            $options Options to pass to the setter
+     */
+    public function addData(ProductInterface $product, $field, $data, array $options = []);
+
     /**
      * Set the data in values of many products
      *
@@ -24,7 +44,7 @@ interface ProductUpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use set(
+     * @deprecated will be removed in 1.5, please use setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
@@ -50,24 +70,4 @@ interface ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     );
-
-    /**
-     * Sets a data in a product field (erase the current data)
-     *
-     * @param ProductInterface $product The product to modify
-     * @param string           $field   The field to modify
-     * @param mixed            $data    The data to set
-     * @param array            $options Options to pass to the setter
-     */
-    public function set(ProductInterface $product, $field, $data, array $options = []);
-
-    /**
-     * Adds a data in a product field (complete the current data)
-     *
-     * @param ProductInterface $product The product to modify
-     * @param string           $field   The field to complete
-     * @param mixed            $data    The data to add
-     * @param array            $options Options to pass to the setter
-     */
-    public function addData(ProductInterface $product, $field, $data, array $options = []);
 }

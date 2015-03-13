@@ -9,13 +9,13 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
- * Sets a text value in many products
+ * Sets a date value in many products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextValueSetter extends AbstractValueSetter
+class DateAttributeSetter extends AbstractAttributeSetter
 {
     /**
      * @param ProductBuilderInterface  $productBuilder
@@ -34,19 +34,7 @@ class TextValueSetter extends AbstractValueSetter
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, use method setAttributeData
-     */
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Expected data input format: "my text to update"
+     * Expected data input format : "yyyy-mm-dd"
      */
     public function setAttributeData(
         ProductInterface $product,
@@ -55,10 +43,38 @@ class TextValueSetter extends AbstractValueSetter
         array $options = []
     ) {
         $this->resolver->resolve($options);
-        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'text');
-        $this->checkData($attribute, $data);
+        $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'date');
+        $data = $this->formatData($attribute, $data);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
+    }
+
+    /**
+     * Format data
+     *
+     * @param AttributeInterface $attribute
+     * @param mixed              $data
+     *
+     * @return string
+     */
+    protected function formatData(AttributeInterface $attribute, $data)
+    {
+        if ($data instanceof \DateTime) {
+            $data = $data->format('Y-m-d');
+        } elseif (is_string($data)) {
+            $this->validateDateFormat($attribute, $data);
+        } elseif (null !== $data) {
+            throw InvalidArgumentException::expected(
+                $attribute->getCode(),
+                'datetime or string',
+                gettype($data),
+                'setter',
+                'date',
+                $data
+            );
+        }
+
+        return $data;
     }
 
     /**
@@ -76,22 +92,34 @@ class TextValueSetter extends AbstractValueSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
+
+        if (null !== $data) {
+            $data = new \DateTime($data);
+        }
+
         $value->setData($data);
     }
 
     /**
-     * Check data input
      * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param string             $data
      */
-    protected function checkData(AttributeInterface $attribute, $data)
+    protected function validateDateFormat(AttributeInterface $attribute, $data)
     {
-        if (null !== $data && !is_string($data)) {
-            throw InvalidArgumentException::stringExpected(
+        $dateValues = explode('-', $data);
+
+        if (
+            count($dateValues) !== 3
+            || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
+            || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
+        ) {
+            throw InvalidArgumentException::expected(
                 $attribute->getCode(),
+                'a string with the format yyyy-mm-dd',
                 'setter',
-                'text',
-                gettype($data)
+                'date',
+                gettype($data),
+                $data
             );
         }
     }

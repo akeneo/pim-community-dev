@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class TextValueSetterSpec extends ObjectBehavior
+class TextAttributeSetterSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
@@ -30,32 +30,13 @@ class TextValueSetterSpec extends ObjectBehavior
         AttributeInterface $numberAttribute
     ) {
         $textAttribute->getAttributeType()->willReturn('pim_catalog_text');
-        $this->supports($textAttribute)->shouldReturn(true);
         $this->supportsAttribute($textAttribute)->shouldReturn(true);
 
         $textareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($textareaAttribute)->shouldReturn(true);
         $this->supportsAttribute($textareaAttribute)->shouldReturn(true);
 
         $numberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $this->supports($numberAttribute)->shouldReturn(false);
         $this->supportsAttribute($numberAttribute)->shouldReturn(false);
-    }
-
-    function it_checks_locale_and_scope_when_setting_a_value(
-        $attrValidatorHelper,
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        ProductValueInterface $textValue
-    ) {
-        $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
-        $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
-
-        $attribute->getCode()->willReturn('description');
-        $product->getValue('description', 'fr_FR', 'mobile')->willReturn($textValue);
-        $textValue->setData('data');
-
-        $this->setValue([$product], $attribute, 'data', 'fr_FR', 'mobile');
     }
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
@@ -74,19 +55,6 @@ class TextValueSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, 'data', ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_data_is_not_a_string(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 42;
-
-        $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text', gettype($data))
-        )->during('setValue', [[$product], $attribute, $data, 'fr_FR', 'mobile']);
-    }
-
     function it_throws_an_error_if_attribute_data_is_not_a_string(
         AttributeInterface $attribute,
         ProductInterface $product
@@ -98,34 +66,6 @@ class TextValueSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text', gettype($data))
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_sets_text_value_to_a_product_value(
-        AttributeInterface $attribute,
-        ProductInterface $product1,
-        ProductInterface $product2,
-        ProductInterface $product3,
-        $builder,
-        ProductValue $productValue
-    ) {
-        $locale = 'fr_FR';
-        $scope = 'mobile';
-        $data = 'data';
-
-        $attribute->getCode()->willReturn('attributeCode');
-        $productValue->setData($data)->shouldBeCalled();
-
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
-            ->willReturn($productValue);
-
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
-        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
-        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
-
-        $products = [$product1, $product2, $product3];
-
-        $this->setValue($products, $attribute, $data, $locale, $scope);
     }
 
     function it_sets_attribute_data_text_value_to_a_product_value(

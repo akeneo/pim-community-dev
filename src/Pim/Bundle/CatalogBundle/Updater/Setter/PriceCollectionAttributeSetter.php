@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceCollectionValueSetter extends AbstractValueSetter
+class PriceCollectionAttributeSetter extends AbstractAttributeSetter
 {
     /** @var CurrencyManager */
     protected $currencyManager;
@@ -36,18 +36,6 @@ class PriceCollectionValueSetter extends AbstractValueSetter
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->currencyManager = $currencyManager;
         $this->supportedTypes  = $supportedTypes;
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, use method setAttributeData
-     */
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
     }
 
     /**

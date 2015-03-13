@@ -31,15 +31,26 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     {
         $updates = $template->getValuesData();
         foreach ($updates as $attributeCode => $values) {
-            foreach ($values as $value) {
-                $this->productUpdater->setValue(
-                    $products,
-                    $attributeCode,
-                    $value['value'],
-                    $value['locale'],
-                    $value['scope']
-                );
+            foreach ($values as $data) {
+                $this->updateProducts($products, $attributeCode, $data);
             }
+        }
+    }
+
+    /**
+     * @param array  $products
+     * @param string $attributeCode
+     * @param mixed  $data
+     */
+    protected function updateProducts(array $products, $attributeCode, $data)
+    {
+        foreach ($products as $product) {
+            $this->productUpdater->setData(
+                $product,
+                $attributeCode,
+                $data['value'],
+                ['locale' => $data['locale'], 'scope' => $data['scope']]
+            );
         }
     }
 }
