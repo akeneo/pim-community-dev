@@ -115,7 +115,7 @@ pim_enrich:
             label:          Change status (enable / disable)
             description:    The selected products will be enabled or disabled.
             success_flash:  Product(s) status have been changed
-            launched_flash: Product(s) status job is running
+            launched_flash: The job updating product(s) status is currently running
 
         edit-common-attributes:
             label:         Edit attributes
