@@ -6,11 +6,11 @@ Feature: Update multi select fields
   Scenario: Successfully update a multi select field
     Given a "apparel" catalog configuration
     And the following products:
-      | sku  |
-      | red_and_blue |
-      | red |
+      | sku             |
+      | red_and_blue    |
+      | red             |
       | black_and_white |
-      | reverted |
+      | reverted        |
     Then I should get the following products after apply the following updater to it:
       | product         | actions                                                                                                                                                                                                                              | result                                                                                                                  |
       | red_and_blue    | [{"type": "set_value", "field": "additional_colors", "value": ["additional_red", "additional_blue"], "locale": null, "scope": null}]                                                                                                 | {"values": {"additional_colors": [{"locale": null, "scope": null, "value": ["additional_blue", "additional_red"]}]}}    |

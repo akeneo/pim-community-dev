@@ -43,34 +43,38 @@ class MetricValueCopier extends AbstractValueCopier
     /**
      * {@inheritdoc}
      */
-    public function copyValue(
-        array $products,
+    public function copyAttributeData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
+        array $options = []
     ) {
+        // TODO: option resolver for this
+        $fromLocale = $options['from_locale'];
+        $toLocale = $options['from_locale'];
+        $fromScope = $options['from_scope'];
+        $toScope = $options['from_scope'];
+
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
         $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
 
-        foreach ($products as $product) {
-            $this->copySingleValue(
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                $fromLocale,
-                $toLocale,
-                $fromScope,
-                $toScope
-            );
-        }
+        $this->copySingleValue(
+            $fromProduct,
+            $toProduct,
+            $fromAttribute,
+            $toAttribute,
+            $fromLocale,
+            $toLocale,
+            $fromScope,
+            $toScope
+        );
     }
 
     /**
-     * @param ProductInterface   $product
+     * @param ProductInterface   $fromProduct
+     * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
@@ -79,7 +83,8 @@ class MetricValueCopier extends AbstractValueCopier
      * @param string             $toScope
      */
     protected function copySingleValue(
-        ProductInterface $product,
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -87,12 +92,12 @@ class MetricValueCopier extends AbstractValueCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
             $fromData = $fromValue->getData();
-            $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
+            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
             if (null === $metric = $toValue->getMetric()) {

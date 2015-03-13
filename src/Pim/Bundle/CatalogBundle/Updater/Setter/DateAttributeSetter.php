@@ -82,7 +82,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param mixed              $data
+     * @param string             $data
      * @param string             $locale
      * @param string             $scope
      */

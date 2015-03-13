@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractValueCopier implements CopierInterface
+abstract class AbstractValueCopier implements AttributeCopierInterface
 {
     /** @var array */
     protected $supportedFromTypes = [];
@@ -44,7 +44,7 @@ abstract class AbstractValueCopier implements CopierInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
         $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
@@ -83,6 +83,8 @@ abstract class AbstractValueCopier implements CopierInterface
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $type
+     *
+     * TODO: weird to have this here!? Looks not used!
      *
      * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
      */
