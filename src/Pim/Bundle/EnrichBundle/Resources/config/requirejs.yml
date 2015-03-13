@@ -47,6 +47,7 @@ config:
 
         # Templates
         pim/template/product/form:                   pimenrich/templates/product/form.html
+        pim/template/product/field/field:          pimenrich/templates/product/field/field.html
         pim/template/product/field/boolean:          pimenrich/templates/product/field/boolean.html
         pim/template/product/field/date:             pimenrich/templates/product/field/date.html
         pim/template/product/field/media:            pimenrich/templates/product/field/media.html

@@ -1,15 +1,1 @@
-<div class="multi-select-field">
-    <header>
-        <label><%= label %></label>
-        <span class="field-info">
-            <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
-            <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
-        </span>
-    </header>
-    <input type="hidden" class="select-field" value="<%= value.value.join(',') %>" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>"/>
-    <footer>
-        <div class="field-info">
-
-        </div>
-    </footer>
-</div>
+<input type="hidden" class="select-field" value="<%= value.value.join(',') %>" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>"/>

@@ -43,7 +43,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             'click .nav-tabs li': 'changeAttributeGroup',
             'click #add-attribute li a': 'addAttribute',
             'click #get-data': 'getData',
-            'click #save': 'save'
+            'click #save': 'save',
+            'click i.remove-attribute': 'removeAttribute'
         },
         initialize: function () {
             this.listenTo(this.model, 'change', this.render);
@@ -88,7 +89,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
                     FieldManager.getField(attributeCode).done(_.bind(function(field) {
                         field.setContext({
                             'locale': this.model.get('locale'),
-                            'scope': this.model.get('scope')
+                            'scope': this.model.get('scope'),
+                            'optional': AttributeManager.isOptional(attributeCode, product, this.config['families'])
                         });
                         field.setConfig(this.config);
                         field.setValues(value);
@@ -130,6 +132,14 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             }
 
             product.values[attributeCode] = [];
+
+            this.model.set('product', product);
+            this.model.trigger('change');
+        },
+        removeAttribute: function(event) {
+            var attributeCode = event.currentTarget.dataset.attribute;
+            var product = this.model.get('product');
+            delete product.values[attributeCode];
 
             this.model.set('product', product);
             this.model.trigger('change');

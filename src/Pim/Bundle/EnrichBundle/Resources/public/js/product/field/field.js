@@ -1,15 +1,16 @@
 "use strict";
 
-define(['backbone', 'underscore'], function (Backbone, _) {
+define(['backbone', 'underscore', 'text!pim/template/product/field/field'], function (Backbone, _, fieldTemplate) {
     var FieldModel = Backbone.Model.extend({});
 
     return Backbone.View.extend({
         tagName: 'div',
         attribute: null,
+        type: 'text',
         context: {},
         config: {},
         model: FieldModel,
-        template: function() { throw new Error('You should implement your field template'); },
+        template: _.template(fieldTemplate),
         initialize: function(attribute)
         {
             this.attribute = attribute;
@@ -21,17 +22,23 @@ define(['backbone', 'underscore'], function (Backbone, _) {
         {
             this.$el.empty();
             var value = this.getCurrentValue();
-            this.$el.html(
-                this.template({
-                    label: this.attribute.label[this.context.locale],
-                    value: value,
-                    config: this.config,
-                    attribute: this.attribute
-                })
-            );
+            var templateContext = {
+                type: this.type,
+                label: this.attribute.label[this.context.locale],
+                value: value,
+                config: this.config,
+                context: this.context,
+                attribute: this.attribute
+            };
+
+            this.$el.html(this.template(templateContext));
+            this.$('.field-input').append(this.renderInput(templateContext));
             this.delegateEvents();
 
             return this;
+        },
+        renderInput: function() {
+            throw new Error('You should implement your field template');
         },
         getData: function()
         {

@@ -2,9 +2,12 @@
 
 define(['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'bootstrap.bootstrapswitch'], function (Field, _, fieldTemplate) {
     return Field.extend({
-        template: _.template(fieldTemplate),
+        fieldTemplate: _.template(fieldTemplate),
         events: {
             'change input': 'updateModel'
+        },
+        renderInput: function(context) {
+            return this.fieldTemplate(context);
         },
         render: function() {
             Field.prototype.render.apply(this, arguments);

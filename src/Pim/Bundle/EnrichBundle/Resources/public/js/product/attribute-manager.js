@@ -44,6 +44,9 @@ define(['pim/config-manager'], function (ConfigManager) {
                 });
 
             return promise.promise();
+        },
+        isOptional: function(attribute, product, families) {
+            return !product.family ? true : !_.contains(families[product.family].attributes, attribute);
         }
     };
 });
