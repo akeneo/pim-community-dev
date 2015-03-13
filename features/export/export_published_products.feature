@@ -44,6 +44,6 @@ Feature: Export published products
     Then exported file of "clothing_mobile_published_product_export" should contain:
     """
     sku;categories;datasheet;description-de_DE-mobile;description-en_US-mobile;description-fr_FR-mobile;enabled;family;groups;handmade;length;main_color;manufacturer;name-de_DE;name-en_US;name-fr_FR;number_in_stock-mobile;price-EUR;price-USD;rating;release_date-mobile;secondary_color;side_view;size;top_view;weather_conditions
-    jacket-white;winter_collection,jackets;;"Ein sehr elegantes weißes Jacket";"A really stylish white jacket";"Un Jacket blanc élégant";1;jackets;;;;white;Volcom;"Weißes Jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
-    jacket-black;winter_collection,jackets;;;;;1;jackets;;;;black;Volcom;"Weißes Jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
+    jacket-white;jackets,winter_collection;;"Ein sehr elegantes weißes Jacket";"A really stylish white jacket";"Un Jacket blanc élégant";1;jackets;;;;white;Volcom;"Weißes Jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
+    jacket-black;jackets,winter_collection;;;;;1;jackets;;;;black;Volcom;"Weißes Jacket";"White jacket";"Jacket blanc";;10.00;15.00;;;;;XL;;
     """
