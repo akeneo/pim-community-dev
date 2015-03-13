@@ -52,7 +52,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $eventDispatcher->dispatch(PublishedProductEvents::POST_PUBLISH, Argument::any(), Argument::any())->shouldBeCalled();
 
         $om->persist($published)->shouldBeCalled();
-        $om->flush()->shouldBeCalled();
+        $om->flush($published)->shouldBeCalled();
 
         $this->publish($product);
     }
@@ -79,6 +79,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $unpublisher->unpublish($alreadyPublished)->shouldBeCalled();
         $om->remove($alreadyPublished)->shouldBeCalled();
         $om->persist($published)->shouldBeCalled();
+        $om->flush($published)->shouldBeCalled();
         $om->flush()->shouldBeCalled();
 
         $this->publish($product);
