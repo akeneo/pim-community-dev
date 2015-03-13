@@ -50,8 +50,50 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             this.listenTo(this.model, 'change', this.render);
         },
         render: function () {
-            var promises = [];
+            this.getConfig().done(_.bind(function() {
+                var product = this.model.get('product');
 
+                this.$el.html(this.template({config: this.config, 'state': this.model.toJSON()}));
+
+                var productValues = this.getAttributeGroupValues(product, this.model.get('attributeGroup'));
+
+                var fieldPromisses = [];
+                _.each(productValues, _.bind(function (productValue, attributeCode) {
+                    fieldPromisses.push(this.renderField(product, attributeCode, productValue));
+                }, this));
+
+                $.when.apply($, fieldPromisses).done(_.bind(function() {
+                    var $productValuesPanel = this.$('#product-values');
+
+                    _.each(arguments, _.bind(function(field) {
+                        $productValuesPanel.append(field.$el);
+                    }, this));
+                }, this));
+            }, this));
+
+            return this;
+        },
+        renderField: function(product, attributeCode, value) {
+            var promise = new $.Deferred();
+
+            FieldManager.getField(attributeCode).done(_.bind(function(field) {
+                field.setContext({
+                    'locale': this.model.get('locale'),
+                    'scope': this.model.get('scope'),
+                    'optional': AttributeManager.isOptional(attributeCode, product, this.config['families'])
+                });
+                field.setConfig(this.config);
+                field.setValues(value);
+                field.render();
+
+                promise.resolve(field);
+            }, this));
+
+            return promise.promise();
+        },
+        getConfig: function () {
+            var configurationPromise = $.Deferred();
+            var promises = [];
 
             ConfigManager.getConfig().done(_.bind(function(config) {
                 this.config = config;
@@ -71,47 +113,20 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
             promises.push(ConfigManager.getConfig());
 
             $.when.apply($, promises).done(_.bind(function() {
-                var product = this.model.get('product');
-
-                this.$el.html(this.template({config: this.config, 'state': this.model.toJSON()}));
-
-                var values = {};
-                _.each(product.values, _.bind(function(value, attributeCode) {
-                    if (-1 !== this.config.attributegroups[this.model.get('attributeGroup')].attributes.indexOf(attributeCode)) {
-                        values[attributeCode] = value;
-                    }
-                }, this));
-
-                var fieldPromisses = [];
-                _.each(values, _.bind(function (value, attributeCode) {
-                    var promise = new $.Deferred();
-
-                    FieldManager.getField(attributeCode).done(_.bind(function(field) {
-                        field.setContext({
-                            'locale': this.model.get('locale'),
-                            'scope': this.model.get('scope'),
-                            'optional': AttributeManager.isOptional(attributeCode, product, this.config['families'])
-                        });
-                        field.setConfig(this.config);
-                        field.setValues(value);
-                        field.render();
-
-                        promise.resolve(field);
-                    }, this));
-
-                    fieldPromisses.push(promise.promise());
-                }, this));
-
-                $.when.apply($, fieldPromisses).done(_.bind(function() {
-                    var $productValuesPanel = this.$('#product-values');
-
-                    _.each(arguments, _.bind(function(field) {
-                        $productValuesPanel.append(field.$el);
-                    }, this));
-                }, this));
+                configurationPromise.resolve(this.config);
             }, this));
 
-            return this;
+            return configurationPromise.promise();
+        },
+        getAttributeGroupValues: function (product, attributeGroup) {
+            var values = {};
+            _.each(product.values, _.bind(function(productValue, attributeCode) {
+                if (-1 !== this.config.attributegroups[attributeGroup].attributes.indexOf(attributeCode)) {
+                    values[attributeCode] = productValue;
+                }
+            }, this));
+
+            return values;
         },
         changeLocale: function (event) {
             this.model.set('locale', event.currentTarget.dataset.locale);
