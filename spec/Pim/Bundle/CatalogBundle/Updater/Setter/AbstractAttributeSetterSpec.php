@@ -122,11 +122,6 @@ class AbstractAttributeSetterSpec extends ObjectBehavior
 
 class ConcreteAttributeSetter extends AbstractAttributeSetter
 {
-    function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
-        // needs to be implemented
-    }
-
     function setAttributeData(ProductInterface $product, AttributeInterface $attribute, $data, array $options = [])
     {
         // needs to be implemented

@@ -48,21 +48,6 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, use method setAttributeData
-     *
-     * setValue( [$products], $weightAttribute,
-     *           ['data' => 12, 'unit' => 'KILOGRAM']
-     */
-    public function setValue(array $products, AttributeInterface $attribute, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->setAttributeData($product, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * Expected data input format:
      * {
      *     "data": "12.0"|"12"|12|12.3,
