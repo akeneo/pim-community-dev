@@ -167,6 +167,8 @@ define(['jquery', 'underscore', 'backbone', 'routing', 'pim/field-manager', 'pim
 
             this.model.set('product', product);
             this.model.trigger('change');
+
+            this.model.set('attributeGroup', this.config['attributes'][attributeCode].group);
         },
         removeAttribute: function(event) {
             var attributeCode = event.currentTarget.dataset.attribute;
