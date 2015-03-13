@@ -94,6 +94,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
                     'command'     => 'akeneo:batch:job',
                     'code'        => $job->getCode(),
                     '--no-debug'  => true,
+                    '--no-log'    => true,
                     '-v'          => true
                 ]
             ),
