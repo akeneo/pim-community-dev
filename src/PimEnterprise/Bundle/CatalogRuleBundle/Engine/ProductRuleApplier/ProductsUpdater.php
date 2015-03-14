@@ -98,15 +98,20 @@ class ProductsUpdater
      */
     protected function applyCopyAction(array $products, ProductCopyValueActionInterface $action)
     {
-        $this->productUpdater->copyValue(
-            $products,
-            $action->getFromField(),
-            $action->getToField(),
-            $action->getFromLocale(),
-            $action->getToLocale(),
-            $action->getFromScope(),
-            $action->getToScope()
-        );
+        foreach ($products as $product) {
+            $this->productUpdater->copyData(
+                $product,
+                $product,
+                $action->getFromField(),
+                $action->getToField(),
+                [
+                    'from_locale' => $action->getFromLocale(),
+                    'from_scope' => $action->getFromScope(),
+                    'to_locale' => $action->getToLocale(),
+                    'to_scope' => $action->getToScope()
+                ]
+            );
+        }
 
         return $this;
     }
@@ -121,13 +126,14 @@ class ProductsUpdater
      */
     protected function applySetAction(array $products, ProductSetValueActionInterface $action)
     {
-        $this->productUpdater->setValue(
-            $products,
-            $action->getField(),
-            $action->getValue(),
-            $action->getLocale(),
-            $action->getScope()
-        );
+        foreach ($products as $product) {
+            $this->productUpdater->setData(
+                $product,
+                $action->getField(),
+                $action->getValue(),
+                ['locale' => $action->getLocale(), 'scope' => $action->getScope()]
+            );
+        }
 
         return $this;
     }
