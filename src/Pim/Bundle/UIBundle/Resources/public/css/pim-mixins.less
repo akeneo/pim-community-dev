@@ -1,0 +1,15 @@
+.border-radius (@radius:0px) {
+    -webkit-border-radius:      @radius;
+    -moz-border-radius:         @radius;
+    border-radius:              @radius;
+
+    -moz-background-clip:       padding;
+    -webkit-background-clip:    padding-box;
+    background-clip:            padding-box;
+}
+
+.box-sizing(@value:border-box){
+    box-sizing:                 @value;
+    -webkit-box-sizing:         @value;
+    -moz-box-sizing:            @value;
+}
