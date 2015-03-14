@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractValueCopier implements AttributeCopierInterface
+abstract class AbstractAttributeCopier implements AttributeCopierInterface
 {
     /** @var array */
     protected $supportedFromTypes = [];

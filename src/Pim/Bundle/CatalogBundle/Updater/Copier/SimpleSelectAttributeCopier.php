@@ -5,17 +5,16 @@ namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
- * Copy a price collection value attribute in other price collection value attribute
+ * Copy a simple select value attribute in other simple select value attribute
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceCollectionValueCopier extends AbstractValueCopier
+class SimpleSelectAttributeCopier extends AbstractAttributeCopier
 {
     /**
      * @param ProductBuilderInterface  $productBuilder
@@ -66,16 +65,14 @@ class PriceCollectionValueCopier extends AbstractValueCopier
     }
 
     /**
-     * Copy single value
-     *
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
-     * @param string             $fromLocale
-     * @param string             $toLocale
-     * @param string             $fromScope
-     * @param string             $toScope
+     * @param string|null        $fromLocale
+     * @param string|null        $toLocale
+     * @param string|null        $fromScope
+     * @param string|null        $toScope
      */
     protected function copySingleValue(
         ProductInterface $fromProduct,
@@ -93,21 +90,8 @@ class PriceCollectionValueCopier extends AbstractValueCopier
             if (null === $toValue) {
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
-            $this->copyOptions($fromValue, $toValue);
-        }
-    }
 
-    /**
-     * Copy attribute price into a price collection attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     */
-    protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
-    {
-        foreach ($fromValue->getData() as $price) {
-            $this->productBuilder
-                ->addPriceForCurrencyWithData($toValue, $price->getCurrency(), $price->getData());
+            $toValue->setOption($fromValue->getData());
         }
     }
 }

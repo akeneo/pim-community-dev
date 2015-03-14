@@ -22,18 +22,18 @@ parameters:
 
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     # TODO useful to use this abstract?
-    pim_catalog.updater.copier.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier
-    pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
-    pim_catalog.updater.copier.textarea_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
-    pim_catalog.updater.copier.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
-    pim_catalog.updater.copier.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
-    pim_catalog.updater.copier.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
-    pim_catalog.updater.copier.image_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\MediaValueCopier
-    pim_catalog.updater.copier.file_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\MediaValueCopier
-    pim_catalog.updater.copier.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\MetricValueCopier
-    pim_catalog.updater.copier.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Copier\BaseValueCopier
-    pim_catalog.updater.copier.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectValueCopier
-    pim_catalog.updater.copier.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionValueCopier
+    pim_catalog.updater.copier.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Copier\AbstractAttributeCopier
+    pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.textarea_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.image_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.file_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\MetricAttributeCopier
+    pim_catalog.updater.copier.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectAttributeCopier
+    pim_catalog.updater.copier.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionAttributeCopier
 
     pim_catalog.updater.adder.registry.class:               Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistry
     pim_catalog.updater.adder.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Adder\CategoryFieldAdder

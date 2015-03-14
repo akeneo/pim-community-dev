@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-
 /**
  * Copy a value from a field to another in many products
  *

@@ -46,6 +46,14 @@
 - Rename Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectAttributeSetter
 - Rename Pim/Bundle/CatalogBundle/Updater/Setter/TextValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/TextAttributeSetter
 - Remove setValue and supports from Pim/Bundle/CatalogBundle/Updater/Setter/SetterInterface
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/CopierInterface -> Pim/Bundle/CatalogBundle/Updater/Copier/AttributeCopierInterface
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/AbstractValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/AbstractAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/BaseValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/BaseAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MediaValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MediaAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MetricValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MetricAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectAttributeCopier
 
 # 1.3.x
 

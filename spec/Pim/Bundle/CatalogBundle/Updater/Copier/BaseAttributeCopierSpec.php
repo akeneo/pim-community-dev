@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class BaseValueCopierSpec extends ObjectBehavior
+class BaseAttributeCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
@@ -34,27 +34,27 @@ class BaseValueCopierSpec extends ObjectBehavior
     ) {
         $fromFooAttribute->getAttributeType()->willReturn('foo');
         $toFooAttribute->getAttributeType()->willReturn('foo');
-        $this->supports($fromFooAttribute, $toFooAttribute)->shouldReturn(true);
+        $this->supportsAttributes($fromFooAttribute, $toFooAttribute)->shouldReturn(true);
 
         $fromFooAttribute->getAttributeType()->willReturn('foo');
         $toFooAttribute->getAttributeType()->willReturn('bar');
-        $this->supports($fromFooAttribute, $toFooAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromFooAttribute, $toFooAttribute)->shouldReturn(false);
 
         $fromTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromTextareaAttribute, $toTextareaAttribute)->shouldReturn(false);
 
         $fromImageAttribute->getAttributeType()->willReturn('pim_catalog_image');
         $toImageAttribute->getAttributeType()->willReturn('pim_catalog_image');
-        $this->supports($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
 
         $fromFileAttribute->getAttributeType()->willReturn('pim_catalog_file');
         $toFileAttribute->getAttributeType()->willReturn('pim_catalog_file');
-        $this->supports($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromImageAttribute, $toImageAttribute)->shouldReturn(false);
 
         $fromFooAttribute->getAttributeType()->willReturn('foo');
         $toTextareaAttribute->getAttributeType()->willReturn('pim_catalog_textarea');
-        $this->supports($fromFooAttribute, $toTextareaAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromFooAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
     function it_copies_a_boolean_value_to_a_product_value(
@@ -98,8 +98,20 @@ class BaseValueCopierSpec extends ObjectBehavior
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
-
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        foreach ($products as $product) {
+            $this->copyAttributeData(
+                $product,
+                $product,
+                $fromAttribute,
+                $toAttribute,
+                [
+                    'from_locale' => $fromLocale,
+                    'to_locale' => $toLocale,
+                    'from_scope' => $fromScope,
+                    'to_scope' => $toScope
+                ]
+            );
+        }
     }
 
     function it_copies__a_date_value_to_a_product_value(
@@ -143,8 +155,20 @@ class BaseValueCopierSpec extends ObjectBehavior
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
-
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        foreach ($products as $product) {
+            $this->copyAttributeData(
+                $product,
+                $product,
+                $fromAttribute,
+                $toAttribute,
+                [
+                    'from_locale' => $fromLocale,
+                    'to_locale' => $toLocale,
+                    'from_scope' => $fromScope,
+                    'to_scope' => $toScope
+                ]
+            );
+        }
     }
 
     function it_copies_number_value_to_a_product_value(
@@ -188,8 +212,20 @@ class BaseValueCopierSpec extends ObjectBehavior
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
-
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        foreach ($products as $product) {
+            $this->copyAttributeData(
+                $product,
+                $product,
+                $fromAttribute,
+                $toAttribute,
+                [
+                    'from_locale' => $fromLocale,
+                    'to_locale' => $toLocale,
+                    'from_scope' => $fromScope,
+                    'to_scope' => $toScope
+                ]
+            );
+        }
     }
 
     function it_copies_text_value_to_a_product_value(
@@ -235,8 +271,20 @@ class BaseValueCopierSpec extends ObjectBehavior
             ->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
-
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        foreach ($products as $product) {
+            $this->copyAttributeData(
+                $product,
+                $product,
+                $fromAttribute,
+                $toAttribute,
+                [
+                    'from_locale' => $fromLocale,
+                    'to_locale' => $toLocale,
+                    'from_scope' => $fromScope,
+                    'to_scope' => $toScope
+                ]
+            );
+        }
     }
 
     function it_copies_media_value_to_a_product_value(
@@ -282,7 +330,19 @@ class BaseValueCopierSpec extends ObjectBehavior
             ->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
-
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        foreach ($products as $product) {
+            $this->copyAttributeData(
+                $product,
+                $product,
+                $fromAttribute,
+                $toAttribute,
+                [
+                    'from_locale' => $fromLocale,
+                    'to_locale' => $toLocale,
+                    'from_scope' => $fromScope,
+                    'to_scope' => $toScope
+                ]
+            );
+        }
     }
 }

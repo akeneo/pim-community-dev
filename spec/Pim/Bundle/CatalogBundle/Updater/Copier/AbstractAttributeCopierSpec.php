@@ -6,15 +6,16 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\Copier\AbstractAttributeCopier;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class AbstractValueCopierSpec extends ObjectBehavior
+class AbstractAttributeCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Copier\ConcreteValueCopier');
+        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Copier\ConcreteAttributeCopier');
         $this->beConstructedWith($productBuilder, $attrValidatorHelper);
     }
 
@@ -136,16 +137,14 @@ class AbstractValueCopierSpec extends ObjectBehavior
     }
 }
 
-class ConcreteValueCopier extends AbstractValueCopier
+class ConcreteAttributeCopier extends AbstractAttributeCopier
 {
-    function copyValue(
-        array $products,
+    public function copyAttributeData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
+        array $options = []
     ) {
         // needs to be implemented
     }

@@ -16,11 +16,11 @@ interface FieldCopierInterface extends CopierInterface
     /**
      * Copy a data from a source field to a destination field
      *
-     * @param ProductInterface   $fromProduct
-     * @param ProductInterface   $toProduct
-     * @param string             $fromField
-     * @param string             $toField
-     * @param array              $options
+     * @param ProductInterface $fromProduct
+     * @param ProductInterface $toProduct
+     * @param string           $fromField
+     * @param string           $toField
+     * @param array            $options
      *
      * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
      *
