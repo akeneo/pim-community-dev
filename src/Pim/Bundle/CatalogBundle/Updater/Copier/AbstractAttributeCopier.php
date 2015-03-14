@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Abstract copier
@@ -29,6 +30,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
 
+    /** @var OptionResolver */
+    protected $resolver;
+
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
@@ -39,6 +43,9 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     ) {
         $this->productBuilder      = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
@@ -78,30 +85,19 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     }
 
     /**
-     * Check that unit families of 2 attributes are consistent.
-     *
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string             $type
-     *
-     * TODO: weird to have this here!? Looks not used!
-     *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
      */
-    protected function checkUnitFamily(
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        $type
-    ) {
-        try {
-            $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
-        } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
-                $fromAttribute->getCode() . ' && ' . $toAttribute->getCode(),
-                'copier',
-                $type
-            );
-        }
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['from_locale', 'from_scope', 'to_locale', 'to_scope']);
+        $resolver->setDefaults(
+            [
+                'from_locale' => null,
+                'from_scope' => null,
+                'to_locale' => null,
+                'to_scope' => null
+            ]
+        );
     }
 }

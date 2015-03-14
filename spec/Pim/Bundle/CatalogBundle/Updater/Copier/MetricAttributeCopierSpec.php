@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -126,5 +127,21 @@ class MetricAttributeCopierSpec extends ObjectBehavior
                 ]
             );
         }
+    }
+
+    function it_throws_an_exception_when_unit_families_are_not_consistent(
+        $attrValidatorHelper,
+        ProductInterface $product,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute
+    ) {
+        $e = new \LogicException('Metric families are not the same for attributes: "fromCode" and "toCode".');
+        $fromAttribute->getCode()->willReturn('fromCode');
+        $toAttribute->getCode()->willReturn('toCode');
+        $attrValidatorHelper->validateLocale(Argument::any(), Argument::any())->willReturn(null);
+        $attrValidatorHelper->validateScope(Argument::any(), Argument::any())->willReturn(null);
+        $attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute)->willThrow($e);
+
+        $this->shouldThrow($e)->during('copyAttributeData', [$product, $product, $fromAttribute, $toAttribute]);
     }
 }

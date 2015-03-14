@@ -58,11 +58,11 @@ class MediaAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $toAttribute,
         array $options = []
     ) {
-        // TODO: option resolver for this
+        $options = $this->resolver->resolve($options);
         $fromLocale = $options['from_locale'];
-        $toLocale = $options['from_locale'];
+        $toLocale = $options['to_locale'];
         $fromScope = $options['from_scope'];
-        $toScope = $options['from_scope'];
+        $toScope = $options['to_scope'];
 
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');

@@ -119,22 +119,6 @@ class AbstractAttributeCopierSpec extends ObjectBehavior
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, null, 'ecommerce']);
     }
-
-    function it_throws_an_exception_when_unit_families_are_not_consistent(
-        $attrValidatorHelper,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute
-    ) {
-        $e = new \LogicException('Metric families are not the same for attributes: "fromCode" and "toCode".');
-
-        $fromAttribute->getCode()->willReturn('fromCode');
-        $toAttribute->getCode()->willReturn('toCode');
-        $attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute)->willThrow($e);
-
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'fromCode && toCode', 'copier', 'concrete')
-        )->during('testUnitFamily', [$fromAttribute, $toAttribute]);
-    }
 }
 
 class ConcreteAttributeCopier extends AbstractAttributeCopier
@@ -152,10 +136,5 @@ class ConcreteAttributeCopier extends AbstractAttributeCopier
     function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'concrete');
-    }
-
-    function testUnitFamily(AttributeInterface $from, AttributeInterface $to)
-    {
-        $this->checkUnitFamily($from, $to, 'concrete');
     }
 }

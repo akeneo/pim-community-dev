@@ -49,7 +49,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
         $data,
         array $options = []
     ) {
-        $this->resolver->resolve($options);
+        $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'multi select');
         $this->checkData($attribute, $data);
 
