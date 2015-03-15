@@ -199,6 +199,9 @@ class CsvFormater
             case 'pim_catalog_multiselect':
                 $value = FieldNameBuilder::splitCollection($value);
                 break;
+            case 'pim_catalog_simpleselect':
+                $value = $value === "" ? null : $value;
+                break;
             case 'pim_catalog_boolean':
                 $value = (bool) $value;
                 break;
