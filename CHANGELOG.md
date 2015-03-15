@@ -63,6 +63,7 @@
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AttributeManager
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/CategoryManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/FamilyManager
 
 # 1.3.x
 
