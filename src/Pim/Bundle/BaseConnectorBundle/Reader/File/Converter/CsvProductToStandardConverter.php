@@ -1,19 +1,17 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Formater;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Converter;
 
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
- * Csv formater
+ * Product CSV Converter
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: too "global" naming, content is product tinted, CSVToStandardConverter?
  */
-class CsvFormater
+class CsvProductToStandardConverter implements StandardFormatConverterInterface
 {
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
@@ -107,7 +105,7 @@ class CsvFormater
      *
      * @return array structured product
      */
-    public function convertToStructured(array $product)
+    public function convert($product)
     {
         $result = [];
         foreach ($product as $column => $value) {
