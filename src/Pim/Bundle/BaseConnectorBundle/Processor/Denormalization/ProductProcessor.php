@@ -4,8 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\Formater\CsvFormater;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\BaseConnectorBundle\Reader\File\Converter\StandardFormatConverterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -24,8 +23,8 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var CsvFormater */
-    protected $csvFormater;
+    /** @var StandardFormatConverterInterface */
+    protected $converter;
 
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
@@ -39,7 +38,7 @@ class ProductProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $validator      validator of the object
      * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      * @param ProductBuilderInterface               $builder        product builder
-     * @param CsvFormater                           $csvFormater    csv formater
+     * @param StandardFormatConverterInterface      $converter      csv converter
      * @param ProductUpdaterInterface               $productUpdater product updater
      * @param string                                $class          class of the object to instanciate in case if need
      * @param string                                $format         format use to denormalize
@@ -50,7 +49,7 @@ class ProductProcessor extends AbstractProcessor
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         ProductBuilderInterface $builder,
-        CsvFormater $csvFormater,
+        StandardFormatConverterInterface $converter,
         ProductUpdaterInterface $productUpdater,
         $class,
         $format
@@ -58,7 +57,7 @@ class ProductProcessor extends AbstractProcessor
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
 
         $this->productBuilder = $builder;
-        $this->csvFormater    = $csvFormater;
+        $this->converter      = $converter;
         $this->productUpdater = $productUpdater;
         $this->format         = $format; // TODO: should be used by the converter! format to standard then use updater!
     }
@@ -68,7 +67,7 @@ class ProductProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->csvFormater->convertToStructured($item);
+        $convertedItem = $this->converter->convert($item);
         $identifierProperty = $this->repository->getIdentifierProperties();
 
         $identifier = $convertedItem[$identifierProperty[0]][0]['data'];
