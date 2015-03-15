@@ -42,6 +42,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** CursorFactoryInterface */
     protected $cursorFactory;
 
+    /** @var array */
+    protected $appliedFilters;
+
     /**
      * Constructor
      *
@@ -132,6 +135,13 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $this->addFieldFilter($filter, $field, $operator, $value, $context);
         }
 
+        $this->appliedFilters[] = [
+            'field'    => $field,
+            'operator' => $operator,
+            'value'    => $value,
+            'context'  => $context
+        ];
+
         return $this;
     }
 
@@ -162,6 +172,16 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Returns applied filters
+     *
+     * @return array
+     */
+    public function getAppliedFilters()
+    {
+        return $this->appliedFilters;
     }
 
     /**
