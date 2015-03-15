@@ -665,7 +665,7 @@ Feature: Import rules
     And I launch the import job
     And I wait for the "clothing_rule_import" job to finish
     Then I should see "skipped 2"
-    And I should see "actions[0]: Source and destination attributes \"description\" and \"side_view\" are not supported by any copier"
+    And I should see "actions[0]: No copier found for fields \"description\" and \"side_view\""
     When I am on the "description" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule copier actions:

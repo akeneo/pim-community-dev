@@ -42,8 +42,8 @@ class ProductsUpdaterSpec extends ObjectBehavior
     ) {
         $rule->getActions()->willReturn([]);
 
-        $productUpdater->setValue(Argument::any())->shouldNotBeCalled();
-        $productUpdater->copyValue(Argument::any())->shouldNotBeCalled();
+        $productUpdater->setData(Argument::any())->shouldNotBeCalled();
+        $productUpdater->copyData(Argument::any())->shouldNotBeCalled();
 
         $templateUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
 
@@ -63,7 +63,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $action->getLocale()->willReturn('en_US');
         $rule->getActions()->willReturn([$action]);
 
-        $productUpdater->setValue(Argument::any(), 'sku', 'foo', 'en_US', 'ecommerce')
+        $productUpdater->setData(Argument::any(), 'sku', 'foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])
             ->shouldBeCalled();
 
         $templateUpdater->update(Argument::any(), Argument::any())
@@ -88,7 +88,13 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $rule->getActions()->willReturn([$action]);
 
         $productUpdater
-            ->copyValue([$product], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
+            ->copyData(
+                $product,
+                $product,
+                'sku',
+                'description',
+                ['from_locale' => 'fr_FR', 'to_locale' => 'fr_CH', 'from_scope' => 'ecommerce', 'to_scope' => 'tablet']
+            )
             ->shouldBeCalled();
 
         $templateUpdater->update(Argument::any(), Argument::any())
@@ -126,7 +132,13 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $rule->getActions()->willReturn([$action]);
 
         $productUpdater
-            ->copyValue([$product], 'sku', 'description', 'fr_FR', 'fr_CH', 'ecommerce', 'tablet')
+            ->copyData(
+                $product,
+                $product,
+                'sku',
+                'description',
+                ['from_locale' => 'fr_FR', 'to_locale' => 'fr_CH', 'from_scope' => 'ecommerce', 'to_scope' => 'tablet']
+            )
             ->shouldBeCalled();
 
         $product->getVariantGroup()->willReturn($group);

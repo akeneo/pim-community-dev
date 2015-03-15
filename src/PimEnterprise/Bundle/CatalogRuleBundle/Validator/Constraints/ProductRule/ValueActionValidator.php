@@ -66,12 +66,11 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->factory->setValue(
-                [$fakeProduct],
+            $this->factory->setData(
+                $fakeProduct,
                 $action->getField(),
                 $action->getValue(),
-                $action->getLocale(),
-                $action->getScope()
+                ['locale' => $action->getLocale(), 'scope' => $action->getScope()]
             );
         } catch (\Exception $e) {
             $this->context->addViolation(
@@ -89,14 +88,17 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->factory->copyValue(
-                [$fakeProduct],
+            $this->factory->copyData(
+                $fakeProduct,
+                $fakeProduct,
                 $action->getFromField(),
                 $action->getToField(),
-                $action->getFromLocale(),
-                $action->getToLocale(),
-                $action->getFromScope(),
-                $action->getToScope()
+                [
+                    'from_locale' => $action->getFromLocale(),
+                    'from_scope' => $action->getFromScope(),
+                    'to_locale' => $action->getToLocale(),
+                    'to_scope' => $action->getToScope()
+                ]
             );
         } catch (\Exception $e) {
             $this->context->addViolation(
