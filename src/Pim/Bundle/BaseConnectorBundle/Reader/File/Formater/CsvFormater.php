@@ -11,7 +11,7 @@ use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO: too "global" naming, content is product tinted
+ * TODO: too "global" naming, content is product tinted, CSVToStandardConverter?
  */
 class CsvFormater
 {

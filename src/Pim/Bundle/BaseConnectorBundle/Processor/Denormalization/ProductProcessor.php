@@ -5,8 +5,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\Formater\CsvFormater;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -21,8 +21,8 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor
 {
-    /** @var ProductManager */
-    protected $manager;
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /** @var CsvFormater */
     protected $csvFormater;
@@ -38,9 +38,9 @@ class ProductProcessor extends AbstractProcessor
      * @param DenormalizerInterface                 $denormalizer   denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator      validator of the object
      * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
-     * @param ProductManager                        $manager        product manager
-     * @param CsvFormater                           $csvFormater    product manager
-     * @param ProductUpdaterInterface               $productUpdater product manager
+     * @param ProductBuilderInterface               $builder        product builder
+     * @param CsvFormater                           $csvFormater    csv formater
+     * @param ProductUpdaterInterface               $productUpdater product updater
      * @param string                                $class          class of the object to instanciate in case if need
      * @param string                                $format         format use to denormalize
      */
@@ -49,7 +49,7 @@ class ProductProcessor extends AbstractProcessor
         DenormalizerInterface $denormalizer, // TODO: useless here, except if embed the updater or setter registry?
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductManager $manager,
+        ProductBuilderInterface $builder,
         CsvFormater $csvFormater,
         ProductUpdaterInterface $productUpdater,
         $class,
@@ -57,10 +57,10 @@ class ProductProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
 
-        $this->manager        = $manager; // TODO: should be builder
+        $this->productBuilder = $builder;
         $this->csvFormater    = $csvFormater;
         $this->productUpdater = $productUpdater;
-        $this->format         = $format; // TODO: useless?
+        $this->format         = $format; // TODO: should be used by the converter! format to standard then use updater!
     }
 
     /**
@@ -89,14 +89,10 @@ class ProductProcessor extends AbstractProcessor
     public function findOrCreateProduct($identifier)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
-
         if (false === $product) {
-            // TODO: use the builder for this kind of stuff, legacy and abusive manager uses,
-            // cf rule action validation too
-            $product = $this->manager->createProduct();
-            $identifierValue = $this->manager->createProductValue();
-            $identifierValue->setAttribute($this->repository->getIdentifierAttribute());
-            $identifierValue->setData($identifier);
+            $product = $this->productBuilder->createProduct($identifier);
+
+            // TODO create with family to be able to add values!
         }
 
         return $product;
@@ -108,14 +104,19 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $item)
     {
+        // add missing values to ensure product has value for any attribute of its family
+        $this->productBuilder->addMissingProductValues($product);
         foreach ($item as $field => $values) {
             if (in_array($field, ['enabled', 'categories', 'groups', 'family'])) {
-                $this->productUpdater->set($product, $field, $values, []);
+                $this->productUpdater->setData($product, $field, $values, []);
             } else {
                 foreach ($values as $value) {
-                    $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                    // TODO: use registry and not updater?
-                    $this->productUpdater->set($product, $field, $value['data'], $options);
+                    // sets value if it exists, means coming from family's attributes or already exist as optional
+                    // TODO no values sets when new product is created (because family has not been sets and values does not exist yet)!
+                    if (null !== $product->getValue($field, $value['locale'], $value['scope'])) {
+                        $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+                        $this->productUpdater->setData($product, $field, $value['data'], $options);
+                    }
                 }
             }
         }

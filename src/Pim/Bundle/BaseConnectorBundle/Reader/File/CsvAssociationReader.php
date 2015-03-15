@@ -2,11 +2,6 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
