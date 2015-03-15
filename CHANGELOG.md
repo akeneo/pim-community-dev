@@ -11,7 +11,7 @@
 - Move PimEnterprise/Bundle/WorkflowBundle/Doctrine/ORM/{ → Repository}/PublishedProductRepository
 - Add ProductBuilderInterface argument of the constructor of PimEnterprise/Bundle/CatalogRuleBundle/Validator/Constraints/ProductRule/ValueActionValidator
 
-# 1.3.x
+# 1.3.4 (2015-03-11)
 
 ## Bug fixes
 - PIM-3814: "Affected by rules" info on attribute doesn't disappear
@@ -119,6 +119,20 @@
 - PIM-3548: Do not rely on the absolute file path of a media
 
 # 1.0.x
+
+## Bug fixes
+- PIM-3883: Mass publish does not work on Mongo
+
+# 1.0.25 (2015-03-11)
+- Update community-edition dependency to 1.2.32 version.
+
+# 1.0.24 (2015-03-06)
+- Update community-edition dependency to 1.2.31 version.
+
+## Bug fixes
+- PIM-3658: Mass publish time are exponential and not linear
+
+# 1.0.23 (2015-03-02)
 
 ## Bug fixes
 - PIM-3837: Fix XSS vulnerability on user form

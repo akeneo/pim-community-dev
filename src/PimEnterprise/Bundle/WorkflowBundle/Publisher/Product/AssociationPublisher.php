@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
@@ -72,6 +73,9 @@ class AssociationPublisher implements PublisherInterface
 
         $publishedProducts = $this->repository->findByOriginalProducts($products->toArray());
         if (count($publishedProducts) > 0) {
+            if (is_array($publishedProducts)) {
+                $publishedProducts = new ArrayCollection($publishedProducts);
+            }
             $copiedAssociation->setProducts($publishedProducts);
         }
     }

@@ -1,6 +1,7 @@
 parameters:
     pimee_workflow.event_subscriber.published_product.check_removal.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
     pimee_workflow.event_subscriber.published_product.consistency_exception.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\PublishedProductConsistencyExceptionSubscriber
+    pimee_workflow.event_subscriber.published_product.detach_product.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\DetachProductPostPublishSubscriber
     pimee_workflow.event_subscriber.product_draft.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\PrepareUploadingMediaSubscriber
     pimee_workflow.event_subscriber.product_draft.prepare_changes.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\PrepareProductDraftChangesSubscriber
     pimee_workflow.event_subscriber.product_draft.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MarkInProgressSubscriber
@@ -25,6 +26,13 @@ services:
         class: %pimee_workflow.event_subscriber.published_product.consistency_exception.class%
         arguments:
             - '@router'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.event_subscriber.published_product.detach_product:
+        class: %pimee_workflow.event_subscriber.published_product.detach_product.class%
+        arguments:
+            - '@pim_catalog.manager.product'
         tags:
             - { name: kernel.event_subscriber }
 
