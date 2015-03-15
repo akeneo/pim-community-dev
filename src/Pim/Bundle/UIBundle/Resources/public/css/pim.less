@@ -592,7 +592,7 @@ span.link-label {
 
 
 
-.tabs-top > .nav-tabs {
+.tabs-top > .nav-tabs, .tabs-top > header > .nav-tabs {
   background: none;
   border-bottom: 3px solid @color-new-purple-medium;
   margin: 0;
@@ -644,10 +644,16 @@ span.link-label {
     border-color: #ddd;
     margin-bottom: 0;
     line-height: 28px;
+    width: 150px;
+    word-wrap: break-word;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     &:hover {
       background-color: @color-new-purple-light;
       border: solid 1px #ddd;
+      cursor: pointer;
     }
   }
 
@@ -674,6 +680,37 @@ span.link-label {
 
 
 
+.display-flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex(@ratio:1) {
+  -webkit-box-flex: @ratio;
+     -moz-box-flex: @ratio;
+      -webkit-flex: @ratio;
+          -ms-flex: @ratio;
+              flex: @ratio;
+}
+
+.flex-direction(@direction:row) {
+  -webkit-box-flex-direction: @direction;
+     -moz-box-flex-direction: @direction;
+      -webkit-flex-direction: @direction;
+          -ms-flex-direction: @direction;
+              flex-direction: @direction;
+}
+
+.align-items(@position) {
+  -webkit-box-align-items: @position;
+     -moz-box-align-items: @position;
+      -webkit-align-items: @position;
+          -ms-align-items: @position;
+              align-items: @position;
+}
 
 
 
@@ -685,18 +722,18 @@ span.link-label {
 
 
 
-
-
+#container {
+  height: 100%;
+}
 
 
 
 #product-values {
-  margin: 15px 10px;
+  margin: 15px 20px;
 }
 
 
 .panel-selector {
-  float: right;
   margin-top: 7px;
 
   .btn {
@@ -707,6 +744,7 @@ span.link-label {
     height: 26px;
     line-height: 10px;
     padding: 0 18px;
+    border-raidus: 1px;
 
     &.active {
       background: #555;
@@ -729,8 +767,16 @@ span.link-label {
   font-weight: 300;
   padding: 10px 10px 0 10px;
 
-  .form-tabs {
-    border-bottom: none;
+
+  & > .tabbable {
+    & > header {
+      .display-flex();
+
+      .form-tabs {
+        border-bottom: none;
+        .flex();
+      }
+    }
   }
 
   .tabs-left > .nav-tabs a {
@@ -739,22 +785,63 @@ span.link-label {
 
   & > header {
     margin-bottom: 10px;
+
+    & > div {
+      .display-flex();
+    }
+
+    .product-title {
+      margin-bottom: 5px;
+      .flex();
+      .display-flex();
+      .align-items(center);
+
+      .product-label {
+        font-size: 17px;
+        font-weight: 300;
+        margin-left: 10px;
+        color: @color-form-info;
+      }
+    }
+  }
+
+  .meta {
+    .display-flex();
+
+    span {
+      font-size: 11px;
+      color: @color-form-info;
+
+      &:not(:last-child):after {
+        margin: 0 10px;
+        content: "|";
+      }
+    }
   }
 
   .form-content {
-    display: flex;
+    .display-flex();
 
     & > .tab-content {
-      flex: 1;
+      .flex();
       border-top: 3px solid @color-new-purple-medium;
-
 
       & > .tab-pane {
         border-right: 1px solid #E5E5E5;
       }
     }
+  }
 
+  .tabs-left {
+    .display-flex();
 
+    & > .nav-tabs {
+      margin: 0;
+    }
+
+    & > .tab-content {
+      .flex();
+    }
   }
 }
 
@@ -790,8 +877,12 @@ span.link-label {
 }
 
 .form-field {
+  @max-field-width: 500px;
+  @min-field-width: 300px;
+
   margin-bottom: 20px;
-  max-width: 500px;
+  max-width: @max-field-width;
+  min-width: @min-field-width;
 
   label {
     font-size: 12px;
@@ -800,10 +891,26 @@ span.link-label {
     display: inline-block;
   }
 
-  .field-info {
-    float: right;
-    color: @color-form-info;
+  header {
+    .display-flex();
+
+    .field-info {
+      align-self: flex-end;
+      font-size: 11px;
+    }
+
+    label {
+      .flex();
+    }
   }
+
+  footer {
+    .field-info {
+      color: @color-form-info;
+      font-size: 12px;
+    }
+  }
+
 
   input,
   textarea {
@@ -836,9 +943,13 @@ span.link-label {
     }
   }
 
-  &.metric-field{
-    input {
-      width: 300px;
+  &.metric-field {
+    .field-input {
+      .display-flex();
+
+      input {
+        .flex();
+      }
     }
   }
 
@@ -876,7 +987,7 @@ span.link-label {
     min-height: 30px;
     .border-radius(0);
     .box-sizing();
-    max-width: 400px;
+    max-width: @max-field-width;
     display: block;
 
     .select2-choice {

@@ -5,7 +5,7 @@
             <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
             <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
         </span>
-        <% if (context.optional) { %><i class="icon-remove remove-attribute" data-attribute="<%= attribute.code %>"></i><% } %>
+        <% if (context.optional) { %><i class="icon-remove remove-attribute" data-attribute="<%= attribute.code %>" data-toggle="tooltip" title="Remove this attribute"></i><% } %>
     </header>
     <div class="field-input">
     </div>
