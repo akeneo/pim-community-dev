@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Repository for AttributeOption entity
@@ -14,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeOptionRepository extends EntityRepository implements
-    ReferableEntityRepositoryInterface,
     AttributeOptionRepositoryInterface
 {
     /**
@@ -140,25 +138,5 @@ class AttributeOptionRepository extends EntityRepository implements
     public function getIdentifierProperties()
     {
         return array('attribute', 'code');
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function getReferenceProperties()
-    {
-        return $this->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
     }
 }

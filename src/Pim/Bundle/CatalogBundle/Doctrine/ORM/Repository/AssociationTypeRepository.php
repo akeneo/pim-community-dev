@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 
@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationTypeRepository extends ReferableEntityRepository implements AssociationTypeRepositoryInterface
+class AssociationTypeRepository extends EntityRepository implements AssociationTypeRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -74,5 +74,21 @@ class AssociationTypeRepository extends ReferableEntityRepository implements Ass
             ->select('count(a.id)')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(['code' => $code]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
     }
 }

@@ -60,7 +60,6 @@
 - Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/ORM/CursorReader
 - Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/BulkProductReader and Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/ObsoleteProductReader
 - Remove deprecated Pim/Bundle/CatalogBundle/Repository/ReferableEntityRepositoryInterface and Pim/Bundle/CatalogBundle/Doctrine/ReferableEntityRepository
-- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager
 
 # 1.3.x
 

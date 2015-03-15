@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Association repository
@@ -19,7 +18,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  */
 class AssociationRepository extends EntityRepository implements
     AssociationRepositoryInterface,
-    ReferableEntityRepositoryInterface,
     IdentifiableObjectRepositoryInterface
 {
     /**
@@ -91,25 +89,5 @@ class AssociationRepository extends EntityRepository implements
             ->setParameter(':productId', $product->getId());
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function getReferenceProperties()
-    {
-        return $this->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
     }
 }

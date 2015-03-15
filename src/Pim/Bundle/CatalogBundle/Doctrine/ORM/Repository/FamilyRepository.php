@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyRepository extends ReferableEntityRepository implements FamilyRepositoryInterface
+class FamilyRepository extends EntityRepository implements FamilyRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -188,5 +188,21 @@ class FamilyRepository extends ReferableEntityRepository implements FamilyReposi
         }
 
         return $attrByFamilies;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
     }
 }

@@ -7,7 +7,6 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
