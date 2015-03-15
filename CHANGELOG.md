@@ -97,6 +97,11 @@
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
 
+# 1.0.x
+
+## Bug fixes
+- PIM-3883: Mass publish does not work on Mongo
+
 # 1.0.25 (2015-03-11)
 - Update community-edition dependency to 1.2.32 version.
 
