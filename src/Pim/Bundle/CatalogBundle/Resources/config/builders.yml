@@ -7,6 +7,7 @@ services:
         class: %pim_catalog.builder.product.class%
         arguments:
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.family'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.currency'

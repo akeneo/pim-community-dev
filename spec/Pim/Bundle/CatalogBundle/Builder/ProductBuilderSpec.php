@@ -13,6 +13,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -25,6 +26,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
     function let(
         AttributeRepositoryInterface $attributeRepository,
+        FamilyRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
@@ -38,6 +40,7 @@ class ProductBuilderSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $attributeRepository,
+            $familyRepository,
             $channelRepository,
             $localeRepository,
             $currencyRepository,
@@ -46,12 +49,30 @@ class ProductBuilderSpec extends ObjectBehavior
         );
     }
 
-    function it_creates_product($attributeRepository, $eventDispatcher, AttributeInterface $skuAttribute)
+    function it_creates_product_without_family($attributeRepository, $eventDispatcher, AttributeInterface $skuAttribute)
     {
         $attributeRepository->getIdentifier()->willReturn($skuAttribute);
         $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
 
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
+    }
+
+    function it_creates_product_with_a_family($attributeRepository, $familyRepository, $eventDispatcher, AttributeInterface $skuAttribute, FamilyInterface $tshirtFamily)
+    {
+        $attributeRepository->getIdentifier()->willReturn($skuAttribute);
+        $skuAttribute->getCode()->willReturn('sku');
+        $skuAttribute->getAttributeType()->willReturn('pim_catalog_identifier');
+        $skuAttribute->getBackendType()->willReturn('varchar');
+        $skuAttribute->isLocalizable()->willReturn(false);
+        $skuAttribute->isScopable()->willReturn(false);
+        $skuAttribute->isLocaleSpecific()->willReturn(false);
+        $eventDispatcher->dispatch(ProductEvents::CREATE, Argument::any());
+
+        $familyRepository->findOneByIdentifier("tshirt")->willReturn($tshirtFamily);
+        $tshirtFamily->getId()->shouldBeCalled();
+        $tshirtFamily->getAttributes()->willReturn([]);
+
+        $this->createProduct("mysku", "tshirt")->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
 
     function it_adds_missing_product_values_from_family_on_new_product(

@@ -17,11 +17,16 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 interface ProductBuilderInterface
 {
     /**
+     * Create product with its identifier value,
+     *  - sets the identifier data if provided
+     *  - sets family and related values if provided
+     *
      * @param string $identifier
+     * @param string $familyCode
      *
      * @return ProductInterface
      */
-    public function createProduct($identifier = null);
+    public function createProduct($identifier = null, $familyCode = null);
 
     /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales

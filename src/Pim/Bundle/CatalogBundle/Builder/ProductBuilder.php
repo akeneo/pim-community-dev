@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -35,6 +36,9 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
+
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
@@ -48,6 +52,7 @@ class ProductBuilder implements ProductBuilderInterface
      * Constructor
      *
      * @param AttributeRepositoryInterface $attributeRepository Attribute repository
+     * @param FamilyRepositoryInterface    $familyRepository    Family repository
      * @param ChannelRepositoryInterface   $channelRepository   Channel repository
      * @param LocaleRepositoryInterface    $localeRepository    Locale repository
      * @param CurrencyRepositoryInterface  $currencyRepository  Currency repository
@@ -56,6 +61,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
+        FamilyRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
@@ -63,6 +69,7 @@ class ProductBuilder implements ProductBuilderInterface
         array $classes
     ) {
         $this->attributeRepository = $attributeRepository;
+        $this->familyRepository = $familyRepository;
         $this->channelRepository  = $channelRepository;
         $this->localeRepository   = $localeRepository;
         $this->currencyRepository = $currencyRepository;
@@ -75,14 +82,21 @@ class ProductBuilder implements ProductBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function createProduct($identifier = null)
+    public function createProduct($identifier = null, $familyCode = null)
     {
         $product = new $this->productClass();
+
         $identifierAttribute = $this->attributeRepository->getIdentifier();
         $productValue = $this->createProductValue($identifierAttribute);
         $product->addValue($productValue);
         if (null !== $identifier) {
             $productValue->setData($identifier);
+        }
+
+        if (null !== $familyCode) {
+            $family = $this->familyRepository->findOneByIdentifier($familyCode);
+            $product->setFamily($family);
+            $this->addMissingProductValues($product);
         }
 
         $event = new GenericEvent($product);
