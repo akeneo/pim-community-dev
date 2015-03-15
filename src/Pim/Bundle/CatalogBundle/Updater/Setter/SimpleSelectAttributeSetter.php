@@ -50,7 +50,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         $data,
         array $options = []
     ) {
-        $this->resolver->resolve($options);
+        $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'text');
         $this->checkData($attribute, $data);
 

@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -12,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class MetricValueCopierSpec extends ObjectBehavior
+class MetricAttributeCopierSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
@@ -42,14 +43,14 @@ class MetricValueCopierSpec extends ObjectBehavior
     ) {
         $fromMetricAttribute->getAttributeType()->willReturn('pim_catalog_metric');
         $toMetricAttribute->getAttributeType()->willReturn('pim_catalog_metric');
-        $this->supports($fromMetricAttribute, $toMetricAttribute)->shouldReturn(true);
+        $this->supportsAttributes($fromMetricAttribute, $toMetricAttribute)->shouldReturn(true);
 
         $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $this->supports($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
-        $this->supports($fromMetricAttribute, $toNumberAttribute)->shouldReturn(false);
-        $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromMetricAttribute, $toNumberAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
     function it_copies_a_metric_value_to_a_product_value(
@@ -112,7 +113,35 @@ class MetricValueCopierSpec extends ObjectBehavior
         $builder->addProductValue($product3, $toAttribute, $toLocale, $toScope)->shouldBeCalledTimes(1)->willReturn($toProductValue);
 
         $products = [$product1, $product2, $product3, $product4];
+        foreach ($products as $product) {
+            $this->copyAttributeData(
+                $product,
+                $product,
+                $fromAttribute,
+                $toAttribute,
+                [
+                    'from_locale' => $fromLocale,
+                    'to_locale' => $toLocale,
+                    'from_scope' => $fromScope,
+                    'to_scope' => $toScope
+                ]
+            );
+        }
+    }
 
-        $this->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+    function it_throws_an_exception_when_unit_families_are_not_consistent(
+        $attrValidatorHelper,
+        ProductInterface $product,
+        AttributeInterface $fromAttribute,
+        AttributeInterface $toAttribute
+    ) {
+        $e = new \LogicException('Metric families are not the same for attributes: "fromCode" and "toCode".');
+        $fromAttribute->getCode()->willReturn('fromCode');
+        $toAttribute->getCode()->willReturn('toCode');
+        $attrValidatorHelper->validateLocale(Argument::any(), Argument::any())->willReturn(null);
+        $attrValidatorHelper->validateScope(Argument::any(), Argument::any())->willReturn(null);
+        $attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute)->willThrow($e);
+
+        $this->shouldThrow($e)->during('copyAttributeData', [$product, $product, $fromAttribute, $toAttribute]);
     }
 }

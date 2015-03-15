@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class MediaValueCopierSpec extends ObjectBehavior
+class MediaAttributeCopierSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
@@ -33,7 +33,7 @@ class MediaValueCopierSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\Copier\MediaValueCopier');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier');
     }
 
     function it_is_a_copier()
@@ -50,14 +50,14 @@ class MediaValueCopierSpec extends ObjectBehavior
     ) {
         $fromMediaAttribute->getAttributeType()->willReturn('media');
         $toMediaAttribute->getAttributeType()->willReturn('media');
-        $this->supports($fromMediaAttribute, $toMediaAttribute)->shouldReturn(true);
+        $this->supportsAttributes($fromMediaAttribute, $toMediaAttribute)->shouldReturn(true);
 
         $fromNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
         $toNumberAttribute->getAttributeType()->willReturn('pim_catalog_number');
-        $this->supports($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromNumberAttribute, $toNumberAttribute)->shouldReturn(false);
 
-        $this->supports($fromMediaAttribute, $toNumberAttribute)->shouldReturn(false);
-        $this->supports($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromMediaAttribute, $toNumberAttribute)->shouldReturn(false);
+        $this->supportsAttributes($fromNumberAttribute, $toTextareaAttribute)->shouldReturn(false);
     }
 
     function it_copies_when_a_product_value_has_the_values_and_the_media(
@@ -93,7 +93,13 @@ class MediaValueCopierSpec extends ObjectBehavior
         $mediaManager->generateFilenamePrefix($product, $fromProductValue)->willReturn('prefix-to-file');
         $mediaManager->duplicate($fromMedia, $toMedia, 'prefix-to-file')->shouldBeCalled();
 
-        $this->copyValue([$product], $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            ['from_locale' => $fromLocale, 'to_locale' => $toLocale, 'from_scope' => $fromScope, 'to_scope' => $toScope]
+        );
     }
 
     function it_copies_when_a_product_value_has_a_media_but_not_the_target_value(
@@ -132,7 +138,13 @@ class MediaValueCopierSpec extends ObjectBehavior
         $mediaManager->generateFilenamePrefix($product, $fromProductValue)->willReturn('prefix-to-file');
         $mediaManager->duplicate($fromMedia, $toMedia, 'prefix-to-file')->shouldBeCalled();
 
-        $this->copyValue([$product], $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            ['from_locale' => $fromLocale, 'to_locale' => $toLocale, 'from_scope' => $fromScope, 'to_scope' => $toScope]
+        );
     }
 
     function it_copies_an_empty_media(
@@ -165,6 +177,12 @@ class MediaValueCopierSpec extends ObjectBehavior
         $product->getValue('fromAttributeCode', $fromLocale, $fromScope)->willReturn($fromProductValue);
         $product->getValue('toAttributeCode', $toLocale, $toScope)->willReturn($toProductValue);
 
-        $this->copyValue([$product], $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        $this->copyAttributeData(
+            $product,
+            $product,
+            $fromAttribute,
+            $toAttribute,
+            ['from_locale' => $fromLocale, 'to_locale' => $toLocale, 'from_scope' => $fromScope, 'to_scope' => $toScope]
+        );
     }
 }

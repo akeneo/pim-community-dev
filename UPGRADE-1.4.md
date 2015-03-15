@@ -43,4 +43,12 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Setter\\PriceCollectionValueSetter/CatalogBundle\\Updater\\Setter\\PriceCollectionAttributeSetter/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Setter\\SimpleSelectValueSetter/CatalogBundle\\Updater\\Setter\\SimpleSelectAttributeSetter/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Setter\\TextValueSetter/CatalogBundle\\Updater\\Setter\\TextAttributeSetter/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\CopierInterface/CatalogBundle\\Updater\\Copier\\AttributeCopierInterface/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\AbstractValueCopier/CatalogBundle\\Updater\\Copier\\AbstractAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\BaseValueCopier/CatalogBundle\\Updater\\Copier\\BaseAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\MediaValueCopier/CatalogBundle\\Updater\\Copier\\MediaAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\MetricValueCopier/CatalogBundle\\Updater\\Copier\\MetricAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\MultiSelectValueCopier/CatalogBundle\\Updater\\Copier\\MultiSelectAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\PriceCollectionValueCopier/CatalogBundle\\Updater\\Copier\\PriceCollectionAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\SimpleSelectValueCopier/CatalogBundle\\Updater\\Copier\\SimpleSelectAttributeCopier/g'
 ```

@@ -1,9 +1,9 @@
-Feature: Update simple select fields
+Feature: Update text fields
   In order to update products
   As an internal process or any user
-  I need to be able to update a simple select field of a product
+  I need to be able to update a text field of a product
 
-  Scenario: Successfully update a simple select field
+  Scenario: Successfully update a text field
     Given a "apparel" catalog configuration
     And the following products:
       | sku      |

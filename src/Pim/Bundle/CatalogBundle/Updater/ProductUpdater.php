@@ -53,8 +53,7 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     public function setData(ProductInterface $product, $field, $data, array $options = [])
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
-
+        $attribute = $this->getAttribute($field);
         if (null !== $attribute) {
             $setter = $this->setterRegistry->getAttributeSetter($attribute);
         } else {
@@ -70,6 +69,8 @@ class ProductUpdater implements ProductUpdaterInterface
         } else {
             $setter->setFieldData($product, $field, $data, $options);
         }
+
+        return $this;
     }
 
     /**
@@ -77,8 +78,7 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     public function addData(ProductInterface $product, $field, $data, array $options = [])
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $field]);
-
+        $attribute = $this->getAttribute($field);
         if (null !== $attribute) {
             $adder = $this->adderRegistry->getAttributeAdder($attribute);
         } else {
@@ -94,6 +94,39 @@ class ProductUpdater implements ProductUpdaterInterface
         } else {
             $adder->addFieldData($product, $field, $data, $options);
         }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function copyData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
+        $fromField,
+        $toField,
+        array $options = []
+    ) {
+        $fromAttribute = $this->getAttribute($fromField);
+        $toAttribute = $this->getAttribute($toField);
+        if (null !== $fromAttribute && null !== $toAttribute) {
+            $copier = $this->copierRegistry->getAttributeCopier($fromAttribute, $toAttribute);
+        } else {
+            $copier = $this->copierRegistry->getFieldCopier($fromField, $toField);
+        }
+
+        if (null === $copier) {
+            throw new \LogicException(sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
+        }
+
+        if (null !== $fromAttribute && null !== $toAttribute) {
+            $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
+        } else {
+            $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
+        }
+
+        return $this;
     }
 
     /**
@@ -120,10 +153,15 @@ class ProductUpdater implements ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     ) {
-        $fromAttribute = $this->getAttribute($fromField);
-        $toAttribute = $this->getAttribute($toField);
-        $copier = $this->copierRegistry->get($fromAttribute, $toAttribute);
-        $copier->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        $options = [
+            'from_locale' => $fromLocale,
+            'to_locale' => $toLocale,
+            'from_scope' => $fromScope,
+            'to_scope' => $toScope,
+        ];
+        foreach ($products as $product) {
+            $this->copyData($product, $product, $fromField, $toField, $options);
+        }
 
         return $this;
     }
@@ -135,14 +173,11 @@ class ProductUpdater implements ProductUpdaterInterface
      *
      * @throws \LogicException
      *
-     * @return AttributeInterface
+     * @return AttributeInterface|null
      */
     protected function getAttribute($code)
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
-        if ($attribute === null) {
-            throw new \LogicException(sprintf('Unknown attribute "%s".', $code));
-        }
 
         return $attribute;
     }

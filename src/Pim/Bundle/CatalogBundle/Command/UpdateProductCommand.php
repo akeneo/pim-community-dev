@@ -174,14 +174,17 @@ class UpdateProductCommand extends ContainerAwareCommand
     protected function applyCopyData(ProductInterface $product, array $update)
     {
         $updater = $this->getUpdater();
-        $updater->copyValue(
-            [$product],
+        $updater->copyData(
+            $product,
+            $product,
             $update['from_field'],
             $update['to_field'],
-            $update['from_locale'],
-            $update['to_locale'],
-            $update['from_scope'],
-            $update['to_scope']
+            [
+                'from_locale' => $update['from_locale'],
+                'to_locale' => $update['to_locale'],
+                'from_scope' => $update['from_scope'],
+                'to_scope' => $update['to_scope']
+            ]
         );
     }
 

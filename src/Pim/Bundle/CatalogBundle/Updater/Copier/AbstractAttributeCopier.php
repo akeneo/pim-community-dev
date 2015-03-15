@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Abstract copier
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractValueCopier implements CopierInterface
+abstract class AbstractAttributeCopier implements AttributeCopierInterface
 {
     /** @var array */
     protected $supportedFromTypes = [];
@@ -29,6 +30,9 @@ abstract class AbstractValueCopier implements CopierInterface
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
 
+    /** @var OptionResolver */
+    protected $resolver;
+
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
@@ -39,12 +43,15 @@ abstract class AbstractValueCopier implements CopierInterface
     ) {
         $this->productBuilder      = $productBuilder;
         $this->attrValidatorHelper = $attrValidatorHelper;
+
+        $this->resolver = new OptionsResolver();
+        $this->configureOptions($this->resolver);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
     {
         $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
         $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
@@ -78,28 +85,19 @@ abstract class AbstractValueCopier implements CopierInterface
     }
 
     /**
-     * Check that unit families of 2 attributes are consistent.
-     *
-     * @param AttributeInterface $fromAttribute
-     * @param AttributeInterface $toAttribute
-     * @param string             $type
-     *
-     * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
+     * Configure the option resolver
+     * @param OptionsResolver $resolver
      */
-    protected function checkUnitFamily(
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute,
-        $type
-    ) {
-        try {
-            $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
-        } catch (\LogicException $e) {
-            throw InvalidArgumentException::expectedFromPreviousException(
-                $e,
-                $fromAttribute->getCode() . ' && ' . $toAttribute->getCode(),
-                'copier',
-                $type
-            );
-        }
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired(['from_locale', 'from_scope', 'to_locale', 'to_scope']);
+        $resolver->setDefaults(
+            [
+                'from_locale' => null,
+                'from_scope' => null,
+                'to_locale' => null,
+                'to_scope' => null
+            ]
+        );
     }
 }

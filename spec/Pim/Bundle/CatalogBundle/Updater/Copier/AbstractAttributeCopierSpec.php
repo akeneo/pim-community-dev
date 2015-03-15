@@ -6,15 +6,16 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Updater\Copier\AbstractValueCopier;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\Copier\AbstractAttributeCopier;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
-class AbstractValueCopierSpec extends ObjectBehavior
+class AbstractAttributeCopierSpec extends ObjectBehavior
 {
     function let(ProductBuilderInterface $productBuilder, AttributeValidatorHelper $attrValidatorHelper)
     {
-        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Copier\ConcreteValueCopier');
+        $this->beAnInstanceOf('spec\Pim\Bundle\CatalogBundle\Updater\Copier\ConcreteAttributeCopier');
         $this->beConstructedWith($productBuilder, $attrValidatorHelper);
     }
 
@@ -118,34 +119,16 @@ class AbstractValueCopierSpec extends ObjectBehavior
             InvalidArgumentException::expectedFromPreviousException($e, 'attributeCode', 'copier', 'concrete')
         )->during('testLocaleAndScope', [$attribute, null, 'ecommerce']);
     }
-
-    function it_throws_an_exception_when_unit_families_are_not_consistent(
-        $attrValidatorHelper,
-        AttributeInterface $fromAttribute,
-        AttributeInterface $toAttribute
-    ) {
-        $e = new \LogicException('Metric families are not the same for attributes: "fromCode" and "toCode".');
-
-        $fromAttribute->getCode()->willReturn('fromCode');
-        $toAttribute->getCode()->willReturn('toCode');
-        $attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute)->willThrow($e);
-
-        $this->shouldThrow(
-            InvalidArgumentException::expectedFromPreviousException($e, 'fromCode && toCode', 'copier', 'concrete')
-        )->during('testUnitFamily', [$fromAttribute, $toAttribute]);
-    }
 }
 
-class ConcreteValueCopier extends AbstractValueCopier
+class ConcreteAttributeCopier extends AbstractAttributeCopier
 {
-    function copyValue(
-        array $products,
+    public function copyAttributeData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
+        array $options = []
     ) {
         // needs to be implemented
     }
@@ -153,10 +136,5 @@ class ConcreteValueCopier extends AbstractValueCopier
     function testLocaleAndScope(AttributeInterface $attribute, $locale, $scope)
     {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'concrete');
-    }
-
-    function testUnitFamily(AttributeInterface $from, AttributeInterface $to)
-    {
-        $this->checkUnitFamily($from, $to, 'concrete');
     }
 }

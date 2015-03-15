@@ -3,32 +3,39 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
- * Copy a simple select value attribute in other simple select value attribute
+ * Copy a metric value attribute in other metric value attribute
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseValueCopier extends AbstractValueCopier
+class MetricAttributeCopier extends AbstractAttributeCopier
 {
+    /** @var MetricFactory */
+    protected $metricFactory;
+
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
+     * @param MetricFactory            $metricFactory
      * @param array                    $supportedFromTypes
      * @param array                    $supportedToTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
+        MetricFactory $metricFactory,
         array $supportedFromTypes,
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+        $this->metricFactory  = $metricFactory;
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes = $supportedToTypes;
     }
@@ -36,48 +43,38 @@ class BaseValueCopier extends AbstractValueCopier
     /**
      * {@inheritdoc}
      */
-    public function copyValue(
-        array $products,
+    public function copyAttributeData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
+        array $options = []
     ) {
+        $options = $this->resolver->resolve($options);
+        $fromLocale = $options['from_locale'];
+        $toLocale = $options['to_locale'];
+        $fromScope = $options['from_scope'];
+        $toScope = $options['to_scope'];
+
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
+        $this->attrValidatorHelper->validateUnitFamilies($fromAttribute, $toAttribute);
 
-        foreach ($products as $product) {
-            $this->copySingleValue(
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                $fromLocale,
-                $toLocale,
-                $fromScope,
-                $toScope
-            );
-        }
+        $this->copySingleValue(
+            $fromProduct,
+            $toProduct,
+            $fromAttribute,
+            $toAttribute,
+            $fromLocale,
+            $toLocale,
+            $fromScope,
+            $toScope
+        );
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supports(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
-    {
-        $supportsFrom = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
-        $supportsTo   = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
-
-        $sameType = $fromAttribute->getAttributeType() === $toAttribute->getAttributeType();
-
-        return $supportsFrom && $supportsTo && $sameType;
-    }
-
-    /**
-     * Copy single value
-     *
-     * @param ProductInterface   $product
+     * @param ProductInterface   $fromProduct
+     * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
@@ -86,7 +83,8 @@ class BaseValueCopier extends AbstractValueCopier
      * @param string             $toScope
      */
     protected function copySingleValue(
-        ProductInterface $product,
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -94,14 +92,22 @@ class BaseValueCopier extends AbstractValueCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
+            $fromData = $fromValue->getData();
+            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
-            $toValue->setData($fromValue->getData());
+            if (null === $metric = $toValue->getMetric()) {
+                $metric = $this->metricFactory->createMetric($fromData->getFamily());
+            }
+
+            $metric->setUnit($fromData->getUnit());
+            $metric->setData($fromData->getData());
+
+            $toValue->setMetric($metric);
         }
     }
 }

@@ -9,13 +9,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
- * Copy a price collection value attribute in other price collection value attribute
+ * Copy a multi select value attribute in other multi select value attribute
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PriceCollectionValueCopier extends AbstractValueCopier
+class MultiSelectAttributeCopier extends AbstractAttributeCopier
 {
     /**
      * @param ProductBuilderInterface  $productBuilder
@@ -37,35 +37,39 @@ class PriceCollectionValueCopier extends AbstractValueCopier
     /**
      * {@inheritdoc}
      */
-    public function copyValue(
-        array $products,
+    public function copyAttributeData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
+        array $options = []
     ) {
+        $options = $this->resolver->resolve($options);
+        $fromLocale = $options['from_locale'];
+        $toLocale = $options['to_locale'];
+        $fromScope = $options['from_scope'];
+        $toScope = $options['to_scope'];
+
         $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
         $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
 
-        foreach ($products as $product) {
-            $this->copySingleValue(
-                $product,
-                $fromAttribute,
-                $toAttribute,
-                $fromLocale,
-                $toLocale,
-                $fromScope,
-                $toScope
-            );
-        }
+        $this->copySingleValue(
+            $fromProduct,
+            $toProduct,
+            $fromAttribute,
+            $toAttribute,
+            $fromLocale,
+            $toLocale,
+            $fromScope,
+            $toScope
+        );
     }
 
     /**
      * Copy single value
      *
-     * @param ProductInterface   $product
+     * @param ProductInterface   $fromProduct
+     * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
      * @param string             $fromLocale
@@ -74,7 +78,8 @@ class PriceCollectionValueCopier extends AbstractValueCopier
      * @param string             $toScope
      */
     protected function copySingleValue(
-        ProductInterface $product,
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
         AttributeInterface $fromAttribute,
         AttributeInterface $toAttribute,
         $fromLocale,
@@ -82,27 +87,40 @@ class PriceCollectionValueCopier extends AbstractValueCopier
         $fromScope,
         $toScope
     ) {
-        $fromValue = $product->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
+        $fromValue = $fromProduct->getValue($fromAttribute->getCode(), $fromLocale, $fromScope);
         if (null !== $fromValue) {
-            $toValue = $product->getValue($toAttribute->getCode(), $toLocale, $toScope);
+            $toValue = $toProduct->getValue($toAttribute->getCode(), $toLocale, $toScope);
             if (null === $toValue) {
-                $toValue = $this->productBuilder->addProductValue($product, $toAttribute, $toLocale, $toScope);
+                $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
+
+            $this->removeOptions($toValue);
             $this->copyOptions($fromValue, $toValue);
         }
     }
 
     /**
-     * Copy attribute price into a price collection attribute
+     * Remove options from attribute
+     *
+     * @param ProductValueInterface $toValue
+     */
+    protected function removeOptions(ProductValueInterface $toValue)
+    {
+        foreach ($toValue->getOptions() as $attributeOption) {
+            $toValue->removeOption($attributeOption);
+        }
+    }
+
+    /**
+     * Copy attribute options into a multi select attribute
      *
      * @param ProductValueInterface $fromValue
      * @param ProductValueInterface $toValue
      */
     protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
     {
-        foreach ($fromValue->getData() as $price) {
-            $this->productBuilder
-                ->addPriceForCurrencyWithData($toValue, $price->getCurrency(), $price->getData());
+        foreach ($fromValue->getOptions() as $attributeOption) {
+            $toValue->addOption($attributeOption);
         }
     }
 }
