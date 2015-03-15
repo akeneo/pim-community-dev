@@ -70,11 +70,15 @@ class ProductProcessor extends AbstractProcessor
     {
         $convertedItem = $this->csvFormater->convertToStructured($item);
         $identifierProperty = $this->repository->getIdentifierProperties();
+
         $identifier = $convertedItem[$identifierProperty[0]][0]['data'];
+        $familyCode = $convertedItem['family'];
         unset($convertedItem[$this->repository->getIdentifierProperties()[0]]);
         unset($convertedItem['associations']);
+        unset($convertedItem['family']);
+        unset($convertedItem['groups']); // TODO: until we split groups and variant groups
 
-        $product = $this->findOrCreateProduct($identifier);
+        $product = $this->findOrCreateProduct($identifier, $familyCode);
         $this->updateProduct($product, $convertedItem);
         $this->validateProduct($product, $item);
 
@@ -83,16 +87,18 @@ class ProductProcessor extends AbstractProcessor
 
     /**
      * @param string $identifier
+     * @param string $familyCode
      *
      * @return ProductInterface
      */
-    public function findOrCreateProduct($identifier)
+    public function findOrCreateProduct($identifier, $familyCode)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
         if (false === $product) {
-            $product = $this->productBuilder->createProduct($identifier);
-
-            // TODO create with family to be able to add values!
+            $product = $this->productBuilder->createProduct($identifier, $familyCode);
+        } else {
+            // add missing values to ensure product has values for any attribute of its family
+            $this->productBuilder->addMissingProductValues($product);
         }
 
         return $product;
@@ -104,15 +110,12 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function updateProduct(ProductInterface $product, array $item)
     {
-        // add missing values to ensure product has value for any attribute of its family
-        $this->productBuilder->addMissingProductValues($product);
         foreach ($item as $field => $values) {
-            if (in_array($field, ['enabled', 'categories', 'groups', 'family'])) {
+            if (in_array($field, ['enabled', 'categories', 'groups'])) {
                 $this->productUpdater->setData($product, $field, $values, []);
             } else {
                 foreach ($values as $value) {
                     // sets value if it exists, means coming from family's attributes or already exist as optional
-                    // TODO no values sets when new product is created (because family has not been sets and values does not exist yet)!
                     if (null !== $product->getValue($field, $value['locale'], $value['scope'])) {
                         $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
                         $this->productUpdater->setData($product, $field, $value['data'], $options);
