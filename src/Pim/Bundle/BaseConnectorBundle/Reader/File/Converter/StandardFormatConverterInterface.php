@@ -3,7 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Converter;
 
 /**
- * Standard formatter interface, convert a format to the standard one
+ * Standard converter interface, convert a format to the standard one
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
