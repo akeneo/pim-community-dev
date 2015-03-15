@@ -58,6 +58,7 @@
 - Remove deprecated handleMedia() and handleAllMedia() from Pim\Bundle\CatalogBundle\Manager\ProductManager
 - Replace argument ProductManager by MediaManager in constructor of Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter
 - Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/ORM/CursorReader
+- Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/BulkProductReader and Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/ObsoleteProductReader
 
 # 1.3.x
 
