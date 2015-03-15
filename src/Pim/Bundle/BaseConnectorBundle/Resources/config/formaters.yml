@@ -6,4 +6,3 @@ services:
         class: %pim_base_connector.formater.csv.class%
         arguments:
             - '@pim_transform.builder.field_name'
-

@@ -4,8 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -19,9 +18,6 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor
 {
-    /** @var ProductManager */
-    protected $manager;
-
     /** @var string */
     protected $format;
 
@@ -30,7 +26,6 @@ class ProductAssociationProcessor extends AbstractProcessor
      * @param DenormalizerInterface                 $denormalizer     denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator        validator of the object
      * @param ObjectDetacherInterface               $detacher         detacher to remove it from UOW when skip
-     * @param ProductManager                        $manager          product manager
      * @param FieldNameBuilder                      $fieldNameBuilder product manager
      * @param string                                $class            class of the object to instanciate in case if need
      * @param string                                $format           format use to denormalize
@@ -40,7 +35,6 @@ class ProductAssociationProcessor extends AbstractProcessor
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductManager $manager,
         FieldNameBuilder $fieldNameBuilder,
         $class,
         $productClass,
@@ -48,7 +42,6 @@ class ProductAssociationProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
 
-        $this->manager          = $manager;
         $this->fieldNameBuilder = $fieldNameBuilder;
         $this->format           = $format;
         $this->productClass     = $productClass;
@@ -60,7 +53,10 @@ class ProductAssociationProcessor extends AbstractProcessor
     public function process($item)
     {
         $identifier = $item['product'][$this->repository->getIdentifierProperties()[0]];
-        $product    = $this->findOrCreateProduct($identifier);
+        $product    = $this->findProduct($identifier);
+        if (null === $product) {
+            throw new \LogicException(sprintf('No product with identifier "%s" has been found', $identifier));
+        }
 
         foreach ($product->getAssociations() as $association) {
             foreach ($association->getGroups() as $group) {
@@ -101,13 +97,14 @@ class ProductAssociationProcessor extends AbstractProcessor
         return $associations;
     }
 
-    public function findOrCreateProduct($identifier)
+    /**
+     * @param string $identifier
+     *
+     * @return ProductInterface|null
+     */
+    public function findProduct($identifier)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
-
-        if (false === $product) {
-            $product = $this->manager->createProduct();
-        }
 
         return $product;
     }
