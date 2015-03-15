@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupRepository extends ReferableEntityRepository implements GroupRepositoryInterface
+class GroupRepository extends EntityRepository implements GroupRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -321,5 +321,21 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
             ->getGroupsByTypeQB($type)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
     }
 }

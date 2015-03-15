@@ -54,6 +54,17 @@
 - Rename Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectAttributeCopier
 - Rename Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionAttributeCopier
 - Rename Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectAttributeCopier
+- Remove MediaManager from constructor of Pim\Bundle\CatalogBundle\Manager\ProductManager
+- Remove deprecated handleMedia() and handleAllMedia() from Pim\Bundle\CatalogBundle\Manager\ProductManager
+- Replace argument ProductManager by MediaManager in constructor of Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter
+- Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/ORM/CursorReader
+- Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/BulkProductReader and Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/ObsoleteProductReader
+- Remove deprecated Pim/Bundle/CatalogBundle/Repository/ReferableEntityRepositoryInterface and Pim/Bundle/CatalogBundle/Doctrine/ReferableEntityRepository
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AttributeManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/CategoryManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/FamilyManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
 
 # 1.3.x
 

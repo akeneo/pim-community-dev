@@ -22,7 +22,6 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Product repository
@@ -34,7 +33,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 class ProductRepository extends DocumentRepository implements
     ProductRepositoryInterface,
     IdentifiableObjectRepositoryInterface,
-    ReferableEntityRepositoryInterface,
     AssociationRepositoryInterface,
     MongoProductRepositoryInterface
 {
@@ -687,26 +685,6 @@ class ProductRepository extends DocumentRepository implements
     protected function getIdentifierAttribute()
     {
         return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function getReferenceProperties()
-    {
-        return $this->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
     }
 
     /**

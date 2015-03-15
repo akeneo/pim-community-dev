@@ -9,7 +9,6 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Repository for attribute entity
@@ -20,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
  */
 class AttributeRepository extends EntityRepository implements
     IdentifiableObjectRepositoryInterface,
-    ReferableEntityRepositoryInterface,
     AttributeRepositoryInterface
 {
     /** @var string $identifierCode */
@@ -413,25 +411,5 @@ class AttributeRepository extends EntityRepository implements
             ->setParameter(1, 'pim_catalog_identifier');
 
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function getReferenceProperties()
-    {
-        return $this->getIdentifierProperties();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.4
-     */
-    public function findByReference($code)
-    {
-        return $this->findOneByIdentifier($code);
     }
 }

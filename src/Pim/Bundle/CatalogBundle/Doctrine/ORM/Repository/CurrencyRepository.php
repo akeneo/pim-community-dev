@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CurrencyRepository extends ReferableEntityRepository implements CurrencyRepositoryInterface
+class CurrencyRepository extends EntityRepository implements CurrencyRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -65,5 +65,21 @@ class CurrencyRepository extends ReferableEntityRepository implements CurrencyRe
         $qb->addSelect($rootAlias);
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleRepository extends ReferableEntityRepository implements LocaleRepositoryInterface
+class LocaleRepository extends EntityRepository implements LocaleRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -122,5 +122,21 @@ DQL;
             ->setParameter(':current_locale_ids', implode(',', $currentLocaleIds));
 
         return $query->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
     }
 }
