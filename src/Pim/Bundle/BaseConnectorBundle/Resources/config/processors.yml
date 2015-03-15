@@ -123,6 +123,7 @@ services:
             - [ addMapping, [ configuration, rawConfiguration ] ]
 
     # deprecated, will be dropped in 1.4, use pim_base_connector.processor.denormalization.csv_group or variant_group
+    # we need to rework the installer fixtures to support groups and variant groups as different fixtures before to drop it
     pim_base_connector.processor.group:
         parent: pim_base_connector.processor.transformer
         arguments:
