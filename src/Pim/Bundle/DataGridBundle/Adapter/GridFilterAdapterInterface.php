@@ -17,6 +17,9 @@ interface GridFilterAdapterInterface
      * @param Request $request
      *
      * @return array
+     *
+     * TODO: if you consider expose the method transform( please change the name of the interface to Transformer,
+     * Converter is also eligible
      */
     public function adapt(Request $request);
 }
