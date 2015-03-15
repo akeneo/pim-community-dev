@@ -41,9 +41,6 @@ class ProductManager
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /** @var ProductBuilder */
     protected $builder;
 
@@ -67,7 +64,6 @@ class ProductManager
      * @param SaverInterface                     $productSaver
      * @param BulkSaverInterface                 $productBulkSaver
      * @param EventDispatcherInterface           $eventDispatcher
-     * @param MediaManager                       $mediaManager
      * @param ProductBuilder                     $builder
      * @param ProductRepositoryInterface         $productRepository
      * @param AssociationTypeRepositoryInterface $assocTypeRepository
@@ -80,7 +76,6 @@ class ProductManager
         SaverInterface $productSaver,
         BulkSaverInterface $productBulkSaver,
         EventDispatcherInterface $eventDispatcher,
-        MediaManager $mediaManager,
         ProductBuilder $builder,
         ProductRepositoryInterface $productRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
@@ -92,7 +87,6 @@ class ProductManager
         $this->productBulkSaver = $productBulkSaver;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->mediaManager = $mediaManager;
         $this->builder = $builder;
         $this->productRepository = $productRepository;
         $this->assocTypeRepository = $assocTypeRepository;
@@ -255,30 +249,6 @@ class ProductManager
     public function getAttributeName()
     {
         return $this->configuration['attribute_class'];
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return null
-     *
-     * @deprecated will be removed in 1.4, replaced by MediaManager::handleProductMedias
-     */
-    public function handleMedia(ProductInterface $product)
-    {
-        return $this->mediaManager->handleProductMedias($product);
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     *
-     * @return null
-     *
-     * @deprecated will be removed in 1.4, replaced by MediaManager::handleAllProductsMedias
-     */
-    public function handleAllMedia(array $products)
-    {
-        return $this->mediaManager->handleAllProductsMedias($products);
     }
 
     /**

@@ -54,6 +54,9 @@
 - Rename Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectAttributeCopier
 - Rename Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionAttributeCopier
 - Rename Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectAttributeCopier
+- Remove MediaManager from constructor of Pim\Bundle\CatalogBundle\Manager\ProductManager
+- Remove handleMedia() and handleAllMedia() from Pim\Bundle\CatalogBundle\Manager\ProductManager
+- Replace argument ProductManager by MediaManager in constructor of Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter
 
 # 1.3.x
 

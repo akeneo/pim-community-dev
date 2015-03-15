@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,19 +20,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class LoaderFactory
 {
-    /**
-     * @var DoctrineCache
-     */
+    /** @var DoctrineCache */
     protected $doctrineCache;
 
-    /**
-     * @var ConfigurationRegistryInterface
-     */
+    /** @var ConfigurationRegistryInterface */
     protected $configRegistry;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
     /**
@@ -68,9 +63,9 @@ class LoaderFactory
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);
         $multiple = $this->configRegistry->isMultiple($name);
-        $productManager = $this->configRegistry->getProductManager();
+        $mediaManager = $this->configRegistry->getMediaManager();
 
-        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple, $productManager);
+        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple, $mediaManager);
     }
 
     /**
@@ -81,7 +76,7 @@ class LoaderFactory
      * @param ItemProcessorInterface $processor
      * @param string                 $class
      * @param boolean                $multiple
-     * @param ProductManager         $productManager
+     * @param MediaManager           $mediaManager
      *
      * @return LoaderInterface
      */
@@ -91,7 +86,7 @@ class LoaderFactory
         ItemProcessorInterface $processor,
         $class,
         $multiple,
-        ProductManager $productManager
+        MediaManager $mediaManager
     ) {
         return new $class(
             $objectManager,
@@ -100,7 +95,7 @@ class LoaderFactory
             $processor,
             $this->eventDispatcher,
             $multiple,
-            $productManager
+            $mediaManager
         );
     }
 }
