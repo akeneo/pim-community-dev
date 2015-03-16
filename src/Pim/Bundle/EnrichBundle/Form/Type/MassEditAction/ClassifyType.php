@@ -2,8 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
@@ -15,20 +19,28 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ClassifyType extends AbstractType
 {
-    /** @var string */
+    /** @var string $categoryClass */
     protected $categoryClass;
 
-    /** @var string */
+    /** @var CategoryManager $categoryManager */
+    protected $categoryManager;
+
+    /** @var string $dataClass */
     protected $dataClass;
 
     /**
-     * @param string $categoryClass
-     * @param string $dataClass
+     * Constructor.
+     *
+     * @param string          $categoryClass
+     * @param CategoryManager $categoryManager
+     * @param string          $dataClass
      */
-    public function __construct($categoryClass, $dataClass)
+    public function __construct($categoryClass, $categoryManager, $dataClass)
     {
-        $this->categoryClass = $categoryClass;
-        $this->dataClass     = $dataClass;
+        $this->categoryClass   = $categoryClass;
+        $this->categoryManager = $categoryManager;
+        $this->dataClass       = $dataClass;
+        $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
     }
 
     /**
@@ -62,13 +74,21 @@ class ClassifyType extends AbstractType
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['trees'] = $this->getTrees();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             [
-                'data_class' => $this->dataClass,
+                'data_class' => $this->dataClass
             ]
         );
     }
@@ -79,5 +99,13 @@ class ClassifyType extends AbstractType
     public function getName()
     {
         return 'pim_enrich_mass_classify';
+    }
+
+    /**
+     * @return CategoryInterface[]
+     */
+    public function getTrees()
+    {
+        return $this->trees;
     }
 }
