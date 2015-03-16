@@ -3,23 +3,22 @@
 namespace Pim\Bundle\BaseConnectorBundle\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Pim\Bundle\EnrichBundle\MassEditAction\Handler\ChangeStatusHandler;
+use Pim\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductHandler;
 
 /**
- * Step for mass edit
+ * BatchBundle Step for standard mass edit products
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditChangeStatusStep extends AbstractStep
+class MassEditUpdateProductStep extends AbstractStep
 {
     /** @var array */
     protected $configuration;
 
-    /** @var ChangeStatusHandler */
+    /** @var UpdateProductHandler */
     protected $handler;
 
     /**
@@ -58,7 +57,7 @@ class MassEditChangeStatusStep extends AbstractStep
     }
 
     /**
-     * @return ChangeStatusHandler
+     * @return UpdateProductHandler
      */
     public function getHandler()
     {
@@ -66,7 +65,7 @@ class MassEditChangeStatusStep extends AbstractStep
     }
 
     /**
-     * @param ChangeStatusHandler $handler
+     * @param UpdateProductHandler $handler
      */
     public function setHandler($handler)
     {

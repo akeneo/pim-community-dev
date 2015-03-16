@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 /**
- * Operation to execute on a set of items
+ * Basic mass edit operation to execute on a set of items
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -11,13 +11,34 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  */
 interface MassEditOperationInterface
 {
+    /**
+     * Get alias of this mass edit operation
+     *
+     * @return string
+     */
     public function getAlias();
 
+    /**
+     * Get filters to retrieve items for this operation
+     *
+     * @return array
+     */
     public function getFilters();
 
+    /**
+     * @param array $filters
+     */
     public function setFilters(array $filters);
 
+    /**
+     * Get actions this operation is going to apply on each item
+     *
+     * @return array
+     */
     public function getActions();
 
+    /**
+     * @param array $actions
+     */
     public function setActions(array $actions);
 }

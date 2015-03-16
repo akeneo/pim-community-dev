@@ -14,11 +14,11 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
-* @author    Adrien Pétremann <adrien.petremann@akeneo.com>
-* @copyright 2015 Akeneo SAS (http://www.akeneo.com)
-* @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
-*/
-class ChangeStatusHandler extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
+ * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class UpdateProductHandler extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
@@ -64,23 +64,19 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
      */
     public function execute(array $configuration)
     {
-        $cursor = $this->getProducts($configuration['filters']);
+        $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
         $actions = $configuration['actions'];
-        $action = $actions[0];
 
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
-                // TODO: Use this with the new version of productUpdater :
-//                foreach ($actions as $action) {
-//                    $this->productUpdater->setValue($product, $action['field'], $action['value']);
-//                }
+                foreach ($actions as $action) {
+                    $this->productUpdater->set($product, $action['field'], $action['value']);
+                }
 
-                $product->setEnabled($action['value']);
-//                $product->setFamilyId($action['value']);
                 $this->stepExecution->incrementSummaryInfo('mass_edited');
+                // TODO: validation & skip
             }
-
 
             $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
             $this->detachProducts($productsPage);
@@ -128,7 +124,7 @@ class ChangeStatusHandler extends AbstractConfigurableStepElement implements Ste
      *
      * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
      */
-    protected function getProducts(array $filters)
+    protected function getProductsCursor(array $filters)
     {
         $productQueryBuilder = $this->getProductQueryBuilder();
 

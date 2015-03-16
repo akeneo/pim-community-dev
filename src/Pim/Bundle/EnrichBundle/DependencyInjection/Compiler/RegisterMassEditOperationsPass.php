@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Register mass edit operations
@@ -20,6 +20,19 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
 
     /** @staticvar */
     const OPERATION_TAG = 'pim_enrich.mass_edit_action';
+
+    /** @var ReferenceFactory */
+    protected $referenceFactory;
+
+    /**
+     * Constructor.
+     *
+     * @param ReferenceFactory $referenceFactory
+     */
+    public function __construct(ReferenceFactory $referenceFactory)
+    {
+        $this->referenceFactory = $referenceFactory;
+    }
 
     /**
      * {@inheritdoc}
@@ -37,7 +50,7 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
             $gridName = isset($config['datagrid']) ? $config['datagrid'] : null;
 
             $registry->addMethodCall('register', [
-                new Reference($operationsId),
+                $this->referenceFactory->createReference($operationsId),
                 $alias,
                 $acl,
                 $gridName

@@ -10,9 +10,9 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
-use Pim\Bundle\EnrichBundle\MassEditAction\OperationRegistry;
+use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -22,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\Exception\NotFoundResourceException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -47,10 +48,13 @@ class MassEditActionController extends AbstractDoctrineController
     protected $massEditJobManager;
 
     /** @var DoctrineJobRepository */
-    protected $jobManager;
+    protected $jobRepository;
 
     /** @var ConnectorRegistry */
     protected $connectorRegistry;
+
+    /** @var MassEditFormResolver */
+    protected $massEditFormResolver;
 
     /**
      * Constructor
@@ -67,9 +71,10 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param MassEditJobManager         $massEditJobManager
-     * @param DoctrineJobRepository      $jobManager
+     * @param DoctrineJobRepository      $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
-     * @param OperationRegistry          $operationRegistry
+     * @param OperationRegistryInterface $operationRegistry
+     * @param MassEditFormResolver       $massEditFormResolver
      */
     public function __construct(
         Request $request,
@@ -84,9 +89,10 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
         MassEditJobManager $massEditJobManager,
-        DoctrineJobRepository $jobManager,
+        DoctrineJobRepository $jobRepository,
         ConnectorRegistry $connectorRegistry,
-        OperationRegistry $operationRegistry
+        OperationRegistryInterface $operationRegistry,
+        MassEditFormResolver $massEditFormResolver
     ) {
         parent::__construct(
             $request,
@@ -100,12 +106,13 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->parametersParser   = $parametersParser;
-        $this->gridFilterAdapter  = $gridFilterAdapter;
-        $this->massEditJobManager = $massEditJobManager;
-        $this->jobManager         = $jobManager;
-        $this->connectorRegistry  = $connectorRegistry;
-        $this->operationRegistry  = $operationRegistry;
+        $this->parametersParser     = $parametersParser;
+        $this->gridFilterAdapter    = $gridFilterAdapter;
+        $this->massEditJobManager   = $massEditJobManager;
+        $this->jobRepository        = $jobRepository;
+        $this->connectorRegistry    = $connectorRegistry;
+        $this->operationRegistry    = $operationRegistry;
+        $this->massEditFormResolver = $massEditFormResolver;
     }
 
     /**
@@ -120,13 +127,13 @@ class MassEditActionController extends AbstractDoctrineController
         $objectsCount = $this->request->get('objectsCount');
         $itemsName    = $this->getItemsName($gridName);
 
-        $availableOperations = $this->operationRegistry->getAllByGridName($gridName);
-        $form = $this->getOperationsForm($availableOperations);
+        $form = $this->massEditFormResolver->getAvailableOperationsForm($gridName);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
             if ($form->isValid()) {
                 $data = $form->getData();
+
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
                     $this->getQueryParams() + ['operationAlias' => $data['operationAlias']]
@@ -155,8 +162,7 @@ class MassEditActionController extends AbstractDoctrineController
         $itemsName    = $operation->getItemsName();
         $productCount = $this->request->get('objectsCount');
 
-        $form = $this->createForm(new MassEditOperatorType());
-        $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
+        $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
@@ -187,12 +193,10 @@ class MassEditActionController extends AbstractDoctrineController
         $itemsName    = $operation->getItemsName();
         $productCount = $this->request->get('objectsCount');
 
-        $form = $this->createForm(new MassEditOperatorType());
-        $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
+        $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
         $form->submit($this->request);
 
         if ($form->isValid()) {
-
             $operation = $form->getData()['operation'];
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
             $operation->setFilters($pimFilters);
@@ -200,9 +204,15 @@ class MassEditActionController extends AbstractDoctrineController
             $rawConfiguration = $operation->getBatchConfig();
             //TODO: to remove !
             $jobCode = $operation->getBatchJobCode();
-            $jobInstance = $this->jobManager->getJobManager()
+            $jobInstance = $this->jobRepository->getJobManager()
                 ->getRepository('AkeneoBatchBundle:JobInstance')
                 ->findOneByCode($jobCode);
+
+            if (null === $jobInstance) {
+                throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));
+            }
+
+            // TODO: Fixme, we should be able to remove this line without having an error
             $jobInstance = $this->getJobInstance($jobInstance->getId());
 
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
@@ -298,28 +308,6 @@ class MassEditActionController extends AbstractDoctrineController
             default:
                 return 'item';
         }
-    }
-
-    /**
-     * @param array $availableOperations
-     *
-     * @return Form
-     */
-    protected function getOperationsForm(array $availableOperations)
-    {
-        $choices = [];
-
-        foreach (array_keys($availableOperations) as $alias) {
-                $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
-        }
-
-        return $this->createForm(
-            new MassEditOperatorType(),
-            null,
-            [
-                'operations' => $choices
-            ]
-        );
     }
 
     /**
