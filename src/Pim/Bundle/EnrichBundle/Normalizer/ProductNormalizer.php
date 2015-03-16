@@ -20,6 +20,9 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
+    /**
+     * @param NormalizerInterface $productNormalizer
+     */
     public function __construct(NormalizerInterface $productNormalizer)
     {
         $this->productNormalizer = $productNormalizer;

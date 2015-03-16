@@ -11,8 +11,17 @@ namespace Pim\Bundle\CatalogBundle\Resolver;
  */
 class FQCNResolver
 {
+    /** @var array */
     protected $classNames = [];
 
+    /**
+     * Get FQCN for the givent entity type
+     * @param string $entityType
+     *
+     * @throws LogicException
+     *
+     * @return string
+     */
     public function getFQCN($entityType)
     {
         if (!isset($this->classNames[$entityType])) {
@@ -22,6 +31,11 @@ class FQCNResolver
         return $this->classNames[$entityType];
     }
 
+    /**
+     * Set the FCQN for the given entity type
+     * @param string $entityType
+     * @param string $className
+     */
     public function setFQCN($entityType, $className)
     {
         $this->classNames[$entityType] = $className;

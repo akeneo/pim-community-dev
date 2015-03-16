@@ -71,7 +71,7 @@ class CompletenessRestController
      *
      * @param integer $id
      *
-     * @return Response
+     * @return JSONResponse
      */
     public function getAction($id)
     {

@@ -30,6 +30,13 @@ class VersioningRestController
         $this->normalizer        = $normalizer;
     }
 
+    /**
+     * Get the history of the given entity type with the given entityId
+     * @param string $entityType
+     * @param string $entityId
+     *
+     * @return JSONResponse
+     */
     public function getAction($entityType, $entityId)
     {
         return new JsonResponse(

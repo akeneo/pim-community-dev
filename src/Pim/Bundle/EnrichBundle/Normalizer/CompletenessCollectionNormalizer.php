@@ -20,6 +20,9 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /**
+     * @param NormalizerInterface $normalizer
+     */
     public function __construct(NormalizerInterface $normalizer)
     {
         $this->normalizer = $normalizer;
@@ -47,6 +50,12 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         return false;
     }
 
+    /**
+     * Normalize a completeness element
+     * @param array $completeness
+     *
+     * @return array
+     */
     protected function normalizeCompleteness($completeness)
     {
         $missing = [];
