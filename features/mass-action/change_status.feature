@@ -6,9 +6,9 @@ Feature: Configure action to change status of many products at once
 
   Background:
     Given the "apparel" catalog configuration
+    And I am logged in as "Julia"
 
   Scenario: Configure the operation to enable many products at once
-    And I am logged in as "Julia"
     Given a disabled "boat" product
     And a disabled "jet-ski" product
     And I am on the products page
@@ -18,7 +18,6 @@ Feature: Configure action to change status of many products at once
     Then I should be on the products page
 
   Scenario: Configure the operation to disable many products at once
-    And I am logged in as "Julia"
     Given an enabled "boat" product
     And an enabled "jet-ski" product
     And I am on the products page
