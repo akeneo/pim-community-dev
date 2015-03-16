@@ -191,4 +191,26 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->select('a.id')
+            ->innerJoin('pp.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->where($qb->expr()->in('pp.id', $productIds))
+            ->groupBy('a.id');
+
+        $attributes = $qb->getQuery()->getArrayResult();
+        $attributeIds = array();
+        foreach ($attributes as $attribute) {
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
 }

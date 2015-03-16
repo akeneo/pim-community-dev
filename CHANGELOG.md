@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3883: Mass publish does not work on Mongo
+- PIM-3898: Quick export does not work on published products
 
 # 1.0.25 (2015-03-11)
 - Update community-edition dependency to 1.2.32 version.
