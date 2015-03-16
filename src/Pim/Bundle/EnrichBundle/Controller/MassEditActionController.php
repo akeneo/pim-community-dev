@@ -48,7 +48,7 @@ class MassEditActionController extends AbstractDoctrineController
     protected $massEditJobManager;
 
     /** @var DoctrineJobRepository */
-    protected $jobManager;
+    protected $jobRepository;
 
     /** @var ConnectorRegistry */
     protected $connectorRegistry;
@@ -71,7 +71,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param MassEditJobManager         $massEditJobManager
-     * @param DoctrineJobRepository      $jobManager
+     * @param DoctrineJobRepository      $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver
@@ -89,7 +89,7 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
         MassEditJobManager $massEditJobManager,
-        DoctrineJobRepository $jobManager,
+        DoctrineJobRepository $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
         MassEditFormResolver $massEditFormResolver
@@ -109,7 +109,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->parametersParser     = $parametersParser;
         $this->gridFilterAdapter    = $gridFilterAdapter;
         $this->massEditJobManager   = $massEditJobManager;
-        $this->jobManager           = $jobManager;
+        $this->jobRepository        = $jobRepository;
         $this->connectorRegistry    = $connectorRegistry;
         $this->operationRegistry    = $operationRegistry;
         $this->massEditFormResolver = $massEditFormResolver;
@@ -204,7 +204,7 @@ class MassEditActionController extends AbstractDoctrineController
             $rawConfiguration = $operation->getBatchConfig();
             //TODO: to remove !
             $jobCode = $operation->getBatchJobCode();
-            $jobInstance = $this->jobManager->getJobManager()
+            $jobInstance = $this->jobRepository->getJobManager()
                 ->getRepository('AkeneoBatchBundle:JobInstance')
                 ->findOneByCode($jobCode);
 
@@ -212,6 +212,7 @@ class MassEditActionController extends AbstractDoctrineController
                 throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));
             }
 
+            // TODO: Fixme, we should be able to remove this line without having an error
             $jobInstance = $this->getJobInstance($jobInstance->getId());
 
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
