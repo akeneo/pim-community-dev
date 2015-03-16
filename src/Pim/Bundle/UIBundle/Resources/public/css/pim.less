@@ -11,8 +11,6 @@
 @import 'tinymce';
 
 @import 'pim-mixins';
-// @import 'pim-product-form';
-// @import 'pim-tab-nav';
 
 /* General **********************************************************************************************************/
 
@@ -637,46 +635,6 @@ span.link-label {
       font-weight: bold;
     }
   }
-}
-
-.display-flex() {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-
-.flex(@ratio: 1) {
-  -webkit-box-flex: @ratio;
-     -moz-box-flex: @ratio;
-      -webkit-flex: @ratio;
-          -ms-flex: @ratio;
-              flex: @ratio;
-}
-
-.flex-direction(@direction: row) {
-  -webkit-box-flex-direction: @direction;
-     -moz-box-flex-direction: @direction;
-      -webkit-flex-direction: @direction;
-          -ms-flex-direction: @direction;
-              flex-direction: @direction;
-}
-
-.align-items(@position) {
-  -webkit-box-align-items: @position;
-     -moz-box-align-items: @position;
-      -webkit-align-items: @position;
-          -ms-align-items: @position;
-              align-items: @position;
-}
-
-.flex-order(@order: 1) {
-  -webkit-box-ordinal-group: @order;
-     -moz-box-ordinal-group: @order;
-             -ms-flex-order: @order;
-              -webkit-order: @order;
-                      order: @order;
 }
 
 #container {
