@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.26 (2015-03-16)
 
 ## Bug fixes
 - PIM-3883: Mass publish does not work on Mongo
