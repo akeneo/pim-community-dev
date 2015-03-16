@@ -31,6 +31,7 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      * @return ProductInterface
      */
     public function setId($id);
+
     /**
      * Get the identifier of the product
      *
@@ -333,4 +334,36 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      * @return ProductInterface
      */
     public function setFamilyId($familyId);
+
+    /**
+     * Get created datetime
+     *
+     * @return DateTime
+     */
+    public function getCreated();
+
+    /**
+     * Set created datetime
+     *
+     * @param DateTime $created
+     *
+     * @return ProductInterface
+     */
+    public function setCreated($created);
+
+    /**
+     * Get updated datetime
+     *
+     * @return DateTime
+     */
+    public function getUpdated();
+
+    /**
+     * Set updated datetime
+     *
+     * @param DateTime $updated
+     *
+     * @return ProductInterface
+     */
+    public function setUpdated($updated);
 }

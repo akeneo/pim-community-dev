@@ -36,6 +36,7 @@ class PimCatalogExtension extends Extension
         $loader->load('query_builders.yml');
         $loader->load('removers.yml');
         $loader->load('repositories.yml');
+        $loader->load('resolvers.yml');
         $loader->load('savers.yml');
         $loader->load('updaters.yml');
         $loader->load('validators.yml');
