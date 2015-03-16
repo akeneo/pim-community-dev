@@ -24,12 +24,12 @@ class VersionNormalizer implements NormalizerInterface
     {
         return [
             'author'       => $version->getAuthor(),
-            'resourceId'   => (string) $version->getResourceId(),
+            'resource_id'  => (string) $version->getResourceId(),
             'snapshot'     => $version->getSnapshot(),
             'changeset'    => $version->getChangeset(),
             'context'      => $version->getContext(),
             'version'      => $version->getVersion(),
-            'loggedAt'     => $version->getLoggedAt()->format('Y-m-d H:i:s'),
+            'logged_at'    => $version->getLoggedAt()->format('Y-m-d H:i:s'),
             'pending'      => $version->isPending()
         ];
     }

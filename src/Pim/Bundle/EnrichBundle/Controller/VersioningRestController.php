@@ -32,11 +32,11 @@ class VersioningRestController
 
     public function getAction($entityType, $entityId)
     {
-        var_dump(
+        return new JsonResponse(
             $this->normalizer->normalize(
                 $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId),
                 'array'
             )
-        ); die;
+        );
     }
 }
