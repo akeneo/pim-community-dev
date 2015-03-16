@@ -2,13 +2,17 @@
 
 namespace Pim\Bundle\CatalogBundle\Builder;
 
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Product builder
@@ -28,35 +32,63 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $productPriceClass;
 
-    /** @var ChannelRepository */
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var LocaleRepository */
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var CurrencyRepository */
+    /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
     /**
      * Constructor
      *
-     * @param ChannelRepositoryInterface  $channelRepository  Channel repository
-     * @param LocaleRepositoryInterface   $localeRepository   Locale repository
-     * @param CurrencyRepositoryInterface $currencyRepository Currency repository
-     * @param array                       $classes            Product, product value and price classes
+     * @param AttributeRepositoryInterface $attributeRepository Attribute repository
+     * @param ChannelRepositoryInterface   $channelRepository   Channel repository
+     * @param LocaleRepositoryInterface    $localeRepository    Locale repository
+     * @param CurrencyRepositoryInterface  $currencyRepository  Currency repository
+     * @param EventDispatcherInterface     $eventDispatcher     Event dispatcher
+     * @param array                        $classes             Product, product value and price classes
      */
     public function __construct(
+        AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
+        EventDispatcherInterface $eventDispatcher,
         array $classes
     ) {
+        $this->attributeRepository = $attributeRepository;
         $this->channelRepository  = $channelRepository;
         $this->localeRepository   = $localeRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->eventDispatcher    = $eventDispatcher;
         $this->productClass       = $classes['product'];
         $this->productValueClass  = $classes['product_value'];
         $this->productPriceClass  = $classes['product_price'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createProduct($identifier = null)
+    {
+        $product = new $this->productClass();
+        $identifierAttribute = $this->attributeRepository->getIdentifier();
+        $productValue = $this->createProductValue($identifierAttribute);
+        $product->addValue($productValue);
+        if (null !== $identifier) {
+            $productValue->setData($identifier);
+        }
+
+        $event = new GenericEvent($product);
+        $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
+
+        return $product;
     }
 
     /**

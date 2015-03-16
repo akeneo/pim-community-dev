@@ -47,7 +47,7 @@ class VariantGroupAttributeController
     protected $templateBuilder;
 
     /** @var VariantGroupAttributesResolver */
-    protected $groupAttributesResolver;
+    protected $groupAttrResolver;
 
     /**
      * @param RouterInterface                 $router
@@ -56,7 +56,7 @@ class VariantGroupAttributeController
      * @param SaverInterface                  $groupSaver
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductTemplateBuilderInterface $templateBuilder
-     * @param VariantGroupAttributesResolver  $groupAttributesResolver
+     * @param VariantGroupAttributesResolver  $groupAttrResolver
      */
     public function __construct(
         RouterInterface $router,
@@ -65,7 +65,7 @@ class VariantGroupAttributeController
         SaverInterface $groupSaver,
         AttributeRepositoryInterface $attributeRepository,
         ProductTemplateBuilderInterface $templateBuilder,
-        VariantGroupAttributesResolver $groupAttributesResolver
+        VariantGroupAttributesResolver $groupAttrResolver
     ) {
         $this->router              = $router;
         $this->formFactory         = $formFactory;
@@ -73,7 +73,7 @@ class VariantGroupAttributeController
         $this->groupSaver          = $groupSaver;
         $this->attributeRepository = $attributeRepository;
         $this->templateBuilder     = $templateBuilder;
-        $this->groupAttributesResolver = $groupAttributesResolver;
+        $this->groupAttrResolver   = $groupAttrResolver;
     }
 
     /**
@@ -192,7 +192,7 @@ class VariantGroupAttributeController
         return $this->formFactory->create(
             'pim_available_attributes',
             $availableAttributes,
-            ['excluded_attributes' => $this->groupAttributesResolver->getNonEligibleAttributes($group)]
+            ['excluded_attributes' => $this->groupAttrResolver->getNonEligibleAttributes($group)]
         );
     }
 

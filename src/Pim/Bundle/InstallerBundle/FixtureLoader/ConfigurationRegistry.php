@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Symfony\Component\Config\ConfigCache;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,34 +18,22 @@ use Symfony\Component\Yaml\Yaml;
  */
 class ConfigurationRegistry implements ConfigurationRegistryInterface
 {
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     protected $container;
 
-    /**
-     * @var PropertyAccessorInterface
-     */
+    /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $bundles;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $config;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $cacheDir;
 
-    /**
-     * @var boolean
-     */
+    /** @var boolean */
     protected $debug;
 
     /**
@@ -257,12 +246,12 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     }
 
     /**
-     * Return the ProductManager
+     * Return the MediaManager
      *
-     * @return ProductManager
+     * @return MediaManager
      */
-    public function getProductManager()
+    public function getMediaManager()
     {
-        return $this->container->get('pim_catalog.manager.product');
+        return $this->container->get('pim_catalog.manager.media');
     }
 }

@@ -24,7 +24,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
+        $mediaManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
             ->disableOriginalConstructor()
             ->getMock();
         $loader = new Loader(
@@ -34,7 +34,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             $processor,
             $eventSubscriber,
             false,
-            $productManager
+            $mediaManager
         );
 
         $reader->expects($this->once())

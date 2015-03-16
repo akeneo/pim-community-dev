@@ -9,9 +9,12 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -277,9 +280,9 @@ class FixturesContext extends RawMinkContext
         $product = $this->loadFixture('products', $data);
 
         $this->getProductBuilder()->addMissingProductValues($product);
-        $this->getProductManager()->handleMedia($product);
+        $this->getMediaManager()->handleProductMedias($product);
 
-        $this->getProductManager()->saveProduct($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
 
         return $product;
     }
@@ -2043,11 +2046,27 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     */
+    protected function getMediaManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.media');
+    }
+
+    /**
+     * @return ProductBuilderInterface
      */
     protected function getProductBuilder()
     {
         return $this->getContainer()->get('pim_catalog.builder.product');
+    }
+
+    /**
+     * @return ProductSaver
+     */
+    protected function getProductSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product');
     }
 
     /**
@@ -2056,14 +2075,6 @@ class FixturesContext extends RawMinkContext
     protected function getAttributeManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.attribute');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
-     */
-    protected function getMediaManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.media');
     }
 
     /**

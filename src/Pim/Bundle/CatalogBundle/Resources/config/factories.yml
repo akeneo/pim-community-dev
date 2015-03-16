@@ -9,14 +9,14 @@ services:
     pim_catalog.factory.family:
         class: %pim_catalog.factory.family.class%
         arguments:
-            - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.attribute_requirement'
+            - '@pim_catalog.repository.attribute'
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%
 
-    # deprecetad: will be removed in 1.4
+    # deprecated: will be removed in 1.4
     pim_catalog.factory.referenced_collection:
         alias: akeneo_storage_utils.factory.referenced_collection
 

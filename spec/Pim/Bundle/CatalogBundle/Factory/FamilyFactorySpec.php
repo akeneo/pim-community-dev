@@ -9,20 +9,21 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Prophecy\Argument;
 
 class FamilyFactorySpec extends ObjectBehavior
 {
     function let(
-        ProductManager $productManager,
         ChannelManager $channelManager,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->beConstructedWith($productManager, $channelManager, $factory);
+        $this->beConstructedWith($channelManager, $factory, $attributeRepository);
     }
 
     function it_creates_a_family(
-        $productManager,
+        $attributeRepository,
         $channelManager,
         $factory,
         AttributeInterface $identifierAttribute,
@@ -31,7 +32,7 @@ class FamilyFactorySpec extends ObjectBehavior
         AttributeRequirementInterface $printRequirement,
         AttributeRequirementInterface $ecommerceRequirement
     ) {
-        $productManager->getIdentifierAttribute()
+        $attributeRepository->getIdentifier()
             ->willReturn($identifierAttribute)
             ->shouldBeCalled();
 
