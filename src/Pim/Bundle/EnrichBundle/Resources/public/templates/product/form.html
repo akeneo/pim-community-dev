@@ -46,35 +46,9 @@
                 <button class="btn ">History</button>
             </div>
         </header>
-        <div class="form-content fullheight">
-            <div class="tab-content">
+        <div class="form-container">
+            <div class="tab-container">
                 <div class="tab-pane active" id="product-attributes">
-                    <header>
-                        <% if (state.optionalAttributes.length) { %>
-                            <div class="btn-group pull-right" id="add-attribute">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                    Add an attribute
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <% _.each(state.optionalAttributes, function (attribute) { %>
-                                        <li><a data-attribute="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></a></li>
-                                    <% }); %>
-                                </ul>
-                            </div>
-                        <% } %>
-                        <div class="btn-group pull-right" id="current-scope">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <%= state.scope %>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <% _.each(config.channels ,function (scope) { %>
-                                    <li><a data-scope="<%= scope.code %>"><%= scope.label %></a></li>
-                                <% }); %>
-                            </ul>
-                        </div>
-                    </header>
                     <div class="tabbable tabs-left">
                         <ul class="nav nav-tabs">
                             <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>
@@ -84,17 +58,69 @@
                             <% }); %>
                         </ul>
                         <div class="tab-content">
-                            <div class="tab-pane active" id="product-values"></div>
+                            <header>
+                                <div class="btn-group" id="current-locale">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <%= state.locale %>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
+                                            <li><a data-locale="<%= locale %>"><%= locale %></a></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                                <% if (state.optionalAttributes.length) { %>
+                                    <div class="btn-group pull-right" id="add-attribute">
+                                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                            Add an attribute
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <% _.each(state.optionalAttributes, function (attribute) { %>
+                                                <li><a data-attribute="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></a></li>
+                                            <% }); %>
+                                        </ul>
+                                    </div>
+                                <% } %>
+                                <div class="btn-group pull-right" id="current-scope">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <%= state.scope %>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <% _.each(config.channels ,function (scope) { %>
+                                            <li><a data-scope="<%= scope.code %>"><%= scope.label %></a></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                            </header>
+                            <div class="tab-pane active" id="product-values">
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="panel-content">
+            <div class="panel-container">
                 <div class="panel-pane active">
-                <header>
-                    <button class="close pull-right">&times;</button>
-                    <h1>Completeness</h1>
-                </header>
+                    <header>
+                        <button class="close pull-right">&times;</button>
+                        <h1>Completeness</h1>
+                    </header>
+                    <div class="panel-content">
+                        <div class="completeness-block">
+                            <header><h1>German</h1><button>collapse</button></header>
+                            <div class="content">
+                                <div>
+                                    <h2>Mobile</h2>
+                                    <div class="progress">
+                                      <div class="bar" style="width: 60%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- <div class="panel-pane">
 
