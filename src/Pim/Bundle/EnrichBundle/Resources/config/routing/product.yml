@@ -98,3 +98,17 @@ pim_enrich_product_rest_post:
     requirements:
         id: '[0-9a-f]+'
     methods: [POST]
+
+pim_enrich_product_completeness_rest_get:
+    path: /rest/{id}/completeness
+    defaults: { _controller: pim_enrich.controller.completeness_rest:getAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
+pim_enrich_product_history_rest_get:
+    path: /rest/{entityId}/history
+    defaults: { _controller: pim_enrich.controller.versioning_rest:getAction, entityType: product }
+    requirements:
+        entityId: '[0-9a-f]+'
+    methods: [GET]

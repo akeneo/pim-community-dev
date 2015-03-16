@@ -12,6 +12,8 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         model: FieldModel,
         template: _.template(fieldTemplate),
         infoElements: {},
+        editable: true,
+        enabled: true,
         initialize: function(attribute)
         {
             this.attribute    = attribute;
@@ -31,7 +33,8 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
                 config: this.config,
                 context: this.context,
                 attribute: this.attribute,
-                info: this.infoElements
+                info: this.infoElements,
+                editMode: this.getEditMode()
             };
 
             this.$el.html(this.template(templateContext));
@@ -45,7 +48,11 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         },
         getData: function()
         {
-            return this.model.get('values');
+            if (this.editable && this.enabled) {
+                return this.model.get('values');
+            } else {
+                return [];
+            }
         },
         setValues: function(values)
         {
@@ -81,6 +88,30 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         complete: function()
         {
             return true;
+        },
+        setEditable: function(editable) {
+            this.editable = editable;
+        },
+        getEditable: function() {
+            return this.editable;
+        },
+        setEnabled: function(enabled) {
+            this.enabled = enabled;
+        },
+        getEnabled: function() {
+            return this.enabled;
+        },
+        getEditMode: function()
+        {
+            if (this.editable) {
+                if (this.enabled) {
+                    return 'edit';
+                } else {
+                    return 'disabled';
+                }
+            } else {
+                return 'view';
+            }
         },
         getCurrentValue: function()
         {

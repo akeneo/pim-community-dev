@@ -27,6 +27,8 @@ parameters:
     pim_enrich.controller.variant_group_rest.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupRestController
     pim_enrich.controller.channel_rest.class: Pim\Bundle\EnrichBundle\Controller\ChannelRestController
     pim_enrich.controller.measures_rest.class: Pim\Bundle\EnrichBundle\Controller\MeasuresRestController
+    pim_enrich.controller.completeness_rest.class: Pim\Bundle\EnrichBundle\Controller\CompletenessRestController
+    pim_enrich.controller.versioning_rest.class: Pim\Bundle\EnrichBundle\Controller\VersioningRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -315,3 +317,19 @@ services:
         class: %pim_enrich.controller.measures_rest.class%
         arguments:
             - %akeneo_measure.measures_config%
+
+    pim_enrich.controller.completeness_rest:
+        class: %pim_enrich.controller.completeness_rest.class%
+        arguments:
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_user.context.user'
+            - '@pim_enrich.normalizer.completeness_collection'
+
+    pim_enrich.controller.versioning_rest:
+        class: %pim_enrich.controller.versioning_rest.class%
+        arguments:
+            - '@pim_versioning.repository.version'
+            - '@pim_catalog.resolver.fqcn'
+            - '@pim_internal_api_serializer'

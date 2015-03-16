@@ -1,11 +1,15 @@
 <% if (!value.value) { %>
     <% _.each(config.currency, function (currency) { %>
-        <span><%= currency %></span>
-        <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= currency %>" value="">
+        <div class="input-append">
+            <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= currency %>" value="" <%= editMode === 'disabled' ? 'disabled' : '' %>>
+            <span class="add-on"><%= price.currency %></span>
+        </div>
     <% }) %>
 <% } else { %>
     <% _.each(value.value, function (price) { %>
-        <span><%= price.currency %></span>
-        <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= price.currency %>" value="<%= price.data %>">
+        <div class="input-append">
+            <input type="text" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= price.currency %>" value="<%= price.data %>" <%= editMode === 'disabled' ? 'disabled' : '' %>>
+            <span class="add-on"><%= price.currency %></span>
+        </div>
     <% }) %>
 <% } %>

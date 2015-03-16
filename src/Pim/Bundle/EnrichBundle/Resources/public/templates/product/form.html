@@ -1,64 +1,172 @@
-<header>
-    <div class="btn-group" id="current-locale">
-        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-            <%= state.locale %>
-            <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu">
-            <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
-                <li><a data-locale="<%= locale %>"><%= locale %></a></li>
-            <% }); %>
-        </ul>
-    </div>
-    <button class="btn pull-right" id="get-data">get data</button>
-    <button class="btn pull-right" id="save">save</button>
-</header>
-
-<div class="tabbable tabs-top">
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a>Attributes</a>
-        </li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane active" id="product-attributes">
-            <header>
-                <% if (state.optionalAttributes.length) { %>
-                    <div class="btn-group pull-right" id="add-attribute">
-                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                            Add an attribute
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <% _.each(state.optionalAttributes, function (attribute) { %>
-                                <li><a data-attribute="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></a></li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                <% } %>
-                <div class="btn-group pull-right" id="current-scope">
+<div class="product-edit-form">
+    <header>
+        <div>
+            <div class="product-title">
+                <div class="btn-group" id="current-locale">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                        <%= state.scope %>
+                        <%= state.locale %>
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <% _.each(config.channels ,function (scope) { %>
-                            <li><a data-scope="<%= scope.code %>"><%= scope.label %></a></li>
+                        <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
+                            <li><a data-locale="<%= locale %>"><%= locale %></a></li>
                         <% }); %>
                     </ul>
                 </div>
-            </header>
-            <div class="tabbable tabs-left">
-                <ul class="nav nav-tabs">
-                    <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>
-                        <li data-attribute-group="<%= attributeGroup.code %>" class="<%= state.attributeGroup === attributeGroup.code ? 'active' : '' %>">
-                            <a><%= attributeGroup.label.en_US %></a>
-                        </li>
-                    <% }); %>
-                </ul>
-                <div class="tab-content">
-                    <div class="tab-pane active" id="product-values"></div>
+                <span class="product-label">Sony SRS-BTV25</span>
+            </div>
+            <div class="actions">
+                <button class="btn" id="get-data">get data</button>
+                <button class="btn" id="save">save</button>
+            </div>
+        </div>
+        <div class="meta">
+            <span>Family: Tshirt <i class="icon-pencil"></i></span>
+            <span>Created: 2015-03-12 08:11:27 By admin</span>
+            <span>Last update: 2015-03-12 08:11:27 By admin</span>
+        </div>
+    </header>
+    <div class="tabbable tabs-top">
+        <header>
+            <ul class="nav nav-tabs form-tabs">
+                <li class="active">
+                    <a>Attributes</a>
+                </li>
+                <li>
+                    <a>Categories</a>
+                </li>
+                <li>
+                    <a>Associations</a>
+                </li>
+            </ul>
+            <div class="btn-group panel-selector">
+                <button class="btn">Proposals</button>
+                <button class="btn active">Completeness</button>
+                <button class="btn">Comments</button>
+                <button class="btn ">History</button>
+            </div>
+        </header>
+        <div class="form-container">
+            <div class="tab-container">
+                <div class="tab-pane active" id="product-attributes">
+                    <div class="tabbable tabs-left">
+                        <ul class="nav nav-tabs">
+                            <% _.each(state.activeAttributeGroups, function (attributeGroup) { %>
+                                <li data-attribute-group="<%= attributeGroup.code %>" class="<%= state.attributeGroup === attributeGroup.code ? 'active' : '' %>">
+                                    <a><%= attributeGroup.label.en_US %></a>
+                                </li>
+                            <% }); %>
+                        </ul>
+                        <div class="tab-content">
+                            <header>
+                                <div class="btn-group" id="current-locale">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <%= state.locale %>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <% _.each(_.unique(_.flatten(_.pluck(config.channels, 'locales'))), function (locale) { %>
+                                            <li><a data-locale="<%= locale %>"><%= locale %></a></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                                <% if (state.optionalAttributes.length) { %>
+                                    <div class="btn-group pull-right" id="add-attribute">
+                                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                            Add an attribute
+                                            <span class="caret"></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <% _.each(state.optionalAttributes, function (attribute) { %>
+                                                <li><a data-attribute="<%= config.attributes[attribute].code %>"><%= config.attributes[attribute].label.en_US %></a></li>
+                                            <% }); %>
+                                        </ul>
+                                    </div>
+                                <% } %>
+                                <div class="btn-group pull-right" id="current-scope">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <%= state.scope %>
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <% _.each(config.channels ,function (scope) { %>
+                                            <li><a data-scope="<%= scope.code %>"><%= scope.label %></a></li>
+                                        <% }); %>
+                                    </ul>
+                                </div>
+                            </header>
+                            <div class="tab-pane active" id="product-values">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+            <div class="panel-container">
+                <div class="panel-pane active">
+                    <header>
+                        <button class="close pull-right">&times;</button>
+                        <h1>Completeness</h1>
+                    </header>
+                    <div class="panel-content">
+                        <div class="completeness-block">
+                            <header><span class="locale">German</span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+                            <div class="content">
+                                <div>
+                                    <span class="channel">Mobile</span>
+                                    <div class="progress progress-warning">
+                                      <div class="bar" style="width: 60%;"></div>
+                                    </div>
+                                    <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                                </div>
+                                <div>
+                                    <span class="channel">Mobile</span>
+                                    <div class="progress progress-warning">
+                                      <div class="bar" style="width: 60%;"></div>
+                                    </div>
+                                    <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                                </div>
+                                <div>
+                                    <span class="channel">Mobile</span>
+                                    <div class="progress progress-success">
+                                      <div class="bar" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="completeness-block">
+                            <header><span class="locale">English</span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+                            <div class="content">
+                                <div>
+                                    <span class="channel">Mobile</span>
+                                    <div class="progress progress-warning">
+                                      <div class="bar" style="width: 60%;"></div>
+                                    </div>
+                                    <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                                </div>
+                                <div>
+                                    <span class="channel">Mobile</span>
+                                    <div class="progress progress-warning">
+                                      <div class="bar" style="width: 60%;"></div>
+                                    </div>
+                                    <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                                </div>
+                                <div>
+                                    <span class="channel">Mobile</span>
+                                    <div class="progress progress-success">
+                                      <div class="bar" style="width: 100%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="panel-pane">
+
+                </div>
+                <div class="panel-pane">
+
+                </div> -->
             </div>
         </div>
     </div>

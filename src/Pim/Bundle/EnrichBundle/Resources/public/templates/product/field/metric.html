@@ -1,5 +1,5 @@
 <input type="text" class="data" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" value="<%= value.value.data %>"/>
-<select class="unit select-field" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>">
+<select class="unit select-field" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>>
     <% _.each(_.keys(config.measures[attribute.metric_family].units), function(unit) { %>
         <option value="<%= unit %>"<% if (value.value.unit === unit) { %> selected<% } %>><%= unit %></option>
     <% }); %>
