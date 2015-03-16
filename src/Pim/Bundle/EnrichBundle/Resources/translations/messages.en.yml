@@ -128,6 +128,7 @@ pim_enrich:
             label:         Classify products in categories
             description:   The products will be positioned into following categories, the existing placement is kept.
             success_flash: Product(s) have been classified into selected categories
+            launched_flash: The job updating product(s) categories is currently running
 
         change-family:
             label:         Change the family of products

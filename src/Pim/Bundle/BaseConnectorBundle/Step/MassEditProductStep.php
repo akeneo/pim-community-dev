@@ -13,7 +13,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductHandler;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditUpdateProductStep extends AbstractStep
+class MassEditProductStep extends AbstractStep
 {
     /** @var array */
     protected $configuration;
