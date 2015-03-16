@@ -7,9 +7,11 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -32,8 +34,14 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $productPriceClass;
 
+    /** @var string */
+    protected $associationClass;
+
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
+
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
 
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
@@ -44,45 +52,62 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepository;
+
     /**
      * Constructor
      *
-     * @param AttributeRepositoryInterface $attributeRepository Attribute repository
-     * @param ChannelRepositoryInterface   $channelRepository   Channel repository
-     * @param LocaleRepositoryInterface    $localeRepository    Locale repository
-     * @param CurrencyRepositoryInterface  $currencyRepository  Currency repository
-     * @param EventDispatcherInterface     $eventDispatcher     Event dispatcher
-     * @param array                        $classes             Product, product value and price classes
+     * @param AttributeRepositoryInterface       $attributeRepository Attribute repository
+     * @param FamilyRepositoryInterface          $familyRepository    Family repository
+     * @param ChannelRepositoryInterface         $channelRepository   Channel repository
+     * @param LocaleRepositoryInterface          $localeRepository    Locale repository
+     * @param CurrencyRepositoryInterface        $currencyRepository  Currency repository
+     * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
+     * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
+     * @param array                              $classes             Model classes
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
+        FamilyRepositoryInterface $familyRepository,
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
+        AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
         array $classes
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->channelRepository  = $channelRepository;
-        $this->localeRepository   = $localeRepository;
-        $this->currencyRepository = $currencyRepository;
-        $this->eventDispatcher    = $eventDispatcher;
-        $this->productClass       = $classes['product'];
-        $this->productValueClass  = $classes['product_value'];
-        $this->productPriceClass  = $classes['product_price'];
+        $this->familyRepository    = $familyRepository;
+        $this->channelRepository   = $channelRepository;
+        $this->localeRepository    = $localeRepository;
+        $this->currencyRepository  = $currencyRepository;
+        $this->assocTypeRepository = $assocTypeRepository;
+        $this->eventDispatcher     = $eventDispatcher;
+        $this->productClass        = $classes['product'];
+        $this->productValueClass   = $classes['product_value'];
+        $this->productPriceClass   = $classes['product_price'];
+        $this->associationClass    = $classes['association'];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function createProduct($identifier = null)
+    public function createProduct($identifier = null, $familyCode = null)
     {
         $product = new $this->productClass();
+
         $identifierAttribute = $this->attributeRepository->getIdentifier();
         $productValue = $this->createProductValue($identifierAttribute);
         $product->addValue($productValue);
         if (null !== $identifier) {
             $productValue->setData($identifier);
+        }
+
+        if (null !== $familyCode) {
+            $family = $this->familyRepository->findOneByIdentifier($familyCode);
+            $product->setFamily($family);
+            $this->addMissingProductValues($product);
         }
 
         $event = new GenericEvent($product);
@@ -112,6 +137,25 @@ class ProductBuilder implements ProductBuilderInterface
         }
 
         $this->addMissingPricesToProduct($product);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addMissingAssociations(ProductInterface $product)
+    {
+        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($product);
+        if (!empty($missingAssocTypes)) {
+            foreach ($missingAssocTypes as $associationType) {
+                $association = new $this->associationClass();
+                $association->setAssociationType($associationType);
+                $product->addAssociation($association);
+            }
+        }
+
+        return $this;
     }
 
     /**
