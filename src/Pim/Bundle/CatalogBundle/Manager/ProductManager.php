@@ -7,7 +7,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -253,18 +252,12 @@ class ProductManager
 
     /**
      * @param ProductInterface $product
+     *
+     * @deprecated will be remove in 1.5, please use ProductBuilderInterface::addMissingAssociations
      */
     public function ensureAllAssociationTypes(ProductInterface $product)
     {
-        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($product);
-
-        if (!empty($missingAssocTypes)) {
-            foreach ($missingAssocTypes as $associationType) {
-                $association = new Association();
-                $association->setAssociationType($associationType);
-                $product->addAssociation($association);
-            }
-        }
+        $this->builder->addMissingAssociations($product);
     }
 
     /**

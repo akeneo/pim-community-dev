@@ -3,6 +3,8 @@
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -10,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
@@ -23,6 +26,7 @@ class ProductBuilderSpec extends ObjectBehavior
     const PRODUCT_CLASS = 'Pim\Bundle\CatalogBundle\Model\Product';
     const VALUE_CLASS   = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
     const PRICE_CLASS   = 'Pim\Bundle\CatalogBundle\Entity\ProductPrice';
+    const ASSOCIATION_CLASS = 'Pim\Bundle\CatalogBundle\Model\Association';
 
     function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -30,12 +34,14 @@ class ProductBuilderSpec extends ObjectBehavior
         ChannelRepositoryInterface $channelRepository,
         LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
+        AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher
     ) {
         $entityConfig = array(
             'product' => self::PRODUCT_CLASS,
             'product_value' => self::VALUE_CLASS,
-            'product_price' => self::PRICE_CLASS
+            'product_price' => self::PRICE_CLASS,
+            'association' => self::ASSOCIATION_CLASS
         );
 
         $this->beConstructedWith(
@@ -44,6 +50,7 @@ class ProductBuilderSpec extends ObjectBehavior
             $channelRepository,
             $localeRepository,
             $currencyRepository,
+            $assocTypeRepository,
             $eventDispatcher,
             $entityConfig
         );
@@ -133,6 +140,21 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->addValue(Argument::any())->shouldBeCalledTimes(6);
 
         $this->addMissingProductValues($product);
+    }
+
+    function it_adds_missing_product_associations(
+        $assocTypeRepository,
+        ProductInterface $productOne,
+        ProductInterface $productTwo,
+        AssociationTypeInterface $type
+    ) {
+        $assocTypeRepository->findMissingAssociationTypes($productOne)->willReturn([$type]);
+        $productOne->addAssociation(Argument::any())->shouldBeCalled();
+        $this->addMissingAssociations($productOne);
+
+        $assocTypeRepository->findMissingAssociationTypes($productTwo)->willReturn([]);
+        $productTwo->addAssociation(Argument::any())->shouldNotBeCalled();
+        $this->addMissingAssociations($productTwo);
     }
 
     function it_adds_product_value(ProductInterface $product, AttributeInterface $size)

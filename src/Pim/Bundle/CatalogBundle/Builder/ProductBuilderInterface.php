@@ -36,9 +36,18 @@ interface ProductBuilderInterface
      *
      * @param ProductInterface $product
      *
-     * @return null
+     * @return ProductBuilderInterface
      */
     public function addMissingProductValues(ProductInterface $product);
+
+    /**
+     * Add empty associations for each association types when they don't exist yet
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductBuilderInterface
+     */
+    public function addMissingAssociations(ProductInterface $product);
 
     /**
      * Creates required value(s) to add the attribute to the product
