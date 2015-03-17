@@ -278,11 +278,7 @@ class FixturesContext extends RawMinkContext
             ->reset();
 
         $product = $this->loadFixture('products', $data);
-
-        // TODO: should be useless, maybe a behat issue
-        // $this->getProductBuilder()->addMissingProductValues($product);
         $this->getMediaManager()->handleProductMedias($product);
-
         $this->getProductSaver()->save($product, ['recalculate' => false]);
 
         return $product;
