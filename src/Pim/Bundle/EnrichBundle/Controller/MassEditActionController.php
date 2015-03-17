@@ -154,6 +154,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
+     *
      * @return Response|RedirectResponse
      */
     public function configureAction($operationAlias)
@@ -173,6 +174,7 @@ class MassEditActionController extends AbstractDoctrineController
             [
                 'form'           => $form->createView(),
                 'operationAlias' => $operationAlias,
+                'operation'      => $operation,
                 'queryParams'    => $this->getQueryParams(),
                 'productCount'   => $productCount,
                 'itemsName'      => $itemsName,
