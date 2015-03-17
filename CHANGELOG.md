@@ -65,6 +65,7 @@
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/CategoryManager
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/FamilyManager
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
+- Change arguments of Pim\Bundle\EnrichBundle\Controller\AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
 
 # 1.3.x
 

@@ -281,7 +281,6 @@ class FixturesContext extends RawMinkContext
         $product = $this->loadFixture('products', $data);
         $this->getMediaManager()->handleProductMedias($product);
 
-        // TODO: ugly hack!
         // we get rid of "add missing values" but we still have an issue with the ORM price filter on empty operator
         /** @var ProductValueInterface $value */
         foreach ($product->getValues() as $value) {

@@ -553,7 +553,7 @@ class ProductController extends AbstractDoctrineController
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
-        // TODO: with this version of the form we need to add missing values from family
+        // With this version of the form we need to add missing values from family
         $this->productBuilder->addMissingProductValues($product);
         $this->productBuilder->addMissingAssociations($product);
 
