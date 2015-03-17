@@ -51,7 +51,6 @@ define(
                 this.listenTo(this.getRoot().model, 'change', this.render);
 
                 return $.when(
-                    this.loadConfiguration(),
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
@@ -132,6 +131,10 @@ define(
                 var configurationPromise = $.Deferred();
                 var promises = [];
 
+                ConfigManager.getConfig().done(_.bind(function(config) {
+                    this.config.set(config, {silent: true});
+                }, this));
+
                 AttributeManager.getAttributeGroupsForProduct(this.getData())
                     .done(_.bind(function(attributeGroups) {
                         this.config.set('attributeGroups', attributeGroups, {silent: true});
@@ -141,6 +144,7 @@ define(
                         this.config.set('optionalAttributes', optionalAttributes, {silent: true});
                     }, this));
 
+                promises.push(ConfigManager.getConfig());
                 promises.push(AttributeManager.getAttributeGroupsForProduct(this.getData()));
                 promises.push(AttributeManager.getOptionalAttributes(this.getData()));
 

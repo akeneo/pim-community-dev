@@ -64,7 +64,7 @@ define(
                     }
                 }, this));
 
-                console.log(this.getParent().renderedFields);
+                this.render();
             }
         });
     }
