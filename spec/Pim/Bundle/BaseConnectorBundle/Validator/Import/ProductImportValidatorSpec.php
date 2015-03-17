@@ -23,7 +23,17 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $this->beConstructedWith($validator, $constraintGuesser, $productManager);
     }
 
-    function it_check_unicity_of_product_value(
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator');
+    }
+
+    function it_is_an_import_validator()
+    {
+        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface');
+    }
+
+    function it_checks_unicity_of_product_value(
         Product $product1,
         Product $product2,
         ColumnInfo $columnInfo1,
