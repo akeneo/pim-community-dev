@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -19,6 +20,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class JobExecutionNotifier implements EventSubscriberInterface
 {
+    /** @staticvar string */
+    const TYPE_MASS_EDIT = 'mass_edit';
+
     /** @var NotificationManager */
     protected $manager;
 
@@ -71,11 +75,29 @@ class JobExecutionNotifier implements EventSubscriberInterface
         $type = $jobExecution->getJobInstance()->getType();
 
         // TODO: maybe create a registry or something similar to load routes ?
+        $this->generateNotification($jobExecution, $user, $type, $status);
+    }
 
+    /**
+     * Generates the correct notification for the given job $type.
+     *
+     * @param JobExecution $jobExecution
+     * @param null|string  $user
+     * @param string       $type
+     * @param string       $status
+     *
+     * @throws NotImplementedException
+     */
+    protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
+    {
         if (JobInstance::TYPE_EXPORT === $type || JobInstance::TYPE_IMPORT === $type) {
             $this->generateExportImportNotify($jobExecution, $user, $type, $status);
-        } elseif ('mass_edit' === $type) { //TODO: move this status in job instance const
+        } elseif (self::TYPE_MASS_EDIT === $type) {
             $this->generateMassEditNotify($jobExecution, $user, $type, $status);
+        } else {
+            throw new NotImplementedException(
+                sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
+            );
         }
     }
 
