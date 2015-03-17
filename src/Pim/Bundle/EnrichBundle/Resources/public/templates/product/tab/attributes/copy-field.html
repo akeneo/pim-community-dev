@@ -1,17 +1,12 @@
-<div class="<%= type %>-field form-field <%= editMode %>">
+<div class="<%= type %>-field form-field">
     <header>
         <label><%= label %></label>
         <span class="field-info pull-right">
             <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
             <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
         </span>
-        <% if (context.optional) { %><i class="icon-remove remove-attribute" data-attribute="<%= attribute.code %>" data-toggle="tooltip" title="Remove this attribute"></i><% } %>
     </header>
     <div class="field-input">
+        <%= data.value %>
     </div>
-    <footer>
-        <div class="field-info">
-            <% _.each(info['footer'], function(element) { %><%= element.html() %><% }) %>
-        </div>
-    </footer>
 </div>

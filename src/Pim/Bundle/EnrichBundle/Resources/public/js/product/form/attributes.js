@@ -130,11 +130,11 @@ define(
 
                 AttributeManager.getAttributeGroupsForProduct(this.getData())
                     .done(_.bind(function(attributeGroups) {
-                        this.config.set('attributeGroups', attributeGroups);
+                        this.config.set('attributeGroups', attributeGroups, {silent: true});
                     }, this));
                 AttributeManager.getOptionalAttributes(this.getData())
                     .done(_.bind(function(optionalAttributes) {
-                        this.config.set('optionalAttributes', optionalAttributes);
+                        this.config.set('optionalAttributes', optionalAttributes, {silent: true});
                     }, this));
 
                 promises.push(AttributeManager.getAttributeGroupsForProduct(this.getData()));

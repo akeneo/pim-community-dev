@@ -877,6 +877,17 @@ span.link-label {
 @max-field-width: 500px;
 @min-field-width: 300px;
 
+.field-container {
+  .display-flex();
+
+  & > * {
+    .flex(1);
+    &:not(:last-child) {
+      margin-right: 20px;
+    }
+  }
+}
+
 .form-field {
   margin-bottom: 20px;
   max-width: @max-field-width;
