@@ -71,7 +71,7 @@ class UpdateProductHandler extends AbstractConfigurableStepElement implements St
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
                 foreach ($actions as $action) {
-                    $this->productUpdater->set($product, $action['field'], $action['value']);
+                    $this->productUpdater->setData($product, $action['field'], $action['value']);
                 }
 
                 $this->stepExecution->incrementSummaryInfo('mass_edited');
