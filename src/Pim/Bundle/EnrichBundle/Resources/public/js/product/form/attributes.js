@@ -50,11 +50,21 @@ define(
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
 
-                return ConfigManager.getConfig().done(_.bind(function(config) {
+                return $.when(
+                    this.loadConfiguration(),
+                    BaseForm.prototype.configure.apply(this, arguments)
+                );
+            },
+            loadConfiguration: function () {
+                var promise = $.Deferred();
+
+                ConfigManager.getConfig().done(_.bind(function(config) {
                     this.config.set(config, {silent: true});
 
-                    return BaseForm.prototype.configure.apply(this, arguments);
+                    promise.resolve();
                 }, this));
+
+                return promise.promise();
             },
             render: function () {
                 this.getConfig().done(_.bind(function() {
@@ -139,7 +149,7 @@ define(
             getAttributeGroupValues: function (product, attributeGroup) {
                 var values = {};
                 _.each(product.values, _.bind(function(productValue, attributeCode) {
-                    if (attributeGroup && -1 !== this.config.get('attributeGroups')[attributeGroup].attributes.indexOf(attributeCode)) {
+                    if (attributeGroup && -1 !== this.config.get('attributegroups')[attributeGroup].attributes.indexOf(attributeCode)) {
                         values[attributeCode] = productValue;
                     }
                 }, this));

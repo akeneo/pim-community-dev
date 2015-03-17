@@ -17,10 +17,13 @@ define(
             },
             render: function () {
                 ConfigManager.getEntityList('channels').done(_.bind(function(channels) {
+                    if (!this.getRoot().state.get('scope')) {
+                        this.getRoot().state.set('scope', channels[0].code);
+                    }
                     this.$el.html(
                         this.template({
                             channels: channels,
-                            currentScope: this.getRoot().state.get('scope') || channels[0].code
+                            currentScope: this.getRoot().state.get('scope')
                         })
                     );
                     this.$el.prependTo(this.getRoot().$('.tab-content>header'));

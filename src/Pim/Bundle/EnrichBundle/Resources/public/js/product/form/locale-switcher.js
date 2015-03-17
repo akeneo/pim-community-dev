@@ -27,10 +27,13 @@ define(
             },
             render: function () {
                 this.getLocales().done(_.bind(function(locales) {
+                    if (!this.getRoot().state.get('locale')) {
+                        this.getRoot().state.set('locale', locales[0]);
+                    }
                     this.$el.html(
                         this.template({
                             locales: locales,
-                            currentLocale: this.getRoot().state.get('locale') || locales[0]
+                            currentLocale: this.getRoot().state.get('locale')
                         })
                     );
                     this.$el.prependTo(this.getRoot().$('.product-title'));

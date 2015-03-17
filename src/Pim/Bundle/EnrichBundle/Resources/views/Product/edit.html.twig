@@ -21,7 +21,6 @@
                     ProductManager.get(100)
                 ).done(function(form, product) {
                     form.setData(product);
-                    // form.setElement('#product-edit-form');
                     form.setElement('#product-edit-form').render();
                 });
             });

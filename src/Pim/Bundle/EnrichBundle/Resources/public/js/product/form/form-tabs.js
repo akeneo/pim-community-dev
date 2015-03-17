@@ -13,24 +13,29 @@ define(
             events: {
                 'click header ul.nav-tabs li': 'changeTab'
             },
+            initialize: function () {
+                this.state = new Backbone.Model();
+
+                this.listenTo(this.state, 'change', this.render);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
+            },
             configure: function() {
                 this.getRoot().addTab = _.bind(this.addTab, this);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             addTab: function (code, label) {
-                var state = this.getRoot().state;
-
-                var tabs = state.get('tabs') || [];
+                var tabs = this.state.get('tabs') || [];
                 tabs.push({ code: code, label: label });
 
-                state.set('tabs', tabs, {silent: true});
+                this.state.set('tabs', tabs, {silent: true});
 
-                if (state.get('currentTab') === undefined) {
-                    state.set('currentTab', tabs[0].code, {silent: true});
+                if (this.state.get('currentTab') === undefined) {
+                    this.state.set('currentTab', tabs[0].code, {silent: true});
                 }
 
-                state.trigger('change');
+                this.state.trigger('change');
             },
             setParent: function (parent) {
                 parent.addTab = this.addTab;
@@ -40,23 +45,25 @@ define(
                 return this;
             },
             render: function () {
+                if (!this.configured) {
+                    return;
+                }
+
                 this.$el.html(
                     this.template({
-                        state: this.getRoot().state.toJSON()
+                        state: this.state.toJSON()
                     })
                 );
                 this.$el.insertAfter(this.getRoot().$('>div>header'));
                 this.delegateEvents();
 
-                this.extensions[this.getRoot().state.get('currentTab')].render();
+                this.extensions[this.state.get('currentTab')].render();
                 this.extensions['panels'].render();
 
                 return this;
             },
             changeTab: function (event) {
-                this.getRoot().state.set('currentTab', event.currentTarget.dataset.tab);
-
-                this.render();
+                this.state.set('currentTab', event.currentTarget.dataset.tab);
             }
         });
     }

@@ -23,19 +23,6 @@ define(
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            configure: function () {
-                var promise = $.Deferred();
-
-                this.state.set('locale', 'en_US');
-                this.state.set('scope', 'ecommerce');
-                this.state.set('currentTab', 'attributes');
-
-                BaseForm.prototype.configure.apply(this, arguments).done(function() {
-                    promise.resolve();
-                });
-
-                return promise.promise();
-            },
             render: function () {
                 if (!this.configured) {
                     return;
