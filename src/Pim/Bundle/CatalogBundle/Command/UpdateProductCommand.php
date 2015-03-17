@@ -26,12 +26,12 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $updatesExample = [
             [
-                'type' => 'set_value',
+                'type' => 'set_data',
                 'field' => 'name',
-                'value' => 'My name'
+                'data' => 'My name'
             ],
             [
-                'type'        => 'copy_value',
+                'type'        => 'copy_data',
                 'from_field'  => 'description',
                 'from_scope'  => 'ecommerce',
                 'from_locale' => 'en_US',
@@ -42,7 +42,7 @@ class UpdateProductCommand extends ContainerAwareCommand
             [
                 'type'  => 'add_data',
                 'field' => 'categories',
-                'value' => ['tshirt']
+                'data' => ['tshirt']
             ],
         ];
 
@@ -114,11 +114,11 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['type']);
-        $resolver->setAllowedValues(['type' => ['set_value', 'copy_value', 'add_data']]);
+        $resolver->setAllowedValues(['type' => ['set_data', 'copy_data', 'add_data']]);
         $resolver->setOptional(
             [
                 'field',
-                'value',
+                'data',
                 'locale',
                 'scope',
                 'from_field',
@@ -142,9 +142,9 @@ class UpdateProductCommand extends ContainerAwareCommand
 
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);
-            if ('set_value' === $update['type']) {
+            if ('set_data' === $update['type']) {
                 $this->applySetData($product, $update);
-            } elseif ('copy_value' === $update['type']) {
+            } elseif ('copy_data' === $update['type']) {
                 $this->applyCopyData($product, $update);
             } else {
                 $this->applyAddData($product, $update);
@@ -162,7 +162,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         $updater->setData(
             $product,
             $update['field'],
-            $update['value'],
+            $update['data'],
             ['locale' => $update['locale'], 'scope' => $update['scope']]
         );
     }
@@ -198,7 +198,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         $updater->addData(
             $product,
             $update['field'],
-            $update['value'],
+            $update['data'],
             ['locale' => $update['locale'], 'scope' => $update['scope']]
         );
     }
