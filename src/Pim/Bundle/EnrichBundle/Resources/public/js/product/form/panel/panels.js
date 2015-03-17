@@ -47,7 +47,7 @@ define(
 
                 _.each(this.extensions, _.bind(function(extension) {
                     if (extension.code === this.getRoot().state.get('currentPanel')) {
-                        console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
+                        console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
                         this.$el.append(extension.render().$el);
                     }
                 }, this));
@@ -56,7 +56,7 @@ define(
 
                 _.each(this.extensions, _.bind(function(extension) {
                     if (extension.code === 'selector') {
-                        console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
+                        console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
                         this.getParent().$('>header').append(extension.render().$el);
                     }
                 }, this));

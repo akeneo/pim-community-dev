@@ -4,7 +4,7 @@ define(
     ['underscore', 'backbone'],
     function(_, Backbone) {
         return Backbone.View.extend({
-            code: '',
+            code: 'form',
             initialize: function () {
                 this.extensions = {};
                 this.configured = false;
@@ -61,7 +61,7 @@ define(
                 }
 
                 _.each(this.extensions, function(extension) {
-                    console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
+                    console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
                     extension.render();
                 });
 
