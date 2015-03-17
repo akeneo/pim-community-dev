@@ -5,6 +5,7 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
 
     return Backbone.View.extend({
         tagName: 'div',
+        className: 'field-container',
         attribute: null,
         fieldType: 'text',
         context: {},
@@ -19,6 +20,8 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
             this.attribute    = attribute;
             this.model        = new FieldModel();
             this.infoElements = {};
+            this.context      = {};
+            this.config       = {};
 
             return this;
         },

@@ -24,9 +24,7 @@ define(
                     })
                 );
 
-                this.$el.appendTo(this.getRoot().$('#form-tab-content'));
-
-                // new TreeAssociate('#trees', '#hidden-tree-input');
+                this.$el.appendTo(this.getRoot().$('.form-container .tab-pane[data-tab="categories"]'));
 
                 return this;
             }

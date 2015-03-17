@@ -32,6 +32,7 @@ define(
                 'click #add-attribute li a': 'addAttribute',
                 'click i.remove-attribute': 'removeAttribute'
             },
+            renderedFields: [],
             initialize: function () {
                 this.config = new Backbone.Model({
                     'attributeGroups' : [],
@@ -74,12 +75,14 @@ define(
                     $.when.apply($, fieldPromisses).done(_.bind(function() {
                         var $productValuesPanel = this.$('#product-values');
 
+                        this.renderedFields = [];
                         _.each(arguments, _.bind(function(field) {
+                            this.renderedFields.push(field);
                             $productValuesPanel.append(field.$el);
                         }, this));
                     }, this));
 
-                    this.$el.appendTo(this.getRoot().$('.form-container .tab-pane:first'));
+                    this.$el.appendTo(this.getRoot().$('.form-container .tab-pane[data-tab="attributes"]'));
 
                     this.delegateEvents();
 

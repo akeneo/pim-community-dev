@@ -31,6 +31,7 @@ config:
         pim/form-builder:                         pimenrich/js/form/builder
         pim/form-registry:                        pimenrich/js/form/registry
         pim/product-edit-form/attributes:         pimenrich/js/product/form/attributes
+        pim/product-edit-form/attributes/copy:    pimenrich/js/product/form/attributes/copy
         pim/product-edit-form/categories:         pimenrich/js/product/form/categories
         pim/product-edit-form/panel/panels:       pimenrich/js/product/form/panel/panels
         pim/product-edit-form/panel/selector:     pimenrich/js/product/form/panel/selector
@@ -68,6 +69,7 @@ config:
         pim/template/product/form:                   pimenrich/templates/product/form.html
         pim/template/product/tab/categories:         pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attributes:         pimenrich/templates/product/tab/attributes.html
+        pim/template/product/tab/attributes/copy:    pimenrich/templates/product/tab/attributes/copy.html
         pim/template/product/panel/container:        pimenrich/templates/product/panel/container.html
         pim/template/product/panel/selector:         pimenrich/templates/product/panel/selector.html
         pim/template/product/panel/completeness:     pimenrich/templates/product/panel/completeness.html

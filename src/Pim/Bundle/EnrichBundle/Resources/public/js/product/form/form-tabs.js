@@ -48,7 +48,7 @@ define(
                 this.$el.insertAfter(this.getRoot().$('>div>header'));
                 this.delegateEvents();
 
-                BaseForm.prototype.render.apply(this, arguments);
+                this.extensions[this.getRoot().state.get('currentTab')].render();
 
                 return this;
             },

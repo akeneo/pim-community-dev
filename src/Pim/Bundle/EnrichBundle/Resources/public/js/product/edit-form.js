@@ -23,6 +23,19 @@ define(
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
+            configure: function () {
+                var promise = $.Deferred();
+
+                this.state.set('locale', 'en_US');
+                this.state.set('scope', 'ecommerce');
+                this.state.set('currentTab', 'attributes');
+
+                BaseForm.prototype.configure.apply(this, arguments).done(function() {
+                    promise.resolve();
+                });
+
+                return promise.promise();
+            },
             render: function () {
                 if (!this.configured) {
                     return;
@@ -34,7 +47,10 @@ define(
                     })
                 );
 
-                BaseForm.prototype.render.apply(this, arguments);
+                _.each(this.extensions, function(extension) {
+                    console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
+                    extension.render();
+                });
 
                 return this;
             }

@@ -12,7 +12,7 @@ define(
             className: 'panel-container closed',
             events: {
                 'click .panel-selector': 'changePanel',
-                'click .panel-container > header > .close': 'closePanel'
+                'click > header > .close': 'closePanel'
             },
             configure: function() {
                 this.getRoot().addPanel = _.bind(this.addPanel, this);
@@ -52,6 +52,8 @@ define(
                     }
                 }, this));
 
+                //TODO: check that it exists
+                console.log(this.getParent().$('.form-container'));
                 this.getParent().$('.form-container').append(this.$el);
 
                 _.each(this.extensions, _.bind(function(extension) {
