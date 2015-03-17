@@ -1,0 +1,29 @@
+<ul class="nav nav-tabs">
+    <% _.each(config.attributeGroups, function (attributeGroup) { %>
+        <li data-attribute-group="<%= attributeGroup.code %>" class="<%= config.attributeGroup === attributeGroup.code ? 'active' : '' %>">
+            <a><%= attributeGroup.label.en_US %></a>
+        </li>
+    <% }); %>
+</ul>
+<div class="tab-content">
+    <header>
+        <% if (config.optionalAttributes.length) { %>
+            <div class="btn-group pull-right" id="add-attribute">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    Add an attribute
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <% _.each(config.optionalAttributes, function (attribute) { %>
+                        <li>
+                            <a data-attribute="<%= config.attributes[attribute].code %>">
+                                <%= config.attributes[attribute].label.en_US %>
+                            </a>
+                        </li>
+                    <% }); %>
+                </ul>
+            </div>
+        <% } %>
+    </header>
+    <div class="tab-pane active" id="product-values"></div>
+</div>

@@ -1,0 +1,88 @@
+<header>
+    <ul class="nav nav-tabs form-tabs">
+        <% _.each(state.tabs, function (tab) { %>
+            <li <% if (state.currentTab === tab.code) { %> class="active"<% } %> data-tab="<%= tab.code %>">
+                <a><%= tab.label %></a>
+            </li>
+        <% }); %>
+    </ul>
+    <div class="btn-group panel-selector">
+        <button class="btn">Proposals</button>
+        <button class="btn active">Completeness</button>
+        <button class="btn">Comments</button>
+        <button class="btn ">History</button>
+    </div>
+</header>
+<div class="form-container">
+    <div class="tab-container">
+        <% _.each(state.tabs, function (tab) { %>
+            <div class="tab-pane<%= state.currentTab === tab.code ? ' active' : '' %>"></div>
+        <% }); %>
+    </div>
+    <div class="panel-container">
+        <div class="panel-pane active">
+            <header>
+                <button class="close pull-right">&times;</button>
+                <h1>Completeness</h1>
+            </header>
+            <div class="panel-content">
+                <div class="completeness-block">
+                    <header><span class="locale">German</span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+                    <div class="content">
+                        <div>
+                            <span class="channel">Mobile</span>
+                            <div class="progress progress-warning">
+                              <div class="bar" style="width: 60%;"></div>
+                            </div>
+                            <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                        </div>
+                        <div>
+                            <span class="channel">Mobile</span>
+                            <div class="progress progress-warning">
+                              <div class="bar" style="width: 60%;"></div>
+                            </div>
+                            <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                        </div>
+                        <div>
+                            <span class="channel">Mobile</span>
+                            <div class="progress progress-success">
+                              <div class="bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="completeness-block">
+                    <header><span class="locale">English</span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+                    <div class="content">
+                        <div>
+                            <span class="channel">Mobile</span>
+                            <div class="progress progress-warning">
+                              <div class="bar" style="width: 60%;"></div>
+                            </div>
+                            <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                        </div>
+                        <div>
+                            <span class="channel">Mobile</span>
+                            <div class="progress progress-warning">
+                              <div class="bar" style="width: 60%;"></div>
+                            </div>
+                            <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
+                        </div>
+                        <div>
+                            <span class="channel">Mobile</span>
+                            <div class="progress progress-success">
+                              <div class="bar" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="panel-pane">
+
+        </div>
+        <div class="panel-pane">
+
+        </div> -->
+    </div>
+</div>

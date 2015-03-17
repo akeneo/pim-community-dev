@@ -12,7 +12,20 @@
 </div>
 
 <script>
-    require(['pim/product-edit-form'], function() {});
+    require(
+        ['jquery', 'pim/form-builder', 'pim/product-manager'],
+        function($, FormBuilder, ProductManager) {
+            $(function() {
+                $.when(
+                    FormBuilder.build('pim/product-edit-form'),
+                    ProductManager.get(100)
+                ).done(function(form, product) {
+                    form.setData(product);
+                    // form.setElement('#product-edit-form');
+                    form.setElement('#product-edit-form').render();
+                });
+            });
+        });
 </script>
 
 

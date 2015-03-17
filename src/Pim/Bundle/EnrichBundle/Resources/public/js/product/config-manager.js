@@ -2,18 +2,7 @@
 
 define(['routing'], function (Routing) {
     return {
-        entities: {
-            'locales': [
-                {
-                    'code': 'fr_FR',
-                    'label': 'French'
-                },
-                {
-                    'code': 'en_US',
-                    'label': 'English'
-                }
-            ]
-        },
+        entities: {},
         promises: {},
         urls: {
             'attributegroups': 'pim_enrich_attributegroup_rest_index',
@@ -24,7 +13,7 @@ define(['routing'], function (Routing) {
         },
         getEntityList: function(entityType)
         {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             //If we never called the backend we call it and set the promise
             if (!(entityType in this.promises)) {
@@ -52,7 +41,7 @@ define(['routing'], function (Routing) {
         },
         getEntity: function(entityType, entityIdentifier)
         {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             this.getEntityList(entityType).done(function(entities) {
                 promise.resolve(entities[entityIdentifier]);
@@ -62,13 +51,14 @@ define(['routing'], function (Routing) {
         },
         getConfig: function()
         {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             $.when(
                 this.getEntityList('attributegroups'),
                 this.getEntityList('attributes'),
                 this.getEntityList('channels'),
-                this.getEntityList('measures')
+                this.getEntityList('measures'),
+                this.getEntityList('families')
             ).done(_.bind(function() {
                 promise.resolve(this.entities);
             }, this));
