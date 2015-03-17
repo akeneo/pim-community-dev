@@ -29,7 +29,7 @@ define([
     return {
         fields: {},
         getField: function (attributeCode) {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             if (this.fields[attributeCode]) {
                 promise.resolve(this.fields[attributeCode]);

@@ -1,0 +1,27 @@
+<div class="tabbable tabs-left">
+    <ul class="nav nav-tabs" id="trees-list">
+        <% var trees = [{id: 1, code: 'master', label: 'master', associated: true}, {id: 2, code: 'sales', label: 'sales', associated: false}];_.each(trees, function (tree) { %>
+            <li data-tree="<%= tree.code %>" class="active">
+                <a <% if (tree.associated) { %>class="tree-has-product"<% } %>href="javascript:void(0);" id="tree-link-<%= tree.id %>">
+                    <i class="icon-ok green"></i>
+                    <%= tree.label %>
+                </a>
+            </li>
+        <% }); %>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="product-categories">
+            <div id="trees" data-id="100" data-datalocale="en_US" data-selected-tree="1">
+                <div class="tree root-unselectable" data-tree-id="1">
+                    <h3>master</h3>
+                    <div id="tree-1" class="buffer-small-left"></div>
+                </div>
+                <div class="tree root-unselectable" data-tree-id="2">
+                    <h3>sales</h3>
+                    <div id="tree-2" class="buffer-small-left"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="text" id="hidden-tree-input" value="116,128">

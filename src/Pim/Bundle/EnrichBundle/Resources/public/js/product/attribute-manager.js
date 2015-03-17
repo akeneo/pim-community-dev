@@ -4,7 +4,7 @@ define(['pim/config-manager'], function (ConfigManager) {
     return {
         getAttributeGroupsForProduct: function(product)
         {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             $.when(
                 ConfigManager.getEntityList('attributegroups'),
@@ -23,20 +23,24 @@ define(['pim/config-manager'], function (ConfigManager) {
             return promise.promise();
         },
         getAttributesForProduct: function(product) {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
-            ConfigManager.getEntityList('families').done(function (families) {
-                promise.resolve(
-                    !product.family ?
-                    _.keys(product.values) :
-                    _.union(_.keys(product.values), families[product.family].attributes)
-                );
-            });
+            if (_.isEmpty(product)) {
+                promise.resolve([]);
+            } else {
+                ConfigManager.getEntityList('families').done(function (families) {
+                    promise.resolve(
+                        !product.family ?
+                        _.keys(product.values) :
+                        _.union(_.keys(product.values), families[product.family].attributes)
+                    );
+                });
+            }
 
             return promise.promise();
         },
         getOptionalAttributes: function(product) {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             $.when(ConfigManager.getEntityList('attributes'), this.getAttributesForProduct(product))
                 .done(function(attributes, productAttributes) {

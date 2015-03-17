@@ -4,7 +4,7 @@ define(['routing', 'pim/config-manager'], function (Routing, ConfigManager) {
     return {
         getAttributeGroupsForProduct: function(product)
         {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             $.when(
                 ConfigManager.getEntityList('attributegroups'),
@@ -23,7 +23,7 @@ define(['routing', 'pim/config-manager'], function (Routing, ConfigManager) {
             return promise.promise();
         },
         getAttributesForProduct: function(product) {
-            var promise = new $.Deferred();
+            var promise = $.Deferred();
 
             ConfigManager.getEntityList('families').done(_.bind(function (families) {
                 promise.resolve(!product.family ? _.keys(product.values) : families[product.family].attributes);
