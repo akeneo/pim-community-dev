@@ -81,12 +81,6 @@ define(
 
                     this.$el.appendTo(this.getRoot().$('.form-container .tab-pane:first'));
 
-                    if (this.getRoot().state.get('currentTab') === 'attributes') {
-                        this.$el.addClass('active');
-                    } else {
-                        this.$el.removeClass('active');
-                    }
-
                     this.delegateEvents();
 
                     $('#get-data').off('click').on('click', _.bind(this.getValuesData, this));
