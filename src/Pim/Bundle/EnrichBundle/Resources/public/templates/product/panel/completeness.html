@@ -1,10 +1,10 @@
-<% _.each(completenesses, function(channels, locale) { %>
-    <div class="completeness-block">
-        <header><span class="locale" data-locale="<%= locale %>"><%= locale %></span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+<% _.each(completenesses, function(locales, channel) { %>
+    <div class="completeness-block" data-closed="false">
+        <header><span class="channel" data-channel="<%= channel %>"><%= channel %></span><span class="btn"><i class="icon-angle-down"></i></span></header>
         <div class="content">
-            <% _.each(channels, function(completeness, channel) { %>
+            <% _.each(locales, function(completeness, locale) { %>
                 <div>
-                    <span class="channel" data-channel="<%= channel %>"><%= channel %></span>
+                    <span class="locale" data-locale="<%= locale %>"><%= locale %></span>
                     <div class="progress <%= completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
                       <div class="bar" style="width: <%= completeness.completeness.ratio %>%;"></div>
                     </div>

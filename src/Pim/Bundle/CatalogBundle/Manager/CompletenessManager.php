@@ -171,9 +171,10 @@ class CompletenessManager
                 $entities
             );
         };
-        $channelTemplate = array_fill_keys($getCodes($channels), array('completeness' => null, 'missing' => array()));
-        $localeCodes = $getCodes($locales);
-        $completenesses = array_fill_keys($localeCodes, $channelTemplate);
+        $localeTemplate = array_fill_keys($getCodes($locales), array('completeness' => null, 'missing' => array()));
+        $channelCodes = $getCodes($channels) ;
+        $localeCodes = $getCodes($locales) ;
+        $completenesses = array_fill_keys($channelCodes, $localeTemplate);
 
         if (!$family) {
             return $completenesses;
@@ -183,7 +184,7 @@ class CompletenessManager
         foreach ($allCompletenesses as $completeness) {
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
-            $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
+            $completenesses[$channel->getCode()][$locale->getCode()]['completeness'] = $completeness;
         }
         $requirements = $this->familyRepository
             ->getFullRequirementsQB($family, $localeCode)
@@ -226,7 +227,7 @@ class CompletenessManager
                 $missing = true;
             }
             if ($missing) {
-                $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
+                $completenesses[$channel->getCode()][$localeCode]['missing'][] = $attribute;
             }
         }
     }

@@ -12,13 +12,18 @@ define(
             ).done(function (Form, extensions) {
                 var form = new Form();
 
-                var promises = [];
+                var extensionPromises = [];
                 _.each(extensions, function(extension) {
-                    promises.push(buildForm(extension));
+                    var extensionPromise = buildForm(extension.module);
+                    extensionPromise.done(function(loadedExtension) {
+                        form.addExtension(extension.code, loadedExtension);
+                    });
+
+                    extensionPromises.push(extensionPromise);
                 });
-                $.when.apply($, promises).done(function() {
-                    form.setExtensions(arguments);
-                        promise.resolve(form);
+
+                $.when.apply($, extensionPromises).done(function() {
+                    promise.resolve(form);
                 });
             });
 

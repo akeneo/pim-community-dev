@@ -4,8 +4,9 @@ define(
     ['underscore', 'backbone'],
     function(_, Backbone) {
         return Backbone.View.extend({
+            code: 'form',
             initialize: function () {
-                this.extensions = [];
+                this.extensions = {};
                 this.configured = false;
             },
             configure: function () {
@@ -23,14 +24,10 @@ define(
 
                 return promise.promise();
             },
-            addExtension: function (extension) {
+            addExtension: function (code, extension) {
                 extension.setParent(this);
-                this.extensions.push(extension);
-            },
-            setExtensions: function (extensions) {
-                _.each(extensions, _.bind(this.addExtension, this));
-
-                return this;
+                extension.code = code;
+                this.extensions[code] = extension;
             },
             setParent: function (parent) {
                 this.parent = parent;
@@ -64,7 +61,7 @@ define(
                 }
 
                 _.each(this.extensions, function(extension) {
-                    console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
+                    console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
                     extension.render();
                 });
 
