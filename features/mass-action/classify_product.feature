@@ -2,7 +2,7 @@
 Feature: Classify many products at once
   In order to easily classify products
   As a product manager
-  I need to associate many products to categories at once
+  I need to associate many products to categories at once with a form
 
   Background:
     Given the "footwear" catalog configuration
@@ -19,8 +19,4 @@ Feature: Classify many products at once
     And I click on the "Winter collection" category
     And I click on the "Summer collection" category
     When I move on to the next step
-    And I am on the products page
-    And I select the "2014 collection" tree
-    Then I should see "Summer collection (2)"
-    And I should see "Winter collection (2)"
-
+    Then I should be on the products page
