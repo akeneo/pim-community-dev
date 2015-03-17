@@ -15,14 +15,18 @@ define(
                 var extensionPromises = [];
                 _.each(extensions, function(extension) {
                     var extensionPromise = buildForm(extension.module);
-                    extensionPromise.done(function(loadedExtension) {
-                        form.addExtension(extension.code, loadedExtension);
+                    extensionPromise.done(function(loadedModule) {
+                        extension.loadedModule = loadedModule;
                     });
 
                     extensionPromises.push(extensionPromise);
                 });
 
                 $.when.apply($, extensionPromises).done(function() {
+                    _.each(extensions, function(extension) {
+                        form.addExtension(extension.code, extension.loadedModule);
+                    });
+
                     promise.resolve(form);
                 });
             });
