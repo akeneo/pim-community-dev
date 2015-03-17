@@ -20,7 +20,6 @@ define(
             render: function () {
                 if (this.getRoot().model.get('meta')) {
                     CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id).done(_.bind(function(completenesses) {
-                        console.log(completenesses);
                         this.$el.html(
                             this.template({
                                 state: this.getRoot().state.toJSON(),
