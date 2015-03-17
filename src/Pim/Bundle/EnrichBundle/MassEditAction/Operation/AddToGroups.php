@@ -2,13 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 
 /**
  * Adds many products to many groups
@@ -17,41 +12,39 @@ use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToGroups extends AbstractMassEditOperation
+class AddToGroups extends AbstractMassEditOperation implements
+    ConfigurableOperationInterface,
+    BatchableOperationInterface
 {
-    /** @var GroupRepositoryInterface */
-    protected $groupRepository;
-
     /** @var ArrayCollection */
     protected $groups;
 
-    /** @var string[] */
-    protected $warningMessages;
-
     /**
-     * @param GroupRepositoryInterface            $groupRepository
+     * Constructor
      */
-    public function __construct(
-        GroupRepositoryInterface $groupRepository
-    ) {
-        $this->groupRepository = $groupRepository;
-        $this->groups          = new ArrayCollection();
+    public function __construct()
+    {
+        $this->groups = new ArrayCollection();
     }
 
     /**
      * Set groups
      *
-     * @param array $groups
+     * @param ArrayCollection $groups
+     *
+     * @return $this
      */
-    public function setGroups(array $groups)
+    public function setGroups(ArrayCollection $groups)
     {
-        $this->groups = new ArrayCollection($groups);
+        $this->groups = $groups;
+
+        return $this;
     }
 
     /**
      * Get groups
      *
-     * @return array
+     * @return ArrayCollection
      */
     public function getGroups()
     {
@@ -63,9 +56,7 @@ class AddToGroups extends AbstractMassEditOperation
      */
     public function getFormOptions()
     {
-        return [
-            'groups' => $this->groupRepository->getAllGroupsExceptVariant()
-        ];
+        return [];
     }
 
     /**
@@ -77,54 +68,64 @@ class AddToGroups extends AbstractMassEditOperation
     }
 
     /**
-     * Get warning messages
-     *
-     * @return string[]
-     */
-    public function getWarningMessages()
-    {
-        if (null === $this->warningMessages) {
-            $this->warningMessages = $this->generateWarningMessages($this->objects);
-        }
-
-        return $this->warningMessages;
-    }
-
-    /**
-     * Get warning messages to display during the mass edit action
-     * @param ProductInterface[] $products
-     *
-     * @return string[]
-     */
-    protected function generateWarningMessages(array $products)
-    {
-        $messages = [];
-
-        if (count($this->groupRepository->getAllGroupsExceptVariant()) === 0) {
-            $messages[] = [
-                'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',
-                'options' => []
-            ];
-        }
-
-        return $messages;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(ProductInterface $product)
-    {
-        foreach ($this->groups as $group) {
-            $group->addProduct($product);
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getAlias()
     {
         return 'add-to-groups';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        return [
+            [
+                'field' => 'groups',
+                'value' => $this->getGroupsCode(),
+            ]
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchConfig()
+    {
+        return addslashes(
+            json_encode(
+                [
+                    'filters' => $this->getFilters(),
+                    'actions' => $this->getActions(),
+                ]
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'add_product_value';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getItemsName()
+    {
+        return 'product';
+    }
+
+    /**
+     * @return array
+     */
+    protected function getGroupsCode()
+    {
+        return $this->getGroups()->map(function (GroupInterface $group) {
+            return $group->getCode();
+        })->toArray();
     }
 }

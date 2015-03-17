@@ -332,6 +332,7 @@ services:
     pim_enrich.form.type.add_to_groups:
         class: %pim_enrich.form.type.add_to_groups.class%
         arguments:
+            - '@pim_catalog.repository.group'
             - %pim_catalog.entity.group.class%
             - %pim_enrich.mass_edit_action.add_to_groups.class%
         tags:
