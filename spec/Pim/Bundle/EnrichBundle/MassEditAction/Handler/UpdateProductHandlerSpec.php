@@ -74,8 +74,8 @@ class UpdateProductHandlerSpec extends ObjectBehavior
 
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $productUpdater->set($product1, 'enabled', false)->shouldBeCalled();
-        $productUpdater->set($product2, 'enabled', false)->shouldBeCalled();
+        $productUpdater->setData($product1, 'enabled', false)->shouldBeCalled();
+        $productUpdater->setData($product2, 'enabled', false)->shouldBeCalled();
 
         $productSaver->saveAll([$product1, $product2], Argument::type('array'))->shouldBeCalled();
 
