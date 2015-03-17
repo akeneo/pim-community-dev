@@ -1,10 +1,10 @@
 @javascript
-Feature: Add products to many groups at once
+Feature: Add products to many groups at once via a form
   In order to easily organize products into groups
   As a product manager
-  I need to be able to add products to many groups at once
+  I need to be able to add products to many groups at once via a form
 
-  Scenario: Add products to a none variant group
+  Scenario: Add products to a related group
     Given the "footwear" catalog configuration
     And the following products:
       | sku          |
@@ -17,7 +17,7 @@ Feature: Add products to many groups at once
     And I choose the "Add to groups" operation
     And I check "Similar boots"
     When I move on to the next step
-    Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"
+    Then I should be on the products page
 
   Scenario: Fail to add similar products to a variant group
     Given the "footwear" catalog configuration
