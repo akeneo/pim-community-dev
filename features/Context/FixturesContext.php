@@ -528,7 +528,7 @@ class FixturesContext extends RawMinkContext
         $comments = [];
 
         foreach ($table->getHash() as $row) {
-            $product = $this->getProductManager()->findByIdentifier($row['product']);
+            $product = $this->getProductRepository()->findOneByIdentifier($row['product']);
             $row['resource'] = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
@@ -1364,7 +1364,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductManager()->findByIdentifier($sku);
+        $product = $this->getProductRepository()->findOneByIdentifier($sku);
 
         if (!$product) {
             throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
@@ -2050,6 +2050,14 @@ class FixturesContext extends RawMinkContext
     protected function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
+     */
+    protected function getProductRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product');
     }
 
     /**
