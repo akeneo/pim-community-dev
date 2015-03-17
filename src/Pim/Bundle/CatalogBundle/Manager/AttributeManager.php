@@ -135,17 +135,4 @@ class AttributeManager
 
         return $attribute;
     }
-
-    /**
-     * Remove an attribute
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @deprecated will be removed in 1.4, replaced by AttributeRemover::remove
-     */
-    public function remove(AttributeInterface $attribute)
-    {
-        $this->objectManager->remove($attribute);
-        $this->objectManager->flush();
-    }
 }

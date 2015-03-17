@@ -32,7 +32,6 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product'
             - '@event_dispatcher'
-            - '@pim_catalog.manager.media'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.association_type'

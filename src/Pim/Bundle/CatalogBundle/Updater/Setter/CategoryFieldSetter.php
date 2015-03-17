@@ -15,6 +15,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class CategoryFieldSetter extends AbstractFieldSetter
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $categoryRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param array                                 $supportedFields

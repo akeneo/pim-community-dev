@@ -1,9 +1,9 @@
-Feature: Update boolean fields
+Feature: Update number fields
   In order to update products
   As an internal process or any user
-  I need to be able to update a boolean field of a product
+  I need to be able to update a number field of a product
 
-  Scenario: Successfully update a boolean field
+  Scenario: Successfully update a number field
     Given a "default" catalog configuration
     And the following attributes:
       | code         | type   | localizable | scopable |

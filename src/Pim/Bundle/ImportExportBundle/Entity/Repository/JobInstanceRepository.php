@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Job instance repository
@@ -13,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
  *
  * @deprecated will be moved to Pim\Bundle\ImportExportBundle\Doctrine\ORM\Repository in 1.4
  */
-class JobInstanceRepository extends ReferableEntityRepository
+class JobInstanceRepository extends EntityRepository implements IdentifiableObjectRepositoryInterface
 {
     /**
      * Create datagrid query builder
@@ -24,14 +25,28 @@ class JobInstanceRepository extends ReferableEntityRepository
     {
         $qb = $this->createQueryBuilder('j');
         $qb
-            ->addSelect(
-                "CONCAT(CONCAT('pim_base_connector.jobs.', j.alias), '.title') as jobAlias"
-            )
+            ->addSelect("j.alias as jobAlias")
             ->addSelect(
                 "CONCAT('pim_import_export.status.', j.status) as statusLabel"
             )
             ->andWhere('j.type = :jobType');
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($code)
+    {
+        return $this->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return array('code');
     }
 }

@@ -40,10 +40,13 @@ services:
         class: %pim_transform.transformer.product.class%
         parent: pim_transform.transformer.entity
         arguments:
-            - '@pim_catalog.manager.product'
             - '@pim_transform.cache.attribute_cache'
             - '@pim_base_connector.reader.cached_association'
             - '@pim_catalog.updater.product_template'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.repository.product'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_value.class%
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.product.class% }
 

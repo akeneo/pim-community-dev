@@ -53,17 +53,4 @@ class FamilyManager
             ['localeCode' => $this->userContext->getCurrentLocaleCode()]
         );
     }
-
-    /**
-     * Remove a family
-     *
-     * @param FamilyInterface $family
-     *
-     * @deprecated will be removed in 1.4, replaced by FamilyRemover::remove
-     */
-    public function remove(FamilyInterface $family)
-    {
-        $this->objectManager->remove($family);
-        $this->objectManager->flush();
-    }
 }

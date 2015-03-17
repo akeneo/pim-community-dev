@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,7 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Update a product
+ * Updates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -37,7 +38,12 @@ class UpdateProductCommand extends ContainerAwareCommand
                 'to_field'    => 'description',
                 'to_scope'    => 'mobile',
                 'to_locale'   => 'en_US'
-            ]
+            ],
+            [
+                'type'  => 'add_data',
+                'field' => 'categories',
+                'value' => ['tshirt']
+            ],
         ];
 
         $this
@@ -108,7 +114,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['type']);
-        $resolver->setAllowedValues(['type' => ['set_value', 'copy_value']]);
+        $resolver->setAllowedValues(['type' => ['set_value', 'copy_value', 'add_data']]);
         $resolver->setOptional(
             [
                 'field',
@@ -137,9 +143,11 @@ class UpdateProductCommand extends ContainerAwareCommand
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);
             if ('set_value' === $update['type']) {
-                $this->applySetValue($product, $update);
+                $this->applySetData($product, $update);
+            } elseif ('copy_value' === $update['type']) {
+                $this->applyCopyData($product, $update);
             } else {
-                $this->applyCopyValue($product, $update);
+                $this->applyAddData($product, $update);
             }
         }
     }
@@ -148,11 +156,10 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param array            $update
      */
-    protected function applySetValue(ProductInterface $product, array $update)
+    protected function applySetData(ProductInterface $product, array $update)
     {
-        $updater = $this->getContainer()->get('pim_catalog.updater.product');
-
-        $updater->set(
+        $updater = $this->getUpdater();
+        $updater->setData(
             $product,
             $update['field'],
             $update['value'],
@@ -164,18 +171,44 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param array            $update
      */
-    protected function applyCopyValue(ProductInterface $product, array $update)
+    protected function applyCopyData(ProductInterface $product, array $update)
     {
-        $updater = $this->getContainer()->get('pim_catalog.updater.product');
-        $updater->copyValue(
-            [$product],
+        $updater = $this->getUpdater();
+        $updater->copyData(
+            $product,
+            $product,
             $update['from_field'],
             $update['to_field'],
-            $update['from_locale'],
-            $update['to_locale'],
-            $update['from_scope'],
-            $update['to_scope']
+            [
+                'from_locale' => $update['from_locale'],
+                'to_locale' => $update['to_locale'],
+                'from_scope' => $update['from_scope'],
+                'to_scope' => $update['to_scope']
+            ]
         );
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $update
+     */
+    protected function applyAddData(ProductInterface $product, array $update)
+    {
+        $updater = $this->getUpdater();
+        $updater->addData(
+            $product,
+            $update['field'],
+            $update['value'],
+            ['locale' => $update['locale'], 'scope' => $update['scope']]
+        );
+    }
+
+    /**
+     * @return ProductUpdaterInterface
+     */
+    protected function getUpdater()
+    {
+        return $this->getContainer()->get('pim_catalog.updater.product');
     }
 
     /**

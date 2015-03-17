@@ -7,11 +7,13 @@
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" {% if resource_granted("pim_enrich_category_edit") %} data-movable="true"{% endif %}{% if resource_granted("pim_enrich_category_create") %} data-creatable="true"{% endif %}></div>
+        <div id="tree" {% if resource_granted("pim_enrich_category_edit") %} data-editable="true"{% endif %}{% if resource_granted("pim_enrich_category_create") %} data-creatable="true"{% endif %}></div>
 
         <div id="category-form">
             <div class="sub-title buffer-extra-top buffer-left fullwidth text-center">
-                {{ 'category.suggest selection'|trans }}
+                {% if resource_granted('pim_enrich_category_edit') %}
+                    {{ 'category.suggest selection'|trans }}
+                {% endif %}
                 {% if resource_granted('pim_enrich_category_create') %}
                     <br/>
                     <br/>

@@ -15,6 +15,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class FamilyFieldSetter extends AbstractFieldSetter
 {
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $familyRepository;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param array                                 $supportedFields

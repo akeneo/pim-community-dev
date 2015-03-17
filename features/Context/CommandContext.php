@@ -108,7 +108,6 @@ class CommandContext extends RawMinkContext
                     $update['result']
                 ));
             }
-
             $diff = $this->arrayIntersect($actual, $expected);
 
             assertEquals(
