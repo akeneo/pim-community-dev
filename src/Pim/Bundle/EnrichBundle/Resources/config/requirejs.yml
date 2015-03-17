@@ -28,16 +28,18 @@ config:
         pim/item/view:                      pimenrich/js/pim-item-view
 
         # Form
-        pim/form-builder:                      pimenrich/js/form/builder
-        pim/form-registry:                     pimenrich/js/form/registry
-        pim/product-edit-form/attributes:      pimenrich/js/product/form/attributes
-        pim/product-edit-form/categories:      pimenrich/js/product/form/categories
-        pim/product-manager:                   pimenrich/js/product/product-manager
-        pim/form:                              pimenrich/js/product/form
-        pim/product-edit-form/locale-switcher: pimenrich/js/product/form/locale-switcher
-        pim/product-edit-form/scope-switcher:  pimenrich/js/product/form/scope-switcher
-        pim/product-edit-form/form-tabs:       pimenrich/js/product/form/form-tabs
-        pim/product-edit-form/save:            pimenrich/js/product/form/save
+        pim/form-builder:                         pimenrich/js/form/builder
+        pim/form-registry:                        pimenrich/js/form/registry
+        pim/product-edit-form/attributes:         pimenrich/js/product/form/attributes
+        pim/product-edit-form/categories:         pimenrich/js/product/form/categories
+        pim/product-edit-form/panel/panels:       pimenrich/js/product/form/panel/panels
+        pim/product-manager:                      pimenrich/js/product/product-manager
+        pim/form:                                 pimenrich/js/product/form
+        pim/product-edit-form/locale-switcher:    pimenrich/js/product/form/locale-switcher
+        pim/product-edit-form/scope-switcher:     pimenrich/js/product/form/scope-switcher
+        pim/product-edit-form/form-tabs:          pimenrich/js/product/form/form-tabs
+        pim/product-edit-form/panel/completeness: pimenrich/js/product/form/panel/completeness
+        pim/product-edit-form/save:               pimenrich/js/product/form/save
 
         # Product edit form
         pim/product-edit-form:              pimenrich/js/product/edit-form
@@ -46,6 +48,7 @@ config:
         pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
         pim/config-manager:                 pimenrich/js/product/config-manager
         pim/variant-group-manager:          pimenrich/js/product/variant-group-manager
+        pim/completeness-manager:           pimenrich/js/product/completeness-manager
 
         # Fields
         pim/field:                          pimenrich/js/product/field/field
@@ -64,6 +67,9 @@ config:
         pim/template/product/form:                   pimenrich/templates/product/form.html
         pim/template/product/tab/categories:         pimenrich/templates/product/tab/categories.html
         pim/template/product/tab/attributes:         pimenrich/templates/product/tab/attributes.html
+        pim/template/product/panel/container:        pimenrich/templates/product/panel/container.html
+        pim/template/product/panel/selector:         pimenrich/templates/product/panel/selector.html
+        pim/template/product/panel/completeness:     pimenrich/templates/product/panel/completeness.html
         pim/template/product/locale-switcher:        pimenrich/templates/product/locale-switcher.html
         pim/template/product/form-tabs:              pimenrich/templates/product/form-tabs.html
         pim/template/product/save:                   pimenrich/templates/product/save.html

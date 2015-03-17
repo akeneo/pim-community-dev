@@ -1,56 +1,16 @@
-<header>
-    <button class="close pull-right">&times;</button>
-    <h1>Completeness</h1>
-</header>
-<div class="panel-content">
+<% _.each(completenesses, function(channels, locale) { %>
     <div class="completeness-block">
-        <header><span class="locale">German</span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+        <header><span class="locale" data-locale="<%= locale %>"><%= locale %></span><span class="close btn"><i class="icon-angle-down"></i></span></header>
         <div class="content">
-            <div>
-                <span class="channel">Mobile</span>
-                <div class="progress progress-warning">
-                  <div class="bar" style="width: 60%;"></div>
+            <% _.each(channels, function(completeness, channel) { %>
+                <div>
+                    <span class="channel" data-channel="<%= channel %>"><%= channel %></span>
+                    <div class="progress <%= completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
+                      <div class="bar" style="width: <%= completeness.completeness.ratio %>%;"></div>
+                    </div>
+                    <div class="missing"><%= completeness.completeness.missing %> missing values: <span class="missing-attributes"><%= completeness.missing.join(' - ') %></span></div>
                 </div>
-                <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
-            </div>
-            <div>
-                <span class="channel">Mobile</span>
-                <div class="progress progress-warning">
-                  <div class="bar" style="width: 60%;"></div>
-                </div>
-                <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
-            </div>
-            <div>
-                <span class="channel">Mobile</span>
-                <div class="progress progress-success">
-                  <div class="bar" style="width: 100%;"></div>
-                </div>
-            </div>
+            <% }); %>
         </div>
     </div>
-    <div class="completeness-block">
-        <header><span class="locale">English</span><span class="close btn"><i class="icon-angle-down"></i></span></header>
-        <div class="content">
-            <div>
-                <span class="channel">Mobile</span>
-                <div class="progress progress-warning">
-                  <div class="bar" style="width: 60%;"></div>
-                </div>
-                <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
-            </div>
-            <div>
-                <span class="channel">Mobile</span>
-                <div class="progress progress-warning">
-                  <div class="bar" style="width: 60%;"></div>
-                </div>
-                <div class="missing">2 missing values: <span class="missing-attributes">price- description - color</span></div>
-            </div>
-            <div>
-                <span class="channel">Mobile</span>
-                <div class="progress progress-success">
-                  <div class="bar" style="width: 100%;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<% }); %>

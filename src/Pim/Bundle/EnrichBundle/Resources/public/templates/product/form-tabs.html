@@ -6,28 +6,11 @@
             </li>
         <% }); %>
     </ul>
-    <div class="btn-group panel-selector">
-        <button class="btn">Proposals</button>
-        <button class="btn active">Completeness</button>
-        <button class="btn">Comments</button>
-        <button class="btn ">History</button>
-    </div>
 </header>
 <div class="form-container">
     <div class="tab-container">
         <% _.each(state.tabs, function (tab) { %>
             <div class="tab-pane<%= state.currentTab === tab.code ? ' active' : '' %>"></div>
         <% }); %>
-    </div>
-    <div class="panel-container">
-        <div class="panel-pane active">
-
-        </div>
-        <!-- <div class="panel-pane">
-
-        </div>
-        <div class="panel-pane">
-
-        </div> -->
     </div>
 </div>

@@ -4,8 +4,8 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/container',
-        'text!pim/template/product/selector'
+        'text!pim/template/product/panel/container',
+        'text!pim/template/product/panel/selector'
     ],
     function(_, BaseForm, containerTemplate, selectorTemplate) {
         return BaseForm.extend({
@@ -46,6 +46,12 @@ define(
                     })
                 );
 
+                _.each(this.extensions, _.bind(function(extension) {
+                    if (extension.code === this.getRoot().state.get('currentPanel')) {
+                        this.$el.append(extension.render().$el);
+                    }
+                }, this));
+
                 this.getParent().$('.form-container').append(this.$el);
                 this.getParent().$('>header').append(
                     this.selectorTemplate({
@@ -53,8 +59,6 @@ define(
                     })
                 );
                 this.delegateEvents();
-
-                BaseForm.prototype.render.apply(this, arguments);
 
                 return this;
             },
