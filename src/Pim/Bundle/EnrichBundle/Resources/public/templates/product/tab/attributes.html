@@ -1,5 +1,5 @@
 <ul class="nav nav-tabs">
-    <% _.each(config.attributegroups, function (attributeGroup) { %>
+    <% _.each(config.attributeGroups, function (attributeGroup) { %>
         <li data-attribute-group="<%= attributeGroup.code %>" class="<%= config.attributeGroup === attributeGroup.code ? 'active' : '' %>">
             <a><%= attributeGroup.label.en_US %></a>
         </li>

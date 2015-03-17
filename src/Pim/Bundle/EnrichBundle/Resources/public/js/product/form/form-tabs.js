@@ -3,10 +3,11 @@
 define(
     [
         'underscore',
+        'backbone',
         'pim/form',
         'text!pim/template/product/form-tabs'
     ],
-    function(_, BaseForm, template) {
+    function(_, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'tabbable tabs-top',
@@ -37,16 +38,9 @@ define(
 
                 this.state.trigger('change');
             },
-            setParent: function (parent) {
-                parent.addTab = this.addTab;
-
-                BaseForm.prototype.setParent.apply(this, arguments);
-
-                return this;
-            },
             render: function () {
                 if (!this.configured) {
-                    return;
+                    return this;
                 }
 
                 this.$el.html(

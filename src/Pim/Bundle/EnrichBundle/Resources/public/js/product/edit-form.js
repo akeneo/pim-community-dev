@@ -25,7 +25,7 @@ define(
             },
             render: function () {
                 if (!this.configured) {
-                    return;
+                    return this;
                 }
 
                 this.$el.html(
@@ -35,7 +35,7 @@ define(
                 );
 
                 _.each(this.extensions, function(extension) {
-                    console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
+                    console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                     extension.render();
                 });
 

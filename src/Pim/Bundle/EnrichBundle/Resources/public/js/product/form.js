@@ -57,7 +57,7 @@ define(
             },
             render: function () {
                 if (!this.configured) {
-                    return;
+                    return this;
                 }
 
                 _.each(this.extensions, function(extension) {
