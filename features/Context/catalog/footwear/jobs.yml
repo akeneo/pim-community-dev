@@ -140,3 +140,13 @@ jobs:
             enclosure:     '"'
             escape:        '\'
             copyValues: true
+    update_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product
+        label:     Mass update products
+        type:      mass_edit
+    add_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value
+        label:     Mass add products values
+        type:      mass_edit
