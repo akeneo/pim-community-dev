@@ -3,16 +3,23 @@
 define(
     [
         'underscore',
+        'backbone',
         'pim/form',
         'text!pim/template/product/panel/container'
     ],
-    function(_, BaseForm, template) {
+    function(_, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-container closed',
             events: {
-                'click .panel-selector': 'changePanel',
                 'click > header > .close': 'closePanel'
+            },
+            initialize: function () {
+                this.state = new Backbone.Model();
+
+                this.listenTo(this.state, 'change', this.render);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function() {
                 this.getRoot().addPanel = _.bind(this.addPanel, this);
@@ -20,34 +27,31 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             addPanel: function (code, label) {
-                var state = this.getRoot().state;
-
-                var panels = state.get('panels') || [];
+                var panels = this.state.get('panels') || [];
                 panels.push({ code: code, label: label });
 
-                state.set('panels', panels);
+                this.state.set('panels', panels, {silent: true});
 
-                if (state.get('currentPanel') === undefined) {
-                    state.set('currentPanel', panels[0].code);
-                }
-            },
-            setParent: function (parent) {
-                parent.addPanel = this.addPanel;
-
-                BaseForm.prototype.setParent.apply(this, arguments);
-
-                return this;
+                this.state.trigger('change');
             },
             render: function () {
+                if (!this.configured) {
+                    return this;
+                }
+
+                this.$el[this.state.get('currentPanel') ? 'removeClass' : 'addClass']('closed');
+
                 this.$el.html(
                     this.template({
-                        state: this.getRoot().state.toJSON()
+                        state: this.state.toJSON()
                     })
                 );
 
-                var currentPanelExtension = this.extensions[this.getRoot().state.get('currentPanel')];
-                console.log(currentPanelExtension.parent.code, 'triggered the rendering of extension', currentPanelExtension.code);
-                this.$el.append(currentPanelExtension.render().$el);
+                if (this.state.get('currentPanel')) {
+                    var currentPanelExtension = this.extensions[this.state.get('currentPanel')];
+                    console.log(this.code, 'triggered the rendering of', currentPanelExtension.code);
+                    this.$el.append(currentPanelExtension.render().$el);
+                }
 
                 //TODO: check that it exists
                 console.log(this.getParent().$('.form-container'));
@@ -55,22 +59,15 @@ define(
 
                 var selectorExtension = this.extensions['selector'];
 
-                console.log(selectorExtension.parent.code, 'triggered the rendering of extension', selectorExtension.code);
+                console.log(this.code, 'triggered the rendering of', selectorExtension.code);
                 this.getParent().$('>header').append(selectorExtension.render().$el);
 
                 this.delegateEvents();
 
                 return this;
             },
-            changePanel: function (event) {
-                // this.$el.
-                this.getRoot().state.set('currentPanel', event.currentTarget.dataset.panel);
-
-                this.render();
-                this.$el.removeClass('closed');
-            },
             closePanel: function () {
-                this.$el.addClass('closed');
+                this.state.set('currentPanel', null);
             }
         });
     }

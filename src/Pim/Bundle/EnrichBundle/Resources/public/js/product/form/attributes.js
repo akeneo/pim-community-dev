@@ -67,6 +67,10 @@ define(
                 return promise.promise();
             },
             render: function () {
+                if (!this.configured) {
+                    return this;
+                }
+
                 this.getConfig().done(_.bind(function() {
                     var product = this.getData();
 

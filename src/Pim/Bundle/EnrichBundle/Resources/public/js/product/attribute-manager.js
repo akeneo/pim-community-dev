@@ -25,17 +25,13 @@ define(['pim/config-manager'], function (ConfigManager) {
         getAttributesForProduct: function(product) {
             var promise = $.Deferred();
 
-            if (_.isEmpty(product)) {
-                promise.resolve([]);
-            } else {
-                ConfigManager.getEntityList('families').done(function (families) {
-                    promise.resolve(
-                        !product.family ?
-                        _.keys(product.values) :
-                        _.union(_.keys(product.values), families[product.family].attributes)
-                    );
-                });
-            }
+            ConfigManager.getEntityList('families').done(function (families) {
+                promise.resolve(
+                    !product.family ?
+                    _.keys(product.values) :
+                    _.union(_.keys(product.values), families[product.family].attributes)
+                );
+            });
 
             return promise.promise();
         },

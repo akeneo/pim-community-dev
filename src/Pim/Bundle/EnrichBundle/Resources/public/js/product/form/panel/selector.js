@@ -16,7 +16,7 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        state: this.getRoot().state.toJSON()
+                        state: this.getParent().state.toJSON()
                     })
                 );
 
@@ -25,10 +25,11 @@ define(
                 return this;
             },
             changePanel: function (event) {
-                this.getRoot().state.set('currentPanel', event.currentTarget.dataset.panel);
-
-                this.getParent().render();
-                this.getParent().$el.removeClass('closed');
+                if (this.getParent().state.get('currentPanel') === event.currentTarget.dataset.panel) {
+                    this.getParent().state.set('currentPanel', null);
+                } else {
+                    this.getParent().state.set('currentPanel', event.currentTarget.dataset.panel);
+                }
             }
         });
     }
