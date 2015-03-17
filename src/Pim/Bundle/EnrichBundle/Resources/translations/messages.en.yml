@@ -140,6 +140,7 @@ pim_enrich:
             label:         Add to groups
             description:   Select the groups in which to add the selected products
             success_flash: Products were successfully added to the selected groups
+            launched_flash: The job updating product(s) group(s) is currently running
             no_group:      No group for now. Please start by creating a group.
 
         add-to-variant-group:
