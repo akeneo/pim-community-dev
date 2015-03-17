@@ -11,10 +11,14 @@ define(
             ],
             'pim/product-edit-form/form-tabs': [
                 'pim/product-edit-form/attributes',
-                'pim/product-edit-form/categories'
+                'pim/product-edit-form/categories',
+                'pim/product-edit-form/panel/panels'
             ],
             'pim/product-edit-form/attributes': [
                 'pim/product-edit-form/scope-switcher'
+            ],
+            'pim/product-edit-form/panel/panels': [
+                'pim/product-edit-form/panel/completeness'
             ]
         };
 

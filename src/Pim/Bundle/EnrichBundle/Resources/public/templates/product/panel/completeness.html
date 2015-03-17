@@ -1,0 +1,16 @@
+<% _.each(completenesses, function(channels, locale) { %>
+    <div class="completeness-block">
+        <header><span class="locale" data-locale="<%= locale %>"><%= locale %></span><span class="close btn"><i class="icon-angle-down"></i></span></header>
+        <div class="content">
+            <% _.each(channels, function(completeness, channel) { %>
+                <div>
+                    <span class="channel" data-channel="<%= channel %>"><%= channel %></span>
+                    <div class="progress <%= completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
+                      <div class="bar" style="width: <%= completeness.completeness.ratio %>%;"></div>
+                    </div>
+                    <div class="missing"><%= completeness.completeness.missing %> missing values: <span class="missing-attributes"><%= completeness.missing.join(' - ') %></span></div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+<% }); %>

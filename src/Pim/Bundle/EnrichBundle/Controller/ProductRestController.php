@@ -65,7 +65,7 @@ class ProductRestController
     {
         $product = $this->findProductOr404($id);
 
-        return new JsonResponse($this->normalizer->normalize($product, 'json'));
+        return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
     }
 
     /**
