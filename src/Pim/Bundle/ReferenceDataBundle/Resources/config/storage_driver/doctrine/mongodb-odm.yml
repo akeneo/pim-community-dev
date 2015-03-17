@@ -1,4 +1,5 @@
 parameters:
+    # pim_reference_data.doctrine.query.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDBODM\Filter\ReferenceDataFilter
     pim_reference_data.mongodb.normalizer.reference_data.class: Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\ReferenceDataNormalizer
 
 services:

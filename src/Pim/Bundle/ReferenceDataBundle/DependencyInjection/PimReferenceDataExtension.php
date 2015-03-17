@@ -29,6 +29,8 @@ class PimReferenceDataExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('attribute_types.yml');
+        $loader->load('filters.yml');
+        $loader->load('query_builders.yml');
         $loader->load('selectors.yml');
         $loader->load('formatters.yml');
 
