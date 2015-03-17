@@ -14,10 +14,10 @@ Feature: Update groups fields
       | add_two_when_not_empty     | similar |
       | add_nothing_when_not_empty | similar |
     Then I should get the following products after apply the following updater to it:
-      | product                    | actions                                                                  | result                                     |
-      | add_one_when_empty         | [{"type": "add_data", "field": "groups", "value": ["related"]}]          | {"groups": ["related"]}                    |
-      | add_two_when_empty         | [{"type": "add_data", "field": "groups", "value": ["related","upsell"]}] | {"groups": ["related","upsell"]}           |
-      | add_nothing_when_empty     | [{"type": "add_data", "field": "groups", "value": []}]                   | {"groups": []}                             |
-      | add_one_when_not_empty     | [{"type": "add_data", "field": "groups", "value": ["related"]}]          | {"groups": ["related","similar"]}          |
-      | add_two_when_not_empty     | [{"type": "add_data", "field": "groups", "value": ["related","upsell"]}] | {"groups": ["related","similar","upsell"]} |
-      | add_nothing_when_not_empty | [{"type": "add_data", "field": "groups", "value": []}]                   | {"groups": ["similar"]}                    |
+      | product                    | actions                                                                 | result                                     |
+      | add_one_when_empty         | [{"type": "add_data", "field": "groups", "data": ["related"]}]          | {"groups": ["related"]}                    |
+      | add_two_when_empty         | [{"type": "add_data", "field": "groups", "data": ["related","upsell"]}] | {"groups": ["related","upsell"]}           |
+      | add_nothing_when_empty     | [{"type": "add_data", "field": "groups", "data": []}]                   | {"groups": []}                             |
+      | add_one_when_not_empty     | [{"type": "add_data", "field": "groups", "data": ["related"]}]          | {"groups": ["related","similar"]}          |
+      | add_two_when_not_empty     | [{"type": "add_data", "field": "groups", "data": ["related","upsell"]}] | {"groups": ["related","similar","upsell"]} |
+      | add_nothing_when_not_empty | [{"type": "add_data", "field": "groups", "data": []}]                   | {"groups": ["similar"]}                    |

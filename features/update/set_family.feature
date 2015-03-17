@@ -15,8 +15,8 @@ Feature: Update family fields
       | mug   |
       | tv    |
     Then I should get the following products after apply the following updater to it:
-      | product | actions                                                                                                               | result              |
-      | tshirt1 | [{"type": "set_value", "field": "family", "value": "shirt"}]                                                          | {"family": "shirt"} |
-      | tshirt1 | [{"type": "set_value", "field": "family", "value": null}]                                                             | {"family": null}    |
-      | tshirt2 | [{"type": "set_value", "field": "family", "value": "mug"}]                                                            | {"family": "mug"}   |
-      | tshirt2 | [{"type": "set_value", "field": "family", "value": "shirt"}, {"type": "set_value", "field": "family", "value": "tv"}] | {"family": "tv"}    |
+      | product | actions                                                                                                           | result              |
+      | tshirt1 | [{"type": "set_data", "field": "family", "data": "shirt"}]                                                        | {"family": "shirt"} |
+      | tshirt1 | [{"type": "set_data", "field": "family", "data": null}]                                                           | {"family": null}    |
+      | tshirt2 | [{"type": "set_data", "field": "family", "data": "mug"}]                                                          | {"family": "mug"}   |
+      | tshirt2 | [{"type": "set_data", "field": "family", "data": "shirt"}, {"type": "set_data", "field": "family", "data": "tv"}] | {"family": "tv"}    |
