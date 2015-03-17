@@ -38,10 +38,33 @@ define(
                         'copying': this.copying
                     })
                 );
-                _.each(this.copyFields, _.bind(function (copyField) {
-                    copyField.render();
-                    copyField.field.addInfo('comparision', 'copy', copyField.$el);
-                }, this));
+                var locale = 'fr_FR';
+                var scope  = 'mobile';
+
+                if (this.copying) {
+                    _.each(this.getParent().renderedFields, _.bind(function (field) {
+                        if (field.attribute.scopable || field.attribute.localizable) {
+                            var copyField = new CopyField(field.attribute);
+
+                            copyField.setLocale(locale);
+                            copyField.setChannel(scope);
+                            copyField.setField(field);
+                            copyField.setData('');
+
+                            var values = field.getData();
+                            _.each(values, function(value) {
+                                if (value.scope === scope && value.locale === locale) {
+                                    copyField.setData(value.value);
+                                }
+                            });
+
+                            copyField.render();
+                            copyField.field.addInfo('comparision', 'copy', copyField.$el);
+
+                            this.copyFields[field.attribute.code] = copyField;
+                        }
+                    }, this));
+                }
 
                 this.delegateEvents();
                 this.$el.appendTo(this.getParent().$('.tab-content > header'));
@@ -49,29 +72,8 @@ define(
                 return this;
             },
             startCopying: function() {
-                var locale = 'fr_FR';
-                var scope  = 'mobile';
                 this.copying = true;
 
-                _.each(this.getParent().renderedFields, _.bind(function (field) {
-                    if (field.attribute.scopable || field.attribute.localizable) {
-                        var copyField = new CopyField(field.attribute);
-
-                        copyField.setLocale(locale);
-                        copyField.setChannel(scope);
-                        copyField.setField(field);
-                        copyField.setData('');
-
-                        var values = field.getData();
-                        _.each(values, function(value) {
-                            if (value.scope === scope && value.locale === locale) {
-                                copyField.setData(value.value);
-                            }
-                        });
-
-                        this.copyFields[field.attribute.code] = copyField;
-                    }
-                }, this));
 
                 this.render();
             },
