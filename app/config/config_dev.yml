@@ -21,7 +21,7 @@ monolog:
 
 oro_assetic:
     css_debug:      ~
-    css_debug_all:  false
+    css_debug_all:  true
 
 swiftmailer:
     disable_delivery: true
