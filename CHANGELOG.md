@@ -69,6 +69,7 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-2874: Bad title on failed submit
 - PIM-3836: Fix translations of a custom job label instance
 
 # 1.3.4 (2015-03-11)
