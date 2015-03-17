@@ -24,11 +24,13 @@ define(
                 var tabs = state.get('tabs') || [];
                 tabs.push({ code: code, label: label });
 
-                state.set('tabs', tabs);
+                state.set('tabs', tabs, {silent: true});
 
                 if (state.get('currentTab') === undefined) {
-                    state.set('currentTab', tabs[0].code);
+                    state.set('currentTab', tabs[0].code, {silent: true});
                 }
+
+                state.trigger('change');
             },
             setParent: function (parent) {
                 parent.addTab = this.addTab;

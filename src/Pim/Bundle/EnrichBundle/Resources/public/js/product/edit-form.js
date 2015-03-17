@@ -24,6 +24,10 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             render: function () {
+                if (!this.configured) {
+                    return;
+                }
+
                 this.$el.html(
                     this.template({
                         state: this.state.toJSON()

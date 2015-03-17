@@ -50,7 +50,7 @@ define(
                 this.listenTo(this.getRoot().model, 'change', this.render);
 
                 return ConfigManager.getConfig().done(_.bind(function(config) {
-                    this.config.set(config);
+                    this.config.set(config, {silent: true});
 
                     return BaseForm.prototype.configure.apply(this, arguments);
                 }, this));
@@ -121,11 +121,6 @@ define(
                 var configurationPromise = $.Deferred();
                 var promises = [];
 
-                ConfigManager.getConfig()
-                    .then(_.bind(function(config) {
-                        this.config.set(config);
-                    }, this));
-
                 AttributeManager.getAttributeGroupsForProduct(this.getData())
                     .done(_.bind(function(attributeGroups) {
                         this.config.set('attributeGroups', attributeGroups);
@@ -135,7 +130,6 @@ define(
                         this.config.set('optionalAttributes', optionalAttributes);
                     }, this));
 
-                promises.push(ConfigManager.getConfig());
                 promises.push(AttributeManager.getAttributeGroupsForProduct(this.getData()));
                 promises.push(AttributeManager.getOptionalAttributes(this.getData()));
 

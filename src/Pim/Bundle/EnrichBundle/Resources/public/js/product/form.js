@@ -6,6 +6,7 @@ define(
         return Backbone.View.extend({
             initialize: function () {
                 this.extensions = [];
+                this.configured = false;
             },
             configure: function () {
                 var promise = $.Deferred();
@@ -15,9 +16,10 @@ define(
                     extensionPromises.push(extension.configure());
                 });
 
-                $.when.apply($, extensionPromises).done(function() {
+                $.when.apply($, extensionPromises).done(_.bind(function() {
+                    this.configured = true;
                     promise.resolve();
-                });
+                }, this));
 
                 return promise.promise();
             },
@@ -57,6 +59,10 @@ define(
                 return this.getRoot().model.toJSON();
             },
             render: function () {
+                if (!this.configured) {
+                    return;
+                }
+
                 _.each(this.extensions, function(extension) {
                     console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
                     extension.render();
