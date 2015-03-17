@@ -45,23 +45,18 @@ define(
                     })
                 );
 
-                _.each(this.extensions, _.bind(function(extension) {
-                    if (extension.code === this.getRoot().state.get('currentPanel')) {
-                        console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
-                        this.$el.append(extension.render().$el);
-                    }
-                }, this));
+                var currentPanelExtension = this.extensions[this.getRoot().state.get('currentPanel')];
+                console.log(currentPanelExtension.parent.code, 'triggered the rendering of extension', currentPanelExtension.code);
+                this.$el.append(currentPanelExtension.render().$el);
 
                 //TODO: check that it exists
                 console.log(this.getParent().$('.form-container'));
                 this.getParent().$('.form-container').append(this.$el);
 
-                _.each(this.extensions, _.bind(function(extension) {
-                    if (extension.code === 'selector') {
-                        console.log(extension.parent.code, 'triggered the rendering of extension', extension.code);
-                        this.getParent().$('>header').append(extension.render().$el);
-                    }
-                }, this));
+                var selectorExtension = this.extensions['selector'];
+
+                console.log(selectorExtension.parent.code, 'triggered the rendering of extension', selectorExtension.code);
+                this.getParent().$('>header').append(selectorExtension.render().$el);
 
                 this.delegateEvents();
 

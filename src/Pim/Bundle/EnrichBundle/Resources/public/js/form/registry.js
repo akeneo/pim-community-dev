@@ -16,10 +16,6 @@ define(
                 {
                     'code': 'locale-switcher',
                     'module': 'pim/product-edit-form/locale-switcher'
-                },
-                {
-                    'code': 'panels',
-                    'module': 'pim/product-edit-form/panel/panels'
                 }
             ],
             'pim/product-edit-form/form-tabs': [
@@ -30,6 +26,10 @@ define(
                 {
                     'code': 'categories',
                     'module': 'pim/product-edit-form/categories'
+                },
+                {
+                    'code': 'panels',
+                    'module': 'pim/product-edit-form/panel/panels'
                 }
             ],
             'pim/product-edit-form/attributes': [

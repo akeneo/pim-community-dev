@@ -49,6 +49,7 @@ define(
                 this.delegateEvents();
 
                 this.extensions[this.getRoot().state.get('currentTab')].render();
+                this.extensions['panels'].render();
 
                 return this;
             },
