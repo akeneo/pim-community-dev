@@ -53,8 +53,6 @@ define(
                     this.$el.append(currentPanelExtension.render().$el);
                 }
 
-                //TODO: check that it exists
-                console.log(this.getParent().$('.form-container'));
                 this.getParent().$('.form-container').append(this.$el);
 
                 var selectorExtension = this.extensions['selector'];

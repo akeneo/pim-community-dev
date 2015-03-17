@@ -10,7 +10,7 @@ define(
     function(_, BaseForm, template, ConfigManager) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn-group pull-right',
+            className: 'btn-group',
             id: 'current-scope',
             events: {
                 'click li a': 'changeScope',
@@ -26,7 +26,7 @@ define(
                             currentScope: this.getRoot().state.get('scope')
                         })
                     );
-                    this.$el.prependTo(this.getRoot().$('.tab-content>header'));
+                    this.$el.prependTo(this.getParent().$('.tab-content > header > .attribute-edit-actions'));
                     this.delegateEvents();
                 }, this));
 

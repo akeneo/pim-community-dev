@@ -1,4 +1,5 @@
 <ul class="nav nav-tabs">
+    <li class="header"></li>
     <% _.each(config.attributeGroups, function (attributeGroup) { %>
         <li data-attribute-group="<%= attributeGroup.code %>" class="<%= config.attributeGroup === attributeGroup.code ? 'active' : '' %>">
             <a><%= attributeGroup.label.en_US %></a>
@@ -7,8 +8,9 @@
 </ul>
 <div class="tab-content">
     <header>
+        <div class="attribute-edit-actions">
         <% if (config.optionalAttributes.length) { %>
-            <div class="btn-group pull-right" id="add-attribute">
+            <div class="btn-group add-attribute">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     Add an attribute
                     <span class="caret"></span>
@@ -24,6 +26,7 @@
                 </ul>
             </div>
         <% } %>
+        </div>
     </header>
     <div class="tab-pane active" id="product-values"></div>
 </div>

@@ -25,11 +25,10 @@ define(
     ) {
         var FormView = BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tabbable tabs-left',
-            id: 'product-attributes',
+            className: 'tabbable tabs-left product-attributes',
             events: {
                 'click .nav-tabs li': 'changeAttributeGroup',
-                'click #add-attribute li a': 'addAttribute',
+                'click .add-attribute li a': 'addAttribute',
                 'click i.remove-attribute': 'removeAttribute'
             },
             renderedFields: [],

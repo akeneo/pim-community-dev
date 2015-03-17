@@ -10,11 +10,12 @@ define(
     function(_, BaseForm, template, CopyField) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn',
-            id: 'product-copy',
+            className: 'attribute-copy-actions',
             copyFields: {},
+            copying: false,
             events: {
-                'click': 'openCopyPanel'
+                'click .start-copying': 'startCopying',
+                'click .stop-copying':  'stopCopying'
             },
             initialize: function() {
                 this.copyFields = {};
@@ -25,9 +26,16 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
+                if (this.copying) {
+                    this.getParent().$el.addClass('comparision-mode');
+                } else {
+                    this.getParent().$el.removeClass('comparision-mode');
+                }
+
                 this.$el.html(
                     this.template({
-                        state: this.getRoot().state.toJSON()
+                        state: this.getRoot().state.toJSON(),
+                        'copying': this.copying
                     })
                 );
                 _.each(this.copyFields, _.bind(function (copyField) {
@@ -40,9 +48,10 @@ define(
 
                 return this;
             },
-            openCopyPanel: function() {
+            startCopying: function() {
                 var locale = 'fr_FR';
                 var scope  = 'mobile';
+                this.copying = true;
 
                 _.each(this.getParent().renderedFields, _.bind(function (field) {
                     if (field.attribute.scopable || field.attribute.localizable) {
@@ -62,6 +71,16 @@ define(
 
                         this.copyFields[field.attribute.code] = copyField;
                     }
+                }, this));
+
+                this.render();
+            },
+            stopCopying: function() {
+                this.copying = false;
+
+                _.each(this.copyFields, _.bind(function(copyField) {
+                    copyField.field.removeInfo('comparision', 'copy');
+                    delete this.copyFields[copyField.field.attribute.code];
                 }, this));
 
                 this.render();

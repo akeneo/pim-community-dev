@@ -83,6 +83,8 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         },
         removeInfo: function(position, code) {
             delete this.infoElements[position][code];
+
+            this.render();
         },
         validate: function()
         {

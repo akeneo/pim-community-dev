@@ -1,1 +1,7 @@
-toto
+<% if (!copying) { %>
+    <div class="btn start-copying">Copy</div>
+<% } else { %>
+    <div>locale</div>
+    <div>scope</div>
+    <div class="btn stop-copying">&times;</div>
+<% } %>

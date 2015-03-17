@@ -22,10 +22,10 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
 
             var templateContext = {
                 type: this.field.fieldType,
-                label: this.attribute.label[this.locale],
+                label: this.field.attribute.label[this.locale],
                 data: this.data,
-                config: this.config,
-                context: this.context,
+                config: this.field.config,
+                context: this.field.context,
                 attribute: this.attribute
             };
 
@@ -54,17 +54,9 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
         setChannel: function(channel) {
             this.channel = channel;
         },
-        setContext: function(context)
-        {
-            this.context = context;
-        },
         setField: function(field)
         {
             this.field = field;
-        },
-        setConfig: function(config)
-        {
-            this.config = config;
         }
     });
 });

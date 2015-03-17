@@ -19,6 +19,10 @@ define(
                 this.model = new Backbone.Model();
                 this.state = new Backbone.Model();
 
+                //Should be given by conf
+                this.state.set('locale', 'en_US');
+                this.state.set('scope', 'ecommerce');
+
                 this.listenTo(this.state, 'change', this.render);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
