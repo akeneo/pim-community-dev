@@ -4,16 +4,15 @@ define(
     [
         'underscore',
         'pim/form',
-        'text!pim/template/product/panel/container',
-        'text!pim/template/product/panel/selector'
+        'text!pim/template/product/panel/container'
     ],
-    function(_, BaseForm, containerTemplate, selectorTemplate) {
+    function(_, BaseForm, template) {
         return BaseForm.extend({
-            containerTemplate: _.template(containerTemplate),
-            selectorTemplate: _.template(selectorTemplate),
-            className: 'panel-container',
+            template: _.template(template),
+            className: 'panel-container closed',
             events: {
-                'click .panel-selector': 'changePanel'
+                'click .panel-selector': 'changePanel',
+                'click .panel-container > header > .close': 'closePanel'
             },
             configure: function() {
                 this.getRoot().addPanel = _.bind(this.addPanel, this);
@@ -41,31 +40,40 @@ define(
             },
             render: function () {
                 this.$el.html(
-                    this.containerTemplate({
+                    this.template({
                         state: this.getRoot().state.toJSON()
                     })
                 );
 
                 _.each(this.extensions, _.bind(function(extension) {
                     if (extension.code === this.getRoot().state.get('currentPanel')) {
+                        console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
                         this.$el.append(extension.render().$el);
                     }
                 }, this));
 
                 this.getParent().$('.form-container').append(this.$el);
-                this.getParent().$('>header').append(
-                    this.selectorTemplate({
-                        state: this.getRoot().state.toJSON()
-                    })
-                );
+
+                _.each(this.extensions, _.bind(function(extension) {
+                    if (extension.code === 'selector') {
+                        console.log(extension.parent.cid, 'triggered the rendering of extension', extension.cid);
+                        this.getParent().$('>header').append(extension.render().$el);
+                    }
+                }, this));
+
                 this.delegateEvents();
 
                 return this;
             },
             changePanel: function (event) {
+                // this.$el.
                 this.getRoot().state.set('currentPanel', event.currentTarget.dataset.panel);
 
                 this.render();
+                this.$el.removeClass('closed');
+            },
+            closePanel: function () {
+                this.$el.addClass('closed');
             }
         });
     }

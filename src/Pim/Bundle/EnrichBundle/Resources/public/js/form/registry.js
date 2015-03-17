@@ -5,20 +5,48 @@ define(
     function($) {
         var extensionMap = {
             'pim/product-edit-form': [
-                'pim/product-edit-form/save',
-                'pim/product-edit-form/form-tabs',
-                'pim/product-edit-form/locale-switcher'
+                {
+                    'code': 'save',
+                    'module': 'pim/product-edit-form/save'
+                },
+                {
+                    'code': 'form-tabs',
+                    'module': 'pim/product-edit-form/form-tabs'
+                },
+                {
+                    'code': 'locale-switcher',
+                    'module': 'pim/product-edit-form/locale-switcher'
+                }
             ],
             'pim/product-edit-form/form-tabs': [
-                'pim/product-edit-form/attributes',
-                'pim/product-edit-form/categories',
-                'pim/product-edit-form/panel/panels'
+                {
+                    'code': 'attributes',
+                    'module': 'pim/product-edit-form/attributes'
+                },
+                {
+                    'code': 'categories',
+                    'module': 'pim/product-edit-form/categories'
+                },
+                {
+                    'code': 'panels',
+                    'module': 'pim/product-edit-form/panel/panels'
+                }
             ],
             'pim/product-edit-form/attributes': [
-                'pim/product-edit-form/scope-switcher'
+                {
+                    'code': 'scope-switcher',
+                    'module': 'pim/product-edit-form/scope-switcher'
+                }
             ],
             'pim/product-edit-form/panel/panels': [
-                'pim/product-edit-form/panel/completeness'
+                {
+                    'code': 'completeness',
+                    'module': 'pim/product-edit-form/panel/completeness'
+                },
+                {
+                    'code': 'selector',
+                    'module': 'pim/product-edit-form/panel/selector'
+                }
             ]
         };
 
@@ -41,7 +69,17 @@ define(
 
                 var extensions = getExtensions(formName);
 
-                require(extensions, function() {
+                var requirePromises = [];
+                _.each(extensions, function (extension) {
+                    var requirePromise = $.Deferred();
+                    require([extension.module], function() {
+                        requirePromise.resolve(extension);
+                    });
+
+                    requirePromises.push(requirePromise);
+                });
+
+                $.when.apply($, requirePromises).done(function() {
                     promise.resolve(extensions);
                 });
 

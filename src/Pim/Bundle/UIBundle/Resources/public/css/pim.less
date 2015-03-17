@@ -767,6 +767,10 @@ span.link-label {
   border-left: 1px solid #e5e5e5;
   padding: 0 15px;
 
+  &.closed {
+    display: none;
+  }
+
   & > header {
     border-bottom: 3px solid #ddd;
     margin-bottom: 15px;
@@ -794,11 +798,28 @@ span.link-label {
   border: 1px solid #e5e5e5;
   margin-bottom: 10px;
 
+  &[data-closed="true"] {
+    border-bottom: none;
+
+    .content {
+      display: none;
+    }
+
+    i:before {
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+      filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+    }
+  }
+
   header {
     border-bottom: 1px solid #e5e5e5;
     .display-flex();
 
-    .locale {
+    .channel {
       .flex(1);
       margin: 0;
       margin-left: 10px;
@@ -807,6 +828,8 @@ span.link-label {
       font-weight: 200;
       line-height: 35px;
     }
+
+
 
     .btn {
       border: none;
@@ -829,7 +852,7 @@ span.link-label {
       margin-bottom: 20px;
     }
 
-    .channel {
+    .locale {
       display: block;
       font-size: 13px;
       margin-bottom: 5px;

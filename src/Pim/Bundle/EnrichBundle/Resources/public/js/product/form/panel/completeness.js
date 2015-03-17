@@ -12,6 +12,9 @@ define(
             template: _.template(template),
             className: 'panel-pane',
             code: 'completeness',
+            events: {
+                'click header': 'switchChannel'
+            },
             configure: function () {
                 this.getRoot().addPanel('completeness', 'Completeness');
 
@@ -26,10 +29,19 @@ define(
                                 completenesses: completenesses
                             })
                         );
+                        this.delegateEvents();
                     }, this));
                 }
 
                 return this;
+            },
+            switchChannel: function(event) {
+                var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
+                if ($completenessBlock.attr('data-closed') === 'false') {
+                    $completenessBlock.attr('data-closed', 'true');
+                } else {
+                    $completenessBlock.attr('data-closed', 'false');
+                }
             }
         });
     }

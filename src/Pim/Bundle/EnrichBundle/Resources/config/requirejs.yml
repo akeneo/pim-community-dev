@@ -33,6 +33,7 @@ config:
         pim/product-edit-form/attributes:         pimenrich/js/product/form/attributes
         pim/product-edit-form/categories:         pimenrich/js/product/form/categories
         pim/product-edit-form/panel/panels:       pimenrich/js/product/form/panel/panels
+        pim/product-edit-form/panel/selector:     pimenrich/js/product/form/panel/selector
         pim/product-manager:                      pimenrich/js/product/product-manager
         pim/form:                                 pimenrich/js/product/form
         pim/product-edit-form/locale-switcher:    pimenrich/js/product/form/locale-switcher
