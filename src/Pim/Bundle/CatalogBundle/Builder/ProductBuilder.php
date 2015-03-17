@@ -107,8 +107,6 @@ class ProductBuilder implements ProductBuilderInterface
         if (null !== $familyCode) {
             $family = $this->familyRepository->findOneByIdentifier($familyCode);
             $product->setFamily($family);
-            // TODO: should be useless
-            //$this->addMissingProductValues($product);
         }
 
         $event = new GenericEvent($product);

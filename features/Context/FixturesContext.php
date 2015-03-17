@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -279,6 +280,16 @@ class FixturesContext extends RawMinkContext
 
         $product = $this->loadFixture('products', $data);
         $this->getMediaManager()->handleProductMedias($product);
+
+        // TODO: ugly hack!
+        // we get rid of "add missing values" but we still have an issue with the ORM price filter on empty operator
+        /** @var ProductValueInterface $value */
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+                $this->getProductBuilder()->addMissingPrices($value);
+            }
+        }
+
         $this->getProductSaver()->save($product, ['recalculate' => false]);
 
         return $product;

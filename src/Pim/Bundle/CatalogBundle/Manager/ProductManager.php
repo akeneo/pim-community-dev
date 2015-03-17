@@ -123,11 +123,6 @@ class ProductManager
     {
         $product = $this->getProductRepository()->findOneByWithValues($id);
 
-        if ($product) {
-            // TODO: only for edit form purpose
-            // $this->builder->addMissingProductValues($product);
-        }
-
         return $product;
     }
 
@@ -141,10 +136,6 @@ class ProductManager
     public function findByIdentifier($identifier)
     {
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);
-        if ($product) {
-            // TODO: only for form purpose
-            // $this->builder->addMissingProductValues($product);
-        }
 
         return $product;
     }
