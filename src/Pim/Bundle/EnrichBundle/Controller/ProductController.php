@@ -552,6 +552,8 @@ class ProductController extends AbstractDoctrineController
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
+        // TODO: with this version of the form we need to add missing values from family
+        $this->productBuilder->addMissingProductValues($product);
 
         if (!$product) {
             throw $this->createNotFoundException(
