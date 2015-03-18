@@ -220,6 +220,20 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
+    public function hasAttributeCode($attributeCode)
+    {
+        foreach ($this->attributes as $attribute) {
+            if ($attributeCode === $attribute->getCode()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setAttributeAsLabel(AttributeInterface $attributeAsLabel)
     {
         $this->attributeAsLabel = $attributeAsLabel;
