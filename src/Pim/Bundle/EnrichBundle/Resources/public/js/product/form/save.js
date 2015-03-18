@@ -25,7 +25,6 @@ define(
             },
             render: function () {
                 this.$el.html(this.template());
-                this.$el.appendTo(this.getRoot().$('header .actions'));
                 this.delegateEvents();
 
                 return this;

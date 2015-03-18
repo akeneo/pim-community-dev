@@ -9,11 +9,12 @@ define(
             $.when(
                 FormRegistry.getForm(formName),
                 FormRegistry.getFormExtensions(formName)
-            ).done(function (Form, extensions) {
+            ).done(function (Form, extensionMeta) {
                 var form = new Form();
+                form.setZones(extensionMeta.zones);
 
                 var extensionPromises = [];
-                _.each(extensions, function(extension) {
+                _.each(extensionMeta.extensions, function(extension) {
                     var extensionPromise = buildForm(extension.module);
                     extensionPromise.done(function(loadedModule) {
                         extension.loadedModule = loadedModule;
@@ -23,8 +24,8 @@ define(
                 });
 
                 $.when.apply($, extensionPromises).done(function() {
-                    _.each(extensions, function(extension) {
-                        form.addExtension(extension.code, extension.loadedModule);
+                    _.each(extensionMeta.extensions, function(extension) {
+                        form.addExtension(extension.code, extension.loadedModule, extension.zone, extension.insertAction);
                     });
 
                     promise.resolve(form);

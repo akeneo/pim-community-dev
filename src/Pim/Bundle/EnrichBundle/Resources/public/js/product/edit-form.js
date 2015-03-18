@@ -38,12 +38,7 @@ define(
                     })
                 );
 
-                _.each(this.extensions, function(extension) {
-                    console.log(extension.parent.code, 'triggered the rendering of', extension.code);
-                    extension.render();
-                });
-
-                return this;
+                return this.renderExtensions();
             }
         });
 

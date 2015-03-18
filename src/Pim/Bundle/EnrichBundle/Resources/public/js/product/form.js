@@ -6,8 +6,17 @@ define(
         return Backbone.View.extend({
             code: 'form',
             initialize: function () {
-                this.extensions = {};
-                this.configured = false;
+                this.extensions   = {};
+                this.zones        = {};
+                this.zone         = '';
+                this.insertAction = null;
+                this.configured   = false;
+            },
+            setZones: function (zones) {
+                this.zones = zones;
+            },
+            getTargetElement: function () {
+                return this.parent.$(this.parent.zones[this.zone]);
             },
             configure: function () {
                 var promise = $.Deferred();
@@ -24,9 +33,13 @@ define(
 
                 return promise.promise();
             },
-            addExtension: function (code, extension) {
+            addExtension: function (code, extension, zone, insertAction) {
                 extension.setParent(this);
+
                 extension.code = code;
+                extension.zone = zone;
+                extension.insertAction = insertAction || 'append';
+
                 this.extensions[code] = extension;
             },
             setParent: function (parent) {
@@ -60,7 +73,11 @@ define(
                     return this;
                 }
 
+                return this.renderExtensions();
+            },
+            renderExtensions: function () {
                 _.each(this.extensions, function(extension) {
+                    extension.getTargetElement()[extension.insertAction](extension.el);
                     console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                     extension.render();
                 });

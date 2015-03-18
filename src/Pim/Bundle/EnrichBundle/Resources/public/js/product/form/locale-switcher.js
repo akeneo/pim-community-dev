@@ -36,7 +36,6 @@ define(
                             currentLocale: this.getRoot().state.get('locale')
                         })
                     );
-                    this.$el.prependTo(this.getParent().$('.tab-content > header > .attribute-edit-actions'));
                     this.delegateEvents();
                 }, this));
 

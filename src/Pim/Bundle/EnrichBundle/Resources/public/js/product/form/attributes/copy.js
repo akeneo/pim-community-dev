@@ -92,7 +92,6 @@ define(
                 }
 
                 this.delegateEvents();
-                this.$el.appendTo(this.getParent().$('.tab-content > header'));
 
                 return this;
             },

@@ -1,60 +1,97 @@
 'use strict';
 
 define(
-    ['jquery'],
-    function($) {
+    ['jquery', 'underscore'],
+    function($, _) {
         var extensionMap = {
-            'pim/product-edit-form': [
-                {
-                    'code': 'save',
-                    'module': 'pim/product-edit-form/save'
-                },
-                {
-                    'code': 'form-tabs',
-                    'module': 'pim/product-edit-form/form-tabs'
+            'pim/product-edit-form': {
+                'extensions': [
+                    {
+                        'code': 'save',
+                        'module': 'pim/product-edit-form/save',
+                        'zone': 'buttons',
+                        'insertAction': 'append'
+                    },
+                    {
+                        'code': 'form-tabs',
+                        'module': 'pim/product-edit-form/form-tabs',
+                        'zone': 'header',
+                        'insertAction': 'after'
+                    }
+                ],
+                'zones': {
+                    'header': '>div>header',
+                    'title': 'header .product-title',
+                    'buttons': 'header .actions'
                 }
-            ],
-            'pim/product-edit-form/form-tabs': [
-                {
-                    'code': 'attributes',
-                    'module': 'pim/product-edit-form/attributes'
-                },
-                {
-                    'code': 'categories',
-                    'module': 'pim/product-edit-form/categories'
-                },
-                {
-                    'code': 'panels',
-                    'module': 'pim/product-edit-form/panel/panels'
+            },
+            'pim/product-edit-form/form-tabs': {
+                'extensions' : [
+                    {
+                        'code': 'attributes',
+                        'module': 'pim/product-edit-form/attributes',
+                        'zone': 'container',
+                        'insertAction': 'append'
+                    },
+                    {
+                        'code': 'categories',
+                        'module': 'pim/product-edit-form/categories',
+                        'zone': 'container',
+                        'insertAction': 'append'
+                    },
+                    {
+                        'code': 'panels',
+                        'module': 'pim/product-edit-form/panel/panels',
+                        'zone': 'container',
+                        'insertAction': 'append'
+                    }
+                ],
+                'zones': {
+                    'container': '.form-container'
                 }
-            ],
-            'pim/product-edit-form/attributes': [
-                {
-                    'code': 'scope-switcher',
-                    'module': 'pim/product-edit-form/scope-switcher'
-                },
-                {
-                    'code': 'locale-switcher',
-                    'module': 'pim/product-edit-form/locale-switcher'
-                },
-                {
-                    'code': 'copy',
-                    'module': 'pim/product-edit-form/attributes/copy'
+            },
+            'pim/product-edit-form/attributes': {
+                'extensions': [
+                    {
+                        'code': 'scope-switcher',
+                        'module': 'pim/product-edit-form/scope-switcher',
+                        'zone': 'edit-actions',
+                        'insertAction': 'prepend'
+                    },
+                    {
+                        'code': 'locale-switcher',
+                        'module': 'pim/product-edit-form/locale-switcher',
+                        'zone': 'edit-actions',
+                        'insertAction': 'prepend'
+                    },
+                    {
+                        'code': 'copy',
+                        'module': 'pim/product-edit-form/attributes/copy',
+                        'zone': 'header',
+                        'insertAction': 'append'
+                    }
+                ],
+                'zones': {
+                    'header' : '.tab-content > header',
+                    'edit-actions': '.tab-content > header > .attribute-edit-actions'
                 }
-            ],
-            'pim/product-edit-form/panel/panels': [
-                {
-                    'code': 'completeness',
-                    'module': 'pim/product-edit-form/panel/completeness'
-                },
-                {
-                    'code': 'selector',
-                    'module': 'pim/product-edit-form/panel/selector'
-                }
-            ]
+            },
+            'pim/product-edit-form/panel/panels': {
+                'extensions': [
+                    {
+                        'code': 'completeness',
+                        'module': 'pim/product-edit-form/panel/completeness'
+                    },
+                    {
+                        'code': 'selector',
+                        'module': 'pim/product-edit-form/panel/selector'
+                    }
+                ],
+                'zones': {}
+            }
         };
 
-        var getExtensions = function (formName) {
+        var getExtensionMeta = function (formName) {
             return extensionMap[formName] || [];
         };
 
@@ -71,20 +108,10 @@ define(
             getFormExtensions: function getFormExtensions (formName) {
                 var promise = $.Deferred();
 
-                var extensions = getExtensions(formName);
+                var extensionMeta = getExtensionMeta(formName);
 
-                var requirePromises = [];
-                _.each(extensions, function (extension) {
-                    var requirePromise = $.Deferred();
-                    require([extension.module], function() {
-                        requirePromise.resolve(extension);
-                    });
-
-                    requirePromises.push(requirePromise);
-                });
-
-                $.when.apply($, requirePromises).done(function() {
-                    promise.resolve(extensions);
+                require(_.pluck(extensionMeta.extensions, 'module'), function() {
+                    promise.resolve(extensionMeta);
                 });
 
                 return promise.promise();

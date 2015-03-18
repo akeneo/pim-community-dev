@@ -48,11 +48,13 @@ define(
                         state: this.state.toJSON()
                     })
                 );
-                this.$el.insertAfter(this.getRoot().$('>div>header'));
                 this.delegateEvents();
 
                 this.extensions[this.state.get('currentTab')].render();
-                this.extensions['panels'].render();
+
+                var panels = this.extensions.panels;
+                panels.getTargetElement()[panels.insertAction](panels.el);
+                panels.render();
 
                 return this;
             },
