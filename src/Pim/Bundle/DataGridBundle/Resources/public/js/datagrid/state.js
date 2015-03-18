@@ -11,6 +11,37 @@ define(
             }
         };
 
+        var _getParsed = function(alias, key) {
+            var rawValue = _get(alias, key);
+            var parsedValue = {};
+
+            if (null == rawValue) {
+                return rawValue;
+            }
+            rawValue.split("&").forEach(function(part) {
+                if (!part) return;
+                var item = part.split("=");
+                var key = decodeURIComponent(item[0]);
+                var from = key.indexOf("[");
+                if (from==-1) {
+                    parsedValue[key] = decodeURIComponent(item[1]);
+                } else {
+                    var to = key.indexOf("]");
+                    var index = key.substring(from+1,to);
+                    key = key.substring(0,from);
+                    if (!parsedValue[key]) {
+                        parsedValue[key] = [];
+                    }
+                    if (!index) {
+                        parsedValue[key].push(item[1]);
+                    } else {
+                        parsedValue[key][index] = item[1];
+                    }
+                }
+            });
+            return parsedValue;
+        }
+
         var _set = function (alias, key, value) {
             if (storageEnabled) {
                 var oldValue = _get(alias, key);
@@ -49,6 +80,18 @@ define(
                     return values;
                 } else {
                     return _get.apply(this, arguments);
+                }
+            },
+            getParsed: function(alias, keys) {
+                if (_.isArray(keys)) {
+                    var values = {};
+                    _.each(keys, function(key) {
+                        values[key] = _getParsed(alias, key);
+                    });
+
+                    return values;
+                } else {
+                    return _getParsed.apply(this, arguments);
                 }
             },
             set: function(alias, data) {
