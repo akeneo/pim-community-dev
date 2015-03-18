@@ -211,6 +211,8 @@ class CategoryProcessor extends TransformerProcessor
             }
         }
 
+        // TODO: Categories which are skipped because of a circular references problem should be detach
+        // or $categories should be passed by reference in checkCircularReferences()
         foreach (array_unique($invalidCodes) as $code) {
             unset($categories[$code]);
             $this->setItemErrors(
