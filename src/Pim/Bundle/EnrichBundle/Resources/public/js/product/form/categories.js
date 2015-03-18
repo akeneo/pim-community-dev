@@ -31,6 +31,13 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
+                this.$el.appendTo(this.getRoot().$('.form-container .tab-pane[data-tab="categories"]'));
+
+                if (this.treeAssociate) {
+                    this.delegateEvents();
+                    return;
+                }
+
                 this.$el.html(
                     this.template({
                         product: this.getData(),
@@ -40,11 +47,7 @@ define(
                     })
                 );
 
-                this.$el.appendTo(this.getRoot().$('.form-container .tab-pane[data-tab="categories"]'));
-
-                if (!this.treeAssociate) {
-                    this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input');
-                }
+                this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input');
 
                 return this;
             },
