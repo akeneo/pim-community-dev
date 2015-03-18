@@ -312,6 +312,8 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
+# 1.2.33 (2015-03-16)
+
 # 1.2.32 (2015-03-11)
 
 ## Bug fixes
