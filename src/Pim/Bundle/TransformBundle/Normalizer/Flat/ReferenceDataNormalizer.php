@@ -14,7 +14,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 class ReferenceDataNormalizer extends AbstractProductValueDataNormalizer
 {
     /** @var array $supportedFormats */
-    protected $supportedFormats = ['csv'];
+    protected $supportedFormats = ['csv', 'flat'];
 
     /**
      * {@inheritdoc}
