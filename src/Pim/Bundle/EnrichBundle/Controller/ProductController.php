@@ -253,8 +253,6 @@ class ProductController extends AbstractDoctrineController
 
         $this->dispatch(ProductEvents::PRE_EDIT, new GenericEvent($product));
 
-        $this->productManager->ensureAllAssociationTypes($product);
-
         $form = $this->createForm(
             'pim_product_edit',
             $product,
@@ -311,8 +309,6 @@ class ProductController extends AbstractDoctrineController
     public function updateAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-
-        $this->productManager->ensureAllAssociationTypes($product);
 
         $form = $this->createForm(
             'pim_product_edit',
@@ -552,12 +548,14 @@ class ProductController extends AbstractDoctrineController
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
-
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
+        // With this version of the form we need to add missing values from family
+        $this->productBuilder->addMissingProductValues($product);
+        $this->productBuilder->addMissingAssociations($product);
 
         return $product;
     }

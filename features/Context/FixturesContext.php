@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -278,9 +279,15 @@ class FixturesContext extends RawMinkContext
             ->reset();
 
         $product = $this->loadFixture('products', $data);
-
-        $this->getProductBuilder()->addMissingProductValues($product);
         $this->getMediaManager()->handleProductMedias($product);
+
+        // we get rid of "add missing values" but we still have an issue with the ORM price filter on empty operator
+        /** @var ProductValueInterface $value */
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+                $this->getProductBuilder()->addMissingPrices($value);
+            }
+        }
 
         $this->getProductSaver()->save($product, ['recalculate' => false]);
 
@@ -521,7 +528,7 @@ class FixturesContext extends RawMinkContext
         $comments = [];
 
         foreach ($table->getHash() as $row) {
-            $product = $this->getProductManager()->findByIdentifier($row['product']);
+            $product = $this->getProductRepository()->findOneByIdentifier($row['product']);
             $row['resource'] = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
@@ -1357,7 +1364,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductManager()->findByIdentifier($sku);
+        $product = $this->getProductRepository()->findOneByIdentifier($sku);
 
         if (!$product) {
             throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
@@ -2043,6 +2050,14 @@ class FixturesContext extends RawMinkContext
     protected function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
+     */
+    protected function getProductRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.product');
     }
 
     /**

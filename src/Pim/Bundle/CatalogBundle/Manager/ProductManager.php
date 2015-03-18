@@ -105,6 +105,8 @@ class ProductManager
      * Get product configuration
      *
      * @return array
+     *
+     * @deprecated will be remove in 1.5, please use parameters as %pim_catalog.entity.product.class%
      */
     public function getConfiguration()
     {
@@ -123,27 +125,21 @@ class ProductManager
     {
         $product = $this->getProductRepository()->findOneByWithValues($id);
 
-        if ($product) {
-            $this->builder->addMissingProductValues($product);
-        }
-
         return $product;
     }
 
     /**
      * Find a product by identifier
-     * Also ensure that it contains all required values
      *
      * @param string $identifier
      *
      * @return ProductInterface|null
+     *
+     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::findOneByIdentifier
      */
     public function findByIdentifier($identifier)
     {
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);
-        if ($product) {
-            $this->builder->addMissingProductValues($product);
-        }
 
         return $product;
     }
@@ -195,7 +191,7 @@ class ProductManager
      *
      * @return AttributeInterface|null
      *
-     * @deprecated will be remove in 1.5, please use AttributeRepositoryInterface::getIdentifierAttribute();
+     * @deprecated will be removed in 1.5, please use AttributeRepositoryInterface::getIdentifierAttribute();
      */
     public function getIdentifierAttribute()
     {
@@ -207,7 +203,7 @@ class ProductManager
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
-     * @deprecated will be remove in 1.5, please use ProductBuilderInterface::createProduct();
+     * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProduct();
      */
     public function createProduct()
     {
@@ -219,7 +215,7 @@ class ProductManager
      *
      * @return string
      *
-     * @deprecated will be remove in 1.5, please use %pim_catalog.entity.product.class%
+     * @deprecated will be removed in 1.5, please use %pim_catalog.entity.product.class%
      */
     public function getProductName()
     {
@@ -231,7 +227,7 @@ class ProductManager
      *
      * @return string
      *
-     * @deprecated will be remove in 1.5, please use %pim_catalog.entity.product_value.class%
+     * @deprecated will be removed in 1.5, please use %pim_catalog.entity.product_value.class%
      */
     public function getProductValueName()
     {
@@ -243,7 +239,7 @@ class ProductManager
      *
      * @return string
      *
-     * @deprecated will be remove in 1.5, please use %pim_catalog.entity.attribute.class%
+     * @deprecated will be removed in 1.5, please use %pim_catalog.entity.attribute.class%
      */
     public function getAttributeName()
     {
@@ -253,7 +249,7 @@ class ProductManager
     /**
      * @param ProductInterface $product
      *
-     * @deprecated will be remove in 1.5, please use ProductBuilderInterface::addMissingAssociations
+     * @deprecated will be removed in 1.5, please use ProductBuilderInterface::addMissingAssociations
      */
     public function ensureAllAssociationTypes(ProductInterface $product)
     {
@@ -274,6 +270,8 @@ class ProductManager
      * Return related repository
      *
      * @return ObjectRepository
+     *
+     * @deprecated will be removed in 1.5, please use AttributeOptionRepositoryInterface
      */
     public function getAttributeOptionRepository()
     {

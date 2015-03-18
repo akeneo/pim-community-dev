@@ -19,7 +19,7 @@ interface ProductBuilderInterface
     /**
      * Create product with its identifier value,
      *  - sets the identifier data if provided
-     *  - sets family and related values if provided
+     *  - sets family if provided
      *
      * @param string $identifier
      * @param string $familyCode
