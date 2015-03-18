@@ -95,9 +95,6 @@ class ProductProcessor extends AbstractProcessor
         $product = $this->repository->findOneByIdentifier($identifier);
         if (false === $product) {
             $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        } else {
-            // add missing values to ensure product has values for any attribute of its family
-            $this->productBuilder->addMissingProductValues($product);
         }
 
         return $product;
@@ -114,8 +111,11 @@ class ProductProcessor extends AbstractProcessor
                 $this->productUpdater->setData($product, $field, $values, []);
             } else {
                 foreach ($values as $value) {
-                    // sets value if it exists, means coming from family's attributes or already exist as optional
-                    if (null !== $product->getValue($field, $value['locale'], $value['scope'])) {
+                    // sets the value if the attribute belongs to the family or if the value already exists as optional
+                    $family = $product->getFamily();
+                    $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
+                    $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
+                    if ($belongsToFamily || $hasValue) {
                         $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
                         $this->productUpdater->setData($product, $field, $value['data'], $options);
                     }
