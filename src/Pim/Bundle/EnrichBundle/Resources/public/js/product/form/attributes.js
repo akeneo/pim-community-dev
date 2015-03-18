@@ -5,6 +5,7 @@ define(
         'jquery',
         'underscore',
         'backbone',
+        'oro/mediator',
         'pim/form',
         'pim/field-manager',
         'pim/config-manager',
@@ -16,6 +17,7 @@ define(
         $,
         _,
         Backbone,
+        mediator,
         BaseForm,
         FieldManager,
         ConfigManager,
@@ -29,7 +31,7 @@ define(
             events: {
                 'click .nav-tabs li': 'changeAttributeGroup',
                 'click .add-attribute li a': 'addAttribute',
-                'click i.remove-attribute': 'removeAttribute'
+                'click .remove-attribute': 'removeAttribute'
             },
             renderedFields: {},
             initialize: function () {
@@ -37,6 +39,7 @@ define(
                     'attributeGroups' : [],
                     'attributes': []
                 });
+
 
                 this.listenTo(this.config, 'change', this.render);
 
@@ -46,6 +49,7 @@ define(
                 this.getRoot().addTab('attributes', 'Attributes');
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
+                mediator.on('post_save', _.bind(this.postSave, this));
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -93,7 +97,7 @@ define(
 
                 return this;
             },
-            renderField: function(product, attributeCode, value) {
+            renderField: function(product, attributeCode, values) {
                 var promise = $.Deferred();
 
                 FieldManager.getField(attributeCode).done(_.bind(function(field) {
@@ -103,7 +107,7 @@ define(
                         'optional': AttributeManager.isOptional(attributeCode, product, this.config.get('families'))
                     });
                     field.setConfig(this.config.toJSON());
-                    field.setValues(value);
+                    field.setValues(values);
 
                     this.addVariantInfos(product, field);
 
@@ -166,6 +170,7 @@ define(
                 var attributeCode = event.currentTarget.dataset.attribute;
                 var product = this.getData();
 
+                this.config.set('attributeGroup', this.config.get('attributes')[attributeCode].group, {silent: true});
                 if (product.values[attributeCode]) {
                     this.getRoot().model.trigger('change');
                     return;
@@ -173,7 +178,8 @@ define(
 
                 product.values[attributeCode] = [];
 
-                this.config.set('attributeGroup', this.config.get('attributes')[attributeCode].group);
+                this.extensions['copy'].generateCopyFields();
+
                 this.setData(product);
                 this.getRoot().model.trigger('change');
             },
@@ -196,22 +202,26 @@ define(
             removeAttribute: function(event) {
                 var attributeCode = event.currentTarget.dataset.attribute;
                 var product = this.getData();
+                var fields = FieldManager.getFields();
+
                 delete product.values[attributeCode];
+                delete fields[attributeCode];
+                this.extensions['copy'].generateCopyFields();
 
                 this.setData(product);
+
+                console.log(this.getData());
                 this.getRoot().model.trigger('change');
             },
             getValuesData: function () {
-                var fields = FieldManager.getFields();
-                var values = {};
-                _.each(fields, function(field, key) {
-                    values[key] = field.getData();
-                });
-                console.log(values);
-                this.setData({
-                    values: values,
-                    enabled: Math.floor(Math.random()*10) >= 5
-                });
+                //We will have to decide if we keep this behavior (not sure if getting the field value is the good strategie)
+                console.log(this.getData().values);
+                return this.getData().values;
+            },
+            postSave: function() {
+                this.renderedFields = {};
+
+                this.render();
             }
         });
 

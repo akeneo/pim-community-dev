@@ -52,6 +52,7 @@ config:
         pim/config-manager:                 pimenrich/js/product/config-manager
         pim/variant-group-manager:          pimenrich/js/product/variant-group-manager
         pim/completeness-manager:           pimenrich/js/product/completeness-manager
+        pim/channel-manager:                pimenrich/js/product/channel-manager
 
         # Fields
         pim/field:                          pimenrich/js/product/field/field

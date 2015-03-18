@@ -5,9 +5,9 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/scope-switcher',
-        'pim/config-manager'
+        'pim/channel-manager'
     ],
-    function(_, BaseForm, template, ConfigManager) {
+    function(_, BaseForm, template, ChannelManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group',
@@ -16,7 +16,7 @@ define(
                 'click li a': 'changeScope',
             },
             render: function () {
-                ConfigManager.getEntityList('channels').done(_.bind(function(channels) {
+                ChannelManager.getChannels().done(_.bind(function(channels) {
                     if (!this.getRoot().state.get('scope')) {
                         this.getRoot().state.set('scope', channels[0].code);
                     }

@@ -3,6 +3,7 @@
 define(
     [
         'underscore',
+        'oro/mediator',
         'pim/form',
         'text!pim/template/product/save',
         'oro/navigation',
@@ -11,6 +12,7 @@ define(
     ],
     function(
         _,
+        mediator,
         BaseForm,
         template,
         Navigation,
@@ -39,10 +41,13 @@ define(
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
+                mediator.trigger('pre_save');
                 ProductManager.save(100, product).done(_.bind(function(data) {
                     navigation.addFlashMessage('success', 'Product saved');
                     navigation.afterRequest();
+
                     this.setData(data);
+                    mediator.trigger('post_save', data);
                 }, this)).fail(function(response) {
                     console.log('Errors:', response.responseJSON);
                     navigation.addFlashMessage('error', 'Error saving product');

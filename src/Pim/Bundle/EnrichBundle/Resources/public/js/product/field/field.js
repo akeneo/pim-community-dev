@@ -1,7 +1,9 @@
 "use strict";
 
-define(['backbone', 'underscore', 'text!pim/template/product/field/field'], function (Backbone, _, fieldTemplate) {
-    var FieldModel = Backbone.Model.extend({});
+define(['backbone', 'underscore', 'text!pim/template/product/field/field', 'pim/attribute-manager'], function (Backbone, _, fieldTemplate, AttributeManager) {
+    var FieldModel = Backbone.Model.extend({
+        'values': []
+    });
 
     return Backbone.View.extend({
         tagName: 'div',
@@ -67,7 +69,12 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         setValues: function(values)
         {
             if (values.length === 0) {
-                values.push(this.createEmptyValue());
+                values.push(AttributeManager.getValue(
+                    [],
+                    this.attribute,
+                    this.context.locale,
+                    this.context.scope
+                ));
             }
 
             this.model.set('values', values);
@@ -127,45 +134,12 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         },
         getCurrentValue: function()
         {
-            var value = this.model.get('values').map(_.bind(function(currentValue) {
-                if (this.attribute.localizable &&
-                    this.attribute.scopable
-                ) {
-                    if (!(
-                        currentValue.locale === this.context.locale &&
-                        currentValue.scope === this.context.scope
-                    )) {
-                        return null;
-                    }
-                } else if (this.attribute.localizable) {
-                    if (currentValue.locale !== this.context.locale) {
-                        return null;
-                    }
-                } else if (this.attribute.scopable) {
-                    if (currentValue.scope !== this.context.scope) {
-                        return null;
-                    }
-                } else if (currentValue.scope || currentValue.locale) {
-                    return null;
-                }
-
-                return currentValue;
-            }, this)).filter(function(value) {
-                return value !== null;
-            })[0];
-
-            if (!value) {
-                value = this.createEmptyValue();
-            }
-
-            return value;
-        },
-        createEmptyValue: function() {
-            return {
-                value: this.getEmptyData(),
-                locale: this.attribute.localizable ? this.context.locale : null,
-                scope: this.attribute.scopable ? this.context.scope : null
-            };
+            return AttributeManager.getValue(
+                this.model.get('values'),
+                this.attribute,
+                this.context.locale,
+                this.context.scope
+            );
         },
         getEmptyData: function() {
             return null;

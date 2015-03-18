@@ -5,9 +5,11 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/tab/attribute/copy',
-        'pim/product-edit-form/attributes/copyfield'
+        'pim/product-edit-form/attributes/copyfield',
+        'pim/config-manager',
+        'pim/attribute-manager'
     ],
-    function(_, BaseForm, template, CopyField) {
+    function(_, BaseForm, template, CopyField, ConfigManager, AttributeManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',
@@ -39,48 +41,8 @@ define(
                         'copying': this.copying
                     })
                 );
-                var locale = 'fr_FR';
-                var scope  = 'mobile';
 
                 if (this.copying) {
-                    //This should be moved to somewhere else (can be done outside of render)
-                    _.each(this.getData().values, _.bind(function (values, code) {
-                        _.each(values, _.bind(function(value) {
-                            if (
-                                (
-                                    value.scope === scope &&
-                                    value.locale === locale
-                                ) ||
-                                (
-                                    value.scope === scope &&
-                                    value.locale === null
-                                ) ||
-                                (
-                                    value.scope === null &&
-                                    value.locale === locale
-                                )
-                            ) {
-                                var copyField = new CopyField();
-
-                                if (
-                                    this.copyFields[code] &&
-                                    this.copyFields[code].locale === value.locale &&
-                                    this.copyFields[code].scope === value.scope
-                                ) {
-                                    copyField = this.copyFields[code];
-                                    copyField.setSelected(this.copyFields[code].selected);
-                                }
-
-                                copyField.setLocale(value.locale);
-                                copyField.setScope(value.scope);
-                                copyField.setData(value.value);
-
-                                this.copyFields[code] = copyField;
-                            }
-                        }, this));
-
-                    }, this));
-
                     _.each(this.copyFields, _.bind(function (copyField, code) {
                         var field = this.getParent().renderedFields[code];
                         if (field) {
@@ -95,15 +57,50 @@ define(
 
                 return this;
             },
+            generateCopyFields: function() {
+                var locale = 'fr_FR';
+                var scope  = 'mobile';
+                this.copyFields = {};
+
+                ConfigManager.getEntityList('attributes').done(_.bind(function(attributes) {
+                    _.each(this.getData().values, _.bind(function (values, code) {
+                        var attribute = attributes[code];
+
+                        if (attribute.scopable || attribute.localizable) {
+                            var valueToCopy = AttributeManager.getValue(values, attribute, locale, scope);
+
+                            var copyField = new CopyField();
+                            if (
+                                this.copyFields[code] &&
+                                this.copyFields[code].locale === valueToCopy.locale &&
+                                this.copyFields[code].scope === valueToCopy.scope
+                            ) {
+                                copyField = this.copyFields[code];
+                                copyField.setSelected(this.copyFields[code].selected);
+                            }
+
+                            copyField.setLocale(valueToCopy.locale);
+                            copyField.setScope(valueToCopy.scope);
+                            copyField.setData(valueToCopy.value);
+
+                            this.copyFields[code] = copyField;
+                        }
+                    }, this));
+                }, this));
+            },
             copy: function(){
                 _.each(this.copyFields, function (copyField) {
                     if (copyField.field) {
                         copyField.field.setCurrentValue(copyField.data);
+                        copyField.selected = false;
                     }
                 });
+
+                this.getParent().render();
             },
             startCopying: function() {
                 this.copying = true;
+                this.generateCopyFields();
 
                 this.render();
             },

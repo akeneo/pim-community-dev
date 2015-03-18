@@ -3,13 +3,10 @@
 define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-field'], function (Backbone, _, copyFieldTemplate) {
     return Backbone.View.extend({
         tagName: 'div',
-        attribute: null,
         field: null,
         locale: null,
         scope: null,
         data: '',
-        context: {},
-        config: {},
         template: _.template(copyFieldTemplate),
         selected: false,
         events: {
@@ -17,8 +14,6 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
         },
         initialize: function()
         {
-            this.context  = {};
-            this.config   = {};
             this.selected = false;
             this.field    = null;
 
@@ -30,7 +25,7 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
 
             var templateContext = {
                 type: this.field.fieldType,
-                label: this.field.attribute.label[this.locale],
+                label: this.field.attribute.label[this.field.context.locale],
                 data: this.data,
                 config: this.field.config,
                 context: this.field.context,
