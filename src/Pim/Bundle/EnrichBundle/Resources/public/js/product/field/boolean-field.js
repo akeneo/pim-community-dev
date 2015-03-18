@@ -19,7 +19,7 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'b
             return false;
         },
         updateModel: function (event) {
-            var data = event.currentTarget.value;
+            var data = event.currentTarget.checked;
             this.setCurrentValue(data);
         }
     });
