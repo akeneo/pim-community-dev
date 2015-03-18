@@ -139,9 +139,8 @@ class PublishedProductManager
 
         if (true === $publishOptions['flush']) {
             $this->getObjectManager()->flush();
+            $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
         }
-
-        $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
 
         return $published;
     }
