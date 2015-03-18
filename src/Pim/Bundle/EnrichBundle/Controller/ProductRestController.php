@@ -112,7 +112,7 @@ class ProductRestController
         if (0 === $violations->count()) {
             $this->productManager->saveProduct($product);
 
-            return new JsonResponse($this->normalizer->normalize($product, 'json'));
+            return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
         } else {
             $errors = [];
             foreach ($violations as $violation) {

@@ -178,6 +178,9 @@ define(
                 this.getRoot().model.trigger('change');
             },
             addVariantInfos: function(product, field) {
+                if (!product.variant_group) {
+                    return;
+                }
                 VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
                     if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
 

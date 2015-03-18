@@ -31,10 +31,16 @@ define(
                 return this;
             },
             save: function() {
+                var product = this.getData();
+
+                delete product.associations;
+                delete product.variant_group;
+                delete product.meta;
+
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
-                ProductManager.save(100, this.getData()).done(_.bind(function(data) {
+                ProductManager.save(100, product).done(_.bind(function(data) {
                     navigation.addFlashMessage('success', 'Product saved');
                     navigation.afterRequest();
                     this.setData(data);
