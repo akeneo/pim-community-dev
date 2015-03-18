@@ -14,12 +14,12 @@ Feature: Edit a product
       | name        | text     | no          |                  |                 | Name        | no       |
       | other_name  | text     | yes         |                  |                 | Other Name  | yes      |
     And the following product values:
-      | product | attribute   | value                             | locale | scope     |
-      | sandal  | description | My awesome description            | en_US  | ecommerce |
-      | sandal  | description | My awesome description for mobile | en_US  | mobile    |
-      | sandal  | other_name  | My awesome sandals                | en_US  | ecommerce |
-      | sandal  | other_name  | My awesome sandals for mobile     | en_US  | mobile    |
-      | sandal  | name        | My sandals name                   |        |           |
+      | product | attribute   | value                                | locale | scope     |
+      | sandal  | description | My awesome description for ecommerce | en_US  | ecommerce |
+      | sandal  | description | My awesome description for mobile    | en_US  | mobile    |
+      | sandal  | other_name  | My awesome sandals                   | en_US  | ecommerce |
+      | sandal  | other_name  | My awesome sandals for mobile        | en_US  | mobile    |
+      | sandal  | name        | My sandals name                      |        |           |
 
   @javascript
   Scenario: Successfully create, edit and save a product
@@ -50,3 +50,14 @@ Feature: Edit a product
     And I am logged in as "Julia"
     When I am on the "sandal" product page
     Then the english other_name of "sandal" should be "My awesome sandals"
+
+  @javascript
+  Scenario: Successfully preserve channel filter between datagrid and edit form
+    Given I am logged in as "Sandra"
+    And I am on the "sandal" product page
+    Then I should see "My awesome description for mobile"
+    When I am on the products page
+    And I filter by "Channel" with value "E-Commerce"
+    When I am on the "sandal" product page
+    Then I should not see "My awesome description for mobile"
+    Then I should see "My awesome description for ecommerce"
