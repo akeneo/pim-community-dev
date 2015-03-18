@@ -1,7 +1,21 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2', 'tinymce'],
-        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
+        [
+            'jquery',
+            'underscore',
+            'pim/optionform',
+            'pim/scopable',
+            'pim/currencyfield',
+            'datepicker',
+            'pim/dialog',
+            'pim/dialogform',
+            'oro/mediator',
+            'pim/datagrid/state',
+            'backbone/bootstrap-modal',
+            'jquery.select2',
+            'tinymce'
+        ],
+        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator, stateManager) {
             'use strict';
 
             $(function () {
@@ -10,33 +24,9 @@
                 });
 
                 var initialScope = '{{ app.user.catalogScope.code }}';
-                var datagridFilters = sessionStorage.getItem('product-grid.filters');
-                if (datagridFilters) {
-                    var result = {};
-                    datagridFilters.split("&").forEach(function(part) {
-                        if(!part) return;
-                        var item = part.split("=");
-                        var key = decodeURIComponent(item[0]);
-                        var from = key.indexOf("[");
-                        if (from==-1) {
-                            result[key] = decodeURIComponent(item[1]);
-                        } else {
-                            var to = key.indexOf("]");
-                            var index = key.substring(from+1,to);
-                            key = key.substring(0,from);
-                            if (!result[key]) {
-                                result[key] = [];
-                            }
-                            if (!index) {
-                                result[key].push(item[1]);
-                            } else {
-                                result[key][index] = item[1];
-                            }
-                        }
-                    });
-                    if (undefined != result.f && undefined != result.f.scope) {
-                        initialScope = result.f.scope;
-                    }
+                var datagridFilters = stateManager.getParsed('product-grid', 'filters')
+                if (null != datagridFilters && undefined != datagridFilters.f.scope) {
+                    initialScope = datagridFilters.f.scope;
                 }
 
                 _.each($('form div.scopable:not(.currency)'), function (field) {
