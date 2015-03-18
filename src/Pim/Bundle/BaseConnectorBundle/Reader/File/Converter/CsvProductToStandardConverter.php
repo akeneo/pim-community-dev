@@ -208,7 +208,7 @@ class CsvProductToStandardConverter implements StandardFormatConverterInterface
                 break;
             case 'pim_catalog_image':
             case 'pim_catalog_file':
-                $value = [
+                $value = $value === "" ? null : [
                     'filePath'         => $value,
                     'originalFilename' => basename($value)
                 ];

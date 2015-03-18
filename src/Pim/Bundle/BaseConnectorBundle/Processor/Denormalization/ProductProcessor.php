@@ -37,7 +37,7 @@ class ProductProcessor extends AbstractProcessor
      * @param DenormalizerInterface                 $denormalizer   denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator      validator of the object
      * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
-     * @param ProductBuilderInterface               $builder        product builder
+     * @param ProductBuilderInterface               $productBuilder product builder
      * @param StandardFormatConverterInterface      $converter      csv converter
      * @param ProductUpdaterInterface               $productUpdater product updater
      * @param string                                $class          class of the object to instanciate in case if need
@@ -45,18 +45,18 @@ class ProductProcessor extends AbstractProcessor
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        DenormalizerInterface $denormalizer, // TODO: useless here, except if embed the updater or setter registry?
+        DenormalizerInterface $denormalizer, // TODO: useless here, except if we embed the updater or setter registry?
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        ProductBuilderInterface $builder,
-        StandardFormatConverterInterface $converter,
+        ProductBuilderInterface $productBuilder,
+        StandardFormatConverterInterface $converter, // TODO: could be embedded in denormalizer?
         ProductUpdaterInterface $productUpdater,
         $class,
         $format
     ) {
         parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
 
-        $this->productBuilder = $builder;
+        $this->productBuilder = $productBuilder;
         $this->converter      = $converter;
         $this->productUpdater = $productUpdater;
         $this->format         = $format; // TODO: should be used by the converter! format to standard then use updater!
@@ -67,21 +67,63 @@ class ProductProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $convertedItem = $this->converter->convert($item);
+        $convertedItem = $this->convertItemData($item);
+        $identifier    = $this->getIdentifier($convertedItem);
+        $familyCode    = $this->getFamilyCode($convertedItem);
+        $filteredItem  = $this->filterItemData($convertedItem);
+
+        $product = $this->findOrCreateProduct($identifier, $familyCode);
+        $this->updateProduct($product, $filteredItem);
+        $this->validateProduct($product, $item);
+
+        return $product;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return array
+     */
+    protected function convertItemData(array $item)
+    {
+        return $this->converter->convert($item);
+    }
+
+    /**
+     * @param array $convertedItem
+     *
+     * @return string
+     */
+    protected function getIdentifier(array $convertedItem)
+    {
         $identifierProperty = $this->repository->getIdentifierProperties();
 
-        $identifier = $convertedItem[$identifierProperty[0]][0]['data'];
-        $familyCode = $convertedItem['family'];
+        return $convertedItem[$identifierProperty[0]][0]['data'];
+    }
+
+    /**
+     * @param array $convertedItem
+     *
+     * @return string|null
+     */
+    protected function getFamilyCode(array $convertedItem)
+    {
+        return $convertedItem['family'];
+    }
+
+    /**
+     * @param array $convertedItem
+     *
+     * @return array
+     */
+    protected function filterItemData(array $convertedItem)
+    {
         unset($convertedItem[$this->repository->getIdentifierProperties()[0]]);
         unset($convertedItem['associations']);
         unset($convertedItem['family']);
         unset($convertedItem['groups']); // TODO: until we split groups and variant groups
 
-        $product = $this->findOrCreateProduct($identifier, $familyCode);
-        $this->updateProduct($product, $convertedItem);
-        $this->validateProduct($product, $item);
-
-        return $product;
+        return $convertedItem;
     }
 
     /**
@@ -90,14 +132,11 @@ class ProductProcessor extends AbstractProcessor
      *
      * @return ProductInterface
      */
-    public function findOrCreateProduct($identifier, $familyCode)
+    protected function findOrCreateProduct($identifier, $familyCode)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
         if (false === $product) {
             $product = $this->productBuilder->createProduct($identifier, $familyCode);
-        } else {
-            // add missing values to ensure product has values for any attribute of its family
-            $this->productBuilder->addMissingProductValues($product);
         }
 
         return $product;
@@ -114,8 +153,11 @@ class ProductProcessor extends AbstractProcessor
                 $this->productUpdater->setData($product, $field, $values, []);
             } else {
                 foreach ($values as $value) {
-                    // sets value if it exists, means coming from family's attributes or already exist as optional
-                    if (null !== $product->getValue($field, $value['locale'], $value['scope'])) {
+                    // sets the value if the attribute belongs to the family or if the value already exists as optional
+                    $family = $product->getFamily();
+                    $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
+                    $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
+                    if ($belongsToFamily || $hasValue) {
                         $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
                         $this->productUpdater->setData($product, $field, $value['data'], $options);
                     }
