@@ -32,7 +32,7 @@ config:
         pim/form-registry:                           pimenrich/js/form/registry
         pim/product-edit-form/attributes:            pimenrich/js/product/form/attributes
         pim/product-edit-form/attributes/copy:       pimenrich/js/product/form/attributes/copy
-        pim/product-edit-form/attributes/copy-field: pimenrich/js/product/form/attributes/copy-field
+        pim/product-edit-form/attributes/copyfield:  pimenrich/js/product/form/attributes/copy-field
         pim/product-edit-form/categories:            pimenrich/js/product/form/categories
         pim/product-edit-form/panel/panels:          pimenrich/js/product/form/panel/panels
         pim/product-edit-form/panel/selector:        pimenrich/js/product/form/panel/selector

@@ -12,14 +12,14 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         config: {},
         model: FieldModel,
         template: _.template(fieldTemplate),
-        infoElements: {},
+        elements: {},
         editable: true,
         enabled: true,
         initialize: function(attribute)
         {
             this.attribute    = attribute;
             this.model        = new FieldModel();
-            this.infoElements = {};
+            this.elements = {};
             this.context      = {};
             this.config       = {};
 
@@ -36,12 +36,19 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
                 config: this.config,
                 context: this.context,
                 attribute: this.attribute,
-                info: this.infoElements,
+                info: this.elements,
                 editMode: this.getEditMode()
             };
 
             this.$el.html(this.template(templateContext));
-            this.$('.field-input').append(this.renderInput(templateContext));
+            this.$('.form-field.edit .field-input').append(this.renderInput(templateContext));
+
+            _.each(this.elements, _.bind(function (elements, position) {
+                var $container = this.$('.' + position + '-elements-container');
+                _.each(elements, _.bind(function(element) {
+                    $container.append(element);
+                }, this));
+            }, this));
             this.delegateEvents();
 
             return this;
@@ -73,16 +80,16 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field'], func
         {
             this.config = config;
         },
-        addInfo: function(position, code, element) {
-            if (!(position in this.infoElements)) {
-                this.infoElements[position] = {};
+        addElement: function(position, code, element) {
+            if (!(position in this.elements)) {
+                this.elements[position] = {};
             }
-            this.infoElements[position][code] = element;
+            this.elements[position][code] = element;
 
             this.render();
         },
-        removeInfo: function(position, code) {
-            delete this.infoElements[position][code];
+        removeElement: function(position, code) {
+            delete this.elements[position][code];
 
             this.render();
         },

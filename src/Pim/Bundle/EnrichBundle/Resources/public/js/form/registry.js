@@ -12,10 +12,6 @@ define(
                 {
                     'code': 'form-tabs',
                     'module': 'pim/product-edit-form/form-tabs'
-                },
-                {
-                    'code': 'locale-switcher',
-                    'module': 'pim/product-edit-form/locale-switcher'
                 }
             ],
             'pim/product-edit-form/form-tabs': [
@@ -36,6 +32,10 @@ define(
                 {
                     'code': 'scope-switcher',
                     'module': 'pim/product-edit-form/scope-switcher'
+                },
+                {
+                    'code': 'locale-switcher',
+                    'module': 'pim/product-edit-form/locale-switcher'
                 },
                 {
                     'code': 'copy',

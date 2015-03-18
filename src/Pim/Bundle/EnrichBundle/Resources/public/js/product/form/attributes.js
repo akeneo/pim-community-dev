@@ -31,7 +31,7 @@ define(
                 'click .add-attribute li a': 'addAttribute',
                 'click i.remove-attribute': 'removeAttribute'
             },
-            renderedFields: [],
+            renderedFields: {},
             initialize: function () {
                 this.config = new Backbone.Model({
                     'attributeGroups' : [],
@@ -74,9 +74,10 @@ define(
                     $.when.apply($, fieldPromisses).done(_.bind(function() {
                         var $productValuesPanel = this.$('#product-values');
 
-                        this.renderedFields = [];
+                        this.renderedFields = {};
                         _.each(arguments, _.bind(function(field) {
-                            this.renderedFields.push(field);
+                            field.render();
+                            this.renderedFields[field.attribute.code] = field;
                             $productValuesPanel.append(field.$el);
                         }, this));
                     }, this));
@@ -103,7 +104,6 @@ define(
                     });
                     field.setConfig(this.config.toJSON());
                     field.setValues(value);
-                    field.render();
 
                     this.addVariantInfos(product, field);
 
@@ -189,7 +189,7 @@ define(
                                 variantGroup.label[this.getRoot().state.get('locale')] +
                             '</div>'
                         );
-                        field.addInfo('footer', 'coming_from_variant_group', $element);
+                        field.addElement('footer', 'coming_from_variant_group', $element);
                     }
                 }, this));
             },

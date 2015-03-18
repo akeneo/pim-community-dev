@@ -25,7 +25,7 @@ define(
                 Field.prototype.render.apply(this, arguments);
 
                 setTimeout(_.bind(function() {
-                    this.$('input').datepicker();
+                    this.$('.datepicker').datepicker();
                 }, this), 0);
             },
             updateModel: function (event) {

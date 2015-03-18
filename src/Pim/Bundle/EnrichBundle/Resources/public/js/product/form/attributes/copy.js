@@ -5,7 +5,7 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/tab/attribute/copy',
-        'pim/product-edit-form/attributes/copy-field'
+        'pim/product-edit-form/attributes/copyfield'
     ],
     function(_, BaseForm, template, CopyField) {
         return BaseForm.extend({
@@ -15,7 +15,8 @@ define(
             copying: false,
             events: {
                 'click .start-copying': 'startCopying',
-                'click .stop-copying':  'stopCopying'
+                'click .stop-copying':  'stopCopying',
+                'click .copy':  'copy'
             },
             initialize: function() {
                 this.copyFields = {};
@@ -42,27 +43,51 @@ define(
                 var scope  = 'mobile';
 
                 if (this.copying) {
-                    _.each(this.getParent().renderedFields, _.bind(function (field) {
-                        if (field.attribute.scopable || field.attribute.localizable) {
-                            var copyField = new CopyField(field.attribute);
+                    //This should be moved to somewhere else (can be done outside of render)
+                    _.each(this.getData().values, _.bind(function (values, code) {
+                        _.each(values, _.bind(function(value) {
+                            if (
+                                (
+                                    value.scope === scope &&
+                                    value.locale === locale
+                                ) ||
+                                (
+                                    value.scope === scope &&
+                                    value.locale === null
+                                ) ||
+                                (
+                                    value.scope === null &&
+                                    value.locale === locale
+                                )
+                            ) {
+                                var copyField = new CopyField();
 
-                            copyField.setLocale(locale);
-                            copyField.setChannel(scope);
-                            copyField.setField(field);
-                            copyField.setData('');
-
-                            var values = field.getData();
-                            _.each(values, function(value) {
-                                if (value.scope === scope && value.locale === locale) {
-                                    copyField.setData(value.value);
+                                if (
+                                    this.copyFields[code] &&
+                                    this.copyFields[code].locale === value.locale &&
+                                    this.copyFields[code].scope === value.scope
+                                ) {
+                                    copyField = this.copyFields[code];
+                                    copyField.setSelected(this.copyFields[code].selected);
                                 }
-                            });
 
-                            copyField.render();
-                            copyField.field.addInfo('comparision', 'copy', copyField.$el);
+                                copyField.setLocale(value.locale);
+                                copyField.setScope(value.scope);
+                                copyField.setData(value.value);
 
-                            this.copyFields[field.attribute.code] = copyField;
+                                this.copyFields[code] = copyField;
+                            }
+                        }, this));
+
+                    }, this));
+
+                    _.each(this.copyFields, _.bind(function (copyField, code) {
+                        var field = this.getParent().renderedFields[code];
+                        if (field) {
+                            copyField.setField(field);
+                            copyField.field.addElement('comparision', 'copy', copyField.render().$el);
                         }
+
                     }, this));
                 }
 
@@ -71,9 +96,15 @@ define(
 
                 return this;
             },
+            copy: function(){
+                _.each(this.copyFields, function (copyField) {
+                    if (copyField.field) {
+                        copyField.field.setCurrentValue(copyField.data);
+                    }
+                });
+            },
             startCopying: function() {
                 this.copying = true;
-
 
                 this.render();
             },
@@ -81,10 +112,12 @@ define(
                 this.copying = false;
 
                 _.each(this.copyFields, _.bind(function(copyField) {
-                    copyField.field.removeInfo('comparision', 'copy');
-                    delete this.copyFields[copyField.field.attribute.code];
+                    if (copyField.field) {
+                        copyField.field.removeElement('comparision', 'copy');
+                    }
                 }, this));
 
+                this.copyFields = {};
                 this.render();
             }
         });

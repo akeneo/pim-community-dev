@@ -69,8 +69,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
         $context['entity'] = 'product';
         $data = [];
 
+        if ($product->getGroupCodes()) {
+            $groups = explode(',', $product->getGroupCodes());
+            if ($product->getVariantGroup()) {
+                $variantGroup = $product->getVariantGroup()->getCode();
+                $groups = array_diff($groups, [$variantGroup]);
+            }
+        } else {
+            $groups = [];
+        }
+
         $data[self::FIELD_FAMILY]        = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS]        = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
+        $data[self::FIELD_GROUPS]        = $groups;
         $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
         $data[self::FIELD_CATEGORY]      = $product->getCategoryCodes() ?
             explode(',', $product->getCategoryCodes()) :

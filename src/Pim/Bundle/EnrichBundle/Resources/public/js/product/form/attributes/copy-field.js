@@ -4,15 +4,23 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
     return Backbone.View.extend({
         tagName: 'div',
         attribute: null,
-        field: 'text',
+        field: null,
+        locale: null,
+        scope: null,
+        data: '',
         context: {},
         config: {},
         template: _.template(copyFieldTemplate),
-        initialize: function(attribute)
+        selected: false,
+        events: {
+            'change .copy-field-selector': 'selectionChanged'
+        },
+        initialize: function()
         {
-            this.attribute    = attribute;
-            this.context      = {};
-            this.config       = {};
+            this.context  = {};
+            this.config   = {};
+            this.selected = false;
+            this.field    = null;
 
             return this;
         },
@@ -26,16 +34,14 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
                 data: this.data,
                 config: this.field.config,
                 context: this.field.context,
-                attribute: this.attribute
+                attribute: this.field.attribute,
+                selected: this.selected
             };
 
             this.$el.html(this.template(templateContext));
             this.delegateEvents();
 
             return this;
-        },
-        renderInput: function() {
-            throw new Error('You should implement your field template');
         },
         getData: function()
         {
@@ -51,12 +57,18 @@ define(['backbone', 'underscore', 'text!pim/template/product/tab/attribute/copy-
         setLocale: function(locale) {
             this.locale = locale;
         },
-        setChannel: function(channel) {
-            this.channel = channel;
+        setScope: function(scope) {
+            this.scope = scope;
         },
         setField: function(field)
         {
             this.field = field;
+        },
+        selectionChanged: function(event) {
+            this.selected = event.currentTarget.checked;
+        },
+        setSelected: function(selected) {
+            this.selected = selected;
         }
     });
 });

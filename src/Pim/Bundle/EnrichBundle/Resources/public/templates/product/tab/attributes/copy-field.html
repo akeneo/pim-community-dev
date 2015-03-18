@@ -1,12 +1,15 @@
-<div class="<%= type %>-field form-field">
-    <header>
-        <label><%= label %></label>
-        <span class="field-info pull-right">
-            <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
-            <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
-        </span>
-    </header>
-    <div class="field-input">
-        <%= data.value %>
+<div class="copy-container">
+    <input type="checkbox" class="copy-field-selector" <%= selected ? 'checked' : '' %>></input>
+    <div class="<%= type %>-field form-field">
+        <header>
+            <label><%= label %></label>
+            <span class="field-info pull-right">
+                <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
+                <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
+            </span>
+        </header>
+        <div class="field-input">
+            <%= data %>
+        </div>
     </div>
 </div>
