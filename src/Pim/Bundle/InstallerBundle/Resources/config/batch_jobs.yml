@@ -127,7 +127,7 @@ connector:
                     title:     pim_installer.jobs.fixtures_attribute_options_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.attribute_option
+                        processor: pim_base_connector.processor.denormalization.yaml_attribute_option
                         writer:    pim_base_connector.writer.doctrine
 
         fixtures_family_yml:
