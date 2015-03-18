@@ -53,10 +53,7 @@ define(
                     this.$el.append(currentPanelExtension.render().$el);
                 }
 
-                this.getParent().$('.form-container').append(this.$el);
-
-                var selectorExtension = this.extensions['selector'];
-
+                var selectorExtension = this.extensions.selector;
                 console.log(this.code, 'triggered the rendering of', selectorExtension.code);
                 this.getParent().$('>header').append(selectorExtension.render().$el);
 

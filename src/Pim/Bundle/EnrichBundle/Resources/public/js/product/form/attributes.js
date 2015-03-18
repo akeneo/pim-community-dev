@@ -88,7 +88,7 @@ define(
 
                     $('#get-data').off('click').on('click', _.bind(this.getValuesData, this));
 
-                    return BaseForm.prototype.render.apply(this, arguments);
+                    this.renderExtensions();
                 }, this));
 
                 return this;

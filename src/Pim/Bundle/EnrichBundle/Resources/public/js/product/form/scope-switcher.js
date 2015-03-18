@@ -26,7 +26,6 @@ define(
                             currentScope: this.getRoot().state.get('scope')
                         })
                     );
-                    this.$el.prependTo(this.getParent().$('.tab-content > header > .attribute-edit-actions'));
                     this.delegateEvents();
                 }, this));
 
