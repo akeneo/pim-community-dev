@@ -35,9 +35,7 @@ define(
             initialize: function () {
                 this.config = new Backbone.Model({
                     'attributeGroups' : [],
-                    'optionalAttributes' : [],
-                    'attributes': [],
-                    'attributeGroup': 'marketing'
+                    'attributes': []
                 });
 
                 this.listenTo(this.config, 'change', this.render);
@@ -52,17 +50,6 @@ define(
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
-            },
-            loadConfiguration: function () {
-                var promise = $.Deferred();
-
-                ConfigManager.getConfig().done(_.bind(function(config) {
-                    this.config.set(config, {silent: true});
-
-                    promise.resolve();
-                }, this));
-
-                return promise.promise();
             },
             render: function () {
                 if (!this.configured) {
@@ -125,25 +112,23 @@ define(
 
                 return promise.promise();
             },
-
             getConfig: function () {
                 var configurationPromise = $.Deferred();
                 var promises = [];
 
-                ConfigManager.getConfig().done(_.bind(function(config) {
-                    this.config.set(config, {silent: true});
-                }, this));
-
                 AttributeManager.getAttributeGroupsForProduct(this.getData())
                     .done(_.bind(function(attributeGroups) {
                         this.config.set('attributeGroups', attributeGroups, {silent: true});
+                        if (undefined === this.config.get('attributeGroup')) {
+                            this.config.set('attributeGroup', _.keys(attributeGroups)[0]);
+                        }
                     }, this));
                 AttributeManager.getOptionalAttributes(this.getData())
                     .done(_.bind(function(optionalAttributes) {
                         this.config.set('optionalAttributes', optionalAttributes, {silent: true});
                     }, this));
 
-                promises.push(ConfigManager.getConfig());
+                promises.push(this.loadConfiguration());
                 promises.push(AttributeManager.getAttributeGroupsForProduct(this.getData()));
                 promises.push(AttributeManager.getOptionalAttributes(this.getData()));
 
@@ -152,6 +137,17 @@ define(
                 }, this));
 
                 return configurationPromise.promise();
+            },
+            loadConfiguration: function () {
+                var promise = $.Deferred();
+
+                ConfigManager.getConfig().done(_.bind(function(config) {
+                    this.config.set(config, {silent: true});
+
+                    promise.resolve();
+                }, this));
+
+                return promise.promise();
             },
             getAttributeGroupValues: function (product, attributeGroup) {
                 var values = {};
@@ -171,7 +167,7 @@ define(
                 var product = this.getData();
 
                 if (product.values[attributeCode]) {
-                    this.getRoot().state.trigger('change');
+                    this.getRoot().model.trigger('change');
                     return;
                 }
 
@@ -179,6 +175,7 @@ define(
 
                 this.config.set('attributeGroup', this.config.get('attributes')[attributeCode].group);
                 this.setData(product);
+                this.getRoot().model.trigger('change');
             },
             addVariantInfos: function(product, field) {
                 VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
