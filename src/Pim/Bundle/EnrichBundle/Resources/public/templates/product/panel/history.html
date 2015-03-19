@@ -1,0 +1,18 @@
+<table class="table table-condensed table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Version</th>
+            <th>Author</th>
+            <th>Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(versions, function(version, index) { %>
+            <tr data-version="<%= index %>">
+                <td><%= version.version %></td>
+                <td><%= version.author %><%= version.context ? ' (' + version.context + ')' : '' %></td>
+                <td><%= version.logged_at %></td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>

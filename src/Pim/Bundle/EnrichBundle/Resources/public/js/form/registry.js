@@ -83,6 +83,10 @@ define(
                         'module': 'pim/product-edit-form/panel/completeness'
                     },
                     {
+                        'code': 'history',
+                        'module': 'pim/product-edit-form/panel/history'
+                    },
+                    {
                         'code': 'selector',
                         'module': 'pim/product-edit-form/panel/selector'
                     }
