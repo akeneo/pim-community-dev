@@ -1,14 +1,15 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Converter;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Flat;
 
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Exception\InvalidOptionsException;
 
 /**
- * Attribute Option CSV Converter
+ * Attribute Option Flat Converter
  *
  * @author    Nicolas Dupont <nicola@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -16,7 +17,7 @@ use Symfony\Component\Validator\Exception\InvalidOptionsException;
  *
  * TODO: rename to ArrayConverter + use Flat or Structured
  */
-class CsvAttributeOptionToStandardConverter implements StandardFormatConverterInterface
+class AttributeOptionToStandardConverter implements StandardArrayConverterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -56,11 +57,11 @@ class CsvAttributeOptionToStandardConverter implements StandardFormatConverterIn
      *
      * @param array $item Representing a flat attribute option
      *
-     * @return array structured product
+     * @return array structured item
      *
      * @throws InvalidOptionsException
      */
-    public function convert($item)
+    public function convert(array $item)
     {
         $optionResolver = $this->createOptionsResolver();
         $resolvedItem = $optionResolver->resolve($item);

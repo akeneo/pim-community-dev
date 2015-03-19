@@ -1,17 +1,18 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Converter;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Flat;;
 
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
- * Product CSV Converter
+ * Product Flat Converter
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvProductToStandardConverter implements StandardFormatConverterInterface
+class ProductToStandardConverter implements StandardArrayConverterInterface
 {
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
@@ -105,7 +106,7 @@ class CsvProductToStandardConverter implements StandardFormatConverterInterface
      *
      * @return array structured product
      */
-    public function convert($product)
+    public function convert(array $product)
     {
         $result = [];
         foreach ($product as $column => $value) {

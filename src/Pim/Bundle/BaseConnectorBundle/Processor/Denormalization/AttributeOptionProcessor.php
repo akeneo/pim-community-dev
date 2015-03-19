@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\Converter\StandardFormatConverterInterface;
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -30,11 +30,11 @@ class AttributeOptionProcessor extends AbstractProcessor
     /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var StandardFormatConverterInterface */
+    /** @var StandardArrayConverterInterface */
     protected $formatConverter;
 
     /**
-     * @param StandardFormatConverterInterface      $formatConverter     format converter
+     * @param StandardArrayConverterInterface      $formatConverter     format converter
      * @param IdentifiableObjectRepositoryInterface $optionRepository    option repository to search the object in
      * @param IdentifiableObjectRepositoryInterface $attributeRepository attribute repository to search the object in
      * @param DenormalizerInterface                 $denormalizer        denormalizer used to transform array to object
@@ -43,7 +43,7 @@ class AttributeOptionProcessor extends AbstractProcessor
      * @param string                                $class               class of the object to instanciate in case if need
      */
     public function __construct(
-        StandardFormatConverterInterface $formatConverter,
+        StandardArrayConverterInterface $formatConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         DenormalizerInterface $denormalizer,
