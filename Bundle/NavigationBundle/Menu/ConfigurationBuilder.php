@@ -97,7 +97,7 @@ class ConfigurationBuilder implements BuilderInterface
         }
         $menu->setExtra('isAllowed', $isAllowed);
 
-        if (!$menu->getExtra('showIfEmpty') && $menu->hasChildren()) {
+        if ($menu->getExtra('hideIfEmpty') && $menu->hasChildren()) {
             $willDisplaySomeChildren = false;
 
             foreach ($menu->getChildren() as $child) {
