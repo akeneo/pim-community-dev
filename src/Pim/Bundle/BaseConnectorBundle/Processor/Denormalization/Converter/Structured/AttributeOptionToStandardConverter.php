@@ -1,15 +1,17 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Converter;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Structured;
+
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
 
 /**
- * Attribute Option Yaml Converter
+ * Attribute Option Structured Converter
  *
  * @author    Nicolas Dupont <nicola@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class YamlAttributeOptionToStandardConverter implements StandardFormatConverterInterface
+class AttributeOptionToStandardConverter implements StandardArrayConverterInterface
 {
     /**
      * Converts yaml array to standard structured array:
@@ -42,7 +44,7 @@ class YamlAttributeOptionToStandardConverter implements StandardFormatConverterI
      *
      * @return array structured product
      */
-    public function convert($item)
+    public function convert(array $item)
     {
         // TODO: option resolver!
         $item['sort_order'] = $item['sortOrder'];

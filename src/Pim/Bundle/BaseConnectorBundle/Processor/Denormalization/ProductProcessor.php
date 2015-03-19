@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\BaseConnectorBundle\Reader\File\Converter\StandardFormatConverterInterface;
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -23,7 +23,7 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var StandardFormatConverterInterface */
+    /** @var StandardArrayConverterInterface */
     protected $converter;
 
     /** @var ProductUpdaterInterface */
@@ -33,23 +33,23 @@ class ProductProcessor extends AbstractProcessor
     protected $format;
 
     /**
+     * @param StandardArrayConverterInterface      $converter      csv converter
      * @param IdentifiableObjectRepositoryInterface $repository     repository to search the object in
      * @param DenormalizerInterface                 $denormalizer   denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator      validator of the object
      * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      * @param ProductBuilderInterface               $productBuilder product builder
-     * @param StandardFormatConverterInterface      $converter      csv converter
      * @param ProductUpdaterInterface               $productUpdater product updater
      * @param string                                $class          class of the object to instanciate in case if need
      * @param string                                $format         format use to denormalize
      */
     public function __construct(
+        StandardArrayConverterInterface $converter, // TODO: could be embedded in denormalizer?
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer, // TODO: useless here, except if we embed the updater or setter registry?
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         ProductBuilderInterface $productBuilder,
-        StandardFormatConverterInterface $converter, // TODO: could be embedded in denormalizer?
         ProductUpdaterInterface $productUpdater,
         $class,
         $format
