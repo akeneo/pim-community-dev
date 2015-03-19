@@ -1,18 +1,18 @@
 parameters:
-    pim_base_connector.converter.csv_product.class:           Pim\Bundle\BaseConnectorBundle\Reader\File\Converter\CsvProductToStandardConverter
-    pim_base_connector.converter.csv_attribute_option.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\Converter\CsvAttributeOptionToStandardConverter
-    pim_base_connector.converter.yaml_attribute_option.class: Pim\Bundle\BaseConnectorBundle\Reader\File\Converter\YamlAttributeOptionToStandardConverter
+    pim_base_connector.converter.flat.product.class:                Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Flat\ProductToStandardConverter
+    pim_base_connector.converter.flat.attribute_option.class:       Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Flat\AttributeOptionToStandardConverter
+    pim_base_connector.converter.structured.attribute_option.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Structured\AttributeOptionToStandardConverter
 
 services:
-    pim_base_connector.converter.csv_product:
-        class: %pim_base_connector.converter.csv_product.class%
+    pim_base_connector.converter.flat.product:
+        class: %pim_base_connector.converter.flat.product.class%
         arguments:
             - '@pim_transform.builder.field_name'
 
-    pim_base_connector.converter.csv_attribute_option:
-        class: %pim_base_connector.converter.csv_attribute_option.class%
+    pim_base_connector.converter.flat.attribute_option:
+        class: %pim_base_connector.converter.flat.attribute_option.class%
         arguments:
             - '@pim_catalog.repository.locale'
 
-    pim_base_connector.converter.yaml_attribute_option:
-        class: %pim_base_connector.converter.yaml_attribute_option.class%
+    pim_base_connector.converter.structured.attribute_option:
+        class: %pim_base_connector.converter.structured.attribute_option.class%
