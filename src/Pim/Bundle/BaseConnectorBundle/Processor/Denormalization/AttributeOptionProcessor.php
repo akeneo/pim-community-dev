@@ -21,12 +21,6 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class AttributeOptionProcessor extends AbstractReworkedProcessor
 {
-    /** @staticvar string */
-    const OPTION_CODE_FIELD = 'code';
-
-    /** @staticvar string */
-    const ATTRIBUTE_CODE_FIELD = 'attribute';
-
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
@@ -106,16 +100,7 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
      */
     protected function updateAttributeOption(AttributeOptionInterface $attributeOption, array $convertedItem)
     {
-        $isNew = $attributeOption->getId() === null;
-        $readOnlyFields = [self::ATTRIBUTE_CODE_FIELD, self::OPTION_CODE_FIELD];
-        foreach ($convertedItem as $field => $data) {
-            $isReadOnlyField = in_array($field, $readOnlyFields);
-            if ($isNew) {
-                $this->optionUpdater->setData($attributeOption, $field, $data);
-            } elseif (false === $isReadOnlyField) {
-                $this->optionUpdater->setData($attributeOption, $field, $data);
-            }
-        }
+        $this->optionUpdater->update($attributeOption, $convertedItem);
 
         return $attributeOption;
     }

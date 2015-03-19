@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
- * Provides basic operations to update an attribute option
+ * Updates an attribute option
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -15,6 +15,12 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
  */
 class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
 {
+    /** @staticvar string */
+    const OPTION_CODE_FIELD = 'code';
+
+    /** @staticvar string */
+    const ATTRIBUTE_CODE_FIELD = 'attribute';
+
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -30,23 +36,41 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
      * {@inheritdoc}
      *
      * Expected input format :
-     *
-     * $field: "code"
-     * $data: "option_code"
-     *
-     * $field: "attribute"
-     * $data: "attribute_code",
-     *
-     * $field: "labels"
-     * $data: {
-     *     "en_US": "My US Label",
-     *     "fr_FR": "My FR Label"
+     * {
+     *     'attribute': 'maximum_print_size',
+     *     'code': '210_x_1219_mm',
+     *     'sort_order': 2,
+     *     'labels': {
+     *         'de_DE': '210 x 1219 mm',
+     *         'en_US': '210 x 1219 mm',
+     *         'fr_FR': '210 x 1219 mm'
+     *     }
      * }
-     *
-     * $field: "sort_order"
-     * $data: 2
      */
-    public function setData(AttributeOptionInterface $attributeOption, $field, $data, array $options = [])
+    public function update(AttributeOptionInterface $attributeOption, $data, array $options = [])
+    {
+        // TODO: option resolver
+
+        $isNew = $attributeOption->getId() === null;
+        $readOnlyFields = [self::ATTRIBUTE_CODE_FIELD, self::OPTION_CODE_FIELD];
+        foreach ($data as $field => $data) {
+            $isReadOnlyField = in_array($field, $readOnlyFields);
+            if ($isNew) {
+                $this->setData($attributeOption, $field, $data);
+            } elseif (false === $isReadOnlyField) {
+                $this->setData($attributeOption, $field, $data);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param AttributeOptionInterface $attributeOption
+     * @param string                   $field
+     * @param mixed                    $data
+     */
+    protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
     {
         // TODO: option resolver!
         $supportedFields = ['code', 'sort_order', 'labels', 'attribute'];
@@ -89,16 +113,10 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
         if ('sort_order' === $field) {
             $attributeOption->setSortOrder($data);
         }
-
-        return $this;
     }
 
     /**
-     * Fetch the attribute by its code
-     *
      * @param string $code
-     *
-     * @throws \LogicException
      *
      * @return AttributeInterface|null
      */
