@@ -1,6 +1,5 @@
 parameters:
     pim_reference_data.extension.sorter.reference_data_sorter.class: Pim\Bundle\ReferenceDataBundle\Extension\Sorter\ReferenceDataSorter
-    pim_reference_data.doctrine.query.sorter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Sorter\ReferenceDataSorter
 
 services:
     pim_reference_data.extension.sorter.reference_data_sorter:
