@@ -19,35 +19,35 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractReworkedProcessor
 {
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
+
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter standard converter
-     * @param IdentifiableObjectRepositoryInterface $repository     repository to search the object in
-     * @param ValidatorInterface                    $validator      validator of the object
-     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
+     * @param StandardArrayConverterInterface       $arrayConverter array converter
+     * @param IdentifiableObjectRepositoryInterface $repository     product repository
      * @param ProductBuilderInterface               $productBuilder product builder
      * @param ProductUpdaterInterface               $productUpdater product updater
+     * @param ValidatorInterface                    $validator      validator of the object
+     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
         ProductBuilderInterface $productBuilder,
-        ProductUpdaterInterface $productUpdater
+        ProductUpdaterInterface $productUpdater,
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher
     ) {
         parent::__construct($repository, $validator, $detacher);
 
         $this->productBuilder = $productBuilder;
-        $this->arrayConverter      = $arrayConverter;
+        $this->arrayConverter = $arrayConverter;
         $this->productUpdater = $productUpdater;
     }
 
