@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.5 (2015-03-19)
 
 ## Bug fixes
 - PIM-3925: do not show system menu if no item allowed
