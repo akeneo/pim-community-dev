@@ -33,33 +33,27 @@ class AttributeOptionProcessor extends AbstractProcessor
     /** @var StandardFormatConverterInterface */
     protected $formatConverter;
 
-    /** @var string */
-    protected $format;
-
     /**
+     * @param StandardFormatConverterInterface      $formatConverter     format converter
      * @param IdentifiableObjectRepositoryInterface $optionRepository    option repository to search the object in
      * @param IdentifiableObjectRepositoryInterface $attributeRepository attribute repository to search the object in
-     * @param StandardFormatConverterInterface      $formatConverter     format converter
      * @param DenormalizerInterface                 $denormalizer        denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator           validator of the object
      * @param ObjectDetacherInterface               $detacher            detacher to remove it from UOW when skip
      * @param string                                $class               class of the object to instanciate in case if need
-     * @param string                                $format              format use to denormalize
      */
     public function __construct(
+        StandardFormatConverterInterface $formatConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
-        StandardFormatConverterInterface $formatConverter,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
-        $class,
-        $format
+        $class
     ) {
         parent::__construct($optionRepository, $denormalizer, $validator, $detacher, $class);
         $this->attributeRepository = $attributeRepository;
         $this->formatConverter = $formatConverter;
-        $this->format = $format; // TODO: useful to resolve the converter?
     }
 
     /**
@@ -138,7 +132,7 @@ class AttributeOptionProcessor extends AbstractProcessor
         $attributeOption = $this->denormalizer->denormalize(
             $attributeOptionData,
             $this->class,
-            $this->format, // TODO useless here, we should pass the internal standard format!
+            null, // TODO useless here, could pass internal standard format!
             ['object' => $attributeOption]
         );
 

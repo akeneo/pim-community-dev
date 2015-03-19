@@ -2,15 +2,33 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File\Converter;
 
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Exception\InvalidOptionsException;
+
 /**
  * Attribute Option CSV Converter
  *
  * @author    Nicolas Dupont <nicola@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: rename to ArrayConverter + use Flat or Structured
  */
 class CsvAttributeOptionToStandardConverter implements StandardFormatConverterInterface
 {
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /**
+     * @param LocaleRepositoryInterface $localeRepository
+     */
+    public function __construct(LocaleRepositoryInterface $localeRepository)
+    {
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * Converts flat csv array to standard structured array:
      *
@@ -39,13 +57,15 @@ class CsvAttributeOptionToStandardConverter implements StandardFormatConverterIn
      * @param array $item Representing a flat attribute option
      *
      * @return array structured product
+     *
+     * @throws InvalidOptionsException
      */
     public function convert($item)
     {
-        // TODO: option resolver!
-
+        $optionResolver = $this->createOptionsResolver();
+        $resolvedItem = $optionResolver->resolve($item);
         $convertedItem = ['labels' => []];
-        foreach ($item as $field => $data) {
+        foreach ($resolvedItem as $field => $data) {
             $isLabel = false !== strpos($field, 'label-', 0);
             if ($isLabel) {
                 $labelTokens = explode('-', $field);
@@ -57,5 +77,34 @@ class CsvAttributeOptionToStandardConverter implements StandardFormatConverterIn
         }
 
         return $convertedItem;
+    }
+
+    /**
+     * @return OptionsResolverInterface
+     */
+    protected function createOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+
+        $required = ['code', 'attribute', 'sort_order'];
+        $defaults = ['sort_order' => 1];
+        $allowedTypes = [
+            'code' => 'string',
+            'attribute' => 'string',
+            'sort_order' => 'string',
+        ];
+
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $code) {
+            $labelField = 'label-'.$code;
+            $required[] = $labelField;
+            $allowedTypes[$labelField] = 'string';
+        }
+
+        $resolver->setRequired($required);
+        $resolver->setDefaults($defaults);
+        $resolver->setAllowedTypes($allowedTypes);
+
+        return $resolver;
     }
 }
