@@ -6,6 +6,5 @@ services:
         class: %pim_reference_data.extension.selector.orm.reference_data.class%
         arguments:
             - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
-            - '@pim_reference_data.registry'
         tags:
             - { name: pim_datagrid.extension.selector, type: product_value_reference_data }

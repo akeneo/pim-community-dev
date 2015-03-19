@@ -5,7 +5,6 @@ namespace Pim\Bundle\ReferenceDataBundle\Extension\Selector\ORM;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
-use Pim\Component\ReferenceData\ConfigurationRegistry;
 
 /**
  * Reference data selector
@@ -19,17 +18,12 @@ class ReferenceDataSelector implements SelectorInterface
     /** @var SelectorInterface */
     protected $predecessor;
 
-    /** @var ConfigurationRegistry */
-    protected $registry;
-
     /**
-     * @param SelectorInterface     $predecessor
-     * @param ConfigurationRegistry $registry
+     * @param SelectorInterface $predecessor
      */
-    public function __construct(SelectorInterface $predecessor, ConfigurationRegistry $registry)
+    public function __construct(SelectorInterface $predecessor)
     {
         $this->predecessor = $predecessor;
-        $this->registry = $registry;
     }
 
     /**
