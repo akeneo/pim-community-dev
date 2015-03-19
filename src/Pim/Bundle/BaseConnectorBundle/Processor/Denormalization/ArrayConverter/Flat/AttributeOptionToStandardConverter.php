@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Flat;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

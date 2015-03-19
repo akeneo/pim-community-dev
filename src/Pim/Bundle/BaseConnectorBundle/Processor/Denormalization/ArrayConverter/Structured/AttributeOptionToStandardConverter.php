@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\Structured;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Structured;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 
 /**
  * Attribute Option Structured Converter

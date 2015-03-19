@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter;
 
 /**
  * Standard converter interface, convert a format to the standard one
