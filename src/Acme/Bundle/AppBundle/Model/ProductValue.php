@@ -1,7 +1,9 @@
 <?php
 
-namespace Acme\Bundle\AppBundle\Entity;
+namespace Acme\Bundle\AppBundle\Model;
 
+use Acme\Bundle\AppBundle\Entity\Color;
+use Acme\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue as PimProductValue;
 
@@ -16,6 +18,9 @@ class ProductValue extends PimProductValue
 {
     /** @var ArrayCollection */
     protected $fabrics;
+
+    /** @var array (used only in MongoDB implementation) */
+    protected $fabricIds;
 
     /** @var Color */
     protected $color;
@@ -72,7 +77,7 @@ class ProductValue extends PimProductValue
     /**
      * @param Color $color
      */
-    public function setColor($color)
+    public function setColor(Color $color = null)
     {
         $this->color = $color;
     }

@@ -31,7 +31,8 @@ class ReferenceDataRepository extends EntityRepository implements
             $qb->andWhere(sprintf('%s.code LIKE :search', $this->getAlias()))
                 ->setParameter('search', "$search%");
         } else {
-            $options['limit'] = ReferenceDataRepositoryInterface::LIMIT_IF_NO_SEARCH;
+            // TODO-RD: fix the select2 search so that we can use the limit
+//            $options['limit'] = ReferenceDataRepositoryInterface::LIMIT_IF_NO_SEARCH;
         }
 
         if (isset($options['limit'])) {

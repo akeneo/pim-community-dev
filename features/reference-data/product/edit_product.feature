@@ -38,11 +38,11 @@ Feature: Edit a product
       | Sole fabric | Cashmerewool, Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "Red"
+    Then the product Heel color should be "Blue"
     Then the product Sole fabric should be "Cashmerewool, Silk"
 
   @javascript
-  Scenario: Successfully edit reference data values to a product
+  Scenario: Successfully remove reference data values to a product
     Given I am logged in as "Mary"
     And the following product values:
       | product    | attribute   | value          |
