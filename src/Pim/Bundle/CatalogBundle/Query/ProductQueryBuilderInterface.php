@@ -42,6 +42,13 @@ interface ProductQueryBuilderInterface
     public function addSorter($field, $direction, array $context = []);
 
     /**
+     * Returns applied filters
+     *
+     * @return array
+     */
+    public function getAppliedFilters();
+
+    /**
      * Get query builder
      *
      * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
