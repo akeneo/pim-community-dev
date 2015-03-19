@@ -26,7 +26,6 @@ class PimCatalogExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
         $loader->load('context.yml');
-        $loader->load('denormalizers.yml');
         $loader->load('doctrine.yml');
         $loader->load('entities.yml');
         $loader->load('event_subscribers.yml');
