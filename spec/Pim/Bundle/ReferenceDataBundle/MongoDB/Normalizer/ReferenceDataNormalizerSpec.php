@@ -24,7 +24,8 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
 
     function it_normalizes(ReferenceDataInterface $referenceData)
     {
+        $referenceData->getId()->willReturn('my-id');
         $referenceData->getCode()->willReturn('my-reference-data');
-        $this->normalize($referenceData, 'mongodb_json')->shouldReturn(['code' => 'my-reference-data']);
+        $this->normalize($referenceData, 'mongodb_json')->shouldReturn(['id' => 'my-id', 'code' => 'my-reference-data']);
     }
 }

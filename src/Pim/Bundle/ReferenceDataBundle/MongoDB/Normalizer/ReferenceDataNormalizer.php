@@ -19,7 +19,10 @@ class ReferenceDataNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $data = ['code' => $object->getCode()];
+        $data = [
+            'id'   => $object->getId(),
+            'code' => $object->getCode()
+        ];
 
         return $data;
     }
