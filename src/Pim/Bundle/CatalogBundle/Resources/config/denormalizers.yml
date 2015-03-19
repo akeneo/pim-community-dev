@@ -1,9 +1,0 @@
-parameters:
-    pim_catalog.denormalizer.standard.attribute_option.class: Pim\Bundle\CatalogBundle\Denormalizer\Standard\AttributeOptionDenormalizer
-
-services:
-    pim_catalog.denormalizer.standard.attribute_option:
-        class: %pim_catalog.denormalizer.standard.attribute_option.class%
-        public: false
-        arguments:
-            - %pim_catalog.entity.attribute_option.class%
