@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 
 /**
- * Provides basic operations to update an attribute option
+ * Updates an attribute option
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -17,11 +17,10 @@ interface AttributeOptionUpdaterInterface
      * Sets a data in a product field (erase the current data)
      *
      * @param AttributeOptionInterface $attributeOption The item to update
-     * @param string                   $field           The field to update
-     * @param mixed                    $data            The data to set
+     * @param mixed                    $data            The data to update
      * @param array                    $options         Options to pass to the setter
      *
      * @return ProductUpdaterInterface
      */
-    public function setData(AttributeOptionInterface $attributeOption, $field, $data, array $options = []);
+    public function update(AttributeOptionInterface $attributeOption, $data, array $options = []);
 }
