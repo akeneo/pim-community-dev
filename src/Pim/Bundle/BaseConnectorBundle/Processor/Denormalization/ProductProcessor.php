@@ -33,7 +33,7 @@ class ProductProcessor extends AbstractProcessor
     protected $format;
 
     /**
-     * @param StandardArrayConverterInterface      $converter      csv converter
+     * @param StandardArrayConverterInterface       $converter      csv converter
      * @param IdentifiableObjectRepositoryInterface $repository     repository to search the object in
      * @param DenormalizerInterface                 $denormalizer   denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator      validator of the object
