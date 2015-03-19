@@ -47,7 +47,7 @@ class ProductProcessor extends AbstractReworkedProcessor
         parent::__construct($repository, $validator, $detacher);
 
         $this->productBuilder = $productBuilder;
-        $this->arrayConverter      = $arrayConverter;
+        $this->arrayConverter = $arrayConverter;
         $this->productUpdater = $productUpdater;
     }
 
