@@ -12,7 +12,7 @@
 
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
-    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,check-interfaces,check-coupling,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -109,6 +109,12 @@
         </exec>
         <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="false">
             <arg value="${basedir}/spec" />
+        </exec>
+    </target>
+
+    <target name="check-coupling" description="Check the bundles coupling">
+        <exec executable="${basedir}/app/Resources/jenkins/coupling_check.sh" failonerror="true">
+            <arg value="${basedir}/src" />
         </exec>
     </target>
 
