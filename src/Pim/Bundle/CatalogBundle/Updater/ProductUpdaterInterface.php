@@ -14,6 +14,17 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 interface ProductUpdaterInterface
 {
     /**
+     * Updates a product with associative array of field to data (erase the current data)
+     *
+     * @param ProductInterface $product The product to update
+     * @param array            $data    The data to set
+     * @param array            $options Options to pass to the setter
+     *
+     * @return ProductUpdaterInterface
+     */
+    public function update(ProductInterface $product, array $data, array $options = []);
+
+    /**
      * Sets a data in a product field (erase the current data)
      *
      * @param ProductInterface $product The product to update

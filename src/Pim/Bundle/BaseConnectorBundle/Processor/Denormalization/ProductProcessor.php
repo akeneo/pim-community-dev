@@ -133,26 +133,11 @@ class ProductProcessor extends AbstractReworkedProcessor
 
     /**
      * @param ProductInterface $product
-     * @param array            $item
+     * @param array            $filteredItem
      */
-    protected function updateProduct(ProductInterface $product, array $item)
+    protected function updateProduct(ProductInterface $product, array $filteredItem)
     {
-        foreach ($item as $field => $values) {
-            if (in_array($field, ['enabled', 'categories', 'groups'])) {
-                $this->productUpdater->setData($product, $field, $values, []);
-            } else {
-                foreach ($values as $value) {
-                    // sets the value if the attribute belongs to the family or if the value already exists as optional
-                    $family = $product->getFamily();
-                    $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
-                    $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
-                    if ($belongsToFamily || $hasValue) {
-                        $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                        $this->productUpdater->setData($product, $field, $value['data'], $options);
-                    }
-                }
-            }
-        }
+        $this->productUpdater->update($product, $filteredItem);
     }
 
     /**
