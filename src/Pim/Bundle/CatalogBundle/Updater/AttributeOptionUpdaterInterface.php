@@ -22,5 +22,5 @@ interface AttributeOptionUpdaterInterface
      *
      * @return ProductUpdaterInterface
      */
-    public function update(AttributeOptionInterface $attributeOption, $data, array $options = []);
+    public function update(AttributeOptionInterface $attributeOption, array $data, array $options = []);
 }
