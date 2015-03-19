@@ -90,7 +90,7 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
         $allowedTypes = [
             'code' => 'string',
             'attribute' => 'string',
-            'sort_order' => 'string',
+            'sort_order' => 'int'
         ];
 
         $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
@@ -103,6 +103,10 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
         $resolver->setRequired($required);
         $resolver->setDefaults($defaults);
         $resolver->setAllowedTypes($allowedTypes);
+        $integerNormalizer = function ($options, $value) {
+            return (int) $value;
+        };
+        $resolver->setNormalizers(['sort_order' => $integerNormalizer]);
 
         return $resolver;
     }
