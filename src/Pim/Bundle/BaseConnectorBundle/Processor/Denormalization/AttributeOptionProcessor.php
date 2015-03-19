@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionProcessor extends AbstractProcessor
+class AttributeOptionProcessor extends AbstractReworkedProcessor
 {
     /** @staticvar string */
     const ATTRIBUTE_CODE_FIELD = 'attribute';
@@ -31,10 +31,16 @@ class AttributeOptionProcessor extends AbstractProcessor
     protected $attributeRepository;
 
     /** @var StandardArrayConverterInterface */
-    protected $formatConverter;
+    protected $arrayConverter;
+
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
+
+    /** @var string */
+    protected $class;
 
     /**
-     * @param StandardArrayConverterInterface       $formatConverter     format converter
+     * @param StandardArrayConverterInterface       $arrayConverter      format converter
      * @param IdentifiableObjectRepositoryInterface $optionRepository    option repository to search the object in
      * @param IdentifiableObjectRepositoryInterface $attributeRepository attribute repository to search the object in
      * @param DenormalizerInterface                 $denormalizer        denormalizer used to transform array to object
@@ -43,7 +49,7 @@ class AttributeOptionProcessor extends AbstractProcessor
      * @param string                                $class               class of the object to instanciate in case if need
      */
     public function __construct(
-        StandardArrayConverterInterface $formatConverter,
+        StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
         IdentifiableObjectRepositoryInterface $attributeRepository,
         DenormalizerInterface $denormalizer,
@@ -51,9 +57,11 @@ class AttributeOptionProcessor extends AbstractProcessor
         ObjectDetacherInterface $detacher,
         $class
     ) {
-        parent::__construct($optionRepository, $denormalizer, $validator, $detacher, $class);
+        parent::__construct($optionRepository, $validator, $detacher);
         $this->attributeRepository = $attributeRepository;
-        $this->formatConverter = $formatConverter;
+        $this->arrayConverter = $arrayConverter;
+        $this->denormalizer = $denormalizer;
+        $this->class = $class;
     }
 
     /**
@@ -78,7 +86,7 @@ class AttributeOptionProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        return $this->formatConverter->convert($item);
+        return $this->arrayConverter->convert($item);
     }
 
     /**
@@ -112,7 +120,10 @@ class AttributeOptionProcessor extends AbstractProcessor
         }
 
         /** @var AttributeOptionInterface $attributeOption */
-        $attributeOption = $this->findOrCreateObject($this->repository, $convertedItem, $this->class);
+        $attributeOption = $this->findObject($this->repository, $convertedItem);
+        if ($attributeOption === null) {
+            return new $this->class();
+        }
         $attributeOption->setCode($convertedItem[self::CODE_FIELD]);
         $attributeOption->setAttribute($attribute);
 
@@ -132,7 +143,7 @@ class AttributeOptionProcessor extends AbstractProcessor
         $attributeOption = $this->denormalizer->denormalize(
             $attributeOptionData,
             $this->class,
-            null, // TODO useless here, could pass internal standard format!
+            null,
             ['object' => $attributeOption]
         );
 

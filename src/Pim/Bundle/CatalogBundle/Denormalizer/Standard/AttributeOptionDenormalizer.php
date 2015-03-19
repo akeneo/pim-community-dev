@@ -7,6 +7,8 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
+ * TODO: attempt, may be replaced by updater because introduce more complex concern to use setters
+ *
  * Denormalizes a standard array format to an attribute option object
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
