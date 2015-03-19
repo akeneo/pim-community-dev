@@ -1318,16 +1318,17 @@ table#progress-table {
 }
 
 /** datagrid columns configuration ***********************************************************************************/
-.column-configurator-modal {
+.modal-large {
   width: 90%;
   left: 5%;
   margin-left: 0;
   top: 5%;
   .modal-body {
     max-height: inherit;
-    padding: 0;
-    background-color: #edf1f2;
   }
+}
+.column-configurator-modal .modal-body {
+  max-height: inherit;
 }
 #column-configurator {
   h4 {

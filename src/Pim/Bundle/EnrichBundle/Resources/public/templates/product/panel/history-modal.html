@@ -1,0 +1,49 @@
+<table class="table table-condensed table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Version</th>
+            <th>Author</th>
+            <th>From</th>
+            <th>Logged at</th>
+            <th>Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(versions, function(version, index) { %>
+            <tr data-version="<%= index %>">
+                <td>
+                    <span>
+                        <i class="icon-chevron-right"></i>
+                    </span>
+                    <%= version.version %>
+                </td>
+                <td><%= version.author %></td>
+                <td><%= version.context %></td>
+                <td><%= version.logged_at %></td>
+                <td class="truncate"><%= _.keys(version.changeset).join(', ') %></td>
+            </tr>
+            <tr class="changeset hide">
+                <td colspan="5">
+                    <table class="table table-condensed table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Old values</th>
+                                <th>New values</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% _.each(version.changeset, function(value, key) { %>
+                                <tr>
+                                    <td><%= key %></td>
+                                    <td><%= value.old %></td>
+                                    <td><%= value.new %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+</table>
