@@ -167,11 +167,7 @@ class ProductUpdater implements ProductUpdaterInterface
     }
 
     /**
-     * Fetch the attribute by its code
-     *
      * @param string $code
-     *
-     * @throws \LogicException
      *
      * @return AttributeInterface|null
      */
