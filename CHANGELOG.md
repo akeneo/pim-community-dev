@@ -67,12 +67,13 @@
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
 - Change arguments of Pim\Bundle\EnrichBundle\Controller\AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
 
-# 1.3.x
+# 1.3.5 (2015-03-19)
 
 ## Bug fixes
 - PIM-2874: Bad title on failed submit
 - PIM-3836: Fix translations of a custom job label instance
 - PIM-3909: Keep channel filter between product datagrid and edit form
+- PIM-3925: do not show system menu if no item allowed
 
 # 1.3.4 (2015-03-11)
 
@@ -383,6 +384,8 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.33 (2015-03-16)
 
 # 1.2.32 (2015-03-11)
 
