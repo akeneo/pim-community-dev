@@ -11,6 +11,8 @@ parameters:
     pim_base_connector.processor.denormalization.csv_product.class:             Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductProcessor
     pim_base_connector.processor.denormalization.csv_product_association.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductAssociationProcessor
 
+    pim_base_connector.denormalization.array_converter.flat.product.class:                Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat\ProductToStandardConverter
+
     pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
     pim_base_connector.processor.dummy.class:                           Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
@@ -182,7 +184,7 @@ services:
     pim_base_connector.processor.denormalization.product.flat:
         class: %pim_base_connector.processor.denormalization.product.class%
         arguments:
-            - '@pim_base_connector.converter.flat.product'
+            - '@pim_base_connector.denormalization.array_converter.flat.product'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
@@ -200,6 +202,12 @@ services:
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.product.class%
             - 'csv'
+
+    # Denormalization / Converters
+    pim_base_connector.denormalization.array_converter.flat.product:
+        class: %pim_base_connector.denormalization.array_converter.flat.product.class%
+        arguments:
+            - '@pim_transform.builder.field_name'
 
     # Normalization
     pim_base_connector.processor.normalization.csv_group:
