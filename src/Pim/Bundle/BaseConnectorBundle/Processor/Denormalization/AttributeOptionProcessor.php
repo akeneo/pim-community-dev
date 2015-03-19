@@ -83,8 +83,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
     }
 
     /**
-     * Find or create
-     *
      * @param array $convertedItem
      *
      * @return AttributeOptionInterface
@@ -101,8 +99,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
     }
 
     /**
-     * Update the variant group fields
-     *
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $convertedItem
      *
