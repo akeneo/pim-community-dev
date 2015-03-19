@@ -219,9 +219,21 @@ define(
                 return this.getData().values;
             },
             postSave: function() {
-                this.renderedFields = {};
+                FieldManager.fields = {};
 
                 this.render();
+            },
+            setScope: function(scope) {
+                this.getRoot().state.set('scope', scope);
+            },
+            getScope: function() {
+                return this.getRoot().state.get('scope');
+            },
+            setLocale: function(locale) {
+                this.getRoot().state.set('locale', locale);
+            },
+            getLocale: function() {
+                return this.getRoot().state.get('locale');
             }
         });
 

@@ -88,6 +88,25 @@ define(
                     }
                 ],
                 'zones': {}
+            },
+            'pim/product-edit-form/attributes/copy': {
+                'extensions': [
+                    {
+                        'code': 'scope-switcher',
+                        'module': 'pim/product-edit-form/scope-switcher',
+                        'zone': 'copy-actions',
+                        'insertAction': 'prepend'
+                    },
+                    {
+                        'code': 'locale-switcher',
+                        'module': 'pim/product-edit-form/locale-switcher',
+                        'zone': 'copy-actions',
+                        'insertAction': 'prepend'
+                    }
+                ],
+                'zones': {
+                    'copy-actions' : '.copy-actions'
+                }
             }
         };
 

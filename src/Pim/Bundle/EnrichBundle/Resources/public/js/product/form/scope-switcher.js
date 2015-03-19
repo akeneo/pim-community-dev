@@ -10,20 +10,19 @@ define(
     function(_, BaseForm, template, ChannelManager) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn-group',
-            id: 'current-scope',
+            className: 'btn-group scope-switcher',
             events: {
                 'click li a': 'changeScope',
             },
             render: function () {
                 ChannelManager.getChannels().done(_.bind(function(channels) {
-                    if (!this.getRoot().state.get('scope')) {
-                        this.getRoot().state.set('scope', channels[0].code);
+                    if (!this.getParent().getScope()) {
+                        this.getParent().setScope(channels[0].code);
                     }
                     this.$el.html(
                         this.template({
                             channels: channels,
-                            currentScope: this.getRoot().state.get('scope')
+                            currentScope: this.getParent().getScope()
                         })
                     );
                     this.delegateEvents();
@@ -32,7 +31,7 @@ define(
                 return this;
             },
             changeScope: function (event) {
-                this.getRoot().state.set('scope', event.currentTarget.dataset.scope);
+                this.getParent().setScope(event.currentTarget.dataset.scope);
                 this.render();
             }
         });

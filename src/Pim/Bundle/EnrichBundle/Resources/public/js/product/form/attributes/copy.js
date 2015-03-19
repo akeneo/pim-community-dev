@@ -15,6 +15,8 @@ define(
             className: 'attribute-copy-actions',
             copyFields: {},
             copying: false,
+            locale: null,
+            scope: null,
             events: {
                 'click .start-copying': 'startCopying',
                 'click .stop-copying':  'stopCopying',
@@ -51,6 +53,8 @@ define(
                         }
 
                     }, this));
+
+                    this.renderExtensions();
                 }
 
                 this.delegateEvents();
@@ -58,8 +62,6 @@ define(
                 return this;
             },
             generateCopyFields: function() {
-                var locale = 'fr_FR';
-                var scope  = 'mobile';
                 this.copyFields = {};
 
                 ConfigManager.getEntityList('attributes').done(_.bind(function(attributes) {
@@ -67,7 +69,7 @@ define(
                         var attribute = attributes[code];
 
                         if (attribute.scopable || attribute.localizable) {
-                            var valueToCopy = AttributeManager.getValue(values, attribute, locale, scope);
+                            var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
 
                             var copyField = new CopyField();
                             if (
@@ -115,6 +117,24 @@ define(
 
                 this.copyFields = {};
                 this.render();
+            },
+            setLocale: function(locale) {
+                this.locale = locale;
+
+                this.generateCopyFields();
+                this.render();
+            },
+            setScope: function(scope) {
+                this.scope = scope;
+
+                this.generateCopyFields();
+                this.render();
+            },
+            getLocale: function() {
+                return this.locale;
+            },
+            getScope: function() {
+                return this.scope;
             }
         });
     }

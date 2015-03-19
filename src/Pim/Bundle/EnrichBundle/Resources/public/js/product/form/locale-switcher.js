@@ -10,20 +10,19 @@ define(
     function(_, BaseForm, template, ChannelManager) {
         return BaseForm.extend({
             template: _.template(template),
-            className: 'btn-group',
-            id: 'current-locale',
+            className: 'btn-group locale-switcher',
             events: {
                 'click li a': 'changeLocale',
             },
             render: function () {
                 ChannelManager.getLocales().done(_.bind(function(locales) {
-                    if (!this.getRoot().state.get('locale')) {
-                        this.getRoot().state.set('locale', locales[0]);
+                    if (!this.getParent().getLocale()) {
+                        this.getParent().setLocale(locales[0]);
                     }
                     this.$el.html(
                         this.template({
                             locales: locales,
-                            currentLocale: this.getRoot().state.get('locale')
+                            currentLocale: this.getParent().getLocale()
                         })
                     );
                     this.delegateEvents();
@@ -32,7 +31,7 @@ define(
                 return this;
             },
             changeLocale: function (event) {
-                this.getRoot().state.set('locale', event.currentTarget.dataset.locale);
+                this.getParent().setLocale(event.currentTarget.dataset.locale);
                 this.render();
             }
         });
