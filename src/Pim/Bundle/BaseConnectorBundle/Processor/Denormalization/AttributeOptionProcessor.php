@@ -34,7 +34,7 @@ class AttributeOptionProcessor extends AbstractProcessor
     protected $formatConverter;
 
     /**
-     * @param StandardArrayConverterInterface      $formatConverter     format converter
+     * @param StandardArrayConverterInterface       $formatConverter     format converter
      * @param IdentifiableObjectRepositoryInterface $optionRepository    option repository to search the object in
      * @param IdentifiableObjectRepositoryInterface $attributeRepository attribute repository to search the object in
      * @param DenormalizerInterface                 $denormalizer        denormalizer used to transform array to object
