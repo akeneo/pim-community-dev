@@ -33,6 +33,7 @@ class PimReferenceDataExtension extends Extension
         $loader->load('query_builders.yml');
         $loader->load('selectors.yml');
         $loader->load('formatters.yml');
+        $loader->load('sorters.yml');
 
         $this->loadStorageDriverFiles($container);
     }
