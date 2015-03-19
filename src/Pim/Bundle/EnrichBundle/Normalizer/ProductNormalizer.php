@@ -3,7 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Product normalizer
@@ -12,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var array */
     protected $supportedFormat = ['internal_api'];
@@ -20,12 +23,20 @@ class ProductNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
+    /** @var SerializerInterface */
+    protected $serializer;
+
     /**
      * @param NormalizerInterface $productNormalizer
+     * @param VersionManager      $versionManager
      */
-    public function __construct(NormalizerInterface $productNormalizer)
+    public function __construct(NormalizerInterface $productNormalizer, VersionManager $versionManager)
     {
         $this->productNormalizer = $productNormalizer;
+        $this->versionManager    = $versionManager;
     }
 
     /**
@@ -37,8 +48,15 @@ class ProductNormalizer implements NormalizerInterface
 
         $normalizedProduct['meta'] = [
             'id'      => $product->getId(),
-            'created' => $product->getCreated(),
-            'updated' => $product->getUpdated()
+            'label'   => $product->getLabel(),
+            'created' => $this->serializer->normalize(
+                $this->versionManager->getOldestLogEntry($product),
+                'array'
+            ),
+            'updated' => $this->serializer->normalize(
+                $this->versionManager->getNewestLogEntry($product),
+                'array'
+            )
         ];
 
         return $normalizedProduct;
@@ -50,5 +68,13 @@ class ProductNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormat);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSerializer(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
     }
 }

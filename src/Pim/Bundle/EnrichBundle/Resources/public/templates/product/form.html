@@ -2,16 +2,16 @@
     <header>
         <div>
             <div class="product-title">
-                <span class="product-label">Sony SRS-BTV25</span>
+                <span class="product-label"><%= product.meta.label %></span>
             </div>
             <div class="actions">
                 <button class="btn" id="get-data">get data</button>
             </div>
         </div>
         <div class="meta">
-            <span>Family: Tshirt <i class="icon-pencil"></i></span>
-            <span>Created: 2015-03-12 08:11:27 By admin</span>
-            <span>Last update: 2015-03-12 08:11:27 By admin</span>
+            <span>Family: <%= product.family %> <i class="icon-pencil"></i></span>
+            <span>Created: <%= product.meta.created.logged_at %> By <%= product.meta.created.author %></span>
+            <span>Last update: <%= product.meta.updated.logged_at %> By <%= product.meta.updated.author %></span>
         </div>
     </header>
 </div>

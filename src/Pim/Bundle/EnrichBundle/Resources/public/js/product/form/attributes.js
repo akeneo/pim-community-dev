@@ -224,6 +224,7 @@ define(
                 this.render();
             },
             setScope: function(scope) {
+
                 this.getRoot().state.set('scope', scope);
             },
             getScope: function() {

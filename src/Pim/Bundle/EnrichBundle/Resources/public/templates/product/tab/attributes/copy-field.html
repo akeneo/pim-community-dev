@@ -4,8 +4,12 @@
         <header>
             <label><%= label %></label>
             <span class="field-info pull-right">
-                <% if (attribute.scopable) { %> <span>Scopable value <i class="icon-sitemap icon-rotate-270"></i></span> <% } %>
-                <% if (attribute.localizable) { %> <span>Localized value <i class="icon-globe icon-rotate-270"></i></span> <% } %>
+                <% if (attribute.scopable || attribute.scopable) { %>
+                    <span class="field-context">
+                        <% if (attribute.scopable) { %> <span><%= scope %></span> <% } %>
+                        <% if (attribute.localizable) { %> <span><%= i18n.getFlag(locale) %></span> <% } %>
+                    </span>
+                <% } %>
             </span>
         </header>
         <div class="field-input">

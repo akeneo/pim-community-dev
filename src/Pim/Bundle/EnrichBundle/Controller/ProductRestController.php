@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -116,10 +117,27 @@ class ProductRestController
         } else {
             $errors = [];
             foreach ($violations as $violation) {
-                $errors[$violation->getPropertyPath()] = [
-                    'messsage'      => $violation->getMessage(),
-                    'invalid_value' => $violation->getInvalidValue()
-                ];
+                $path = $violation->getPropertyPath();
+                if (0 === strpos($path, 'values')) {
+                    $codeStart  = strpos($path, '[') + 1;
+                    $codeLength = strpos($path, ']') - $codeStart;
+
+                    $valueIndex = substr($path, $codeStart, $codeLength);
+                    $value = $product->getValues()[$valueIndex];
+
+                    $errors['values'][$value->getAttribute()->getCode()][] = [
+                        'attribute'     => $value->getAttribute()->getCode(),
+                        'locale'        => $value->getLocale(),
+                        'scope'         => $value->getScope(),
+                        'message'       => $violation->getMessage(),
+                        'invalid_value' => $violation->getInvalidValue()
+                    ];
+                } else {
+                    $errors[$path] = [
+                        'message'       => $violation->getMessage(),
+                        'invalid_value' => $violation->getInvalidValue()
+                    ];
+                }
             }
 
             return new JsonResponse($errors, 400);

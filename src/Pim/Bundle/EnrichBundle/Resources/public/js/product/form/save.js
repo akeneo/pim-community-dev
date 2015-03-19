@@ -49,7 +49,16 @@ define(
                     this.setData(data);
                     mediator.trigger('post_save', data);
                 }, this)).fail(function(response) {
-                    console.log('Errors:', response.responseJSON);
+                    switch (response.status) {
+                        case 400:
+                            mediator.trigger('validation_error', response.responseJSON);
+                        break;
+                        case 500:
+                            console.log('Errors:', response.responseJSON);
+                        break;
+                        default:
+                    }
+
                     navigation.addFlashMessage('error', 'Error saving product');
                     navigation.afterRequest();
                 }).always(function() {

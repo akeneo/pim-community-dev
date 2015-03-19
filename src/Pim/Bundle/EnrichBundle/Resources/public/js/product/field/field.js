@@ -1,6 +1,12 @@
 "use strict";
 
-define(['backbone', 'underscore', 'text!pim/template/product/field/field', 'pim/attribute-manager'], function (Backbone, _, fieldTemplate, AttributeManager) {
+define([
+        'backbone',
+        'underscore',
+        'text!pim/template/product/field/field',
+        'pim/attribute-manager',
+        'pim/i18n'
+        ], function (Backbone, _, fieldTemplate, AttributeManager, i18n) {
     var FieldModel = Backbone.Model.extend({
         'values': []
     });
@@ -21,7 +27,7 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field', 'pim/
         {
             this.attribute    = attribute;
             this.model        = new FieldModel();
-            this.elements = {};
+            this.elements     = {};
             this.context      = {};
             this.config       = {};
 
@@ -39,7 +45,8 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field', 'pim/
                 context: this.context,
                 attribute: this.attribute,
                 info: this.elements,
-                editMode: this.getEditMode()
+                editMode: this.getEditMode(),
+                i18n: i18n
             };
 
             this.$el.html(this.template(templateContext));
@@ -47,8 +54,13 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field', 'pim/
 
             _.each(this.elements, _.bind(function (elements, position) {
                 var $container = this.$('.' + position + '-elements-container');
+                $container.empty();
                 _.each(elements, _.bind(function(element) {
-                    $container.append(element);
+                    if (typeof element.render === 'function') {
+                        $container.append(element.render().$el);
+                    } else {
+                        $container.append(element);
+                    }
                 }, this));
             }, this));
             this.delegateEvents();
@@ -88,7 +100,7 @@ define(['backbone', 'underscore', 'text!pim/template/product/field/field', 'pim/
             this.config = config;
         },
         addElement: function(position, code, element) {
-            if (!(position in this.elements)) {
+            if (!this.elements[position]) {
                 this.elements[position] = {};
             }
             this.elements[position][code] = element;

@@ -28,15 +28,15 @@ class ProductValueKeyGenerator
      *
      * @return string
      */
-    public static function getKey(ProductValueInterface $value)
+    public static function getKey(ProductValueInterface $value, $separator = '-')
     {
         $attribute = $value->getAttribute();
         $key = $attribute->getCode();
         if ($attribute->isLocalizable()) {
-            $key .= '_'.$value->getLocale();
+            $key .= $separator . $value->getLocale();
         }
         if ($attribute->isScopable()) {
-            $key .= '_'.$value->getScope();
+            $key .= $separator . $value->getScope();
         }
 
         return $key;

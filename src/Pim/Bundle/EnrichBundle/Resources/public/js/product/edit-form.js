@@ -34,7 +34,8 @@ define(
 
                 this.$el.html(
                     this.template({
-                        state: this.state.toJSON()
+                        state: this.state.toJSON(),
+                        product: this.getData()
                     })
                 );
 

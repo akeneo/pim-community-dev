@@ -69,6 +69,12 @@ define(
                         'module': 'pim/product-edit-form/attributes/copy',
                         'zone': 'header',
                         'insertAction': 'append'
+                    },
+                    {
+                        'code': 'validation',
+                        'module': 'pim/product-edit-form/attributes/validation',
+                        'zone': 'header',
+                        'insertAction': 'append'
                     }
                 ],
                 'zones': {

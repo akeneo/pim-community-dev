@@ -5,9 +5,10 @@ define(
         'underscore',
         'pim/form',
         'pim/completeness-manager',
-        'text!pim/template/product/panel/completeness'
+        'text!pim/template/product/panel/completeness',
+        'pim/i18n'
     ],
-    function(_, BaseForm, CompletenessManager, template) {
+    function(_, BaseForm, CompletenessManager, template, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -26,7 +27,8 @@ define(
                         this.$el.html(
                             this.template({
                                 state: this.getRoot().state.toJSON(),
-                                completenesses: completenesses
+                                completenesses: completenesses,
+                                i18n: i18n
                             })
                         );
                         this.delegateEvents();

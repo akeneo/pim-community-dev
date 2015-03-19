@@ -4,7 +4,7 @@
         <div class="content">
             <% _.each(locales, function(completeness, locale) { %>
                 <div>
-                    <span class="locale" data-locale="<%= locale %>"><%= locale %></span>
+                    <span class="locale" data-locale="<%= locale %>"><%= i18n.getFlag(locale) %></span>
                     <div class="progress <%= completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
                       <div class="bar" style="width: <%= completeness.completeness.ratio %>%;"></div>
                     </div>
