@@ -10,7 +10,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -45,9 +44,9 @@ abstract class AbstractReworkedProcessor extends AbstractConfigurableStepElement
     protected $detacher;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                    $validator    validator of the object
-     * @param ObjectDetacherInterface               $detacher     object detacher
+     * @param IdentifiableObjectRepositoryInterface $repository repository to search the object in
+     * @param ValidatorInterface                    $validator  validator of the object
+     * @param ObjectDetacherInterface               $detacher   object detacher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,

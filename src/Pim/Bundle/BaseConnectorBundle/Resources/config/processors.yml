@@ -177,22 +177,20 @@ services:
         arguments:
             - '@pim_base_connector.converter.flat.attribute_option'
             - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.denormalizer.standard.attribute_option'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
             - '@pim_validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.denormalization.attribute_option.structured:
         class: %pim_base_connector.processor.denormalization.attribute_option.class%
         arguments:
             - '@pim_base_connector.converter.structured.attribute_option'
             - '@pim_catalog.repository.attribute_option'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.denormalizer.standard.attribute_option'
+            - '@pim_catalog.factory.attribute_option'
+            - '@pim_catalog.updater.attribute_option'
             - '@pim_validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.normalization.csv_group:
         class: %pim_base_connector.processor.csv_serializer.homogeneous.class%

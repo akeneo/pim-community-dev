@@ -5,9 +5,9 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Factory\AttributeOptionFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -22,46 +22,40 @@ use Symfony\Component\Validator\ValidatorInterface;
 class AttributeOptionProcessor extends AbstractReworkedProcessor
 {
     /** @staticvar string */
-    const ATTRIBUTE_CODE_FIELD = 'attribute';
+    const OPTION_CODE_FIELD = 'code';
 
     /** @staticvar string */
-    const CODE_FIELD = 'code';
-
-    /** @var IdentifiableObjectRepositoryInterface */
-    protected $attributeRepository;
+    const ATTRIBUTE_CODE_FIELD = 'attribute';
 
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
+    /** @var AttributeOptionFactory */
+    protected $optionFactory;
 
-    /** @var string */
-    protected $class;
+    /** @var AttributeOptionUpdaterInterface */
+    protected $optionUpdater;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter      format converter
-     * @param IdentifiableObjectRepositoryInterface $optionRepository    option repository to search the object in
-     * @param IdentifiableObjectRepositoryInterface $attributeRepository attribute repository to search the object in
-     * @param DenormalizerInterface                 $denormalizer        denormalizer used to transform array to object
-     * @param ValidatorInterface                    $validator           validator of the object
-     * @param ObjectDetacherInterface               $detacher            detacher to remove it from UOW when skip
-     * @param string                                $class               class of the object to instanciate in case if need
+     * @param StandardArrayConverterInterface       $arrayConverter   format converter
+     * @param IdentifiableObjectRepositoryInterface $optionRepository option repository
+     * @param AttributeOptionFactory                $optionFactory    option factory
+     * @param AttributeOptionUpdaterInterface       $optionUpdater    option updater
+     * @param ValidatorInterface                    $validator        validator of the object
+     * @param ObjectDetacherInterface               $detacher         detacher to remove it from UOW when skip
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
-        IdentifiableObjectRepositoryInterface $attributeRepository,
-        DenormalizerInterface $denormalizer,
+        AttributeOptionFactory $optionFactory,
+        AttributeOptionUpdaterInterface $optionUpdater,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
-        $class
+        ObjectDetacherInterface $detacher
     ) {
         parent::__construct($optionRepository, $validator, $detacher);
-        $this->attributeRepository = $attributeRepository;
         $this->arrayConverter = $arrayConverter;
-        $this->denormalizer = $denormalizer;
-        $this->class = $class;
+        $this->optionFactory = $optionFactory;
+        $this->optionUpdater = $optionUpdater;
     }
 
     /**
@@ -70,7 +64,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
     public function process($item)
     {
         $convertedItem = $this->convertItemData($item);
-        $this->checkItemData($convertedItem, $item);
         /** @var AttributeOptionInterface $attributeOption */
         $attributeOption = $this->findOrCreateAttributeOption($convertedItem);
         $this->updateAttributeOption($attributeOption, $convertedItem);
@@ -90,20 +83,7 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
     }
 
     /**
-     * @param array $convertedItem
-     */
-    protected function checkItemData(array $convertedItem, array $item)
-    {
-        if (!isset($convertedItem[self::CODE_FIELD]) || empty($convertedItem[self::CODE_FIELD])) {
-            $this->skipItemWithMessage($item, 'Option code must be provided');
-        }
-        if (!isset($convertedItem[self::ATTRIBUTE_CODE_FIELD]) || empty($convertedItem[self::ATTRIBUTE_CODE_FIELD])) {
-            $this->skipItemWithMessage($item, 'Attribute code must be provided');
-        }
-    }
-
-    /**
-     * Find or create the group
+     * Find or create
      *
      * @param array $convertedItem
      *
@@ -111,21 +91,11 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
      */
     protected function findOrCreateAttributeOption(array $convertedItem)
     {
-        /** @var AttributeInterface $attribute */
-        $attribute = $this->attributeRepository->findOneByIdentifier($convertedItem[self::ATTRIBUTE_CODE_FIELD]);
-        if (null === $attribute) {
-            throw new \InvalidArgumentException(
-                sprintf('Argument with code "%s" does not exists', $convertedItem[self::ATTRIBUTE_CODE_FIELD])
-            );
-        }
-
         /** @var AttributeOptionInterface $attributeOption */
         $attributeOption = $this->findObject($this->repository, $convertedItem);
         if ($attributeOption === null) {
-            return new $this->class();
+            return $this->optionFactory->createAttributeOption();
         }
-        $attributeOption->setCode($convertedItem[self::CODE_FIELD]);
-        $attributeOption->setAttribute($attribute);
 
         return $attributeOption;
     }
@@ -134,18 +104,22 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
      * Update the variant group fields
      *
      * @param AttributeOptionInterface $attributeOption
-     * @param array                    $attributeOptionData
+     * @param array                    $convertedItem
      *
      * @return AttributeOptionInterface
      */
-    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, array $attributeOptionData)
+    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, array $convertedItem)
     {
-        $attributeOption = $this->denormalizer->denormalize(
-            $attributeOptionData,
-            $this->class,
-            null,
-            ['object' => $attributeOption]
-        );
+        $isNew = $attributeOption->getId() === null;
+        $readOnlyFields = [self::ATTRIBUTE_CODE_FIELD, self::OPTION_CODE_FIELD];
+        foreach ($convertedItem as $field => $data) {
+            $isReadOnlyField = in_array($field, $readOnlyFields);
+            if ($isNew) {
+                $this->optionUpdater->setData($attributeOption, $field, $data);
+            } elseif (false === $isReadOnlyField) {
+                $this->optionUpdater->setData($attributeOption, $field, $data);
+            }
+        }
 
         return $attributeOption;
     }
