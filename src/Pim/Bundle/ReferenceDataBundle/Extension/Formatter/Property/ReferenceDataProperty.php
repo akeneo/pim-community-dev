@@ -18,7 +18,6 @@ class ReferenceDataProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        $result = $this->getBackendData($value);
         $referenceData = $value[$value['attribute']['referenceDataName']];
 
         if (isset($referenceData['code'])) {

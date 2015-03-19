@@ -161,7 +161,7 @@ parameters:
                     multiple: true
                     attr:
                         empty_choice: true
-        sorter:          product_value
+        sorter:          product_value_reference_data
     pim_datagrid.product.attribute_type.pim_reference_data_multiselect:
         column:
             type:        product_value_reference_data
