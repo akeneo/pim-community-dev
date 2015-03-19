@@ -5,22 +5,18 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Updates an attribute option
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
 {
-    /** @staticvar string */
-    const OPTION_CODE_FIELD = 'code';
-
-    /** @staticvar string */
-    const ATTRIBUTE_CODE_FIELD = 'attribute';
-
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
@@ -49,11 +45,12 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
      */
     public function update(AttributeOptionInterface $attributeOption, array $data, array $options = [])
     {
-        // TODO: option resolver
+        $optionResolver = $this->createOptionsResolver();
+        $resolvedData = $optionResolver->resolve($data);
 
         $isNew = $attributeOption->getId() === null;
-        $readOnlyFields = [self::ATTRIBUTE_CODE_FIELD, self::OPTION_CODE_FIELD];
-        foreach ($data as $field => $data) {
+        $readOnlyFields = ['attribute', 'code'];
+        foreach ($resolvedData as $field => $data) {
             $isReadOnlyField = in_array($field, $readOnlyFields);
             if ($isNew) {
                 $this->setData($attributeOption, $field, $data);
@@ -72,18 +69,6 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
      */
     protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
     {
-        // TODO: option resolver!
-        $supportedFields = ['code', 'sort_order', 'labels', 'attribute'];
-        if (!in_array($field, $supportedFields)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Field "%s" is not supported, the updater supports [%s]',
-                    $field,
-                    implode(', ', $supportedFields)
-                )
-            );
-        }
-
         if ('code' === $field) {
             $attributeOption->setCode($data);
         }
@@ -101,9 +86,9 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
             $attributeOption->setAttribute($attribute);
         }
 
-        // TODO: label + locale code as option?
         if ('labels' === $field) {
             foreach ($data as $localeCode => $label) {
+                // TODO check the locale or we consider it's a domain validator concern?
                 $attributeOption->setLocale($localeCode);
                 $translation = $attributeOption->getTranslation();
                 $translation->setLabel($label);
@@ -125,5 +110,32 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
         $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
 
         return $attribute;
+    }
+
+    /**
+     * @return OptionsResolverInterface
+     */
+    protected function createOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+
+        $required = ['code', 'attribute', 'sort_order', 'labels'];
+        $defaults = ['sort_order' => 1];
+        $allowedTypes = [
+            'code' => 'string',
+            'attribute' => 'string',
+            'sort_order' => 'int',
+            'labels' => 'array'
+        ];
+
+        $resolver->setRequired($required);
+        $resolver->setDefaults($defaults);
+        $resolver->setAllowedTypes($allowedTypes);
+        $integerNormalizer = function ($options, $value) {
+            return (int) $value;
+        };
+        $resolver->setNormalizers(['sort_order' => $integerNormalizer]);
+
+        return $resolver;
     }
 }
