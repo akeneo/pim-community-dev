@@ -2,15 +2,13 @@
 
 namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
-use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\ConfigurationRegistry;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
 class ReferenceDataFilterSpec extends ObjectBehavior
@@ -18,7 +16,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
     function let(
         QueryBuilder $qb,
         AttributeValidatorHelper $attrValidatorHelper,
-        ConfigurationRegistry $registry
+        ConfigurationRegistryInterface $registry
     ) {
         $this->beConstructedWith(
             $attrValidatorHelper,

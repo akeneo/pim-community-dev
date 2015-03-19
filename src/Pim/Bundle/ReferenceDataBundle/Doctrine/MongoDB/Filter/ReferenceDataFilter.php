@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\ConfigurationRegistry;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
  * Reference data filter
@@ -23,7 +23,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
 
-    /** @var ConfigurationRegistry */
+    /** @var ConfigurationRegistryInterface */
     protected $registry;
 
     /** @var array */
@@ -32,12 +32,13 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Instanciate the base filter
      *
-     * @param array $supportedAttributes
-     * @param array $supportedOperators
+     * @param array                          $supportedAttributes
+     * @param ConfigurationRegistryInterface $registry
+     * @param array                          $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
-        ConfigurationRegistry $registry,
+        ConfigurationRegistryInterface $registry,
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;

@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Component\ReferenceData\ConfigurationRegistry;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
 /**
@@ -16,7 +16,7 @@ use Prophecy\Argument;
  */
 class ReferenceDataFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper, ConfigurationRegistry $registry)
+    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper, ConfigurationRegistryInterface $registry)
     {
         $this->beConstructedWith($attrValidatorHelper, $registry, ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);

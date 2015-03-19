@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Component\ReferenceData\ConfigurationRegistry;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
@@ -19,24 +19,24 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class ReferenceDataFilter extends ChoiceFilter
 {
-    /** @var ConfigurationRegistry */
+    /** @var ConfigurationRegistryInterface */
     protected $registry;
 
     /**
      * Constructor
      *
-     * @param FormFactoryInterface         $factory
-     * @param ProductFilterUtility         $util
-     * @param UserContext                  $userContext
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ConfigurationRegistry        $registry
+     * @param FormFactoryInterface           $factory
+     * @param ProductFilterUtility           $util
+     * @param UserContext                    $userContext
+     * @param AttributeRepositoryInterface   $attributeRepository
+     * @param ConfigurationRegistryInterface $registry
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
         AttributeRepositoryInterface $attributeRepository,
-        ConfigurationRegistry $registry
+        ConfigurationRegistryInterface $registry
     ) {
         parent::__construct($factory, $util, $userContext, null, $attributeRepository);
         $this->registry = $registry;
