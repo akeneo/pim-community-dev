@@ -54,6 +54,7 @@ oro_menu_config:
         system_tab:
             extras:
                 position: 60
+                hideIfEmpty: true
             showNonAuthorized: false
         pim_enrich_locale:
             label: pim_menu.item.locale
