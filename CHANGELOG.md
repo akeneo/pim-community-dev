@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.5 (2015-03-19)
 
 ## Bug fixes
 - PIM-2874: Bad title on failed submit
