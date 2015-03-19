@@ -18,48 +18,38 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractProcessor
+class ProductProcessor extends AbstractReworkedProcessor
 {
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var StandardArrayConverterInterface */
-    protected $converter;
+    protected $arrayConverter;
 
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
-    /** @var string */
-    protected $format;
-
     /**
-     * @param StandardArrayConverterInterface       $converter      csv converter
+     * @param StandardArrayConverterInterface       $arrayConverter standard converter
      * @param IdentifiableObjectRepositoryInterface $repository     repository to search the object in
-     * @param DenormalizerInterface                 $denormalizer   denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator      validator of the object
      * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      * @param ProductBuilderInterface               $productBuilder product builder
      * @param ProductUpdaterInterface               $productUpdater product updater
-     * @param string                                $class          class of the object to instanciate in case if need
-     * @param string                                $format         format use to denormalize
      */
     public function __construct(
-        StandardArrayConverterInterface $converter, // TODO: could be embedded in denormalizer?
+        StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        DenormalizerInterface $denormalizer, // TODO: useless here, except if we embed the updater or setter registry?
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher,
         ProductBuilderInterface $productBuilder,
-        ProductUpdaterInterface $productUpdater,
-        $class,
-        $format
+        ProductUpdaterInterface $productUpdater
     ) {
-        parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
+        parent::__construct($repository, $validator, $detacher);
 
         $this->productBuilder = $productBuilder;
-        $this->converter      = $converter;
+        $this->arrayConverter      = $arrayConverter;
         $this->productUpdater = $productUpdater;
-        $this->format         = $format; // TODO: should be used by the converter! format to standard then use updater!
     }
 
     /**
@@ -86,7 +76,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        return $this->converter->convert($item);
+        return $this->arrayConverter->convert($item);
     }
 
     /**
