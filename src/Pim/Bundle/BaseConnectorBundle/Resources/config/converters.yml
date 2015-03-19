@@ -11,6 +11,8 @@ services:
 
     pim_base_connector.converter.csv_attribute_option:
         class: %pim_base_connector.converter.csv_attribute_option.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
 
     pim_base_connector.converter.yaml_attribute_option:
         class: %pim_base_connector.converter.yaml_attribute_option.class%
