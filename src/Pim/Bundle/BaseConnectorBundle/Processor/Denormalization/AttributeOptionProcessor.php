@@ -5,7 +5,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\Converter\StandardArrayConverterInterface;
-use Pim\Bundle\CatalogBundle\Factory\AttributeOptionFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -24,32 +23,32 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
-    /** @var AttributeOptionFactory */
-    protected $optionFactory;
-
     /** @var AttributeOptionUpdaterInterface */
     protected $optionUpdater;
+
+    /** @var string */
+    protected $class;
 
     /**
      * @param StandardArrayConverterInterface       $arrayConverter   format converter
      * @param IdentifiableObjectRepositoryInterface $optionRepository option repository
-     * @param AttributeOptionFactory                $optionFactory    option factory
      * @param AttributeOptionUpdaterInterface       $optionUpdater    option updater
      * @param ValidatorInterface                    $validator        validator of the object
      * @param ObjectDetacherInterface               $detacher         detacher to remove it from UOW when skip
+     * @param string                                $class            attribute option class
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
-        AttributeOptionFactory $optionFactory,
         AttributeOptionUpdaterInterface $optionUpdater,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher
+        ObjectDetacherInterface $detacher,
+        $class
     ) {
         parent::__construct($optionRepository, $validator, $detacher);
         $this->arrayConverter = $arrayConverter;
-        $this->optionFactory = $optionFactory;
         $this->optionUpdater = $optionUpdater;
+        $this->class = $class;
     }
 
     /**
@@ -86,7 +85,7 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
         /** @var AttributeOptionInterface $attributeOption */
         $attributeOption = $this->findObject($this->repository, $convertedItem);
         if ($attributeOption === null) {
-            return $this->optionFactory->createAttributeOption();
+            return new $this->class();
         }
 
         return $attributeOption;

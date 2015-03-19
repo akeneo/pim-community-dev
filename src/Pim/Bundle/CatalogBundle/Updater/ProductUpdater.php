@@ -51,6 +51,30 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      */
+    public function update(ProductInterface $product, array $data, array $options = [])
+    {
+        foreach ($data as $field => $values) {
+            // TODO: hard coded :(
+            if (in_array($field, ['enabled', 'categories', 'groups', 'associations'])) {
+                $this->setData($product, $field, $values, []);
+            } else {
+                foreach ($values as $value) {
+                    // sets the value if the attribute belongs to the family or if the value already exists as optional
+                    $family = $product->getFamily();
+                    $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
+                    $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
+                    if ($belongsToFamily || $hasValue) {
+                        $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+                        $this->setData($product, $field, $value['data'], $options);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setData(ProductInterface $product, $field, $data, array $options = [])
     {
         $attribute = $this->getAttribute($field);
