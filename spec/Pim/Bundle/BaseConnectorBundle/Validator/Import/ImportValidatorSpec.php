@@ -191,4 +191,26 @@ class ImportValidatorSpec extends ObjectBehavior
 
         $this->validate($product, [$columnInfo], [], [])->shouldReturn([]);
     }
+
+    function it_validates_an_entity_which_has_no_identifier(
+        $validator,
+        ProductInterface $product,
+        ColumnInfo $columnInfo,
+        ConstraintViolationList $violationList,
+        \ArrayIterator $iterator
+    ) {
+        $product->getReference()->willReturn('sku-001');
+
+        $columnInfo->getPropertyPath()->willReturn('unique_attribute');
+
+        $validator->validate($product)->willReturn($violationList);
+
+        $violationList->getIterator()->willReturn($iterator);
+
+        $iterator->rewind()->willReturn(null);
+        $iterator->valid()->willReturn(false);
+        $iterator->next()->willReturn(null);
+
+        $this->validate($product, [$columnInfo], [], [])->shouldReturn([]);
+    }
 }
