@@ -57,7 +57,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
     public function process($item)
     {
         $convertedItem = $this->convertItemData($item);
-        /** @var AttributeOptionInterface $attributeOption */
         $attributeOption = $this->findOrCreateAttributeOption($convertedItem);
         $this->updateAttributeOption($attributeOption, $convertedItem);
         $this->validateAttributeOption($attributeOption, $convertedItem);
@@ -82,7 +81,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
      */
     protected function findOrCreateAttributeOption(array $convertedItem)
     {
-        /** @var AttributeOptionInterface $attributeOption */
         $attributeOption = $this->findObject($this->repository, $convertedItem);
         if ($attributeOption === null) {
             return new $this->class();
