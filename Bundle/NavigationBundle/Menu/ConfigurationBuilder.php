@@ -96,6 +96,21 @@ class ConfigurationBuilder implements BuilderInterface
             }
         }
         $menu->setExtra('isAllowed', $isAllowed);
+
+        if (!$menu->getExtra('showIfEmpty') && $menu->hasChildren()) {
+            $willDisplaySomeChildren = false;
+
+            foreach ($menu->getChildren() as $child) {
+                if ($child->isDisplayed() && $child->getExtra('isAllowed')) {
+                    $willDisplaySomeChildren = true;
+                    break;
+                }
+            }
+
+            if (!$willDisplaySomeChildren) {
+                $menu->setDisplay(false);
+            }
+        }
     }
 
     /**
