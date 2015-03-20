@@ -11,6 +11,7 @@ define(
                 FormRegistry.getFormExtensions(formName)
             ).done(function (Form, extensionMeta) {
                 var form = new Form();
+
                 form.setZones(extensionMeta.zones);
 
                 var extensionPromises = [];

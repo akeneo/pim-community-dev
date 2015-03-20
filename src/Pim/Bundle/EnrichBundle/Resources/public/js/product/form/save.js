@@ -64,6 +64,7 @@ define(
                 }).always(function() {
                     loadingMask.hide().$el.remove();
                 });
+
             }
         });
     }

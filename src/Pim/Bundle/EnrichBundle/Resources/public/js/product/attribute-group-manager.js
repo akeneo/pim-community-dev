@@ -1,6 +1,6 @@
 "use strict";
 
-define(['routing', 'pim/config-manager'], function (Routing, ConfigManager) {
+define(['routing', 'pim/config-manager', 'pim/attribute-manager'], function (Routing, ConfigManager, AttributeManager) {
     return {
         getAttributeGroupsForProduct: function(product)
         {
@@ -8,7 +8,7 @@ define(['routing', 'pim/config-manager'], function (Routing, ConfigManager) {
 
             $.when(
                 ConfigManager.getEntityList('attributegroups'),
-                this.getAttributesForProduct(product)
+                AttributeManager.getAttributesForProduct(product)
             ).done(_.bind(function(attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};
                 _.each(attributeGroups, function(attributeGroup) {
@@ -22,14 +22,27 @@ define(['routing', 'pim/config-manager'], function (Routing, ConfigManager) {
 
             return promise.promise();
         },
-        getAttributesForProduct: function(product) {
-            var promise = $.Deferred();
+        getAttributeGroupValues: function(product, attributeGroup)
+        {
+            var values = {};
+                _.each(product.values, _.bind(function(productValue, attributeCode) {
+                    if (attributeGroup && -1 !== attributeGroup.attributes.indexOf(attributeCode)) {
+                        values[attributeCode] = productValue;
+                    }
+                }, this));
 
-            ConfigManager.getEntityList('families').done(_.bind(function (families) {
-                promise.resolve(!product.family ? _.keys(product.values) : families[product.family].attributes);
-            }, this));
+                return values;
+        },
+        getAttributeGroupForAttribute: function(attributeGroups, attribute) {
+            var result = null;
 
-            return promise.promise();
+            _.each(attributeGroups, function(attributeGroup) {
+                if (-1 !== attributeGroup.attributes.indexOf(attribute)) {
+                    result = attributeGroup.code;
+                }
+            });
+
+            return result;
         }
     };
 });

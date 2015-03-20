@@ -46,9 +46,6 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/multi-select
                 multiple: true
             });
         },
-        getEmptyData: function() {
-            return [];
-        },
         updateModel: function (event) {
             var data = event.currentTarget.value.split(',');
             this.setCurrentValue(data);

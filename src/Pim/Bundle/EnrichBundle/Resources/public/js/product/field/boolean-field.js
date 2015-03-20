@@ -15,12 +15,11 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'b
 
             this.$('.switch').bootstrapSwitch();
         },
-        getEmptyData: function() {
-            return false;
-        },
         updateModel: function (event) {
             var data = event.currentTarget.checked;
             this.setCurrentValue(data);
+
+            Field.prototype.updateModel.apply(this, arguments);
         }
     });
 });

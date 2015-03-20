@@ -53,6 +53,18 @@ define(
             'pim/product-edit-form/attributes': {
                 'extensions': [
                     {
+                        'code': 'attribute-group-selector',
+                        'module': 'pim/product-edit-form/attributes/attribute-group-selector',
+                        'zone': 'attributes',
+                        'insertAction': 'prepend'
+                    },
+                    {
+                        'code': 'add-attribute',
+                        'module': 'pim/product-edit-form/attributes/add-attribute',
+                        'zone': 'edit-actions',
+                        'insertAction': 'append'
+                    },
+                    {
                         'code': 'scope-switcher',
                         'module': 'pim/product-edit-form/scope-switcher',
                         'zone': 'edit-actions',
@@ -79,7 +91,8 @@ define(
                 ],
                 'zones': {
                     'header' : '.tab-content > header',
-                    'edit-actions': '.tab-content > header > .attribute-edit-actions'
+                    'edit-actions': '.tab-content > header > .attribute-edit-actions',
+                    'attributes': 'self'
                 }
             },
             'pim/product-edit-form/panel/panels': {

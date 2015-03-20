@@ -12,9 +12,23 @@ define(
     function(_, Backbone, BaseForm, mediator, FieldManager, ValidationError) {
         return BaseForm.extend({
             initialize: function () {
-                mediator.on('validation_error', _.bind(this.addValidationErrors, this));
+                mediator.on('validation_error', _.bind(this.validationError, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
+            },
+            validationError: function(data) {
+                this.removeValidationErrors();
+                this.addValidationErrors(data);
+
+                mediator.trigger('post_validation_error', _.bind(this.addValidationErrors, this));
+            },
+            removeValidationErrors: function() {
+                var fields = FieldManager.getFields();
+
+                _.each(fields, function(field) {
+                    field.setValid(true);
+                    field.removeElement('footer', 'validation');
+                });
             },
             addValidationErrors: function(data) {
                 _.each(data.values, _.bind(function(fieldErrors, attributeCode) {
@@ -26,9 +40,11 @@ define(
                             'validation',
                             validationError
                         );
-                    }, this));
 
+                        field.setValid(false);
+                    }, this));
                 }, this));
+
             },
             changeContext: function (locale, scope) {
                 if (locale) {

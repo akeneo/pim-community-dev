@@ -1,0 +1,13 @@
+<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+    Add an attribute
+    <span class="caret"></span>
+</a>
+<ul class="dropdown-menu">
+    <% _.each(attributes, function (attribute) { %>
+        <li>
+            <a data-attribute="<%= attribute.code %>">
+                <%= attribute.label.en_US %>
+            </a>
+        </li>
+    <% }); %>
+</ul>

@@ -10,6 +10,7 @@ define(
         'pim/field-manager',
         'pim/config-manager',
         'pim/attribute-manager',
+        'pim/attribute-group-manager',
         'pim/variant-group-manager',
         'text!pim/template/product/tab/attributes'
     ],
@@ -22,6 +23,7 @@ define(
         FieldManager,
         ConfigManager,
         AttributeManager,
+        AttributeGroupManager,
         VariantGroupManager,
         formTemplate
     ) {
@@ -36,10 +38,9 @@ define(
             renderedFields: {},
             initialize: function () {
                 this.config = new Backbone.Model({
-                    'attributeGroups' : [],
                     'attributes': []
                 });
-
+                FieldManager.fields = {};
 
                 this.listenTo(this.config, 'change', this.render);
 
@@ -50,6 +51,7 @@ define(
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
                 mediator.on('post_save', _.bind(this.postSave, this));
+                mediator.on('post_validation_error', _.bind(this.postValidationError, this));
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -68,7 +70,10 @@ define(
                         state: this.getRoot().state.toJSON()
                     }));
 
-                    var productValues = this.getAttributeGroupValues(product, this.config.get('attributeGroup'));
+                    var productValues = AttributeGroupManager.getAttributeGroupValues(
+                        product,
+                        this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
+                    );
 
                     var fieldPromisses = [];
                     _.each(productValues, _.bind(function (productValue, attributeCode) {
@@ -109,7 +114,7 @@ define(
                     field.setConfig(this.config.toJSON());
                     field.setValues(values);
 
-                    this.addVariantInfos(product, field);
+                    //this.addVariantInfos(product, field);
 
                     promise.resolve(field);
                 }, this));
@@ -120,21 +125,12 @@ define(
                 var configurationPromise = $.Deferred();
                 var promises = [];
 
-                AttributeManager.getAttributeGroupsForProduct(this.getData())
-                    .done(_.bind(function(attributeGroups) {
-                        this.config.set('attributeGroups', attributeGroups, {silent: true});
-                        if (undefined === this.config.get('attributeGroup')) {
-                            this.config.set('attributeGroup', _.keys(attributeGroups)[0]);
-                        }
-                    }, this));
-                AttributeManager.getOptionalAttributes(this.getData())
-                    .done(_.bind(function(optionalAttributes) {
-                        this.config.set('optionalAttributes', optionalAttributes, {silent: true});
-                    }, this));
+                var product = this.getData();
 
                 promises.push(this.loadConfiguration());
-                promises.push(AttributeManager.getAttributeGroupsForProduct(this.getData()));
-                promises.push(AttributeManager.getOptionalAttributes(this.getData()));
+                promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
+                promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
+                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product));
 
                 $.when.apply($, promises).done(_.bind(function() {
                     configurationPromise.resolve(this.config);
@@ -153,24 +149,16 @@ define(
 
                 return promise.promise();
             },
-            getAttributeGroupValues: function (product, attributeGroup) {
-                var values = {};
-                _.each(product.values, _.bind(function(productValue, attributeCode) {
-                    if (attributeGroup && -1 !== this.config.get('attributegroups')[attributeGroup].attributes.indexOf(attributeCode)) {
-                        values[attributeCode] = productValue;
-                    }
-                }, this));
-
-                return values;
-            },
             changeAttributeGroup: function (event) {
                 this.config.set('attributeGroup', event.currentTarget.dataset.attributeGroup);
             },
-            addAttribute: function(event) {
-                var attributeCode = event.currentTarget.dataset.attribute;
+            addAttribute: function(attributeCode) {
                 var product = this.getData();
 
-                this.config.set('attributeGroup', this.config.get('attributes')[attributeCode].group, {silent: true});
+                this.extensions['attribute-group-selector'].setCurrent(
+                    this.config.get('attributes')[attributeCode].group
+                );
+
                 if (product.values[attributeCode]) {
                     this.getRoot().model.trigger('change');
                     return;
@@ -183,34 +171,34 @@ define(
                 this.setData(product);
                 this.getRoot().model.trigger('change');
             },
-            addVariantInfos: function(product, field) {
-                if (!product.variant_group) {
-                    return;
-                }
-                VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
-                    if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
+            // addVariantInfos: function(product, field) {
+            //     if (!product.variant_group) {
+            //         return;
+            //     }
+            //     VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
+            //         if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
 
-                        var $element = $(
-                            '<div><i class="icon-lock"></i>Updated by variant group: ' +
-                                variantGroup.label[this.getRoot().state.get('locale')] +
-                            '</div>'
-                        );
-                        field.addElement('footer', 'coming_from_variant_group', $element);
-                    }
-                }, this));
-            },
+            //             var $element = $(
+            //                 '<div><i class="icon-lock"></i>Updated by variant group: ' +
+            //                     variantGroup.label[this.getRoot().state.get('locale')] +
+            //                 '</div>'
+            //             );
+            //             field.addElement('footer', 'coming_from_variant_group', $element);
+            //         }
+            //     }, this));
+            // },
             removeAttribute: function(event) {
                 var attributeCode = event.currentTarget.dataset.attribute;
                 var product = this.getData();
                 var fields = FieldManager.getFields();
 
+                this.extensions['add-attribute'].updateOptionalAttributes(product);
                 delete product.values[attributeCode];
                 delete fields[attributeCode];
                 this.extensions['copy'].generateCopyFields();
 
                 this.setData(product);
 
-                console.log(this.getData());
                 this.getRoot().model.trigger('change');
             },
             getValuesData: function () {
@@ -218,13 +206,7 @@ define(
                 console.log(this.getData().values);
                 return this.getData().values;
             },
-            postSave: function() {
-                FieldManager.fields = {};
-
-                this.render();
-            },
             setScope: function(scope) {
-
                 this.getRoot().state.set('scope', scope);
             },
             getScope: function() {
@@ -235,6 +217,32 @@ define(
             },
             getLocale: function() {
                 return this.getRoot().state.get('locale');
+            },
+            postValidationError: function() {
+                this.extensions['attribute-group-selector'].removeBadges();
+                this.updateAttributeGroupBadges();
+            },
+            postSave: function() {
+                FieldManager.fields = {};
+
+                this.render();
+            },
+            updateAttributeGroupBadges: function() {
+                var fields = FieldManager.getFields();
+
+                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
+                    .done(_.bind(function(attributeGroups) {
+                        _.each(fields, _.bind(function(field) {
+                            var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
+                                attributeGroups,
+                                field.attribute.code
+                            );
+
+                            if (!field.getValid()) {
+                                this.extensions['attribute-group-selector'].addToBadge(attributeGroup, 'invalid');
+                            }
+                        }, this));
+                    }, this));
             }
         });
 

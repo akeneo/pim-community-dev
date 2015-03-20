@@ -23,6 +23,7 @@ define([
         elements: {},
         editable: true,
         enabled: true,
+        valid: true,
         initialize: function(attribute)
         {
             this.attribute    = attribute;
@@ -70,6 +71,9 @@ define([
         renderInput: function() {
             throw new Error('You should implement your field template');
         },
+        updateModel: function() {
+            this.valid = true;
+        },
         getData: function()
         {
             if (this.editable && this.enabled) {
@@ -108,13 +112,19 @@ define([
             this.render();
         },
         removeElement: function(position, code) {
-            delete this.elements[position][code];
+            if (this.elements[position] && this.elements[position][code]) {
+                delete this.elements[position][code];
+            }
 
             this.render();
         },
-        validate: function()
+        setValid: function(valid)
         {
-            return true;
+            this.valid = valid;
+        },
+        getValid: function()
+        {
+            return this.valid;
         },
         complete: function()
         {

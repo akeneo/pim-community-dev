@@ -6,14 +6,14 @@ define([
         'text!pim/template/product/tab/attribute/copy-field',
         'pim/i18n'
     ],
-    function (Backbone, _, copyFieldTemplate, i18n) {
+    function (Backbone, _, template, i18n) {
         return Backbone.View.extend({
             tagName: 'div',
             field: null,
             locale: null,
             scope: null,
             data: '',
-            template: _.template(copyFieldTemplate),
+            template: _.template(template),
             selected: false,
             events: {
                 'change .copy-field-selector': 'selectionChanged'

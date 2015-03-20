@@ -16,7 +16,11 @@ define(
                 this.zones = zones;
             },
             getTargetElement: function () {
-                return this.parent.$(this.parent.zones[this.zone]);
+                if ('self' === this.parent.zones[this.zone]) {
+                    return this.parent.$el;
+                } else {
+                    return this.parent.$(this.parent.zones[this.zone]);
+                }
             },
             configure: function () {
                 var promise = $.Deferred();

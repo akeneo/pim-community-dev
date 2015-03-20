@@ -15,12 +15,6 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/metric', 'jq
 
             this.$('.unit').select2('destroy').select2({});
         },
-        getEmptyData: function() {
-            return {
-                'data': null,
-                'unit': this.attribute.default_metric_unit
-            };
-        },
         updateModel: function () {
             var data = this.$('.data').val();
             this.setCurrentValue({

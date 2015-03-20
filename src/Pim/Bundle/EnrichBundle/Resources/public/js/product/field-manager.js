@@ -49,12 +49,6 @@ define([
         getFields: function() {
             return this.fields;
         },
-        getProductAttributeGroups: function()
-        {
-            _.each(this.fields, function() {
-
-            });
-        },
         getFieldForAttribute: function (attribute)
         {
             switch(attribute.type) {

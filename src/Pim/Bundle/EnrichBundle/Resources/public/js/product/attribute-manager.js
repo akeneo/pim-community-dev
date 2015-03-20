@@ -1,27 +1,7 @@
 "use strict";
 
-define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager, ChannelManager) {
+define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
     return {
-        getAttributeGroupsForProduct: function(product)
-        {
-            var promise = $.Deferred();
-
-            $.when(
-                ConfigManager.getEntityList('attributegroups'),
-                this.getAttributesForProduct(product)
-            ).done(function(attributeGroups, productAttributes) {
-                var activeAttributeGroups = {};
-                _.each(attributeGroups, function(attributeGroup) {
-                    if (_.intersection(attributeGroup.attributes, productAttributes).length > 0) {
-                        activeAttributeGroups[attributeGroup.code] = attributeGroup;
-                    }
-                });
-
-                promise.resolve(activeAttributeGroups);
-            });
-
-            return promise.promise();
-        },
         getAttributesForProduct: function(product) {
             var promise = $.Deferred();
 
@@ -40,7 +20,13 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager, C
 
             $.when(ConfigManager.getEntityList('attributes'), this.getAttributesForProduct(product))
                 .done(function(attributes, productAttributes) {
-                    promise.resolve(_.difference(_.keys(attributes), productAttributes));
+                    var optionalAttribute = _.map(
+                        _.difference(_.keys(attributes), productAttributes),
+                        function(attribute) {
+                            return attributes[attribute];
+                        }
+                    );
+                    promise.resolve(optionalAttribute);
                 });
 
             return promise.promise();
@@ -60,7 +46,6 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager, C
         getEmptyValue: function(attribute)
         {
             switch(attribute.type) {
-                case 'pim_catalog_boolean':
                 case 'pim_catalog_date':
                 case 'pim_catalog_number':
                 case 'pim_catalog_file':
@@ -79,6 +64,8 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager, C
                 case 'pim_catalog_text':
                 case 'pim_catalog_textarea':
                     return '';
+                case 'pim_catalog_boolean':
+                    return false;
                 default:
                     throw new Error(JSON.stringify(attribute));
             }
