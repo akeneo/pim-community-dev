@@ -3,6 +3,10 @@ define(
     function ($, datetimeFormatter) {
         'use strict';
 
+        $.datepicker._gotoToday = function (id) {
+            $(id).datepicker('setDate', new Date()).datepicker('hide').blur();
+        };
+
         var init = function(id) {
             var $field = $('#' + id);
             if ($field.hasClass('hasPicker')) {
