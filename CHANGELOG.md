@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Improvements
+- PIM-3195: Remove useless ajax requests on product association
+
 # 1.2.33 (2015-03-16)
 
 # 1.2.32 (2015-03-11)
