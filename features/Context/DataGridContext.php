@@ -404,6 +404,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param int $size
+     *
+     * @When /^page size should be (\d+)$/
+     */
+    public function pageSizeShouldBe($size)
+    {
+        $this->datagrid->pageSizeIs((int) $size);
+        $this->wait();
+    }
+
+    /**
      * @param string $columnName
      * @param string $order
      *
