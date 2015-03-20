@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Bug fixes
+- PIM-3933: Add missing translation keys for published products
+
 ## BC Breaks
 - Move PimEnterprise/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepository
 - Move PimEnterprise/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/ProductMassActionRepository
