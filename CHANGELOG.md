@@ -4,6 +4,7 @@
 - PIM-3874: clicking a category gives an error with only "list categories" permission
 - PIM-3771: Create version when modifying variant group attribute
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
+- PIM-3929: Categories with circular references are skipped in processor during import
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
