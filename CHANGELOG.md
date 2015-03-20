@@ -1,7 +1,7 @@
 # 1.4.x
 
 ## Bug fixes
-- PIM-3874: clicking a category gives an error with only "list categories" permission 
+- PIM-3874: clicking a category gives an error with only "list categories" permission
 - PIM-3771: Create version when modifying variant group attribute
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
 
@@ -66,6 +66,11 @@
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/FamilyManager
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
 - Change arguments of Pim\Bundle\EnrichBundle\Controller\AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
+
+# 1.3.x
+
+## Bug fixes
+- PIM-3926: Set explicit message for 403 error
 
 # 1.3.5 (2015-03-19)
 

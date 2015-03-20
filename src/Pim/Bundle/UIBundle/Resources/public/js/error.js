@@ -5,7 +5,8 @@ function(_, Backbone, routing, app, Modal) {
 
     var defaults = {
             header: 'Server error',
-            message: 'Error! Incorrect server response.'
+            message: 'Error! Incorrect server response.',
+            forbidden_access: 'You don\'t have the permission to open this page'
         },
 
         /**
@@ -42,6 +43,9 @@ function(_, Backbone, routing, app, Modal) {
             if (xhr.status === 401) {
                 this._processRedirect();
             } else if (xhr.readyState === 4) {
+                if (xhr.status === 403) {
+                    options.message = options.forbidden_access;
+                }
                 this._processModal(xhr, options);
             }
         },
