@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
+- PIM-3296: Better display of options changes in Proposals
 
 ## BC Breaks
 - Move PimEnterprise/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepository
