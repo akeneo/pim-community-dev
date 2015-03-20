@@ -3,16 +3,15 @@
 namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -25,6 +24,21 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductBuilder implements ProductBuilderInterface
 {
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var FamilyRepositoryInterface */
+    protected $familyRepository;
+
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
+
+    /** @var AssociationTypeRepositoryInterface */
+    protected $assocTypeRepository;
+
+    /** @var AttributeValuesResolver */
+    protected $valuesResolver;
+
     /** @var string */
     protected $productClass;
 
@@ -37,53 +51,32 @@ class ProductBuilder implements ProductBuilderInterface
     /** @var string */
     protected $associationClass;
 
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var FamilyRepositoryInterface */
-    protected $familyRepository;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
-
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
-
-    /** @var AssociationTypeRepositoryInterface */
-    protected $assocTypeRepository;
-
     /**
      * Constructor
      *
      * @param AttributeRepositoryInterface       $attributeRepository Attribute repository
      * @param FamilyRepositoryInterface          $familyRepository    Family repository
-     * @param ChannelRepositoryInterface         $channelRepository   Channel repository
-     * @param LocaleRepositoryInterface          $localeRepository    Locale repository
      * @param CurrencyRepositoryInterface        $currencyRepository  Currency repository
      * @param AssociationTypeRepositoryInterface $assocTypeRepository Association type repository
      * @param EventDispatcherInterface           $eventDispatcher     Event dispatcher
+     * @param AttributeValuesResolver            $valuesResolver      Attributes values resolver
      * @param array                              $classes             Model classes
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
         EventDispatcherInterface $eventDispatcher,
+        AttributeValuesResolver $valuesResolver,
         array $classes
     ) {
         $this->attributeRepository = $attributeRepository;
         $this->familyRepository    = $familyRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->localeRepository    = $localeRepository;
         $this->currencyRepository  = $currencyRepository;
         $this->assocTypeRepository = $assocTypeRepository;
         $this->eventDispatcher     = $eventDispatcher;
+        $this->valuesResolver      = $valuesResolver;
         $this->productClass        = $classes['product'];
         $this->productValueClass   = $classes['product_value'];
         $this->productPriceClass   = $classes['product_price'];
@@ -121,7 +114,7 @@ class ProductBuilder implements ProductBuilderInterface
     public function addMissingProductValues(ProductInterface $product)
     {
         $attributes     = $this->getExpectedAttributes($product);
-        $requiredValues = $this->getExpectedValues($attributes);
+        $requiredValues = $this->valuesResolver->getEligibleValues($attributes);
         $existingValues = $this->getExistingValues($product);
 
         $missingValues = array_filter(
@@ -162,7 +155,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
     {
-        $requiredValues = $this->getExpectedValues(array($attribute));
+        $requiredValues = $this->valuesResolver->getEligibleValues(array($attribute));
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
@@ -341,7 +334,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     protected function getExpectedAttributes(ProductInterface $product)
     {
-        $attributes = array();
+        $attributes = [];
         $productAttributes = $product->getAttributes();
         foreach ($productAttributes as $attribute) {
             $attributes[$attribute->getCode()] = $attribute;
@@ -389,56 +382,6 @@ class ProductBuilder implements ProductBuilderInterface
     }
 
     /**
-     * Returns an array of values that are expected to link product to an attribute depending on locale and scope
-     * Each value is returned as an array with 'scope' and 'locale' keys
-     *
-     * @param AttributeInterface[] $attributes
-     *
-     * @return array:array
-     */
-    protected function getExpectedValues(array $attributes)
-    {
-        $values = array();
-        foreach ($attributes as $attribute) {
-            $requiredValues = array();
-            if ($attribute->isScopable() && $attribute->isLocalizable()) {
-                $requiredValues = $this->getScopeToLocaleRows($attribute);
-            } elseif ($attribute->isScopable()) {
-                $requiredValues = $this->getScopeRows($attribute);
-            } elseif ($attribute->isLocalizable()) {
-                $requiredValues = $this->getLocaleRows($attribute);
-            } else {
-                $requiredValues[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => null);
-            }
-            $values = array_merge($values, $this->filterExpectedValues($attribute, $requiredValues));
-        }
-
-        return $values;
-    }
-
-    /**
-     * Filter expected values based on the locales available for the provided attribute
-     *
-     * @param AttributeInterface $attribute
-     * @param array              $values
-     *
-     * @return array
-     */
-    protected function filterExpectedValues(AttributeInterface $attribute, array $values)
-    {
-        if ($attribute->isLocaleSpecific()) {
-            $availableLocales = $attribute->getLocaleSpecificCodes();
-            foreach ($values as $index => $value) {
-                if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
-                    unset($values[$index]);
-                }
-            }
-        }
-
-        return $values;
-    }
-
-    /**
      * Add missing prices (a price per currency)
      *
      * @param ProductInterface $product the product
@@ -450,69 +393,5 @@ class ProductBuilder implements ProductBuilderInterface
         foreach ($product->getValues() as $value) {
             $this->addMissingPrices($value);
         }
-    }
-
-    /**
-     * Return rows for available locales
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return array
-     */
-    protected function getLocaleRows(AttributeInterface $attribute)
-    {
-        $locales = $this->localeRepository->getActivatedLocales();
-        $localeRows = array();
-        foreach ($locales as $locale) {
-            $localeRows[] = array(
-                'attribute' => $attribute->getCode(), 'locale' => $locale->getCode(), 'scope' => null
-            );
-        }
-
-        return $localeRows;
-    }
-
-    /**
-     * Return rows for available channels
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return array
-     */
-    protected function getScopeRows(AttributeInterface $attribute)
-    {
-        $channels = $this->channelRepository->findAll();
-        $scopeRows = array();
-        foreach ($channels as $channel) {
-            $scopeRows[] = array(
-                'attribute' => $attribute->getCode(), 'locale' => null, 'scope' => $channel->getCode()
-            );
-        }
-
-        return $scopeRows;
-    }
-
-    /**
-     * Return rows for available channels and theirs locales
-     *
-     * @param AttributeInterface $attribute
-     *
-     * @return array
-     */
-    protected function getScopeToLocaleRows(AttributeInterface $attribute)
-    {
-        $channels = $this->channelRepository->findAll();
-        $scopeToLocaleRows = array();
-        foreach ($channels as $channel) {
-            foreach ($channel->getLocales() as $locale) {
-                $scopeToLocaleRows[] = array(
-                    'attribute' => $attribute->getCode(),
-                    'locale' => $locale->getCode(),
-                    'scope' => $channel->getCode()
-                );
-            }
-        }
-
-        return $scopeToLocaleRows;
     }
 }

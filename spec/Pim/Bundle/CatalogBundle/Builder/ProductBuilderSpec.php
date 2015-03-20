@@ -3,21 +3,17 @@
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
-use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -31,11 +27,10 @@ class ProductBuilderSpec extends ObjectBehavior
     function let(
         AttributeRepositoryInterface $attributeRepository,
         FamilyRepositoryInterface $familyRepository,
-        ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
         CurrencyRepositoryInterface $currencyRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AttributeValuesResolver $valuesResolver
     ) {
         $entityConfig = array(
             'product' => self::PRODUCT_CLASS,
@@ -47,11 +42,10 @@ class ProductBuilderSpec extends ObjectBehavior
         $this->beConstructedWith(
             $attributeRepository,
             $familyRepository,
-            $channelRepository,
-            $localeRepository,
             $currencyRepository,
             $assocTypeRepository,
             $eventDispatcher,
+            $valuesResolver,
             $entityConfig
         );
     }
@@ -83,52 +77,74 @@ class ProductBuilderSpec extends ObjectBehavior
     }
 
     function it_adds_missing_product_values_from_family_on_new_product(
+        $valuesResolver,
         FamilyInterface $family,
         ProductInterface $product,
         AttributeInterface $sku,
         AttributeInterface $name,
         AttributeInterface $desc,
-        $localeRepository,
-        LocaleInterface $fr,
-        LocaleInterface $en,
-        $channelRepository,
-        ChannelInterface $ecom,
-        ChannelInterface $print,
         ProductValueInterface $skuValue
     ) {
-        // get expected attributes
-        $product->getAttributes()->willReturn([$sku]);
-        $product->getFamily()->willReturn($family);
-        $family->getAttributes()->willReturn([$sku, $name, $desc]);
-
-        // get expected values
         $sku->getCode()->willReturn('sku');
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
-        $sku->isLocaleSpecific()->willReturn(false);
 
         $name->getCode()->willReturn('name');
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $name->isLocalizable()->willReturn(true);
         $name->isScopable()->willReturn(false);
-        $name->isLocaleSpecific()->willReturn(false);
 
-        $desc->getCode()->willReturn('desc');
+        $desc->getCode()->willReturn('description');
         $desc->getAttributeType()->willReturn('pim_catalog_text');
         $desc->isLocalizable()->willReturn(true);
         $desc->isScopable()->willReturn(true);
-        $desc->isLocaleSpecific()->willReturn(false);
 
-        $fr->getCode()->willReturn('fr_FR');
-        $en->getCode()->willReturn('fr_FR');
-        $localeRepository->getActivatedLocales()->willReturn([$fr, $en]);
+        // get expected attributes
+        $product->getAttributes()->willReturn([$sku]);
+        $family->getAttributes()->willReturn([$sku, $name, $desc]);
+        $product->getFamily()->willReturn($family);
 
-        $ecom->getCode()->willReturn('ecom');
-        $ecom->getLocales()->willReturn([$en, $fr]);
-        $print->getCode()->willReturn('print');
-        $print->getLocales()->willReturn([$en, $fr]);
-        $channelRepository->findAll()->willReturn([$ecom, $print]);
+        // get eligible values
+        $valuesResolver->getEligibleValues(['sku' => $sku, 'name' => $name, 'description' => $desc])->willReturn(
+            [
+                [
+                    'attribute' => 'sku',
+                    'locale' => null,
+                    'scope' => null
+                ],
+                [
+                    'attribute' => 'name',
+                    'locale' => 'fr_FR',
+                    'scope' => null
+                ],
+                [
+                    'attribute' => 'name',
+                    'locale' => 'en_US',
+                    'scope' => null
+                ],
+                [
+                    'attribute' => 'description',
+                    'locale' => 'en_US',
+                    'scope' => 'ecommerce'
+                ],
+                [
+                    'attribute' => 'description',
+                    'locale' => 'fr_FR',
+                    'scope' => 'ecommerce'
+                ],
+                [
+                    'attribute' => 'description',
+                    'locale' => 'en_US',
+                    'scope' => 'print'
+                ],
+                [
+                    'attribute' => 'description',
+                    'locale' => 'fr_FR',
+                    'scope' => 'print'
+                ]
+            ]
+        );
 
         // get existing values
         $skuValue->getAttribute()->willReturn($sku);
