@@ -30,10 +30,16 @@ class ORMProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_has_a_channel()
+    function it_is_configurable(AbstractQuery $query)
     {
+        $this->getChannel()->shouldReturn(null);
+        $this->getQuery()->shouldReturn(null);
+
         $this->setChannel('mobile');
+        $this->setQuery($query);
+
         $this->getChannel()->shouldReturn('mobile');
+        $this->getQuery()->shouldReturn($query);
     }
 
     function it_reads_products_one_by_one(
