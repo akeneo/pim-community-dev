@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
@@ -22,8 +23,8 @@ use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
  */
 class CsvProductReader extends CsvReader
 {
-    /** @var array Media attribute codes */
-    protected $mediaAttributes = array();
+    /** @var string[] Media attribute codes */
+    protected $mediaAttributes;
 
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
@@ -36,6 +37,9 @@ class CsvProductReader extends CsvReader
 
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
+
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /**
      * Constructor
@@ -55,14 +59,11 @@ class CsvProductReader extends CsvReader
         $localeClass,
         $currencyClass
     ) {
-        $this->fieldNameBuilder = $fieldNameBuilder;
-
-        $attributeRepository = $entityManager->getRepository($attributeClass);
-        $this->mediaAttributes = $attributeRepository->findMediaAttributeCodes();
-
-        $this->channelRepository = $entityManager->getRepository($channelClass);
-        $this->localeRepository = $entityManager->getRepository($localeClass);
-        $this->currencyRepository = $entityManager->getRepository($currencyClass);
+        $this->fieldNameBuilder    = $fieldNameBuilder;
+        $this->attributeRepository = $entityManager->getRepository($attributeClass);
+        $this->channelRepository   = $entityManager->getRepository($channelClass);
+        $this->localeRepository    = $entityManager->getRepository($localeClass);
+        $this->currencyRepository  = $entityManager->getRepository($currencyClass);
     }
 
     /**
@@ -82,10 +83,14 @@ class CsvProductReader extends CsvReader
     /**
      * Get the media attributes
      *
-     * @return array
+     * @return string[]
      */
     public function getMediaAttributes()
     {
+        if (null === $this->mediaAttributes) {
+            $this->mediaAttributes = $this->attributeRepository->findMediaAttributeCodes();
+        }
+
         return $this->mediaAttributes;
     }
 
@@ -130,7 +135,7 @@ class CsvProductReader extends CsvReader
             $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
             $value = trim($value);
 
-            if (in_array($attributeCode, $this->mediaAttributes) && !empty($value)) {
+            if (in_array($attributeCode, $this->getMediaAttributes()) && !empty($value)) {
                 $data[$code] = dirname($this->filePath) . '/' . $value;
             }
         }

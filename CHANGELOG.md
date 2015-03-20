@@ -8,6 +8,7 @@
 - PIM-3965: Fix groups without labels are not displayed in the product grid cell
 - PIM-3971: Cache results for Select2 on product edit form
 - PIM-4017: Fix save an empty media attribute with variant group
+- PIM-3931: Remove db query from CsvReader constructor
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber` to include `Oro\Bundle\SecurityBundle\SecurityFacade`and `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
