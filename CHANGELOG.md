@@ -1,3 +1,8 @@
+# 1.2.x
+
+## Bug fixes
+- PIM-3602: Today button is not working
+
 # 1.2.33 (2015-03-16)
 
 # 1.2.32 (2015-03-11)
