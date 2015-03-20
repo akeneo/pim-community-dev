@@ -562,10 +562,6 @@ class CategoryProcessorSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
-        $this->process($data)->shouldReturn([
-            'child_category' => $childCategory,
-            'parent_category' => $parentCategory,
-            'grand_parent_category' => $grandParentCategory
-        ]);
+        $this->process($data)->shouldReturn([]);
     }
 }
