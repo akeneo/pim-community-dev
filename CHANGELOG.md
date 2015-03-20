@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3926: Set explicit message for 403 error
+
 # 1.3.5 (2015-03-19)
 
 ## Bug fixes
