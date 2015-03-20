@@ -3,7 +3,11 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Product Flat Converter
@@ -17,14 +21,31 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var array */
+    protected $optionalAttributeFields;
+
+    /** @var array */
+    protected $optionalAssociationFields;
+
     /**
-     * Constructor
-     *
      * @param FieldNameBuilder $fieldNameBuilder
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductBuilderInterface $productBuilder
      */
-    public function __construct(FieldNameBuilder $fieldNameBuilder)
-    {
+    public function __construct(
+        FieldNameBuilder $fieldNameBuilder,
+        AttributeRepositoryInterface $attributeRepository,
+        ProductBuilderInterface $productBuilder
+    ) {
         $this->fieldNameBuilder = $fieldNameBuilder;
+        $this->attributeRepository = $attributeRepository;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -102,15 +123,18 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *      }
      * }
      *
-     * @param array $product Representing a flat product
+     * @param array $item Representing a flat product
      *
-     * @return array structured product
+     * @return array structured $item
      */
-    public function convert(array $product)
+    public function convert(array $item)
     {
+        $optionResolver = $this->createOptionsResolver();
+        $resolvedItem = $optionResolver->resolve($item);
+
         $result = [];
-        foreach ($product as $column => $value) {
-            $value  = $this->convertToStructuredField($column, $value);
+        foreach ($resolvedItem as $column => $value) {
+            $value = $this->convertToStructuredField($column, $value);
             $result = $this->addFieldToCollection($result, $value);
 
             // TODO: filter empty values, for instance a simple select with "" should not be kept as an update
@@ -299,5 +323,86 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         }
 
         return $collection;
+    }
+
+    /**
+     * @return OptionsResolverInterface
+     */
+    protected function createOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+
+        $required = ['family', 'enabled', 'categories', 'associations', 'groups'];
+        $defaults = ['sort_order' => 1];
+        $allowedTypes = [
+            'family' => 'string',
+            'enabled' => 'bool',
+            'categories' => 'string',
+            'associations' => 'string',
+            'groups' => 'string'
+        ];
+        $optional = array_merge($this->getOptionalAttributeFields(), $this->getOptionalAssociationFields());
+
+
+        $resolver->setRequired($required);
+        $resolver->setOptional($optional);
+        $resolver->setDefaults($defaults);
+        $resolver->setAllowedTypes($allowedTypes);
+        $booleanNormalizer = function ($options, $value) {
+            return (int) $value;
+        };
+        $resolver->setNormalizers(['enabled' => $booleanNormalizer]);
+
+        return $resolver;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptionalAttributeFields()
+    {
+        if (empty($this->optionalAttributeFields)) {
+            $attributes = $this->attributeRepository->findAll();
+            $values = $this->productBuilder->getExpectedValues($attributes);
+            foreach ($values as $value) {
+                if ($value['locale'] !== null && $value['scope'] !== null) {
+                    $this->optionalAttributeFields[] = sprintf(
+                        '%s-%s-%s',
+                        $value['attribute'],
+                        $value['locale'],
+                        $value['scope']
+                    );
+                } elseif ($value['locale'] !== null) {
+                    $this->optionalAttributeFields[] = sprintf(
+                        '%s-%s',
+                        $value['attribute'],
+                        $value['locale']
+                    );
+                } elseif ($value['scope'] !== null) {
+                    $this->optionalAttributeFields[] = sprintf(
+                        '%s-%s',
+                        $value['attribute'],
+                        $value['scope']
+                    );
+                } else {
+                    $this->optionalAttributeFields[] = $value['attribute'];
+                }
+
+            }
+        }
+
+        return $this->optionalAttributeFields;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptionalAssociationFields()
+    {
+        if (empty($this->optionalAssociationFields)) {
+            $this->optionalAssociationFields = $this->fieldNameBuilder->getAssociationFieldNames();
+        }
+
+        return $this->optionalAssociationFields;
     }
 }
