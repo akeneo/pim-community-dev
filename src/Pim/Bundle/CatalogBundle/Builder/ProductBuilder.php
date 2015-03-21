@@ -114,7 +114,7 @@ class ProductBuilder implements ProductBuilderInterface
     public function addMissingProductValues(ProductInterface $product)
     {
         $attributes     = $this->getExpectedAttributes($product);
-        $requiredValues = $this->valuesResolver->getEligibleValues($attributes);
+        $requiredValues = $this->valuesResolver->resolveEligibleValues($attributes);
         $existingValues = $this->getExistingValues($product);
 
         $missingValues = array_filter(
@@ -155,7 +155,7 @@ class ProductBuilder implements ProductBuilderInterface
      */
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute)
     {
-        $requiredValues = $this->valuesResolver->getEligibleValues(array($attribute));
+        $requiredValues = $this->valuesResolver->resolveEligibleValues([$attribute]);
 
         foreach ($requiredValues as $value) {
             $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);

@@ -70,7 +70,7 @@ class AttributeValuesResolverSpec extends ObjectBehavior
         $print->getLocales()->willReturn([$en, $fr]);
         $channelRepository->findAll()->willReturn([$ecom, $print]);
 
-        $this->getEligibleValues([$sku, $name, $desc, $tax])->shouldReturn(
+        $this->resolveEligibleValues([$sku, $name, $desc, $tax])->shouldReturn(
             [
                 [
                     'attribute' => 'sku',
