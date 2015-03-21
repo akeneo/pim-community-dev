@@ -106,7 +106,7 @@ class ProductBuilderSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
 
         // get eligible values
-        $valuesResolver->getEligibleValues(['sku' => $sku, 'name' => $name, 'description' => $desc])->willReturn(
+        $valuesResolver->resolveEligibleValues(['sku' => $sku, 'name' => $name, 'description' => $desc])->willReturn(
             [
                 [
                     'attribute' => 'sku',
