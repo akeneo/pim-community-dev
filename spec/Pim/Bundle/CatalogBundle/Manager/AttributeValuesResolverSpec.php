@@ -72,41 +72,49 @@ class AttributeValuesResolverSpec extends ObjectBehavior
             [
                 [
                     'attribute' => 'sku',
+                    'type' => 'pim_catalog_identifier',
                     'locale' => null,
                     'scope' => null
                 ],
                 [
                     'attribute' => 'name',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'fr_FR',
                     'scope' => null
                 ],
                 [
                     'attribute' => 'name',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'en_US',
                     'scope' => null
                 ],
                 [
                     'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'en_US',
                     'scope' => 'ecommerce'
                 ],
                 [
                     'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'fr_FR',
                     'scope' => 'ecommerce'
                 ],
                 [
                     'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'en_US',
                     'scope' => 'print'
                 ],
                 [
                     'attribute' => 'description',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'fr_FR',
                     'scope' => 'print'
                 ],
                 [
                     'attribute' => 'tax',
+                    'type' => 'pim_catalog_text',
                     'locale' => 'fr_FR',
                     'scope' => null
                 ]
