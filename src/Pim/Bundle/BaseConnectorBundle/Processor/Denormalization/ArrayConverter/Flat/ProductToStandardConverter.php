@@ -4,7 +4,9 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverte
 
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -24,8 +26,11 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    /** @var CurrencyRepositoryInterface */
+    protected $currencyRepository;
+
+    /** @var AttributeValuesResolver */
+    protected $valuesResolver;
 
     /** @var array */
     protected $optionalAttributeFields;
@@ -34,18 +39,21 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     protected $optionalAssociationFields;
 
     /**
-     * @param FieldNameBuilder $fieldNameBuilder
+     * @param FieldNameBuilder             $fieldNameBuilder
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductBuilderInterface $productBuilder
+     * @param CurrencyRepositoryInterface  $currencyRepository
+     * @param AttributeValuesResolver      $valuesResolver
      */
     public function __construct(
         FieldNameBuilder $fieldNameBuilder,
         AttributeRepositoryInterface $attributeRepository,
-        ProductBuilderInterface $productBuilder
+        CurrencyRepositoryInterface  $currencyRepository,
+        AttributeValuesResolver $valuesResolver
     ) {
         $this->fieldNameBuilder = $fieldNameBuilder;
         $this->attributeRepository = $attributeRepository;
-        $this->productBuilder = $productBuilder;
+        $this->currencyRepository = $currencyRepository;
+        $this->valuesResolver = $valuesResolver;
     }
 
     /**
@@ -184,7 +192,6 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     protected function formatValue($column, $value)
     {
         $fieldNameInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($column);
-
         $data = $this->formatValueData($value, $fieldNameInfos);
 
         return [$fieldNameInfos['attribute']->getCode() => [[
@@ -332,24 +339,22 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     {
         $resolver = new OptionsResolver();
 
-        $required = ['family', 'enabled', 'categories', 'associations', 'groups'];
-        $defaults = ['sort_order' => 1];
+        $required = ['family', 'enabled', 'categories', 'groups'];
+        $defaults = ['enabled' => 1];
         $allowedTypes = [
             'family' => 'string',
             'enabled' => 'bool',
             'categories' => 'string',
-            'associations' => 'string',
             'groups' => 'string'
         ];
         $optional = array_merge($this->getOptionalAttributeFields(), $this->getOptionalAssociationFields());
-
 
         $resolver->setRequired($required);
         $resolver->setOptional($optional);
         $resolver->setDefaults($defaults);
         $resolver->setAllowedTypes($allowedTypes);
         $booleanNormalizer = function ($options, $value) {
-            return (int) $value;
+            return (bool) $value;
         };
         $resolver->setNormalizers(['enabled' => $booleanNormalizer]);
 
@@ -358,36 +363,52 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * @return array
+     *
+     * TODO: extract in a FieldNameBuilder / refactor the existing one
      */
     protected function getOptionalAttributeFields()
     {
         if (empty($this->optionalAttributeFields)) {
             $attributes = $this->attributeRepository->findAll();
-            $values = $this->productBuilder->getExpectedValues($attributes);
+            $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
+            $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
                 if ($value['locale'] !== null && $value['scope'] !== null) {
-                    $this->optionalAttributeFields[] = sprintf(
+                    $field = sprintf(
                         '%s-%s-%s',
                         $value['attribute'],
                         $value['locale'],
                         $value['scope']
                     );
                 } elseif ($value['locale'] !== null) {
-                    $this->optionalAttributeFields[] = sprintf(
+                    $field = sprintf(
                         '%s-%s',
                         $value['attribute'],
                         $value['locale']
                     );
                 } elseif ($value['scope'] !== null) {
-                    $this->optionalAttributeFields[] = sprintf(
+                    $field = sprintf(
                         '%s-%s',
                         $value['attribute'],
                         $value['scope']
                     );
                 } else {
-                    $this->optionalAttributeFields[] = $value['attribute'];
+                    $field = $value['attribute'];
                 }
 
+                if ('pim_catalog_price_collection' === $value['type']) {
+                    $this->optionalAttributeFields[] = $field;
+                    foreach ($currencyCodes as $currencyCode) {
+                        $currencyField = sprintf('%s-%s', $field, $currencyCode);
+                        $this->optionalAttributeFields[] = $currencyField;
+                    }
+                } elseif ('pim_catalog_metric' === $value['type']) {
+                    $this->optionalAttributeFields[] = $field;
+                    $metricField = sprintf('%s-%s', $field, 'unit');
+                    $this->optionalAttributeFields[] = $metricField;
+                } else {
+                    $this->optionalAttributeFields[] = $field;
+                }
             }
         }
 
@@ -396,6 +417,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * @return array
+     *
+     * TODO: extract in a FieldNameBuilder / refactor the existing one
      */
     protected function getOptionalAssociationFields()
     {
