@@ -658,6 +658,10 @@ span.link-label {
     padding: 8px 0;
     .display-flex();
     justify-content: flex-end;
+
+    .locale-switcher, .scope-switcher {
+      align-self: flex-start;
+    }
   }
 
   .attribute-edit-actions {
@@ -672,6 +676,10 @@ span.link-label {
 }
 
 .comparision-mode {
+  .comparision-elements-container {
+    display: block;
+  }
+
   .attribute-edit-actions, .attribute-copy-actions {
     max-width: @max-field-width;
   }
@@ -705,7 +713,7 @@ span.link-label {
   }
 
   .tabs-left > .nav-tabs a {
-    padding: 8px 25px 8px 15px;
+    padding: 8px 15px 8px 15px;
   }
 
   & > header {
@@ -925,6 +933,8 @@ span.link-label {
 }
 
 .comparision-elements-container {
+  display: none;
+
   .copy-container {
     .display-flex();
 
@@ -1097,6 +1107,21 @@ span.link-label {
   padding: 5px 5px 3px 5px;
   border: 1px solid #e5e5e5;
   border-radius: 2px;
+}
+
+.attribute-group-selector {
+  li > a {
+    .display-flex();
+
+    .attribute-group-label {
+      .flex(1);
+    }
+  }
+
+  .invalid-badge {
+    background-color: #d0021b;
+    margin-left: 2px;
+  }
 }
 
 .validation-errors {

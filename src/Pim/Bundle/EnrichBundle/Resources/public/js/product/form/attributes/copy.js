@@ -47,7 +47,7 @@ define(
                 if (this.copying) {
                     _.each(this.copyFields, _.bind(function (copyField, code) {
                         var field = this.getParent().renderedFields[code];
-                        if (field) {
+                        if (field && 'edit' === field.getEditMode()) {
                             copyField.setField(field);
                             copyField.field.addElement('comparision', 'copy', copyField.render().$el);
                         }
@@ -68,7 +68,7 @@ define(
                     _.each(this.getData().values, _.bind(function (values, code) {
                         var attribute = attributes[code];
 
-                        if (attribute.scopable || attribute.localizable) {
+                        if ((attribute.scopable || attribute.localizable)) {
                             var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
 
                             var copyField = new CopyField();
@@ -92,7 +92,7 @@ define(
             },
             copy: function(){
                 _.each(this.copyFields, function (copyField) {
-                    if (copyField.field) {
+                    if (copyField.field && 'edit' === field.getEditMode()) {
                         copyField.field.setCurrentValue(copyField.data);
                         copyField.selected = false;
                     }
