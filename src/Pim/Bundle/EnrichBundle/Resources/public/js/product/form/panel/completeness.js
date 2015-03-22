@@ -26,7 +26,6 @@ define(
                     CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id).done(_.bind(function(completenesses) {
                         this.$el.html(
                             this.template({
-                                state: this.getRoot().state.toJSON(),
                                 completenesses: completenesses,
                                 i18n: i18n
                             })

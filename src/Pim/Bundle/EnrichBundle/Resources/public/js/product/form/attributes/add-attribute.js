@@ -15,7 +15,7 @@ define([
             state: null,
             product: null,
             events: {
-                'click a': 'addAttribute'
+                'click li a': 'addAttribute'
             },
             initialize: function()
             {

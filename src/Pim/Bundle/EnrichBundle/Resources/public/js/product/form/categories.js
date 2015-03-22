@@ -11,7 +11,7 @@ define(
     function(_, Backbone, BaseForm, formTemplate, TreeAssociate) {
         return BaseForm.extend({
             template: _.template(formTemplate),
-            className: 'tab-pane',
+            className: 'tab-pane active',
             id: 'product-categories',
             events: {
                 'click .nav-tabs li': 'changeTree',
@@ -31,8 +31,6 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                this.$el.appendTo(this.getRoot().$('.form-container .tab-pane[data-tab="categories"]'));
-
                 if (this.treeAssociate) {
                     this.delegateEvents();
                     return;
@@ -41,7 +39,7 @@ define(
                 this.$el.html(
                     this.template({
                         product: this.getData(),
-                        locale: this.getRoot().state.get('locale'),
+                        locale: 'en_US',
                         state: this.state.toJSON(),
                         trees: this.loadTrees()
                     })

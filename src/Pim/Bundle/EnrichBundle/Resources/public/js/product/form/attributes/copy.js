@@ -39,7 +39,7 @@ define(
 
                 this.$el.html(
                     this.template({
-                        state: this.getRoot().state.toJSON(),
+                        state: this.getParent().state.toJSON(),
                         'copying': this.copying
                     })
                 );

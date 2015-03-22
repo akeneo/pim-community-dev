@@ -43,11 +43,11 @@ define(
                         'code': 'panels',
                         'module': 'pim/product-edit-form/panel/panels',
                         'zone': 'container',
-                        'insertAction': 'append'
+                        'insertAction': 'after'
                     }
                 ],
                 'zones': {
-                    'container': '.form-container'
+                    'container': '.tab-container'
                 }
             },
             'pim/product-edit-form/attributes': {
@@ -86,6 +86,12 @@ define(
                         'code': 'validation',
                         'module': 'pim/product-edit-form/attributes/validation',
                         'zone': 'header',
+                        'insertAction': 'append'
+                    },
+                    {
+                        'code': 'variant-group',
+                        'module': 'pim/product-edit-form/attributes/variant-group',
+                        'zone': 'attributes',
                         'insertAction': 'append'
                     }
                 ],

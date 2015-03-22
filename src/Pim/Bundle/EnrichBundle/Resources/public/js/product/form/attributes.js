@@ -30,26 +30,22 @@ define(
         var FormView = BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tabbable tabs-left product-attributes',
+            state: null,
             events: {
-                'click .nav-tabs li': 'changeAttributeGroup',
-                'click .add-attribute li a': 'addAttribute',
                 'click .remove-attribute': 'removeAttribute'
             },
             renderedFields: {},
             initialize: function () {
-                this.config = new Backbone.Model({
-                    'attributes': []
-                });
                 FieldManager.fields = {};
-
-                this.listenTo(this.config, 'change', this.render);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
                 this.getRoot().addTab('attributes', 'Attributes');
+                this.state = new Backbone.Model();
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
+                this.listenTo(this.state, 'change', this.render);
                 mediator.on('post_save', _.bind(this.postSave, this));
                 mediator.on('post_validation_error', _.bind(this.postValidationError, this));
 
@@ -63,58 +59,48 @@ define(
                 }
 
                 this.getConfig().done(_.bind(function() {
-                    var product = this.getData();
+                    this.$el.html(this.template({}));
 
-                    this.$el.html(this.template({
-                        config: this.config.toJSON(),
-                        state: this.getRoot().state.toJSON()
-                    }));
+                    ConfigManager.getEntityList('families').done(_.bind(function(families) {
+                        var product = this.getData();
+                        var productValues = AttributeGroupManager.getAttributeGroupValues(
+                            product,
+                            this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
+                        );
 
-                    var productValues = AttributeGroupManager.getAttributeGroupValues(
-                        product,
-                        this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
-                    );
+                        var fieldPromisses = [];
+                        _.each(productValues, _.bind(function (productValue, attributeCode) {
+                            fieldPromisses.push(this.renderField(product, attributeCode, productValue, families));
+                        }, this));
 
-                    var fieldPromisses = [];
-                    _.each(productValues, _.bind(function (productValue, attributeCode) {
-                        fieldPromisses.push(this.renderField(product, attributeCode, productValue));
-                    }, this));
+                        $.when.apply($, fieldPromisses).done(_.bind(function() {
+                            var $productValuesPanel = this.$('.product-values');
 
-                    $.when.apply($, fieldPromisses).done(_.bind(function() {
-                        var $productValuesPanel = this.$('#product-values');
-
-                        this.renderedFields = {};
-                        _.each(arguments, _.bind(function(field) {
-                            field.render();
-                            this.renderedFields[field.attribute.code] = field;
-                            $productValuesPanel.append(field.$el);
+                            this.renderedFields = {};
+                            _.each(arguments, _.bind(function(field) {
+                                field.render();
+                                this.renderedFields[field.attribute.code] = field;
+                                $productValuesPanel.append(field.$el);
+                            }, this));
                         }, this));
                     }, this));
-
-                    this.$el.appendTo(this.getRoot().$('.form-container .tab-pane[data-tab="attributes"]'));
-
                     this.delegateEvents();
-
-                    $('#get-data').off('click').on('click', _.bind(this.getValuesData, this));
 
                     this.renderExtensions();
                 }, this));
 
                 return this;
             },
-            renderField: function(product, attributeCode, values) {
+            renderField: function(product, attributeCode, values, families) {
                 var promise = $.Deferred();
 
                 FieldManager.getField(attributeCode).done(_.bind(function(field) {
                     field.setContext({
-                        'locale': this.getRoot().state.get('locale'),
-                        'scope': this.getRoot().state.get('scope'),
-                        'optional': AttributeManager.isOptional(attributeCode, product, this.config.get('families'))
+                        'locale': this.state.get('locale'),
+                        'scope': this.state.get('scope'),
+                        'optional': AttributeManager.isOptional(attributeCode, product, families)
                     });
-                    field.setConfig(this.config.toJSON());
                     field.setValues(values);
-
-                    //this.addVariantInfos(product, field);
 
                     promise.resolve(field);
                 }, this));
@@ -127,37 +113,22 @@ define(
 
                 var product = this.getData();
 
-                promises.push(this.loadConfiguration());
+                ConfigManager.getConfig();
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
                 promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
-                promises.push(AttributeGroupManager.getAttributeGroupsForProduct(product));
 
                 $.when.apply($, promises).done(_.bind(function() {
-                    configurationPromise.resolve(this.config);
+                    configurationPromise.resolve();
                 }, this));
 
                 return configurationPromise.promise();
             },
-            loadConfiguration: function () {
-                var promise = $.Deferred();
-
-                ConfigManager.getConfig().done(_.bind(function(config) {
-                    this.config.set(config, {silent: true});
-
-                    promise.resolve();
-                }, this));
-
-                return promise.promise();
-            },
-            changeAttributeGroup: function (event) {
-                this.config.set('attributeGroup', event.currentTarget.dataset.attributeGroup);
-            },
             addAttribute: function(attributeCode) {
                 var product = this.getData();
 
-                this.extensions['attribute-group-selector'].setCurrent(
-                    this.config.get('attributes')[attributeCode].group
-                );
+                ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function(attribute) {
+                    this.extensions['attribute-group-selector'].setCurrent(attribute.group);
+                }, this));
 
                 if (product.values[attributeCode]) {
                     this.getRoot().model.trigger('change');
@@ -171,22 +142,6 @@ define(
                 this.setData(product);
                 this.getRoot().model.trigger('change');
             },
-            // addVariantInfos: function(product, field) {
-            //     if (!product.variant_group) {
-            //         return;
-            //     }
-            //     VariantGroupManager.getVariantGroup(product.variant_group).done(_.bind(function(variantGroup) {
-            //         if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
-
-            //             var $element = $(
-            //                 '<div><i class="icon-lock"></i>Updated by variant group: ' +
-            //                     variantGroup.label[this.getRoot().state.get('locale')] +
-            //                 '</div>'
-            //             );
-            //             field.addElement('footer', 'coming_from_variant_group', $element);
-            //         }
-            //     }, this));
-            // },
             removeAttribute: function(event) {
                 var attributeCode = event.currentTarget.dataset.attribute;
                 var product = this.getData();
@@ -207,16 +162,16 @@ define(
                 return this.getData().values;
             },
             setScope: function(scope) {
-                this.getRoot().state.set('scope', scope);
+                this.state.set('scope', scope);
             },
             getScope: function() {
-                return this.getRoot().state.get('scope');
+                return this.state.get('scope');
             },
             setLocale: function(locale) {
-                this.getRoot().state.set('locale', locale);
+                this.state.set('locale', locale);
             },
             getLocale: function() {
-                return this.getRoot().state.get('locale');
+                return this.state.get('locale');
             },
             postValidationError: function() {
                 this.extensions['attribute-group-selector'].removeBadges();

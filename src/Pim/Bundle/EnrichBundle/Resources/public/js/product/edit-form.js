@@ -17,13 +17,6 @@ define(
             template: _.template(template),
             initialize: function () {
                 this.model = new Backbone.Model();
-                this.state = new Backbone.Model();
-
-                //Should be given by conf
-                this.state.set('locale', 'en_US');
-                this.state.set('scope', 'ecommerce');
-
-                this.listenTo(this.state, 'change', this.render);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -34,7 +27,6 @@ define(
 
                 this.$el.html(
                     this.template({
-                        state: this.state.toJSON(),
                         product: this.getData()
                     })
                 );

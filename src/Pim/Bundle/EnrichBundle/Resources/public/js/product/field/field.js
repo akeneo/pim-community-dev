@@ -17,7 +17,6 @@ define([
         attribute: null,
         fieldType: 'text',
         context: {},
-        config: {},
         model: FieldModel,
         template: _.template(fieldTemplate),
         elements: {},
@@ -30,46 +29,51 @@ define([
             this.model        = new FieldModel();
             this.elements     = {};
             this.context      = {};
-            this.config       = {};
 
             return this;
         },
         render: function()
         {
-            this.$el.empty();
-            var value = this.getCurrentValue();
-            var templateContext = {
-                type: this.fieldType,
-                label: this.attribute.label[this.context.locale],
-                value: value,
-                config: this.config,
-                context: this.context,
-                attribute: this.attribute,
-                info: this.elements,
-                editMode: this.getEditMode(),
-                i18n: i18n
-            };
+            this.getTemplateContext().done(_.bind(function(templateContext) {
+                this.$el.empty();
 
-            this.$el.html(this.template(templateContext));
-            this.$('.form-field.edit .field-input').append(this.renderInput(templateContext));
+                this.$el.html(this.template(templateContext));
+                this.$('.form-field:not(".view") .field-input').append(this.renderInput(templateContext));
 
-            _.each(this.elements, _.bind(function (elements, position) {
-                var $container = this.$('.' + position + '-elements-container');
-                $container.empty();
-                _.each(elements, _.bind(function(element) {
-                    if (typeof element.render === 'function') {
-                        $container.append(element.render().$el);
-                    } else {
-                        $container.append(element);
-                    }
+                _.each(this.elements, _.bind(function (elements, position) {
+                    var $container = this.$('.' + position + '-elements-container');
+                    $container.empty();
+                    _.each(elements, _.bind(function(element) {
+                        if (typeof element.render === 'function') {
+                            $container.append(element.render().$el);
+                        } else {
+                            $container.append(element);
+                        }
+                    }, this));
                 }, this));
+                this.delegateEvents();
             }, this));
-            this.delegateEvents();
 
             return this;
         },
         renderInput: function() {
             throw new Error('You should implement your field template');
+        },
+        getTemplateContext: function() {
+            var promise = $.Deferred();
+
+            promise.resolve({
+                type: this.fieldType,
+                label: this.attribute.label[this.context.locale],
+                value: this.getCurrentValue(),
+                context: this.context,
+                attribute: this.attribute,
+                info: this.elements,
+                editMode: this.getEditMode(),
+                i18n: i18n
+            });
+
+            return promise.promise();
         },
         updateModel: function() {
             this.valid = true;
@@ -98,10 +102,6 @@ define([
         setContext: function(context)
         {
             this.context = context;
-        },
-        setConfig: function(config)
-        {
-            this.config = config;
         },
         addElement: function(position, code, element) {
             if (!this.elements[position]) {
