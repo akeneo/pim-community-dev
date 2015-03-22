@@ -74,7 +74,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                 throw new InvalidItemException(
                     $e->getMessage(),
                     [
-                        'item'            => $product->getOriginalProduct()->getIdentifier()->getData(),
+                        'item'            => $product->getIdentifier()->getData(),
                         'uploadDirectory' => $this->uploadDirectory,
                     ]
                 );

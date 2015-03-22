@@ -86,7 +86,7 @@ define(
                     select_multiple_modifier: false
                 }
             };
-            if ($el.attr('data-movable')) {
+            if ($el.attr('data-editable')) {
                 this.config.plugins.push('dnd');
             }
             if ($el.attr('data-creatable')) {
@@ -121,6 +121,9 @@ define(
                         });
                     });
                 }).bind('select_node.jstree', function (e, data) {
+                    if (!$el.attr('data-editable')) {
+                        return;
+                    }
                     var id  = data.rslt.obj.attr('id').replace('node_', ''),
                         url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
                     if ('#url=' + url === Backbone.history.location.hash || preventFirst) {

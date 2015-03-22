@@ -33,7 +33,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     protected $cacheClearer;
 
     /** @var ProductTemplateApplierInterface */
-    protected $productTemplateApplier;
+    protected $productTplApplier;
 
     /** @var boolean */
     protected $copyValues = true;
@@ -41,16 +41,16 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * @param SaverInterface                  $groupSaver
      * @param CacheClearer                    $cacheClearer
-     * @param ProductTemplateApplierInterface $productTemplateApplier
+     * @param ProductTemplateApplierInterface $productTplApplier
      */
     public function __construct(
         SaverInterface $groupSaver,
         CacheClearer $cacheClearer,
-        ProductTemplateApplierInterface $productTemplateApplier
+        ProductTemplateApplierInterface $productTplApplier
     ) {
         $this->groupSaver   = $groupSaver;
         $this->cacheClearer = $cacheClearer;
-        $this->productTemplateApplier = $productTemplateApplier;
+        $this->productTplApplier = $productTplApplier;
     }
 
     /**
@@ -133,7 +133,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
         $template = $variantGroup->getProductTemplate();
         $products = $variantGroup->getProducts();
         if ($template && count($template->getValuesData()) > 0 && count($products) > 0) {
-            $skippedMessages = $this->productTemplateApplier->apply($template, $products->toArray());
+            $skippedMessages = $this->productTplApplier->apply($template, $products->toArray());
             $nbSkipped = count($skippedMessages);
             $nbUpdated = count($products) - $nbSkipped;
             $this->incrementUpdatedProductsCount($nbUpdated);

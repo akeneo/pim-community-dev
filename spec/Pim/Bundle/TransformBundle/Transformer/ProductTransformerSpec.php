@@ -8,6 +8,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -26,25 +28,32 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ProductTransformerSpec extends ObjectBehavior
 {
+    const PRODUCT_CLASS = 'Pim\Bundle\CatalogBundle\Model\Product';
+    const VALUE_CLASS   = 'Pim\Bundle\CatalogBundle\Model\ProductValue';
+
     function let(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
-        ProductManager $productManager,
         AttributeCache $attributeCache,
         CachedReader $associationReader,
-        ProductTemplateUpdaterInterface $templateUpdater
+        ProductTemplateUpdaterInterface $templateUpdater,
+        ProductBuilderInterface $productBuilder,
+        ProductRepositoryInterface $productRepository
     ) {
         $this->beConstructedWith(
             $doctrine,
             $propertyAccessor,
             $guesser,
             $columnInfoTransformer,
-            $productManager,
             $attributeCache,
             $associationReader,
-            $templateUpdater
+            $templateUpdater,
+            $productBuilder,
+            $productRepository,
+            self::PRODUCT_CLASS,
+            self::VALUE_CLASS
         );
     }
 
@@ -54,13 +63,13 @@ class ProductTransformerSpec extends ObjectBehavior
     }
 
     function it_transform_an_existing_product(
-        $productManager,
         $guesser,
         $columnInfoTransformer,
         $attributeCache,
         $doctrine,
         $associationReader,
         $templateUpdater,
+        $productRepository,
         AttributeInterface $attributeSku,
         AttributeInterface $attributeDesc,
         ColumnInfo $columnInfoSku,
@@ -85,7 +94,6 @@ class ProductTransformerSpec extends ObjectBehavior
         ProductTemplateInterface $productTemplate
     ) {
         // initialize attributes
-        $productManager->getProductName()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
         $columnInfoTransformer
             ->transform(
                 'Pim\Bundle\CatalogBundle\Model\Product',
@@ -175,7 +183,6 @@ class ProductTransformerSpec extends ObjectBehavior
         $columnInfoDesc->setAttribute($attributeDesc)->shouldBeCalled();
 
         // find entity
-        $productManager->getProductRepository()->willReturn($productRepository);
         $attributeSku->getCode()->willReturn('sku');
         $productRepository->findOneByIdentifier('AKNTS')->willReturn($product);
 
@@ -219,8 +226,6 @@ class ProductTransformerSpec extends ObjectBehavior
         // set product values
         $attributeCache->getRequiredAttributeCodes($product)
             ->willReturn(['sku', 'description']);
-        $productManager->getProductValueName()
-            ->willReturn('Pim\Bundle\CatalogBundle\Model\ProductValue');
         $doctrine->getManagerForClass('Pim\Bundle\CatalogBundle\Model\ProductValue')
             ->willReturn($objectManager);
         $objectManager->getClassMetadata('Pim\Bundle\CatalogBundle\Model\ProductValue')

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Update many products at a time
+ * Provides basic operations to update a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -14,7 +14,50 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 interface ProductUpdaterInterface
 {
     /**
-     * Set the data in values of many products
+     * Sets a data in a product field (erase the current data)
+     *
+     * @param ProductInterface $product The product to update
+     * @param string           $field   The field to update
+     * @param mixed            $data    The data to set
+     * @param array            $options Options to pass to the setter
+     *
+     * @return ProductUpdaterInterface
+     */
+    public function setData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
+     * Adds a data in a product field (complete the current data)
+     *
+     * @param ProductInterface $product The product to update
+     * @param string           $field   The field to update
+     * @param mixed            $data    The data to add
+     * @param array            $options Options to pass to the adder
+     *
+     * @return ProductUpdaterInterface
+     */
+    public function addData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
+     * Copy a data from a source field to a destination field (erase the current destination data)
+     *
+     * @param ProductInterface $fromProduct The product to read from
+     * @param ProductInterface $toProduct   The product to update
+     * @param string           $fromField   The field to read from
+     * @param string           $toField     The field to update
+     * @param array            $options     Options to pass to the copier
+     *
+     * @return ProductUpdaterInterface
+     */
+    public function copyData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
+        $fromField,
+        $toField,
+        array $options = []
+    );
+
+    /**
+     * Sets the data in values of many products
      *
      * @param ProductInterface[] $products
      * @param string             $field
@@ -23,11 +66,13 @@ interface ProductUpdaterInterface
      * @param string             $scope
      *
      * @return ProductUpdaterInterface
+     *
+     * @deprecated will be removed in 1.5, please use setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
     /**
-     * Copy a value from a source field to a destination field in many products
+     * Copies a value from a source field to a destination field in many products
      *
      * @param ProductInterface[] $products
      * @param string             $fromField
@@ -38,6 +83,8 @@ interface ProductUpdaterInterface
      * @param string             $toScope
      *
      * @return ProductUpdaterInterface
+     *
+     * @deprecated will be removed in 1.5, please use copyData(
      */
     public function copyValue(
         array $products,
@@ -48,14 +95,4 @@ interface ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     );
-
-    /**
-     * Set field value on a product
-     *
-     * @param ProductInterface $product The product to modify
-     * @param string           $field   The field to modify
-     * @param mixed            $data    The data to set
-     * @param array            $options Options to pass to the setter
-     */
-    public function set(ProductInterface $product, $field, $data, array $options = []);
 }

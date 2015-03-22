@@ -7,7 +7,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as ODMMongoDBClassMetadataInfo;
 use Doctrine\ORM\Mapping\ClassMetadataInfo as ORMClassMetadataInfo;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 
@@ -142,9 +141,6 @@ class RelationGuesser implements GuesserInterface
     protected function isRepositoryEligible($repository)
     {
         if ($repository instanceof IdentifiableObjectRepositoryInterface) {
-            return true;
-        }
-        if ($repository instanceof ReferableEntityRepositoryInterface) {
             return true;
         }
 

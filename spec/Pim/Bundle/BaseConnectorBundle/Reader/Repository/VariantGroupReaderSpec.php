@@ -7,12 +7,11 @@ use Doctrine\MongoDB\Cursor;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 
 class VariantGroupReaderSpec extends ObjectBehavior
 {
-    function let(StepExecution $stepExecution, GroupRepository $repository)
+    function let(StepExecution $stepExecution, GroupRepositoryInterface $repository)
     {
         $this->beConstructedWith($repository);
         $this->setStepExecution($stepExecution);

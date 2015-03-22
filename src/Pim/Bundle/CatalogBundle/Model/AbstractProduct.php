@@ -513,6 +513,7 @@ abstract class AbstractProduct implements ProductInterface
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
+        sort($codes);
 
         return implode(',', $codes);
     }

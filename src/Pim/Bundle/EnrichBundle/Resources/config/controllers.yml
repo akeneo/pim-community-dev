@@ -153,13 +153,15 @@ services:
             - '@pim_catalog.manager.media'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
+            - '@pim_catalog.builder.product'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.builder.product'
             - '@templating'
-            - '@pim_catalog.manager.product'
 
     pim_enrich.controller.mass_edit_action:
         scope: request

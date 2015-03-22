@@ -6,11 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Event\ProductEvent;
-use Pim\Bundle\CatalogBundle\Event\ProductEvents;
-use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -44,9 +40,6 @@ class ProductManager
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var MediaManager */
-    protected $mediaManager;
-
     /** @var ProductBuilder */
     protected $builder;
 
@@ -70,7 +63,6 @@ class ProductManager
      * @param SaverInterface                     $productSaver
      * @param BulkSaverInterface                 $productBulkSaver
      * @param EventDispatcherInterface           $eventDispatcher
-     * @param MediaManager                       $mediaManager
      * @param ProductBuilder                     $builder
      * @param ProductRepositoryInterface         $productRepository
      * @param AssociationTypeRepositoryInterface $assocTypeRepository
@@ -83,7 +75,6 @@ class ProductManager
         SaverInterface $productSaver,
         BulkSaverInterface $productBulkSaver,
         EventDispatcherInterface $eventDispatcher,
-        MediaManager $mediaManager,
         ProductBuilder $builder,
         ProductRepositoryInterface $productRepository,
         AssociationTypeRepositoryInterface $assocTypeRepository,
@@ -95,7 +86,6 @@ class ProductManager
         $this->productBulkSaver = $productBulkSaver;
         $this->objectManager = $objectManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->mediaManager = $mediaManager;
         $this->builder = $builder;
         $this->productRepository = $productRepository;
         $this->assocTypeRepository = $assocTypeRepository;
@@ -115,6 +105,8 @@ class ProductManager
      * Get product configuration
      *
      * @return array
+     *
+     * @deprecated will be remove in 1.5, please use parameters as %pim_catalog.entity.product.class%
      */
     public function getConfiguration()
     {
@@ -133,27 +125,21 @@ class ProductManager
     {
         $product = $this->getProductRepository()->findOneByWithValues($id);
 
-        if ($product) {
-            $this->builder->addMissingProductValues($product);
-        }
-
         return $product;
     }
 
     /**
      * Find a product by identifier
-     * Also ensure that it contains all required values
      *
      * @param string $identifier
      *
      * @return ProductInterface|null
+     *
+     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::findOneByIdentifier
      */
     public function findByIdentifier($identifier)
     {
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);
-        if ($product) {
-            $this->builder->addMissingProductValues($product);
-        }
 
         return $product;
     }
@@ -201,77 +187,35 @@ class ProductManager
     }
 
     /**
-     * Save a product
-     *
-     * @param ProductInterface $product The product to save
-     * @param array            $options Saving options
-     *
-     * @deprecated will be removed in 1.4, use save()
-     */
-    public function saveProduct(ProductInterface $product, array $options = [])
-    {
-        $this->productSaver->save($product, $options);
-    }
-
-    /**
-     * Save multiple products
-     *
-     * @param ProductInterface[] $products The products to save
-     * @param array              $options  Saving options
-     *
-     * @deprecated will be removed in 1.4, use saveAll()
-     */
-    public function saveAllProducts(array $products, array $options = [])
-    {
-        $this->productBulkSaver->saveAll($products, $options);
-    }
-
-    /**
      * Return the identifier attribute
      *
      * @return AttributeInterface|null
+     *
+     * @deprecated will be removed in 1.5, please use AttributeRepositoryInterface::getIdentifierAttribute();
      */
     public function getIdentifierAttribute()
     {
-        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
+        return $this->attributeRepository->getIdentifier();
     }
 
     /**
      * Create a product
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     *
+     * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProduct();
      */
     public function createProduct()
     {
-        $class = $this->getProductName();
-
-        $product = new $class();
-        $event = new ProductEvent($this, $product);
-        $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
-
-        return $product;
-    }
-
-    /**
-     * Create a product value
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
-     */
-    public function createProductValue()
-    {
-        $class = $this->getProductValueName();
-        $value = new $class();
-
-        $event = new ProductValueEvent($this, $value);
-        $this->eventDispatcher->dispatch(ProductEvents::CREATE_VALUE, $event);
-
-        return $value;
+        return $this->builder->createProduct();
     }
 
     /**
      * Get product FQCN
      *
      * @return string
+     *
+     * @deprecated will be removed in 1.5, please use %pim_catalog.entity.product.class%
      */
     public function getProductName()
     {
@@ -282,6 +226,8 @@ class ProductManager
      * Get product value FQCN
      *
      * @return string
+     *
+     * @deprecated will be removed in 1.5, please use %pim_catalog.entity.product_value.class%
      */
     public function getProductValueName()
     {
@@ -292,6 +238,8 @@ class ProductManager
      * Get attribute FQCN
      *
      * @return string
+     *
+     * @deprecated will be removed in 1.5, please use %pim_catalog.entity.attribute.class%
      */
     public function getAttributeName()
     {
@@ -301,73 +249,11 @@ class ProductManager
     /**
      * @param ProductInterface $product
      *
-     * @return null
-     *
-     * @deprecated will be removed in 1.4, replaced by MediaManager::handleProductMedias
-     */
-    public function handleMedia(ProductInterface $product)
-    {
-        return $this->mediaManager->handleProductMedias($product);
-    }
-
-    /**
-     * @param ProductInterface[] $products
-     *
-     * @return null
-     *
-     * @deprecated will be removed in 1.4, replaced by MediaManager::handleAllProductsMedias
-     */
-    public function handleAllMedia(array $products)
-    {
-        return $this->mediaManager->handleAllProductsMedias($products);
-    }
-
-    /**
-     * @param ProductInterface $product
+     * @deprecated will be removed in 1.5, please use ProductBuilderInterface::addMissingAssociations
      */
     public function ensureAllAssociationTypes(ProductInterface $product)
     {
-        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($product);
-
-        if (!empty($missingAssocTypes)) {
-            foreach ($missingAssocTypes as $associationType) {
-                $association = new Association();
-                $association->setAssociationType($associationType);
-                $product->addAssociation($association);
-            }
-        }
-    }
-
-    /**
-     * Remove products
-     *
-     * @param integer[] $ids
-     *
-     * @deprecated will be removed in 1.4, replaced by ProductRemover::removeAll
-     */
-    public function removeAll(array $ids)
-    {
-        $products = $this->getProductRepository()->findByIds($ids);
-        foreach ($products as $product) {
-            $this->remove($product, false);
-        }
-        $this->objectManager->flush();
-    }
-
-    /**
-     * Remove a product
-     *
-     * @param ProductInterface $product
-     * @param boolean          $flush
-     *
-     * @deprecated will be removed in 1.4, replaced by ProductRemover::remove
-     */
-    public function remove(ProductInterface $product, $flush = true)
-    {
-        $this->objectManager->remove($product);
-        if (true === $flush) {
-            $this->objectManager->flush();
-        }
+        $this->builder->addMissingAssociations($product);
     }
 
     /**
@@ -384,6 +270,8 @@ class ProductManager
      * Return related repository
      *
      * @return ObjectRepository
+     *
+     * @deprecated will be removed in 1.5, please use AttributeOptionRepositoryInterface
      */
     public function getAttributeOptionRepository()
     {

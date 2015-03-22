@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
@@ -76,6 +77,9 @@ class ProductController extends AbstractDoctrineController
     /** @var RemoverInterface */
     protected $productRemover;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
@@ -122,6 +126,7 @@ class ProductController extends AbstractDoctrineController
      * @param MediaManager             $mediaManager
      * @param SequentialEditManager    $seqEditManager
      * @param RemoverInterface         $productRemover
+     * @param ProductBuilderInterface  $productBuilder
      */
     public function __construct(
         Request $request,
@@ -142,7 +147,8 @@ class ProductController extends AbstractDoctrineController
         SaverInterface $productSaver,
         MediaManager $mediaManager,
         SequentialEditManager $seqEditManager,
-        RemoverInterface $productRemover
+        RemoverInterface $productRemover,
+        ProductBuilderInterface $productBuilder
     ) {
         parent::__construct(
             $request,
@@ -166,6 +172,7 @@ class ProductController extends AbstractDoctrineController
         $this->mediaManager      = $mediaManager;
         $this->seqEditManager    = $seqEditManager;
         $this->productRemover    = $productRemover;
+        $this->productBuilder    = $productBuilder;
     }
 
     /**
@@ -203,7 +210,7 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $product = $this->productManager->createProduct();
+        $product = $this->productBuilder->createProduct();
         $form = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -287,8 +294,6 @@ class ProductController extends AbstractDoctrineController
     public function updateAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-
-        $this->productManager->ensureAllAssociationTypes($product);
 
         $form = $this->createForm(
             'pim_product_edit',
@@ -528,12 +533,14 @@ class ProductController extends AbstractDoctrineController
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
-
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
+        // With this version of the form we need to add missing values from family
+        $this->productBuilder->addMissingProductValues($product);
+        $this->productBuilder->addMissingAssociations($product);
 
         return $product;
     }

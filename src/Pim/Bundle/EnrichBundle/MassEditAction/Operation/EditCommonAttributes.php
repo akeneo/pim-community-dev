@@ -298,12 +298,12 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         $messages = [];
 
-        $variantAttributeCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
+        $variantAttrCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
         $rootMessageKey = 'pim_enrich.mass_edit_action.edit-common-attributes';
-        if (count($variantAttributeCodes) > 0) {
+        if (count($variantAttrCodes) > 0) {
             $messages[] = [
                 'key'     => $rootMessageKey.'.truncated_by_variant_attribute.warning',
-                'options' => ['%attributes%' => implode(', ', $variantAttributeCodes)]
+                'options' => ['%attributes%' => implode(', ', $variantAttrCodes)]
             ];
         }
 
@@ -336,13 +336,11 @@ class EditCommonAttributes extends ProductMassEditOperation
             $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
             // if the value is localizable, let's use the locale the user has chosen in the form
             $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
-
-            $this->productUpdater->setValue(
-                [$product],
+            $this->productUpdater->setData(
+                $product,
                 $value->getAttribute()->getCode(),
                 $rawData,
-                $locale,
-                $value->getScope()
+                ['locale' => $locale, 'scope' => $value->getScope()]
             );
         }
     }

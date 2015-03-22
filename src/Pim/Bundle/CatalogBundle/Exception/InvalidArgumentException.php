@@ -298,6 +298,24 @@ class InvalidArgumentException extends \InvalidArgumentException
     }
 
     /**
+     * @param string $name
+     * @param array  $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function associationFormatExpected($name, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects a valid association format as ["associationTypeCode1" => '.
+                '["products" => ["sku1, "sku2"], "groups" => ["group1"]]]", "%s" given.',
+                $name,
+                print_r($data, true)
+            )
+        );
+    }
+
+    /**
      * @param \Exception $exception
      * @param string     $name
      * @param string     $action

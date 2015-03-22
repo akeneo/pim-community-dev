@@ -189,7 +189,7 @@ class CategoryProcessor extends TransformerProcessor
      *
      * @return null
      */
-    private function checkCircularReferences(array $categories, array $items)
+    private function checkCircularReferences(array &$categories, array $items)
     {
         $invalidCodes = array();
         $checkParent = function ($category, $visited = array()) use (&$invalidCodes, &$checkParent) {

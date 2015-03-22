@@ -11,7 +11,7 @@ Feature: Update enabled fields
       | disabled |
       | reverted |
     Then I should get the following products after apply the following updater to it:
-      | product  | actions                                                                                                               | result             |
-      | enabled  | [{"type": "set_value", "field": "enabled", "value": true}]                                                            | {"enabled": true}  |
-      | disabled | [{"type": "set_value", "field": "enabled", "value": false}]                                                           | {"enabled": false} |
-      | reverted | [{"type": "set_value", "field": "enabled", "value": true}, {"type": "set_value", "field": "enabled", "value": false}] | {"enabled": false} |
+      | product  | actions                                                                                                           | result             |
+      | enabled  | [{"type": "set_data", "field": "enabled", "data": true}]                                                          | {"enabled": true}  |
+      | disabled | [{"type": "set_data", "field": "enabled", "data": false}]                                                         | {"enabled": false} |
+      | reverted | [{"type": "set_data", "field": "enabled", "data": true}, {"type": "set_data", "field": "enabled", "data": false}] | {"enabled": false} |

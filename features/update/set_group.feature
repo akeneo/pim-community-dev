@@ -19,9 +19,9 @@ Feature: Update groups fields
       | PACK2 | Second pack | PACK |
       | PACK3 | Third pack  | PACK |
     Then I should get the following products after apply the following updater to it:
-      | product         | actions                                                                                                                               | result                         |
-      | pack1           | [{"type": "set_value", "field": "groups", "value": ["PACK1"]}]                                                                        | {"groups": ["PACK1"]}          |
-      | pack1           | [{"type": "set_value", "field": "groups", "value": []}]                                                                               | {"groups": []}                 |
-      | pack2           | [{"type": "set_value", "field": "groups", "value": ["PACK2"]}]                                                                        | {"groups": ["PACK2"]}          |
-      | pack1_and_pack2 | [{"type": "set_value", "field": "groups", "value": ["PACK1", "PACK2"]}]                                                               | {"groups": ["PACK1", "PACK2"]} |
-      | pack2           | [{"type": "set_value", "field": "groups", "value": ["PACK1", "PACK2"]}, {"type": "set_value", "field": "groups", "value": ["PACK3"]}] | {"groups": ["PACK3"]}          |
+      | product         | actions                                                                                                                           | result                         |
+      | pack1           | [{"type": "set_data", "field": "groups", "data": ["PACK1"]}]                                                                      | {"groups": ["PACK1"]}          |
+      | pack1           | [{"type": "set_data", "field": "groups", "data": []}]                                                                             | {"groups": []}                 |
+      | pack2           | [{"type": "set_data", "field": "groups", "data": ["PACK2"]}]                                                                      | {"groups": ["PACK2"]}          |
+      | pack1_and_pack2 | [{"type": "set_data", "field": "groups", "data": ["PACK1", "PACK2"]}]                                                             | {"groups": ["PACK1", "PACK2"]} |
+      | pack2           | [{"type": "set_data", "field": "groups", "data": ["PACK1", "PACK2"]}, {"type": "set_data", "field": "groups", "data": ["PACK3"]}] | {"groups": ["PACK3"]}          |
