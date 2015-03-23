@@ -108,6 +108,10 @@ define(
                         'module': 'pim/product-edit-form/panel/completeness'
                     },
                     {
+                        'code': 'comments',
+                        'module': 'pim/product-edit-form/panel/comments'
+                    },
+                    {
                         'code': 'history',
                         'module': 'pim/product-edit-form/panel/history'
                     },

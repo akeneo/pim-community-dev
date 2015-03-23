@@ -1,0 +1,77 @@
+<div class="row unspaced" id="comment_threads">
+    <ol class="unstyled">
+        <li class="comment-create">
+            <form class="unspaced create-comment">
+                <div class="row-fluid">
+                    <div class="span12">
+                        <textarea name="body" required="required" placeholder="Write a new comment..." class="exclude span12 input-large"></textarea>
+                        <span class="comment-buttons">
+                            <button class="btn btn-primary comment-btn pull-right">Add a new comment</button>
+                            <input class="btn cancel comment-btn pull-right" type="reset" value="Cancel">
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </li>
+        <% if (comments.length) { %>
+            <% _.each(comments, function(comment) { %>
+                <li>
+                    <ol class="comment-thread unstyled" id="comment<%= comment.id %>">
+                        <li class="comment-topic">
+                            <div class="row-fluid">
+                                <div class="span1 text-right">
+                                    <img width="35" src="/bundles/pimui/img/info-user.png" alt="<%= comment.author %>"/>
+                                </div>
+                                <div class="span11">
+                                    <div>
+                                        <span class="author"><strong><%= comment.author %></strong></span>
+                                        <span class="date">&nbsp;&#8211;&nbsp;<%= comment.created %></span>
+                                    </div>
+                                    <div>
+                                        <span class="message"><%= comment.body %></span>
+                                        <span class="comment-buttons pull-right">
+                                            <a href="javascript:void(0);" class="remove-comment" title="Delete" data-comment-id="<%= comment.id %>">
+                                                <i class="icon-trash"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="reply-to-comment" title="Reply" data-comment-id="<%= comment.id %>">
+                                                <i class="icon-reply"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <% _.each(comment.replies, function(reply) { %>
+                            <li class="row-fluid comment-reply">
+                                <div class="span1 text-right">
+                                    <img width="25" src="/bundles/pimui/img/info-user.png" alt="<%= reply.author %>">
+                                </div>
+                                <div class="span11">
+                                    <div>
+                                        <span class="author"><strong><%= reply.author %></strong></span>
+                                        <span class="date">&nbsp;–&nbsp;<%= reply.created %></span>
+                                    </div>
+                                    <div>
+                                        <span class="message"><%= reply.body %></span>
+                                        <span class="comment-buttons pull-right">
+                                            <a href="javascript:void(0);" class="remove-comment" title="Delete" data-comment-id="<%= reply.id %>">
+                                                <i class="icon-trash"></i>
+                                            </a>
+                                            <a href="javascript:void(0);" class="reply-to-comment" title="Reply" data-comment-id="<%= comment.id %>">
+                                                <i class="icon-reply"></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }); %>
+                    </ol>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <li class="no-data">
+                <p>No comments found</p>
+            </li>
+        <% } %>
+    </ol>
+</div>

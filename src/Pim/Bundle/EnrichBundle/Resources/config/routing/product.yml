@@ -78,12 +78,12 @@ pim_enrich_product_history:
         id: '[0-9a-f]+'
         _format: html|json
 
-pim_enrich_product_comments:
-    path: /{id}/comments.{_format}
-    defaults: { _controller: pim_enrich.controller.product_comment:listCommentsAction, _format: html }
-    requirements:
-        id: '[0-9a-f]+'
-        _format: html|json
+# pim_enrich_product_comments:
+#     path: /{id}/comments.{_format}
+#     defaults: { _controller: pim_enrich.controller.product_comment:listCommentsAction, _format: html }
+#     requirements:
+#         id: '[0-9a-f]+'
+#         _format: html|json
 
 pim_enrich_product_rest_get:
     path: /rest/{id}
@@ -112,3 +112,28 @@ pim_enrich_product_history_rest_get:
     requirements:
         entityId: '[0-9a-f]+'
     methods: [GET]
+
+pim_enrich_product_comments_rest_get:
+    path: /{id}/comments.{_format}
+    defaults: { _controller: pim_enrich.controller.product_comment_rest:getAction, _format: json }
+    requirements:
+        id: '[0-9a-f]+'
+        _format: json
+    methods: [GET]
+
+pim_enrich_product_comments_rest_post:
+    path: /{id}/comments.{_format}
+    defaults: { _controller: pim_enrich.controller.product_comment_rest:postAction, _format: json }
+    requirements:
+        id: '[0-9a-f]+'
+        _format: json
+    methods: [POST]
+
+pim_enrich_product_comment_reply_rest_post:
+    path: /{id}/comments/{commentId}.{_format}
+    defaults: { _controller: pim_enrich.controller.product_comment_rest:postReplyAction, _format: json }
+    requirements:
+        id: '[0-9a-f]+'
+        commentId: '[0-9a-f]+'
+        _format: json
+    methods: [POST]

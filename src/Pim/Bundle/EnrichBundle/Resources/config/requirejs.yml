@@ -49,6 +49,7 @@ config:
         pim/product-edit-form/form-tabs:                           pimenrich/js/product/form/form-tabs
         pim/product-edit-form/panel/completeness:                  pimenrich/js/product/form/panel/completeness
         pim/product-edit-form/panel/history:                       pimenrich/js/product/form/panel/history
+        pim/product-edit-form/panel/comments:                      pimenrich/js/product/form/panel/comments
         pim/product-edit-form/save:                                pimenrich/js/product/form/save
 
         # Product edit form
@@ -88,6 +89,8 @@ config:
         pim/template/product/panel/selector:                         pimenrich/templates/product/panel/selector.html
         pim/template/product/panel/completeness:                     pimenrich/templates/product/panel/completeness.html
         pim/template/product/panel/history:                          pimenrich/templates/product/panel/history.html
+        pim/template/product/panel/comments:                         pimenrich/templates/product/panel/comments.html
+        pim/template/product/panel/comment-reply:                    pimenrich/templates/product/panel/comment-reply.html
         pim/template/product/panel/history-modal:                    pimenrich/templates/product/panel/history-modal.html
         pim/template/product/locale-switcher:                        pimenrich/templates/product/locale-switcher.html
         pim/template/product/form-tabs:                              pimenrich/templates/product/form-tabs.html

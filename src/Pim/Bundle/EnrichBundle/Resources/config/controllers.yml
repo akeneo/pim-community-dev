@@ -29,6 +29,7 @@ parameters:
     pim_enrich.controller.measures_rest.class: Pim\Bundle\EnrichBundle\Controller\MeasuresRestController
     pim_enrich.controller.completeness_rest.class: Pim\Bundle\EnrichBundle\Controller\CompletenessRestController
     pim_enrich.controller.versioning_rest.class: Pim\Bundle\EnrichBundle\Controller\VersioningRestController
+    pim_enrich.controller.product_comment_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -335,3 +336,15 @@ services:
             - '@pim_versioning.repository.version'
             - '@pim_catalog.resolver.fqcn'
             - '@pim_internal_api_serializer'
+
+    pim_enrich.controller.product_comment_rest:
+        scope: request
+        class: %pim_enrich.controller.product_comment_rest.class%
+        arguments:
+            - '@security.context'
+            - '@form.factory'
+            - '@pim_catalog.manager.product'
+            - '@pim_comment.manager.comment'
+            - '@pim_comment.builder.comment'
+            - '@pim_serializer'
+            - '@validator'
