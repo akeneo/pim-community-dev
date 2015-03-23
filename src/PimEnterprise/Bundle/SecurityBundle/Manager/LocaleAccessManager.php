@@ -43,7 +43,7 @@ class LocaleAccessManager
      */
     public function __construct(ManagerRegistry $registry, $localeAccessClass)
     {
-        $this->registry            = $registry;
+        $this->registry          = $registry;
         $this->localeAccessClass = $localeAccessClass;
     }
 
