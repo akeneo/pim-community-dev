@@ -86,7 +86,7 @@ class ProductController extends BaseProductController
         if ($editProductGranted && $editLocaleGranted) {
             $parameters = $this->editAction($this->request, $id);
 
-            return $this->render('PimEnterpriseEnrichBundle:Product:edit.html.twig', $parameters);
+            return $this->render('PimEnrichBundle:Product:edit.html.twig', $parameters);
         } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
             $parameters = $this->showAction($this->request, $id);
 
