@@ -14,6 +14,8 @@ use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Stan
 class AttributeOptionToStandardConverter implements StandardArrayConverterInterface
 {
     /**
+     * {@inheritdoc}
+     *
      * Converts yaml array to standard structured array:
      *
      * Before:
@@ -39,12 +41,8 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      *         'fr_FR': '210 x 1219 mm'
      *     }
      * }
-     *
-     * @param array $item Representing a flat attribute option
-     *
-     * @return array structured product
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
         // TODO: option resolver!
         $item['sort_order'] = $item['sortOrder'];

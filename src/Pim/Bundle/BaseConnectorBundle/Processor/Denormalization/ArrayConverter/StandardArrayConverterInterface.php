@@ -12,9 +12,10 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverte
 interface StandardArrayConverterInterface
 {
     /**
-     * @param array $data
+     * @param array $data    data to convert
+     * @param array $options options used to convert
      *
      * @return array
      */
-    public function convert(array $data);
+    public function convert(array $data, array $options = []);
 }

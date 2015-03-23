@@ -20,6 +20,9 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var OptionsResolverInterface */
+    protected $optionResolver;
+
     /**
      * @param LocaleRepositoryInterface $localeRepository
      */
@@ -29,6 +32,8 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Converts flat csv array to standard structured array:
      *
      * Before:
@@ -52,16 +57,10 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      *         'fr_FR': '210 x 1219 mm'
      *     }
      * }
-     *
-     * @param array $item Representing a flat attribute option
-     *
-     * @return array structured item
-     *
-     * @throws InvalidOptionsException
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
-        $optionResolver = $this->createOptionsResolver();
+        $optionResolver = $this->getOptionsResolverInstance();
         $resolvedItem = $optionResolver->resolve($item);
         $convertedItem = ['labels' => []];
         foreach ($resolvedItem as $field => $data) {
@@ -79,35 +78,39 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
     }
 
     /**
+     * Get the same instance in case of flat format, assuming that each converted item will have same headers
+     *
      * @return OptionsResolverInterface
      */
-    protected function createOptionsResolver()
+    protected function getOptionsResolverInstance()
     {
-        $resolver = new OptionsResolver();
+        if (null === $this->optionResolver) {
+            $this->optionResolver = new OptionsResolver();
 
-        $required = ['code', 'attribute', 'sort_order'];
-        $defaults = ['sort_order' => 1];
-        $allowedTypes = [
-            'code' => 'string',
-            'attribute' => 'string',
-            'sort_order' => 'int'
-        ];
+            $required = ['code', 'attribute', 'sort_order'];
+            $defaults = ['sort_order' => 1];
+            $allowedTypes = [
+                'code' => 'string',
+                'attribute' => 'string',
+                'sort_order' => 'int'
+            ];
 
-        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        foreach ($localeCodes as $code) {
-            $labelField = 'label-'.$code;
-            $required[] = $labelField;
-            $allowedTypes[$labelField] = 'string';
+            $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+            foreach ($localeCodes as $code) {
+                $labelField = 'label-' . $code;
+                $required[] = $labelField;
+                $allowedTypes[$labelField] = 'string';
+            }
+
+            $this->optionResolver->setRequired($required);
+            $this->optionResolver->setDefaults($defaults);
+            $this->optionResolver->setAllowedTypes($allowedTypes);
+            $integerNormalizer = function ($options, $value) {
+                return (int)$value;
+            };
+            $this->optionResolver->setNormalizers(['sort_order' => $integerNormalizer]);
         }
 
-        $resolver->setRequired($required);
-        $resolver->setDefaults($defaults);
-        $resolver->setAllowedTypes($allowedTypes);
-        $integerNormalizer = function ($options, $value) {
-            return (int) $value;
-        };
-        $resolver->setNormalizers(['sort_order' => $integerNormalizer]);
-
-        return $resolver;
+        return $this->optionResolver;
     }
 }
