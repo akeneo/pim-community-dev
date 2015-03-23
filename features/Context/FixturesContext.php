@@ -4,20 +4,20 @@ namespace Context;
 
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Util\Inflector;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Gherkin\Node\PyStringNode;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CommentBundle\Entity\Comment;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
@@ -1982,6 +1982,18 @@ class FixturesContext extends RawMinkContext
         if (is_string($data)) {
             $data = ['code' => $data];
         }
+
+        $requirements = [];
+        foreach ($data as $key => $value) {
+            if (false !== strpos($key, 'requirements-')) {
+                $channel = str_replace('requirements-', '', $key);
+                $attributes = explode(',', $value);
+                $requirements[$channel] = $attributes;
+                unset($data[$key]);
+            }
+        }
+
+        $data['requirements'] = $requirements;
 
         $family = $this->loadFixture('families', $data);
 
