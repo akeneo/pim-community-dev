@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\AttributeType\OptionSimpleSelectType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
@@ -18,7 +18,7 @@ use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataSimpleSelectType extends OptionSimpleSelectType
+class ReferenceDataSimpleSelectType extends AbstractAttributeType
 {
     /** @var ConfigurationRegistryInterface */
     protected $referenceDataRegistry;
