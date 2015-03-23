@@ -85,7 +85,7 @@ class ProductController extends FOSRestController
 	 * possibility of conflict with a legitimate sku.
 	 */
 	$identifier = str_replace('_0x2E_', '.', $identifier);	
-			
+	
         $manager = $this->get('pim_catalog.manager.product');
         $product = $manager->findByIdentifier($identifier);
 
