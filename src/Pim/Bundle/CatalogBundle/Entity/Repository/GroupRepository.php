@@ -272,6 +272,30 @@ class GroupRepository extends ReferableEntityRepository implements GroupReposito
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getOption($id, $collectionId = null, array $options = array())
+    {
+        // TODO: Implement getOption() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptionLabel($object, $dataLocale)
+    {
+        // TODO: Implement getOptionLabel() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOptionId($object)
+    {
+        // TODO: Implement getOptionId() method.
+    }
+
+    /**
      * @return string
      */
     protected function getAlias()

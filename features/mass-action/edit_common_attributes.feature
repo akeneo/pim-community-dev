@@ -50,7 +50,7 @@ Feature: Edit common attributes of many products at once
   Scenario: Allow edition only common attribute to product values
     Given the following attributes:
       | code          | label         | unique |
-      | sole_color    | Sole          | no     |
+      | buckle_color  | Buckle        | no     |
       | fur           | Fur           | no     |
       | serial_number | Serial number | yes    |
     And the following product values:
@@ -59,24 +59,24 @@ Feature: Edit common attributes of many products at once
       | boots     | fur           | rabbit                |
       | boots     | serial_number | 123456789             |
       | highheels | comment       | Comment on high heels |
-      | highheels | sole_color    | Red                   |
+      | highheels | buckle_color  | Red                   |
       | highheels | serial_number | 987654321             |
     When I mass-edit products boots and highheels
     And I choose the "Edit common attributes" operation
     Then I should see available attribute Comment in group "Other"
-    And I should not see available attributes Sole color, Fur and Serial number in group "Other"
+    And I should not see available attributes Buckle color, Fur and Serial number in group "Other"
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
     Given the following attribute:
-      | code       | label | families   |
-      | sole_color | Sole  | high_heels |
+      | code         | label | families   |
+      | buckle_color | Buckle  | high_heels |
     And the following product values:
-      | product | attribute  | value |
-      | boots   | sole_color | Blue  |
+      | product | attribute    | value |
+      | boots   | buckle_color | Blue  |
     When I mass-edit products boots and high_heels
     And I choose the "Edit common attributes" operation
-    Then I should see available attribute Sole in group "Other"
+    Then I should see available attribute Buckle in group "Other"
 
   Scenario: Successfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers

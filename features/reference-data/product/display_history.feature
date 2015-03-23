@@ -13,34 +13,36 @@ Feature: Display the product history
       | code    | type                        | reference_data_name |
       | color   | reference_data_simpleselect | color               |
       | fabrics | reference_data_multiselect  | fabrics             |
+    And the following "color" attribute reference data: Red, Green, Blue
+    And the following "fabrics" attribute reference data: Cashmerewool, Neoprene and Silk
     And I am logged in as "Julia"
 
   Scenario: Add an available "simple select" reference data to a product
     Given I am on the "sandals" product page
     And I add available attribute color
     And I fill in the following information:
-     | color | FHVZ69123 |
+      | color | Red |
     Then I save the product
     And I visit the "History" tab
     And I should see history:
-      | version | property | value     |
-      | 2       | color    | FHVZ69123 |
+      | version | property | value |
+      | 2       | color    | Red   |
     When I visit the "Attributes" tab
     And I fill in the following information:
-     | color | IVPK83294 |
+      | color | Green |
     Then I save the product
     And I visit the "History" tab
     And I should see history:
-      | version | property | value     |
-      | 3       | color    | IVPK83294 |
+      | version | property | value |
+      | 3       | color    | Green |
 
   Scenario: Add an available "multi select" reference data to a product
     Given I am on the "sandals" product page
     And I add available attribute fabrics
     And I fill in the following information:
-     | fabrics | TNF58521, EWA88348 |
+      | fabrics | Cashmerewool, Neoprene |
     Then I save the product
     And I visit the "History" tab
     And I should see history:
-      | version | property | value             |
-      | 2       | fabrics  | TNF58521,EWA88348 |
+      | version | property | value                 |
+      | 2       | fabrics  | Cashmerewool,Neoprene |

@@ -32,7 +32,10 @@ Feature: Export attributes
     pim_catalog_number;number_in_stock;"Number in stock";other;0;0;;;;0;0
     pim_catalog_date;destocking_date;"Destocking date";other;0;1;;;;0;0
     pim_catalog_boolean;handmade;Handmade;other;0;1;;;;0;0
-
+    pim_reference_data_simpleselect;heel_color;Heel color;other;0;1;;;;0;0
+    pim_reference_data_simpleselect;sole_color;Sole color;other;0;1;;;;0;0
+    pim_reference_data_multiselect;sole_fabric;Sole fabric;other;0;1;;;;0;0
+    pim_reference_data_multiselect;lace_fabric;Lace fabric;other;0;1;;;;0;0
     """
 
   Scenario: Successfully export all label locales even if no value were set
@@ -64,6 +67,10 @@ Feature: Export attributes
     pim_catalog_number;number_in_stock;"Number in stock";;other;0;0;;;;0;0
     pim_catalog_date;destocking_date;"Destocking date";;other;0;1;;;;0;0
     pim_catalog_boolean;handmade;Handmade;;other;0;1;;;;0;0
+    pim_reference_data_simpleselect;heel_color;"Heel color";;other;0;1;;;;0;0
+    pim_reference_data_simpleselect;sole_color;"Sole color";;other;0;1;;;;0;0
+    pim_reference_data_multiselect;sole_fabric;"Sole fabric";;other;0;1;;;;0;0
+    pim_reference_data_multiselect;lace_fabric;"Lace fabric";;other;0;1;;;;0;0
 
 
     """
