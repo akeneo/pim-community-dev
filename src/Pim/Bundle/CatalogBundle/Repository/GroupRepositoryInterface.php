@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
 
 /**
  * Group repository interface
@@ -14,7 +15,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GroupRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
+interface GroupRepositoryInterface extends
+ IdentifiableObjectRepositoryInterface, ObjectRepository, OptionRepositoryInterface
 {
     /**
      * Get ordered groups associative array id to label
