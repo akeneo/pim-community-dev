@@ -10,7 +10,7 @@ use Doctrine\ODM\MongoDB\Query\Query;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Prophecy\Argument;
 
 /**
@@ -18,6 +18,16 @@ use Prophecy\Argument;
  */
 class AssociatedProductHydratorSpec extends ObjectBehavior
 {
+    public function let(ProductInterface $productClass)
+    {
+        $this->beConstructedWith(get_class($productClass));
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\AssociatedProductHydrator');
+    }
+
     function it_is_a_hydrator()
     {
         $this->shouldImplement('Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface');
@@ -26,12 +36,13 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
     function it_hydrates_a_result_record(
         Builder $builder,
         Query $query,
-        Product $product,
+        ProductInterface $product,
         Association $association,
         AssociationType $associationType,
-        Product $associatedProduct1,
-        Product $associatedProduct2,
+        ProductInterface $associatedProduct1,
+        ProductInterface $associatedProduct2,
         DocumentManager $documentManager,
+        \Doctrine\ODM\MongoDB\Mapping\ClassMetadata $metadata,
         Collection $collection,
         ArrayIterator $arrayIterator
     ) {
@@ -80,6 +91,27 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
 
         $query->getDocumentManager()->willReturn($documentManager);
         $documentManager->getDocumentCollection(Argument::any())->willReturn($collection);
+        $documentManager->getClassMetadata(Argument::any())->willReturn($metadata);
+        $metadata->getFieldNames()->willReturn([
+            'id',
+            'created',
+            'updated',
+            'locale',
+            'scope',
+            'values',
+            'indexedValues',
+            'indexedValuesOutdated',
+            'family',
+            'familyId',
+            'categories',
+            'categoryIds',
+            'enabled',
+            'groups',
+            'groupIds',
+            'associations',
+            'completenesses',
+            'normalizedData',
+        ]);
 
         $pipeline = [
             [
@@ -91,7 +123,6 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
             ],
             [
                 '$project' => [
-                    'objectProphecy'        => 1,
                     'id'                    => 1,
                     'created'               => 1,
                     'updated'               => 1,
