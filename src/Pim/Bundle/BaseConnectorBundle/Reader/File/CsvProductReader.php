@@ -69,11 +69,11 @@ class CsvProductReader extends CsvReader
     /**
      * Set the media attributes
      *
-     * @param array $mediaAttributes
+     * @param array|null $mediaAttributes
      *
      * @return CsvProductReader
      */
-    public function setMediaAttributes(array $mediaAttributes)
+    public function setMediaAttributes($mediaAttributes)
     {
         $this->mediaAttributes = $mediaAttributes;
 
