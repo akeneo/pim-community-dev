@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,6 +28,9 @@ class ProductRestController
     /** @var ProductUpdater */
     protected $productUpdater;
 
+    /** @var SaverInterface */
+    protected $productSaver;
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -39,6 +43,7 @@ class ProductRestController
     /**
      * @param ProductManager          $productManager
      * @param ProductUpdaterInterface $productUpdater
+     * @param SaverInterface          $productSaver
      * @param NormalizerInterface     $normalizer
      * @param DenormalizerInterface   $denormalizer
      * @param ValidatorInterface      $validator
@@ -46,12 +51,14 @@ class ProductRestController
     public function __construct(
         ProductManager $productManager,
         ProductUpdaterInterface $productUpdater,
+        SaverInterface $productSaver,
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator
     ) {
         $this->productManager = $productManager;
         $this->productUpdater = $productUpdater;
+        $this->productSaver   = $productSaver;
         $this->normalizer     = $normalizer;
         $this->denormalizer   = $denormalizer;
         $this->validator      = $validator;
@@ -85,7 +92,7 @@ class ProductRestController
             if ('values' === $item) {
                 foreach ($itemData as $attributeCode => $values) {
                     foreach ($values as $value) {
-                        $this->productUpdater->set(
+                        $this->productUpdater->setData(
                             $product,
                             $attributeCode,
                             $value['value'],
@@ -97,7 +104,7 @@ class ProductRestController
                     }
                 }
             } else {
-                $this->productUpdater->set(
+                $this->productUpdater->setData(
                     $product,
                     $item,
                     $itemData
@@ -111,7 +118,7 @@ class ProductRestController
         }
 
         if (0 === $violations->count()) {
-            $this->productManager->saveProduct($product);
+            $this->productSaver->save($product);
 
             return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
         } else {
