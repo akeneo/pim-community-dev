@@ -130,6 +130,7 @@ Feature: Publish many products at once
     And the following product values:
       | product   | attribute  | value         | scope     |
       | my-jacket | release    | 2013-02-02    |           |
+      | my-shoes  | release    | 2013-02-03    |           |
       | my-jacket | available  | 2013-02-02    | ecommerce |
       | my-shoes  | available  | 2013-02-03    | ecommerce |
       | my-jacket | max_length | 60 CENTIMETER | ecommerce |
