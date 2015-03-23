@@ -1919,7 +1919,7 @@ class FixturesContext extends RawMinkContext
                 $referenceData = $this->createFabricReferenceData($code);
                 break;
             default:
-                throw new \InvalidArgumentException(sprintf('Unknow reference data type "%s".', $type));
+                throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
         }
 
         $this->getEntityManager()->persist($referenceData);
@@ -1937,7 +1937,6 @@ class FixturesContext extends RawMinkContext
         $configuration = $this->getReferenceDataRegistry()->get('color');
         $class = $configuration->getClass();
 
-        /** @var Color $color */
         $color = new $class();
         $color->setCode($code);
         $color->setName($code);
@@ -1964,7 +1963,6 @@ class FixturesContext extends RawMinkContext
         $configuration = $this->getReferenceDataRegistry()->get('fabrics');
         $class = $configuration->getClass();
 
-        /** @var Fabric $fabric */
         $fabric = new $class();
         $fabric->setCode($code);
         $fabric->setName($code);
