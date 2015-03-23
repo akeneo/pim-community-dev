@@ -8,8 +8,8 @@ parameters:
     pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
-    pim_base_connector.processor.denormalization.csv_product.class:             Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductProcessor
-    pim_base_connector.processor.denormalization.csv_product_association.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductAssociationProcessor
+    pim_base_connector.processor.denormalization.product.class:                 Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductProcessor
+    pim_base_connector.processor.denormalization.product_association.class:     Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductAssociationProcessor
 
     pim_base_connector.denormalization.array_converter.flat.product.class:                Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat\ProductToStandardConverter
 
