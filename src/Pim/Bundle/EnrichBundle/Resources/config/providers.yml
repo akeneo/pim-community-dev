@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.provider.colors.class: Pim\Bundle\EnrichBundle\Provider\ColorsProvider
+    pim_enrich.provider.form_extension.class: Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
 
 services:
     # Color management
@@ -7,3 +8,8 @@ services:
         class: %pim_enrich.provider.colors.class%
         arguments:
             - %pim_enrich.colors%
+
+    pim_enrich.provider.form_extension:
+        class: %pim_enrich.provider.form_extension.class%
+        arguments:
+            - []

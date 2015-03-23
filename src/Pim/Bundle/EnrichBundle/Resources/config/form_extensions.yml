@@ -1,0 +1,119 @@
+extensions:
+    product-edit-form:
+        module: pim/product-edit-form
+        zones:
+            - header: >div>header
+            - title: header .product-title
+            - buttons: header .actions
+
+    form-tabs:
+        module: pim/product-edit-form/form-tabs
+        extends: product-edit-form
+        targetZone: header
+        insertAction: after
+        zones:
+            - container: .tab-container
+
+    save:
+        module: pim/product-edit-form/save
+        extends: product-edit-form
+        targetZone: buttons
+        insertAction: append
+
+    attributes:
+        module: pim/product-edit-form/attributes
+        extends: form-tabs
+        targetZone: container
+        insertAction: append
+        zones:
+            - header: .tab-content > header
+            - edit-actions: .tab-content > header > .attribute-edit-actions
+            - attributes: self
+
+    categories:
+        module: pim/product-edit-form/categories
+        extends: form-tabs
+        targetZone: container
+        insertAction: append
+        zones:
+            - categories: self
+
+    panels:
+        module: pim/product-edit-form/panel/panels
+        extends: form-tabs
+        targetZone: container
+        insertAction: after
+        zones:
+            - panels: self
+
+    attribute-group-selector:
+        module: pim/product-edit-form/attributes/attribute-group-selector
+        extends: attributes
+        targetZone: attributes
+        insertAction: prepend
+
+    add-attribute:
+        module: pim/product-edit-form/attributes/add-attribute
+        extends: attributes
+        targetZone: edit-actions
+        insertAction: append
+
+    scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        extends: attributes
+        targetZone: edit-actions
+        insertAction: prepend
+
+    locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        extends: attributes
+        targetZone: edit-actions
+        insertAction: prepend
+
+    copy:
+        module: pim/product-edit-form/attributes/copy
+        extends: attributes
+        targetZone: header
+        insertAction: append
+        zones:
+            - copy-actions: .copy-actions
+
+    validation:
+        module: pim/product-edit-form/attributes/validation
+        extends: attributes
+        targetZone: header
+        insertAction: append
+
+    variant-group:
+        module: pim/product-edit-form/attributes/variant-group
+        extends: attributes
+        targetZone: attributes
+        insertAction: append
+
+    completeness:
+        extends: panels
+        module: pim/product-edit-form/panel/completeness
+
+    comments:
+        extends: panels
+        module: pim/product-edit-form/panel/comments
+
+    history:
+        extends: panels
+        module: pim/product-edit-form/panel/history
+
+    selector:
+        extends: panels
+        module: pim/product-edit-form/panel/selector
+
+    scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        extends: copy
+        targetZone: copy-actions
+        insertAction: prepend
+
+    locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        extends: copy
+        targetZone: copy-actions
+        insertAction: prepend
