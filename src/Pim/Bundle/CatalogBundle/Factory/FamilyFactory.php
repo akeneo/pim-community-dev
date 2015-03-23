@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Family factory
@@ -16,34 +16,28 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
  */
 class FamilyFactory
 {
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
-
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var AttributeRequirementFactory
-     */
+    /** @var AttributeRequirementFactory */
     protected $factory;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
     /**
-     * @param ProductManager              $productManager
-     * @param ChannelManager              $channelManager
-     * @param AttributeRequirementFactory $factory
+     * @param ChannelManager               $channelManager
+     * @param AttributeRequirementFactory  $factory
+     * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
-        ProductManager $productManager,
         ChannelManager $channelManager,
-        AttributeRequirementFactory $factory
+        AttributeRequirementFactory $factory,
+        AttributeRepositoryInterface $attributeRepository
     ) {
-        $this->productManager = $productManager;
-        $this->channelManager = $channelManager;
-        $this->factory        = $factory;
+        $this->channelManager      = $channelManager;
+        $this->factory             = $factory;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -52,7 +46,7 @@ class FamilyFactory
     public function createFamily()
     {
         $family     = new Family();
-        $identifier = $this->productManager->getIdentifierAttribute();
+        $identifier = $this->attributeRepository->getIdentifier();
 
         $family->addAttribute($identifier);
         $family->setAttributeAsLabel($identifier);

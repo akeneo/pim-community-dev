@@ -1,15 +1,89 @@
 # 1.4.x
 
 ## Bug fixes
+- PIM-3874: clicking a category gives an error with only "list categories" permission
 - PIM-3771: Create version when modifying variant group attribute
+- PIM-2743: keep page per view on datagrids
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
+- PIM-3929: Categories with circular references are skipped in processor during import
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
 - Change the constructor of `Pim/Bundle/TransformBundle/Normalizer/Structured/GroupNormalizer`, added `Symfony\Component\Serializer\Normalizer\DenormalizerInterface` as the last argument
 - Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
+- Move Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/CompletenessRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductCategoryRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/AssociationRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/AssociationTypeRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/AttributeGroupRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/AttributeOptionRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/AttributeRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/CategoryRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/ChannelRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/CompletenessRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/CurrencyRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/FamilyRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/GroupRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/GroupTypeRepository.php
+- Move Pim/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/LocaleRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/ProductCategoryRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/ProductMassActionRepository.php
+- Move Pim/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/ProductRepository.php
+- Remove Pim/Bundle/CatalogBundle/ProductManager::createProductValue, saveProduct, saveAllProducts
+- Add AttributeRepositoryInterface, FamilyRepositoryInterface, AssociationTypeRepositoryInterface and EventDispatcherInterface as arguments of the constructor of Pim/Bundle/CatalogBundle/Builder/ProductBuilder
+- Remove ProductManager and add AttributeRepositoryInterface in arguments of the constructor of Pim/Bundle/CatalogBundle/Factory/FamilyFactory
+- Remove ProductManager, add ProductBuilderInterface, ProductRepositoryInterface, $productClass and $productValueClass in arguments of the constructor of Pim/Bundle/TransformBundle/Transformer/ProductTransformer
+- Remove ProductManager, add AttributeRepositoryInterface in arguments of the constructor of Pim/Bundle/CatalogBundle/Validator/Constraints/SingleIdentifierAttributeValidator
+- Move Pim/Bundle/CatalogBundle/Updater/Setter/AbstractValueSetter.php → Pim/Bundle/CatalogBundle/Updater/Setter/AbstractAttributeSetter
+- Remove AttributeRepositoryInterface argument from constructor of Pim/Bundle/CatalogBundle/Updater/Setter/SetterRegistryInterface, remove method get(
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/BooleanValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/BooleanAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/DateValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/DateAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MediaValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MediaAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MetricValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MetricAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/NumberValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/NumberAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/TextValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/TextAttributeSetter
+- Remove setValue and supports from Pim/Bundle/CatalogBundle/Updater/Setter/SetterInterface
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/CopierInterface -> Pim/Bundle/CatalogBundle/Updater/Copier/AttributeCopierInterface
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/AbstractValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/AbstractAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/BaseValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/BaseAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MediaValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MediaAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MetricValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MetricAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectAttributeCopier
+- Remove MediaManager from constructor of Pim\Bundle\CatalogBundle\Manager\ProductManager
+- Remove deprecated handleMedia() and handleAllMedia() from Pim\Bundle\CatalogBundle\Manager\ProductManager
+- Replace argument ProductManager by MediaManager in constructor of Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter
+- Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/ORM/CursorReader
+- Remove deprecated Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/BulkProductReader and Pim/Bundle/BaseConnectorBundle/Reader/Doctrine/ObsoleteProductReader
+- Remove deprecated Pim/Bundle/CatalogBundle/Repository/ReferableEntityRepositoryInterface and Pim/Bundle/CatalogBundle/Doctrine/ReferableEntityRepository
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AssociationTypeManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/AttributeManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/CategoryManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/FamilyManager
+- Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
+- Change arguments of Pim/Bundle/EnrichBundle/Controller/AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
+- Remove arguments ChannelRepositoryInterface, LocaleRepositoryInterface, add argument AttributeValuesResolver in Pim/Bundle/CatalogBundle/Builder/ProductBuilder constructor
 
 # 1.3.x
+
+## Bug fixes
+- PIM-3926: Set explicit message for 403 error
+
+# 1.3.5 (2015-03-19)
+
+## Bug fixes
+- PIM-2874: Bad title on failed submit
+- PIM-3836: Fix translations of a custom job label instance
+- PIM-3909: Keep channel filter between product datagrid and edit form
+- PIM-3925: do not show system menu if no item allowed
+
+# 1.3.4 (2015-03-11)
 
 ## Bug fixes
 - PIM-3806: Delete an attribute from a product template
@@ -17,6 +91,7 @@
 - PIM-3786: Attribute type should not be blank for import
 - PIM-3437: Fix applying datagrid views and columns when not using hash navigation
 - PIM-3817: Fix error when mass editing after refreshing the grid
+- PIM-3849, PIM-3880: Fix bad completeness scope on mass edit actions
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
@@ -318,7 +393,9 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
-# 1.2.x
+# 1.2.33 (2015-03-16)
+
+# 1.2.32 (2015-03-11)
 
 ## Bug fixes
 - PIM-3786: Attribute type should not be blank for import

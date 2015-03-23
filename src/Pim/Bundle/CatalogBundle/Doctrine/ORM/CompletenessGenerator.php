@@ -200,7 +200,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     ON price.value_id = v.id
                     AND price.currency_code = cur.code
                 GROUP BY l.id, c.id, v.id
-                HAVING COUNT(price.data) = COUNT(price.id)
+                HAVING COUNT(price.data) = COUNT(ccur.currency_id)
 COMPLETE_PRICES_SQL;
     }
 

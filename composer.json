@@ -16,7 +16,7 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "akeneo/batch-bundle": "0.3.*",
+        "akeneo/batch-bundle": "0.4.*",
         "akeneo/measure-bundle": "0.2.*",
         "apy/jsfv-bundle": "2.0.1",
         "ass/xmlsecurity": "1.0.0",
@@ -27,7 +27,7 @@
         "doctrine/doctrine-bundle": "1.2.0",
         "doctrine/doctrine-fixtures-bundle": "2.2.0",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
-        "doctrine/migrations": "1.0.*@dev",
+        "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/orm": "2.4.7",
         "dompdf/dompdf" : "0.6.1",
         "escapestudios/wsse-authentication-bundle": "1.0.2",

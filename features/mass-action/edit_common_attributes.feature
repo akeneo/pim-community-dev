@@ -222,7 +222,7 @@ Feature: Edit common attributes of many products at once
       | 100    | USD      |
       | 150    | EUR      |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3282
+  @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
   Scenario: Successfully mass edit products on the non default channel
     Given the following product values:
       | product   | attribute                | value                   |

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Query;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FilterRegistryInterface;

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+
 /**
  * Interface for fixture loader configuration
  *
@@ -75,9 +77,9 @@ interface ConfigurationRegistryInterface
     public function getReader($name, $extension);
 
     /**
-     * Return the ProductManager
+     * Return the MediaManager
      *
-     * @return ProductManager
+     * @return MediaManager
      */
-    public function getProductManager();
+    public function getMediaManager();
 }

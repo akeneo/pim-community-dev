@@ -17,17 +17,26 @@ interface SetterRegistryInterface
      * Register a setter
      *
      * @param SetterInterface $setter
+     *
+     * @return SetterRegistryInterface
      */
     public function register(SetterInterface $setter);
 
     /**
-     * Fetch the setter which supports the attribute
+     * Get the field setter
+     *
+     * @param string $field the field
+     *
+     * @return SetterInterface|null
+     */
+    public function getFieldSetter($field);
+
+    /**
+     * Get the attribute setter
      *
      * @param AttributeInterface $attribute
      *
-     * @throws \LogicException
-     *
-     * @return SetterInterface
+     * @return SetterInterface|null
      */
-    public function get(AttributeInterface $attribute);
+    public function getAttributeSetter(AttributeInterface $attribute);
 }

@@ -11,10 +11,12 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+se Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CommentBundle\Entity\Comment;
@@ -280,11 +282,17 @@ class FixturesContext extends RawMinkContext
             ->reset();
 
         $product = $this->loadFixture('products', $data);
+        $this->getMediaManager()->handleProductMedias($product);
 
-        $this->getProductBuilder()->addMissingProductValues($product);
-        $this->getProductManager()->handleMedia($product);
+        // we get rid of "add missing values" but we still have an issue with the ORM price filter on empty operator
+        /** @var ProductValueInterface $value */
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
+                $this->getProductBuilder()->addMissingPrices($value);
+            }
+        }
 
-        $this->getProductManager()->saveProduct($product, ['recalculate' => false]);
+        $this->getProductSaver()->save($product, ['recalculate' => false]);
 
         return $product;
     }
@@ -523,7 +531,7 @@ class FixturesContext extends RawMinkContext
         $comments = [];
 
         foreach ($table->getHash() as $row) {
-            $product = $this->getProductManager()->findByIdentifier($row['product']);
+            $product = $this->getProductRepository()->findOneByIdentifier($row['product']);
             $row['resource'] = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
@@ -1377,7 +1385,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $product = $this->getProductManager()->findByIdentifier($sku);
+        $product = $this->getProductRepository()->findOneByIdentifier($sku);
 
         if (!$product) {
             throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
@@ -2147,19 +2155,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+     * @return \Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface
      */
-    protected function getProductBuilder()
+    protected function getProductRepository()
     {
-        return $this->getContainer()->get('pim_catalog.builder.product');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
-     */
-    protected function getAttributeManager()
-    {
-        return $this->getContainer()->get('pim_catalog.manager.attribute');
+        return $this->getContainer()->get('pim_catalog.repository.product');
     }
 
     /**
@@ -2168,6 +2168,30 @@ class FixturesContext extends RawMinkContext
     protected function getMediaManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.media');
+    }
+
+    /**
+     * @return ProductBuilderInterface
+     */
+    protected function getProductBuilder()
+    {
+        return $this->getContainer()->get('pim_catalog.builder.product');
+    }
+
+    /**
+     * @return ProductSaver
+     */
+    protected function getProductSaver()
+    {
+        return $this->getContainer()->get('pim_catalog.saver.product');
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
+     */
+    protected function getAttributeManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.attribute');
     }
 
     /**

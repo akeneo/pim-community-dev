@@ -17,6 +17,18 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 interface ProductBuilderInterface
 {
     /**
+     * Create product with its identifier value,
+     *  - sets the identifier data if provided
+     *  - sets family if provided
+     *
+     * @param string $identifier
+     * @param string $familyCode
+     *
+     * @return ProductInterface
+     */
+    public function createProduct($identifier = null, $familyCode = null);
+
+    /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is localizable/scopable, then all values in the required locales/channels
@@ -24,9 +36,18 @@ interface ProductBuilderInterface
      *
      * @param ProductInterface $product
      *
-     * @return null
+     * @return ProductBuilderInterface
      */
     public function addMissingProductValues(ProductInterface $product);
+
+    /**
+     * Add empty associations for each association types when they don't exist yet
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductBuilderInterface
+     */
+    public function addMissingAssociations(ProductInterface $product);
 
     /**
      * Creates required value(s) to add the attribute to the product
