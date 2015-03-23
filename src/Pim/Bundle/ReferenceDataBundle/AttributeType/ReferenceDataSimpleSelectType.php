@@ -68,7 +68,11 @@ class ReferenceDataSimpleSelectType extends AbstractAttributeType
      */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
-        return parent::defineCustomAttributeProperties($attribute) + [
+        $attributes = parent::defineCustomAttributeProperties($attribute);
+
+        unset($attributes['availableLocales'], $attributes['unique']);
+
+        return $attributes + [
             'reference_data_name' => [
                 'name' => 'reference_data_name',
                 'fieldType' => 'choice',
