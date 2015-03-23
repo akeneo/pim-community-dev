@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,6 +41,9 @@ class ProductRestController
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param ProductManager          $productManager
      * @param ProductUpdaterInterface $productUpdater
@@ -47,6 +51,7 @@ class ProductRestController
      * @param NormalizerInterface     $normalizer
      * @param DenormalizerInterface   $denormalizer
      * @param ValidatorInterface      $validator
+     * @param UserContext             $userContext
      */
     public function __construct(
         ProductManager $productManager,
@@ -54,7 +59,8 @@ class ProductRestController
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
         DenormalizerInterface $denormalizer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        UserContext $userContext
     ) {
         $this->productManager = $productManager;
         $this->productUpdater = $productUpdater;
@@ -62,6 +68,7 @@ class ProductRestController
         $this->normalizer     = $normalizer;
         $this->denormalizer   = $denormalizer;
         $this->validator      = $validator;
+        $this->userContext    = $userContext;
     }
 
     /**
@@ -73,7 +80,16 @@ class ProductRestController
     {
         $product = $this->findProductOr404($id);
 
-        return new JsonResponse($this->normalizer->normalize($product, 'internal_api'));
+        $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
+        $locales  = $this->userContext->getUserLocaleCodes();
+
+        return new JsonResponse(
+            $this->normalizer->normalize(
+                $product,
+                'internal_api',
+                ['locales'  => $locales, 'channels' => $channels]
+            )
+        );
     }
 
     /**
@@ -98,7 +114,7 @@ class ProductRestController
                             $value['value'],
                             [
                                 'locale' => $value['locale'],
-                                'scope' => $value['scope']
+                                'scope'  => $value['scope']
                             ]
                         );
                     }

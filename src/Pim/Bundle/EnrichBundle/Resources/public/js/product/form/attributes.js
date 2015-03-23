@@ -1,4 +1,4 @@
-'use strict';
+ 'use strict';
 
 define(
     [
@@ -42,7 +42,10 @@ define(
             },
             configure: function () {
                 this.getRoot().addTab('attributes', 'Attributes');
-                this.state = new Backbone.Model();
+                this.state = new Backbone.Model({
+                    'locale': 'en_US',
+                    'scope':  'ecommerce'
+                });
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(this.state, 'change', this.render);
@@ -161,14 +164,18 @@ define(
                 console.log(this.getData().values);
                 return this.getData().values;
             },
-            setScope: function(scope) {
-                this.state.set('scope', scope);
+            setScope: function(scope, options) {
+                options = options || {};
+
+                this.state.set('scope', scope, options);
             },
             getScope: function() {
                 return this.state.get('scope');
             },
-            setLocale: function(locale) {
-                this.state.set('locale', locale);
+            setLocale: function(locale, options) {
+                options = options || {};
+
+                this.state.set('locale', locale, options);
             },
             getLocale: function() {
                 return this.state.get('locale');

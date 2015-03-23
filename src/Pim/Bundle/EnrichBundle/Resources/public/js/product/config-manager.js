@@ -9,7 +9,9 @@ define(['routing'], function (Routing) {
             'attributes': 'pim_enrich_attribute_rest_index',
             'families': 'pim_enrich_family_rest_index',
             'channels': 'pim_enrich_channel_rest_index',
-            'measures': 'pim_enrich_measures_rest_index'
+            'locales': 'pim_enrich_locale_rest_index',
+            'measures': 'pim_enrich_measures_rest_index',
+            'currencies': 'pim_enrich_currency_rest_index'
         },
         getEntityList: function(entityType)
         {
@@ -57,7 +59,9 @@ define(['routing'], function (Routing) {
                 this.getEntityList('attributegroups'),
                 this.getEntityList('attributes'),
                 this.getEntityList('channels'),
+                this.getEntityList('locales'),
                 this.getEntityList('measures'),
+                this.getEntityList('currencies'),
                 this.getEntityList('families')
             ).done(_.bind(function() {
                 promise.resolve(this.entities);

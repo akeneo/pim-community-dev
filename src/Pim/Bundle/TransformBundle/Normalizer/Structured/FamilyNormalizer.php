@@ -3,6 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -12,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizer implements NormalizerInterface
+class FamilyNormalizer implements NormalizerInterface, FilterableNormalizerInterface
 {
     /**
      * @var array $supportedFormats
@@ -23,6 +25,11 @@ class FamilyNormalizer implements NormalizerInterface
      * @var TranslationNormalizer $transNormalizer
      */
     protected $transNormalizer;
+
+    /**
+     * @var array $attributeFilters
+     */
+    protected $attributeFilters;
 
     /**
      * Constructor
@@ -37,11 +44,21 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
+    public function setFilters(array $filters)
+    {
+        $this->attributeFilters = $filters;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function normalize($object, $format = null, array $context = array())
     {
         return array(
             'code'             => $object->getCode(),
-            'attributes'       => $this->normalizeAttributes($object),
+            'attributes'       => $this->normalizeAttributes($object, $context),
             'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($object),
         ) + $this->transNormalizer->normalize($object, $format, $context);
@@ -62,14 +79,20 @@ class FamilyNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family)
+    protected function normalizeAttributes(FamilyInterface $family, $context)
     {
-        $attributes = array();
-        foreach ($family->getAttributes() as $attribute) {
-            $attributes[] = $attribute->getCode();
+        $attributes = $family->getAttributes();
+
+        foreach ($this->attributeFilters as $filter) {
+            $attributes = $filter->filter($attributes, $context);
         }
 
-        return $attributes;
+        $normalizedAttributes = array();
+        foreach ($attributes as $attribute) {
+            $normalizedAttributes[] = $attribute->getCode();
+        }
+
+        return $normalizedAttributes;
     }
 
     /**

@@ -64,8 +64,10 @@ define(
 
                 return root;
             },
-            setData: function (data) {
-                this.getRoot().model.set(data);
+            setData: function (data, options) {
+                options = options || {};
+
+                this.getRoot().model.set(data, options);
 
                 return this;
             },

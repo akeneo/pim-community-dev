@@ -22,7 +22,7 @@ class FamilyNormalizer extends Structured\FamilyNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(FamilyInterface $family)
+    protected function normalizeAttributes(FamilyInterface $family, $context)
     {
         $attributes = parent::normalizeAttributes($family);
 

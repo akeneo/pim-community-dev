@@ -26,6 +26,8 @@ parameters:
     pim_enrich.controller.family_rest.class: Pim\Bundle\EnrichBundle\Controller\FamilyRestController
     pim_enrich.controller.variant_group_rest.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupRestController
     pim_enrich.controller.channel_rest.class: Pim\Bundle\EnrichBundle\Controller\ChannelRestController
+    pim_enrich.controller.locale_rest.class: Pim\Bundle\EnrichBundle\Controller\LocaleRestController
+    pim_enrich.controller.currency_rest.class: Pim\Bundle\EnrichBundle\Controller\CurrencyRestController
     pim_enrich.controller.measures_rest.class: Pim\Bundle\EnrichBundle\Controller\MeasuresRestController
     pim_enrich.controller.completeness_rest.class: Pim\Bundle\EnrichBundle\Controller\CompletenessRestController
     pim_enrich.controller.versioning_rest.class: Pim\Bundle\EnrichBundle\Controller\VersioningRestController
@@ -286,24 +288,27 @@ services:
             - '@pim_internal_api_serializer'
             - '@pim_serializer'
             - '@pim_validator'
+            - '@pim_user.context.user'
 
     pim_enrich.controller.attribute_rest:
         class: %pim_enrich.controller.attribute_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
+            - '@security.context'
 
     pim_enrich.controller.attribute_group_rest:
         class: %pim_enrich.controller.attribute_group_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'
+            - '@security.context'
 
     pim_enrich.controller.family_rest:
         class: %pim_enrich.controller.family_rest.class%
         arguments:
             - '@pim_catalog.repository.family'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.variant_group_rest:
         class: %pim_enrich.controller.variant_group_rest.class%
@@ -316,6 +321,17 @@ services:
         arguments:
             - '@pim_catalog.repository.channel'
             - '@pim_serializer'
+
+    pim_enrich.controller.locale_rest:
+        class: %pim_enrich.controller.locale_rest.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@security.context'
+
+    pim_enrich.controller.currency_rest:
+        class: %pim_enrich.controller.currency_rest.class%
+        arguments:
+            - '@pim_catalog.repository.currency'
 
     pim_enrich.controller.measures_rest:
         class: %pim_enrich.controller.measures_rest.class%

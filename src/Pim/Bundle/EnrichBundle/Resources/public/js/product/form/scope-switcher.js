@@ -17,7 +17,7 @@ define(
             render: function () {
                 ChannelManager.getChannels().done(_.bind(function(channels) {
                     if (!this.getParent().getScope()) {
-                        this.getParent().setScope(channels[0].code);
+                        this.getParent().setScope(channels[0].code, {silent: true});
                     }
                     this.$el.html(
                         this.template({

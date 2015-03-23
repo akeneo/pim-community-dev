@@ -1,8 +1,8 @@
 <% if (!value.value) { %>
-    <% _.each(config.currency, function (currency) { %>
+    <% _.each(currencies, function (currency) { %>
         <div class="input-append">
-            <input type="number" pattern="(\d+(.\d+)?)" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= currency %>" value="" <%= editMode === 'disabled' ? 'disabled' : '' %>>
-            <span class="add-on"><%= price.currency %></span>
+            <input type="number" pattern="(\d+(.\d+)?)" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" data-currency="<%= currency.code %>" value="" <%= editMode === 'disabled' ? 'disabled' : '' %>>
+            <span class="add-on"><%= currency.code %></span>
         </div>
     <% }) %>
 <% } else { %>
