@@ -6,15 +6,17 @@ define(
         'pim/form',
         'pim/completeness-manager',
         'text!pim/template/product/panel/completeness',
-        'pim/i18n'
+        'pim/i18n',
+        'oro/mediator'
     ],
-    function(_, BaseForm, CompletenessManager, template, i18n) {
+    function(_, BaseForm, CompletenessManager, template, i18n, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
             code: 'completeness',
             events: {
-                'click header': 'switchChannel'
+                'click header': 'switchChannel',
+                'click .missing-attributes span': 'showAttribute'
             },
             configure: function () {
                 this.getRoot().addPanel('completeness', 'Completeness');
@@ -43,6 +45,16 @@ define(
                 } else {
                     $completenessBlock.attr('data-closed', 'false');
                 }
+            },
+            showAttribute: function(event) {
+                mediator.trigger(
+                    'show_attribute',
+                    {
+                        attribute: event.currentTarget.dataset.attribute,
+                        locale: event.currentTarget.dataset.locale,
+                        scope: event.currentTarget.dataset.channel
+                    }
+                );
             }
         });
     }

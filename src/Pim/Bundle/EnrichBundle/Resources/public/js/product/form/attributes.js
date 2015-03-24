@@ -53,6 +53,8 @@ define(
                 this.listenTo(this.state, 'change', this.render);
                 mediator.on('post_save', _.bind(this.postSave, this));
                 mediator.on('post_validation_error', _.bind(this.postValidationError, this));
+                mediator.on('show_attribute', _.bind(this.showAttribute, this));
+                window.addEventListener('resize', _.bind(this.resize, this));
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -65,7 +67,7 @@ define(
 
                 this.getConfig().done(_.bind(function() {
                     this.$el.html(this.template({}));
-
+                    this.resize();
                     var product = this.getData();
                     $.when(
                         ConfigManager.getEntityList('families'),
@@ -98,6 +100,14 @@ define(
                 }, this));
 
                 return this;
+            },
+            resize: function() {
+                var productValuesContainer = this.$('.product-values');
+                if (productValuesContainer) {
+                    productValuesContainer.css(
+                        {'height': ($(window).height() - productValuesContainer.offset().top - 4) + 'px'}
+                    );
+                }
             },
             renderField: function(product, attributeCode, values, families) {
                 var promise = $.Deferred();
@@ -187,6 +197,12 @@ define(
             },
             postValidationError: function() {
                 this.extensions['attribute-group-selector'].removeBadges();
+                _.each(FieldManager.getFields(), function(field) {
+                    if (!field.getValid()) {
+                        mediator.trigger('show_attribute', {attribute: field.attribute.code});
+                        return;
+                    }
+                });
                 this.updateAttributeGroupBadges();
             },
             postSave: function() {
@@ -210,6 +226,49 @@ define(
                                 this.extensions['attribute-group-selector'].addToBadge(attributeGroup, 'invalid');
                             }
                         }, this));
+                    }, this));
+            },
+            showAttribute: function(event) {
+                AttributeGroupManager.getAttributeGroupsForProduct(this.getData())
+                    .done(_.bind(function(attributeGroups) {
+                        var attributeGroup = AttributeGroupManager.getAttributeGroupForAttribute(
+                            attributeGroups,
+                            event.attribute
+                        );
+                        var needRendering = false;
+
+                        if (event.scope) {
+                            this.setScope(event.scope, {silent: true});
+                            needRendering = true;
+                        }
+                        if (event.locale) {
+                            this.setLocale(event.locale, {silent: true});
+                            needRendering = true;
+                        }
+
+                        if (attributeGroup !== this.extensions['attribute-group-selector'].getCurrent()) {
+                            this.extensions['attribute-group-selector'].setCurrent(attributeGroup);
+                            needRendering = true;
+                        }
+
+                        if (needRendering) {
+                            this.render();
+                        }
+
+                        var field = FieldManager.getFields()[event.attribute];
+
+                        var fieldPosition = field.$el.offset().top - 10;
+
+                        this.$('.product-values').animate(
+                            {
+                                scrollTop: fieldPosition
+                            },
+                            400,
+                            'swing',
+                            function() {
+                                field.setFocus();
+                            }
+                        );
                     }, this));
             }
         });

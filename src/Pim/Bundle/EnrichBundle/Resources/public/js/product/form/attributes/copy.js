@@ -96,7 +96,7 @@ define(
             },
             copy: function(){
                 _.each(this.copyFields, function (copyField) {
-                    if (copyField.field && 'edit' === copyField.field.getEditMode()) {
+                    if (copyField.selected && copyField.field && 'edit' === copyField.field.getEditMode()) {
                         copyField.field.setCurrentValue(copyField.data);
                         copyField.selected = false;
                     }

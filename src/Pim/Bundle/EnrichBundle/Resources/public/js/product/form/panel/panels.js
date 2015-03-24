@@ -18,6 +18,7 @@ define(
                 this.state = new Backbone.Model();
 
                 this.listenTo(this.state, 'change', this.render);
+                window.addEventListener('resize', _.bind(this.resize, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -48,9 +49,10 @@ define(
                 );
 
                 if (this.state.get('currentPanel')) {
-                    var currentPanelExtension = this.extensions[this.state.get('currentPanel')];
-                    console.log(this.code, 'triggered the rendering of', currentPanelExtension.code);
-                    this.$el.append(currentPanelExtension.render().$el);
+                    var currentPanel = this.extensions[this.state.get('currentPanel')];
+                    console.log(this.code, 'triggered the rendering of', currentPanel.code);
+                    currentPanel.getTargetElement()[currentPanel.insertAction](currentPanel.el);
+                    currentPanel.render();
                 }
 
                 var selectorExtension = this.extensions.selector;
@@ -58,11 +60,19 @@ define(
                 this.getParent().$('>header').append(selectorExtension.render().$el);
 
                 this.delegateEvents();
-
+                this.resize();
                 return this;
             },
             closePanel: function () {
                 this.state.set('currentPanel', null);
+            },
+            resize: function() {
+                var panelContent = this.$('.panel-content');
+                if (panelContent) {
+                    panelContent.css(
+                        {'height': ($(window).height() - panelContent.offset().top - 4) + 'px'}
+                    );
+                }
             }
         });
     }

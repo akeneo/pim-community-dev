@@ -132,6 +132,9 @@ define([
         {
             return true;
         },
+        setFocus: function() {
+            this.$('input').first().focus();
+        },
         setEditable: function(editable) {
             this.editable = editable;
         },

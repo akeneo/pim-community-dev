@@ -637,11 +637,23 @@ span.link-label {
   }
 }
 
+body {
+  overflow: hidden !important;
+  min-height: 600px;
+}
+
 @max-field-width: 500px;
 @min-field-width: 300px;
 
 .product-values {
-  margin: 15px 20px;
+  &.tab-pane {
+    padding-top: 15px;
+    padding-right: 20px;
+  }
+
+  margin-left: 20px;
+  box-sizing: border-box;
+  overflow: auto;
 }
 
 .attribute-actions {
@@ -656,11 +668,14 @@ span.link-label {
 
   .attribute-edit-actions, .attribute-copy-actions {
     padding: 8px 0;
+    margin-right: 10px;
     .display-flex();
-    justify-content: flex-end;
 
-    .locale-switcher, .scope-switcher {
-      align-self: flex-start;
+    .other-actions {
+      .flex(1);
+      .display-flex();
+      .align-items(flex-end);
+      .flex-direction(column);
     }
   }
 
@@ -669,7 +684,11 @@ span.link-label {
   }
 
   .attribute-copy-actions {
-    .btn {
+    .context-selectors {
+      margin-left: 5px;
+    }
+
+    & > * > .btn, & > * > .btn-group {
       margin-left: 8px;
     }
   }
@@ -680,17 +699,18 @@ span.link-label {
     display: block;
   }
 
-  .attribute-edit-actions, .attribute-copy-actions {
+  .attribute-edit-actions {
     max-width: @max-field-width;
+    margin-right: 0;
   }
 
-  .attribute-edit-actions {
-    padding-right: 10px;
+  .attribute-copy-actions {
+    max-width: @max-field-width + 10px;
   }
 
   .attribute-copy-actions {
     .flex(1);
-    padding-right: 10px;
+    margin-left: 10px;
     border-left: 1px solid #e5e5e5;
   }
 }
@@ -753,6 +773,7 @@ span.link-label {
   }
 
   .form-container {
+    overflow: hidden;
     .display-flex();
 
     & > .tab-container {
@@ -783,6 +804,10 @@ span.link-label {
       .flex();
     }
   }
+}
+
+.product-attributes >.tab-content {
+  overflow: hidden;
 }
 
 .panel-selector {
@@ -837,8 +862,13 @@ span.link-label {
       line-height: 42px;
       color: #333;
       font-weight: bold;
+      text-transform: capitalize;
     }
   }
+}
+
+.panel-content {
+  overflow: auto;
 }
 
 .completeness-block {
@@ -874,9 +904,8 @@ span.link-label {
       color: #333;
       font-weight: 200;
       line-height: 35px;
+      text-transform: capitalize;
     }
-
-
 
     .btn {
       border: none;
@@ -917,6 +946,14 @@ span.link-label {
 
     .missing {
       color: @color-form-info;
+
+      .missing-attributes span {
+        text-decoration: underline;
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
     }
   }
 }
@@ -1203,7 +1240,6 @@ span.link-label {
         background: #f0f0f0 !important;
       }
     }
-
   }
 
   .select2-input {

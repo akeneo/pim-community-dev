@@ -26,6 +26,8 @@ extensions:
         zones:
             header: .tab-content > header
             edit-actions: .tab-content > header > .attribute-edit-actions
+            context-selectors: .tab-content > header > .attribute-edit-actions > .context-selectors
+            other-actions: .tab-content > header > .attribute-edit-actions > .other-actions
             attributes: self
 
     categories:
@@ -41,7 +43,7 @@ extensions:
         targetZone: container
         insertAction: after
         zones:
-            panels: self
+            panel-content: .panel-content
 
     attribute-group-selector:
         module: pim/product-edit-form/attributes/attribute-group-selector
@@ -52,26 +54,29 @@ extensions:
     add-attribute:
         module: pim/product-edit-form/attributes/add-attribute
         parent: attributes
-        targetZone: edit-actions
+        targetZone: other-actions
+        insertAction: append
 
     scope-switcher:
         module: pim/product-edit-form/scope-switcher
         parent: attributes
-        targetZone: edit-actions
-        insertAction: prepend
+        targetZone: context-selectors
+        insertAction: append
 
     locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: attributes
-        targetZone: edit-actions
-        insertAction: prepend
+        targetZone: context-selectors
+        insertAction: append
 
     copy:
         module: pim/product-edit-form/attributes/copy
         parent: attributes
         targetZone: header
         zones:
-            copy-actions: .copy-actions
+            copy-actions: .other-actions > .copy-actions
+            context-selectors: .context-selectors
+            other-actions: .other-actions
 
     validation:
         module: pim/product-edit-form/attributes/validation
@@ -86,14 +91,20 @@ extensions:
     completeness:
         parent: panels
         module: pim/product-edit-form/panel/completeness
+        targetZone: panel-content
+        insertAction: append
 
     comments:
         parent: panels
         module: pim/product-edit-form/panel/comments
+        targetZone: panel-content
+        insertAction: append
 
     history:
         parent: panels
         module: pim/product-edit-form/panel/history
+        targetZone: panel-content
+        insertAction: append
 
     selector:
         parent: panels
@@ -102,11 +113,11 @@ extensions:
     copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher
         parent: copy
-        targetZone: copy-actions
-        insertAction: prepend
+        targetZone: context-selectors
+        insertAction: append
 
     copy-locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: copy
-        targetZone: copy-actions
-        insertAction: prepend
+        targetZone: context-selectors
+        insertAction: append
