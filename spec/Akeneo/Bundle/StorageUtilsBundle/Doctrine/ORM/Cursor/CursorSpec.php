@@ -156,7 +156,7 @@ class CursorSpec extends ObjectBehavior
         $this->shouldThrow('\Exception')->duringRewind();
     }
 
-    function it_keeps_order(
+    function it_keeps_order_with_object_hydration(
         $queryBuilder,
         AbstractQuery $query,
         From $from,
@@ -213,6 +213,55 @@ class CursorSpec extends ObjectBehavior
         $this->current()->shouldReturn($entity2);
         $this->next();
         $this->current()->shouldReturn($entity4);
+    }
+
+    function it_keeps_order_with_array_hydration(
+        $queryBuilder,
+        AbstractQuery $query,
+        From $from,
+        EntityManager $entityManager,
+        CursorableRepositoryInterface $repository
+    ) {
+        $rootIdExpr = 'o.id';
+        $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
+
+        $from->getFrom()->willReturn($entityClass);
+        $from->getAlias()->willReturn('o');
+
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLPart('from')->willReturn([$from]);
+        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $ids = [
+            5 => 15,
+            3 => 13,
+            1 => 11,
+            2 => 12,
+            4 => 14
+        ];
+        $query->getArrayResult()->willReturn($ids);
+
+        $entityManager->getRepository($entityClass)->willReturn($repository);
+
+        $repository->findByIds(array_keys($ids))->willReturn([
+            1 => ['id'=> 1],
+            2 => ['id'=> 2],
+            3 => ['id'=> 3],
+            4 => ['id'=> 4],
+            5 => ['id'=> 5],
+        ]);
+
+        $this->next();
+        $this->current()->shouldNotReturn(['id'=> 1]);
+        $this->current()->shouldReturn(['id'=> 5]);
+        $this->next();
+        $this->current()->shouldReturn(['id'=> 3]);
+        $this->next();
+        $this->current()->shouldReturn(['id'=> 1]);
     }
 }
 

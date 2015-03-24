@@ -196,12 +196,15 @@ class Cursor extends AbstractCursor
             $this->currentPage++;
             $orderedResult = array_fill_keys($currentIds, null);
             foreach ($items as $entity) {
+                $entityId = null;
                 if (is_object($entity)) {
                     $entityId = $entity->getId();
-                } else {
+                } elseif (is_array($entity) && array_key_exists('id', $entity)) {
                     $entityId = $entity['id'];
                 }
-                $orderedResult[$entityId] = $entity;
+                if ($entityId) {
+                    $orderedResult[$entityId] = $entity;
+                }
             }
             $entities = new \ArrayIterator($orderedResult);
         }
