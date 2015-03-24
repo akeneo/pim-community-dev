@@ -1,6 +1,7 @@
 # 1.4.x
 
 ## Bug fixes
+- PIM-2401: Association grid, add the Is associated sorter (MongoDB impl)
 - PIM-3874: clicking a category gives an error with only "list categories" permission
 - PIM-3771: Create version when modifying variant group attribute
 - PIM-2743: keep page per view on datagrids
