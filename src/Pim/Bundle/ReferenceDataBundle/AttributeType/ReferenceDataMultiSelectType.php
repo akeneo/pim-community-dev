@@ -2,23 +2,20 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\AttributeType;
 
-use Pim\Bundle\CatalogBundle\AttributeType\OptionMultiSelectType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
  * Reference data multi options (select) attribute type
- *
- * TODO-CR: do not extend OptionMultiSelectType
- *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataMultiSelectType extends OptionMultiSelectType
+class ReferenceDataMultiSelectType extends AbstractAttributeType
 {
     /** @var ConfigurationRegistryInterface */
     protected $referenceDataRegistry;
@@ -68,7 +65,11 @@ class ReferenceDataMultiSelectType extends OptionMultiSelectType
      */
     protected function defineCustomAttributeProperties(AttributeInterface $attribute)
     {
-        return parent::defineCustomAttributeProperties($attribute) + [
+        $attributes = parent::defineCustomAttributeProperties($attribute);
+
+        unset($attributes['availableLocales'], $attributes['unique']);
+
+        return $attributes + [
             'reference_data_name' => [
                 'name'      => 'reference_data_name',
                 'fieldType' => 'choice',
@@ -76,7 +77,6 @@ class ReferenceDataMultiSelectType extends OptionMultiSelectType
                     'choices'     => $this->getReferenceDataChoices(),
                     'required'    => true,
                     'multiple'    => false,
-                    //TODO-CR: should be translatable
                     'empty_value' => 'Choose the reference data type',
                     'select2'     => true
                 ],

@@ -9,6 +9,10 @@
         {{ form_row(form.code, { 'label': 'Code'|trans }) }}
         {{ form_row(form.attributeType) }}
 
+        {% if form.reference_data_name is defined %}
+            {{ form_row(form.reference_data_name, { 'label': 'Reference data name'|trans }) }}
+        {% endif %}
+
         {% if form.scopable is defined %}
             {{ form_row(form.scopable, { 'label': 'Scope'|trans }) }}
         {% endif %}
