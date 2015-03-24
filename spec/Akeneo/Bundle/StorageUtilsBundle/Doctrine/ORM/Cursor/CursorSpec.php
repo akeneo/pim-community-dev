@@ -34,18 +34,18 @@ class CursorSpec extends ObjectBehavior
 
         $rootIdExpr = 'o.id';
 
-        $from->getFrom()->shouldBeCalled()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
-        $from->getAlias()->shouldBeCalled()->willReturn('o');
+        $from->getFrom()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
+        $from->getAlias()->willReturn('o');
 
-        $queryBuilder->getRootAliases()->shouldBeCalled()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->shouldBeCalled()->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLPart('from')->willReturn([$from]);
+        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->getQuery()->willReturn($query);
 
-        $query->getArrayResult()->shouldBeCalled()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+        $query->getArrayResult()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
 
         $this->shouldHaveCount(13);
     }
@@ -80,15 +80,15 @@ class CursorSpec extends ObjectBehavior
         $from->getFrom()->shouldBeCalled()->willReturn($entityClass);
         $from->getAlias()->shouldBeCalled()->willReturn('o');
 
-        $queryBuilder->getRootAliases()->shouldBeCalled()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->shouldBeCalled()->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLPart('from')->willReturn([$from]);
+        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->getQuery()->willReturn($query);
 
-        $query->getArrayResult()->shouldBeCalled()->willReturn([
+        $query->getArrayResult()->willReturn([
             10 => 10,
             11 => 11,
             12 => 12,
@@ -104,9 +104,9 @@ class CursorSpec extends ObjectBehavior
             22 => 22
         ]);
 
-        $entityManager->getRepository($entityClass)->shouldBeCalled()->willReturn($repository);
-        $repository->findByIds([10, 11, 12, 13, 14, 15, 16, 17, 18, 19])->shouldBeCalled()->willReturn($page1);
-        $repository->findByIds([20, 21, 22])->shouldBeCalled()->willReturn($page2);
+        $entityManager->getRepository($entityClass)->willReturn($repository);
+        $repository->findByIds([10, 11, 12, 13, 14, 15, 16, 17, 18, 19])->willReturn($page1);
+        $repository->findByIds([20, 21, 22])->willReturn($page2);
 
         // methods that not iterate can be called twice
         $this->rewind()->shouldReturn(null);
@@ -140,20 +140,79 @@ class CursorSpec extends ObjectBehavior
     {
         $rootIdExpr = 'o.id';
 
-        $from->getFrom()->shouldBeCalled()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
-        $from->getAlias()->shouldBeCalled()->willReturn('o');
+        $from->getFrom()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
+        $from->getAlias()->willReturn('o');
 
-        $queryBuilder->getRootAliases()->shouldBeCalled()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->shouldBeCalled()->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->shouldBeCalled()->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLPart('from')->willReturn([$from]);
+        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->getQuery()->willReturn($query);
 
-        $query->getArrayResult()->shouldBeCalled()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
+        $query->getArrayResult()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
 
         $this->shouldThrow('\Exception')->duringRewind();
+    }
+
+    function it_keeps_order(
+        $queryBuilder,
+        AbstractQuery $query,
+        From $from,
+        EntityManager $entityManager,
+        CursorableRepositoryInterface $repository
+    ) {
+        $rootIdExpr = 'o.id';
+        $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
+
+        $from->getFrom()->willReturn($entityClass);
+        $from->getAlias()->willReturn('o');
+
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLPart('from')->willReturn([$from]);
+        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
+        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
+        $queryBuilder->getQuery()->willReturn($query);
+
+        $ids = [
+            5 => 15,
+            3 => 13,
+            1 => 11,
+            2 => 12,
+            4 => 14
+        ];
+        $query->getArrayResult()->willReturn($ids);
+
+        $entityManager->getRepository($entityClass)->willReturn($repository);
+
+        $entity1 = new Entity(1);
+        $entity2 = new Entity(2);
+        $entity3 = new Entity(3);
+        $entity4 = new Entity(4);
+        $entity5 = new Entity(5);
+
+        $repository->findByIds(array_keys($ids))->willReturn([
+            1 => $entity1,
+            2 => $entity2,
+            3 => $entity3,
+            4 => $entity4,
+            5 => $entity5,
+        ]);
+
+        $this->next();
+        $this->current()->shouldNotReturn($entity1);
+        $this->current()->shouldReturn($entity5);
+        $this->next();
+        $this->current()->shouldReturn($entity3);
+        $this->next();
+        $this->current()->shouldReturn($entity1);
+        $this->next();
+        $this->current()->shouldReturn($entity2);
+        $this->next();
+        $this->current()->shouldReturn($entity4);
     }
 }
 
@@ -164,5 +223,10 @@ class Entity
     public function __construct($id)
     {
         $this->id = $id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

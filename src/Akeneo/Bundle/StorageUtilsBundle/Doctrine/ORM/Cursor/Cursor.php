@@ -193,8 +193,17 @@ class Cursor extends AbstractCursor
 
         if (!empty($currentIds)) {
             $items = $this->getRepository()->findByIds($currentIds);
-            $entities = new \ArrayIterator($items);
             $this->currentPage++;
+            $orderedResult = array_fill_keys($currentIds, null);
+            foreach ($items as $entity) {
+                if (is_object($entity)) {
+                    $entityId = $entity->getId();
+                } else {
+                    $entityId = $entity['id'];
+                }
+                $orderedResult[$entityId] = $entity;
+            }
+            $entities = new \ArrayIterator($orderedResult);
         }
 
         return $entities;
