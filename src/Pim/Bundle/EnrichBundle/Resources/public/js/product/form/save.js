@@ -32,7 +32,8 @@ define(
                 return this;
             },
             save: function() {
-                var product = this.getData();
+                var product   = this.getData();
+                var productId = product.meta.id;
 
                 delete product.associations;
                 delete product.variant_group;
@@ -42,7 +43,7 @@ define(
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
                 mediator.trigger('pre_save');
-                ProductManager.save(100, product).done(_.bind(function(data) {
+                ProductManager.save(productId, product).done(_.bind(function(data) {
                     navigation.addFlashMessage('success', 'Product saved');
                     navigation.afterRequest();
 

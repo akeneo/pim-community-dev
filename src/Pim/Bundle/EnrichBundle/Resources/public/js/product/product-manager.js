@@ -28,21 +28,15 @@ define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, Att
         getValues: function(product) {
             var promise = $.Deferred();
 
-            if (!this.productValues) {
-                AttributeManager.getAttributesForProduct(product).done(function(attributes) {
-                    this.productValues = {};
+            AttributeManager.getAttributesForProduct(product).done(function(attributes) {
+                _.each(attributes, _.bind(function(attributeCode) {
+                    if (!product.values[attributeCode]) {
+                        product.values[attributeCode] = [];
+                    }
+                }, this));
 
-                    _.each(attributes, _.bind(function(attributeCode) {
-                        if (product.values[attributeCode]) {
-                            this.productValues[attributeCode] = product.values[attributeCode];
-                        } else {
-                            this.productValues[attributeCode] = [];
-                        }
-                    }, this));
-
-                    promise.resolve(this.productValues);
-                });
-            }
+                promise.resolve(product.values);
+            });
 
             return promise.promise();
         }

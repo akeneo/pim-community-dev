@@ -20,11 +20,19 @@ define([
             console.log(event.currentTarget);
 
             var data = [];
-            _.each($(event.currentTarget).parents('.price-collection-field').find('.price-input'), function(element) {
+            _.each($(event.currentTarget).parents('.price-collection-field').find('.price-input'), _.bind(function(element) {
                 var input = $(element).children('input');
 
-                data.push({'data': input.val(), 'currency': input.data('currency')});
-            });
+                var inputData = input.val();
+
+                if ('' !== inputData) {
+                    inputData = this.attribute.decimalsAllowed ? parseFloat(inputData) : parseInt(inputData);
+                } else {
+                    inputData = null;
+                }
+
+                data.push({'data': inputData, 'currency': input.data('currency')});
+            }, this));
 
             this.setCurrentValue(data);
         },
