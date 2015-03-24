@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Extension\Selector\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
@@ -29,36 +30,36 @@ class ReferenceDataSelector implements SelectorInterface
     /**
      * {@inheritdoc}
      */
-    public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
+    public function apply(DatasourceInterface $dataSource, DatagridConfiguration $configuration)
     {
-        $this->predecessor->apply($datasource, $configuration);
-        $referencesData = $this->buildReferenceData($datasource, $configuration);
+        $this->predecessor->apply($dataSource, $configuration);
+        $referencesData = $this->buildReferenceData($dataSource, $configuration);
     }
 
     /**
      * Build references data
      *
-     * @param DatasourceInterface   $datasource
+     * @param DatasourceInterface   $dataSource
      * @param DatagridConfiguration $configuration
      */
-    protected function buildReferenceData(DatasourceInterface $datasource, DatagridConfiguration $configuration)
+    protected function buildReferenceData(DatasourceInterface $dataSource, DatagridConfiguration $configuration)
     {
         $source = $configuration->offsetGet('source');
-        $qb = $datasource->getQueryBuilder();
+        $qb = $dataSource->getQueryBuilder();
 
         foreach ($source['displayed_columns'] as $column) {
-            $this->buildQueryBuilder($source, $column, $qb);
+            $this->buildQueryBuilder($qb, $source, $column);
         }
     }
 
     /**
      * Build query builder for all references data displayed in grid
      *
-     * @param array  $source
-     * @param string $column
-     * @param array  $qbJoins
+     * @param QueryBuilder $qb
+     * @param array        $source
+     * @param string       $column
      */
-    protected function buildQueryBuilder(array $source = [], $column, $qb)
+    protected function buildQueryBuilder(QueryBuilder $qb, array $source = [], $column)
     {
         if (!isset($source['attributes_configuration'][$column])) {
             return;
@@ -77,9 +78,11 @@ class ReferenceDataSelector implements SelectorInterface
     /**
      * Get query builder joins
      *
+     * @param QueryBuilder $qb
+     *
      * @return array
      */
-    protected function getQbJoins($qb)
+    protected function getQbJoins(QueryBuilder $qb)
     {
         $qbJoin = [];
         $joins = $qb->getDQLPart('join');

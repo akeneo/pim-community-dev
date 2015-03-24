@@ -3,11 +3,11 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -31,7 +31,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Instanciate the base filter
      *
-     * @param array                          $supportedAttributes
+     * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
      * @param array                          $supportedOperators
      */
@@ -80,8 +80,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $locale = null,
         $scope = null
     ) {
-        $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -117,8 +116,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $locale = null,
         $scope = null
     ) {
-        $backendType = $attribute->getBackendType();
-        $joinAlias   = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
+        $joinAlias = $this->getUniqueAlias('filter' . $attribute->getCode(), true);
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
@@ -150,15 +148,15 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Check if value is valid
      *
-     * @param string $field
+     * @param AttributeInterface $attribute
      * @param mixed  $values
      */
-    protected function checkValue($field, $values)
+    protected function checkValue(AttributeInterface $attribute, $values)
     {
-        FieldFilterHelper::checkArray($field->getId(), $values, 'reference_data');
+        FieldFilterHelper::checkArray($attribute->getId(), $values, 'reference_data');
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field->getId(), $value, 'reference_data');
+            FieldFilterHelper::checkIdentifier($attribute->getId(), $value, 'reference_data');
         }
     }
 }

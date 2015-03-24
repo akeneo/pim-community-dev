@@ -3,10 +3,10 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Join\ValueJoin;
 
 /**
  * Reference data sorter
@@ -63,9 +63,7 @@ class ReferenceDataSorter implements AttributeSorterInterface
         );
 
         // join to reference data
-        $referenceDataName = $attribute->getReferenceDataName();
         $joinAliasOpt = $attribute->getCode();
-        $condition    = $joinAliasOpt.".id = ".$attribute->getId();
         $this->qb->leftJoin($joinAlias.'.'.$attribute->getReferenceDataName(), $joinAliasOpt);
 
         $this->qb->addOrderBy($joinAliasOpt . '.code', $direction);

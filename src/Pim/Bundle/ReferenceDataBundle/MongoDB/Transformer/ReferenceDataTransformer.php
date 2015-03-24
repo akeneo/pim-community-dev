@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\MongoDB\Transformer;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -25,7 +26,8 @@ class ReferenceDataTransformer
     {
         $attributeCode = $attribute['code'];
         $normalizedData = $result['normalizedData'];
-        $fromNormData = array('pim_reference_data_simpleselect', 'pim_reference_data_multiselect');
+        $fromNormData = ['pim_reference_data_simpleselect', 'pim_reference_data_multiselect'];
+
         if (in_array($attribute['attributeType'], $fromNormData)) {
             $fieldCode = ProductQueryUtility::getNormalizedValueField(
                 $attributeCode,
@@ -37,7 +39,7 @@ class ReferenceDataTransformer
             $backendType = $attribute['backendType'];
             $references = isset($normalizedData[$fieldCode]) ? $normalizedData[$fieldCode] : [];
 
-            if ($backendType === 'reference_data_option') {
+            if (AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION === $backendType) {
                 $references = $this->filterOptionValues($references, $locale);
             } else {
                 foreach ($references as $indexReference => $reference) {
