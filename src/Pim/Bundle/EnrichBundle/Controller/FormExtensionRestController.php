@@ -26,14 +26,10 @@ class FormExtensionRestController
     }
 
     /**
-     * @param string $key
-     *
      * @return JsonResponse
      */
-    public function getAction($key)
+    public function getAction()
     {
-        $extensions = $this->extensionProvider->getExtensions($key);
-
-        return new JsonResponse($extensions);
+        return new JsonResponse($this->extensionProvider->getExtensions());
     }
 }

@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -30,18 +31,20 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
 
         $providerDefinition = $container->getDefinition(static::PROVIDER_ID);
 
-        $config = [];
+        $extensionConfig = [];
         $files = $this->listConfigFiles($container);
 
         foreach ($files as $file) {
             $config = Yaml::parse($file->getPathName());
             if (isset($config['extensions']) && is_array($config['extensions'])) {
-                $config = array_merge_recursive($config, $config['extensions']);
+                $extensionConfig = array_replace_recursive($extensionConfig, $config['extensions']);
             }
             $container->addResource(new FileResource($file->getPathName()));
         }
 
-        $providerDefinition->addMethodCall('setExtensions', [$config]);
+        foreach ($extensionConfig as $code => $extension) {
+            $providerDefinition->addMethodCall('addExtension', [$code, $extension]);
+        }
     }
 
     /**
@@ -49,7 +52,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      *
-     * @return SplFileInfo[] array of files (key: name of the file)
+     * @return SplFileInfo[]
      */
     protected function listConfigFiles(ContainerBuilder $container)
     {
@@ -81,7 +84,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
      *
      * @param string $directory
      *
-     * @return SplFileInfo[] array of files (key: name of the file)
+     * @return SplFileInfo[]
      */
     protected function listConfigFilesInDirectory($directory)
     {

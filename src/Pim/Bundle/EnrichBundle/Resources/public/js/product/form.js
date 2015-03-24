@@ -8,7 +8,7 @@ define(
             initialize: function () {
                 this.extensions   = {};
                 this.zones        = {};
-                this.zone         = '';
+                this.targetZone   = '';
                 this.insertAction = null;
                 this.configured   = false;
             },
@@ -16,10 +16,10 @@ define(
                 this.zones = zones;
             },
             getTargetElement: function () {
-                if ('self' === this.parent.zones[this.zone]) {
+                if ('self' === this.parent.zones[this.targetZone]) {
                     return this.parent.$el;
                 } else {
-                    return this.parent.$(this.parent.zones[this.zone]);
+                    return this.parent.$(this.parent.zones[this.targetZone]);
                 }
             },
             configure: function () {
@@ -40,9 +40,9 @@ define(
             addExtension: function (code, extension, zone, insertAction) {
                 extension.setParent(this);
 
-                extension.code = code;
-                extension.zone = zone;
-                extension.insertAction = insertAction || 'append';
+                extension.code         = code;
+                extension.targetZone   = zone;
+                extension.insertAction = insertAction;
 
                 this.extensions[code] = extension;
             },

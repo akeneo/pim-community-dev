@@ -26,7 +26,7 @@ define(
 
                 $.when.apply($, extensionPromises).done(function() {
                     _.each(extensionMeta.extensions, function(extension) {
-                        form.addExtension(extension.code, extension.loadedModule, extension.zone, extension.insertAction);
+                        form.addExtension(extension.code, extension.loadedModule, extension.targetZone, extension.insertAction);
                     });
 
                     promise.resolve(form);

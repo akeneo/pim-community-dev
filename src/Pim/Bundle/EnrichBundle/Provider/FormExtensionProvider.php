@@ -14,21 +14,31 @@ class FormExtensionProvider
     /** @var array */
     protected $extensions = [];
 
+    /** @var array */
+    protected $defaults = [
+        'module'       => null,
+        'parent'       => null,
+        'targetZone'   => null,
+        'insertAction' => 'append',
+        'zones'        => []
+    ];
+
     /**
-     * @param array $extensions
+     * @param string $code
+     * @param array  $config
      */
-    public function setExtensions(array $extensions)
+    public function addExtension($code, array $config)
     {
-        $this->extensions = $extensions;
+        $config = $config + $this->defaults + ['code' => $code];
+
+        $this->extensions[] = $config;
     }
 
     /**
-     * @param string $type
-     *
      * @return array
      */
-    public function getExtensions($type)
+    public function getExtensions()
     {
-        return isset($this->extensions[$type]) ? $this->extensions[$type] : [];
+        return $this->extensions;
     }
 }
