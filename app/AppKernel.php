@@ -124,6 +124,7 @@ class AppKernel extends Kernel
             new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
             new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
             new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
+            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
         ];
     }
 
