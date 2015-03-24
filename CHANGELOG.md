@@ -1,6 +1,7 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-2401: Association grid, add the Is associated sorter (MongoDB impl)
 - PIM-3926: Set explicit message for 403 error
 
 # 1.3.5 (2015-03-19)
