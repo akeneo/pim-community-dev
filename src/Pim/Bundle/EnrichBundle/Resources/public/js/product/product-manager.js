@@ -1,7 +1,8 @@
 'use strict';
 
-define(['jquery', 'routing'], function ($, Routing) {
+define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, AttributeManager) {
     return {
+        productValues: null,
         get: function (id) {
             var promise = $.Deferred();
 
@@ -23,6 +24,27 @@ define(['jquery', 'routing'], function ($, Routing) {
                 contentType: 'application/json',
                 data: JSON.stringify(data)
             }).promise();
+        },
+        getValues: function(product) {
+            var promise = $.Deferred();
+
+            if (!this.productValues) {
+                AttributeManager.getAttributesForProduct(product).done(function(attributes) {
+                    this.productValues = {};
+
+                    _.each(attributes, _.bind(function(attributeCode) {
+                        if (product.values[attributeCode]) {
+                            this.productValues[attributeCode] = product.values[attributeCode];
+                        } else {
+                            this.productValues[attributeCode] = [];
+                        }
+                    }, this));
+
+                    promise.resolve(this.productValues);
+                });
+            }
+
+            return promise.promise();
         }
     };
 });

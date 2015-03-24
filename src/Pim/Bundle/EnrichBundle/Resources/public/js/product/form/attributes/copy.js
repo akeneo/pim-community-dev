@@ -7,9 +7,10 @@ define(
         'text!pim/template/product/tab/attribute/copy',
         'pim/product-edit-form/attributes/copyfield',
         'pim/config-manager',
-        'pim/attribute-manager'
+        'pim/attribute-manager',
+        'pim/product-manager'
     ],
-    function(_, BaseForm, template, CopyField, ConfigManager, AttributeManager) {
+    function(_, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',
@@ -64,8 +65,11 @@ define(
             generateCopyFields: function() {
                 this.copyFields = {};
 
-                ConfigManager.getEntityList('attributes').done(_.bind(function(attributes) {
-                    _.each(this.getData().values, _.bind(function (values, code) {
+                $.when(
+                    ConfigManager.getEntityList('attributes'),
+                    ProductManager.getValues(this.getData())
+                ).done(_.bind(function(attributes, productValues) {
+                    _.each(productValues, _.bind(function (values, code) {
                         var attribute = attributes[code];
 
                         if ((attribute.scopable || attribute.localizable)) {

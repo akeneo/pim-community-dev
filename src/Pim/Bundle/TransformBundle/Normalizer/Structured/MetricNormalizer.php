@@ -26,7 +26,9 @@ class MetricNormalizer implements NormalizerInterface
     {
         return [
             'data' => $object->getData(),
-            'unit' => $object->getUnit()
+            'unit' => $object->getUnit() ?
+                $object->getUnit() :
+                $object->getValue()->getAttribute()->getDefaultMetricUnit()
         ];
     }
 

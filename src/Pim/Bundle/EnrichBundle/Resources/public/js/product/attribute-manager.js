@@ -50,7 +50,6 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
                 case 'pim_catalog_number':
                 case 'pim_catalog_file':
                 case 'pim_catalog_image':
-                case 'pim_catalog_price_collection':
                 case 'pim_catalog_simpleselect':
                 case 'pim_catalog_identifier':
                     return null;
@@ -66,6 +65,8 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
                     return '';
                 case 'pim_catalog_boolean':
                     return false;
+                case 'pim_catalog_price_collection':
+                    return [];
                 default:
                     throw new Error(JSON.stringify(attribute));
             }

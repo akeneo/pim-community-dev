@@ -4,9 +4,10 @@ define([
         'pim/field',
         'underscore',
         'pim/config-manager',
+        'pim/attribute-manager',
         'text!pim/template/product/field/metric',
         'jquery.select2'
-        ], function (Field, _, ConfigManager, fieldTemplate) {
+        ], function (Field, _, ConfigManager, AttributeManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'metric',
@@ -33,8 +34,10 @@ define([
         },
         updateModel: function () {
             var data = this.$('.data').val();
+            var unit = this.$('.unit option:selected').val();
+
             this.setCurrentValue({
-                unit: this.$('.unit option:selected').val(),
+                unit: '' !== unit ? unit : this.attribute.default_metric_unit,
                 data: '' !== data ? data : null
             });
         }

@@ -22,16 +22,16 @@ define(['routing', 'pim/config-manager', 'pim/attribute-manager'], function (Rou
 
             return promise.promise();
         },
-        getAttributeGroupValues: function(product, attributeGroup)
+        getAttributeGroupValues: function(values, attributeGroup)
         {
-            var values = {};
-                _.each(product.values, _.bind(function(productValue, attributeCode) {
+            var filteredValues = {};
+                _.each(values, _.bind(function(productValue, attributeCode) {
                     if (attributeGroup && -1 !== attributeGroup.attributes.indexOf(attributeCode)) {
-                        values[attributeCode] = productValue;
+                        filteredValues[attributeCode] = productValue;
                     }
                 }, this));
 
-                return values;
+                return filteredValues;
         },
         getAttributeGroupForAttribute: function(attributeGroups, attribute) {
             var result = null;

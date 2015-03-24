@@ -1071,8 +1071,13 @@ span.link-label {
       .flex(1);
       .display-flex();
 
-      .unit {
+      & > input {
+        width: auto;
         .flex(1);
+      }
+
+      .unit {
+        max-width: 150px;
       }
     }
   }

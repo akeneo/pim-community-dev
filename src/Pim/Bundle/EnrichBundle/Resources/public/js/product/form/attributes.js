@@ -10,6 +10,7 @@ define(
         'pim/field-manager',
         'pim/config-manager',
         'pim/attribute-manager',
+        'pim/product-manager',
         'pim/attribute-group-manager',
         'pim/variant-group-manager',
         'text!pim/template/product/tab/attributes'
@@ -23,6 +24,7 @@ define(
         FieldManager,
         ConfigManager,
         AttributeManager,
+        ProductManager,
         AttributeGroupManager,
         VariantGroupManager,
         formTemplate
@@ -64,10 +66,13 @@ define(
                 this.getConfig().done(_.bind(function() {
                     this.$el.html(this.template({}));
 
-                    ConfigManager.getEntityList('families').done(_.bind(function(families) {
-                        var product = this.getData();
+                    var product = this.getData();
+                    $.when(
+                        ConfigManager.getEntityList('families'),
+                        ProductManager.getValues(product)
+                    ).done(_.bind(function(families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
-                            product,
+                            values,
                             this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
                         );
 
@@ -186,6 +191,7 @@ define(
             },
             postSave: function() {
                 FieldManager.fields = {};
+                this.extensions['attribute-group-selector'].removeBadges();
 
                 this.render();
             },
