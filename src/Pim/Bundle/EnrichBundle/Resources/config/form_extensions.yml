@@ -1,0 +1,112 @@
+extensions:
+    product-edit-form:
+        module: pim/product-edit-form
+        zones:
+            header: >div>header
+            title: header .product-title
+            buttons: header .actions
+
+    form-tabs:
+        module: pim/product-edit-form/form-tabs
+        parent: product-edit-form
+        targetZone: header
+        insertAction: after
+        zones:
+            container: .tab-container
+
+    save:
+        module: pim/product-edit-form/save
+        parent: product-edit-form
+        targetZone: buttons
+
+    attributes:
+        module: pim/product-edit-form/attributes
+        parent: form-tabs
+        targetZone: container
+        zones:
+            header: .tab-content > header
+            edit-actions: .tab-content > header > .attribute-edit-actions
+            attributes: self
+
+    categories:
+        module: pim/product-edit-form/categories
+        parent: form-tabs
+        targetZone: container
+        zones:
+            categories: self
+
+    panels:
+        module: pim/product-edit-form/panel/panels
+        parent: form-tabs
+        targetZone: container
+        insertAction: after
+        zones:
+            panels: self
+
+    attribute-group-selector:
+        module: pim/product-edit-form/attributes/attribute-group-selector
+        parent: attributes
+        targetZone: attributes
+        insertAction: prepend
+
+    add-attribute:
+        module: pim/product-edit-form/attributes/add-attribute
+        parent: attributes
+        targetZone: edit-actions
+
+    scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        parent: attributes
+        targetZone: edit-actions
+        insertAction: prepend
+
+    locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        parent: attributes
+        targetZone: edit-actions
+        insertAction: prepend
+
+    copy:
+        module: pim/product-edit-form/attributes/copy
+        parent: attributes
+        targetZone: header
+        zones:
+            copy-actions: .copy-actions
+
+    validation:
+        module: pim/product-edit-form/attributes/validation
+        parent: attributes
+        targetZone: header
+
+    variant-group:
+        module: pim/product-edit-form/attributes/variant-group
+        parent: attributes
+        targetZone: attributes
+
+    completeness:
+        parent: panels
+        module: pim/product-edit-form/panel/completeness
+
+    comments:
+        parent: panels
+        module: pim/product-edit-form/panel/comments
+
+    history:
+        parent: panels
+        module: pim/product-edit-form/panel/history
+
+    selector:
+        parent: panels
+        module: pim/product-edit-form/panel/selector
+
+    copy-scope-switcher:
+        module: pim/product-edit-form/scope-switcher
+        parent: copy
+        targetZone: copy-actions
+        insertAction: prepend
+
+    copy-locale-switcher:
+        module: pim/product-edit-form/locale-switcher
+        parent: copy
+        targetZone: copy-actions
+        insertAction: prepend

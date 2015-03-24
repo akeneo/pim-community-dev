@@ -65,3 +65,7 @@ sequential_edit:
 measures:
     resource: '@PimEnrichBundle/Resources/config/routing/measures.yml'
     prefix: /configuration/measures
+
+form_extensions:
+    resource: '@PimEnrichBundle/Resources/config/routing/form_extensions.yml'
+    prefix: /form/

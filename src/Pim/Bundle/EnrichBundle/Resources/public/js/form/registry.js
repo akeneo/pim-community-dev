@@ -1,150 +1,39 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore'],
-    function($, _) {
-        var extensionMap = {
-            'pim/product-edit-form': {
-                'extensions': [
-                    {
-                        'code': 'save',
-                        'module': 'pim/product-edit-form/save',
-                        'zone': 'buttons',
-                        'insertAction': 'append'
-                    },
-                    {
-                        'code': 'form-tabs',
-                        'module': 'pim/product-edit-form/form-tabs',
-                        'zone': 'header',
-                        'insertAction': 'after'
-                    }
-                ],
-                'zones': {
-                    'header': '>div>header',
-                    'title': 'header .product-title',
-                    'buttons': 'header .actions'
-                }
-            },
-            'pim/product-edit-form/form-tabs': {
-                'extensions' : [
-                    {
-                        'code': 'attributes',
-                        'module': 'pim/product-edit-form/attributes',
-                        'zone': 'container',
-                        'insertAction': 'append'
-                    },
-                    {
-                        'code': 'categories',
-                        'module': 'pim/product-edit-form/categories',
-                        'zone': 'container',
-                        'insertAction': 'append'
-                    },
-                    {
-                        'code': 'panels',
-                        'module': 'pim/product-edit-form/panel/panels',
-                        'zone': 'container',
-                        'insertAction': 'after'
-                    }
-                ],
-                'zones': {
-                    'container': '.tab-container'
-                }
-            },
-            'pim/product-edit-form/attributes': {
-                'extensions': [
-                    {
-                        'code': 'attribute-group-selector',
-                        'module': 'pim/product-edit-form/attributes/attribute-group-selector',
-                        'zone': 'attributes',
-                        'insertAction': 'prepend'
-                    },
-                    {
-                        'code': 'add-attribute',
-                        'module': 'pim/product-edit-form/attributes/add-attribute',
-                        'zone': 'edit-actions',
-                        'insertAction': 'append'
-                    },
-                    {
-                        'code': 'scope-switcher',
-                        'module': 'pim/product-edit-form/scope-switcher',
-                        'zone': 'edit-actions',
-                        'insertAction': 'prepend'
-                    },
-                    {
-                        'code': 'locale-switcher',
-                        'module': 'pim/product-edit-form/locale-switcher',
-                        'zone': 'edit-actions',
-                        'insertAction': 'prepend'
-                    },
-                    {
-                        'code': 'copy',
-                        'module': 'pim/product-edit-form/attributes/copy',
-                        'zone': 'header',
-                        'insertAction': 'append'
-                    },
-                    {
-                        'code': 'validation',
-                        'module': 'pim/product-edit-form/attributes/validation',
-                        'zone': 'header',
-                        'insertAction': 'append'
-                    },
-                    {
-                        'code': 'variant-group',
-                        'module': 'pim/product-edit-form/attributes/variant-group',
-                        'zone': 'attributes',
-                        'insertAction': 'append'
-                    }
-                ],
-                'zones': {
-                    'header' : '.tab-content > header',
-                    'edit-actions': '.tab-content > header > .attribute-edit-actions',
-                    'attributes': 'self'
-                }
-            },
-            'pim/product-edit-form/panel/panels': {
-                'extensions': [
-                    {
-                        'code': 'completeness',
-                        'module': 'pim/product-edit-form/panel/completeness'
-                    },
-                    {
-                        'code': 'comments',
-                        'module': 'pim/product-edit-form/panel/comments'
-                    },
-                    {
-                        'code': 'history',
-                        'module': 'pim/product-edit-form/panel/history'
-                    },
-                    {
-                        'code': 'selector',
-                        'module': 'pim/product-edit-form/panel/selector'
-                    }
-                ],
-                'zones': {}
-            },
-            'pim/product-edit-form/attributes/copy': {
-                'extensions': [
-                    {
-                        'code': 'scope-switcher',
-                        'module': 'pim/product-edit-form/scope-switcher',
-                        'zone': 'copy-actions',
-                        'insertAction': 'prepend'
-                    },
-                    {
-                        'code': 'locale-switcher',
-                        'module': 'pim/product-edit-form/locale-switcher',
-                        'zone': 'copy-actions',
-                        'insertAction': 'prepend'
-                    }
-                ],
-                'zones': {
-                    'copy-actions' : '.copy-actions'
-                }
+    ['jquery', 'underscore', 'routing'],
+    function($, _, Routing) {
+        var extensionMap = [];
+
+        var getExtensionMap = function () {
+            var promise = $.Deferred();
+
+            if (extensionMap.length) {
+                promise.resolve(extensionMap);
+            } else {
+                $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).done(function (data) {
+                    extensionMap = data;
+                    promise.resolve(extensionMap);
+                });
             }
+
+            return promise.promise();
         };
 
         var getExtensionMeta = function (formName) {
-            return extensionMap[formName] || [];
+            var promise = $.Deferred();
+
+            getExtensionMap().done(function (extensionMap) {
+                var form = _.first(_.where(extensionMap, { module: formName }));
+                var meta = {
+                    zones: form.zones,
+                    extensions: _.where(extensionMap, { parent: form.code })
+                };
+
+                promise.resolve(meta);
+            });
+
+            return promise.promise();
         };
 
         return {
@@ -160,15 +49,12 @@ define(
             getFormExtensions: function getFormExtensions (formName) {
                 var promise = $.Deferred();
 
-                var extensionMeta = getExtensionMeta(formName);
-
-                require(_.pluck(extensionMeta.extensions, 'module'), function() {
+                getExtensionMeta(formName).done(function (extensionMeta) {
                     promise.resolve(extensionMeta);
                 });
 
                 return promise.promise();
             }
-
         };
     }
 );
