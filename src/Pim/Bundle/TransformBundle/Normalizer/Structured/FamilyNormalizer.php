@@ -29,7 +29,7 @@ class FamilyNormalizer implements NormalizerInterface, FilterableNormalizerInter
     /**
      * @var array $attributeFilters
      */
-    protected $attributeFilters;
+    protected $attributeFilters = [];
 
     /**
      * Constructor
@@ -79,7 +79,7 @@ class FamilyNormalizer implements NormalizerInterface, FilterableNormalizerInter
      *
      * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family, $context)
+    protected function normalizeAttributes(FamilyInterface $family, array $context = [])
     {
         $attributes = $family->getAttributes();
 

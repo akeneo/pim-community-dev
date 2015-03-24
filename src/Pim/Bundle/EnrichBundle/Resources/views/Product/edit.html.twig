@@ -18,7 +18,7 @@
             $(function() {
                 $.when(
                     FormBuilder.build('pim/product-edit-form'),
-                    ProductManager.get(100)
+                    ProductManager.get({{ product_id }})
                 ).done(function(form, product) {
                     form.setData(product);
                     form.setElement('#product-edit-form').render();

@@ -10,7 +10,7 @@ pim_enrich_product_create:
 
 pim_enrich_product_edit:
     path: /{id}/edit
-    defaults: { _controller: pim_enrich.controller.product:editAction }
+    defaults: { _controller: pim_enrich.controller.product_rest:editAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET, POST]

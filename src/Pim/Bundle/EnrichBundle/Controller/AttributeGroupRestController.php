@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+// use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -38,9 +38,9 @@ class AttributeGroupRestController
 
         $normalizedAttributes = [];
         foreach ($attributeGroups as $attributeGroup) {
-            if ($this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
+            // if ($this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
                 $normalizedAttributes[$attributeGroup->getCode()] = $this->normalizer->normalize($attributeGroup, 'json');
-            }
+            // }
         }
 
         return new JsonResponse($normalizedAttributes);
@@ -50,9 +50,9 @@ class AttributeGroupRestController
     {
         $attributeGroup = $this->attributeGroupGroupRepo->findOneById($id);
 
-        if (!$this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
-            throw new AccessDeniedHttpException('You are not authorized to see this attribute group');
-        }
+        // if (!$this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
+        //     throw new AccessDeniedHttpException('You are not authorized to see this attribute group');
+        // }
 
         return new JsonResponse($this->normalizer->normalize($attributeGroup, 'json'));
     }

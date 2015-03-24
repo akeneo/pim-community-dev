@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+// use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,9 +35,9 @@ class LocaleRestController
 
         $normalizedLocales = [];
         foreach ($locales as $locale) {
-            if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+            // if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
                 $normalizedLocales[$locale->getCode()] = $this->normalizeLocale($locale);
-            }
+            // }
         }
 
         return new JsonResponse($normalizedLocales);
@@ -47,9 +47,9 @@ class LocaleRestController
     {
         $locale = $this->localeRepository->findOneById($id);
 
-        if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
-            throw new AccessDeniedHttpException('You are not authorized to see this locale');
-        }
+        // if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+        //     throw new AccessDeniedHttpException('You are not authorized to see this locale');
+        // }
 
         return new JsonResponse($this->normalizeLocale($locale));
     }
@@ -59,8 +59,8 @@ class LocaleRestController
         return [
             'code'   => $locale->getCode(),
             'rights' => [
-                'view' => $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale),
-                'edit' => $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)
+                'view' => true,//$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale),
+                'edit' => true//$this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)
             ]
         ];
     }

@@ -289,6 +289,7 @@ services:
             - '@pim_serializer'
             - '@pim_validator'
             - '@pim_user.context.user'
+            - '@templating'
 
     pim_enrich.controller.attribute_rest:
         class: %pim_enrich.controller.attribute_rest.class%

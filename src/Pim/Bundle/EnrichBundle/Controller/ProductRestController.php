@@ -3,9 +3,11 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -13,6 +15,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Product controller
@@ -69,6 +72,21 @@ class ProductRestController
         $this->denormalizer   = $denormalizer;
         $this->validator      = $validator;
         $this->userContext    = $userContext;
+    }
+
+    /**
+     * Edit product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @Template("PimEnrichBundle:Product:edit.html.twig")
+     * @AclAncestor("pim_enrich_product_index")
+     * @return array
+     */
+    public function editAction($id)
+    {
+        return ['product_id' => $id];
     }
 
     /**
