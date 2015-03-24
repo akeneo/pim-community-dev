@@ -6,14 +6,11 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
  * Reference data simple options (select) attribute type
- *
- * TODO-CR: do not extend OptionsMultiSelectType
- *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -74,13 +71,12 @@ class ReferenceDataSimpleSelectType extends AbstractAttributeType
 
         return $attributes + [
             'reference_data_name' => [
-                'name' => 'reference_data_name',
+                'name'      => 'reference_data_name',
                 'fieldType' => 'choice',
-                'options' => [
-                    'choices' => $this->getReferenceDataChoices(),
-                    'required' => true,
+                'options'   => [
+                    'choices'     => $this->getReferenceDataChoices(),
+                    'required'    => true,
                     'multiple'    => false,
-                    //TODO-CR: should be translatable
                     'empty_value' => 'Choose the reference data type',
                     'select2'     => true
                 ],

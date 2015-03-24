@@ -583,6 +583,7 @@ Choose a color:                      Choose a color
 Search:                              Search
 Choose the attribute type:           Choose the attribute type
 Choose the attribute group:          Choose the attribute group
+Choose the reference data type:      Choose the reference data type
 Drop a file or click here:           Drop a file or click here
 Drop an image or click here:         Drop an image or click here
 Automatic option sorting:            Automatic option sorting
@@ -714,6 +715,9 @@ pim_catalog_image:            Image
 pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
+
+pim_reference_data_simpleselect: Reference data simple select
+pim_reference_data_multiselect:  Reference data multi select
 
 # Locales
 Activated: Activated
