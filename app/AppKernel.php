@@ -27,7 +27,8 @@ class AppKernel extends Kernel
     {
         $bundles = [
             // your app bundles should be registered here
-            new Acme\Bundle\AppBundle\AcmeAppBundle()
+            new Acme\Bundle\AppBundle\AcmeAppBundle(),
+            new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
         ];
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
