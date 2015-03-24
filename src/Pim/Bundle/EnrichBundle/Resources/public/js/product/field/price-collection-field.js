@@ -17,8 +17,16 @@ define([
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {
-            // var data = event.currentTarget.value;
-            // this.setCurrentValue(data);
+            console.log(event.currentTarget);
+
+            var data = [];
+            _.each($(event.currentTarget).parents('.price-collection-field').find('.price-input'), function(element) {
+                var input = $(element).children('input');
+
+                data.push({'data': input.val(), 'currency': input.data('currency')});
+            });
+
+            this.setCurrentValue(data);
         },
         getTemplateContext: function() {
             var promise = $.Deferred();
