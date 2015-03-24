@@ -53,11 +53,8 @@ define(
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
                 currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);
-
-                if ('attributes' !== this.state.get('currentTab')) {
-                    console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
-                    currentTab.render();
-                }
+                console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
+                currentTab.render();
 
                 var panels = this.extensions.panels;
                 panels.getTargetElement()[panels.insertAction](panels.el);
