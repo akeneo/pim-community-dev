@@ -300,6 +300,16 @@ attributes:
         useableAsGridFilter: true
         sortOrder:           35
         reference_data_name: color
+    cap_color:
+        labels:
+            en_US: Cap color
+        type:  pim_reference_data_simpleselect
+        group: other
+        useableAsGridFilter: true
+        sortOrder:           35
+        reference_data_name: color
+        localizable:         true
+        scopable:            true
     sole_fabric:
         labels:
             en_US: Sole fabric
@@ -316,3 +326,5 @@ attributes:
         useableAsGridFilter: true
         sortOrder:           45
         reference_data_name: fabrics
+        localizable:         true
+        scopable:            true
