@@ -1,0 +1,7 @@
+parameters:
+#    pim_enterprise_reference_data.example.class: PimEnterprise\Bundle\ReferenceDataBundle\Example
+
+services:
+#    pim_enterprise_reference_data.example:
+#        class: %pim_enterprise_reference_data.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

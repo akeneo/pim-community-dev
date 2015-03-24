@@ -127,6 +127,7 @@ class AppKernel extends Kernel
             new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
             new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
+            new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
         ];
     }
 
