@@ -35,6 +35,7 @@ parameters:
     pim_catalog.updater.copier.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
     pim_catalog.updater.copier.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectAttributeCopier
     pim_catalog.updater.copier.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionAttributeCopier
+    pim_catalog.updater.copier.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Copier\CategoryFieldCopier
 
     pim_catalog.updater.adder.registry.class:               Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistry
     pim_catalog.updater.adder.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Adder\CategoryFieldAdder
@@ -307,6 +308,14 @@ services:
         arguments:
             - ['pim_catalog_price_collection']
             - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.copier' }
+
+    pim_catalog.updater.copier.category_field:
+        class: %pim_catalog.updater.copier.category_field.class%
+        arguments:
+            - ['categories']
+            - ['categories']
         tags:
             - { name: 'pim_catalog.updater.copier' }
 
