@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Extension\Selector\ORM;
+namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Selector\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;

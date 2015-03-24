@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Extension\Sorter;
+namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;

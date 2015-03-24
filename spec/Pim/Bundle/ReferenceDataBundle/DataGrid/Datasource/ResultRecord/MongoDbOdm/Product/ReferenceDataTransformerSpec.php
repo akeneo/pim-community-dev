@@ -1,19 +1,15 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\MongoDB\Transformer;
+namespace spec\Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Prophecy\Argument;
-
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 class ReferenceDataTransformerSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\MongoDB\Transformer\ReferenceDataTransformer');
+        $this->shouldHaveType('Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer');
     }
 
     function it_transforms_simple_reference_data()

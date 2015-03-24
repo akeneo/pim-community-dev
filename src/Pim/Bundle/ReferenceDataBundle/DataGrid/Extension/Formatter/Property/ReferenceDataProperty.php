@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Extension\Formatter\Property;
+namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Formatter\Property;
 
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FieldProperty;
 

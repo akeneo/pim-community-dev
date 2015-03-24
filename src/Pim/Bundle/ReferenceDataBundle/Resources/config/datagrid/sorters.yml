@@ -1,5 +1,5 @@
 parameters:
-    pim_reference_data.extension.sorter.reference_data_sorter.class: Pim\Bundle\ReferenceDataBundle\Extension\Sorter\ReferenceDataSorter
+    pim_reference_data.extension.sorter.reference_data_sorter.class: Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Sorter\ReferenceDataSorter
 
 services:
     pim_reference_data.extension.sorter.reference_data_sorter:

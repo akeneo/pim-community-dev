@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\Filter;
+namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Filter;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;

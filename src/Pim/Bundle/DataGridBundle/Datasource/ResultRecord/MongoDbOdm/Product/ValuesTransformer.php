@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
-use Pim\Bundle\ReferenceDataBundle\MongoDB\Transformer\ReferenceDataTransformer;
+use Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer;
 
 /**
  * Transform sub-part or product

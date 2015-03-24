@@ -29,11 +29,11 @@ class PimReferenceDataExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('attribute_types.yml');
-        $loader->load('filters.yml');
-        $loader->load('query_builders.yml');
-        $loader->load('selectors.yml');
-        $loader->load('formatters.yml');
-        $loader->load('sorters.yml');
+        $loader->load('datagrid/filters.yml');
+        $loader->load('datagrid/formatters.yml');
+        $loader->load('datagrid/query_builders.yml');
+        $loader->load('datagrid/selectors.yml');
+        $loader->load('datagrid/sorters.yml');
 
         $this->loadStorageDriverFiles($container);
     }
