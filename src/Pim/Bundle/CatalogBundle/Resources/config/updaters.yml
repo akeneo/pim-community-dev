@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
     pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
+    pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
 
     pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
     # TODO useful to use this abstract?
@@ -339,3 +340,8 @@ services:
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.attribute_option:
+        class: %pim_catalog.updater.attribute_option.class%
+        arguments:
+            - @pim_catalog.repository.attribute
