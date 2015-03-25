@@ -18,6 +18,11 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-3957: Unable to publish a product already published
+
+# 1.3.5 (2015-03-19)
+
+## Bug fixes
 - PIM-3925: do not show system menu if no item allowed
 
 # 1.3.4 (2015-03-11)
