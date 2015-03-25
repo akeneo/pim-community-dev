@@ -41,6 +41,7 @@ parameters:
     pim_catalog.updater.adder.association_field.class:      Pim\Bundle\CatalogBundle\Updater\Adder\AssociationFieldAdder
     pim_catalog.updater.adder.group_field.class:            Pim\Bundle\CatalogBundle\Updater\Adder\GroupFieldAdder
     pim_catalog.updater.adder.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Adder\MultiSelectAttributeAdder
+    pim_catalog.updater.adder.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Adder\PriceCollectionAttributeAdder
 
 services:
     pim_catalog.updater.product:
@@ -348,5 +349,15 @@ services:
             - '@pim_catalog.repository.group'
             - '@pim_catalog.builder.product'
             - ['associations']
+        tags:
+            - { name: 'pim_catalog.updater.adder' }
+
+    pim_catalog.updater.adder.price_collection_value:
+        class: %pim_catalog.updater.adder.price_collection_value.class%
+        arguments:
+            - @pim_catalog.builder.product
+            - @pim_catalog.validator.helper.attribute
+            - @pim_catalog.manager.currency
+            - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }
