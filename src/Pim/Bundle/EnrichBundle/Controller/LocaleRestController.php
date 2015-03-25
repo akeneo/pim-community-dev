@@ -2,12 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-// use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Locale rest controller
@@ -19,49 +15,16 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 class LocaleRestController
 {
     protected $localeRepository;
-    protected $securityContext;
 
-    public function __construct(
-        LocaleRepositoryInterface $localeRepository,
-        SecurityContextInterface $securityContext
-    ) {
+    public function __construct(LocaleRepositoryInterface $localeRepository)
+    {
         $this->localeRepository = $localeRepository;
-        $this->securityContext  = $securityContext;
     }
 
     public function indexAction()
     {
-        $locales = $this->localeRepository->getActivatedLocales();
+        $locales = $this->localeRepository->getActivatedLocaleCodes();
 
-        $normalizedLocales = [];
-        foreach ($locales as $locale) {
-            // if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
-                $normalizedLocales[$locale->getCode()] = $this->normalizeLocale($locale);
-            // }
-        }
-
-        return new JsonResponse($normalizedLocales);
-    }
-
-    public function getAction($id)
-    {
-        $locale = $this->localeRepository->findOneById($id);
-
-        // if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
-        //     throw new AccessDeniedHttpException('You are not authorized to see this locale');
-        // }
-
-        return new JsonResponse($this->normalizeLocale($locale));
-    }
-
-    protected function normalizeLocale(LocaleInterface $locale)
-    {
-        return [
-            'code'   => $locale->getCode(),
-            'rights' => [
-                'view' => true,//$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale),
-                'edit' => true//$this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)
-            ]
-        ];
+        return new JsonResponse($locales);
     }
 }

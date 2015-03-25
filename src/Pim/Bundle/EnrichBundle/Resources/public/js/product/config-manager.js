@@ -46,7 +46,7 @@ define(['routing'], function (Routing) {
             var promise = $.Deferred();
 
             this.getEntityList(entityType).done(function(entities) {
-                promise.resolve(entities[entityIdentifier]);
+                promise.resolve(_.findWhere(entities, {code: entityIdentifier}));
             });
 
             return promise.promise();
