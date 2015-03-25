@@ -70,7 +70,7 @@ define(
                     ProductManager.getValues(this.getData())
                 ).done(_.bind(function(attributes, productValues) {
                     _.each(productValues, _.bind(function (values, code) {
-                        var attribute = attributes[code];
+                        var attribute = _.findWhere(attributes, {code: code});
 
                         if ((attribute.scopable || attribute.localizable)) {
                             var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
