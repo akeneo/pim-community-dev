@@ -47,4 +47,4 @@ Feature: Display reference data in the grid
       Then the row "high-heels" should contain:
       | column      | value         |
       | Cap color   | Orange        |
-      | Lace fabric | Flax, Cotton  |
+      | Lace fabric | Cotton, Flax  |
