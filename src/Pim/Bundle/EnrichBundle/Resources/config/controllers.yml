@@ -21,6 +21,7 @@ parameters:
     pim_enrich.controller.product_attribute.class: Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
     pim_enrich.controller.product_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductRestController
+    pim_enrich.controller.media_rest.class: Pim\Bundle\EnrichBundle\Controller\MediaRestController
     pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
     pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
     pim_enrich.controller.family_rest.class: Pim\Bundle\EnrichBundle\Controller\FamilyRestController
@@ -291,6 +292,11 @@ services:
             - '@pim_validator'
             - '@pim_user.context.user'
             - '@templating'
+
+    pim_enrich.controller.media_rest:
+        class: %pim_enrich.controller.media_rest.class%
+        arguments:
+            - %kernel.root_dir%
 
     pim_enrich.controller.attribute_rest:
         class: %pim_enrich.controller.attribute_rest.class%
