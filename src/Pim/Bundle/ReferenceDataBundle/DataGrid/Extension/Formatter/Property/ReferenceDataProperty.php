@@ -18,7 +18,7 @@ class ReferenceDataProperty extends FieldProperty
      */
     protected function convertValue($value)
     {
-        $referenceData = $value[$value['attribute']['referenceDataName']];
+        $referenceData = $value[$value['attribute']['properties']['reference_data_name']];
 
         if (isset($referenceData['code'])) {
             return $referenceData['code'];
