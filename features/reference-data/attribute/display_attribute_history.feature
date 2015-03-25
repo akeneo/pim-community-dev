@@ -13,7 +13,7 @@ Feature: Display the attribute history
 
   Scenario: Successfully edit a attribute and see the history
     Given I am on the attributes page
-    And I create a "pim_reference_data_simpleselect" attribute
+    And I create a "Reference data simple select" attribute
     And I fill in the following information:
       | Code                | mycolor  |
       | Reference data name | color     |

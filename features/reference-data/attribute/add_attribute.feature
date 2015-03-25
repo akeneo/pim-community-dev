@@ -9,7 +9,7 @@ Feature: Add attribute options
     And I am on the attributes page
 
   Scenario: Successfully create a simple reference data
-    Given I create a "pim_reference_data_simpleselect" attribute
+    Given I create a "Reference data simple select" attribute
     Given I fill in the following information:
       | Code                | mycolor   |
       | Reference data name | color     |
@@ -18,7 +18,7 @@ Feature: Add attribute options
     Then I should see flash message "Attribute successfully created"
 
   Scenario: Successfully create a multiple reference data
-    Given I create a "pim_reference_data_multiselect" attribute
+    Given I create a "Reference data multi select" attribute
     Given I fill in the following information:
       | Code                | mycolor   |
       | Reference data name | fabric    |

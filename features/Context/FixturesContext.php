@@ -1711,11 +1711,20 @@ class FixturesContext extends RawMinkContext
 
         $data['type'] = $this->getAttributeType($data['type']);
 
+        $properties = [];
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
-                $data[$key] = $element === 'yes';
+                $element = $element === 'yes';
+                $data[$key] = $element;
+            }
+            if (false !== strpos($key, 'property-')) {
+                $property = str_replace('property-', '', $key);
+                $properties[$property] = $element;
+                unset($data[$key]);
             }
         }
+
+        $data['properties'] = $properties;
 
         $attribute = $this->loadFixture('attributes', $data);
 

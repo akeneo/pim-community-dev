@@ -53,9 +53,10 @@ class ReferenceDataMultiSelectType extends AbstractAttributeType
      */
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
-        $referenceDataConf = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
-        $options           = parent::prepareValueFormOptions($value);
-        $options['class']  = $referenceDataConf->getClass();
+        $referenceDataConf   = $this->referenceDataRegistry->get($value->getAttribute()->getReferenceDataName());
+        $options             = parent::prepareValueFormOptions($value);
+        $options['class']    = $referenceDataConf->getClass();
+        $options['multiple'] = true;
 
         return $options;
     }
