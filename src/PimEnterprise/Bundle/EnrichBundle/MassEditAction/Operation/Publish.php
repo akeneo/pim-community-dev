@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class Publish extends AbstractMassEditAction
+class Publish extends AbstractMassEditOperation
 {
     /** @var PublishedProductManager */
     protected $manager;
@@ -102,5 +102,13 @@ class Publish extends AbstractMassEditAction
         }
 
         $this->manager->publishAll($this->objects);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        // TODO: Implement getAlias() method.
     }
 }

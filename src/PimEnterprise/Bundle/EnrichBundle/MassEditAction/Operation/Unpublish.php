@@ -91,4 +91,12 @@ class Unpublish extends PublishedProductMassEditOperation
             $this->manager->unpublish($published);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        // TODO: Implement getAlias() method.
+    }
 }

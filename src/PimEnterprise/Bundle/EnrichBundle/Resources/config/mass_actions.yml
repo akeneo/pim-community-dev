@@ -42,7 +42,7 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: publish
                 acl: pim_enrich_product_edit_attributes
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     # Overriden products operation to deal with product draft or working copy saving depending on permissions
     pim_enrich.mass_edit_action.edit_common_attributes:
@@ -62,19 +62,17 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: edit-common-attributes
                 acl: pim_enrich_product_edit_attributes
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid
 
     # Overriden products operation to add permission checks when try to classify products
     pim_enrich.mass_edit_action.classify:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
-        arguments:
-            - '@pim_catalog.manager.category'
-            - '@pimee_workflow.saver.working_copy_product'
-            - '@security.context'
+        calls:
+            - [setSecurityContext, [ @security.context ]]
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: classify
                 acl: pim_enrich_product_categories_view
-                operator: pim_enrich.mass_edit_action.operator.product
+                datagrid: product-grid

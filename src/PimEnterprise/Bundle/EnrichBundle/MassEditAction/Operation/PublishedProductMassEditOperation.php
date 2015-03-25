@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-abstract class PublishedProductMassEditOperation extends AbstractMassEditAction
+abstract class PublishedProductMassEditOperation extends AbstractMassEditOperation
 {
     /**
      * {@inheritdoc}
