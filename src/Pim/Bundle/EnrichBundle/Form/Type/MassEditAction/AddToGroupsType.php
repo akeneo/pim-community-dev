@@ -55,7 +55,7 @@ class AddToGroupsType extends AbstractType
                 'required' => false,
                 'multiple' => true,
                 'expanded' => true,
-                'choices'  => $options['groups']
+                'choices'  => $options['groups'],
             ]
         );
     }
@@ -94,7 +94,7 @@ class AddToGroupsType extends AbstractType
      *
      * @return string[]
      */
-    public function getWarningMessages()
+    protected function getWarningMessages()
     {
         if (null === $this->warningMessages) {
             $this->warningMessages = $this->generateWarningMessages();
@@ -115,7 +115,7 @@ class AddToGroupsType extends AbstractType
         if (count($this->groupRepository->getAllGroupsExceptVariant()) === 0) {
             $messages[] = [
                 'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',
-                'options' => []
+                'options' => [],
             ];
         }
 
