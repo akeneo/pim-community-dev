@@ -2,10 +2,14 @@
 
 namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Intl\Exception\NotImplementedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Job execution notifier
@@ -16,6 +20,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class JobExecutionNotifier implements EventSubscriberInterface
 {
+    /** @staticvar string */
+    const TYPE_MASS_EDIT = 'mass_edit';
+
     /** @var NotificationManager */
     protected $manager;
 
@@ -32,9 +39,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
-        );
+        ];
     }
 
     /**
@@ -67,13 +74,72 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
         $type = $jobExecution->getJobInstance()->getType();
 
+        // TODO: maybe create a registry or something similar to load routes ?
+        $this->generateNotification($jobExecution, $user, $type, $status);
+    }
+
+    /**
+     * Generates the correct notification for the given job $type.
+     *
+     * @param JobExecution $jobExecution
+     * @param null|string  $user
+     * @param string       $type
+     * @param string       $status
+     *
+     * @throws NotImplementedException
+     */
+    protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
+    {
+        if (JobInstance::TYPE_EXPORT === $type || JobInstance::TYPE_IMPORT === $type) {
+            $this->generateExportImportNotify($jobExecution, $user, $type, $status);
+        } elseif (self::TYPE_MASS_EDIT === $type) {
+            $this->generateMassEditNotify($jobExecution, $user, $type, $status);
+        } else {
+            throw new NotImplementedException(
+                sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
+            );
+        }
+    }
+
+    /**
+     * @param JobExecution         $jobExecution
+     * @param string|UserInterface $user
+     * @param string               $type
+     * @param string               $status
+     */
+    protected function generateExportImportNotify(JobExecution $jobExecution, $user, $type, $status)
+    {
         $this->manager->notify(
             [$user],
             sprintf('pim_import_export.notification.%s.%s', $type, $status),
             $status,
             [
-                'route' => sprintf('pim_importexport_%s_execution_show', $type),
-                'routeParams' => [
+                'route'         => sprintf('pim_importexport_%s_execution_show', $type),
+                'routeParams'   => [
+                    'id' => $jobExecution->getId()
+                ],
+                'messageParams' => [
+                    '%label%' => $jobExecution->getJobInstance()->getLabel()
+                ]
+            ]
+        );
+    }
+
+    /**
+     * @param JobExecution         $jobExecution
+     * @param string|UserInterface $user
+     * @param string               $type
+     * @param string               $status
+     */
+    protected function generateMassEditNotify(JobExecution $jobExecution, $user, $type, $status)
+    {
+        $this->manager->notify(
+            [$user],
+            sprintf('pim_mass_edit.notification.%s.%s', $type, $status),
+            $status,
+            [
+                'route'         => sprintf('pim_%s_execution_show', $type),
+                'routeParams'   => [
                     'id' => $jobExecution->getId()
                 ],
                 'messageParams' => [

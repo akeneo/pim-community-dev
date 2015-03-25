@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\InitializableMassEditOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
@@ -39,14 +40,14 @@ abstract class AbstractMassEditOperator
      * @var MassEditOperationInterface[] $operations
      * @Exclude
      */
-    protected $operations = array();
+//    protected $operations = [];
 
     /**
      * The default acls for each configured operation, indexed by code
      *
      * @var string[] $acls
      */
-    protected $acls = array();
+    protected $acls = [];
 
     /**
      * @param SecurityFacade $securityFacade
@@ -79,11 +80,13 @@ abstract class AbstractMassEditOperator
     /**
      * Get the operation choices to present in the batch operator form
      *
+     * TODO: Move to registry
+     *
      * @return array
      */
     public function getOperationChoices()
     {
-        $choices = array();
+        $choices = [];
 
         foreach (array_keys($this->operations) as $alias) {
             if ($this->isGranted($alias)) {
@@ -102,20 +105,6 @@ abstract class AbstractMassEditOperator
     public function getOperation()
     {
         return $this->operation;
-    }
-
-    /**
-     * Set products to mass edit
-     *
-     * @param array $products
-     *
-     * @return AbstractMassEditOperator
-     */
-    public function setObjectsToMassEdit(array $products)
-    {
-        $this->operation->setObjectsToMassEdit($products);
-
-        return $this;
     }
 
     /**
@@ -157,28 +146,28 @@ abstract class AbstractMassEditOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      */
-    public function initializeOperation()
-    {
-        if ($this->operation) {
-            $this->operation->initialize();
-        }
-    }
+//    public function initializeOperation()
+//    {
+//        if ($this->operation && $this->operation instanceof InitializableMassEditOperationInterface) {
+//            $this->operation->initialize();
+//        }
+//    }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      */
-    public function performOperation()
-    {
-        set_time_limit(0);
-        if ($this->operation) {
-            $this->operation->perform();
-        }
-    }
+//    public function performOperation()
+//    {
+//        set_time_limit(0);
+//        if ($this->operation) {
+//            $this->operation->perform();
+//        }
+//    }
 
     /**
      * Finalize the batch operation - flush the products
      */
-    abstract public function finalizeOperation();
+//    abstract public function finalizeOperation();
 
     /**
      * Returns the name of the operator
@@ -193,7 +182,7 @@ abstract class AbstractMassEditOperator
      *
      * @return string
      */
-    abstract public function getPerformedOperationRedirectionRoute();
+//    abstract public function getPerformedOperationRedirectionRoute();
 
     /**
      * Returns true if the operation is allowed for the current user

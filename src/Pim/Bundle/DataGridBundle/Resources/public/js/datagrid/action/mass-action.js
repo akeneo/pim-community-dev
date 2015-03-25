@@ -56,7 +56,14 @@ function(_, messenger, __, Modal, AbstractAction) {
                 values: idValues.join(',')
             };
 
+            if (selectionState.inset) {
+                params.objectsCount = idValues.length;
+            } else {
+                params.objectsCount = collection.state.totalRecords - idValues.length;
+            }
+
             params = this.getExtraParameters(params, collection.state);
+
             params = collection.processFiltersParams(params, null, 'filters');
 
             var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();

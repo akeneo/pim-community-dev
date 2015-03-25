@@ -2,19 +2,18 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction\AddSelectedOperationSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Form type for Mass edit action operator
+ * Form type for Mass edit action selection
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditOperatorType extends AbstractType
+class MassEditChooseActionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -25,13 +24,12 @@ class MassEditOperatorType extends AbstractType
             ->add(
                 'operationAlias',
                 'choice',
-                array(
+                [
                     'choices'  => $options['operations'],
                     'expanded' => true,
                     'multiple' => false,
-                )
-            )
-            ->addEventSubscriber(new AddSelectedOperationSubscriber());
+                ]
+            );
     }
 
     /**
@@ -40,9 +38,9 @@ class MassEditOperatorType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'operations' => array(),
-            )
+            [
+                'operations' => [],
+            ]
         );
     }
 
@@ -51,6 +49,6 @@ class MassEditOperatorType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_mass_edit_action';
+        return 'pim_enrich_mass_edit_choose_action';
     }
 }

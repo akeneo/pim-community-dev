@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributes extends ProductMassEditOperation
+class EditCommonAttributes extends AbstractMassEditOperation
 {
     /** @var ArrayCollection|ProductValueInterface[] */
     protected $values;
@@ -61,13 +64,12 @@ class EditCommonAttributes extends ProductMassEditOperation
     /**
      * Constructor
      *
-     * @param ProductBuilder           $productBuilder
-     * @param ProductUpdaterInterface  $productUpdater
-     * @param UserContext              $userContext
-     * @param CatalogContext           $catalogContext
-     * @param ProductMassActionManager $massActionManager
-     * @param NormalizerInterface      $normalizer
-     * @param BulkSaverInterface       $productSaver
+     * @param ProductBuilder                      $productBuilder
+     * @param ProductUpdaterInterface             $productUpdater
+     * @param UserContext                         $userContext
+     * @param CatalogContext                      $catalogContext
+     * @param ProductMassActionManager            $massActionManager
+     * @param NormalizerInterface                 $normalizer
      */
     public function __construct(
         ProductBuilder $productBuilder,
@@ -75,19 +77,16 @@ class EditCommonAttributes extends ProductMassEditOperation
         UserContext $userContext,
         CatalogContext $catalogContext,
         ProductMassActionManager $massActionManager,
-        NormalizerInterface $normalizer,
-        BulkSaverInterface $productSaver
+        NormalizerInterface $normalizer
     ) {
-        parent::__construct($productSaver);
-
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->userContext = $userContext;
-        $this->catalogContext = $catalogContext;
-        $this->massActionManager = $massActionManager;
+        $this->productBuilder      = $productBuilder;
+        $this->productUpdater      = $productUpdater;
+        $this->userContext         = $userContext;
+        $this->catalogContext      = $catalogContext;
+        $this->massActionManager   = $massActionManager;
         $this->displayedAttributes = new ArrayCollection();
-        $this->values = new ArrayCollection();
-        $this->normalizer = $normalizer;
+        $this->values              = new ArrayCollection();
+        $this->normalizer          = $normalizer;
     }
 
     /**
@@ -189,11 +188,11 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     public function getFormOptions()
     {
-        return array(
+        return [
             'locales'           => $this->userContext->getUserLocales(),
             'common_attributes' => $this->getCommonAttributes(),
             'current_locale'    => $this->getLocale()->getCode()
-        );
+        ];
     }
 
     /**
@@ -213,14 +212,6 @@ class EditCommonAttributes extends ProductMassEditOperation
         foreach ($commonAttributes as $attribute) {
             $this->addValues($attribute, $this->getLocale());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function perform()
-    {
-        parent::perform();
     }
 
     /**
@@ -374,5 +365,13 @@ class EditCommonAttributes extends ProductMassEditOperation
             $this->productBuilder->addMissingPrices($value);
             $this->values[$attribute->getCode()] = $value;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'edit-common-attributes';
     }
 }

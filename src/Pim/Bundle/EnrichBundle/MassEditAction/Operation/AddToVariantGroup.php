@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
@@ -17,7 +20,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToVariantGroup extends ProductMassEditOperation
+class AddToVariantGroup extends AbstractMassEditOperation
 {
     /** @var array */
     protected $skippedObjects = [];
@@ -42,48 +45,20 @@ class AddToVariantGroup extends ProductMassEditOperation
 
     /**
      * @param GroupRepositoryInterface             $groupRepository
-     * @param BulkSaverInterface                   $productSaver
      * @param ProductTemplateUpdaterInterface      $templateUpdater
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $prodMassActionRepo
      */
     public function __construct(
         GroupRepositoryInterface $groupRepository,
-        BulkSaverInterface $productSaver,
         ProductTemplateUpdaterInterface $templateUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $prodMassActionRepo
     ) {
-        parent::__construct($productSaver);
-
-        $this->groupRepository = $groupRepository;
-        $this->templateUpdater = $templateUpdater;
-        $this->validator = $validator;
+        $this->groupRepository       = $groupRepository;
+        $this->templateUpdater       = $templateUpdater;
+        $this->validator             = $validator;
         $this->productMassActionRepo = $prodMassActionRepo;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setObjectsToMassEdit(array $products)
-    {
-        $this->objects        = [];
-        $this->skippedObjects = [];
-
-        foreach ($products as $product) {
-            $violations = $this->validator->validate($product, ['pim_catalog_variant_group']);
-
-            if ($product instanceof ProductInterface &&
-                null === $product->getVariantGroup() &&
-                0 === count($violations)
-            ) {
-                $this->objects[] = $product;
-            } else {
-                $this->skippedObjects[] = $product;
-            }
-        }
-
-        return $this;
     }
 
     /**
@@ -287,5 +262,13 @@ class AddToVariantGroup extends ProductMassEditOperation
         }
 
         return $validVariantGroups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAlias()
+    {
+        return 'add-to-variant-group';
     }
 }

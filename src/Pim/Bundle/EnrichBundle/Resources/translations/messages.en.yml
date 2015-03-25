@@ -112,31 +112,35 @@ pim_enrich:
                 fourth: Confirm
 
         change-status:
-            label:         Change status (enable / disable)
-            description:   The selected products will be enabled or disabled.
-            success_flash: Product(s) status have been changed
+            label:          Change status (enable / disable)
+            description:    The selected products will be enabled or disabled.
+            success_flash:  Product(s) status have been changed
+            launched_flash: The job updating product(s) status is currently running
 
         edit-common-attributes:
             label:         Edit attributes
             description:   The selected product's attributes will be edited with following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
-            success_flash: Product(s) attribute(s) have been updated
+            success_flash: The job updating product(s) status is currently running
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
         classify:
             label:         Classify products in categories
             description:   The products will be positioned into following categories, the existing placement is kept.
             success_flash: Product(s) have been classified into selected categories
+            launched_flash: The job updating product(s) categories is currently running
 
         change-family:
             label:         Change the family of products
             description:   The family of the selected products will be changed to the chosen family
             success_flash: The family of selected product(s) has been successfully changed
+            launched_flash: The job updating product(s) family is currently running
 
         add-to-groups:
             label:         Add to groups
             description:   Select the groups in which to add the selected products
             success_flash: Products were successfully added to the selected groups
+            launched_flash: The job updating product(s) group(s) is currently running
             no_group:      No group for now. Please start by creating a group.
 
         add-to-variant-group:
@@ -907,3 +911,14 @@ oro.locale:
 
 # Datagrid
 Selected products successfully deleted: Selected products successfully deleted
+
+pim_mass_edit:
+    notification:
+        mass_edit:
+            success: Mass edit finished
+            error:   Mass edit failed
+
+job_execution.summary:
+    mass_edited: Mass edited
+    skip:        skipped
+    skip_products: skipped products
