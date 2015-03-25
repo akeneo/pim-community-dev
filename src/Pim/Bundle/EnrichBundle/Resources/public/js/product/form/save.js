@@ -25,7 +25,7 @@ define(
             className: 'btn-group pull-right',
             template: _.template(template),
             events: {
-                'click #save': 'save',
+                'click .save-product': 'save',
             },
             render: function () {
                 this.$el.html(this.template());

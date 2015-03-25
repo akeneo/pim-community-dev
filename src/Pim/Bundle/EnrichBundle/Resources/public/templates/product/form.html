@@ -5,13 +5,12 @@
                 <span class="product-label"><%= product.meta.label %></span>
             </div>
             <div class="actions">
-                <button class="btn" id="get-data">get data</button>
             </div>
         </div>
         <div class="meta">
             <span>Family: <%= product.family %> <i class="icon-pencil"></i></span>
-            <span>Created: <%= product.meta.created.logged_at %> By <%= product.meta.created.author %></span>
-            <span>Last update: <%= product.meta.updated.logged_at %> By <%= product.meta.updated.author %></span>
+            <% if (product.meta.created) { %><span>Created: <%= product.meta.created.logged_at %> By <%= product.meta.created.author %></span><% } %>
+            <% if (product.meta.updated) { %><span>Last update: <%= product.meta.updated.logged_at %> By <%= product.meta.updated.author %></span><% } %>
         </div>
     </header>
 </div>

@@ -714,7 +714,6 @@ body {
   font-weight: 300;
   padding: 10px 10px 0 10px;
 
-
   & > .tabbable {
     & > header {
       .display-flex();
@@ -746,7 +745,6 @@ body {
       .product-label {
         font-size: 17px;
         font-weight: 300;
-        margin-left: 10px;
         color: @color-form-info;
       }
     }
@@ -1360,5 +1358,21 @@ body {
   .table-history.table-condensed:not(.grid) td, .table-history.table-condensed:not(.grid)  th {
     text-align: left;
     padding: 7px 15px;
+  }
+}
+
+.product-edit-form {
+  & > header .btn {
+    background-image: none;
+    padding: 3px 15px;
+    height: 35px;
+    text-shadow: none;
+    box-shadow: none;
+  }
+
+  .btn-success {
+    background: #7EC500;
+    color: white;
+    border: 1px solid #6CAA00;
   }
 }
