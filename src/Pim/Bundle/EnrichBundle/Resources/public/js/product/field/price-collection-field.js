@@ -24,7 +24,7 @@ define([
                 var inputData = input.val();
 
                 inputData = ('' !== inputData) ? parseFloat(inputData) : inputData;
-                inputData = isNaN(inputData) ? null : inputData;
+                inputData = isNaN(inputData) || '' === inputData ? null : inputData;
 
                 input.val(null === inputData ? input.defaultValue : inputData);
                 data.push({'data': inputData, 'currency': input.data('currency')});

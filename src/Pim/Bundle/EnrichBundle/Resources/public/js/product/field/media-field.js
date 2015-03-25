@@ -43,6 +43,8 @@ define([
                 var formData = new FormData();
                 formData.append('file', input.files[0]);
 
+                this.$('.progress .bar').css({opacity: 1});
+
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -61,6 +63,7 @@ define([
                 }).done(_.bind(function(data) {
                     this.setCurrentValue(data);
                     this.render();
+                    this.$('.progress .bar').css({opacity: 0});
                 }, this));
             },
             handleProcess: function(e) {

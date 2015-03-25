@@ -55,7 +55,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1) {
+        if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1 && null !== $data) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean', gettype($data));
         }
     }

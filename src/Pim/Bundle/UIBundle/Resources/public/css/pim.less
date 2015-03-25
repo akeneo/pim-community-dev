@@ -1066,7 +1066,7 @@ body {
     font-size: 12px;
   }
 
-  input,
+  input:not([type="file"]),
   textarea {
     box-shadow: 2px 2px 2px 0 rgba(0, 0, 0, 0.04);
     font-size: 12px;
@@ -1134,6 +1134,54 @@ body {
         background-color: #f0f0f0;
       }
     }
+  }
+}
+
+.media-uploader {
+  background: #eee;
+  width: 100%;
+  height: 100px;
+  border-radius: 2px;
+
+  &:not(.has-file) {
+    background-image: url("/bundles/pimui/images/upload.png");
+  }
+
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file {
+    height: 100px;
+    .display-flex();
+    .flex-direction(row);
+    align-items: center;
+
+    img {
+      max-height: 90px;
+      max-width: 150px;
+      margin-right: 5px;
+      margin-left: 5px;
+      border-radius: 2px;
+    }
+
+    span {
+      line-height: 100px;
+    }
+  }
+
+  .progress  {
+    height: 7px;
+    border-radius: 10px;
   }
 }
 
