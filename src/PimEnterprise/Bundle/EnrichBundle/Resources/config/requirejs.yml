@@ -1,3 +1,7 @@
 config:
     paths:
-        pimee/manage-permissions: pimenterpriseenrich/js/manage-permissions
+        pimee/manage-permissions:    pimenterpriseenrich/js/manage-permissions
+        pim/attribute-manager:       pimenterpriseenrich/js/product/attribute-manager
+        pim/attribute-group-manager: pimenterpriseenrich/js/product/attribute-group-manager
+        pim/config-manager:          pimenterpriseenrich/js/product/config-manager
+        pim/permission-manager:      pimenterpriseenrich/js/product/permission-manager
