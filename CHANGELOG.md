@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3957: Unable to publish a product already published
+
 # 1.3.5 (2015-03-19)
 
 ## Bug fixes
