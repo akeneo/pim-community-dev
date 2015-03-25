@@ -150,12 +150,6 @@ a.back-link i {
   padding-left: 5px;
 }
 
-.truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /** Dashboard ********************************************************************************************************/
 .dashboard {
   background-color:#f1f1f1;
@@ -1260,4 +1254,63 @@ body {
 .select2-search input {
   .border-radius(0);
   .box-sizing();
+}
+
+.history-modal {
+  max-height: 90%;
+  overflow: hidden;
+
+  .display-flex();
+  .flex-direction(column);
+
+  .modal-footer {
+    padding: 14px 15px 25px;
+  }
+
+  .modal-header {
+    padding: 9px 15px 20px;
+  }
+
+  .modal-body {
+    overflow: auto;
+  }
+
+  table {
+    width: 100%;
+    border-left: 1px solid #ddd;
+    text-align: left;
+  }
+
+  .logged-at {
+    min-width: 200px;
+  }
+
+  .table-history-details {
+    width: 80%;
+    position: relative;
+    margin: 20px auto;
+
+    th {
+      min-width: 100px;
+    }
+  }
+
+  thead th {
+    text-transform: uppercase;
+    padding: 7px 15px;
+  }
+
+
+  .table-condensed:not(.grid) td, .table-condensed:not(.grid) td, td, th {
+    border-left: none;
+    text-align: left;
+    padding: 7px 15px;
+  }
+}
+
+.panel-content {
+  .table-history.table-condensed:not(.grid) td, .table-history.table-condensed:not(.grid)  th {
+    text-align: left;
+    padding: 7px 15px;
+  }
 }

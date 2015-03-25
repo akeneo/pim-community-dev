@@ -1,4 +1,4 @@
-<table class="table table-condensed table-bordered table-hover">
+<table class="table table-condensed table-bordered table-hover table-history">
     <thead>
         <tr>
             <th>Version</th>
@@ -8,7 +8,7 @@
     </thead>
     <tbody>
         <% _.each(versions, function(version, index) { %>
-            <tr data-version="<%= index %>">
+            <tr data-version="<%= version.version %>">
                 <td><%= version.version %></td>
                 <td><%= version.author %><%= version.context ? ' (' + version.context + ')' : '' %></td>
                 <td><%= version.logged_at %></td>

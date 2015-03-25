@@ -8,7 +8,8 @@ define(
         'text!pim/template/product/save',
         'oro/navigation',
         'oro/loading-mask',
-        'pim/product-manager'
+        'pim/product-manager',
+        'pim/field-manager'
     ],
     function(
         _,
@@ -17,7 +18,8 @@ define(
         template,
         Navigation,
         LoadingMask,
-        ProductManager
+        ProductManager,
+        FieldManager
     ) {
         return BaseForm.extend({
             className: 'btn-group pull-right',
@@ -38,6 +40,8 @@ define(
                 delete product.associations;
                 delete product.variant_group;
                 delete product.meta;
+
+                this.removeEmptyAttributes(product);
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
@@ -65,7 +69,18 @@ define(
                 }).always(function() {
                     loadingMask.hide().$el.remove();
                 });
-
+            },
+            removeEmptyAttributes: function(product) {
+                var fields = FieldManager.getFields();
+                _.each(product.values, function(value, code) {
+                    if (fields[code]) {
+                        if (0 === fields[code].getData().length) {
+                            delete product.values[code];
+                        } else {
+                            value = fields[code].getData();
+                        }
+                    }
+                });
             }
         });
     }

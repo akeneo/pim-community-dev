@@ -15,7 +15,9 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/number'], fu
 
             if ('' !== data) {
                 data = this.attribute.decimalsAllowed ? parseFloat(data) : parseInt(data);
-            } else {
+            }
+
+            if (isNaN(data)) {
                 data = null;
             }
 

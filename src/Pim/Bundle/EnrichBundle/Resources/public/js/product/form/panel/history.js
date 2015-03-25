@@ -8,9 +8,10 @@ define(
         'text!pim/template/product/panel/history',
         'text!pim/template/product/panel/history-modal',
         'routing',
+        'oro/mediator',
         'backbone/bootstrap-modal'
     ],
-    function(_, Backbone, BaseForm, template, modalTemplate, Routing) {
+    function(_, Backbone, BaseForm, template, modalTemplate, Routing, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             modalTemplate: _.template(modalTemplate),
@@ -22,6 +23,8 @@ define(
             },
             configure: function () {
                 this.getRoot().addPanel('history', 'History');
+
+                mediator.on('post_save', _.bind(this.update, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -41,6 +44,9 @@ define(
 
                 return this;
             },
+            update: function() {
+                this.render();
+            },
             loadData: function () {
                 return $.get(
                     Routing.generate(
@@ -58,14 +64,13 @@ define(
                         backdrop: 'static',
                         keyboard: false
                     },
-                    allowCancel: true,
-                    okCloses: false,
-                    cancelText: _.__('pim_datagrid.column_configurator.cancel'),
-                    title: _.__('pim_datagrid.column_configurator.title'),
+                    allowCancel: false,
+                    okCloses: true,
+                    cancelText: 'Close',
+                    title: 'Product history',
                     content: this.modalTemplate({ versions: this.versions }),
-                    okText: _.__('pim_datagrid.column_configurator.apply')
+                    okText: 'Close'
                 });
-
 
                 modal.open();
 

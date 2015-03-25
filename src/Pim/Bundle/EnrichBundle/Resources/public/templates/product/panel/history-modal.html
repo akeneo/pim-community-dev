@@ -11,20 +11,20 @@
     <tbody>
         <% _.each(versions, function(version, index) { %>
             <tr data-version="<%= index %>">
-                <td>
+                <td class="version">
                     <span>
                         <i class="icon-chevron-right"></i>
                     </span>
                     <%= version.version %>
                 </td>
-                <td><%= version.author %></td>
-                <td><%= version.context %></td>
-                <td><%= version.logged_at %></td>
-                <td class="truncate"><%= _.keys(version.changeset).join(', ') %></td>
+                <td class="author"><%= version.author %></td>
+                <td class="context"><%= version.context %></td>
+                <td class="logged-at"><%= version.logged_at %></td>
+                <td class="changes"><%= _.keys(version.changeset).join(', ') %></td>
             </tr>
             <tr class="changeset hide">
                 <td colspan="5">
-                    <table class="table table-condensed table-bordered table-hover">
+                    <table class="table table-condensed table-bordered table-hover table-history-details">
                         <thead>
                             <tr>
                                 <th>Property</th>

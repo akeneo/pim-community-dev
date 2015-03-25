@@ -23,12 +23,10 @@ define([
 
                 var inputData = input.val();
 
-                if ('' !== inputData) {
-                    inputData = this.attribute.decimalsAllowed ? parseFloat(inputData) : parseInt(inputData);
-                } else {
-                    inputData = null;
-                }
+                inputData = ('' !== inputData) ? parseFloat(inputData) : inputData;
+                inputData = isNaN(inputData) ? null : inputData;
 
+                input.val(null === inputData ? input.defaultValue : inputData);
                 data.push({'data': inputData, 'currency': input.data('currency')});
             }, this));
 
