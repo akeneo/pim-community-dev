@@ -5,21 +5,22 @@ Feature: Editing attribute values of a variant group also updates products
   I need to be able to change attribute values of a variant group
 
   # what's tested here?
-  # -----------------------------|-------------|
-  # TYPE                         | VALID VALUE |
-  # -----------------------------|-------------|
-  # pim_catalog_boolean          | done        |
-  # pim_catalog_date             | done        |
-  # pim_catalog_file             | done        |
-  # pim_catalog_identifier       | N/A         |
-  # pim_catalog_image            | done        |
-  # pim_catalog_metric           | done        |
-  # pim_catalog_multiselect      | done        |
-  # pim_catalog_number           | done        |
-  # pim_catalog_price_collection | done        |
-  # pim_catalog_simpleselect     | done        |
-  # pim_catalog_text             | done        |
-  # pim_catalog_textarea         | done        |
+  # --------------------------------|-------------|
+  # TYPE                            | VALID VALUE |
+  # --------------------------------|-------------|
+  # pim_catalog_boolean             | done        |
+  # pim_catalog_date                | done        |
+  # pim_catalog_file                | done        |
+  # pim_catalog_identifier          | N/A         |
+  # pim_catalog_image               | done        |
+  # pim_catalog_metric              | done        |
+  # pim_catalog_multiselect         | done        |
+  # pim_catalog_number              | done        |
+  # pim_catalog_price_collection    | done        |
+  # pim_catalog_simpleselect        | done        |
+  # pim_catalog_text                | done        |
+  # pim_catalog_textarea            | done        |
+  # pim_reference_data_simpleselect | done        |
 
   Background:
     Given a "footwear" catalog configuration
@@ -117,3 +118,23 @@ Feature: Editing attribute values of a variant group also updates products
     And I save the variant group
     Then the product "boot" should have the following values:
       | technical_description | SNKRS-1R.png |
+
+  Scenario: Change a pim_reference_data_simpleselect attribute of a variant group
+    Given the following "heel_color" attribute reference data: ABJP44823, APC40
+    When I add available attributes Heel color
+    And I visit the "Other" group
+    And I change the "Heel color" to "ABJP44823"
+    And I save the variant group
+    And I am on the "boot" product page
+    And I visit the "Other" group
+    Then the product Heel color should be "ABJP44823"
+
+  Scenario: Change a pim_reference_data_multiselect attribute of a variant group
+    Given the following "sole_fabric" attribute reference data: Gold, Smooth and Crispy
+    When I add available attributes Sole fabric
+    And I visit the "Other" group
+    And I change the "Sole fabric" to "Gold, Smooth"
+    And I save the variant group
+    And I am on the "boot" product page
+    And I visit the "Other" group
+    Then the product Sole fabric should be "Gold, Smooth"
