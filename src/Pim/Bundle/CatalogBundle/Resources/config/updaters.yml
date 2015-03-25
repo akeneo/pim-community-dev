@@ -43,6 +43,8 @@ parameters:
     pim_catalog.updater.adder.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Adder\MultiSelectAttributeAdder
     pim_catalog.updater.adder.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Adder\PriceCollectionAttributeAdder
 
+    pim_catalog.updater.remover.registry.class:       Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistry
+
 services:
     pim_catalog.updater.product:
         class: %pim_catalog.updater.product.class%
@@ -51,6 +53,7 @@ services:
             - @pim_catalog.updater.setter.registry
             - @pim_catalog.updater.copier.registry
             - @pim_catalog.updater.adder.registry
+            - @pim_catalog.updater.remover.registry
 
     pim_catalog.updater.product_template:
         class: %pim_catalog.updater.product_template.class%
@@ -361,3 +364,7 @@ services:
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.adder' }
+
+    # Removers
+    pim_catalog.updater.remover.registry:
+        class: %pim_catalog.updater.remover.registry.class%
