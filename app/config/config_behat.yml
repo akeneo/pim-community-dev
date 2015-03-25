@@ -34,3 +34,12 @@ assetic:
 
 pim_enrich:
     record_mails: true
+
+# TODO: move it on config.yml
+pim_reference_data:
+    fabrics:
+        class: Acme\Bundle\AppBundle\Entity\Fabric
+        type: multi
+    color:
+        class: Acme\Bundle\AppBundle\Entity\Color
+        type: simple
