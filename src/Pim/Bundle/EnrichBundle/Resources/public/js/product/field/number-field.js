@@ -12,6 +12,13 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/number'], fu
         },
         updateModel: function (event) {
             var data = event.currentTarget.value;
+
+            if ('' !== data) {
+                data = this.attribute.decimalsAllowed ? parseFloat(data) : parseInt(data);
+            } else {
+                data = null;
+            }
+
             this.setCurrentValue(data);
         }
     });

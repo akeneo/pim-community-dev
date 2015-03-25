@@ -21,6 +21,8 @@ define(
             configure: function () {
                 this.getRoot().addPanel('completeness', 'Completeness');
 
+                mediator.on('post_save', _.bind(this.update, this));
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
@@ -55,6 +57,13 @@ define(
                         scope: event.currentTarget.dataset.channel
                     }
                 );
+            },
+            update: function() {
+                if (this.getRoot().model.get('meta')) {
+                    CompletenessManager.invalidateCache(this.getRoot().model.get('meta').id);
+                }
+
+                this.render();
             }
         });
     }

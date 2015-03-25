@@ -17,8 +17,6 @@ define([
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {
-            console.log(event.currentTarget);
-
             var data = [];
             _.each($(event.currentTarget).parents('.price-collection-field').find('.price-input'), _.bind(function(element) {
                 var input = $(element).children('input');

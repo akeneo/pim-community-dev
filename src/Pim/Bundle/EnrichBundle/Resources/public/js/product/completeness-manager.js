@@ -27,6 +27,16 @@ define(['jquery', 'routing'], function ($, Routing) {
             }
 
             return promise.promise();
+        },
+        invalidateCache: function(productId) {
+            if (productId) {
+                delete this.completenesses[productId];
+                delete this.completenessPromises[productId];
+            } else {
+
+                this.completenesses = {};
+                this.completenessPromises = {};
+            }
         }
     };
 });
