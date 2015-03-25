@@ -2,10 +2,10 @@
     <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" />
     <div class="file">
     <% if (value.value) { %>
-            <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
-                <img class="preview" src="<%= mediaUrl %>"/>
-            <% } %>
-            <span><%= value.value.originalFilename %></span>
+        <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
+            <img class="preview" src="<%= mediaUrl %>"/>
+        <% } %>
+        <span><%= value.value.originalFilename %></span>
     <% } %>
     </div>
     <div class="progress">

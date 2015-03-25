@@ -62,6 +62,7 @@ define(
             },
             updateModel: function (event) {
                 this.state.set('selectedCategories', event.currentTarget.value.split(','));
+                this.getData().categories = this.state.get('selectedCategories');
             }
         });
     }
