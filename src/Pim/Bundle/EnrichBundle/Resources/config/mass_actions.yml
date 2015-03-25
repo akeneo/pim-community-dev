@@ -107,14 +107,6 @@ services:
 
     pim_enrich.mass_edit_action.add_to_variant_group:
         class: %pim_enrich.mass_edit_action.add_to_variant_group.class%
-        arguments:
-            - '@pim_catalog.repository.group'
-            - '@pim_catalog.updater.product_template'
-            - '@validator'
-            - '@pim_catalog.repository.product_mass_action'
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_enrich.product.paginator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
         tags:
             -
                 name: pim_enrich.mass_edit_action
