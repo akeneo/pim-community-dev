@@ -29,6 +29,7 @@ swiftmailer:
 parameters:
     apy_js_form_validation.yui_js: false
 
+# TODO: move it on config.yml
 pim_reference_data:
     fabrics:
         class: Acme\Bundle\AppBundle\Entity\Fabric
