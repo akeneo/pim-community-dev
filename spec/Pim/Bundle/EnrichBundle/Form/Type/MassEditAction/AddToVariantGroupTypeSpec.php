@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AddToGroupsTypeSpec extends ObjectBehavior
+class AddToVariantGroupsTypeSpec extends ObjectBehavior
 {
     function let()
     {

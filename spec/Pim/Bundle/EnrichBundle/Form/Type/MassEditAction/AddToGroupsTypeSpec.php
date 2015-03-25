@@ -67,21 +67,4 @@ class AddToGroupsTypeSpec extends ObjectBehavior
 
         $this->buildForm($builder, $options);
     }
-
-    function it_gets_warning_messages_if_there_is_no_group($groupRepository)
-    {
-        $groupRepository->getAllGroupsExceptVariant()->willReturn([]);
-        $this->getWarningMessages()->shouldReturn([
-            [
-                'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',
-                'options' => []
-            ]
-        ]);
-    }
-
-    function it_gets_no_warning_message_if_there_is_at_least_one_group($groupRepository, GroupInterface $houseGroup)
-    {
-        $groupRepository->getAllGroupsExceptVariant()->willReturn([$houseGroup]);
-        $this->getWarningMessages()->shouldReturn([]);
-    }
 }
