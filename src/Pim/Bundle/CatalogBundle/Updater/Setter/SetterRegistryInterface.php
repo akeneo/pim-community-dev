@@ -27,7 +27,7 @@ interface SetterRegistryInterface
      *
      * @param string $field the field
      *
-     * @return SetterInterface|null
+     * @return FieldSetterInterface|null
      */
     public function getFieldSetter($field);
 
@@ -36,7 +36,7 @@ interface SetterRegistryInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return SetterInterface|null
+     * @return AttributeSetterInterface|null
      */
     public function getAttributeSetter(AttributeInterface $attribute);
 }
