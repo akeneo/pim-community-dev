@@ -8,11 +8,4 @@ use PimEnterprise\Bundle\ReferenceDataBundle\DependencyInjection\Compiler\Regist
 
 class PimEnterpriseReferenceDataBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'PimReferenceDataBundle';
-    }
 }

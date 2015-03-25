@@ -41,12 +41,4 @@ class AcmeEnterpriseAppBundle extends Bundle
             );
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
-    {
-        return 'AcmeAppBundle';
-    }
 }
