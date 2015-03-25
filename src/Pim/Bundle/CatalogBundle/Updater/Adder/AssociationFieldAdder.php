@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater\Setter;
+namespace Pim\Bundle\CatalogBundle\Updater\Adder;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -9,13 +9,13 @@ use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Sets the association field
+ * Association field adder
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationFieldSetter extends AbstractFieldSetter
+class AssociationFieldAdder extends AbstractFieldAdder
 {
     /** @var IdentifiableObjectRepositoryInterface */
     protected $productRepository;
@@ -59,29 +59,11 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *     },
      * }
      */
-    public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
+    public function addFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
-        $this->clearAssociations($product);
         $this->addMissingAssociations($product);
-        $this->setProductsAndGroupsToAssociations($product, $data);
-    }
-
-    /**
-     * Clear associations (remove groups and products from existing associations)
-     *
-     * @param ProductInterface $product
-     */
-    protected function clearAssociations(ProductInterface $product)
-    {
-        foreach ($product->getAssociations() as $association) {
-            foreach ($association->getGroups() as $group) {
-                $association->removeGroup($group);
-            }
-            foreach ($association->getProducts() as $prod) {
-                $association->removeProduct($prod);
-            }
-        }
+        $this->addProductsAndGroupsToAssociations($product, $data);
     }
 
     /**
@@ -95,11 +77,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
     }
 
     /**
-     * Set products and groups to associations
+     * Add products and groups to associations
      *
      * @param ProductInterface $product
+     * @param mixed            $data
      */
-    protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
+    protected function addProductsAndGroupsToAssociations(ProductInterface $product, $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
@@ -107,13 +90,13 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing association type code',
-                    'setter',
+                    'adder',
                     'association',
                     $typeCode
                 );
             }
-            $this->setAssociatedProducts($association, $items['products']);
-            $this->setAssociatedGroups($association, $items['groups']);
+            $this->addAssociatedProducts($association, $items['products']);
+            $this->addAssociatedGroups($association, $items['groups']);
         }
     }
 
@@ -121,7 +104,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param AssociationInterface $association
      * @param array                $productsIdentifiers
      */
-    protected function setAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
+    protected function addAssociatedProducts(AssociationInterface $association, $productsIdentifiers)
     {
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
@@ -129,7 +112,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing product identifier',
-                    'setter',
+                    'adder',
                     'association',
                     $productIdentifier
                 );
@@ -142,7 +125,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * @param AssociationInterface $association
      * @param array                $groupsCodes
      */
-    protected function setAssociatedGroups(AssociationInterface $association, $groupsCodes)
+    protected function addAssociatedGroups(AssociationInterface $association, $groupsCodes)
     {
         foreach ($groupsCodes as $groupCode) {
             $associatedGroup = $this->groupRepository->findOneByIdentifier($groupCode);
@@ -150,7 +133,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing group code',
-                    'setter',
+                    'adder',
                     'association',
                     $groupCode
                 );
@@ -172,7 +155,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $field,
-                'setter',
+                'adder',
                 'association',
                 gettype($data)
             );
