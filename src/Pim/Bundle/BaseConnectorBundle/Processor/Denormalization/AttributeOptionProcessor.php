@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
@@ -34,7 +33,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
      * @param IdentifiableObjectRepositoryInterface $optionRepository option repository
      * @param AttributeOptionUpdaterInterface       $optionUpdater    option updater
      * @param ValidatorInterface                    $validator        validator of the object
-     * @param ObjectDetacherInterface               $detacher         detacher to remove it from UOW when skip
      * @param string                                $class            attribute option class
      */
     public function __construct(
@@ -42,10 +40,9 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
         IdentifiableObjectRepositoryInterface $optionRepository,
         AttributeOptionUpdaterInterface $optionUpdater,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
         $class
     ) {
-        parent::__construct($optionRepository, $validator, $detacher);
+        parent::__construct($optionRepository, $validator);
         $this->arrayConverter = $arrayConverter;
         $this->optionUpdater = $optionUpdater;
         $this->class = $class;
@@ -114,7 +111,6 @@ class AttributeOptionProcessor extends AbstractReworkedProcessor
 
         $violations = $this->validator->validate($attributeOption);
         if ($violations->count() !== 0) {
-            $this->detachObject($attributeOption);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
     }

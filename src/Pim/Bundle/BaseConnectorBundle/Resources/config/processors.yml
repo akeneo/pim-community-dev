@@ -164,7 +164,6 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@pim_validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.denormalization.attribute_option.structured:
@@ -174,7 +173,6 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - '@pim_validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - %pim_catalog.entity.attribute_option.class%
 
     # Denormalization - ArrayConverter

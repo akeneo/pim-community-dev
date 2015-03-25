@@ -7,7 +7,6 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -40,22 +39,16 @@ abstract class AbstractReworkedProcessor extends AbstractConfigurableStepElement
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $repository repository to search the object in
      * @param ValidatorInterface                    $validator  validator of the object
-     * @param ObjectDetacherInterface               $detacher   object detacher
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher
+        ValidatorInterface $validator
     ) {
         $this->repository = $repository;
         $this->validator = $validator;
-        $this->detacher = $detacher;
     }
 
     /**
@@ -97,19 +90,6 @@ abstract class AbstractReworkedProcessor extends AbstractConfigurableStepElement
         }
 
         return $repository->findOneByIdentifier(implode('.', $references));
-    }
-
-    /**
-     * Detaches the object from the unit of work
-     *
-     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
-     * skipped items or we should use an explicit persist strategy
-     *
-     * @param mixed $object
-     */
-    protected function detachObject($object)
-    {
-        $this->detacher->detach($object);
     }
 
     /**

@@ -59,9 +59,9 @@ Feature: Import options
     And I am logged in as "Julia"
     And the following CSV file to import:
     """
-    attribute;code;sort_order;label-fr_FR;label-fr_CA;label-en_US;label-de_DE
-    test;test_A04;3;04FR;04CA;04US;04DE
-    test;test_A05;2;05FR;05CA;05US;05DE
+    attribute;code;sort_order;label-fr_FR;label-en_US;label-de_DE;label-en_GB
+    test;test_A04;3;04FR;04US;04DE;04GB
+    test;test_A05;2;05FR;05US;05DE;05GB
     """
     And the following job "option_import" configuration:
       | filePath | %file to import% |
@@ -77,6 +77,26 @@ Feature: Import options
     And I should see "05FR"
     And I should see "05US"
     And I should see "05DE"
-    And I should not see "04CA"
-    And I should not see "04CA"
-    And I should not see "04CA"
+    And I should see "05GB"
+    And I should see "05GB"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-3820
+  Scenario: Stop an import when a label is provided for a disabled language
+    Given the "apparel" catalog configuration
+    And the following attributes:
+      | code | label | type         |
+      | test | Test  | simpleselect |
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+    """
+    attribute;code;sort_order;label-fr_FR;label-fr_CA;label-en_US;label-de_DE
+    test;test_A04;3;04FR;04CA;04US;04DE
+    test;test_A05;2;05FR;05CA;05US;05DE
+    """
+    And the following job "option_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "option_import" import job page
+    And I launch the import job
+    And I wait for the "option_import" job to finish
+    Then I should see "Status: FAILED"
+    And I should see "The option \"label-fr_CA\" does not exist. Known options are: \"attribute\", \"code\", \"label-de_DE\", \"label-en_GB\", \"label-en_US\", \"label-fr_FR\", \"sort_order\""
