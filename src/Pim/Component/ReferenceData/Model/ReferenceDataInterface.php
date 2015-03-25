@@ -40,4 +40,11 @@ interface ReferenceDataInterface
      * @return int
      */
     public function getSortOrder();
+
+    /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString();
 }

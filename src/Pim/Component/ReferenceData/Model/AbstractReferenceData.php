@@ -40,4 +40,12 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
     {
         $this->code = $code;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __toString()
+    {
+        return $this->code;
+    }
 }
