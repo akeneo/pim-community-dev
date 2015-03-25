@@ -334,7 +334,6 @@ services:
         class: %pim_enrich.controller.locale_rest.class%
         arguments:
             - '@pim_catalog.repository.locale'
-            - '@security.context'
 
     pim_enrich.controller.currency_rest:
         class: %pim_enrich.controller.currency_rest.class%

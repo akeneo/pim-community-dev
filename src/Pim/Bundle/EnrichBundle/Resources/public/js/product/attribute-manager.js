@@ -20,13 +20,13 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
 
             $.when(ConfigManager.getEntityList('attributes'), this.getAttributesForProduct(product))
                 .done(function(attributes, productAttributes) {
-                    var optionalAttribute = _.map(
-                        _.difference(_.keys(attributes), productAttributes),
-                        function(attribute) {
-                            return attributes[attribute];
+                    var optionalAttributes = _.map(
+                        _.difference(_.pluck(attributes, 'code'), productAttributes),
+                        function (attributeCode) {
+                            return _.findWhere(attributes, {code: attributeCode});
                         }
                     );
-                    promise.resolve(optionalAttribute);
+                    promise.resolve(optionalAttributes);
                 });
 
             return promise.promise();
@@ -45,7 +45,7 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
         },
         getEmptyValue: function(attribute)
         {
-            switch(attribute.type) {
+            switch (attribute.type) {
                 case 'pim_catalog_date':
                 case 'pim_catalog_number':
                 case 'pim_catalog_file':
