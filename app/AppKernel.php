@@ -27,6 +27,8 @@ class AppKernel extends Kernel
     {
         $bundles = [
             // your app bundles should be registered here
+
+            // TODO: Acme bundles should not be here
             new Acme\Bundle\AppBundle\AcmeAppBundle(),
             new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
         ];
