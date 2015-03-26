@@ -47,7 +47,7 @@ class ReferenceDataTransformer
                 }
             }
 
-            $result[$attributeCode][$attribute['referenceDataName']] = $references;
+            $result[$attributeCode][$attribute['properties']['reference_data_name']] = $references;
         }
 
         return $result[$attributeCode];
