@@ -25,8 +25,17 @@ class GroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const TYPE_FIELD = 'type';
 
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var string */
     protected $format;
+
+    /** @var string */
+    protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
@@ -44,8 +53,11 @@ class GroupProcessor extends AbstractProcessor
         $class,
         $format
     ) {
-        parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
+        parent::__construct($repository, $validator);
+        $this->denormalizer = $denormalizer;
+        $this->detacher = $detacher;
         $this->format = $format;
+        $this->class = $class;
     }
 
     /**
@@ -81,7 +93,9 @@ class GroupProcessor extends AbstractProcessor
      */
     protected function findOrCreateGroup(array $groupData)
     {
-        $group = $this->findOrCreateObject($this->repository, $groupData, $this->class);
+        if (null === $group = $this->findObject($this->repository, $groupData)) {
+            $group = new $this->class();
+        }
 
         $isVariantGroup = false;
         if ((null === $group->getId() && $groupData[self::TYPE_FIELD] === 'VARIANT') ||
@@ -131,5 +145,18 @@ class GroupProcessor extends AbstractProcessor
             $this->detachObject($group);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
+    }
+
+    /**
+     * Detaches the object from the unit of work
+     *
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
+     * skipped items or we should use an explicit persist strategy
+     *
+     * @param mixed $object
+     */
+    protected function detachObject($object)
+    {
+        $this->detacher->detach($object);
     }
 }

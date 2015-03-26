@@ -49,6 +49,7 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = [];
+
         if ($entity instanceof AttributeOptionInterface) {
             $pendings[] = $entity->getAttribute();
         } elseif ($entity instanceof AttributeOptionValueInterface) {

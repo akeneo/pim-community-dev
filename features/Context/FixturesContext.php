@@ -451,10 +451,9 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeLabelTranslations(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this
-                ->getAttribute($data['attribute'])
-                ->setLocale($this->getLocaleCode($data['locale']))
-                ->setLabel($data['label']);
+            $attribute = $this->getAttribute($data['attribute']);
+            $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
+            $this->persist($attribute);
         }
 
         $this->flush();

@@ -3,7 +3,6 @@ parameters:
     pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
     pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
 
-
     pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
     # TODO useful to use this abstract?
     pim_catalog.updater.setter.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter
