@@ -20,7 +20,7 @@ class ReferenceDataTransformerSpec extends ObjectBehavior
             'localizable'       => null,
             'scopable'          => null,
             'backendType'       => 'reference_data_option',
-            'referenceDataName' => 'sole_color',
+            'properties'        => ['reference_data_name' => 'sole_color'],
         ];
 
         $result = [
@@ -48,7 +48,7 @@ class ReferenceDataTransformerSpec extends ObjectBehavior
             'localizable'       => null,
             'scopable'          => null,
             'backendType'       => 'reference_data_options',
-            'referenceDataName' => 'sole_fabric',
+            'properties'        => ['reference_data_name' => 'sole_fabric'],
         ];
 
         $result = [
