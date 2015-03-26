@@ -101,6 +101,6 @@ class ChangeStatus extends AbstractMassEditOperation implements
      */
     public function getBatchJobCode()
     {
-        return 'update_product';
+        return 'update_product_value';
     }
 }
