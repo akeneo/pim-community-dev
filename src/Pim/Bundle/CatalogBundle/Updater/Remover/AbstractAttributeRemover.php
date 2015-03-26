@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater\Setter;
+namespace Pim\Bundle\CatalogBundle\Updater\Remover;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -9,13 +9,13 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Abstract setter
+ * Abstract attribute remover
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractAttributeSetter implements AttributeSetterInterface
+abstract class AbstractAttributeRemover implements AttributeRemoverInterface
 {
     /** @var array */
     protected $supportedTypes = [];
@@ -30,16 +30,11 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
     protected $resolver;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      */
-    public function __construct(
-        ProductBuilderInterface $productBuilder,
-        AttributeValidatorHelper $attrValidatorHelper
-    ) {
-        $this->productBuilder = $productBuilder;
+    public function __construct(AttributeValidatorHelper $attrValidatorHelper)
+    {
         $this->attrValidatorHelper = $attrValidatorHelper;
-
         $this->resolver = new OptionsResolver();
         $this->configureOptions($this->resolver);
     }
@@ -79,6 +74,7 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)
