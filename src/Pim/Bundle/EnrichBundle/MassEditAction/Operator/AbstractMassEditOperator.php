@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\InitializableMassEditOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
@@ -40,7 +39,6 @@ abstract class AbstractMassEditOperator
      * @var MassEditOperationInterface[] $operations
      * @Exclude
      */
-//    protected $operations = [];
 
     /**
      * The default acls for each configured operation, indexed by code
@@ -144,45 +142,12 @@ abstract class AbstractMassEditOperator
     }
 
     /**
-     * Delegate the batch operation initialization to the chosen operation adapter
-     */
-//    public function initializeOperation()
-//    {
-//        if ($this->operation && $this->operation instanceof InitializableMassEditOperationInterface) {
-//            $this->operation->initialize();
-//        }
-//    }
-
-    /**
-     * Delegate the batch operation execution to the chosen operation adapter
-     */
-//    public function performOperation()
-//    {
-//        set_time_limit(0);
-//        if ($this->operation) {
-//            $this->operation->perform();
-//        }
-//    }
-
-    /**
-     * Finalize the batch operation - flush the products
-     */
-//    abstract public function finalizeOperation();
-
-    /**
      * Returns the name of the operator
      * Used in the view to generate translation key
      *
      * @return string
      */
     abstract public function getName();
-
-    /**
-     * Get the route name to which to redirect at the end of the operation performing)
-     *
-     * @return string
-     */
-//    abstract public function getPerformedOperationRedirectionRoute();
 
     /**
      * Returns true if the operation is allowed for the current user

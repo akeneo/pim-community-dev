@@ -16,7 +16,6 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -155,7 +154,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
      *
-     * @return Response|RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function configureAction($operationAlias)
     {
@@ -187,7 +186,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
-     * @return Response|RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function performAction($operationAlias)
     {
@@ -219,7 +218,6 @@ class MassEditActionController extends AbstractDoctrineController
 
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
 
-            // Binding does not actually perform the operation, thus form errors can miss some constraints
 //            foreach ($this->validator->validate($operator) as $violation) {
 //                $form->addError(
 //                    new FormError(
@@ -259,7 +257,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param integer $id
      * @param boolean $checkStatus
      *
-     * @return Job|RedirectResponse
+     * @return JobInstance
      *
      * @throws NotFoundHttpException
      */
@@ -304,12 +302,17 @@ class MassEditActionController extends AbstractDoctrineController
     {
         switch ($gridName) {
             case 'product-grid':
-                return 'product';
+                $itemsName = 'product';
+                break;
             case 'family-grid':
-                return 'family';
+                $itemsName = 'family';
+                break;
             default:
-                return 'item';
+                $itemsName = 'item';
+                break;
         }
+
+        return $itemsName;
     }
 
     /**

@@ -28,6 +28,9 @@ class ClassifyType extends AbstractType
     /** @var string $dataClass */
     protected $dataClass;
 
+    /** @var CategoryInterface[] */
+    protected $trees;
+
     /**
      * Constructor.
      *

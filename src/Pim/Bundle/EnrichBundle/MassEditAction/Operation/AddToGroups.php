@@ -80,10 +80,12 @@ class AddToGroups extends AbstractMassEditOperation implements
      */
     public function getActions()
     {
+        $groups = $this->getGroups();
+
         return [
             [
                 'field' => 'groups',
-                'value' => $this->getGroupsCode(),
+                'value' => $this->getGroupsCode($groups),
             ]
         ];
     }
@@ -120,12 +122,16 @@ class AddToGroups extends AbstractMassEditOperation implements
     }
 
     /**
+     * @param ArrayCollection $groups
+     *
      * @return array
      */
-    protected function getGroupsCode()
+    protected function getGroupsCode(ArrayCollection $groups)
     {
-        return $this->getGroups()->map(function (GroupInterface $group) {
-            return $group->getCode();
-        })->toArray();
+        return $groups->map(
+            function (GroupInterface $group) {
+                return $group->getCode();
+            }
+        )->toArray();
     }
 }

@@ -49,11 +49,11 @@ class MassEditJobManager
         $rootDir,
         $environment
     ) {
-        $this->rootDir             = $rootDir;
-        $this->environment         = $environment;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->jobExecutionClass   = $jobExecutionClass;
-        $this->objectManager       = $objectManager;
+        $this->rootDir           = $rootDir;
+        $this->environment       = $environment;
+        $this->eventDispatcher   = $eventDispatcher;
+        $this->jobExecutionClass = $jobExecutionClass;
+        $this->objectManager     = $objectManager;
     }
 
     /**
