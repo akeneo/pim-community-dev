@@ -75,10 +75,12 @@ class ChangeFamily extends AbstractMassEditOperation implements
      */
     public function getActions()
     {
+        $family = $this->getFamily();
+
         return [
             [
                 'field' => 'family',
-                'value' => $this->getFamily()->getCode()
+                'value' => $this->getFamilyCode($family),
             ]
         ];
     }
@@ -104,5 +106,15 @@ class ChangeFamily extends AbstractMassEditOperation implements
     public function getBatchJobCode()
     {
         return 'update_product';
+    }
+
+    /**
+     * @param null|FamilyInterface $family
+     *
+     * @return null|string
+     */
+    protected function getFamilyCode($family)
+    {
+        return isset($family) ? $family->getCode() : null;
     }
 }

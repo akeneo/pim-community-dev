@@ -53,7 +53,21 @@ class ChangeFamilySpec extends ObjectBehavior
             [
                 [
                     'field' => 'family',
-                    'value' => 'amazing_mugs'
+                    'value' => 'amazing_mugs',
+                ]
+            ]
+        );
+    }
+
+    function it_sets_value_to_null_if_no_family_set()
+    {
+        $this->getFamily()->shouldReturn(null);
+
+        $this->getActions()->shouldReturn(
+            [
+                [
+                    'field' => 'family',
+                    'value' => null,
                 ]
             ]
         );
@@ -68,9 +82,11 @@ class ChangeFamilySpec extends ObjectBehavior
     {
         $mugs->getCode()->willReturn('amazing_mugs');
         $this->setFamily($mugs);
-        $this->setFilters([
-            ['id', 'IN', ['1003', '1002']]
-        ]);
+        $this->setFilters(
+            [
+                ['id', 'IN', ['1003', '1002']]
+            ]
+        );
 
         $this->getBatchConfig()->shouldReturn(
             '{\"filters\":[[\"id\",\"IN\",[\"1003\",\"1002\"]]],\"actions\":[{\"field\":\"family\",\"value\":\"amazing_mugs\"}]}'
