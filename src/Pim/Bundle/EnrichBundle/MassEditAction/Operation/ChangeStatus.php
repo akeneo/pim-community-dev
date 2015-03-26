@@ -13,11 +13,7 @@ class ChangeStatus extends AbstractMassEditOperation implements
     ConfigurableOperationInterface,
     BatchableOperationInterface
 {
-    /**
-     * Whether or not to enable products
-     *
-     * @var boolean
-     */
+    /** @var boolean Whether or not to enable products */
     protected $toEnable = false;
 
     /**

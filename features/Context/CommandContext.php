@@ -144,7 +144,7 @@ class CommandContext extends RawMinkContext
 
             $operation = $operationRegistry->get($update['operation']);
 
-            if (! $operation instanceof BatchableOperationInterface) {
+            if (!$operation instanceof BatchableOperationInterface) {
                 throw new \Exception(sprintf(
                     'Operation with alias %s must implement the BatchableOperationInterface to be tested this way',
                     $operation->getAlias()
@@ -193,7 +193,7 @@ class CommandContext extends RawMinkContext
             $operation = $operationRegistry->get($update['operation']);
             $productQueryBuilder = $pqbFactory->create();
 
-            if (! $operation instanceof BatchableOperationInterface) {
+            if (!$operation instanceof BatchableOperationInterface) {
                 throw new \Exception(sprintf(
                     'Operation with alias %s must implement the BatchableOperationInterface to be tested this way',
                     $operation->getAlias()

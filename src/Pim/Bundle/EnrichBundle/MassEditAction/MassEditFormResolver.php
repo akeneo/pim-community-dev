@@ -35,8 +35,8 @@ class MassEditFormResolver
         FormFactoryInterface $formFactory,
         MassEditChooseActionType $chooseActionFormType
     ) {
-        $this->operationRegistry = $operationRegistry;
-        $this->formFactory = $formFactory;
+        $this->operationRegistry    = $operationRegistry;
+        $this->formFactory          = $formFactory;
         $this->chooseActionFormType = $chooseActionFormType;
     }
 
@@ -71,7 +71,7 @@ class MassEditFormResolver
     {
         $operation = $this->operationRegistry->get($operationAlias);
 
-        if (! $operation instanceof ConfigurableOperationInterface) {
+        if (!$operation instanceof ConfigurableOperationInterface) {
             throw new \LogicException(sprintf(
                 'Operation with alias "%s" is not an instance of ConfigurableOperationInterface',
                 $operationAlias
