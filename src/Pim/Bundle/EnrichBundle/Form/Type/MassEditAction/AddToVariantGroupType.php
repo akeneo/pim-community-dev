@@ -105,22 +105,6 @@ class AddToVariantGroupType extends AbstractType
     }
 
     /**
-     * Get warning messages
-     *
-     * @return string[]
-     */
-    public function getWarningMessages()
-    {
-        if (null === $this->warningMessages) {
-            $this->warningMessages = $this->generateWarningMessages(
-                $this->getVariantGroups()
-            );
-        }
-
-        return $this->warningMessages;
-    }
-
-    /**
      * Get valid variant groups to display
      *
      * @return array
@@ -128,39 +112,5 @@ class AddToVariantGroupType extends AbstractType
     public function getVariantGroups()
     {
         return $this->groupRepository->getAllVariantGroups();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function buildView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['warningMessages'] = $this->getWarningMessages();
-    }
-
-    /**
-     * Get warning messages to display during the mass edit action
-     *
-     * @param array $validVariantGroups
-     *
-     * @return string[]
-     */
-    protected function generateWarningMessages(array $validVariantGroups)
-    {
-        $messages = [];
-
-        if (0 === (int) $this->groupRepository->countVariantGroups()) {
-            $messages[] = [
-                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.no_variant_group',
-                'options' => []
-            ];
-        } elseif (0 === count($validVariantGroups)) {
-            $messages[] = [
-                'key'     => 'pim_enrich.mass_edit_action.add-to-variant-group.no_valid_variant_group',
-                'options' => []
-            ];
-        }
-
-        return $messages;
     }
 }

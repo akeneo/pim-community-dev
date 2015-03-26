@@ -1,21 +1,21 @@
 connector:
     name: Akeneo Mass Edit Connector
     jobs:
-        update_product:
-            title: update_product
+        update_product_value:
+            title: update_product_value
             type:  mass_edit
             steps:
                 perform:
-                    title: update_product
-                    class: "%pim_base_connector.step.mass_edit_update_product.class%"
+                    title: update_product_value
+                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.update_product
+                        handler: pim_enrich.mass_edit_handler.update_product_value
         add_product_value:
             title: add_product_value
             type:  mass_edit
             steps:
                 perform:
                     title: add_product_value
-                    class: "%pim_base_connector.step.mass_edit_update_product.class%"
+                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
                         handler: pim_enrich.mass_edit_handler.add_product_value
