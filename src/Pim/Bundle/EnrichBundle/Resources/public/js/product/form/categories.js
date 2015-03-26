@@ -6,9 +6,10 @@ define(
         'backbone',
         'pim/form',
         'text!pim/template/product/tab/categories',
+        'routing',
         'pim/tree/associate'
     ],
-    function(_, Backbone, BaseForm, formTemplate, TreeAssociate) {
+    function(_, Backbone, BaseForm, formTemplate, Routing, TreeAssociate) {
         return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tab-pane active',
@@ -18,10 +19,11 @@ define(
                 'change #hidden-tree-input': 'updateModel'
             },
             treeAssociate: null,
+            cache: {},
             initialize: function () {
                 this.state = new Backbone.Model();
 
-                this.state.set('selectedCategories', [116, 128]);
+                this.state.set('selectedCategories', []);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -31,29 +33,38 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (this.treeAssociate) {
+                this.loadTrees().done(_.bind(function (trees) {
+                    this.$el.html(
+                        this.template({
+                            product: this.getData(),
+                            locale: 'en_US',
+                            state: this.state.toJSON(),
+                            trees: trees
+                        })
+                    );
+
+                    this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input');
                     this.delegateEvents();
-                    return;
-                }
-
-                this.$el.html(
-                    this.template({
-                        product: this.getData(),
-                        locale: 'en_US',
-                        state: this.state.toJSON(),
-                        trees: this.loadTrees()
-                    })
-                );
-
-                this.treeAssociate = new TreeAssociate('#trees', '#hidden-tree-input');
+                }, this));
 
                 return this;
             },
             loadTrees: function () {
-                return [
-                    {id: 1, code: 'master', label: 'master', associated: true},
-                    {id: 2, code: 'sales', label: 'sales', associated: false}
-                ];
+                var promise = $.Deferred();
+
+                $.getJSON(
+                    Routing.generate('pim_enrich_product_rest_list_categories', {id: this.getData().meta.id })
+                ).done(_.bind(function(data) {
+                    _.each(data.categories, _.bind(function(category) {
+                        this.cache[category.id] = category.code;
+                    }, this));
+                    if (_.isEmpty(this.state.get('selectedCategories'))) {
+                        this.state.set('selectedCategories', _.pluck(data.categories, 'id'));
+                    }
+                    promise.resolve(data.trees);
+                }, this));
+
+                return promise.promise();
             },
             changeTree: function (event) {
                 this.state.set('currentTree', event.currentTarget.dataset.tree);
@@ -61,8 +72,18 @@ define(
                 this.treeAssociate.switchTree(event.currentTarget.dataset.treeId);
             },
             updateModel: function (event) {
-                this.state.set('selectedCategories', event.currentTarget.value.split(','));
-                this.getData().categories = this.state.get('selectedCategories');
+                var selectedIds = _.filter(event.currentTarget.value.split(','), _.identity);
+                this.state.set('selectedCategories', selectedIds);
+                var categoryCodes = _.map(selectedIds, _.bind(this.getCategoryCode, this));
+
+                this.getRoot().model.set('categories', categoryCodes);
+            },
+            getCategoryCode: function (id) {
+                if (!this.cache[id]) {
+                    this.cache[id] = this.$('#node_' + id).data('code');
+                }
+
+                return this.cache[id];
             }
         });
     }

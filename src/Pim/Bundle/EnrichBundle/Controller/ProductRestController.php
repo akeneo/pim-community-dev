@@ -4,18 +4,17 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * Product controller
@@ -28,6 +27,9 @@ class ProductRestController
 {
     /** @var ProductManager */
     protected $productManager;
+
+    /** @var ProductCategoryManager */
+    protected $productCatManager;
 
     /** @var ProductUpdater */
     protected $productUpdater;
@@ -49,6 +51,7 @@ class ProductRestController
 
     /**
      * @param ProductManager          $productManager
+     * @param ProductCategoryManager  $productCatManager
      * @param ProductUpdaterInterface $productUpdater
      * @param SaverInterface          $productSaver
      * @param NormalizerInterface     $normalizer
@@ -58,6 +61,7 @@ class ProductRestController
      */
     public function __construct(
         ProductManager $productManager,
+        ProductCategoryManager $productCatManager,
         ProductUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
@@ -65,19 +69,19 @@ class ProductRestController
         ValidatorInterface $validator,
         UserContext $userContext
     ) {
-        $this->productManager = $productManager;
-        $this->productUpdater = $productUpdater;
-        $this->productSaver   = $productSaver;
-        $this->normalizer     = $normalizer;
-        $this->denormalizer   = $denormalizer;
-        $this->validator      = $validator;
-        $this->userContext    = $userContext;
+        $this->productManager    = $productManager;
+        $this->productCatManager = $productCatManager;
+        $this->productUpdater    = $productUpdater;
+        $this->productSaver      = $productSaver;
+        $this->normalizer        = $normalizer;
+        $this->denormalizer      = $denormalizer;
+        $this->validator         = $validator;
+        $this->userContext       = $userContext;
     }
 
     /**
      * Edit product
      *
-     * @param Request $request
      * @param integer $id
      *
      * @Template("PimEnrichBundle:Product:edit.html.twig")
@@ -183,6 +187,42 @@ class ProductRestController
 
             return new JsonResponse($errors, 400);
         }
+    }
+
+    /**
+     * List categories and trees for a product
+     *
+     * @param integer $id
+     *
+     * @AclAncestor("pim_enrich_product_categories_view")
+     * @return JsonResponse
+     */
+    public function listCategoriesAction($id)
+    {
+        $product = $this->findProductOr404($id);
+        $trees = $this->productCatManager->getProductCountByTree($product);
+
+        $result = [
+            'trees'      => [],
+            'categories' => []
+        ];
+        foreach ($trees as $tree) {
+            $result['trees'][] = [
+                'id'         => $tree['tree']->getId(),
+                'code'       => $tree['tree']->getCode(),
+                'label'      => $tree['tree']->getLabel(),
+                'associated' => $tree['productCount'] > 0
+            ];
+        }
+
+        foreach ($product->getCategories() as $category) {
+            $result['categories'][] = [
+                'id'   => $category->getId(),
+                'code' => $category->getCode()
+            ];
+        }
+
+        return new JsonResponse($result);
     }
 
     /**

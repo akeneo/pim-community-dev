@@ -233,7 +233,8 @@ class CategoryExtension extends \Twig_Extension
 
         return array(
             'attr'     => array(
-                'id' => 'node_'. $category['item']->getId()
+                'id'        => 'node_'. $category['item']->getId(),
+                'data-code' => $category['item']->getCode()
             ),
             'data'     => $label,
             'state'    => $state,
@@ -280,7 +281,8 @@ class CategoryExtension extends \Twig_Extension
 
         $result = array(
             'attr'  => array(
-                'id' => 'node_'. $category->getId()
+                'id'        => 'node_'. $category->getId(),
+                'data-code' => $category->getCode()
             ),
             'data'  => $label,
             'state' => $state
