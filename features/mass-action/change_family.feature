@@ -5,7 +5,7 @@ Feature: Change family of many products at once
   I need to be able to change the family of many products at once
 
   Background:
-    Given the "default" catalog configuration
+    Given the "footwear" catalog configuration
     And the following families:
       | code     |
       | Food     |

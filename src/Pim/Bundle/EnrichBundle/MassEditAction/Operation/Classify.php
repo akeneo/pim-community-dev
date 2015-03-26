@@ -98,10 +98,14 @@ class Classify extends AbstractMassEditOperation implements
      */
     public function getBatchConfig()
     {
-        return addslashes(json_encode([
-            'filters' => $this->getFilters(),
-            'actions' => $this->getActions()
-        ]));
+        return addslashes(
+            json_encode(
+                [
+                    'filters' => $this->getFilters(),
+                    'actions' => $this->getActions(),
+                ]
+            )
+        );
     }
 
     /**
