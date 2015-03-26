@@ -103,7 +103,7 @@ define(
             },
             resize: function() {
                 var productValuesContainer = this.$('.product-values');
-                if (productValuesContainer) {
+                if (productValuesContainer && this.getRoot().$el.length) {
                     productValuesContainer.css(
                         {'height': ($(window).height() - productValuesContainer.offset().top - 4) + 'px'}
                     );

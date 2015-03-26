@@ -15,6 +15,7 @@ config:
 
     paths:
         oro/datagrid/tab-redirect-action:       pimdatagrid/js/datagrid/action/tab-redirect-action
+        oro/datagrid/inline-edit-action:        pimdatagrid/js/datagrid/action/inline-edit-action
         pim/datagrid/export-action:             pimdatagrid/js/datagrid/action/export-action
         pim/datagrid/configure-columns-action:  pimdatagrid/js/datagrid/action/configure-columns-action
         oro/export-widget:                      pimdatagrid/js/datagrid/widget/export-widget

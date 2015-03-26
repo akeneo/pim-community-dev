@@ -61,7 +61,7 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      tab-redirect
+                type:      inline-edit
                 label:     Edit attributes of the product
                 tab:       pim_enrich-product-tab-attribute
                 icon:      edit
