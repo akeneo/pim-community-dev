@@ -48,7 +48,7 @@ class CategoryFieldSetterSpec extends ObjectBehavior
         )->during('setFieldData', [$product, 'categories', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'categories',
                 0,
                 'setter',

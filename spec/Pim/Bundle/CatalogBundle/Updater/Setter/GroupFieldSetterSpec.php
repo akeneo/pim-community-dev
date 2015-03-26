@@ -50,7 +50,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
         )->during('setFieldData', [$product, 'groups', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
                 'setter',

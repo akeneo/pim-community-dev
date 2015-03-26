@@ -84,7 +84,7 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         )->during('removeFieldData', [$product, 'groups', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
                 'remover',

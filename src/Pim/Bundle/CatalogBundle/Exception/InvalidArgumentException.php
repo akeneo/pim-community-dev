@@ -280,6 +280,29 @@ class InvalidArgumentException extends \InvalidArgumentException
 
     /**
      * @param string $name
+     * @param string $key
+     * @param string $action
+     * @param string $type
+     * @param string $data
+     *
+     * @return InvalidArgumentException
+     */
+    public static function arrayStringValueExpected($name, $key, $action, $type, $data)
+    {
+        return new self(
+            sprintf(
+                'Attribute or field "%s" expects an array with a string value for the key "%s", "%s" given (for %s %s).',
+                $name,
+                $key,
+                $data,
+                $action,
+                $type
+            )
+        );
+    }
+
+    /**
+     * @param string $name
      * @param string $action
      * @param string $type
      *
