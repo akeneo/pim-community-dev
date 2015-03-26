@@ -660,9 +660,16 @@ body {
   .display-flex();
   justify-content: flex-start;
 
+  .attribute-edit-actions {
+    margin-right: 10px;
+  }
+
+  & > div {
+    white-space: nowrap;
+  }
+
   .attribute-edit-actions, .attribute-copy-actions {
     padding: 8px 0;
-    margin-right: 10px;
     .display-flex();
 
     .other-actions {
@@ -712,9 +719,10 @@ body {
 .product-edit-form {
   letter-spacing: 0.03em;
   font-weight: 300;
-  padding: 10px 10px 0 10px;
 
   & > .tabbable {
+    padding: 10px 10px 0 10px;
+
     & > header {
       .display-flex();
 
@@ -730,7 +738,11 @@ body {
   }
 
   & > header {
-    margin-bottom: 10px;
+    margin: 0 0 7px 0;
+    padding: 15px 10px 15px 20px;
+    background: #F7F7F7;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #bbb;
 
     & > div {
       .display-flex();
@@ -803,22 +815,23 @@ body {
 }
 
 .panel-selector {
-  margin-top: 7px;
+  margin-top: 5px;
 
   .btn {
     background: none;
-    font-weight: 200;
-    font-size: 10px;
+    font-weight: bold;
+    font-size: 12px;
     border-color: #e5e5e5;
-    height: 26px;
-    line-height: 10px;
-    padding: 0 18px;
+    height: 30px;
+    line-height: 12px;
+    padding: 8px 18px;
     border-raidus: 1px;
 
     &.active {
       background: #555;
       color: white;
       text-shadow: none;
+      border-color: #555;
     }
   }
 }
@@ -826,7 +839,6 @@ body {
 .panel-container {
   border-top: 3px solid #333;
   width: 400px;
-  margin-left: 15px;
   background: #f9f9f9;
   border-left: 1px solid #e5e5e5;
   padding: 0 15px;
@@ -1372,8 +1384,29 @@ body {
   }
 
   .btn-success {
-    background: #7EC500;
+    background: #67b373;
     color: white;
-    border: 1px solid #6CAA00;
+    border: 1px solid #4c9858;
+  }
+
+  .dropdown-menu {
+    a:hover .language {
+      color: white;
+    }
+  }
+
+  .dropdown-toggle, .btn, .dropdown-menu {
+    text-transform: capitalize;
+    background-image: none;
+
+    .caret {
+      margin-top: 11px;
+    }
+
+    .flag-language .language {
+      font-family: Helvetica;
+      color: #555;
+      padding-top: 1px;
+    }
   }
 }

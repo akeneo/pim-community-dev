@@ -20,8 +20,10 @@ define(
             scope: null,
             events: {
                 'click .start-copying': 'startCopying',
-                'click .stop-copying':  'stopCopying',
-                'click .copy':  'copy'
+                'click .stop-copying': 'stopCopying',
+                'click .select-all': 'selectAll',
+                'click .select-all-visible': 'selectAllVisible',
+                'click .copy': 'copy'
             },
             initialize: function() {
                 this.copyFields = {};
@@ -50,7 +52,7 @@ define(
 
                 if (this.copying) {
                     _.each(this.copyFields, _.bind(function (copyField, code) {
-                        var field = this.getParent().renderedFields[code];
+                        var field = this.getParent().visibleFields[code];
                         if (field && 'edit' === field.getEditMode()) {
                             copyField.setField(field);
                             copyField.field.addElement('comparision', 'copy', copyField);
@@ -136,6 +138,22 @@ define(
 
                 this.generateCopyFields();
                 this.render();
+            },
+            selectAll: function() {
+                _.each(this.copyFields, function(copyField) {
+                    copyField.selected = true;
+                });
+
+                this.getParent().render();
+            },
+            selectAllVisible: function() {
+                _.each(this.copyFields, _.bind(function(copyField, attributeCode) {
+                    if (this.getParent().visibleFields[attributeCode]) {
+                        copyField.selected = true;
+                    }
+                }, this));
+
+                this.getParent().render();
             },
             getLocale: function() {
                 return this.locale;

@@ -36,7 +36,7 @@ define(
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },
-            renderedFields: {},
+            visibleFields: {},
             initialize: function () {
                 FieldManager.fields = {};
 
@@ -86,10 +86,10 @@ define(
                         $.when.apply($, fieldPromisses).done(_.bind(function() {
                             var $productValuesPanel = this.$('.product-values');
 
-                            this.renderedFields = {};
+                            this.visibleFields = {};
                             _.each(arguments, _.bind(function(field) {
                                 field.render();
-                                this.renderedFields[field.attribute.code] = field;
+                                this.visibleFields[field.attribute.code] = field;
                                 $productValuesPanel.append(field.$el);
                             }, this));
                         }, this));
