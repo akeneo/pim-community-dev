@@ -29,7 +29,8 @@ define([
             {
                 this.$el.empty();
                 this.$el.html(this.template({
-                    attributes: this.state.get('attributes')
+                    attributes: this.state.get('attributes'),
+                    locale: this.getParent().state.get('locale')
                 }));
 
                 this.delegateEvents();

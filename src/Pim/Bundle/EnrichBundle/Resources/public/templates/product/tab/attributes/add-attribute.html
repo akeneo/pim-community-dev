@@ -7,7 +7,7 @@
     <% _.each(attributes, function (attribute) { %>
         <li>
             <a data-attribute="<%= attribute.code %>">
-                <%= attribute.code %>
+                <%= attribute.label[locale] ? attribute.label[locale] : '[' + attribute.code + ']' %>
             </a>
         </li>
     <% }); %>
