@@ -66,12 +66,15 @@ class ReferenceDataSelector implements SelectorInterface
         }
 
         $attribute = $source['attributes_configuration'][$column];
-        $referenceDataName = $attribute['properties']['reference_data_name'];
-        $qbJoins = $this->getQbJoins($qb);
 
-        if (null !== $referenceDataName && !in_array($referenceDataName, $qbJoins)) {
-            $qb->leftJoin('values.' . $referenceDataName, $referenceDataName)
-                ->addSelect($referenceDataName);
+        if (isset($attribute['properties']['reference_data_name'])) {
+            $referenceDataName = $attribute['properties']['reference_data_name'];
+            $qbJoins = $this->getQbJoins($qb);
+
+            if (null !== $referenceDataName && !in_array($referenceDataName, $qbJoins)) {
+                $qb->leftJoin('values.' . $referenceDataName, $referenceDataName)
+                    ->addSelect($referenceDataName);
+            }
         }
     }
 
