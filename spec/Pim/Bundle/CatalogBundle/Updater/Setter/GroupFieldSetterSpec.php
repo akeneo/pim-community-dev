@@ -33,7 +33,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface');
     }
 
-    function it_supports_categories_field() {
+    function it_supports_groups_field() {
         $this->supportsField('groups')->shouldReturn(true);
         $this->supportsField('categories')->shouldReturn(false);
     }
