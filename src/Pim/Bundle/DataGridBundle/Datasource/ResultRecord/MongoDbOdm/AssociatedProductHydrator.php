@@ -95,7 +95,6 @@ class AssociatedProductHydrator implements HydratorInterface
         array $queryDefinition,
         array $productFields,
         $associationTypeId
-
     ) {
         $or = [];
         foreach ($currentProduct->getAssociations() as $association) {
