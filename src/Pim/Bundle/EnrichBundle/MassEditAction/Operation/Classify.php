@@ -83,12 +83,12 @@ class Classify extends AbstractMassEditOperation implements
      */
     public function getActions()
     {
+        $categories = $this->getCategories();
+
         return [
             [
                 'field' => 'categories',
-                'value' => array_map(function (CategoryInterface $category) {
-                    return $category->getCode();
-                }, $this->getCategories())
+                'value' => $this->getCategoriesCode($categories)
             ]
         ];
     }
@@ -110,5 +110,20 @@ class Classify extends AbstractMassEditOperation implements
     public function getBatchJobCode()
     {
         return 'add_product_value';
+    }
+
+    /**
+     * @param array $categories
+     *
+     * @return array
+     */
+    protected function getCategoriesCode(array $categories)
+    {
+        return array_map(
+            function (CategoryInterface $category) {
+                return $category->getCode();
+            },
+            $categories
+        );
     }
 }

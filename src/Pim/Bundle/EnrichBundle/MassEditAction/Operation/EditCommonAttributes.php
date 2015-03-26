@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -14,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -64,12 +60,12 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * Constructor
      *
-     * @param ProductBuilder                      $productBuilder
-     * @param ProductUpdaterInterface             $productUpdater
-     * @param UserContext                         $userContext
-     * @param CatalogContext                      $catalogContext
-     * @param ProductMassActionManager            $massActionManager
-     * @param NormalizerInterface                 $normalizer
+     * @param ProductBuilder           $productBuilder
+     * @param ProductUpdaterInterface  $productUpdater
+     * @param UserContext              $userContext
+     * @param CatalogContext           $catalogContext
+     * @param ProductMassActionManager $massActionManager
+     * @param NormalizerInterface      $normalizer
      */
     public function __construct(
         ProductBuilder $productBuilder,

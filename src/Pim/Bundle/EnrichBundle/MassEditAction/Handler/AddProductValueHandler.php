@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
@@ -68,11 +69,9 @@ class AddProductValueHandler
 
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
-                foreach ($actions as $action) {
-                    $this->productUpdater->addData($product, $action['field'], $action['value']);
-                }
-
+                $this->addData($product, $actions);
                 $this->stepExecution->incrementSummaryInfo('mass_edited');
+
                 // TODO: validation & skip
             }
 
@@ -152,5 +151,22 @@ class AddProductValueHandler
             'flush'       => true,
             'schedule'    => false
         ];
+    }
+
+    /**
+     * Add data from $actions to the given $product
+     *
+     * @param ProductInterface $product
+     * @param array            $actions
+     *
+     * @return $this
+     */
+    protected function addData($product, array $actions)
+    {
+        foreach ($actions as $action) {
+            $this->productUpdater->addData($product, $action['field'], $action['value']);
+        }
+
+        return $this;
     }
 }

@@ -112,7 +112,7 @@ class AddToGroupsType extends AbstractType
     {
         $messages = [];
 
-        if (count($this->groupRepository->getAllGroupsExceptVariant()) === 0) {
+        if (0 === count($this->groupRepository->getAllGroupsExceptVariant())) {
             $messages[] = [
                 'key'     => 'pim_enrich.mass_edit_action.add-to-groups.no_group',
                 'options' => [],

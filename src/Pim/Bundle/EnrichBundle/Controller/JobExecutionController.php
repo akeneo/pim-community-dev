@@ -196,7 +196,7 @@ class JobExecutionController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
-        $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
+        $stream = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
         return new StreamedResponse(
             function () use ($stream) {
