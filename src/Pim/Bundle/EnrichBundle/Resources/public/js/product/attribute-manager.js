@@ -83,11 +83,17 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
                 }
             }, this));
 
-            return result ? result : {
-                'scope':  scope,
-                'locale': locale,
-                'value':  this.getEmptyValue(attribute)
-            };
+            if (!result) {
+                result = {
+                    'scope':  scope,
+                    'locale': locale,
+                    'value':  this.getEmptyValue(attribute)
+                };
+
+                values.push(result);
+            }
+
+            return result;
         }
     };
 });

@@ -26,7 +26,7 @@ define([
         initialize: function(attribute)
         {
             this.attribute    = attribute;
-            this.model        = new FieldModel();
+            this.model        = new FieldModel({values: []});
             this.elements     = {};
             this.context      = {};
 
@@ -64,7 +64,9 @@ define([
 
             promise.resolve({
                 type: this.fieldType,
-                label: this.attribute.label[this.context.locale],
+                label: this.attribute.label[this.context.locale] ?
+                    this.attribute.label[this.context.locale] :
+                    this.attribute.code,
                 value: this.getCurrentValue(),
                 context: this.context,
                 attribute: this.attribute,
@@ -173,11 +175,9 @@ define([
         },
         setCurrentValue: function(value)
         {
-            var values = this.model.get('values');
             var productValue = this.getCurrentValue();
 
             productValue.value = value;
-            this.model.set('values', values);
         }
     });
 });

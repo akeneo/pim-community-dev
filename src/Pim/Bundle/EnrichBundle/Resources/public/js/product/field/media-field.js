@@ -11,7 +11,7 @@ define([
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
             events: {
-                'change input': 'updateModel'
+                'change .edit input[type="file"]': 'updateModel'
             },
             renderInput: function(context) {
                 return this.fieldTemplate(context);
@@ -21,7 +21,6 @@ define([
 
                 Field.prototype.getTemplateContext.apply(this, arguments)
                     .done(_.bind(function(templateContext) {
-                        console.log(this.getCurrentValue().value);
                         if (this.getCurrentValue().value && this.getCurrentValue().value.filePath) {
                             var filename = this.getCurrentValue().value.filePath;
                             filename = filename.substring(filename.lastIndexOf('/') + 1);
@@ -66,7 +65,6 @@ define([
                 }, this));
             },
             handleProcess: function(e) {
-                console.log('test');
                 this.$('.progress').css({opacity: 1});
                 this.$('.progress .bar').animate({
                     width: ((e.loaded/e.total) * 100) + '%'

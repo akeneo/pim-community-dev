@@ -29,6 +29,9 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
+                this.locale = 'de_DE';
+                this.scope  = 'mobile';
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
@@ -50,7 +53,7 @@ define(
                         var field = this.getParent().renderedFields[code];
                         if (field && 'edit' === field.getEditMode()) {
                             copyField.setField(field);
-                            copyField.field.addElement('comparision', 'copy', copyField.render().$el);
+                            copyField.field.addElement('comparision', 'copy', copyField);
                         }
 
                     }, this));

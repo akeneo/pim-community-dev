@@ -1,3 +1,4 @@
+<% if (attributes.length) { %>
 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
     Add an attribute
     <span class="caret"></span>
@@ -6,8 +7,9 @@
     <% _.each(attributes, function (attribute) { %>
         <li>
             <a data-attribute="<%= attribute.code %>">
-                <%= attribute.label.en_US %>
+                <%= attribute.code %>
             </a>
         </li>
     <% }); %>
 </ul>
+<% } %>
