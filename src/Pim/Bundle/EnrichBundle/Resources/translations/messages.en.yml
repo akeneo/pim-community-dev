@@ -923,3 +923,8 @@ job_execution.summary:
     mass_edited: Mass edited
     skip:        skipped
     skip_products: skipped products
+
+pim_mass_edit_execution_show:  Mass edit executions | Details
+
+mass_edit report:
+    overview: Mass edit reports

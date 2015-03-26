@@ -217,17 +217,6 @@ class MassEditActionController extends AbstractDoctrineController
             $jobInstance = $this->getJobInstance($jobInstance->getId());
 
             $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
-
-//            foreach ($this->validator->validate($operator) as $violation) {
-//                $form->addError(
-//                    new FormError(
-//                        $violation->getMessage(),
-//                        $violation->getMessageTemplate(),
-//                        $violation->getMessageParameters(),
-//                        $violation->getMessagePluralization()
-//                    )
-//                );
-//            }
         }
 
         if ($form->isValid()) {
