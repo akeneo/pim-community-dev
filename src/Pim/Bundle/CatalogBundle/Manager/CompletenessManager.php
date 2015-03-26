@@ -243,10 +243,10 @@ class CompletenessManager
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {
-            $valueCode .= '_' .$locale;
+            $valueCode .= '-' .$locale;
         }
         if ($attribute->isScopable()) {
-            $valueCode .= '_' . $scope;
+            $valueCode .= '-' . $scope;
         }
 
         return $valueCode;
