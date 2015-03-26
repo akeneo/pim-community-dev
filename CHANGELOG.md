@@ -80,10 +80,11 @@
 # 1.3.5 (2015-03-19)
 
 ## Bug fixes
-- PIM-2874: Bad title on failed submit
+- PIM-2874: Fix bad title on failed submit
 - PIM-3836: Fix translations of a custom job label instance
 - PIM-3909: Keep channel filter between product datagrid and edit form
-- PIM-3925: do not show system menu if no item allowed
+- PIM-3925: Do not show system menu if no item allowed
+- PIM-3965: Fix groups without labels are not displayed in the product grid cell
 
 # 1.3.4 (2015-03-11)
 
