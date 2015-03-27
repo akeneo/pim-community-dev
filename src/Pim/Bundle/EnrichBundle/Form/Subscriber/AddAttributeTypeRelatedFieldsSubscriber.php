@@ -51,13 +51,14 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData'
-        );
+        ];
     }
 
     /**
      * Method called before set data
+     *
      * @param FormEvent $event
      */
     public function preSetData(FormEvent $event)
@@ -69,7 +70,6 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 
         if (is_null($data->getId()) === false) {
             $form = $event->getForm();
-
             $this->disableField($form, 'code');
         }
 
@@ -85,7 +85,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     protected function customizeForm(Form $form, AttributeInterface $attribute)
     {
         $attTypeClass = $this->attTypeRegistry->get($attribute->getAttributeType());
-        $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
+        $fields       = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {
             $form->add($field);
@@ -94,6 +94,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 
     /**
      * Disable a field from its name
+     *
      * @param Form   $form Form
      * @param string $name Field name
      */
@@ -105,8 +106,8 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         $options   = $formField->getConfig()->getOptions();
 
         // replace by disabled and read-only
-        $options['disabled']  = true;
-        $options['read_only'] = true;
+        $options['disabled']        = true;
+        $options['read_only']       = true;
         $options['auto_initialize'] = false;
         $formField = $this->factory->createNamed($name, $type, null, $options);
         $form->add($formField);
