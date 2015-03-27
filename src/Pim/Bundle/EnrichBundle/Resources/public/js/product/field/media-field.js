@@ -65,8 +65,7 @@ define([
                 }, this));
             },
             handleProcess: function(e) {
-                this.$('.progress').css({opacity: 1});
-                this.$('.progress .bar').animate({
+                this.$('.progress .bar').css({
                     width: ((e.loaded/e.total) * 100) + '%'
                 });
             }

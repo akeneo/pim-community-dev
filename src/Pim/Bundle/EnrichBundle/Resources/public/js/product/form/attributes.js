@@ -255,20 +255,7 @@ define(
                             this.render();
                         }
 
-                        var field = FieldManager.getFields()[event.attribute];
-
-                        var fieldPosition = field.$el.offset().top - 10;
-
-                        this.$('.product-values').animate(
-                            {
-                                scrollTop: fieldPosition
-                            },
-                            400,
-                            'swing',
-                            function() {
-                                field.setFocus();
-                            }
-                        );
+                        FieldManager.getFields()[event.attribute].setFocus();
                     }, this));
             }
         });
