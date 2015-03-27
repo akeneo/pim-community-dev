@@ -13,8 +13,8 @@ Feature: Display product attributes in the grid
       | white-boots  |
     And the following product groups:
       | code         | label          | type     | products                 |
-      | boots_akeneo | Akeneo Boots   | RELATED  | black-boots, white_boots |
-      | no_label     |                | RELATED  | gray-boots, white_boots  |
+      | boots_akeneo | Akeneo Boots   | RELATED  | black-boots, white-boots |
+      | no_label     |                | RELATED  | gray-boots, white-boots  |
     When I am logged in as "Julia"
     And I am on the products page
     Then the row "black-boots" should contain:
