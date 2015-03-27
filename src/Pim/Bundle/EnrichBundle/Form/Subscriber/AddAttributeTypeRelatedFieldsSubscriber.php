@@ -2,13 +2,16 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Form subscriber for AttributeInterface
@@ -26,14 +29,27 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     /** @var FormFactoryInterface */
     protected $factory;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /** @var AttributeGroupRepositoryInterface */
+    protected $groupRepository;
+
     /**
      * Constructor
      *
-     * @param AttributeTypeRegistry $attTypeRegistry Registry
+     * @param AttributeTypeRegistry             $attTypeRegistry Registry
+     * @param SecurityFacade                    $securityFacade
+     * @param AttributeGroupRepositoryInterface $groupRepository
      */
-    public function __construct(AttributeTypeRegistry $attTypeRegistry)
-    {
+    public function __construct(
+        AttributeTypeRegistry $attTypeRegistry,
+        SecurityFacade $securityFacade,
+        AttributeGroupRepositoryInterface $groupRepository
+    ) {
         $this->attTypeRegistry = $attTypeRegistry;
+        $this->securityFacade  = $securityFacade;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -51,13 +67,14 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
      */
     public static function getSubscribedEvents()
     {
-        return array(
+        return [
             FormEvents::PRE_SET_DATA => 'preSetData'
-        );
+        ];
     }
 
     /**
      * Method called before set data
+     *
      * @param FormEvent $event
      */
     public function preSetData(FormEvent $event)
@@ -69,8 +86,12 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 
         if (is_null($data->getId()) === false) {
             $form = $event->getForm();
-
             $this->disableField($form, 'code');
+        }
+
+        if (!$this->securityFacade->isGranted('pim_enrich_attribute_group_add_attribute')) {
+            $form = $event->getForm();
+            $this->hideGroupElement($form, $data);
         }
 
         $this->customizeForm($event->getForm(), $data);
@@ -85,7 +106,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
     protected function customizeForm(Form $form, AttributeInterface $attribute)
     {
         $attTypeClass = $this->attTypeRegistry->get($attribute->getAttributeType());
-        $fields = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
+        $fields       = $attTypeClass->buildAttributeFormTypes($this->factory, $attribute);
 
         foreach ($fields as $field) {
             $form->add($field);
@@ -94,6 +115,7 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
 
     /**
      * Disable a field from its name
+     *
      * @param Form   $form Form
      * @param string $name Field name
      */
@@ -105,10 +127,45 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
         $options   = $formField->getConfig()->getOptions();
 
         // replace by disabled and read-only
-        $options['disabled']  = true;
-        $options['read_only'] = true;
+        $options['disabled']        = true;
+        $options['read_only']       = true;
         $options['auto_initialize'] = false;
         $formField = $this->factory->createNamed($name, $type, null, $options);
         $form->add($formField);
+    }
+
+    /**
+     * Hide the group field with a default value = "Other"
+     *
+     * @param FormInterface      $form Form
+     * @param AttributeInterface $data
+     */
+    protected function hideGroupElement(FormInterface $form, AttributeInterface $data)
+    {
+        if (null !== $data->getId()) {
+            $group = $data->getGroup();
+        } else {
+            $group = $this->groupRepository->findDefaultAttributeGroup();
+        }
+
+        $formField = $form->get('group');
+        $options = $formField->getConfig()->getOptions();
+
+        $newOptions =            [
+            'data'      => $group,
+            'class'     => $options['class'],
+            'choices'   => [$group],
+            'required'  => true,
+            'multiple'  => false,
+            'read_only' => true,
+            'attr' => [
+                'class' => 'hide'
+            ]
+        ];
+
+        $form->add('group',
+            'entity',
+            $newOptions
+        );
     }
 }
