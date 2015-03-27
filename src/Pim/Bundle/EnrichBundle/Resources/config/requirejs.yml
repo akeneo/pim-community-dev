@@ -51,6 +51,7 @@ config:
         pim/product-edit-form/panel/history:                       pimenrich/js/product/form/panel/history
         pim/product-edit-form/panel/comments:                      pimenrich/js/product/form/panel/comments
         pim/product-edit-form/save:                                pimenrich/js/product/form/save
+        pim/product-edit-form/change-family:                       pimenrich/js/product/form/change-family
 
         # Product edit form
         pim/product-edit-form:              pimenrich/js/product/edit-form
@@ -95,6 +96,7 @@ config:
         pim/template/product/locale-switcher:                        pimenrich/templates/product/locale-switcher.html
         pim/template/product/form-tabs:                              pimenrich/templates/product/form-tabs.html
         pim/template/product/save:                                   pimenrich/templates/product/save.html
+        pim/template/product/change-family:                          pimenrich/templates/product/change-family.html
         pim/template/product/scope-switcher:                         pimenrich/templates/product/scope-switcher.html
         pim/template/product/field/field:                            pimenrich/templates/product/field/field.html
         pim/template/product/field/boolean:                          pimenrich/templates/product/field/boolean.html
