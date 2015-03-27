@@ -414,6 +414,16 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
+     * @Given /^I display the tooltip for the "([^"]+)" attribute modified$/
+     */
+    public function iDisplayTheTooltipForTheModifiedAttribute($attributeLabel)
+    {
+        $icon = $this->getAttributeIcon('i.from-modified', $attributeLabel);
+
+        $icon->mouseOver();
+    }
+
+    /**
      * @Then /^I should see "([^"]*)" in the popover$/
      */
     public function iShouldSeeInThePopover($search)
