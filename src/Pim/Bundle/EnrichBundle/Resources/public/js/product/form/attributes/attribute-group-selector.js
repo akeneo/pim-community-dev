@@ -55,9 +55,10 @@ define([
                 return promise.promise();
             },
             change: function(event) {
-                this.state.set('current', event.currentTarget.dataset.attributeGroup);
-
-                this.getParent().render();
+                if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {
+                    this.state.set('current', event.currentTarget.dataset.attributeGroup);
+                    this.getParent().render();
+                }
             },
             getCurrent: function()
             {
