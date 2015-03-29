@@ -163,7 +163,8 @@ class AddAttributeTypeRelatedFieldsSubscriber implements EventSubscriberInterfac
             ]
         ];
 
-        $form->add('group',
+        $form->add(
+            'group',
             'entity',
             $newOptions
         );
