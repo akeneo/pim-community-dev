@@ -6,7 +6,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
  * Version manager
@@ -121,7 +121,7 @@ class VersionManager
      *
      * @return Version[]
      */
-    public function buildVersion($versionable, array $changeset = array())
+    public function buildVersion($versionable, array $changeset = [])
     {
         $createdVersions = [];
 
@@ -156,7 +156,7 @@ class VersionManager
     /**
      * Get object manager for Version
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getObjectManager()
     {
@@ -231,7 +231,7 @@ class VersionManager
     {
         if (null === $previousVersion) {
             $previousVersion = $this->getVersionRepository()
-                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId());
+                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId(), false);
         }
 
         return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);
