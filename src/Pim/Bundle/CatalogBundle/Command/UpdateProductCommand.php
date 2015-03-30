@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Command;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -143,6 +143,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);
 
+            //TODO: should we use this format for updates ? (ie: for each update, pass the type of the update ?)
             switch ($update['type']) {
                 case 'set_data':
                     $this->applySetData($product, $update);
@@ -166,13 +167,14 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applySetData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
-        $updater->setData(
-            $product,
+        $update = [
             $update['field'],
             $update['data'],
             ['locale' => $update['locale'], 'scope' => $update['scope']]
-        );
+        ];
+
+        $updater = $this->getUpdater();
+        $updater->update($product, ['set_data' => $update]);
     }
 
     /**
@@ -182,6 +184,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     protected function applyCopyData(ProductInterface $product, array $update)
     {
         $updater = $this->getUpdater();
+        //TODO: broken
         $updater->copyData(
             $product,
             $product,
@@ -202,13 +205,14 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applyAddData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
-        $updater->addData(
-            $product,
+        $update = [
             $update['field'],
             $update['data'],
             ['locale' => $update['locale'], 'scope' => $update['scope']]
-        );
+        ];
+
+        $updater = $this->getUpdater();
+        $updater->update($product, ['add_data' => $update]);
     }
 
     /**
@@ -217,13 +221,14 @@ class UpdateProductCommand extends ContainerAwareCommand
      */
     protected function applyRemoveData(ProductInterface $product, array $update)
     {
-        $updater = $this->getUpdater();
-        $updater->removeData(
-            $product,
+        $update = [
             $update['field'],
             $update['data'],
             ['locale' => $update['locale'], 'scope' => $update['scope']]
-        );
+        ];
+
+        $updater = $this->getUpdater();
+        $updater->update($product, ['remove_data' => $update]);
     }
 
     /**

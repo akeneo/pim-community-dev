@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Edit common attributes of given products
- *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -80,14 +79,14 @@ class EditCommonAttributes extends ProductMassEditOperation
     ) {
         parent::__construct($productSaver);
 
-        $this->productBuilder = $productBuilder;
-        $this->productUpdater = $productUpdater;
-        $this->userContext = $userContext;
-        $this->catalogContext = $catalogContext;
-        $this->massActionManager = $massActionManager;
+        $this->productBuilder      = $productBuilder;
+        $this->productUpdater      = $productUpdater;
+        $this->userContext         = $userContext;
+        $this->catalogContext      = $catalogContext;
+        $this->massActionManager   = $massActionManager;
         $this->displayedAttributes = new ArrayCollection();
-        $this->values = new ArrayCollection();
-        $this->normalizer = $normalizer;
+        $this->values              = new ArrayCollection();
+        $this->normalizer          = $normalizer;
     }
 
     /**
@@ -114,7 +113,6 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Get values
-     *
      * @return Collection
      */
     public function getValues()
@@ -138,7 +136,6 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Get locale
-     *
      * @return LocaleInterface
      */
     public function getLocale()
@@ -166,7 +163,6 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Get displayed attributes
-     *
      * @return Collection
      */
     public function getDisplayedAttributes()
@@ -184,7 +180,6 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Get form options
-     *
      * @return array
      */
     public function getFormOptions()
@@ -230,7 +225,6 @@ class EditCommonAttributes extends ProductMassEditOperation
      *   - it is unique
      *   - without value AND not link to family
      *   - is not common to every products
-     *
      * @return array
      */
     public function getCommonAttributes()
@@ -247,6 +241,7 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Generate common attributes
+     *
      * @param array  $products
      * @param string $locale
      *
@@ -276,7 +271,6 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Get warning messages
-     *
      * @return string[]
      */
     public function getWarningMessages()
@@ -290,6 +284,7 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Get warning messages to display during the mass edit action
+     *
      * @param ProductInterface[] $products
      *
      * @return string[]
@@ -336,12 +331,16 @@ class EditCommonAttributes extends ProductMassEditOperation
             $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
             // if the value is localizable, let's use the locale the user has chosen in the form
             $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
-            $this->productUpdater->setData(
-                $product,
-                $value->getAttribute()->getCode(),
+
+            $update = [
+                'set_data' => $value->getAttribute()->getCode(),
                 $rawData,
                 ['locale' => $locale, 'scope' => $value->getScope()]
-            );
+            ];
+
+            // TODO: should the product be validated here ?
+            // TODO: the whole process could be enhanced by calling productUpdater->update only one time
+            $this->productUpdater->update($product, $update);
         }
     }
 
@@ -355,7 +354,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
-                $key = $attribute->getCode() . '_' . $channel->getCode();
+                $key   = $attribute->getCode() . '_' . $channel->getCode();
                 $value = $this->productBuilder->createProductValue(
                     $attribute,
                     $locale->getCode(),

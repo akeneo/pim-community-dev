@@ -29,7 +29,7 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
         ProductTemplateInterface $template,
         ProductInterface $product
     ) {
-        $updates = [
+        $rawUpdates = [
             'description' => [
                 [
                     'locale' => 'en_US',
@@ -71,27 +71,25 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
             ]
         ];
 
-        $template->getValuesData()->willReturn($updates);
+        $template->getValuesData()->willReturn($rawUpdates);
 
-        $productUpdater->setData($product, 'description', 'Foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])->shouldBeCalled();
-        $productUpdater->setData($product, 'description', 'Bar', ['locale' => 'en_US', 'scope' => 'mobile'])->shouldBeCalled();
-        $productUpdater->setData($product, 'color', 'red', ['locale' => null, 'scope' => null])->shouldBeCalled();
-        $productUpdater
-            ->setData(
-                $product,
+        $updates = [
+            ['description', 'Foo', ['locale' => 'en_US', 'scope' => 'ecommerce']],
+            ['description', 'Bar', ['locale' => 'en_US', 'scope' => 'mobile']],
+            ['color', 'red', ['locale' => null, 'scope' => null]],
+            [
                 'price',
                 [['data' => 10, 'currency' => 'EUR'], ['data' => 20, 'currency' => 'USD']],
                 ['locale' => 'fr_FR', 'scope' => null]
-            )
-            ->shouldBeCalled();
-        $productUpdater
-            ->setData(
-                $product,
+            ],
+            [
                 'image',
                 ['filePath' => '/uploads/image.jpg', 'originalFilename' => 'Image.jpg'],
                 ['locale' => null, 'scope' => 'mobile']
-            )
-            ->shouldBeCalled();
+            ]
+        ];
+
+        $productUpdater->update($product, ['set_data' => $updates])->shouldBeCalled();
 
         $this->update($template, [$product]);
     }
