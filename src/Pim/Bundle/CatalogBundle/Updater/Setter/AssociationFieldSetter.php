@@ -112,8 +112,12 @@ class AssociationFieldSetter extends AbstractFieldSetter
                     $typeCode
                 );
             }
-            $this->setAssociatedProducts($association, $items['products']);
-            $this->setAssociatedGroups($association, $items['groups']);
+            if (isset($items['products'])) {
+                $this->setAssociatedProducts($association, $items['products']);
+            }
+            if (isset($items['groups'])) {
+                $this->setAssociatedGroups($association, $items['groups']);
+            }
         }
     }
 
@@ -193,12 +197,13 @@ class AssociationFieldSetter extends AbstractFieldSetter
      */
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
-        if (!is_array($items) || !is_string($assocTypeCode) || !isset($items['products']) || !isset($items['groups'])) {
+        if (!is_array($items) || !is_string($assocTypeCode) || (!isset($items['products']) && !isset($items['groups']))) {
             throw InvalidArgumentException::associationFormatExpected($field, $data);
         }
 
-        $this->checkAssociationItems($field, $data, $items['products']);
-        $this->checkAssociationItems($field, $data, $items['groups']);
+        foreach ($items as $itemData) {
+            $this->checkAssociationItems($field, $data, $itemData);
+        }
     }
 
     /**

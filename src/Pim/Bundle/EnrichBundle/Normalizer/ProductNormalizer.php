@@ -58,7 +58,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 $this->versionManager->getNewestLogEntry($product),
                 'array'
             )
-        ];
+        ] + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
     }
@@ -85,5 +85,28 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function setSerializer(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getAssociationMeta(ProductInterface $product)
+    {
+        $meta = [];
+        $associations = $product->getAssociations();
+
+        foreach ($associations as $association) {
+            $associationType = $association->getAssociationType();
+            $meta[$associationType->getCode()]['groupIds'] = array_map(
+                function ($group) {
+                    return $group->getId();
+                },
+                $association->getGroups()->toArray()
+            );
+        }
+
+        return ['associations' => $meta];
     }
 }

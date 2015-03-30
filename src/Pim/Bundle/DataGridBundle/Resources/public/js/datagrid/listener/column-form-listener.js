@@ -64,6 +64,13 @@ define(
                     }
                 }, this);
                 this.$checkbox.prop('checked', checked);
+            },
+
+            _processValue: function(id, model) {
+                OroColumnFormListener.prototype._processValue.apply(this, arguments);
+
+                var selectEvent = model.get(this.columnName) ? 'selectModel' : 'unselectModel';
+                mediator.trigger('datagrid:' + selectEvent + ':' + this.gridName, model);
             }
         });
 

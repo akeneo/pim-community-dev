@@ -37,7 +37,6 @@ define(
                 var product   = this.getData();
                 var productId = product.meta.id;
 
-                delete product.associations;
                 delete product.variant_group;
                 delete product.meta;
 
