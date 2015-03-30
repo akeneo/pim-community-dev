@@ -8,6 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Prophecy\Argument;
 
@@ -16,9 +17,13 @@ use Prophecy\Argument;
  */
 class ReferenceDataFilterSpec extends ObjectBehavior
 {
-    function let(Builder $qb, AttributeValidatorHelper $attrValidatorHelper, ConfigurationRegistryInterface $registry)
-    {
-        $this->beConstructedWith($attrValidatorHelper, $registry, ['IN', 'EMPTY']);
+    function let(
+        Builder $qb,
+        AttributeValidatorHelper $attrValidatorHelper,
+        ConfigurationRegistryInterface $registry,
+        ReferenceDataIdResolver $idResolver
+    ) {
+        $this->beConstructedWith($attrValidatorHelper, $registry, $idResolver, ['IN', 'EMPTY']);
         $this->setQueryBuilder($qb);
     }
 
@@ -38,8 +43,8 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $attrValidatorHelper,
         Builder $qb,
         AttributeInterface $attribute,
-        Expr $expr)
-    {
+        Expr $expr
+    ) {
         $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
         $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
 
@@ -47,15 +52,41 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('reference_data_option');
-        $attribute->getReferenceDataName()->willReturn('color');
-        $attribute->getCode()->willReturn('color_code');
+        $attribute->getCode()->willReturn('color');
 
         $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.color_code.id')->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.color.id')->shouldBeCalled()->willReturn($expr);
         $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
-        $this->addAttributeFilter($attribute, 'IN', ['118', '270'], null, null, ['field' => 'option_code.id']);
+        $this->addAttributeFilter($attribute, 'IN', [118, 270], null, null, ['field' => 'color']);
+    }
+
+    function it_adds_a_filter_with_codes_to_the_query(
+        $attrValidatorHelper,
+        $idResolver,
+        Builder $qb,
+        AttributeInterface $attribute,
+        Expr $expr
+    ) {
+        $attrValidatorHelper->validateLocale($attribute, Argument::any())->shouldBeCalled();
+        $attrValidatorHelper->validateScope($attribute, Argument::any())->shouldBeCalled();
+
+        $attribute->getId()->willReturn(42);
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+        $attribute->getBackendType()->willReturn('reference_data_option');
+        $attribute->getCode()->willReturn('color');
+        $attribute->getReferenceDataName()->willReturn('ref_data_color');
+
+        $idResolver->resolve('ref_data_color', ['red', 'blue'])->willReturn([118, 270]);
+
+        $qb->expr()->willReturn($expr);
+        $expr->field('normalizedData.color.id')->shouldBeCalled()->willReturn($expr);
+        $expr->in([118, 270])->shouldBeCalled()->willReturn($expr);
+        $qb->addAnd($expr)->shouldBeCalled();
+
+        $this->addAttributeFilter($attribute, 'IN', ['red', 'blue'], null, null, ['field' => 'color.code']);
     }
 
     function it_adds_an_empty_filter_to_the_query($qb, $attrValidatorHelper, AttributeInterface $attribute, Expr $expr)
@@ -67,32 +98,31 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('reference_data_option');
-        $attribute->getReferenceDataName()->willReturn('color');
-        $attribute->getCode()->willReturn('color_code');
+        $attribute->getCode()->willReturn('color');
 
         $qb->expr()->willReturn($expr);
-        $expr->field('normalizedData.color_code.id')->shouldBeCalled()->willReturn($expr);
+        $expr->field('normalizedData.color.id')->shouldBeCalled()->willReturn($expr);
         $expr->exists(false)->shouldBeCalled()->willReturn($expr);
         $qb->addAnd($expr)->shouldBeCalled();
 
         $this->addAttributeFilter($attribute, 'EMPTY', null, null, null);
     }
 
-    function it_throws_an_exception_if_value_is_not_an_valid_array(AttributeInterface $attribute)
+    function it_throws_an_exception_if_value_is_not_a_valid_array(AttributeInterface $attribute)
     {
         $attribute->getId()->willReturn(1);
-        $attribute->getCode()->willReturn('color_code');
+        $attribute->getCode()->willReturn('color');
 
         $value = 'string';
         $this->shouldThrow(
-            InvalidArgumentException::arrayExpected(1, 'filter', 'reference_data', $value)
+            InvalidArgumentException::arrayExpected('color', 'filter', 'reference_data', $value)
         )
-            ->during('addAttributeFilter', [$attribute, '=', $value]);
+            ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
 
         $value = ['foo'];
         $this->shouldThrow(
-            InvalidArgumentException::numericExpected(1, 'filter', 'reference_data', 'string')
+            InvalidArgumentException::numericExpected('color', 'filter', 'reference_data', 'string')
         )
-            ->during('addAttributeFilter', [$attribute, '=', $value]);
+            ->during('addAttributeFilter', [$attribute, '=', $value, null, null, ['field' => 'color']]);
     }
 }
