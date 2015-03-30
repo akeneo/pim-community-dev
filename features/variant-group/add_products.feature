@@ -40,6 +40,7 @@ Feature: Add products to a variant group
     And the product "sandal-white-39" should have the following value:
       | name-en_US | old name |
 
+  @unstable
   Scenario: Successfully add products in variant groups, history should be updated with a variant group context
     Given I am on the "SANDAL" variant group page
     Then the grid should contain 3 elements
