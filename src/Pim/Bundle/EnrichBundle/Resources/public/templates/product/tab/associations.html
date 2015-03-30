@@ -1,0 +1,41 @@
+<div class="tabbable tabs-left">
+    <ul class="nav nav-tabs" id="associations-list">
+        <% _.each(associationTypes, function (associationType) { %>
+            <li data-association-type="<%= associationType.code %>" data-association-type-id="<%= associationType.id %>"<% if (associationType.code === state.currentAssociationType) { %> class="active"<% } %>>
+                <a href="javascript:void(0);" id="association-link-<%= associationType.id %>">
+                    <%= associationType.label %>
+                </a>
+            </li>
+        <% }); %>
+    </ul>
+    <div class="tab-content">
+        <div id="association-buttons" class="navbar-extra pull-right">
+            <button type="button" class="btn pull-right hide" data-target-association="product">
+                <i class="icon-random"></i>
+                Show products
+            </button>
+            <button type="button" class="btn pull-right" data-target-association="group">
+                <i class="icon-random"></i>
+                Show groups
+            </button>
+        </div>
+        <% _.each(associationTypes, function (associationType) { %>
+             <div id="association-tab-<%= associationType.id %>" class="tab-pane">
+                <h3 class="unspaced">
+                    <%= associationType.label %>
+                    <span class="muted small">
+                        The number goes here
+                    </span>
+                </h3>
+            </div>
+        <% }); %>
+
+        <div id="association-product-grid">
+            <div id="grid-association-product-grid" data-type="datagrid"></div>
+        </div>
+
+        <div id="association-group-grid" class="hide">
+            <div id="grid-association-group-grid" data-type="datagrid"></div>
+        </div>
+    </div>
+</div>

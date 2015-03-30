@@ -50,6 +50,14 @@ extensions:
         zones:
             categories: self
 
+    associations:
+        module: pim/product-edit-form/associations
+        parent: form-tabs
+        targetZone: container
+        zones:
+            header: .tab-content > header
+            associations: self
+
     panels:
         module: pim/product-edit-form/panel/panels
         parent: form-tabs
