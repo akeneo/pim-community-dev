@@ -1,4 +1,5 @@
 parameters:
+    pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
     pim_catalog.updater.product_raw.class:                   Pim\Bundle\CatalogBundle\Updater\ProductRawUpdater
     pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
 
@@ -48,6 +49,12 @@ parameters:
     pim_catalog.updater.remover.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Remover\PriceCollectionAttributeRemover
 
 services:
+    pim_catalog.updater.product:
+        class: %pim_catalog.updater.product.class%
+        arguments:
+            - @pim_catalog.updater.product_raw
+            - @pim_validator
+
     pim_catalog.updater.product_raw:
         class: %pim_catalog.updater.product_raw.class%
         public: false
