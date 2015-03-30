@@ -11,13 +11,14 @@ use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
 /**
- * Provides basic operations to update a product
+ * Provides basic operations to update a product.
+ * No validation on the product is performed after the updates.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements ProductUpdaterInterface
+class ProductRawUpdater implements ProductRawUpdaterInterface
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -39,6 +40,7 @@ class ProductUpdater implements ProductUpdaterInterface
      * @param SetterRegistryInterface      $setterRegistry
      * @param CopierRegistryInterface      $copierRegistry
      * @param AdderRegistryInterface       $adderRegistry
+     * @param RemoverRegistryInterface     $removerRegistry
      */
     public function __construct(
         AttributeRepositoryInterface $repository,

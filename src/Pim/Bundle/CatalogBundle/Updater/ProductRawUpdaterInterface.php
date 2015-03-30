@@ -5,23 +5,24 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Provides basic operations to update a product
+ * Provides basic operations to update a product.
+ * No validation on the product is performed after the updates.
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductUpdaterInterface
+interface ProductRawUpdaterInterface
 {
     /**
      * Sets a data in a product field (erase the current data)
      *
      * @param ProductInterface $product The product to update
-     * @param string           $field   The field to update
-     * @param mixed            $data    The data to set
+     * @param string           $field The field to update
+     * @param mixed            $data The data to set
      * @param array            $options Options to pass to the setter
      *
-     * @return ProductUpdaterInterface
+     * @return ProductRawUpdaterInterface
      */
     public function setData(ProductInterface $product, $field, $data, array $options = []);
 
@@ -29,11 +30,11 @@ interface ProductUpdaterInterface
      * Adds a data in a product field (complete the current data)
      *
      * @param ProductInterface $product The product to update
-     * @param string           $field   The field to update
-     * @param mixed            $data    The data to add
+     * @param string           $field The field to update
+     * @param mixed            $data The data to add
      * @param array            $options Options to pass to the adder
      *
-     * @return ProductUpdaterInterface
+     * @return ProductRawUpdaterInterface
      */
     public function addData(ProductInterface $product, $field, $data, array $options = []);
 
@@ -41,12 +42,12 @@ interface ProductUpdaterInterface
      * Copy a data from a source field to a destination field (erase the current destination data)
      *
      * @param ProductInterface $fromProduct The product to read from
-     * @param ProductInterface $toProduct   The product to update
-     * @param string           $fromField   The field to read from
-     * @param string           $toField     The field to update
-     * @param array            $options     Options to pass to the copier
+     * @param ProductInterface $toProduct The product to update
+     * @param string           $fromField The field to read from
+     * @param string           $toField The field to update
+     * @param array            $options Options to pass to the copier
      *
-     * @return ProductUpdaterInterface
+     * @return ProductRawUpdaterInterface
      */
     public function copyData(
         ProductInterface $fromProduct,
@@ -60,11 +61,11 @@ interface ProductUpdaterInterface
      * Removes a data in a product field (only provided data will be removed)
      *
      * @param ProductInterface $product The product to update
-     * @param string           $field   The field to update
-     * @param mixed            $data    The data to remove
+     * @param string           $field The field to update
+     * @param mixed            $data The data to remove
      * @param array            $options Options to pass to the remover
      *
-     * @return ProductUpdaterInterface
+     * @return ProductRawUpdaterInterface
      */
     public function removeData(ProductInterface $product, $field, $data, array $options = []);
 
@@ -77,7 +78,7 @@ interface ProductUpdaterInterface
      * @param string             $locale
      * @param string             $scope
      *
-     * @return ProductUpdaterInterface
+     * @return ProductRawUpdaterInterface
      *
      * @deprecated will be removed in 1.5, please use setData(
      */
@@ -94,7 +95,7 @@ interface ProductUpdaterInterface
      * @param string             $fromScope
      * @param string             $toScope
      *
-     * @return ProductUpdaterInterface
+     * @return ProductRawUpdaterInterface
      *
      * @deprecated will be removed in 1.5, please use copyData(
      */
