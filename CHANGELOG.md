@@ -73,15 +73,22 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-2401: Association grid, add the Is associated sorter (MongoDB impl)
 - PIM-3926: Set explicit message for 403 error
+- PIM-3938: Querying products with PQB and using Sorters will not return an ordered Cursor
+- PIM-3956: Fix user can add an attribute in a group even if he does not have the permission
+- PIM-3965: Fix groups without labels are not displayed in the product grid cell
+
+## BC breaks
+- Change the constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber` to include `Oro\Bundle\SecurityBundle\SecurityFacade`and `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
 
 # 1.3.5 (2015-03-19)
 
 ## Bug fixes
-- PIM-2874: Bad title on failed submit
+- PIM-2874: Fix bad title on failed submit
 - PIM-3836: Fix translations of a custom job label instance
 - PIM-3909: Keep channel filter between product datagrid and edit form
-- PIM-3925: do not show system menu if no item allowed
+- PIM-3925: Do not show system menu if no item allowed
 
 # 1.3.4 (2015-03-11)
 

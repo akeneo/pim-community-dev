@@ -161,7 +161,7 @@ class VersionManager
     }
 
     /**
-     * @return VersionRepositoryInterface
+     * @return \Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface
      */
     public function getVersionRepository()
     {
@@ -228,7 +228,7 @@ class VersionManager
     {
         if (null === $previousVersion) {
             $previousVersion = $this->getVersionRepository()
-                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId());
+                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId(), false);
         }
 
         return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);

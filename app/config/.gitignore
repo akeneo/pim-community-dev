@@ -1,2 +1,3 @@
 /parameters.yml
 /parameters_test.yml
+*.local.yml
