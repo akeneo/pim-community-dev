@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Remover;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -22,9 +21,6 @@ abstract class AbstractAttributeRemover implements AttributeRemoverInterface
 
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
 
     /** @var OptionsResolver */
     protected $resolver;
