@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Remover;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -16,12 +15,10 @@ use Prophecy\Argument;
 class PriceCollectionAttributeRemoverSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilderInterface $builder,
         CurrencyManager $currencyManager,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
-            $builder,
             $attrValidatorHelper,
             $currencyManager,
             ['pim_catalog_price_collection']
