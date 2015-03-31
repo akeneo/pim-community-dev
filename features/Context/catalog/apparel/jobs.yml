@@ -1,0 +1,6 @@
+jobs:
+    update_product_publication:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_publication
+        label:     Mass update products publication
+        type:      mass_edit
