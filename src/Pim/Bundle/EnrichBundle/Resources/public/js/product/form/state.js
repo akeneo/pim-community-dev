@@ -28,8 +28,13 @@ define(
             state: null,
             linkSelector: 'a[href^="/"]:not(".no-hash")',
             message: _.__('There are unsaved changes'),
-            confirmationMessage: _.__('You will lose changes to the product if you leave the page.'),
-            confirmationTitle: _.__('Are you sure you want to leave this page?'),
+            confirmationMessage: _.__(
+                'pim_enrich.confirmation.discard_changes',
+                {
+                    'entity': _.__('pim_enrich.entity.product.title')
+                }
+            ),
+            confirmationTitle: _.__('pim_enrich.confirmation.leave'),
             configure: function () {
                 _.bindAll(this, 'render', 'unbindEvents', 'linkClicked', 'beforeUnload');
 
