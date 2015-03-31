@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
-use Prophecy\Argument;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
@@ -26,12 +25,10 @@ class ReferenceDataRepositoryResolverSpec extends ObjectBehavior
         $doctrine,
         ConfigurationInterface $configuration,
         ObjectRepository $repository
-
     ) {
         $configuration->getClass()->willReturn('Acme\Bundle\AppBundle\Entity\Color');
         $configurationRegistry->get('colors')->willReturn($configuration);
         $doctrine->getRepository('Acme\Bundle\AppBundle\Entity\Color')->willReturn($repository);
-
 
         $this->resolve('colors')->shouldReturn($repository);
     }

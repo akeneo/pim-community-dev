@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Prophecy\Argument;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior
 {

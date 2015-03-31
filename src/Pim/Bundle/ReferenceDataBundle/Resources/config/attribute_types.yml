@@ -22,4 +22,3 @@ services:
             - '@pim_reference_data.registry'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_reference_data_multiselect, entity: %pim_catalog.entity.product.class% }
-
