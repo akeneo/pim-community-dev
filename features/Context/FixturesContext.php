@@ -675,6 +675,10 @@ class FixturesContext extends RawMinkContext
             }
             assertEquals($data['metric_family'], $attribute->getMetricFamily());
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
+
+            if(isset($data['reference_data_name'])) {
+                assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
+            }
         }
     }
 

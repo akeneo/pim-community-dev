@@ -37,6 +37,13 @@ interface ConfigurationRegistryInterface
     public function get($name);
 
     /**
+     * @param string $name
+     *
+     * @return boolean
+     */
+    public function has($name);
+
+    /**
      * @return ConfigurationInterface[]
      */
     public function all();
