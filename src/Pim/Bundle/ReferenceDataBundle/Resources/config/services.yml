@@ -1,9 +1,17 @@
 parameters:
     pim_reference_data.registry.class: Pim\Component\ReferenceData\ConfigurationRegistry
     pim_reference_data.method_guesser.class: Pim\Component\ReferenceData\MethodNameGuesser
+    pim_reference_data.repository_resolver.class: Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver
 
 services:
     pim_reference_data.registry:
         class: %pim_reference_data.registry.class%
+
     pim_reference_data.method_guesser:
         class: %pim_reference_data.method_guesser.class%
+
+    pim_reference_data.repository_resolver:
+        class: %pim_reference_data.repository_resolver.class%
+        arguments:
+            - '@pim_reference_data.registry'
+            - '@doctrine'

@@ -4,8 +4,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
@@ -15,25 +14,16 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
  */
 class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var ConfigurationRegistryInterface */
-    protected $registry;
-
-    /** @var RegistryInterface */
-    protected $doctrine;
-
     /**
-     * @param array                          $supportedTypes
-     * @param ConfigurationRegistryInterface $registry
-     * @param RegistryInterface              $doctrine
+     * @param array                           $supportedTypes
+     * @param ReferenceDataRepositoryResolver $repositoryResolver
      */
     public function __construct(
         array $supportedTypes,
-        ConfigurationRegistryInterface $registry,
-        RegistryInterface $doctrine
+        ReferenceDataRepositoryResolver $repositoryResolver
     ) {
         parent::__construct($supportedTypes);
-        $this->registry = $registry;
-        $this->doctrine = $doctrine;
+        $this->repositoryResolver = $repositoryResolver;
     }
 
     /**
@@ -59,9 +49,7 @@ class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
             );
         }
 
-        $referenceDataConf = $this->registry->get($attribute->getReferenceDataName());
-        $referenceDataClass = $referenceDataConf->getClass();
-        $repository = $this->doctrine->getRepository($referenceDataClass);
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
         $codes = explode(',', $data);
         foreach ($codes as $code) {

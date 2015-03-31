@@ -5,16 +5,14 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferenceDataDenormalizerSpec extends ObjectBehavior
 {
-    function let(ConfigurationRegistryInterface $registry, RegistryInterface $doctrine)
+    function let(ReferenceDataRepositoryResolver $resolver)
     {
-        $this->beConstructedWith(['pim_reference_data_simpleselect'], $registry, $doctrine);
+        $this->beConstructedWith(['pim_reference_data_simpleselect'], $resolver);
     }
 
     function it_is_initializable()
@@ -70,20 +68,14 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
     }
 
     function it_denormalizes_data_into_reference_data(
-        $registry,
-        $doctrine,
+        $resolver,
         AttributeInterface $attribute,
         ReferenceDataInterface $battlecruiser,
-        ConfigurationInterface $referenceDataConf,
         ReferenceDataRepository $referenceDataRepo
     ) {
         $attribute->getReferenceDataName()->willReturn('starship');
-
-        $referenceDataConf->getClass()->willReturn('My\Powerfull\Starship');
-        $registry->get('starship')->willReturn($referenceDataConf);
-
+        $resolver->resolve('starship')->willReturn($referenceDataRepo);
         $referenceDataRepo->findOneBy(['code' => 'battlecruiser'])->willReturn($battlecruiser);
-        $doctrine->getRepository('My\Powerfull\Starship')->willReturn($referenceDataRepo);
 
         $this
             ->denormalize(

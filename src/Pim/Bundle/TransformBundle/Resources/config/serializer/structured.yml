@@ -227,8 +227,7 @@ services:
         class: %pim_serializer.denormalizer.reference_data.class%
         arguments:
             - ['pim_reference_data_simpleselect']
-            - '@pim_reference_data.registry'
-            - '@doctrine'
+            - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
