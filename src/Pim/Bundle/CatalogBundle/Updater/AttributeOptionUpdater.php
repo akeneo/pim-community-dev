@@ -6,12 +6,13 @@ use Pim\Bundle\CatalogBundle\Exception\UpdaterException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Updates an attribute option
+ * Updates and validates an attribute option
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -26,12 +27,12 @@ class AttributeOptionUpdater implements UpdaterInterface
     protected $validator;
 
     /**
-     * @param AttributeRepositoryInterface $repository
+     * @param AttributeRepositoryInterface $attributeRepository
      * @param ValidatorInterface           $validator
      */
-    public function __construct(AttributeRepositoryInterface $repository, ValidatorInterface $validator)
+    public function __construct(AttributeRepositoryInterface $attributeRepository, ValidatorInterface $validator)
     {
-        $this->attributeRepository = $repository;
+        $this->attributeRepository = $attributeRepository;
         $this->validator           = $validator;
     }
 
@@ -50,7 +51,7 @@ class AttributeOptionUpdater implements UpdaterInterface
      *     }
      * }
      *
-     * @throws \InvalidArgumentException
+     * @throws UpdaterException
      */
     public function update($attributeOption, array $data, array $options = [])
     {
@@ -63,23 +64,24 @@ class AttributeOptionUpdater implements UpdaterInterface
             );
         }
 
-        $optionResolver = $this->createOptionsResolver();
-        $resolvedData = $optionResolver->resolve($data);
-
         $isNew = $attributeOption->getId() === null;
         $readOnlyFields = ['attribute', 'code'];
-        foreach ($resolvedData as $field => $data) {
+        $updateViolations = new ConstraintViolationList();
+        foreach ($data as $field => $data) {
             $isReadOnlyField = in_array($field, $readOnlyFields);
             if ($isNew) {
-                $this->setData($attributeOption, $field, $data);
+                $setViolations = $this->setData($attributeOption, $field, $data);
             } elseif (false === $isReadOnlyField) {
-                $this->setData($attributeOption, $field, $data);
+                $setViolations = $this->setData($attributeOption, $field, $data);
             }
+            $updateViolations->addAll($setViolations);
         }
 
-        $violations = $this->validator->validate($attributeOption);
-        if ($violations->count() !== 0) {
-            throw new UpdaterException($violations);
+        $validatorViolations = $this->validator->validate($attributeOption);
+        $updateViolations->addAll($validatorViolations);
+
+        if ($updateViolations->count() > 0) {
+            throw new UpdaterException($updateViolations);
         }
 
         return $this;
@@ -89,29 +91,30 @@ class AttributeOptionUpdater implements UpdaterInterface
      * @param AttributeOptionInterface $attributeOption
      * @param string                   $field
      * @param mixed                    $data
+     *
+     * @return ConstraintViolationListInterface
      */
     protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
     {
+        $violations = new ConstraintViolationList();
+
         if ('code' === $field) {
             $attributeOption->setCode($data);
         }
 
         if ('attribute' === $field) {
             $attribute = $this->getAttribute($data);
-            if (null === $attribute) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Attribute "%s" does not exists',
-                        $field
-                    )
-                );
+            if (null !== $attribute) {
+                $attributeOption->setAttribute($attribute);
+            } else {
+                $message = sprintf('Attribute "%s" does not exists', $data);
+                $violation = new ConstraintViolation($message, $message, [], $attributeOption, 'attribute');
+                $violations->add($violation);
             }
-            $attributeOption->setAttribute($attribute);
         }
 
         if ('labels' === $field) {
             foreach ($data as $localeCode => $label) {
-                // TODO check the locale or we consider it's a domain validator concern?
                 $attributeOption->setLocale($localeCode);
                 $translation = $attributeOption->getTranslation();
                 $translation->setLabel($label);
@@ -121,6 +124,8 @@ class AttributeOptionUpdater implements UpdaterInterface
         if ('sort_order' === $field) {
             $attributeOption->setSortOrder($data);
         }
+
+        return $violations;
     }
 
     /**
@@ -133,32 +138,5 @@ class AttributeOptionUpdater implements UpdaterInterface
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
 
         return $attribute;
-    }
-
-    /**
-     * @return OptionsResolverInterface
-     */
-    protected function createOptionsResolver()
-    {
-        $resolver = new OptionsResolver();
-
-        $required = ['code', 'attribute', 'sort_order', 'labels'];
-        $defaults = ['sort_order' => 1];
-        $allowedTypes = [
-            'code' => 'string',
-            'attribute' => 'string',
-            'sort_order' => 'int',
-            'labels' => 'array'
-        ];
-
-        $resolver->setRequired($required);
-        $resolver->setDefaults($defaults);
-        $resolver->setAllowedTypes($allowedTypes);
-        $integerNormalizer = function ($options, $value) {
-            return (int) $value;
-        };
-        $resolver->setNormalizers(['sort_order' => $integerNormalizer]);
-
-        return $resolver;
     }
 }

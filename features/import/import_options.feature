@@ -50,6 +50,25 @@ Feature: Import options
     Then I should see "skipped 1"
     And I should see "code: This value should not be blank"
 
+  Scenario: Skip options with unknown attribute code
+    Given the "footwear" catalog configuration
+    And the following attributes:
+      | code  | label | type         |
+      | brand | Brand | simpleselect |
+    And I am logged in as "Julia"
+    And the following CSV file to import:
+    """
+    attribute;code;label-en_US
+    unknown;option_code;Converse
+    """
+    And the following job "footwear_option_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_option_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_option_import" job to finish
+    Then I should see "skipped 1"
+    And I should see "attribute: Attribute \"unknown\" does not exists"
+
   @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Import options with localizable label
     Given the "apparel" catalog configuration

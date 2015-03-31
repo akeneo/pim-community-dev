@@ -9,9 +9,10 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
 
 /**
- * AttributeOption option import processor, allows to,
- *  - create / update attributeOption options
- *  - return the valid attributeOption options, throw exceptions to skip invalid ones
+ * Attribute option import processor, allows to,
+ *  - create / update
+ *  - skip invalid ones
+ *  - return the valid ones
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -104,7 +105,7 @@ class AttributeOptionProcessor extends AbstractProcessor
         try {
             $this->optionUpdater->update($attributeOption, $convertedItem);
         } catch (UpdaterException $exception) {
-            $this->skipItemWithConstraintViolations($originalItem, $exception->getViolations(), $exception);
+            $this->skipItemWithConstraintViolations($originalItem, $exception->getViolations());
         }
 
         return $attributeOption;
