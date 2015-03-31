@@ -3,6 +3,8 @@ define(
     function ($, _) {
         'use strict';
         return {
+            cacheDataSource: [],
+            resultsPerPage: 20,
             init: function ($target) {
                 var self = this;
                 $target.find('input.select2:not(.select2-offscreen)').each(function () {
@@ -28,6 +30,7 @@ define(
                 });
             },
             initSelect: function($select) {
+                var selectId = $select.context.id;
                 var options = {
                         multiple: false,
                         allowClear: false
@@ -43,40 +46,52 @@ define(
                     }
                     options.placeholder = " ";
                 }
-                if ("0" === $select.attr('data-min-input-length')) {
+                options.minimumInputLength = $select.attr('data-min-input-length');
+                options.query = function (options) {
 
-                    options.query = function(query) {
-                        if (!self.hasCachableResults($select) || null === values) {
-                            $.get(
-                                $select.attr('data-url'),
-                                self.getAjaxParameters($select),
-                                function(data) {
-                                    values = self.getSelectOptions(data, options);
-                                    query.callback(values);
+                    var page = 1;
+
+                    if (options.context && options.context.page) {
+                        page = options.context.page;
+                    }
+
+                    var key = [options.term, page, selectId].join('_');
+                    var cachedData = self.cacheDataSource[key];
+
+                    if (cachedData) {
+                        options.callback({
+                            results: cachedData.results,
+                            more: cachedData.results.length === self.resultsPerPage,
+                            context: {
+                                page: page + 1
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            url: $select.attr("data-url"),
+                            data: {
+                                search: options.term,
+                                options: {
+                                    limit: self.resultsPerPage,
+                                    page: page
                                 }
-                            );
-                        } else {
-                            query.callback(self.matchLocalResults(values, query.term));
-                        }
-                    };
-                } else {
-                    options.minimumInputLength = $select.attr('data-min-input-length');
-                    options.ajax = {
-                        url: $select.attr("data-url"),
-                        cache: true,
-                        data: function(term) {
-                            return _.extend(
-                                self.getAjaxParameters($select),
-                                {
-                                    search: term
-                                }
-                            );
-                        },
-                        results: function(data, page) {
-                            return self.getSelectOptions(data, options);
-                        }
-                    };
-                }
+                            },
+                            dataType: 'json',
+                            type: 'GET',
+                            success: function (data) {
+                                self.cacheDataSource[key] = data;
+
+                                options.callback({
+                                    results: data.results,
+                                    more: data.results.length === self.resultsPerPage,
+                                    context: {
+                                        page: page + 1
+                                    }
+                                });
+                            }
+                        });
+                    }
+                };
                 options.initSelection = function(element, callback) {
                     var choices = $.parseJSON($select.attr("data-choices"));
                     callback(choices);

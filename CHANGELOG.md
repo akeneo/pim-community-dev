@@ -6,6 +6,7 @@
 - PIM-3938: Querying products with PQB and using Sorters will not return an ordered Cursor
 - PIM-3956: Fix user can add an attribute in a group even if he does not have the permission
 - PIM-3965: Fix groups without labels are not displayed in the product grid cell
+- PIM-3971: Cache results for Select2 on product edit form
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber` to include `Oro\Bundle\SecurityBundle\SecurityFacade`and `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
