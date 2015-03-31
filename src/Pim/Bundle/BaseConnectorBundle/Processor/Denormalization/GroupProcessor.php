@@ -25,6 +25,9 @@ class GroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const TYPE_FIELD = 'type';
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
@@ -53,11 +56,12 @@ class GroupProcessor extends AbstractProcessor
         $class,
         $format
     ) {
-        parent::__construct($repository, $validator);
+        parent::__construct($repository);
         $this->denormalizer = $denormalizer;
         $this->detacher = $detacher;
         $this->format = $format;
         $this->class = $class;
+        $this->validator = $validator;
     }
 
     /**

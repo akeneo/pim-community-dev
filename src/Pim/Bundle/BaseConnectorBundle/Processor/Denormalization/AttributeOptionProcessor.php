@@ -4,9 +4,9 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Bundle\CatalogBundle\Exception\UpdaterException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdaterInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
 
 /**
  * AttributeOption option import processor, allows to,
@@ -22,7 +22,7 @@ class AttributeOptionProcessor extends AbstractProcessor
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
-    /** @var AttributeOptionUpdaterInterface */
+    /** @var UpdaterInterface */
     protected $optionUpdater;
 
     /** @var string */
@@ -31,21 +31,19 @@ class AttributeOptionProcessor extends AbstractProcessor
     /**
      * @param StandardArrayConverterInterface       $arrayConverter   format converter
      * @param IdentifiableObjectRepositoryInterface $optionRepository option repository
-     * @param AttributeOptionUpdaterInterface       $optionUpdater    option updater
-     * @param ValidatorInterface                    $validator        validator of the object
+     * @param UpdaterInterface                      $optionUpdater    option updater
      * @param string                                $class            attribute option class
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
-        AttributeOptionUpdaterInterface $optionUpdater,
-        ValidatorInterface $validator,
+        UpdaterInterface $optionUpdater,
         $class
     ) {
-        parent::__construct($optionRepository, $validator);
+        parent::__construct($optionRepository);
         $this->arrayConverter = $arrayConverter;
-        $this->optionUpdater = $optionUpdater;
-        $this->class = $class;
+        $this->optionUpdater  = $optionUpdater;
+        $this->class          = $class;
     }
 
     /**
@@ -55,8 +53,7 @@ class AttributeOptionProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
         $attributeOption = $this->findOrCreateAttributeOption($convertedItem);
-        $this->updateAttributeOption($attributeOption, $convertedItem);
-        $this->validateAttributeOption($attributeOption, $convertedItem);
+        $this->updateAttributeOption($attributeOption, $convertedItem, $item);
 
         return $attributeOption;
     }
@@ -89,29 +86,27 @@ class AttributeOptionProcessor extends AbstractProcessor
     /**
      * @param AttributeOptionInterface $attributeOption
      * @param array                    $convertedItem
+     * @param array                    $originalItem
      *
      * @return AttributeOptionInterface
+     *
+     * @throws UpdaterException
      */
-    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, array $convertedItem)
-    {
-        $this->optionUpdater->update($attributeOption, $convertedItem);
-
-        return $attributeOption;
-    }
-
-    /**
-     * @param AttributeOptionInterface $attributeOption
-     * @param array                    $item
-     */
-    protected function validateAttributeOption(AttributeOptionInterface $attributeOption, array $item)
-    {
+    protected function updateAttributeOption(
+        AttributeOptionInterface $attributeOption,
+        array $convertedItem,
+        array $originalItem
+    ) {
         // TODO: ugly fix to workaround issue with "attribute.group.code: This value should not be blank."
         // in case of existing option, attribute is a proxy, attribute group too, the validated group code is null
-        $attributeOption->getAttribute()->getGroup()->getCode();
+        ($attributeOption->getAttribute() !== null) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
 
-        $violations = $this->validator->validate($attributeOption);
-        if ($violations->count() !== 0) {
-            $this->skipItemWithConstraintViolations($item, $violations);
+        try {
+            $this->optionUpdater->update($attributeOption, $convertedItem);
+        } catch (UpdaterException $exception) {
+            $this->skipItemWithConstraintViolations($originalItem, $exception->getViolations(), $exception);
         }
+
+        return $attributeOption;
     }
 }

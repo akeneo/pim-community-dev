@@ -38,6 +38,9 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const LABEL_PATTERN = 'label-';
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /** @var DenormalizerInterface */
     protected $denormalizer;
 
@@ -81,7 +84,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $templateClass,
         $format
     ) {
-        parent::__construct($groupRepository, $validator);
+        parent::__construct($groupRepository);
         $this->denormalizer         = $denormalizer;
         $this->detacher             = $detacher;
         $this->normalizer           = $normalizer;
@@ -89,6 +92,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $this->templateClass        = $templateClass;
         $this->format               = $format;
         $this->class                = $groupClass;
+        $this->validator            = $validator;
     }
 
     /**

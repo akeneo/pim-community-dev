@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Pim\Bundle\CatalogBundle\Exception\UpdaterException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Updates an attribute option
@@ -15,17 +17,22 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
+class AttributeOptionUpdater implements UpdaterInterface
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param AttributeRepositoryInterface $repository
+     * @param ValidatorInterface           $validator
      */
-    public function __construct(AttributeRepositoryInterface $repository)
+    public function __construct(AttributeRepositoryInterface $repository, ValidatorInterface $validator)
     {
         $this->attributeRepository = $repository;
+        $this->validator           = $validator;
     }
 
     /**
@@ -42,9 +49,20 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
      *         'fr_FR': '210 x 1219 mm'
      *     }
      * }
+     *
+     * @throws \InvalidArgumentException
      */
-    public function update(AttributeOptionInterface $attributeOption, array $data, array $options = [])
+    public function update($attributeOption, array $data, array $options = [])
     {
+        if (!$attributeOption instanceof AttributeOptionInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface", "%s" provided.',
+                    ClassUtils::getClass($attributeOption)
+                )
+            );
+        }
+
         $optionResolver = $this->createOptionsResolver();
         $resolvedData = $optionResolver->resolve($data);
 
@@ -57,6 +75,11 @@ class AttributeOptionUpdater implements AttributeOptionUpdaterInterface
             } elseif (false === $isReadOnlyField) {
                 $this->setData($attributeOption, $field, $data);
             }
+        }
+
+        $violations = $this->validator->validate($attributeOption);
+        if ($violations->count() !== 0) {
+            throw new UpdaterException($violations);
         }
 
         return $this;

@@ -69,6 +69,7 @@ services:
         class: %pim_catalog.updater.attribute_option.class%
         arguments:
             - @pim_catalog.repository.attribute
+            - @validator
 
     # Setters
     pim_catalog.updater.setter.registry:

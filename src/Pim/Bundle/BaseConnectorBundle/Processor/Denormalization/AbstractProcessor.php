@@ -7,19 +7,15 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Abstract processor to provide a way to denormalize array data to object by,
  * - fetch an existing object or create it
  * - update the object
- * - validate the object
  * - skip the object if it contains invalid data
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
@@ -36,19 +32,12 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
-     * @param ValidatorInterface                    $validator    validator of the object
+     * @param IdentifiableObjectRepositoryInterface $repository repository to search the object in
      */
-    public function __construct(
-        IdentifiableObjectRepositoryInterface $repository,
-        ValidatorInterface $validator
-    ) {
+    public function __construct(IdentifiableObjectRepositoryInterface $repository)
+    {
         $this->repository = $repository;
-        $this->validator = $validator;
     }
 
     /**

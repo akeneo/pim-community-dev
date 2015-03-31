@@ -163,7 +163,6 @@ services:
             - '@pim_base_connector.denormalization.array_converter.flat.attribute_option'
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
-            - '@pim_validator'
             - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.denormalization.attribute_option.structured:
@@ -172,7 +171,6 @@ services:
             - '@pim_base_connector.denormalization.array_converter.structured.attribute_option'
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
-            - '@pim_validator'
             - %pim_catalog.entity.attribute_option.class%
 
     # Denormalization - ArrayConverter
