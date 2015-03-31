@@ -127,11 +127,27 @@ function($, _, Backbone, app) {
          */
         enable: function() {
             if (!this.enabled) {
+                this.render();
                 this.enabled = true;
                 this.show();
+                var enabledFilters = this._getSessionFilters();
+                enabledFilters[this.name] = 1;
+                sessionStorage.setItem('enabled-filters', JSON.stringify(enabledFilters));
                 this.trigger('enable', this);
             }
             return this;
+        },
+
+        /**
+         * @returns string[]
+         * @protected
+         */
+        _getSessionFilters: function() {
+            var enabledFilters = JSON.parse(sessionStorage.getItem('enabled-filters'));
+            if (!enabledFilters) {
+                enabledFilters = {};
+            }
+            return enabledFilters;
         },
 
         /**
@@ -143,6 +159,9 @@ function($, _, Backbone, app) {
             if (this.enabled) {
                 this.enabled = false;
                 this.hide();
+                var enabledFilters = this._getSessionFilters();
+                enabledFilters[this.name] = 0;
+                sessionStorage.setItem('enabled-filters', JSON.stringify(enabledFilters));
                 this.trigger('disable', this);
                 this.reset();
             }
