@@ -5,6 +5,8 @@ parameters:
     pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
     pim_enrich.mass_edit_action.classify.class:                     PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
 
+    pimee_enrich.mass_edit_handler.update_product_publication.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductPublicationHandler
+
 services:
     # Published product operator
     pimee_enrich.mass_edit_action.operator.published_product:
@@ -76,3 +78,10 @@ services:
                 alias: classify
                 acl: pim_enrich_product_categories_view
                 datagrid: product-grid
+
+    pim_enrich.mass_edit_handler.update_product_publication:
+        class: %pimee_enrich.mass_edit_handler.update_product_publication.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pimee_workflow.manager.published_product'
+            - '@pim_enrich.product.paginator'
