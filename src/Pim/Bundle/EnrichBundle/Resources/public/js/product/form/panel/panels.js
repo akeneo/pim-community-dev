@@ -68,7 +68,7 @@ define(
             },
             resize: function() {
                 var panelContent = this.$('.panel-content');
-                if (panelContent) {
+                if (panelContent.length) {
                     panelContent.css(
                         {'height': ($(window).height() - panelContent.offset().top - 4) + 'px'}
                     );
