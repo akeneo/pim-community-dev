@@ -82,7 +82,7 @@ class ProductRestController
      * @AclAncestor("pim_enrich_product_index")
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction($id)
     {
         return [
             'productId' => $id

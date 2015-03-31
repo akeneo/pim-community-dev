@@ -59,7 +59,7 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/form-builder', 'pim/product-manager', 'pim/usercontext'],
+                            ['jquery', 'pim/form-builder', 'pim/product-manager', 'pim/user-context'],
                             function($, FormBuilder, ProductManager, usercontext) {
                                 usercontext.setUserContext({{ usercontext()|json_encode()|raw }});
 

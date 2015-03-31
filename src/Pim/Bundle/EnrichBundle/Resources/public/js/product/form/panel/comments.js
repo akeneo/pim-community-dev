@@ -5,7 +5,7 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/usercontext',
+        'pim/user-context',
         'text!pim/template/product/panel/comments',
         'routing',
         'oro/messenger'
@@ -44,7 +44,7 @@ define(
                     this.$el.html(
                         this.template({
                             comments: this.comments,
-                            currentUser: usercontext.getUserContext().user
+                            currentUser: usercontext.getUserContext().get('user')
                         })
                     );
                     this.delegateEvents();

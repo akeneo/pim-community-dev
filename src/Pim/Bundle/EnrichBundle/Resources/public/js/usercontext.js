@@ -1,32 +1,37 @@
 'use strict';
 
 define(
-    ['underscore', 'oro/mediator'],
-    function(_, mediator) {
+    ['underscore', 'backbone', 'oro/mediator'],
+    function(_, Backbone, mediator) {
         return {
             userContext: null,
+            model: null,
             setUserContext: function(userContext) {
-                this.userContext = userContext;
+                if (null === this.model) {
+                    this.model = new Backbone.Model({});
+                }
+
+                this.model.set(userContext);
             },
             getUserContext: function() {
-                if (!this.userContext) {
+                if (!this.model) {
                     throw new Error('User context has to be set');
                 }
 
-                return this.userContext;
+                return this.model;
             },
             setCatalogLocale: function(catalogLocale) {
-                this.getUserContext().catalogLocale = catalogLocale;
+                this.model.set('catalogLocale', catalogLocale);
 
                 mediator.trigger('usercontext:catalog_locale:changed');
             },
             setCatalogChannel: function(catalogChannel) {
-                this.getUserContext().catalogChannel = catalogChannel;
+                this.model.set('catalogChannel', catalogChannel);
 
                 mediator.trigger('usercontext:catalog_channel:changed');
             },
             setUserLocale: function(userLocale) {
-                this.getUserContext().userLocale = userLocale;
+                this.model.set('userLocale', userLocale);
 
                 mediator.trigger('usercontext:user_locale:changed');
             }
