@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\MethodNameGuesser;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -18,24 +17,24 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  */
 class ReferenceDataCollectionSetter extends AbstractAttributeSetter
 {
-    /** @var DenormalizerInterface */
-    protected $referenceDataDenormalizer;
+    /** @var ReferenceDataRepositoryResolver */
+    protected $repositoryResolver;
 
     /**
-     * @param ProductBuilderInterface  $productBuilder
-     * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param DenormalizerInterface    $referenceDataDenormalizer
-     * @param array                    $supportedTypes
+     * @param ProductBuilderInterface         $productBuilder
+     * @param AttributeValidatorHelper        $attrValidatorHelper
+     * @param ReferenceDataRepositoryResolver $repositoryResolver
+     * @param array                           $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        DenormalizerInterface $referenceDataDenormalizer,
+        ReferenceDataRepositoryResolver $repositoryResolver,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
 
-        $this->referenceDataDenormalizer = $referenceDataDenormalizer;
+        $this->repositoryResolver = $repositoryResolver;
         $this->supportedTypes = $supportedTypes;
     }
 
@@ -51,9 +50,28 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'reference data collection');
         $this->checkData($attribute, $data);
 
-        $data = $this->referenceDataDenormalizer->denormalize($data, '', null, ['attribute' => $attribute]);
+        $referenceDataCollection = [];
+        foreach ($data as $referenceDataCode) {
 
-        $this->setReferenceDataCollection($attribute, $product, $data, $options['locale'], $options['scope']);
+            $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+            $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
+
+            if (null === $referenceData) {
+                throw InvalidArgumentException::arrayInvalidKey(
+                    $attribute->getCode(),
+                    'code',
+                    'The reference data does not exist',
+                    'setter',
+                    'reference data collection',
+                    $referenceDataCode
+                );
+            }
+
+            $referenceDataCollection[] = $referenceData;
+        }
+
+
+        $this->setReferenceDataCollection($attribute, $product, $referenceDataCollection, $options['locale'], $options['scope']);
     }
 
     /**
@@ -64,10 +82,6 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (null === $data) {
-            return;
-        }
-
         if (!is_array($data)) {
             throw InvalidArgumentException::arrayExpected(
                 $attribute->getCode(),
@@ -76,6 +90,18 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
                 gettype($data)
             );
         }
+
+        foreach ($data as $key => $value) {
+            if (!is_string($value)) {
+                throw InvalidArgumentException::arrayStringKeyExpected(
+                    $attribute->getCode(),
+                    $key,
+                    'setter',
+                    'reference data collection',
+                    gettype($value)
+                );
+            }
+        }
     }
 
     /**
@@ -83,7 +109,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param ProductInterface   $product
-     * @param ArrayCollection    $referenceDataCollection
+     * @param array              $referenceDataCollection
      * @param string|null        $locale
      * @param string|null        $scope
      *
@@ -92,7 +118,7 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
     protected function setReferenceDataCollection(
         AttributeInterface $attribute,
         ProductInterface $product,
-        ArrayCollection $referenceDataCollection,
+        array $referenceDataCollection,
         $locale = null,
         $scope = null
     ) {

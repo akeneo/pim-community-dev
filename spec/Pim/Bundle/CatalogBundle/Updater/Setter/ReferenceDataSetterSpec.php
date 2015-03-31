@@ -2,14 +2,16 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataDenormalizer;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Prophecy\Argument;
 
@@ -18,12 +20,12 @@ class ReferenceDataSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        ReferenceDataDenormalizer $refDataDenormalizer
+        ReferenceDataRepositoryResolver $repositoryResolver
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $refDataDenormalizer,
+            $repositoryResolver,
             ['pim_reference_data_simpleselect']
         );
     }
@@ -46,7 +48,8 @@ class ReferenceDataSetterSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_setting_a_value(
         $attrValidatorHelper,
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ReferenceDataInterface $refData,
         AttributeInterface $attribute,
         ProductInterface $product,
@@ -63,59 +66,64 @@ class ReferenceDataSetterSpec extends ObjectBehavior
 
         $product->getValue('custom_material', $locale, $scope)->willReturn($productValue1);
 
-        $refDataDenormalizer->denormalize(
-            ['code' => 'shiny_metal'],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn($refData);
+        $repositoryResolver->resolve('customMaterials')->willReturn($repository);
+        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
 
         $this->setAttributeData(
             $product,
             $attribute,
-            ['code' => 'shiny_metal'],
+            'shiny_metal',
             ['locale' => $locale, 'scope' => $scope]
         );
     }
 
-    function it_throws_an_exception_if_data_is_not_an_array(
+    function it_throws_an_exception_if_data_is_a_string(
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
         $this->shouldThrow('InvalidArgumentException')->during('setAttributeData', [
-            $product, $attribute, 'shiny_metal', ['locale' => 'fr_FR', 'scope' => 'mobile']
+            $product, $attribute, ['shiny_metal'], ['locale' => 'fr_FR', 'scope' => 'mobile']
         ]);
     }
 
     function it_throws_an_exception_if_reference_data_does_not_exist(
         $attrValidatorHelper,
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ProductInterface $product,
         AttributeInterface $attribute
     ) {
+        $attribute->getReferenceDataName()->willReturn('customMaterials');
+        $attribute->getCode()->willReturn('lace_fabric');
         $attrValidatorHelper->validateLocale(Argument::cetera())->shouldBeCalled();
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
-        $refDataDenormalizer->denormalize(
-            ['code' => 'hulk_retriever'],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn(null);
+        $repositoryResolver->resolve('customMaterials')->willReturn($repository);
+        $repository->findOneBy(['code' => 'hulk_retriever'])->willReturn(null);
 
-        $this->shouldThrow('LogicException')->during(
+        $exception = InvalidArgumentException::validEntityCodeExpected(
+            'lace_fabric',
+            'code',
+            'The reference data does not exist',
+            'setter',
+            'reference data simple select',
+            'hulk_retriever'
+        );
+
+        $this->shouldThrow($exception)->during(
             'setAttributeData',
             [
                 $product,
                 $attribute,
-                ['code' => 'hulk_retriever'],
+                'hulk_retriever',
                 ['locale' => 'fr_FR', 'scope' => 'mobile']
             ]
         );
     }
 
     function it_throws_an_exception_if_product_value_method_is_not_implemented(
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ReferenceDataInterface $refData,
         AttributeInterface $attribute,
         ProductInterface $product,
@@ -125,22 +133,18 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $scope = 'mobile';
 
         $attribute->getCode()->willReturn('custom_material');
-        $attribute->getReferenceDataName()->willReturn('customMaterials');
+        $attribute->getReferenceDataName()->willReturn('notImplemented');
 
-        $refDataDenormalizer->denormalize(
-            ['code' => 'shiny_metal'],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn($refData);
+        $repositoryResolver->resolve('notImplemented')->willReturn($repository);
+        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
 
         $product->getValue('custom_material', $locale, $scope)->willReturn($productValue);
 
-        $this->shouldThrow('LogicException')
+        $this->shouldThrow(new \LogicException('ProductValue method "setNotImplemented" is not implemented'))
             ->during('setAttributeData', [
                 $product,
                 $attribute,
-                ['code' => 'shiny_metal'],
+                'shiny_metal',
                 ['locale' => $locale, 'scope' => $scope]
             ]);
     }
@@ -148,7 +152,8 @@ class ReferenceDataSetterSpec extends ObjectBehavior
     function it_sets_reference_data_to_a_product_value(
         $builder,
         $attrValidatorHelper,
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ReferenceDataInterface $refData,
         AttributeInterface $attribute,
         ProductInterface $product1,
@@ -165,15 +170,10 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $attrValidatorHelper->validateScope(Argument::cetera())->shouldBeCalled();
 
         $attribute->getCode()->willReturn('custom_material');
-        $attribute->getReferenceDataName()->willReturn('customMaterials');
+        $attribute->getReferenceDataName()->willReturn('customMaterial');
 
-        $refDataDenormalizer->denormalize(
-            ['code' => 'shiny_metal'],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn($refData);
-
+        $repositoryResolver->resolve('customMaterial')->willReturn($repository);
+        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
 
         $product1->getValue('custom_material', $locale, $scope)->willReturn(null);
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
@@ -190,7 +190,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $productValue3->setCustomMaterial($refData)->shouldBeCalled();
 
         foreach ($products as $product) {
-            $this->setAttributeData($product, $attribute, ['code' => 'shiny_metal'], ['locale' => $locale, 'scope' => $scope]);
+            $this->setAttributeData($product, $attribute, 'shiny_metal', ['locale' => $locale, 'scope' => $scope]);
         }
     }
 
@@ -232,7 +232,7 @@ class ReferenceDataSetterSpec extends ObjectBehavior
 
 class CustomProductValue extends AbstractProductValue
 {
-    public function setCustomMaterial($refData)
+    public function setCustomMaterial(ReferenceDataInterface $refData = null)
     {
 
     }

@@ -201,7 +201,7 @@ services:
         class: %pim_catalog.updater.setter.reference_data_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - '@pim_serialize.denormalizer.reference_data'
+            - '@pim_reference_data.repository_resolver'
             - ['pim_reference_data_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -210,7 +210,7 @@ services:
         class: %pim_catalog.updater.setter.reference_data_collection_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - '@pim_serialize.denormalizer.reference_data_collection'
+            - '@pim_reference_data.repository_resolver'
             - ['pim_reference_data_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
