@@ -20,6 +20,12 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
 
+    state:
+        module: pim/product-edit-form/state
+        parent: product-edit-form
+        insertAction: after
+        targetZone: meta
+
     change-family:
         module: pim/product-edit-form/change-family
         parent: product-edit-form
