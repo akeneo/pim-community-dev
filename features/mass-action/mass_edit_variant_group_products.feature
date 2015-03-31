@@ -85,3 +85,23 @@ Feature: Apply restrictions when mass editing products with variant groups
     """
     No variant group for now. Please start by creating a variant group.
     """
+
+  @javascript
+  Scenario: BlaBla blublu
+    Given the following families:
+      | code      |
+      | computers |
+      | watches   |
+    And the following products:
+      | sku        | family    |
+      | gold_watch | watches   |
+      | laptop     | computers |
+    And I am logged in as "Julia"
+    And I am on the products page
+    When I mass-edit products gold_watch, laptop
+    And I choose the "Add to a variant group" operation
+    When I select the "Caterpillar boots" variant group
+    And I move on to the next step
+    And I wait 3 seconds
+    And I am on the variant groups page
+    

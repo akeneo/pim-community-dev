@@ -137,6 +137,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_enrich.product.paginator'
+            - '@pim_validator'
 
     pim_enrich.mass_edit_handler.add_product_value:
         class: %pim_enrich.mass_edit_handler.add_product_value.class%
@@ -146,3 +147,4 @@ services:
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_enrich.product.paginator'
+            - '@pim_validator'
