@@ -48,6 +48,7 @@ pim_enrich:
             label: Publish products
             description: Publish the selected products, the current published data will be erased by the current working copy.
             success_flash: Selected products have been successfully published.
+            launched_flash: The job publishing product(s) is currently running.
             message:
                 error: You're not the owner of the selected products, you can't publish them.
                 warning: You're not the owner of all the selected products. You can't publish the products "%notGranted%".
@@ -113,3 +114,6 @@ pimee_enrich:
     groups:
         label: owner groups
         empty: none
+
+job_execution.summary:
+    mass_published: Updated publication
