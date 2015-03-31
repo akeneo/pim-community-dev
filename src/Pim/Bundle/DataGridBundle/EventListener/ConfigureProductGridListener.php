@@ -68,11 +68,21 @@ class ConfigureProductGridListener
     public function buildBefore(BuildBefore $event)
     {
         $datagridConfig = $event->getConfig();
+        $cacheFile = '/tmp/datagrid.context.cache.'.$datagridConfig->getName();
 
-        $this->getContextConfigurator()->configure($datagridConfig);
-        $this->getColumnsConfigurator()->configure($datagridConfig);
-        $this->getSortersConfigurator()->configure($datagridConfig);
-        $this->getFiltersConfigurator()->configure($datagridConfig);
+        if (file_exists($cacheFile)) {
+            $cachedParams = unserialize(file_get_contents($cacheFile));
+            foreach($cachedParams as $name => $value) {
+                $datagridConfig->offsetSet($name, $value);
+            }
+        } else {
+            $this->getContextConfigurator()->configure($datagridConfig);
+            $this->getColumnsConfigurator()->configure($datagridConfig);
+            $this->getSortersConfigurator()->configure($datagridConfig);
+            $this->getFiltersConfigurator()->configure($datagridConfig);
+            $cachedParams = $datagridConfig->toArray();
+            file_put_contents($cacheFile, serialize($cachedParams));
+        }
     }
 
     /**
