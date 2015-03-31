@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter;
 
+use Pim\Bundle\BaseConnectorBundle\Exception\ArrayConversionException;
+
 /**
  * Standard converter interface, convert a format to the standard one
  *
@@ -16,6 +18,8 @@ interface StandardArrayConverterInterface
      * @param array $options options used to convert
      *
      * @return array
+     *
+     * @throws ArrayConversionException
      */
-    public function convert(array $data, array $options = []);
+    public function convert(array $data);
 }

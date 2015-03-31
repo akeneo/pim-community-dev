@@ -2,13 +2,12 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;
 
+use Pim\Bundle\BaseConnectorBundle\Exception\ArrayConversionException;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Attribute Option Flat Converter
+ * Convert flat format to standard format for attribute option
  *
  * @author    Nicolas Dupont <nicola@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -18,9 +17,6 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
-
-    /** @var OptionsResolverInterface */
-    protected $optionResolver;
 
     /**
      * @param LocaleRepositoryInterface $localeRepository
@@ -39,7 +35,7 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      * {
      *     'attribute': 'maximum_print_size',
      *     'code': '210_x_1219_mm',
-     *     'sort_order': 2,
+     *     'sort_order': '2',
      *     'label-de_DE': '210 x 1219 mm',
      *     'label-en_US': '210 x 1219 mm',
      *     'label-fr_FR': '210 x 1219 mm'
@@ -59,10 +55,9 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      */
     public function convert(array $item, array $options = [])
     {
-        $optionResolver = $this->getOptionsResolverInstance();
-        $resolvedItem = $optionResolver->resolve($item);
+        $this->validate($item);
         $convertedItem = ['labels' => []];
-        foreach ($resolvedItem as $field => $data) {
+        foreach ($item as $field => $data) {
             $isLabel = false !== strpos($field, 'label-', 0);
             if ($isLabel) {
                 $labelTokens = explode('-', $field);
@@ -72,44 +67,54 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
                 $convertedItem[$field] = $data;
             }
         }
+        if (!isset($convertedItem['sort_order'])) {
+            $convertedItem['sort_order'] = 1;
+        }
+        $convertedItem['sort_order'] = (int) $convertedItem['sort_order'];
 
         return $convertedItem;
     }
 
     /**
-     * Get the same instance in case of flat format, assuming that each converted item will have same headers
+     * @param array $item
      *
-     * @return OptionsResolverInterface
+     * @throws ArrayConversionException
      */
-    protected function getOptionsResolverInstance()
+    protected function validate(array $item)
     {
-        if (null === $this->optionResolver) {
-            $this->optionResolver = new OptionsResolver();
-
-            $required = ['code', 'attribute', 'sort_order'];
-            $defaults = ['sort_order' => 1];
-            $allowedTypes = [
-                'code' => 'string',
-                'attribute' => 'string',
-                'sort_order' => 'int'
-            ];
-
-            $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-            foreach ($localeCodes as $code) {
-                $labelField = 'label-' . $code;
-                $required[] = $labelField;
-                $allowedTypes[$labelField] = 'string';
-            }
-
-            $this->optionResolver->setRequired($required);
-            $this->optionResolver->setDefaults($defaults);
-            $this->optionResolver->setAllowedTypes($allowedTypes);
-            $integerNormalizer = function ($options, $value) {
-                return (int) $value;
-            };
-            $this->optionResolver->setNormalizers(['sort_order' => $integerNormalizer]);
+        if (!is_array($item)) {
+            throw new ArrayConversionException(sprintf('Item should be an array, "%s" provided', print_r($item, true)));
         }
 
-        return $this->optionResolver;
+        $requiredFields = ['attribute', 'code'];
+        foreach ($requiredFields as $requiredField) {
+            if (!in_array($requiredField, array_keys($item))) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" is expected, provided fields are "%s"',
+                        $requiredField,
+                        implode(', ', array_keys($item))
+                    )
+                );
+            }
+        }
+
+        $authorizedFields = array_merge($requiredFields, ['sort_order']);
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $code) {
+            $authorizedFields[] = 'label-' . $code;
+        }
+
+        foreach ($item as $field => $data) {
+            if (!in_array($field, $authorizedFields)) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" is provided, authorized fields are: "%s"',
+                        $field,
+                        implode(', ', $authorizedFields)
+                    )
+                );
+            }
+        }
     }
 }

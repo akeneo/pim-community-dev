@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverte
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 
 /**
- * Attribute Option Structured Converter
+ * Convert structured format to standard format for attribute option
  *
  * @author    Nicolas Dupont <nicola@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -44,10 +44,54 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      */
     public function convert(array $item, array $options = [])
     {
-        // TODO: option resolver!
+        $this->validate($item);
         $item['sort_order'] = $item['sortOrder'];
         unset($item['sortOrder']);
 
         return $item;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @throws ArrayConversionException
+     */
+    protected function validate(array $item)
+    {
+        if (!is_array($item)) {
+            throw new ArrayConversionException(sprintf('Item should be an array, "%s" provided', print_r($item, true)));
+        }
+
+        $requiredFields = ['attribute', 'code'];
+        foreach ($requiredFields as $requiredField) {
+            if (!in_array($requiredField, array_keys($item))) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" is expected, provided fields are "%s"',
+                        $requiredField,
+                        implode(', ', array_keys($item))
+                    )
+                );
+            }
+        }
+
+        $authorizedFields = array_merge($requiredFields, ['sortOrder', 'labels']);
+        foreach ($item as $field => $data) {
+            if (!in_array($field, $authorizedFields)) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" is provided, authorized fields are: "%s"',
+                        $field,
+                        implode(', ', $authorizedFields)
+                    )
+                );
+            }
+        }
+
+        if (isset($item['labels']) && !is_array($item['labels'])) {
+            throw new ArrayConversionException(
+                sprintf('Field "labels" must be an array, data provided is "%s"', print_r($item['labels'], true))
+            );
+        }
     }
 }

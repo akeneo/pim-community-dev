@@ -118,4 +118,4 @@ Feature: Import options
     And I launch the import job
     And I wait for the "option_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "The option \"label-fr_CA\" does not exist. Known options are: \"attribute\", \"code\", \"label-de_DE\", \"label-en_GB\", \"label-en_US\", \"label-fr_FR\", \"sort_order\""
+    And I should see "Field \"label-fr_CA\" is provided, authorized fields are: \"attribute, code, sort_order, label-de_DE, label-en_GB, label-en_US, label-fr_FR\""
