@@ -31,7 +31,10 @@ class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerI
             'id'           => $comment->getId(),
             'resourceName' => $comment->getResourceName(),
             'resourceId'   => $comment->getResourceId(),
-            'author'       => $comment->getAuthor()->getUsername(),
+            'author'       => [
+                'username' => $comment->getAuthor()->getUsername(),
+                'fullName' => $comment->getAuthor()->getFirstName() . ' ' . $comment->getAuthor()->getLastName()
+            ],
             'body'         => $comment->getBody(),
             'created'      => $this->serializer->normalize($comment->getCreatedAt(), 'json', ['format' => 'M jS g:ia']),
             'replied'      => $this->serializer->normalize($comment->getRepliedAt(), 'json', ['format' => 'M jS g:ia']),

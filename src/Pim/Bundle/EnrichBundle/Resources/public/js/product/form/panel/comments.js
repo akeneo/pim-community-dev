@@ -6,24 +6,21 @@ define(
         'backbone',
         'pim/form',
         'text!pim/template/product/panel/comments',
-        'text!pim/template/product/panel/comment-reply',
         'routing',
         'oro/messenger'
     ],
-    function (_, Backbone, BaseForm, template, replyForm, Routing, messenger) {
+    function (_, Backbone, BaseForm, template, Routing, messenger) {
         return BaseForm.extend({
             template: _.template(template),
-            replyFormTemplate: _.template(replyForm),
             className: 'panel-pane',
             code: 'history',
             comments: [],
             events: {
-                'keyup .create-comment textarea': 'toggleButtons',
-                'click .create-comment .comment-btn.btn-primary': 'saveComment',
+                'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',
+                'click .comment-create .send-comment': 'saveComment',
                 'click .remove-comment' : 'removeComment',
-                'click .reply-to-comment' : 'showReplyForm',
-                'click .comment-reply input[type="reset"]' : 'hideReplyForm',
-                'click .comment-reply .comment-btn.btn-primary': 'saveReply'
+                'click .comment-thread .send-comment': 'saveReply',
+                'click .comment-thread .cancel-comment': 'cancelComment'
             },
             initialize: function () {
                 this.comment = new Backbone.Model();
@@ -31,9 +28,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addPanel('comments', 'Comments');
-
-                this.$replyForm = $(this.replyFormTemplate());
+                this.getRoot().addPanel('comments', _.__('pim_comment.product.tab.comment.title'));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -65,24 +60,30 @@ define(
                     )
                 );
             },
-            toggleButtons: function () {
-                if (this.$('form.create-comment textarea').val()) {
-                    this.$('form.create-comment .comment-buttons').show();
+            toggleButtons: function (event) {
+                var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
+                if ($element.find('textarea').val()) {
+                    $element.addClass('active');
                 } else {
-                    this.$('form.create-comment .comment-buttons').hide();
+                    $element.removeClass('active');
                 }
+            },
+            cancelComment: function (event) {
+                var $element = $(event.currentTarget).parents('.comment-thread, .comment-create');
+                $element.find('textarea').val('');
+                $element.removeClass('active');
             },
             saveComment: function () {
                 $.ajax({
                     type: 'POST',
                     url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getData().meta.id }),
                     contentType: 'application/json',
-                    data: JSON.stringify({ 'body': this.$('form.create-comment textarea').val() })
+                    data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
                 }).done(_.bind(function () {
                     this.render();
-                    messenger.notificationFlashMessage('success', 'Your comment has been created successfully.');
+                    messenger.notificationFlashMessage('success', _.__('flash.comment.create.success'));
                 }, this)).fail(function () {
-                    messenger.notificationFlashMessage('error', 'An error occured during the creation of your comment.');
+                    messenger.notificationFlashMessage('error', _.__('flash.comment.create.error'));
                 });
             },
             removeComment: function (event) {
@@ -93,37 +94,31 @@ define(
                     data: { _method: 'DELETE' }
                 }).done(_.bind(function () {
                     this.render();
-                    messenger.notificationFlashMessage('success', 'Your comment has been deleted successfully.');
+                    messenger.notificationFlashMessage('success', _.__('flash.comment.delete.success'));
                 }, this)).fail(function () {
-                    messenger.notificationFlashMessage('error', 'An error occured during the deletion of your comment.');
+                    messenger.notificationFlashMessage('error', _.__('flash.comment.delete.error'));
                 });
             },
-            showReplyForm: function (event) {
-                this.$replyForm.data('comment-id', event.currentTarget.dataset.commentId);
-                this.$replyForm.appendTo($(event.currentTarget).closest('.comment-thread').find('.comment-topic')).show();
-            },
-            hideReplyForm: function () {
-                this.$replyForm.find('textarea').val('');
-                this.$replyForm.hide();
-            },
-            saveReply: function () {
+            saveReply: function (event) {
+                var $thread = $(event.currentTarget).parents('.comment-thread');
+
                 $.ajax({
                     type: 'POST',
                     url: Routing.generate(
                         'pim_enrich_product_comment_reply_rest_post',
                         {
                             id: this.getData().meta.id,
-                            commentId: this.$replyForm.data('comment-id')
+                            commentId: $thread.data('comment-id')
                         }
                     ),
                     contentType: 'application/json',
-                    data: JSON.stringify({ 'body': this.$replyForm.find('textarea').val()})
+                    data: JSON.stringify({ 'body': $thread.find('textarea').val()})
                 }).done(_.bind(function () {
-                    this.$replyForm.find('textarea').val('');
+                    $thread.find('textarea').val('');
                     this.render();
-                    messenger.notificationFlashMessage('success', 'Your reply has been created successfully.');
+                    messenger.notificationFlashMessage('success', _.__('flash.comment.reply.success'));
                 }, this)).fail(function () {
-                    messenger.notificationFlashMessage('error', 'An error occured during the creation of your reply.');
+                    messenger.notificationFlashMessage('error', _.__('flash.comment.reply.error'));
                 });
             }
         });

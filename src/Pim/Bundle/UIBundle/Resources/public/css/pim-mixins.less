@@ -46,6 +46,22 @@
               align-items: @position;
 }
 
+.align-self(@position) {
+  -webkit-box-align-self: @position;
+     -moz-box-align-self: @position;
+      -webkit-align-self: @position;
+          -ms-align-self: @position;
+              align-self: @position;
+}
+
+.justify-content(@position) {
+  -webkit-box-justify-content: @position;
+     -moz-box-justify-content: @position;
+      -webkit-justify-content: @position;
+          -ms-justify-content: @position;
+              justify-content: @position;
+}
+
 .flex-order(@order: 1) {
   -webkit-box-ordinal-group: @order;
      -moz-box-ordinal-group: @order;
