@@ -40,9 +40,6 @@ class ProductRestController
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
-
     /** @var ValidatorInterface */
     protected $validator;
 
@@ -55,7 +52,6 @@ class ProductRestController
      * @param ProductUpdaterInterface $productUpdater
      * @param SaverInterface          $productSaver
      * @param NormalizerInterface     $normalizer
-     * @param DenormalizerInterface   $denormalizer
      * @param ValidatorInterface      $validator
      * @param UserContext             $userContext
      */
@@ -65,7 +61,6 @@ class ProductRestController
         ProductUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
-        DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
         UserContext $userContext
     ) {
@@ -74,7 +69,6 @@ class ProductRestController
         $this->productUpdater    = $productUpdater;
         $this->productSaver      = $productSaver;
         $this->normalizer        = $normalizer;
-        $this->denormalizer      = $denormalizer;
         $this->validator         = $validator;
         $this->userContext       = $userContext;
     }
@@ -90,7 +84,9 @@ class ProductRestController
      */
     public function editAction($id)
     {
-        return ['product_id' => $id];
+        return [
+            'productId' => $id
+        ];
     }
 
     /**

@@ -26,9 +26,11 @@
                                     <div class="comment-meta">
                                         <span class="author"><strong><%= comment.author.fullName %></strong></span>
                                         <span class="date"><%= comment.created %></span>
-                                        <span class="remove-comment" title="Delete" data-comment-id="<%= comment.id %>">
-                                            <i class="icon-trash"></i>
-                                        </span>
+                                        <% if (comment.author.username === currentUser.username) { %>
+                                            <span class="remove-comment" title="Delete" data-comment-id="<%= comment.id %>">
+                                                <i class="icon-trash"></i>
+                                            </span>
+                                        <% } %>
                                     </div>
                                     <div>
                                         <span class="message"><%= comment.body %></span>
@@ -45,9 +47,11 @@
                                     <div class="comment-meta">
                                         <span class="author"><strong><%= reply.author.fullName %></strong></span>
                                         <span class="date"><%= reply.created %></span>
-                                        <span class="remove-comment" title="Delete" data-comment-id="<%= reply.id %>">
-                                            <i class="icon-trash"></i>
-                                        </span>
+                                        <% if (reply.author.username === currentUser.username) { %>
+                                            <span class="remove-comment" title="Delete" data-comment-id="<%= reply.id %>">
+                                                <i class="icon-trash"></i>
+                                            </span>
+                                        <% } %>
                                     </div>
                                     <div>
                                         <span class="message"><%= reply.body %></span>
@@ -59,7 +63,7 @@
                             <textarea name="body" required="required" placeholder="<%= _.__('comment.placeholder.reply') %>" class="exclude span12 input-large"></textarea>
                             <span class="comment-buttons">
                                <input class="btn cancel-comment" type="reset" value="<%= _.__('btn.cancel') %>">
-                               <button class="btn btn-success send-comment"><%= _.__('comment.reply') %></button>
+                               <button class="btn btn-success send-comment"><%= _.__('btn.reply') %></button>
                             </span>
                         </li>
                     </ol>

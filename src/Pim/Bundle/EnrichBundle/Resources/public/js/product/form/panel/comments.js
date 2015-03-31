@@ -5,11 +5,12 @@ define(
         'underscore',
         'backbone',
         'pim/form',
+        'pim/user-context',
         'text!pim/template/product/panel/comments',
         'routing',
         'oro/messenger'
     ],
-    function (_, Backbone, BaseForm, template, Routing, messenger) {
+    function (_, Backbone, BaseForm, usercontext, template, Routing, messenger) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -42,7 +43,8 @@ define(
 
                     this.$el.html(
                         this.template({
-                            comments: this.comments
+                            comments: this.comments,
+                            currentUser: usercontext.getUserContext().get('user')
                         })
                     );
                     this.delegateEvents();

@@ -57,15 +57,16 @@
                     <div id="product-edit-form">
 
                     </div>
-
                     <script>
                         require(
-                            ['jquery', 'pim/form-builder', 'pim/product-manager'],
-                            function($, FormBuilder, ProductManager) {
+                            ['jquery', 'pim/form-builder', 'pim/product-manager', 'pim/user-context'],
+                            function($, FormBuilder, ProductManager, usercontext) {
+                                usercontext.setUserContext({{ usercontext()|json_encode()|raw }});
+
                                 $(function() {
                                     $.when(
                                         FormBuilder.build('pim/product-edit-form'),
-                                        ProductManager.get({{ product_id }})
+                                        ProductManager.get({{ productId }})
                                     ).done(function(form, product) {
                                         form.setData(product);
                                         form.setElement('#product-edit-form').render();
