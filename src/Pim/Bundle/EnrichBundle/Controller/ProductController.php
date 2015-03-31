@@ -249,7 +249,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $id)
     {
-        return array();
+        return [];
     }
 
     /**

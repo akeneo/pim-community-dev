@@ -202,7 +202,7 @@ class ProductCommentRestController
      *
      * @return \Symfony\Component\Security\Core\User\UserInterface|null
      */
-    public function getUser()
+    protected function getUser()
     {
         if (null === $token = $this->securityContext->getToken()) {
             return null;
