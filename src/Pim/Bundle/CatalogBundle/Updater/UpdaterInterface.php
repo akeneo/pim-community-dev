@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Exception\UpdaterException;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 
 /**
  * Updates and validates an object
@@ -22,7 +22,7 @@ interface UpdaterInterface
      *
      * @return object
      *
-     * @throws UpdaterException
+     * @throws BusinessValidationException
      */
     public function update($object, array $data, array $options = []);
 }

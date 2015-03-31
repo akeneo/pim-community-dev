@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Bundle\CatalogBundle\Exception\UpdaterException;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
 
@@ -91,7 +91,7 @@ class AttributeOptionProcessor extends AbstractProcessor
      *
      * @return AttributeOptionInterface
      *
-     * @throws UpdaterException
+     * @throws BusinessValidationException
      */
     protected function updateAttributeOption(
         AttributeOptionInterface $attributeOption,
@@ -104,7 +104,7 @@ class AttributeOptionProcessor extends AbstractProcessor
 
         try {
             $this->optionUpdater->update($attributeOption, $convertedItem);
-        } catch (UpdaterException $exception) {
+        } catch (BusinessValidationException $exception) {
             $this->skipItemWithConstraintViolations($originalItem, $exception->getViolations());
         }
 

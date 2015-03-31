@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Exception\UpdaterException;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -51,7 +51,7 @@ class AttributeOptionUpdater implements UpdaterInterface
      *     }
      * }
      *
-     * @throws UpdaterException
+     * @throws BusinessValidationException
      */
     public function update($attributeOption, array $data, array $options = [])
     {
@@ -81,7 +81,7 @@ class AttributeOptionUpdater implements UpdaterInterface
         $updateViolations->addAll($validatorViolations);
 
         if ($updateViolations->count() > 0) {
-            throw new UpdaterException($updateViolations);
+            throw new BusinessValidationException($updateViolations);
         }
 
         return $this;
