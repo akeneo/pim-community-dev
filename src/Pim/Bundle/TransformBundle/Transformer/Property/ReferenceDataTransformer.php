@@ -28,7 +28,7 @@ class ReferenceDataTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function transform($value, array $options = [])
     {
         $value = trim($value);
         if (empty($value)) {
