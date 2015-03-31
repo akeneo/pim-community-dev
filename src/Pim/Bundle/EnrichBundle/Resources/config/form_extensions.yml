@@ -23,7 +23,7 @@ extensions:
     state:
         module: pim/product-edit-form/state
         parent: product-edit-form
-        insertAction: after
+        insertAction: before
         targetZone: meta
 
     change-family:

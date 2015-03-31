@@ -111,3 +111,7 @@ pim_enrich:
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+
+    info:
+        entity:
+            updated: There are unsaved changes.
