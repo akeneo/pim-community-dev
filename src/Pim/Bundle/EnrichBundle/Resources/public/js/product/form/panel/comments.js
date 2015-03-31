@@ -6,11 +6,10 @@ define(
         'backbone',
         'pim/form',
         'text!pim/template/product/panel/comments',
-        'text!pim/template/product/panel/comment-reply',
         'routing',
         'oro/messenger'
     ],
-    function (_, Backbone, BaseForm, template, replyForm, Routing, messenger) {
+    function (_, Backbone, BaseForm, template, Routing, messenger) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -18,7 +17,7 @@ define(
             comments: [],
             events: {
                 'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',
-                'click .comment-create .comment-btn': 'saveComment',
+                'click .comment-create .send-comment': 'saveComment',
                 'click .remove-comment' : 'removeComment',
                 'click .comment-thread .send-comment': 'saveReply',
                 'click .comment-thread .cancel-comment': 'cancelComment'
@@ -29,7 +28,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addPanel('comments', 'Comments');
+                this.getRoot().addPanel('comments', _.__('pim_comment.product.tab.comment.title'));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -82,9 +81,9 @@ define(
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
                 }).done(_.bind(function () {
                     this.render();
-                    messenger.notificationFlashMessage('success', 'Your comment has been created successfully.');
+                    messenger.notificationFlashMessage('success', _.__('flash.comment.create.success'));
                 }, this)).fail(function () {
-                    messenger.notificationFlashMessage('error', 'An error occured during the creation of your comment.');
+                    messenger.notificationFlashMessage('error', _.__('flash.comment.create.error'));
                 });
             },
             removeComment: function (event) {
@@ -95,9 +94,9 @@ define(
                     data: { _method: 'DELETE' }
                 }).done(_.bind(function () {
                     this.render();
-                    messenger.notificationFlashMessage('success', 'Your comment has been deleted successfully.');
+                    messenger.notificationFlashMessage('success', _.__('flash.comment.delete.success'));
                 }, this)).fail(function () {
-                    messenger.notificationFlashMessage('error', 'An error occured during the deletion of your comment.');
+                    messenger.notificationFlashMessage('error', _.__('flash.comment.delete.error'));
                 });
             },
             saveReply: function (event) {
@@ -117,9 +116,9 @@ define(
                 }).done(_.bind(function () {
                     $thread.find('textarea').val('');
                     this.render();
-                    messenger.notificationFlashMessage('success', 'Your reply has been created successfully.');
+                    messenger.notificationFlashMessage('success', _.__('flash.comment.reply.success'));
                 }, this)).fail(function () {
-                    messenger.notificationFlashMessage('error', 'An error occured during the creation of your reply.');
+                    messenger.notificationFlashMessage('error', _.__('flash.comment.reply.error'));
                 });
             }
         });

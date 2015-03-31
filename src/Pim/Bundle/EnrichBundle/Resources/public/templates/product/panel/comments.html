@@ -4,10 +4,10 @@
             <form class="unspaced">
                 <div class="row-fluid">
                     <div class="span12">
-                        <textarea class="new-comment-value" placeholder="Write a new comment..."></textarea>
+                        <textarea class="new-comment-value" placeholder="<%= _.__('comment.placeholder.new') %>"></textarea>
                         <span class="comment-buttons">
-                            <input class="btn cancel" type="reset" value="Cancel">
-                            <button class="btn btn-success send-comment">Add a new comment</button>
+                            <input class="btn cancel" type="reset" value="<%= _.__('btn.cancel') %>">
+                            <button class="btn btn-success send-comment"><%= _.__('btn.post') %></button>
                         </span>
                     </div>
                 </div>
@@ -56,10 +56,10 @@
                             </li>
                         <% }); %>
                         <li class="reply-to-comment">
-                            <textarea name="body" required="required" placeholder="Reply to this comment..." class="exclude span12 input-large"></textarea>
+                            <textarea name="body" required="required" placeholder="<%= _.__('comment.placeholder.reply') %>" class="exclude span12 input-large"></textarea>
                             <span class="comment-buttons">
-                               <input class="btn cancel-comment" type="reset" value="Cancel">
-                               <button class="btn btn-success send-comment">Reply</button>
+                               <input class="btn cancel-comment" type="reset" value="<%= _.__('btn.cancel') %>">
+                               <button class="btn btn-success send-comment"><%= _.__('comment.reply') %></button>
                             </span>
                         </li>
                     </ol>
@@ -67,7 +67,7 @@
             <% }); %>
         <% } else { %>
             <li class="no-data">
-                <p>No comments found</p>
+                <p><%= _.__('comment.index.empty') %></p>
             </li>
         <% } %>
     </ol>

@@ -1,3 +1,27 @@
+.justify-content(@position) {
+  -webkit-box-justify-content: @position;
+     -moz-box-justify-content: @position;
+      -webkit-justify-content: @position;
+          -ms-justify-content: @position;
+              justify-content: @position;
+}
+
+.display-flex() {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.flex(@ratio: 1) {
+  -webkit-box-flex: @ratio;
+     -moz-box-flex: @ratio;
+      -webkit-flex: @ratio;
+          -ms-flex: @ratio;
+              flex: @ratio;
+}
+
 .comment-threads {
   a {
     color: #444;
@@ -41,7 +65,8 @@
   .comment-create .comment-buttons, .comment-thread .comment-buttons {
     display: none;
     .justify-content(flex-end);
-    .flex-direction(row);
+
+
   }
 
   .active {
@@ -80,6 +105,10 @@
     &:hover {
       cursor: pointer;
     }
+  }
+
+  .no-data {
+    border: none;
   }
 }
 
