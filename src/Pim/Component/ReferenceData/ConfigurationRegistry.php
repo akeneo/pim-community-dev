@@ -54,6 +54,14 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
+    public function has($name)
+    {
+        return isset(self::$configurations[$name]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function all()
     {
         return self::$configurations;
