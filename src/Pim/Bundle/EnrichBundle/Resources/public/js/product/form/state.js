@@ -27,7 +27,7 @@ define(
             template: _.template(template),
             state: null,
             linkSelector: 'a[href^="/"]:not(".no-hash")',
-            message: _.__('There are unsaved changes'),
+            message: _.__('pim_enrich.info.entity.updated'),
             confirmationMessage: _.__(
                 'pim_enrich.confirmation.discard_changes',
                 {
