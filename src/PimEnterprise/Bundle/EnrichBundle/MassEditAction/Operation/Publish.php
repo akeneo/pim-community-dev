@@ -14,8 +14,6 @@ namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to publish products
@@ -27,12 +25,11 @@ class Publish extends AbstractMassEditOperation implements
     BatchableOperationInterface
 {
     /**
-     * @param PublishedProductManager  $manager
-     * @param SecurityContextInterface $securityContext
+     * Constructor.
      */
     public function __construct()
     {
-        $this->setActions(['publish' => true]);
+        $this->setActions([]);
     }
 
     /**
@@ -75,7 +72,7 @@ class Publish extends AbstractMassEditOperation implements
      */
     public function getBatchJobCode()
     {
-        return 'update_product_publication';
+        return 'publish_product';
     }
 
     /**

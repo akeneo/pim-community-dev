@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\BaseConnectorBundle\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductPublicationHandler;
+use PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\PublishProductHandler;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -16,7 +16,7 @@ class MassEditProductPublicationStep extends AbstractStep
     /** @var array */
     protected $configuration;
 
-    /** @var UpdateProductPublicationHandler */
+    /** @var PublishProductHandler */
     protected $handler;
 
     /**
@@ -47,7 +47,7 @@ class MassEditProductPublicationStep extends AbstractStep
     }
 
     /**
-     * @return UpdateProductPublicationHandler
+     * @return PublishProductHandler
      */
     public function getHandler()
     {
@@ -55,7 +55,7 @@ class MassEditProductPublicationStep extends AbstractStep
     }
 
     /**
-     * @param UpdateProductPublicationHandler $handler
+     * @param PublishProductHandler $handler
      */
     public function setHandler($handler)
     {
