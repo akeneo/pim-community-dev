@@ -2,6 +2,8 @@ web/bundles/*
 web/media/*
 web/css/*
 web/js/*
+web/app_local.php
+app/AppKernel_local.php
 app/archive/*
 app/cache/*
 app/config/*_local.yml
