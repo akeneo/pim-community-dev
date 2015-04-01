@@ -45,7 +45,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
             ->during(
                 'denormalize',
                 [
-                    ['code' => 'battlecruiser'],
+                    'battlecruiser',
                     'pim_reference_data_simpleselect',
                     'json',
                     ['foo' => 'bar']
@@ -53,13 +53,13 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
             );
     }
 
-    function it_throws_an_exception_if_context_attribute_is_not_an_attribute_inteface()
+    function it_throws_an_exception_if_context_attribute_is_not_an_attribute()
     {
         $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
             ->during(
                 'denormalize',
                 [
-                    ['code' => 'battlecruiser'],
+                    'battlecruiser',
                     'pim_reference_data_simpleselect',
                     'json',
                     ['attribute' => 'bar']
@@ -79,7 +79,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
 
         $this
             ->denormalize(
-                ['code' => 'battlecruiser'],
+                'battlecruiser',
                 'pim_reference_data_simpleselect',
                 'json',
                 ['attribute' => $attribute]

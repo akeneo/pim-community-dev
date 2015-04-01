@@ -52,7 +52,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
         }
 
         $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
-        $referenceData = $repository->findOneBy(['code' => $data['code']]);
+        $referenceData = $repository->findOneBy(['code' => $data]);
 
         return $referenceData;
     }
