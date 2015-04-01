@@ -28,7 +28,7 @@ define(
                             });
 
                             field.setEnabled(false);
-                            field.addElement('footer', 'coming_from_variant_group', $element);
+                            field.addElement('footer', 'updated_by', $element);
                         }
                     }, this));
                 }, this));
