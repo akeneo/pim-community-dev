@@ -9,16 +9,6 @@ parameters:
     pimee_enrich.mass_edit_handler.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UnpublishProductHandler
 
 services:
-    # Published product operator
-    pimee_enrich.mass_edit_action.operator.published_product:
-        public: false
-        parent: pim_enrich.mass_edit_action.operator
-        class: %pimee_enrich.mass_edit_action.operator.published_product.class%
-        arguments:
-            - '@pimee_workflow.manager.published_product'
-        tags:
-            - { name: pim_enrich.mass_edit_action_operator, datagrid: published-product-grid }
-
     # Published products operation
     pimee_enrich.mass_edit_action.unpublish:
         public: false
