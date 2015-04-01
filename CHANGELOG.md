@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.6 (2015-04-01)
 
 ## Bug fixes
 - PIM-2401: Association grid, add the Is associated sorter (MongoDB impl)
