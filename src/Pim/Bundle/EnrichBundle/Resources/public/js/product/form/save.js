@@ -22,7 +22,7 @@ define(
         FieldManager
     ) {
         return BaseForm.extend({
-            className: 'btn-group pull-right',
+            className: 'btn-group',
             template: _.template(template),
             events: {
                 'click .save-product': 'save',

@@ -107,6 +107,11 @@ pim_enrich:
     entity:
         product:
             title: product
+            btn:
+                enable: Enable
+                enabled: Enabled
+                disable: Disable
+                disabled: Disabled
 
     confirmation:
         leave:           Are you sure you want to leave this page?
