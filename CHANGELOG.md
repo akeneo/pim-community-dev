@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.6 (2015-04-01)
 
 ## Bug fixes
 - PIM-3935: Fix "working copy value" tooltip is always empty
