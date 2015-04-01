@@ -1,3 +1,6 @@
+parameters:
+    pim_enrich.serializer.normalizer.rule_relation.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
+
 services:
     pim_enrich.serializer.normalizer.granted_product:
         parent: pim_enrich.normalizer.product
@@ -10,5 +13,12 @@ services:
         parent: pim_serializer.normalizer.family
         calls:
             - [setFilters, [['@pimee_transform.serializer.filter.granted_attribute']]]
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }
+
+    pim_enrich.serializer.normalizer.rule_relation:
+        class: %pim_enrich.serializer.normalizer.rule_relation.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 100 }
