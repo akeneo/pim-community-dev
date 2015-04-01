@@ -11,36 +11,25 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 
 /**
  * Batch operation to unpublish products
  *
  * @author Julien Janvier <nicolas@akeneo.com>
  */
-class Unpublish extends PublishedProductMassEditOperation
+class Unpublish extends AbstractMassEditOperation implements
+    ConfigurableOperationInterface,
+    BatchableOperationInterface
 {
     /**
-     * @var PublishedProductManager
+     * Constructor.
      */
-    protected $manager;
-
-    /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
-
-    /**
-     * @param PublishedProductManager  $manager
-     * @param SecurityContextInterface $securityContext
-     */
-    public function __construct(PublishedProductManager $manager, SecurityContextInterface $securityContext)
+    public function __construct()
     {
-        $this->manager         = $manager;
-        $this->securityContext = $securityContext;
+        $this->setActions([]);
     }
 
     /**
@@ -52,51 +41,57 @@ class Unpublish extends PublishedProductMassEditOperation
     }
 
     /**
-     * The list of not granted product identifiers
-     *
-     * @return string
-     */
-    public function getNotGrantedIdentifiers()
-    {
-        /** @var PublishedProductInterface[] $publisheds */
-        $publisheds   = $this->getObjectsToMassEdit();
-        $notGranted = [];
-        foreach ($publisheds as $published) {
-            if ($this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct()) === false) {
-                $notGranted[] = (string) $published->getIdentifier();
-            }
-        }
-
-        return implode(', ', $notGranted);
-    }
-
-    /**
-     * Allows to set the form but we don't use not granted data from it
-     *
-     * @param string $notGranted
-     *
-     * @return Publish
-     */
-    public function setNotGrantedIdentifiers($notGranted)
-    {
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(PublishedProductInterface $published)
-    {
-        if ($this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct())) {
-            $this->manager->unpublish($published);
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function getAlias()
     {
-        // TODO: Implement getAlias() method.
+        return 'unpublish';
+    }
+
+    /**
+     * Get configuration to send to the BatchBundle command
+     *
+     * @return string
+     */
+    public function getBatchConfig()
+    {
+        return addslashes(
+            json_encode(
+                [
+                    'filters' => $this->getFilters(),
+                    'actions' => $this->getActions(),
+                ]
+            )
+        );
+    }
+
+    /**
+     * Get the code of the JobInstance
+     *
+     * @return string
+     */
+    public function getBatchJobCode()
+    {
+        return 'unpublish_product';
+    }
+
+    /**
+     * Get the form options to configure the operation
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return [];
+    }
+
+    /**
+     * Get the name of items this operation applies to
+     *
+     * @return string
+     */
+    public function getItemsName()
+    {
+        return 'published_product';
     }
 }

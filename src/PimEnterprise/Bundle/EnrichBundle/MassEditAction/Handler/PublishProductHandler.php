@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
@@ -13,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateProductPublicationHandler
+class PublishProductHandler extends AbstractConfigurableStepElement
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -46,16 +47,10 @@ class UpdateProductPublicationHandler
     {
         $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
-        $publish = $configuration['actions']['publish'];
 
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
-                if ($publish) {
-                    $this->manager->publish($product);
-                } else {
-                    $this->manager->unpublish($product);
-                }
-
+                $this->manager->publish($product);
                 $this->stepExecution->incrementSummaryInfo('mass_published');
                 // TODO: validation & skip
             }
@@ -64,6 +59,14 @@ class UpdateProductPublicationHandler
 
     /**
      * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [];
+    }
+
+    /**
+     * @param StepExecution $stepExecution
      */
     public function setStepExecution(StepExecution $stepExecution)
     {

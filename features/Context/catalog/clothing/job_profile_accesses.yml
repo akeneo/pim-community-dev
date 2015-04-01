@@ -45,3 +45,8 @@ job_profile_accesses:
     clothing_rule_export:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support]
+
+    publish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+    unpublish_product:
+        executeJobProfile: [IT support, Manager, Redactor]

@@ -54,5 +54,7 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     add_product_value:
         executeJobProfile: [IT support, Manager, Redactor]
-    update_product_publication:
+    publish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+    unpublish_product:
         executeJobProfile: [IT support, Manager, Redactor]

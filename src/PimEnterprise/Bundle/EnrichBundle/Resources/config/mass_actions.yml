@@ -5,40 +5,25 @@ parameters:
     pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
     pim_enrich.mass_edit_action.classify.class:                     PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
 
-    pimee_enrich.mass_edit_handler.update_product_publication.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductPublicationHandler
+    pimee_enrich.mass_edit_handler.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\PublishProductHandler
+    pimee_enrich.mass_edit_handler.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UnpublishProductHandler
 
 services:
-    # Published product operator
-    pimee_enrich.mass_edit_action.operator.published_product:
-        public: false
-        parent: pim_enrich.mass_edit_action.operator
-        class: %pimee_enrich.mass_edit_action.operator.published_product.class%
-        arguments:
-            - '@pimee_workflow.manager.published_product'
-        tags:
-            - { name: pim_enrich.mass_edit_action_operator, datagrid: published-product-grid }
-
     # Published products operation
     pimee_enrich.mass_edit_action.unpublish:
         public: false
         class: %pimee_enrich.mass_edit_action.unpublish.class%
-        arguments:
-            - '@pimee_workflow.manager.published_product'
-            - '@security.context'
         tags:
             -
                 name: pim_enrich.mass_edit_action
                 alias: unpublish
                 acl: pimee_workflow_published_product_index
-                operator: pimee_enrich.mass_edit_action.operator.published_product
+                datagrid: published-product-grid
 
     # New products operations
     pimee_enrich.mass_edit_action.publish:
         public: false
         class: %pimee_enrich.mass_edit_action.publish.class%
-        arguments:
-            - '@pimee_workflow.manager.published_product'
-            - '@security.context'
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -79,9 +64,17 @@ services:
                 acl: pim_enrich_product_categories_view
                 datagrid: product-grid
 
-    pim_enrich.mass_edit_handler.update_product_publication:
-        class: %pimee_enrich.mass_edit_handler.update_product_publication.class%
+    pim_enrich.mass_edit_handler.publish_product:
+        class: %pimee_enrich.mass_edit_handler.publish_product.class%
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pimee_workflow.manager.published_product'
+            - '@pim_enrich.product.paginator'
+
+    pim_enrich.mass_edit_handler.unpublish_product:
+        class: %pimee_enrich.mass_edit_handler.unpublish_product.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pimee_workflow.manager.published_product'
+            - '@pimee_workflow.repository.published_product'
             - '@pim_enrich.product.paginator'
