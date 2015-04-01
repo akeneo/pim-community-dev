@@ -51,14 +51,18 @@ class ProductsValidator
     }
 
     /**
-     * @param RuleInterface      $rule
-     * @param ProductInterface[] $products
+     * @param RuleInterface      $rule     Applied rule
+     * @param ProductInterface[] $products Products to validate
+     *
+     * @return ProductInterface[] Valid products
      */
     public function validate(RuleInterface $rule, array $products)
     {
-        foreach ($products as $product) {
+        $invalidProductIndexes = [];
+        foreach ($products as $index => $product) {
             $violations = $this->productValidator->validate($product);
             if ($violations->count() > 0) {
+                $invalidProductIndexes[] = $index;
                 $this->objectDetacher->detach($product);
                 $reasons = [];
                 foreach ($violations as $violation) {
@@ -70,5 +74,11 @@ class ProductsValidator
                 );
             }
         }
+
+        foreach ($invalidProductIndexes as $index) {
+            unset($products[$index]);
+        }
+
+        return $products;
     }
 }
