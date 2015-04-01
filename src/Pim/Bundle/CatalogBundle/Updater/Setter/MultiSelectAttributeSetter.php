@@ -93,7 +93,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringKeyExpected(
+                throw InvalidArgumentException::arrayStringValueExpected(
                     $attribute->getCode(),
                     $key,
                     'setter',

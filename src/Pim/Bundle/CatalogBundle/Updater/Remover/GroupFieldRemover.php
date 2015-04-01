@@ -7,56 +7,65 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Remove one or several categories from a product
+ * Remove one or several groups to a product
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryFieldRemover extends AbstractFieldRemover
+class GroupFieldRemover extends AbstractFieldRemover
 {
     /** @var IdentifiableObjectRepositoryInterface */
-    protected $categoryRepository;
+    protected $groupRepository;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param array                                 $supportedFields
      */
     public function __construct(
-        IdentifiableObjectRepositoryInterface $categoryRepository,
+        IdentifiableObjectRepositoryInterface $groupRepository,
         array $supportedFields
     ) {
-        $this->categoryRepository = $categoryRepository;
-        $this->supportedFields    = $supportedFields;
+        $this->groupRepository = $groupRepository;
+        $this->supportedFields = $supportedFields;
     }
 
     /**
      * {@inheritdoc}
      *
-     * Expected data input format : ["category_code", "another_category_code"]
+     * Expected data input format : ["group_code", "another_group_code"]
      */
     public function removeFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
 
-        $categories = [];
-        foreach ($data as $categoryCode) {
-            $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+        $groups = [];
+        foreach ($data as $groupCode) {
+            $group = $this->groupRepository->findOneByIdentifier($groupCode);
 
-            if (null === $category) {
+            if (null === $group) {
                 throw InvalidArgumentException::expected(
                     $field,
-                    'existing category code',
+                    'existing group code',
                     'remover',
-                    'category',
-                    $categoryCode
+                    'groups',
+                    $groupCode
                 );
             }
-            $categories[] = $category;
+            if ($group->getType()->isVariant()) {
+                throw InvalidArgumentException::expected(
+                    $field,
+                    'non variant group code',
+                    'remover',
+                    'groups',
+                    $groupCode
+                );
+            }
+            $groups[] = $group;
         }
 
-        foreach ($categories as $categoryToRemove) {
-            $product->removeCategory($categoryToRemove);
+        foreach ($groups as $group) {
+            $product->removeGroup($group);
         }
     }
 
@@ -72,7 +81,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
             throw InvalidArgumentException::arrayExpected(
                 $field,
                 'remover',
-                'category',
+                'groups',
                 gettype($data)
             );
         }
@@ -83,7 +92,7 @@ class CategoryFieldRemover extends AbstractFieldRemover
                     $field,
                     $key,
                     'remover',
-                    'category',
+                    'groups',
                     gettype($value)
                 );
             }

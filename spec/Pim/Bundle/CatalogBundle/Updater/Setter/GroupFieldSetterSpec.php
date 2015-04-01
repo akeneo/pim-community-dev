@@ -33,7 +33,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface');
     }
 
-    function it_supports_categories_field() {
+    function it_supports_groups_field() {
         $this->supportsField('groups')->shouldReturn(true);
         $this->supportsField('categories')->shouldReturn(false);
     }
@@ -50,7 +50,7 @@ class GroupFieldSetterSpec extends ObjectBehavior
         )->during('setFieldData', [$product, 'groups', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
                 'setter',
