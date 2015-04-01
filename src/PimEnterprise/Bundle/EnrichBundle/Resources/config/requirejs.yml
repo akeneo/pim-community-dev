@@ -6,3 +6,10 @@ config:
         pim/config-manager:               pimenterpriseenrich/js/product/config-manager
         pim/permission-manager:           pimenterpriseenrich/js/product/permission-manager
         pim/product-edit-form/attributes: pimenterpriseenrich/js/product/form/attributes
+        pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager
+
+        # Form extensions
+        pimee/product-edit-form/attributes/smart-attribute: pimenterpriseenrich/js/product/form/attributes/smart-attribute
+
+        # Templates
+        pimee/template/product/tab/attribute/smart-attribute: pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html

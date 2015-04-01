@@ -1,0 +1,5 @@
+extensions:
+    smart-attribute:
+        module: pimee/product-edit-form/attributes/smart-attribute
+        parent: attributes
+        targetZone: attributes
