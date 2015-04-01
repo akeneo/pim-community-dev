@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Filter;
 
+use Doctrine\Common\Cache\Cache;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
@@ -43,19 +44,27 @@ class FilterExtension extends AbstractExtension
      */
     protected $adapterResolver;
 
+    /** @var  Cache */
+    protected $cache;
+
     /**
      * @param RequestParameters         $requestParams
      * @param TranslatorInterface       $translator
      * @param DatasourceAdapterResolver $adapterResolver
+     * @param Cache                     $cache
      */
     public function __construct(
         RequestParameters $requestParams,
         TranslatorInterface $translator,
-        DatasourceAdapterResolver $adapterResolver
+        DatasourceAdapterResolver $adapterResolver,
+        Cache $cache
     ) {
         $this->translator = $translator;
         $this->adapterResolver = $adapterResolver;
+
         parent::__construct($requestParams);
+
+        $this->cache = $cache;
     }
 
     /**
@@ -117,31 +126,45 @@ class FilterExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $filtersState    = $data->offsetGetByPath('[state][filters]', []);
-        $filtersMetaData = [];
+        $cache = $this->cache;
+        $cacheKey = ('filterExtension');
+        $cachedData = $cache->fetch($cacheKey);
 
-        $filters = $this->getFiltersToApply($config);
-        $values  = $this->getValuesToApply($config);
+        if (false === $cachedData) {
+            $filtersState    = $data->offsetGetByPath('[state][filters]', []);
+            $filtersMetaData = [];
 
-        foreach ($filters as $filter) {
-            $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
+            $filters = $this->getFiltersToApply($config);
+            $values  = $this->getValuesToApply($config);
 
-            if ($value !== false) {
-                $form = $filter->getForm();
-                if (!$form->isSubmitted()) {
-                    $form->submit($value);
+            foreach ($filters as $filter) {
+                $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
+
+                if ($value !== false) {
+                    $form = $filter->getForm();
+                    if (!$form->isSubmitted()) {
+                        $form->submit($value);
+                    }
+
+                    if ($form->isValid()) {
+                        $filtersState[$filter->getName()] = $value;
+                    }
                 }
 
-                if ($form->isValid()) {
-                    $filtersState[$filter->getName()] = $value;
-                }
+                $metadata          = $filter->getMetadata();
+                $filtersMetaData[] = array_merge(
+                    $metadata,
+                    ['label' => $this->translator->trans($metadata['label'])]
+                );
             }
-
-            $metadata          = $filter->getMetadata();
-            $filtersMetaData[] = array_merge(
-                $metadata,
-                ['label' => $this->translator->trans($metadata['label'])]
-            );
+            $cachedData = [
+                'state' => $filtersState,
+                'metadata' =>$filtersMetaData
+            ];
+            $cache->save($cacheKey, $cachedData, 30);
+        } else {
+            $filtersState    = $cachedData['state'];
+            $filtersMetaData = $cachedData['metadata'];
         }
 
         $data->offsetAddToArray('state', ['filters' => $filtersState])

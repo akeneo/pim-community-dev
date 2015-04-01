@@ -25,6 +25,7 @@
         "doctrine/common": "2.5.0",
         "doctrine/data-fixtures": "1.1.1",
         "doctrine/doctrine-bundle": "1.4.0",
+        "doctrine/doctrine-cache-bundle": "1.0.1",
         "doctrine/doctrine-fixtures-bundle": "2.2.0",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "doctrine/migrations": "1.0.0-alpha3@alpha",

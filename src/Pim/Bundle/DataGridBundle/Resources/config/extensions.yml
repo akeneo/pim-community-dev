@@ -11,6 +11,7 @@ services:
             - '@oro_datagrid.datagrid.request_params'
             - '@translator'
             - '@pim_datagrid.datasource.adapter_resolver'
+            - '@doctrine_cache.providers.pim_apc_metadata_cache'
         tags:
              - { name: oro_datagrid.extension }
 

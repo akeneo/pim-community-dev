@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Doctrine\Common\Cache\Cache;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
@@ -38,6 +39,9 @@ class ConfigureProductGridListener
      */
     protected $sortersConfigurator;
 
+    /** @var  Cache */
+    protected $cache;
+
     /**
      * Constructor
      *
@@ -45,17 +49,20 @@ class ConfigureProductGridListener
      * @param ColumnsConfigurator $columnsConfigurator
      * @param FiltersConfigurator $filtersConfigurator
      * @param SortersConfigurator $sortersConfigurator
+     * @param Cache               $cache
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,
         ColumnsConfigurator $columnsConfigurator,
         FiltersConfigurator $filtersConfigurator,
-        SortersConfigurator $sortersConfigurator
+        SortersConfigurator $sortersConfigurator,
+        Cache $cache
     ) {
         $this->contextConfigurator = $contextConfigurator;
         $this->columnsConfigurator = $columnsConfigurator;
         $this->filtersConfigurator = $filtersConfigurator;
         $this->sortersConfigurator = $sortersConfigurator;
+        $this->cache               = $cache;
     }
 
     /**
@@ -67,21 +74,21 @@ class ConfigureProductGridListener
      */
     public function buildBefore(BuildBefore $event)
     {
+        $cache = $this->cache;
         $datagridConfig = $event->getConfig();
-        $cacheFile = '/tmp/datagrid.context.cache.'.$datagridConfig->getName();
-
-        if (file_exists($cacheFile)) {
-            $cachedParams = unserialize(file_get_contents($cacheFile));
-            foreach($cachedParams as $name => $value) {
-                $datagridConfig->offsetSet($name, $value);
-            }
-        } else {
+        $cacheKey = ('product-grid.config');
+        $cachedData = $cache->fetch($cacheKey);
+        if (false === $cachedData) {
             $this->getContextConfigurator()->configure($datagridConfig);
             $this->getColumnsConfigurator()->configure($datagridConfig);
             $this->getSortersConfigurator()->configure($datagridConfig);
             $this->getFiltersConfigurator()->configure($datagridConfig);
-            $cachedParams = $datagridConfig->toArray();
-            file_put_contents($cacheFile, serialize($cachedParams));
+            $cachedData = $datagridConfig->toArray();
+            $cache->save($cacheKey, $cachedData, 30);
+        } else {
+            foreach($cachedData as $name => $value) {
+                $datagridConfig->offsetSet($name, $value);
+            }
         }
     }
 
