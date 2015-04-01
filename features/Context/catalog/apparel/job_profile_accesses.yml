@@ -48,3 +48,8 @@ job_profile_accesses:
     variant_group_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+
+    publish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+    unpublish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
