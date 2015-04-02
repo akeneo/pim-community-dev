@@ -28,7 +28,7 @@ class ReferenceDataIdResolver
      * Resolve reference data IDs from codes
      *
      * @param string $referenceData reference data name
-     * @param mixed  $codes a code or an array of code
+     * @param mixed  $codes         a code or an array of code
      *
      * @return mixed, a reference data ID or an array of reference data IDs
      */

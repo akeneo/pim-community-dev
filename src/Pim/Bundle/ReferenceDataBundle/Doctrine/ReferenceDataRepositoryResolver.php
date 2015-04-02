@@ -20,6 +20,10 @@ class ReferenceDataRepositoryResolver
     /** @var RegistryInterface */
     protected $doctrineRegistry;
 
+    /**
+     * @param ConfigurationRegistryInterface $configurationRegistry
+     * @param RegistryInterface              $doctrineRegistry
+     */
     public function __construct(
         ConfigurationRegistryInterface $configurationRegistry,
         RegistryInterface $doctrineRegistry
@@ -29,7 +33,7 @@ class ReferenceDataRepositoryResolver
     }
 
     /**
-     * @param $referenceData
+     * @param string $referenceData
      *
      * @return \Doctrine\Common\Persistence\ObjectRepository
      */

@@ -51,9 +51,9 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $this->checkData($attribute, $data);
 
         $referenceDataCollection = [];
-        foreach ($data as $referenceDataCode) {
+        $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
 
-            $repository = $this->repositoryResolver->resolve($attribute->getReferenceDataName());
+        foreach ($data as $referenceDataCode) {
             $referenceData = $repository->findOneBy(['code' => $referenceDataCode]);
 
             if (null === $referenceData) {
@@ -69,7 +69,6 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
 
             $referenceDataCollection[] = $referenceData;
         }
-
 
         $this->setReferenceDataCollection($attribute, $product, $referenceDataCollection, $options['locale'], $options['scope']);
     }
