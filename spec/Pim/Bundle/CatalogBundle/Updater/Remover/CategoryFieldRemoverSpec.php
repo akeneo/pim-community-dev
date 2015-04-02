@@ -64,7 +64,7 @@ class CategoryFieldRemoverSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new InvalidArgumentException(
-                'Attribute or field "categories" expects an array with string data for the key "0", "integer" given (for remover category).'
+                'Attribute or field "categories" expects an array with a string value for the key "0", "integer" given (for remover category).'
             )
         )->duringRemoveFieldData($bookProduct, 'categories', [42]);
     }
