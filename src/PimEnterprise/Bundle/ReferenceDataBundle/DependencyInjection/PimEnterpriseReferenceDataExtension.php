@@ -23,5 +23,6 @@ class PimEnterpriseReferenceDataExtension extends Extension
         $loader->load('services.yml');
         $loader->load('publishers.yml');
         $loader->load('presenters.yml');
+        $loader->load('comparators.yml');
     }
 }
