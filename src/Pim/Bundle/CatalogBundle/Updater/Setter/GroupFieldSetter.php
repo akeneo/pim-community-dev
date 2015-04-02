@@ -95,7 +95,7 @@ class GroupFieldSetter extends AbstractFieldSetter
 
         foreach ($data as $key => $value) {
             if (!is_string($value)) {
-                throw InvalidArgumentException::arrayStringKeyExpected(
+                throw InvalidArgumentException::arrayStringValueExpected(
                     $field,
                     $key,
                     'setter',

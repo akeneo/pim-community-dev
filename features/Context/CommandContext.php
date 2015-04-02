@@ -60,7 +60,6 @@ class CommandContext extends RawMinkContext
      */
     public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {
-
         $application = new Application();
         $application->add(new UpdateProductCommand());
         $application->add(new GetProductCommand());
@@ -82,15 +81,25 @@ class CommandContext extends RawMinkContext
                 ]
             );
 
-            $getCommandTester->execute(
-                [
-                    'command'    => $getCommand->getName(),
-                    'identifier' => $update['product']
-                ]
-            );
-
             $expected = json_decode($update['result'], true);
-            $actual   = json_decode($getCommandTester->getDisplay(), true);
+            if (isset($expected['product'])) {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $expected['product']
+                    ]
+                );
+                unset($expected['product']);
+            } else {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $update['product']
+                    ]
+                );
+            }
+
+            $actual = json_decode($getCommandTester->getDisplay(), true);
 
             if (null === $actual) {
                 throw new \Exception(sprintf(

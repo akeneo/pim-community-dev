@@ -114,7 +114,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $resolver = new OptionsResolver();
         $resolver->setRequired(['type']);
-        $resolver->setAllowedValues(['type' => ['set_data', 'copy_data', 'add_data']]);
+        $resolver->setAllowedValues(['type' => ['set_data', 'copy_data', 'add_data', 'remove_data']]);
         $resolver->setOptional(
             [
                 'field',
@@ -142,12 +142,20 @@ class UpdateProductCommand extends ContainerAwareCommand
 
         foreach ($updates as $update) {
             $update = $resolver->resolve($update);
-            if ('set_data' === $update['type']) {
-                $this->applySetData($product, $update);
-            } elseif ('copy_data' === $update['type']) {
-                $this->applyCopyData($product, $update);
-            } else {
-                $this->applyAddData($product, $update);
+
+            switch ($update['type']) {
+                case 'set_data':
+                    $this->applySetData($product, $update);
+                    break;
+                case 'copy_data':
+                    $this->applyCopyData($product, $update);
+                    break;
+                case 'add_data':
+                    $this->applyAddData($product, $update);
+                    break;
+                case 'remove_data':
+                    $this->applyRemoveData($product, $update);
+                    break;
             }
         }
     }
@@ -204,6 +212,21 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
+     * @param ProductInterface $product
+     * @param array            $update
+     */
+    protected function applyRemoveData(ProductInterface $product, array $update)
+    {
+        $updater = $this->getUpdater();
+        $updater->removeData(
+            $product,
+            $update['field'],
+            $update['data'],
+            ['locale' => $update['locale'], 'scope' => $update['scope']]
+        );
+    }
+
+    /**
      * @return ProductUpdaterInterface
      */
     protected function getUpdater()
@@ -214,7 +237,7 @@ class UpdateProductCommand extends ContainerAwareCommand
     /**
      * @param ProductInterface $product
      *
-     * @return ConstraintViolationListInterface
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */
     protected function validate(ProductInterface $product)
     {

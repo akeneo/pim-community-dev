@@ -78,7 +78,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
         $data = ['foo' => ['bar' => 'baz']];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'attributeCode',
                 'foo',
                 'setter',

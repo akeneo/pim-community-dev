@@ -48,23 +48,23 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * {@inheritdoc}
      *
      * Expected data input format :
-     *     "associations": {
-     *          "XSELL": {
-     *              "groups": ["group1", "group2"],
-     *              "products": ["AKN_TS1", "AKN_TSH2"]
-     *          },
-     *          "UPSELL": {
-     *              "groups": ["group3", "group4"],
-     *              "products": ["AKN_TS3", "AKN_TSH4"]
-     *          },
-     *      }
+     * {
+     *     "XSELL": {
+     *         "groups": ["group1", "group2"],
+     *         "products": ["AKN_TS1", "AKN_TSH2"]
+     *     },
+     *     "UPSELL": {
+     *         "groups": ["group3", "group4"],
+     *         "products": ["AKN_TS3", "AKN_TSH4"]
+     *     },
+     * }
      */
     public function setFieldData(ProductInterface $product, $field, $data, array $options = [])
     {
         $this->checkData($field, $data);
         $this->clearAssociations($product);
         $this->addMissingAssociations($product);
-        $this->setAssociations($product, $data);
+        $this->setProductsAndGroupsToAssociations($product, $data);
     }
 
     /**
@@ -99,7 +99,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
      *
      * @param ProductInterface $product
      */
-    protected function setAssociations(ProductInterface $product, $data)
+    protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
     {
         foreach ($data as $typeCode => $items) {
             $association = $product->getAssociationForTypeCode($typeCode);
