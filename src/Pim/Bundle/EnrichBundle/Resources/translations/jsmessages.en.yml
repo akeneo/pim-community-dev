@@ -112,6 +112,17 @@ pim_enrich:
                 enabled: Enabled
                 disable: Disable
                 disabled: Disabled
+            history:
+                version: Version
+                author: Author
+                logged_at: Logged at
+                more: More
+                from: From
+                modified: Modified
+                property: Property
+                old_values: Old values
+                new_values: New values
+                actions: Actions
 
     confirmation:
         leave:           Are you sure you want to leave this page?

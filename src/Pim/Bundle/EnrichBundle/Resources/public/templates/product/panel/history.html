@@ -1,20 +1,20 @@
 <table class="table table-condensed table-bordered table-hover table-history">
     <thead>
         <tr>
-            <th>Version</th>
-            <th>Author</th>
-            <th>Date</th>
+            <th class="version"><%= _.__('pim_enrich.entity.product.history.version') %></th>
+            <th class="author"><%= _.__('pim_enrich.entity.product.history.author') %></th>
+            <th class="logged-at"><%= _.__('pim_enrich.entity.product.history.logged_at') %></th>
         </tr>
     </thead>
     <tbody>
-        <% _.each(versions, function(version, index) { %>
-            <tr data-version="<%= version.version %>">
-                <td><%= version.version %></td>
-                <td><%= version.author %><%= version.context ? ' (' + version.context + ')' : '' %></td>
-                <td><%= version.logged_at %></td>
+        <% _.each(versions, function(version) { %>
+            <tr data-version="<%= version.version %>" class="product-version">
+                <td class="version"><%= version.version %></td>
+                <td class="author"><%= version.author %><%= version.context ? ' (' + version.context + ')' : '' %></td>
+                <td class="logged_at"><%= version.logged_at %></td>
             </tr>
         <% }); %>
     </tbody>
 </table>
 
-<button id="expand-history" class="btn btn-default pull-right">More</button>
+<button class="btn btn-default pull-right expand-history"><%= _.__('pim_enrich.entity.product.history.more') %></button>

@@ -1,16 +1,17 @@
 <table class="table table-condensed table-bordered table-hover">
     <thead>
         <tr>
-            <th>Version</th>
-            <th>Author</th>
-            <th>From</th>
-            <th>Logged at</th>
-            <th>Modified</th>
+            <th class="version"><%= _.__('pim_enrich.entity.product.history.version') %></th>
+            <th class="author"><%= _.__('pim_enrich.entity.product.history.author') %></th>
+            <th class="context"><%= _.__('pim_enrich.entity.product.history.from') %></th>
+            <th class="logged-at"><%= _.__('pim_enrich.entity.product.history.logged_at') %></th>
+            <th class="changes"><%= _.__('pim_enrich.entity.product.history.modified') %></th>
+            <% if (hasAction) { %><th class="actions"><%= _.__('pim_enrich.entity.product.history.actions') %></th><% } %>
         </tr>
     </thead>
     <tbody>
-        <% _.each(versions, function(version, index) { %>
-            <tr data-version="<%= index %>">
+        <% _.each(versions, function(version) { %>
+            <tr data-version-id="<%= version.id %>" class="product-version">
                 <td class="version">
                     <span>
                         <i class="icon-chevron-right"></i>
@@ -21,23 +22,24 @@
                 <td class="context"><%= version.context %></td>
                 <td class="logged-at"><%= version.logged_at %></td>
                 <td class="changes"><%= _.keys(version.changeset).join(', ') %></td>
+                <% if (hasAction) { %><td class="actions"></td><% } %>
             </tr>
             <tr class="changeset hide">
-                <td colspan="5">
+                <td colspan="<%= hasAction ? '6' : '5' %>">
                     <table class="table table-condensed table-bordered table-hover table-history-details">
                         <thead>
                             <tr>
-                                <th>Property</th>
-                                <th>Old values</th>
-                                <th>New values</th>
+                                <th class="property"><%= _.__('pim_enrich.entity.product.history.property') %></th>
+                                <th class="old-values"><%= _.__('pim_enrich.entity.product.history.old_values') %></th>
+                                <th class="new-values"><%= _.__('pim_enrich.entity.product.history.new_values') %></th>
                             </tr>
                         </thead>
                         <tbody>
                             <% _.each(version.changeset, function(value, key) { %>
                                 <tr>
-                                    <td><%= key %></td>
-                                    <td><%= value.old %></td>
-                                    <td><%= value.new %></td>
+                                    <td class="property"><%= key %></td>
+                                    <td class="old-values"><%= value.old %></td>
+                                    <td class="onew-values"><%= value.new %></td>
                                 </tr>
                             <% }); %>
                         </tbody>

@@ -18,8 +18,14 @@ define(
             className: 'panel-pane',
             code: 'history',
             versions: [],
+            actions: {},
             events: {
-                'click #expand-history': 'showHistoryModal'
+                'click .expand-history': 'showHistoryModal'
+            },
+            initialize: function() {
+                this.actions = {};
+
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
                 this.getRoot().addPanel('history', 'History');
@@ -39,6 +45,8 @@ define(
                             })
                         );
                         this.delegateEvents();
+
+                        this.renderExtensions();
                     }, this));
                 }
 
@@ -57,7 +65,11 @@ define(
                     )
                 );
             },
+            addAction: function(code, element) {
+                this.actions[code] = element;
+            },
             showHistoryModal: function () {
+                mediator.trigger('history:history_modal:before_open');
                 var modal = new Backbone.BootstrapModal({
                     className: 'modal modal-large history-modal',
                     modalOptions: {
@@ -68,11 +80,18 @@ define(
                     okCloses: true,
                     cancelText: 'Close',
                     title: 'Product history',
-                    content: this.modalTemplate({ versions: this.versions }),
+                    content: this.modalTemplate({ versions: this.versions, hasAction: this.actions }),
                     okText: 'Close'
                 });
 
+
                 modal.open();
+                _.each(modal.$el.find('td.actions'), _.bind(function(element) {
+                    _.each(this.actions, _.bind(function(action) {
+                        $(element).append(action.clone(true));
+                    }, this));
+                }, this));
+                mediator.trigger('history:history_modal:after_open', {'modal': modal});
 
                 modal.$el.on('click', 'tbody tr:not(.changeset)', function (event) {
                     var $row = $(event.currentTarget);
