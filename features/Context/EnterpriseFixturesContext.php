@@ -664,6 +664,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             case 'pim_catalog_date':
             case 'pim_catalog_identifier':
             case 'pim_catalog_simpleselect':
+            case 'pim_reference_data_simpleselect':
                 $value = (string) $data;
                 break;
             case 'pim_catalog_number':
@@ -674,7 +675,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $value = ['unit' => $values[1], 'data' => $values[0]];
                 break;
             case 'pim_catalog_multiselect':
-                $value = explode(',', $data);
+            case 'pim_reference_data_multiselect':
+                $value = explode(',', str_replace(' ', '', $data));
                 break;
             case 'pim_catalog_price_collection':
                 $values = explode(',', $data);
