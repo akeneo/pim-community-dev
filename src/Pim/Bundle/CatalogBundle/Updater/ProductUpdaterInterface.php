@@ -57,6 +57,18 @@ interface ProductUpdaterInterface
     );
 
     /**
+     * Removes a data in a product field (only provided data will be removed)
+     *
+     * @param ProductInterface $product The product to update
+     * @param string           $field   The field to update
+     * @param mixed            $data    The data to remove
+     * @param array            $options Options to pass to the remover
+     *
+     * @return ProductUpdaterInterface
+     */
+    public function removeData(ProductInterface $product, $field, $data, array $options = []);
+
+    /**
      * Sets the data in values of many products
      *
      * @param ProductInterface[] $products

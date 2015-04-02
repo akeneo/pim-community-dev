@@ -37,11 +37,11 @@ interface VersionRepositoryInterface
      *
      * @param string  $resourceName
      * @param string  $resourceId
-     * @param boolean $pending
+     * @param bool    $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($resourceName, $resourceId, $pending);
+    public function getNewestLogEntry($resourceName, $resourceId, $pending = false);
 
     /**
      * Returns pending versions

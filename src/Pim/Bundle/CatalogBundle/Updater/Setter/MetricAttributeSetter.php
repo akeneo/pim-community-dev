@@ -113,7 +113,7 @@ class MetricAttributeSetter extends AbstractAttributeSetter
         }
 
         if (!is_string($data['unit'])) {
-            throw InvalidArgumentException::arrayStringKeyExpected(
+            throw InvalidArgumentException::arrayStringValueExpected(
                 $attribute->getCode(),
                 'unit',
                 'setter',
