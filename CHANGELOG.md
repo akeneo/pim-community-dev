@@ -72,12 +72,17 @@
 
 # 1.3.x
 
+# 1.3.6 (2015-04-01)
+
 ## Bug fixes
 - PIM-2401: Association grid, add the Is associated sorter (MongoDB impl)
 - PIM-3926: Set explicit message for 403 error
 - PIM-3938: Querying products with PQB and using Sorters will not return an ordered Cursor
 - PIM-3956: Fix user can add an attribute in a group even if he does not have the permission
 - PIM-3965: Fix groups without labels are not displayed in the product grid cell
+- PIM-3971: Cache results for Select2 on product edit form
+- PIM-4017: Fix save an empty media attribute with variant group
+- PIM-3931: Remove db query from CsvReader constructor
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber` to include `Oro\Bundle\SecurityBundle\SecurityFacade`and `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`
