@@ -148,8 +148,8 @@ class AddProductValueHandlerSpec extends ObjectBehavior
 
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalledTimes(2);
-        $stepExecution->incrementSummaryInfo('skip_products')->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('mass_edited')->shouldNotBeCalled(2);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
 
         $productUpdater->addData($product1, 'categories', ['office', 'bedroom'])->shouldBeCalled();
         $productUpdater->addData($product2, 'categories', ['office', 'bedroom'])->shouldBeCalled();
@@ -157,10 +157,9 @@ class AddProductValueHandlerSpec extends ObjectBehavior
         $stepExecution->addWarning('add_product_value_handler', Argument::any(), [], $product1)->shouldBeCalledTimes(2);
         $stepExecution->addWarning('add_product_value_handler', Argument::any(), [], $product2)->shouldBeCalledTimes(2);
 
-        $objectDetacher->detach($product1)->shouldBeCalled();
-        $objectDetacher->detach($product2)->shouldBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
 
-        $productSaver->saveAll([$product1, $product2], Argument::type('array'))->shouldBeCalled();
+        $productSaver->saveAll([], Argument::type('array'))->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 

@@ -19,72 +19,14 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I am on the products page
     And I mass-edit products moon_boots, gold_sandals and sneakers
     And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    You cannot group the following products (moon_boots) because they are already in a variant group or doesn't have the group axis.
-    """
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
     Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
-
-  @javascript
-  Scenario: Filters variant groups not having all their attributes in common with products
-    Given the following product groups:
-      | code        | label            | axis                  | type    |
-      | magic_shoes | Some magic shoes | length, color         | VARIANT |
-      | ultra_shoes | Ultra shoes      | handmade, color, size | VARIANT |
-    And I am logged in as "Julia"
-    And I am on the products page
-    When I mass-edit products moon_boots, gold_sandals and sneakers
-    And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    The following variant groups have been skipped because they don't share attributes with selected products : Similar boots [similar_boots], Some magic shoes [magic_shoes], Ultra shoes [ultra_shoes]
-    """
-    And the field "Group" should have the following options:
-    """
-    Caterpillar boots
-    """
-    When I select the "Caterpillar boots" variant group
-    And I move on to the next step
-    Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
-
-  @javascript
-  Scenario: No valid variant group based on product attributes is available for mass assign
-    Given the following families:
-      | code      |
-      | computers |
-      | watches   |
-    And the following products:
-      | sku        | family    |
-      | gold_watch | watches   |
-      | laptop     | computers |
-    And I am logged in as "Julia"
-    And I am on the products page
-    When I mass-edit products gold_watch, laptop
-    And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    No variant group is sharing attributes with selected products.
-    """
-    And I should see:
-    """
-    The following variant groups have been skipped because they don't share attributes with selected products : Caterpillar boots [caterpillar_boots]
-    """
-
-  @javascript
-  Scenario: No variant group is available for mass assign
-    Given I am logged in as "Julia"
-    And I am on the variant groups page
-    And I click on the "Delete" action of the row which contains "caterpillar_boots"
-    And I confirm the deletion
-    And I am on the products page
-    When I mass-edit products moon_boots, sandals and sneakers
-    And I choose the "Add to a variant group" operation
-    Then I should see:
-    """
-    No variant group for now. Please start by creating a variant group.
-    """
+    When I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message            |
+      | success | Mass edit finished |
 
   @javascript
   Scenario: BlaBla blublu
@@ -102,6 +44,15 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
-    And I wait 3 seconds
-    And I am on the variant groups page
-    
+    When I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message                          |
+      | warning | Mass edit finished with warnings |
+    Then I go on the last executed job resume of "update_product_value"
+    And I should see "The product \"gold_watch\" is in the variant group \"caterpillar_boots\" but it misses the following axes: size, color.: gold_watch"
+    And I should see "Group \"[caterpillar_boots]\" already contains another product with values \"\": gold_watch"
+    And I should see "The product \"laptop\" is in the variant group \"caterpillar_boots\" but it misses the following axes: size, color.: laptop"
+    And I should see "Group \"[caterpillar_boots]\" already contains another product with values \"\": laptop"
+    And I should see "skipped products 2"
+    And I should see "first warnings displayed 4/4"

@@ -143,8 +143,8 @@ class UpdateProductHandlerSpec extends ObjectBehavior
 
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalledTimes(2);
-        $stepExecution->incrementSummaryInfo('skip_products')->shouldBeCalledTimes(2);
+        $stepExecution->incrementSummaryInfo('mass_edited')->shouldNotBeCalled(2);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
 
         $productUpdater->setData($product1, 'enabled', false)->shouldBeCalled();
         $productUpdater->setData($product2, 'enabled', false)->shouldBeCalled();
@@ -152,10 +152,9 @@ class UpdateProductHandlerSpec extends ObjectBehavior
         $stepExecution->addWarning('update_product_handler', Argument::any(), [], $product1)->shouldBeCalledTimes(2);
         $stepExecution->addWarning('update_product_handler', Argument::any(), [], $product2)->shouldBeCalledTimes(2);
 
-        $objectDetacher->detach($product1)->shouldBeCalled();
-        $objectDetacher->detach($product2)->shouldBeCalled();
+        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
 
-        $productSaver->saveAll([$product1, $product2], Argument::type('array'))->shouldBeCalled();
+        $productSaver->saveAll([], Argument::type('array'))->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 

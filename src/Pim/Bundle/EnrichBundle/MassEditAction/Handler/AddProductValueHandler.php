@@ -85,18 +85,14 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
 
                 if (0 < $violations->count()) {
                     $this->addWarningMessage($violations, $product);
-                    $this->stepExecution->incrementSummaryInfo('skip_products');
-                    $this->objectDetacher->detach($product);
-                    $invalidProducts[] = $index;
+                    $this->stepExecution->incrementSummaryInfo('skipped_products');
+                    $invalidProducts[$index] = $product;
                 } else {
                     $this->stepExecution->incrementSummaryInfo('mass_edited');
                 }
             }
 
-            foreach ($invalidProducts as $index) {
-                unset($productsPage[$index]);
-            }
-
+            $productsPage = array_diff_key($productsPage, $invalidProducts);
             $this->detachProducts($invalidProducts);
             $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
             $this->detachProducts($productsPage);
@@ -206,7 +202,7 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
             // for instance cf VariantGroupAxis
             $invalidValue = $violation->getInvalidValue();
             if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string)$invalidValue;
+                $invalidValue = (string) $invalidValue;
             } elseif (is_object($invalidValue)) {
                 $invalidValue = get_class($invalidValue);
             }
