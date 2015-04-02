@@ -3,19 +3,17 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 class ReferenceDataDenormalizerSpec extends ObjectBehavior
 {
-    function let(ConfigurationRegistryInterface $registry, RegistryInterface $doctrine)
+    function let(ReferenceDataRepositoryResolver $resolver)
     {
-        $this->beConstructedWith(['pim_reference_data_simpleselect'], $registry, $doctrine);
+        $this->beConstructedWith(['pim_reference_data_simpleselect'], $resolver);
     }
 
     function it_is_initializable()
@@ -43,7 +41,7 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
         $this->denormalize([], 'pim_reference_data_simpleselect', 'csv')->shouldReturn(null);
     }
 
-    function it_throws_an_exception_if_context_value_is_not_a_product_value_inteface()
+    function it_throws_an_exception_if_context_value_is_not_a_product_value_interface()
     {
         $this->shouldThrow('Symfony\Component\Routing\Exception\InvalidParameterException')
             ->during(
@@ -72,22 +70,16 @@ class ReferenceDataDenormalizerSpec extends ObjectBehavior
     }
 
     function it_denormalizes_data_into_reference_data(
-        $registry,
-        $doctrine,
+        $resolver,
         AttributeInterface $attribute,
         ReferenceDataInterface $battlecruiser,
-        ConfigurationInterface $referenceDataConf,
         ReferenceDataRepository $referenceDataRepo,
         ProductValueInterface $productValue
     ) {
         $attribute->getReferenceDataName()->willReturn('starship');
         $productValue->getAttribute()->willReturn($attribute);
-
-        $referenceDataConf->getClass()->willReturn('My\Powerfull\Starship');
-        $registry->get('starship')->willReturn($referenceDataConf);
-
+        $resolver->resolve('starship')->willReturn($referenceDataRepo);
         $referenceDataRepo->findOneBy(['code' => 'battlecruiser'])->willReturn($battlecruiser);
-        $doctrine->getRepository('My\Powerfull\Starship')->willReturn($referenceDataRepo);
 
         $this
             ->denormalize(

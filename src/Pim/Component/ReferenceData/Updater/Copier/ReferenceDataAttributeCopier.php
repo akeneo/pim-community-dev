@@ -1,21 +1,23 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater\Copier;
+namespace Pim\Component\ReferenceData\Updater\Copier;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Updater\Copier\AbstractAttributeCopier;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Component\ReferenceData\MethodNameGuesser;
 
 /**
- * Copy a multi select value attribute in other multi select value attribute
+ * Copy a reference data value attribute in other reference data value attribute
  *
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MultiSelectAttributeCopier extends AbstractAttributeCopier
+class ReferenceDataAttributeCopier extends AbstractAttributeCopier
 {
     /**
      * @param ProductBuilderInterface  $productBuilder
@@ -31,7 +33,7 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->supportedFromTypes = $supportedFromTypes;
-        $this->supportedToTypes = $supportedToTypes;
+        $this->supportedToTypes   = $supportedToTypes;
     }
 
     /**
@@ -44,14 +46,14 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
         AttributeInterface $toAttribute,
         array $options = []
     ) {
-        $options = $this->resolver->resolve($options);
+        $options    = $this->resolver->resolve($options);
         $fromLocale = $options['from_locale'];
-        $toLocale = $options['to_locale'];
-        $fromScope = $options['from_scope'];
-        $toScope = $options['to_scope'];
+        $toLocale   = $options['to_locale'];
+        $fromScope  = $options['from_scope'];
+        $toScope    = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'multi select');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'multi select');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'reference data');
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'reference data');
 
         $this->copySingleValue(
             $fromProduct,
@@ -66,16 +68,26 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
     }
 
     /**
-     * Copy single value
-     *
+     * {@inheritdoc}
+     */
+    public function supportsAttributes(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    {
+        $supportsFrom  = in_array($fromAttribute->getAttributeType(), $this->supportedFromTypes);
+        $supportsTo    = in_array($toAttribute->getAttributeType(), $this->supportedToTypes);
+        $referenceData = ($fromAttribute->getReferenceDataName() === $toAttribute->getReferenceDataName());
+
+        return $supportsFrom && $supportsTo && $referenceData;
+    }
+
+    /**
      * @param ProductInterface   $fromProduct
      * @param ProductInterface   $toProduct
      * @param AttributeInterface $fromAttribute
      * @param AttributeInterface $toAttribute
-     * @param string             $fromLocale
-     * @param string             $toLocale
-     * @param string             $fromScope
-     * @param string             $toScope
+     * @param string|null        $fromLocale
+     * @param string|null        $toLocale
+     * @param string|null        $fromScope
+     * @param string|null        $toScope
      */
     protected function copySingleValue(
         ProductInterface $fromProduct,
@@ -94,33 +106,30 @@ class MultiSelectAttributeCopier extends AbstractAttributeCopier
                 $toValue = $this->productBuilder->addProductValue($toProduct, $toAttribute, $toLocale, $toScope);
             }
 
-            $this->removeOptions($toValue);
-            $this->copyOptions($fromValue, $toValue);
+            $fromDataGetter = $this->getValueMethodName($fromValue, $fromAttribute, 'get');
+            $toDataSetter = $this->getValueMethodName($toValue, $toAttribute, 'set');
+
+            $toValue->$toDataSetter($fromValue->$fromDataGetter());
         }
     }
 
     /**
-     * Remove options from attribute
+     * @param ProductValueInterface $value
+     * @param AttributeInterface    $attribute
+     * @param string                $type
      *
-     * @param ProductValueInterface $toValue
+     * @return string
      */
-    protected function removeOptions(ProductValueInterface $toValue)
+    private function getValueMethodName(ProductValueInterface $value, AttributeInterface $attribute, $type)
     {
-        foreach ($toValue->getOptions() as $attributeOption) {
-            $toValue->removeOption($attributeOption);
-        }
-    }
+        $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), true);
 
-    /**
-     * Copy attribute options into a multi select attribute
-     *
-     * @param ProductValueInterface $fromValue
-     * @param ProductValueInterface $toValue
-     */
-    protected function copyOptions(ProductValueInterface $fromValue, ProductValueInterface $toValue)
-    {
-        foreach ($fromValue->getOptions() as $attributeOption) {
-            $toValue->addOption($attributeOption);
+        if (false === method_exists($value, $method)) {
+            throw new \LogicException(
+                sprintf('ProductValue method "%s" is not implemented', $method)
+            );
         }
+
+        return $method;
     }
 }

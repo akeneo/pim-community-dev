@@ -27,8 +27,9 @@ class PimReferenceDataExtension extends Extension
         $container->setParameter('pim_reference_data.configurations', $configs[0]);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('services.yml');
         $loader->load('attribute_types.yml');
+        $loader->load('updaters.yml');
+        $loader->load('services.yml');
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/query_builders.yml');

@@ -33,7 +33,7 @@ interface ConfigurationInterface
      * @param string $name
      */
     public function setName($name);
-    
+
     /**
      * @return string
      */

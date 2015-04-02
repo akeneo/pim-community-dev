@@ -1,5 +1,5 @@
 @javascript
-Feature: Edit common attributes of many products at once
+Feature: Edit common attributes of many products containing reference data at once
   In order to update many products with the same reference data
   As a product manager
   I need to be able to edit common attributes of many products at once

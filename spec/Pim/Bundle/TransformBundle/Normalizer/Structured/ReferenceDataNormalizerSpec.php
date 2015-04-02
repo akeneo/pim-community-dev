@@ -28,12 +28,7 @@ class ReferenceDataNormalizerSpec extends ObjectBehavior
     {
         $starship->getCode()->willReturn('battlecruiser');
 
-        $this->normalize($starship, 'xml', [])->shouldReturn([
-            'code' => 'battlecruiser'
-        ]);
-
-        $this->normalize($starship, 'json', [])->shouldReturn([
-            'code' => 'battlecruiser'
-        ]);
+        $this->normalize($starship, 'xml', [])->shouldReturn('battlecruiser');
+        $this->normalize($starship, 'json', [])->shouldReturn('battlecruiser');
     }
 }

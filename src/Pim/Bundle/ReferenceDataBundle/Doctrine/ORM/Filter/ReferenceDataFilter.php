@@ -3,12 +3,16 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\AbstractAttributeFilter;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Reference data filter
@@ -28,21 +32,34 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var array */
     protected $supportedAttributes;
 
+    /** @var ReferenceDataIdResolver */
+    protected $idResolver;
+
+    /** @var OptionsResolverInterface */
+    protected $optionsResolver;
+
     /**
      * Instanciate the base filter
      *
      * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
+     * @param ReferenceDataIdResolver        $idsResolver
      * @param array                          $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         ConfigurationRegistryInterface $registry,
+        ReferenceDataIdResolver $idsResolver,
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
-        $this->supportedOperators  = $supportedOperators;
+        $this->idResolver = $idsResolver;
+        $this->supportedOperators = $supportedOperators;
+
+        $this->optionsResolver = new OptionsResolver();
+        $this->optionsResolver->setRequired(['field']);
+        $this->optionsResolver->setOptional(['locale', 'scope']);
     }
 
     /**
@@ -56,10 +73,27 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $scope = null,
         $options = []
     ) {
+        try {
+            $options = $this->optionsResolver->resolve($options);
+        } catch (\Exception $e) {
+            throw InvalidArgumentException::expectedFromPreviousException(
+                $e,
+                $attribute->getCode(),
+                'filter',
+                'reference data simple select'
+            );
+        }
+
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'reference_data');
 
         if (Operators::IS_EMPTY !== $operator) {
-            $this->checkValue($attribute, $value);
+            $field = $options['field'];
+            $this->checkValue($field, $value);
+
+            if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($field)) {
+                $value = $this->idResolver->resolve($attribute->getReferenceDataName(), $value);
+            }
+
             $this->addNonEmptyFilter($attribute, $operator, $value, $locale, $scope);
         } else {
             $this->addEmptyFilter($attribute, $locale, $scope);
@@ -148,15 +182,15 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Check if value is valid
      *
-     * @param AttributeInterface $attribute
+     * @param string $field
      * @param mixed  $values
      */
-    protected function checkValue(AttributeInterface $attribute, $values)
+    protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($attribute->getId(), $values, 'reference_data');
+        FieldFilterHelper::checkArray($field, $values, 'reference_data');
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($attribute->getId(), $value, 'reference_data');
+            FieldFilterHelper::checkIdentifier($field, $value, 'reference_data');
         }
     }
 }

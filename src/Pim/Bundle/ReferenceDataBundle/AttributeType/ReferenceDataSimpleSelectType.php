@@ -23,8 +23,8 @@ class ReferenceDataSimpleSelectType extends AbstractAttributeType
     /**
      * Constructor
      *
-     * @param string                         $backendType the backend type
-     * @param string                         $formType the form type
+     * @param string                         $backendType       the backend type
+     * @param string                         $formType          the form type
      * @param ConstraintGuesserInterface     $constraintGuesser the form type
      * @param ConfigurationRegistryInterface $registry
      */

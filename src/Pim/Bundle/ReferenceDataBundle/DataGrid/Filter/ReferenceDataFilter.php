@@ -43,7 +43,7 @@ class ReferenceDataFilter extends ChoiceFilter
     }
 
     /**
-     * @param  AttributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @return array
      */

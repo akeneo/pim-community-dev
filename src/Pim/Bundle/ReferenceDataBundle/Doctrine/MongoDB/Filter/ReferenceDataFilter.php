@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataIdResolver;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 /**
@@ -26,23 +27,29 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /** @var ConfigurationRegistryInterface */
     protected $registry;
 
+    /** @var ReferenceDataIdResolver */
+    protected $idResolver;
+
     /** @var array */
     protected $supportedAttributes;
 
     /**
      * Instanciate the base filter
      *
-     * @param array                          $supportedAttributes
+     * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
+     * @param ReferenceDataIdResolver        $idResolver
      * @param array                          $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         ConfigurationRegistryInterface $registry,
+        ReferenceDataIdResolver $idResolver,
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
+        $this->idResolver = $idResolver;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -60,10 +67,14 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'number');
 
         if (Operators::IS_EMPTY !== $operator) {
-            $this->checkValue($attribute, $value);
+            $field = $options['field'];
+            $this->checkValue($field, $value);
+
+            if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($field)) {
+                $value = $this->idResolver->resolve($attribute->getReferenceDataName(), $value);
+            }
         }
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf(
             '%s.%s.id',
             ProductQueryUtility::NORMALIZED_FIELD,
@@ -112,10 +123,10 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      */
     protected function checkValue($field, $values)
     {
-        FieldFilterHelper::checkArray($field->getId(), $values, 'reference_data');
+        FieldFilterHelper::checkArray($field, $values, 'reference_data');
 
         foreach ($values as $value) {
-            FieldFilterHelper::checkIdentifier($field->getId(), $value, 'reference_data');
+            FieldFilterHelper::checkIdentifier($field, $value, 'reference_data');
         }
     }
 }

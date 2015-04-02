@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
@@ -10,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue\ReferenceDataCollectionDenormalizer;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Prophecy\Argument;
 
@@ -19,12 +20,12 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        ReferenceDataCollectionDenormalizer $refDataDenormalizer
+        ReferenceDataRepositoryResolver $repositoryResolver
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
-            $refDataDenormalizer,
+            $repositoryResolver,
             ['pim_reference_data_multiselect']
         );
     }
@@ -51,7 +52,8 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_setting_a_value(
         $attrValidatorHelper,
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ReferenceDataInterface $refData1,
         ReferenceDataInterface $refData2,
         AttributeInterface $attribute,
@@ -77,17 +79,14 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
 
         $product->getValue('custom_material', $locale, $scope)->willReturn($productValue1);
 
-        $refDataDenormalizer->denormalize(
-            [['code' => 'shiny_metal'], ['code' => 'cold_metal']],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn($collection);
+        $repositoryResolver->resolve('customMaterials')->willReturn($repository);
+        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData1);
+        $repository->findOneBy(['code' => 'cold_metal'])->willReturn($refData2);
 
         $this->setAttributeData(
             $product,
             $attribute,
-            [['code' => 'shiny_metal'], ['code' => 'cold_metal']],
+            ['shiny_metal', 'cold_metal'],
             ['locale' => $locale, 'scope' => $scope]
         );
     }
@@ -102,7 +101,8 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_product_value_method_is_not_implemented(
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ReferenceDataInterface $refData,
         AttributeInterface $attribute,
         ProductInterface $product,
@@ -117,12 +117,8 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('custom_material');
         $attribute->getReferenceDataName()->willReturn('customMaterials');
 
-        $refDataDenormalizer->denormalize(
-            ['code' => 'shiny_metal'],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn($collection);
+        $repositoryResolver->resolve('customMaterials')->willReturn($repository);
+        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData);
 
         $product->getValue('custom_material', $locale, $scope)->willReturn($productValue);
 
@@ -138,7 +134,8 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
     function it_sets_reference_data_collection_to_a_product_value(
         $builder,
         $attrValidatorHelper,
-        $refDataDenormalizer,
+        $repositoryResolver,
+        ObjectRepository $repository,
         ReferenceDataInterface $refData1,
         ReferenceDataInterface $refData2,
         AttributeInterface $attribute,
@@ -162,13 +159,9 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('custom_material');
         $attribute->getReferenceDataName()->willReturn('customMaterials');
 
-        $refDataDenormalizer->denormalize(
-            [['code' => 'shiny_metal'], ['code' => 'cold_metal']],
-            '',
-            null,
-            ['attribute' => $attribute]
-        )->willReturn($collection);
-
+        $repositoryResolver->resolve('customMaterials')->willReturn($repository);
+        $repository->findOneBy(['code' => 'shiny_metal'])->willReturn($refData1);
+        $repository->findOneBy(['code' => 'cold_metal'])->willReturn($refData2);
 
         $product1->getValue('custom_material', $locale, $scope)->willReturn(null);
         $product2->getValue('custom_material', $locale, $scope)->willReturn($productValue2);
@@ -206,7 +199,7 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
             $this->setAttributeData(
                 $product,
                 $attribute,
-                [['code' => 'shiny_metal'], ['code' => 'cold_metal']],
+                ['shiny_metal', 'cold_metal'],
                 ['locale' => $locale, 'scope' => $scope]
             );
         }

@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class ReferenceDataTransformerSpec extends ObjectBehavior
 {
