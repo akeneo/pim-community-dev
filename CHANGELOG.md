@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3961: Fix inconsistencies in unique value constraint validator
+- PIM-3416: Fix less / more than date filter
 
 # 1.3.6 (2015-04-01)
 
