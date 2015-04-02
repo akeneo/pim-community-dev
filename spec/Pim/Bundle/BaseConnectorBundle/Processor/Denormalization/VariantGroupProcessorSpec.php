@@ -50,7 +50,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $validator->validate(Argument::any())->willReturn(new ConstraintViolationList());
     }
 
-    function it_is_a_configurable_step_execution_aware_writer()
+    function it_is_a_configurable_step_execution_aware_processor()
     {
         $this->shouldBeAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
         $this->shouldImplement('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
