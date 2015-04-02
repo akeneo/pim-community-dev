@@ -13,8 +13,11 @@ Feature: Add products to variant group via a form
       | moon_boots   |
     And I am logged in as "Julia"
     And I am on the products page
-    Given I mass-edit products kickers, hiking_shoes and moon_boots
+    Given I mass-edit products kickers, hiking_shoes
     And I choose the "Add to a variant group" operation
     And I select the "Caterpillar boots" variant group
-    When I move on to the next step
-    Then I should be on the products page
+    And I press the "Next" button
+    And I apply the following mass-edit operation with the given configuration:
+      | operation            | filters                                                                  | actions                                                    |
+      | add-to-variant-group | [{"field":"sku", "operator":"IN", "value": ["kickers", "hiking_shoes"]}] | [{"field": "variant_group", "value": "caterpillar_boots"}] |
+    Then "caterpillar_boots" group should contain "kickers, hiking_shoes"
