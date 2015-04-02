@@ -16,8 +16,11 @@ Feature: Add products to many groups at once via a form
     Given I mass-edit products kickers, hiking_shoes and moon_boots
     And I choose the "Add to groups" operation
     And I check "Similar boots"
-    When I move on to the next step
-    Then I should be on the products page
+    And I press the "Next" button
+    And I apply the following mass-edit operation with the given configuration:
+      | operation     | filters                                                                                | actions                                           |
+      | add-to-groups | [{"field":"sku", "operator":"IN", "value": ["kickers", "hiking_shoes", "moon_boots"]}] | [{"field": "groups", "value": ["similar_boots"]}] |
+    Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"
 
   Scenario: Fail to add similar products to a variant group
     Given the "footwear" catalog configuration

@@ -15,7 +15,11 @@ Feature: Configure action to change status of many products at once
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (enable / disable)" operation
     And I enable the products
-    Then I should be on the products page
+    And I apply the following mass-edit operation with the given configuration:
+      | operation     | filters                                                          | actions                               |
+      | change-family | [{"field":"sku", "operator":"IN", "value": ["boat", "jet-ski"]}] | [{"field": "enabled", "value": true}] |
+    Then product "boat" should be enabled
+    And product "jet-ski" should be enabled
 
   Scenario: Configure the operation to disable many products at once
     Given an enabled "boat" product
@@ -24,4 +28,8 @@ Feature: Configure action to change status of many products at once
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (enable / disable)" operation
     And I disable the products
-    Then I should be on the products page
+    And I apply the following mass-edit operation with the given configuration:
+      | operation     | filters                                                          | actions                                |
+      | change-family | [{"field":"sku", "operator":"IN", "value": ["boat", "jet-ski"]}] | [{"field": "enabled", "value": false}] |
+    Then product "boat" should be disabled
+    And product "jet-ski" should be disabled
