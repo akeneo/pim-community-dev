@@ -386,6 +386,8 @@ services:
             - @pim_catalog.validator.helper.attribute
             - @pim_catalog.manager.currency
             - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
 
     pim_catalog.updater.remover.group_field:
         class: %pim_catalog.updater.remover.group_field.class%
