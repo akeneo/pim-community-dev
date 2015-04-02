@@ -1,7 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\Channel:
     type: entity
     table: pim_catalog_channel
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ChannelRepository
     fields:
         id:
             type: integer

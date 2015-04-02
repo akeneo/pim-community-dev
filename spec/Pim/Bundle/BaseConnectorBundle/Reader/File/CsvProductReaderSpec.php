@@ -55,7 +55,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $fieldNameBuilder
     ) {
         $this->setFilePath(
-            __DIR__ . '/../../../../../../src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/with_media.csv'
+            __DIR__ . '/../../../../../../features/Context/fixtures/with_media.csv'
         );
 
         $channelRepository->getChannelCodes()->willReturn([]);
@@ -73,9 +73,9 @@ class CsvProductReaderSpec extends ObjectBehavior
                 'sku'          => 'SKU-001',
                 'name'         => 'door',
                 'view'         =>
-                    __DIR__ . '/../../../../../../src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/sku-001.jpg',
+                    __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.jpg',
                 'manual-fr_FR' =>
-                    __DIR__ . '/../../../../../../src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/sku-001.txt',
+                    __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.txt',
             ])
         ;
     }
@@ -87,7 +87,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $fieldNameBuilder
     ) {
         $this->setFilePath(
-            __DIR__ . '/../../../../../../src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/invalid_import_header.csv'
+            __DIR__ . '/../../../../../../features/Context/fixtures/invalid_import_header.csv'
         );
 
         $channelRepository->getChannelCodes()->willReturn(['ecommerce']);
@@ -111,7 +111,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $fieldNameBuilder
     ) {
         $this->setFilePath(
-            __DIR__ . '/../../../../../../src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/invalid_import_header.csv'
+            __DIR__ . '/../../../../../../features/Context/fixtures/invalid_import_header.csv'
         );
 
         $channelRepository->getChannelCodes()->willReturn(['ecommerce']);
@@ -135,7 +135,7 @@ class CsvProductReaderSpec extends ObjectBehavior
         $fieldNameBuilder
     ) {
         $this->setFilePath(
-            __DIR__ . '/../../../../../../src/Pim/Bundle/BaseConnectorBundle/Tests/fixtures/invalid_import_header.csv'
+            __DIR__ . '/../../../../../../features/Context/fixtures/invalid_import_header.csv'
         );
 
         $channelRepository->getChannelCodes()->willReturn(['ecommerce']);

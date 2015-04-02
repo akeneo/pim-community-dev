@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
 /**
@@ -30,6 +31,9 @@ class ProductUpdater implements ProductUpdaterInterface
     /** @var AdderRegistryInterface */
     protected $adderRegistry;
 
+    /** @var RemoverRegistryInterface */
+    protected $removerRegistry;
+
     /**
      * @param AttributeRepositoryInterface $repository
      * @param SetterRegistryInterface      $setterRegistry
@@ -40,12 +44,14 @@ class ProductUpdater implements ProductUpdaterInterface
         AttributeRepositoryInterface $repository,
         SetterRegistryInterface $setterRegistry,
         CopierRegistryInterface $copierRegistry,
-        AdderRegistryInterface $adderRegistry
+        AdderRegistryInterface $adderRegistry,
+        RemoverRegistryInterface $removerRegistry
     ) {
         $this->attributeRepository = $repository;
-        $this->setterRegistry = $setterRegistry;
-        $this->copierRegistry = $copierRegistry;
-        $this->adderRegistry = $adderRegistry;
+        $this->setterRegistry      = $setterRegistry;
+        $this->copierRegistry      = $copierRegistry;
+        $this->adderRegistry       = $adderRegistry;
+        $this->removerRegistry     = $removerRegistry;
     }
 
     /**
@@ -124,6 +130,31 @@ class ProductUpdater implements ProductUpdaterInterface
             $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
         } else {
             $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeData(ProductInterface $product, $field, $data, array $options = [])
+    {
+        $attribute = $this->getAttribute($field);
+        if (null !== $attribute) {
+            $remover = $this->removerRegistry->getAttributeRemover($attribute);
+        } else {
+            $remover = $this->removerRegistry->getFieldRemover($field);
+        }
+
+        if (null === $remover) {
+            throw new \LogicException(sprintf('No remover found for field "%s"', $field));
+        }
+
+        if (null !== $attribute) {
+            $remover->removeAttributeData($product, $attribute, $data, $options);
+        } else {
+            $remover->removeFieldData($product, $field, $data, $options);
         }
 
         return $this;

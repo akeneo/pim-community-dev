@@ -26,7 +26,7 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var OptionResolver */
+    /** @var OptionsResolver */
     protected $resolver;
 
     /**
