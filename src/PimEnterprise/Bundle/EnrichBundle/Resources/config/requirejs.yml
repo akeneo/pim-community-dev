@@ -10,6 +10,10 @@ config:
 
         # Form extensions
         pimee/product-edit-form/attributes/smart-attribute: pimenterpriseenrich/js/product/form/attributes/smart-attribute
+        pimee/product-edit-form/panel/history/published:    pimenterpriseenrich/js/product/form/panel/history/published
+        pimee/product-edit-form/panel/history/revert:       pimenterpriseenrich/js/product/form/panel/history/revert
 
         # Templates
         pimee/template/product/tab/attribute/smart-attribute: pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
+        pimee/template/product/panel/history/published:       pimenterpriseenrich/templates/product/panel/history/published.html
+        pimee/template/product/panel/history/revert:          pimenterpriseenrich/templates/product/panel/history/revert.html

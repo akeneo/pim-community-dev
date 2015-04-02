@@ -3,3 +3,13 @@ extensions:
         module: pimee/product-edit-form/attributes/smart-attribute
         parent: attributes
         targetZone: attributes
+
+    published:
+        module: pimee/product-edit-form/panel/history/published
+        parent: history
+        targetZone: history
+
+    revert:
+        module: pimee/product-edit-form/panel/history/revert
+        parent: history
+        targetZone: history

@@ -14,3 +14,18 @@ permission-changes:
     job profile:
         grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong>
         revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
+
+pimee_enrich:
+    entity:
+        product:
+            history:
+                published: Published
+                revert:    Restore
+                published: Published
+            smart_attribute:
+                come_from: "This attribute can be updated by a rule:"
+    confirmation:
+        revert:
+            product:
+                title: Revert confirmation
+                content: Are you sure you want to revert the product to this version ?
