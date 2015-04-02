@@ -8,7 +8,7 @@ datagrid:
                 dataField: id
                 columnName: is_checked
         source:
-            type:              pim_datasource_product
+            type:              pim_datasource_associated_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
