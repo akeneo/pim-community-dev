@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -74,9 +73,20 @@ class AttributeOptionUpdater implements UpdaterInterface
         foreach ($data as $field => $data) {
             $isReadOnlyField = in_array($field, $readOnlyFields);
             if ($isNew || !$isReadOnlyField) {
-                $setViolations = $this->setData($attributeOption, $field, $data);
+                try {
+                    $this->setData($attributeOption, $field, $data);
+                } catch (\InvalidArgumentException $e) {
+                    $setViolation = new ConstraintViolation(
+                        $e->getMessage(),
+                        $e->getMessage(),
+                        [],
+                        $attributeOption,
+                        null,
+                        null
+                    );
+                    $updateViolations->add($setViolation);
+                }
             }
-            $updateViolations->addAll($setViolations);
         }
 
         $validatorViolations = $this->validator->validate($attributeOption);
@@ -94,12 +104,10 @@ class AttributeOptionUpdater implements UpdaterInterface
      * @param string                   $field
      * @param mixed                    $data
      *
-     * @return ConstraintViolationListInterface
+     * @throws \InvalidArgumentException
      */
     protected function setData(AttributeOptionInterface $attributeOption, $field, $data)
     {
-        $violations = new ConstraintViolationList();
-
         if ('code' === $field) {
             $attributeOption->setCode($data);
         }
@@ -109,9 +117,7 @@ class AttributeOptionUpdater implements UpdaterInterface
             if (null !== $attribute) {
                 $attributeOption->setAttribute($attribute);
             } else {
-                $message = sprintf('Attribute "%s" does not exist', $data);
-                $violation = new ConstraintViolation($message, $message, [], $attributeOption, 'attribute');
-                $violations->add($violation);
+                throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $data));
             }
         }
 
@@ -126,8 +132,6 @@ class AttributeOptionUpdater implements UpdaterInterface
         if ('sort_order' === $field) {
             $attributeOption->setSortOrder($data);
         }
-
-        return $violations;
     }
 
     /**
