@@ -6,12 +6,10 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Adder\AdderInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\AttributeAdderInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\AttributeCopierInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\FieldCopierInterface;
 use Pim\Bundle\CatalogBundle\Updater\Remover\AttributeRemoverInterface;
@@ -19,11 +17,10 @@ use Pim\Bundle\CatalogBundle\Updater\Remover\FieldRemoverInterface;
 use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\AttributeSetterInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 use Prophecy\Argument;
 
-class ProductUpdaterSpec extends ObjectBehavior
+class ProductRawUpdaterSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -43,7 +40,7 @@ class ProductUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\ProductUpdater');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\ProductRawUpdater');
     }
 
     function it_sets_a_value(

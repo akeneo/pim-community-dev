@@ -2,214 +2,169 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Provides basic operations to update a product
+ * Updates and validates a product
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements ProductUpdaterInterface
+class ProductUpdater implements UpdaterInterface
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var ProductRawUpdaterInterface */
+    protected $rawUpdater;
 
-    /** @var SetterRegistryInterface */
-    protected $setterRegistry;
-
-    /** @var CopierRegistryInterface */
-    protected $copierRegistry;
-
-    /** @var AdderRegistryInterface */
-    protected $adderRegistry;
-
-    /** @var RemoverRegistryInterface */
-    protected $removerRegistry;
+    /** @var ValidatorInterface */
+    protected $validator;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param SetterRegistryInterface      $setterRegistry
-     * @param CopierRegistryInterface      $copierRegistry
-     * @param AdderRegistryInterface       $adderRegistry
+     * @param ProductRawUpdaterInterface $rawUpdater
+     * @param ValidatorInterface         $validator
      */
     public function __construct(
-        AttributeRepositoryInterface $repository,
-        SetterRegistryInterface $setterRegistry,
-        CopierRegistryInterface $copierRegistry,
-        AdderRegistryInterface $adderRegistry,
-        RemoverRegistryInterface $removerRegistry
+        ProductRawUpdaterInterface $rawUpdater,
+        ValidatorInterface $validator
     ) {
-        $this->attributeRepository = $repository;
-        $this->setterRegistry      = $setterRegistry;
-        $this->copierRegistry      = $copierRegistry;
-        $this->adderRegistry       = $adderRegistry;
-        $this->removerRegistry     = $removerRegistry;
+        $this->rawUpdater = $rawUpdater;
+        $this->validator  = $validator;
     }
 
     /**
      * {@inheritdoc}
-     */
-    public function setData(ProductInterface $product, $field, $data, array $options = [])
-    {
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $setter = $this->setterRegistry->getAttributeSetter($attribute);
-        } else {
-            $setter = $this->setterRegistry->getFieldSetter($field);
-        }
-
-        if (null === $setter) {
-            throw new \LogicException(sprintf('No setter found for field "%s"', $field));
-        }
-
-        if (null !== $attribute) {
-            $setter->setAttributeData($product, $attribute, $data, $options);
-        } else {
-            $setter->setFieldData($product, $field, $data, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addData(ProductInterface $product, $field, $data, array $options = [])
-    {
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $adder = $this->adderRegistry->getAttributeAdder($attribute);
-        } else {
-            $adder = $this->adderRegistry->getFieldAdder($field);
-        }
-
-        if (null === $adder) {
-            throw new \LogicException(sprintf('No adder found for field "%s"', $field));
-        }
-
-        if (null !== $attribute) {
-            $adder->addAttributeData($product, $attribute, $data, $options);
-        } else {
-            $adder->addFieldData($product, $field, $data, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function copyData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        $fromField,
-        $toField,
-        array $options = []
-    ) {
-        $fromAttribute = $this->getAttribute($fromField);
-        $toAttribute = $this->getAttribute($toField);
-        if (null !== $fromAttribute && null !== $toAttribute) {
-            $copier = $this->copierRegistry->getAttributeCopier($fromAttribute, $toAttribute);
-        } else {
-            $copier = $this->copierRegistry->getFieldCopier($fromField, $toField);
-        }
-
-        if (null === $copier) {
-            throw new \LogicException(sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
-        }
-
-        if (null !== $fromAttribute && null !== $toAttribute) {
-            $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
-        } else {
-            $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeData(ProductInterface $product, $field, $data, array $options = [])
-    {
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $remover = $this->removerRegistry->getAttributeRemover($attribute);
-        } else {
-            $remover = $this->removerRegistry->getFieldRemover($field);
-        }
-
-        if (null === $remover) {
-            throw new \LogicException(sprintf('No remover found for field "%s"', $field));
-        }
-
-        if (null !== $attribute) {
-            $remover->removeAttributeData($product, $attribute, $data, $options);
-        } else {
-            $remover->removeFieldData($product, $field, $data, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function copyValue(
-        array $products,
-        $fromField,
-        $toField,
-        $fromLocale = null,
-        $toLocale = null,
-        $fromScope = null,
-        $toScope = null
-    ) {
-        $options = [
-            'from_locale' => $fromLocale,
-            'to_locale' => $toLocale,
-            'from_scope' => $fromScope,
-            'to_scope' => $toScope,
-        ];
-        foreach ($products as $product) {
-            $this->copyData($product, $product, $fromField, $toField, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Fetch the attribute by its code
+     * $data could be formatted like this:
+     * [
+     *      ['set_data' =>
+     *          [
+     *              ['categories', ['shirts', 'jeans'], ['locale' => 'fr_FR']],
+     *              ['price', [{ "data": 12.3, "currency": "EUR" }, { "data": 12, "currency": "USD" }]]],
+     *              ['description', 'A beautiful tee', ['locale' => 'en_US', 'scope' => 'mobile']]
+     *              ...
+     *          ]
+     *      ]
+     *      ['add_data' => [ ['tshirt_style', ['vneck'], []], [second data to add], ...] ]
+     *      ['copy_data' => [ [first data to copy], [second data to copy], ...] ]
+     *      ['remove_data' => [ [first data to remove], [second data to remove], ...] ]
+     * ]
+     * OR like this
+     * [
+     *      ['set_data', 'categories', ['shirts', 'jeans'], ['locale' => 'fr_FR']],
+     *      ['set_data', 'price', [{ "data": 12.3, "currency": "EUR" }, { "data": 12, "currency": "USD" }]]],
+     *      ['set_data', 'description', 'A beautiful tee', ['locale' => 'en_US', 'scope' => 'mobile']]
+     *      ['add_data', 'tshirt_style', ['vneck']],
+     *      ...
+     * ]
      *
-     * @param string $code
+     * First implementation coded here.
      *
-     * @throws \LogicException
-     *
-     * @return AttributeInterface|null
+     * Problems:
+     *    what about copy products ? (from / to)
      */
-    protected function getAttribute($code)
+    public function update($product, array $data)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        if (!$product instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                "Product updater expects a Pim\\Bundle\\CatalogBundle\\Model\\ProductInterface."
+            );
+        }
 
-        return $attribute;
+        try {
+            $this->checkData($data);
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException("Invalid data for product updater", 0, $e);
+        }
+
+        $updaterViolations = new ConstraintViolationList();
+        try {
+            $this->applyRawUpdates($product, $data);
+        } catch (\InvalidArgumentException $e) {
+            //TODO: fix this dirty hack
+            $updaterViolations->add(new ConstraintViolation($e->getMessage(), $e->getMessage(), [], '', '', ''));
+        }
+
+        $violations = $this->validator->validate($product);
+        $violations->addAll($updaterViolations);
+
+        if ($violations->count() > 0) {
+            throw new BusinessValidationException(
+                $violations,
+                sprintf('Business violations for product "%s".', $product->getIdentifier())
+            );
+        }
+
+        return $product;
+    }
+
+    /**
+     * Apply raw updates on a product
+     *
+     * @param ProductInterface $product
+     * @param array            $rawUpdates
+     */
+    protected function applyRawUpdates(ProductInterface $product, array $rawUpdates)
+    {
+        foreach ($rawUpdates as $updateType => $updates) {
+            foreach ($updates as $update) {
+                $this->checkSingleUpdateData($update);
+
+                $field   = $update[0];
+                $value   = $update[1];
+                $options = isset($update[2]) ? $update[2] : [];
+
+                $method = lcfirst(str_replace('_', '', ucwords($update)));
+                $this->$method($product, $field, $value, $options);
+
+                //TODO: what about copy products ??
+            }
+        }
+    }
+
+    /**
+     * Checks the format the updates data
+     *
+     * @param array $data
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function checkData(array $data)
+    {
+        $options = new OptionsResolver();
+        $options->setOptional(['set_data', 'add_data', 'copy_data', 'remove_data']);
+        $options->addAllowedTypes(
+            [
+                'set_data'    => 'array',
+                'add_data'    => 'array',
+                'copy_data'   => 'array',
+                'remove_data' => 'array'
+            ]
+        );
+
+        $options->resolve($data);
+    }
+
+    /**
+     * Check the format of a single update data
+     *
+     * @param array $data
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function checkSingleUpdateData(array $data)
+    {
+        if (count($data) > 3 || count($data) < 2) {
+            //TODO
+            throw new \InvalidArgumentException();
+        }
+
+        if (3 === count($data) && !is_array($data[2])) {
+            //TODO
+            throw new \InvalidArgumentException();
+        }
     }
 }

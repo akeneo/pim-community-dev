@@ -29,28 +29,35 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
      */
     public function update(ProductTemplateInterface $template, array $products)
     {
-        $updates = $template->getValuesData();
-        foreach ($updates as $attributeCode => $values) {
-            foreach ($values as $data) {
-                $this->updateProducts($products, $attributeCode, $data);
-            }
+        $updates = $this->productTemplateToUpdates($template);
+
+        foreach ($products as $product) {
+            // TODO: should the product be validated here ?
+            $this->productUpdater->update($product, $updates);
         }
     }
 
     /**
-     * @param array  $products
-     * @param string $attributeCode
-     * @param mixed  $data
+     * Transforms product template data to a set of applicable updates.
+     *
+     * @param ProductTemplateInterface $template
+     *
+     * @return array
      */
-    protected function updateProducts(array $products, $attributeCode, $data)
+    protected function productTemplateToUpdates(ProductTemplateInterface $template)
     {
-        foreach ($products as $product) {
-            $this->productUpdater->setData(
-                $product,
-                $attributeCode,
-                $data['value'],
-                ['locale' => $data['locale'], 'scope' => $data['scope']]
-            );
+        $updates = [];
+
+        foreach ($template->getValuesData() as $attributeCode => $values) {
+            foreach ($values as $data) {
+                $updates[] = [
+                    $attributeCode,
+                    $data['value'],
+                    ['locale' => $data['locale'], 'scope' => $data['scope']]
+                ];
+            }
         }
+
+        return ['set_data' => $updates];
     }
 }
