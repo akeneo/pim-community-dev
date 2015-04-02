@@ -3,18 +3,17 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
 class SimpleSelectAttributeCopierSpec extends ObjectBehavior
 {
-    function let(ProductBuilder $builder, AttributeValidatorHelper $attrValidatorHelper)
+    function let(ProductBuilderInterface $builder, AttributeValidatorHelper $attrValidatorHelper)
     {
         $this->beConstructedWith(
             $builder,
@@ -66,8 +65,8 @@ class SimpleSelectAttributeCopierSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         ProductInterface $product4,
-        ProductValue $fromProductValue,
-        ProductValue $toProductValue,
+        ProductValueInterface $fromProductValue,
+        ProductValueInterface $toProductValue,
         AttributeOptionInterface $attributeOption
     ) {
         $fromLocale = 'fr_FR';
