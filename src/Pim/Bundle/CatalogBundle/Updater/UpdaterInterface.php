@@ -23,6 +23,7 @@ interface UpdaterInterface
      * @return object
      *
      * @throws BusinessValidationException
+     * @throws \InvalidArgumentException
      */
     public function update($object, array $data, array $options = []);
 }

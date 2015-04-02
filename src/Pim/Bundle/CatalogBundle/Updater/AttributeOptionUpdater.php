@@ -64,14 +64,16 @@ class AttributeOptionUpdater implements UpdaterInterface
             );
         }
 
+        // TODO: ugly fix to workaround issue with "attribute.group.code: This value should not be blank."
+        // in case of existing option, attribute is a proxy, attribute group too, the validated group code is null
+        ($attributeOption->getAttribute() !== null) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
+
         $isNew = $attributeOption->getId() === null;
         $readOnlyFields = ['attribute', 'code'];
         $updateViolations = new ConstraintViolationList();
         foreach ($data as $field => $data) {
             $isReadOnlyField = in_array($field, $readOnlyFields);
-            if ($isNew) {
-                $setViolations = $this->setData($attributeOption, $field, $data);
-            } elseif (false === $isReadOnlyField) {
+            if ($isNew || !$isReadOnlyField) {
                 $setViolations = $this->setData($attributeOption, $field, $data);
             }
             $updateViolations->addAll($setViolations);
@@ -103,11 +105,11 @@ class AttributeOptionUpdater implements UpdaterInterface
         }
 
         if ('attribute' === $field) {
-            $attribute = $this->getAttribute($data);
+            $attribute = $this->findAttribute($data);
             if (null !== $attribute) {
                 $attributeOption->setAttribute($attribute);
             } else {
-                $message = sprintf('Attribute "%s" does not exists', $data);
+                $message = sprintf('Attribute "%s" does not exist', $data);
                 $violation = new ConstraintViolation($message, $message, [], $attributeOption, 'attribute');
                 $violations->add($violation);
             }
@@ -133,7 +135,7 @@ class AttributeOptionUpdater implements UpdaterInterface
      *
      * @return AttributeInterface|null
      */
-    protected function getAttribute($code)
+    protected function findAttribute($code)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
 

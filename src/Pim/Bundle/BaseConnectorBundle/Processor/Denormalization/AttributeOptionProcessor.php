@@ -54,7 +54,11 @@ class AttributeOptionProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
         $attributeOption = $this->findOrCreateAttributeOption($convertedItem);
-        $this->updateAttributeOption($attributeOption, $convertedItem, $item);
+        try {
+            $this->optionUpdater->update($attributeOption, $convertedItem);
+        } catch (BusinessValidationException $exception) {
+            $this->skipItemWithConstraintViolations($item, $exception->getViolations());
+        }
 
         return $attributeOption;
     }
@@ -79,33 +83,6 @@ class AttributeOptionProcessor extends AbstractProcessor
         $attributeOption = $this->findObject($this->repository, $convertedItem);
         if ($attributeOption === null) {
             return new $this->class();
-        }
-
-        return $attributeOption;
-    }
-
-    /**
-     * @param AttributeOptionInterface $attributeOption
-     * @param array                    $convertedItem
-     * @param array                    $originalItem
-     *
-     * @return AttributeOptionInterface
-     *
-     * @throws BusinessValidationException
-     */
-    protected function updateAttributeOption(
-        AttributeOptionInterface $attributeOption,
-        array $convertedItem,
-        array $originalItem
-    ) {
-        // TODO: ugly fix to workaround issue with "attribute.group.code: This value should not be blank."
-        // in case of existing option, attribute is a proxy, attribute group too, the validated group code is null
-        ($attributeOption->getAttribute() !== null) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
-
-        try {
-            $this->optionUpdater->update($attributeOption, $convertedItem);
-        } catch (BusinessValidationException $exception) {
-            $this->skipItemWithConstraintViolations($originalItem, $exception->getViolations());
         }
 
         return $attributeOption;

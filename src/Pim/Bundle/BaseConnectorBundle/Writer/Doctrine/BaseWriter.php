@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 
 /**
@@ -26,19 +26,19 @@ class BaseWriter extends AbstractConfigurableStepElement implements
     /** @var BulkSaverInterface */
     protected $bulkSaver;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
+    /** @var BulkObjectDetacherInterface */
+    protected $bulkDetacher;
 
     /**
-     * @param BulkSaverInterface      $bulkSaver
-     * @param ObjectDetacherInterface $objectDetacher
+     * @param BulkSaverInterface          $bulkSaver
+     * @param BulkObjectDetacherInterface $bulkDetacher
      */
     public function __construct(
         BulkSaverInterface $bulkSaver,
-        ObjectDetacherInterface $objectDetacher
+        BulkObjectDetacherInterface $bulkDetacher
     ) {
-        $this->bulkSaver      = $bulkSaver;
-        $this->objectDetacher = $objectDetacher;
+        $this->bulkSaver    = $bulkSaver;
+        $this->bulkDetacher = $bulkDetacher;
     }
 
     /**
@@ -47,10 +47,8 @@ class BaseWriter extends AbstractConfigurableStepElement implements
     public function write(array $objects)
     {
         $this->bulkSaver->saveAll($objects);
-        // TODO a detachAll could be nice!
-        foreach ($objects as $object) {
-            $this->objectDetacher->detach($object);
-        }
+        $this->bulkDetacher->detachAll($objects);
+        $this->incrementCount($objects);
     }
 
     /**
@@ -67,5 +65,19 @@ class BaseWriter extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @param array $objects
+     */
+    protected function incrementCount(array $objects)
+    {
+        foreach ($objects as $object) {
+            if ($object->getId()) {
+                $this->stepExecution->incrementSummaryInfo('update');
+            } else {
+                $this->stepExecution->incrementSummaryInfo('create');
+            }
+        }
     }
 }

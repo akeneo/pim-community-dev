@@ -67,7 +67,7 @@ Feature: Import options
     And I launch the import job
     And I wait for the "footwear_option_import" job to finish
     Then I should see "skipped 1"
-    And I should see "attribute: Attribute \"unknown\" does not exists"
+    And I should see "attribute: Attribute \"unknown\" does not exist"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Import options with localizable label
