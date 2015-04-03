@@ -918,11 +918,12 @@ pim_mass_edit:
         mass_edit:
             success: Mass edit finished
             error:   Mass edit failed
+            warning: Mass edit finished with warnings
 
 job_execution.summary:
-    mass_edited: Mass edited
-    skip:        skipped
-    skip_products: skipped products
+    mass_edited:      Mass edited
+    skip:             skipped
+    skipped_products: skipped products
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 

@@ -124,6 +124,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $code
+     *
+     * @When /^I go on the last executed job resume of "([^"]*)"$/
+     */
+    public function iGoOnTheLastExecutedJobResume($code)
+    {
+        $this->wait();
+        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
+        $jobExecutions = $jobInstance->getJobExecutions();
+
+        $url = '/spread/mass_edit_execution/'.$jobExecutions->last()->getId();
+        $this->getSession()->visit($this->locatePath($url));
+        $this->wait();
+    }
+
+    /**
      * @param string $page
      *
      * @Given /^I am on the ([^"]*) page$/
