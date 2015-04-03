@@ -70,6 +70,8 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
+            - '@pim_validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_enrich.mass_edit_handler.unpublish_product:
         class: %pimee_enrich.mass_edit_handler.unpublish_product.class%
@@ -78,3 +80,5 @@ services:
             - '@pimee_workflow.manager.published_product'
             - '@pimee_workflow.repository.published_product'
             - '@pim_enrich.product.paginator'
+            - '@pim_validator'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
