@@ -14,12 +14,11 @@ use Pim\Bundle\BaseConnectorBundle\Exception\ArrayConversionException;
 interface StandardArrayConverterInterface
 {
     /**
-     * @param array $data    data to convert
-     * @param array $options options used to convert
+     * @param array $item data to convert
      *
      * @return array
      *
      * @throws ArrayConversionException
      */
-    public function convert(array $data);
+    public function convert(array $item);
 }

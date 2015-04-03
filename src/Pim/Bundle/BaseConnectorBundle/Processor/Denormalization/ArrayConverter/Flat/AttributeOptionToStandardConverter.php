@@ -53,7 +53,7 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      *     }
      * }
      */
-    public function convert(array $item, array $options = [])
+    public function convert(array $item)
     {
         $this->validate($item);
         $convertedItem = ['labels' => []];
@@ -82,10 +82,6 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      */
     protected function validate(array $item)
     {
-        if (!is_array($item)) {
-            throw new ArrayConversionException(sprintf('Item should be an array, "%s" provided', print_r($item, true)));
-        }
-
         $requiredFields = ['attribute', 'code'];
         foreach ($requiredFields as $requiredField) {
             if (!in_array($requiredField, array_keys($item))) {
