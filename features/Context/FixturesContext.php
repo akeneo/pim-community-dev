@@ -1516,12 +1516,11 @@ class FixturesContext extends RawMinkContext
      *
      * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
      */
-    public function iSetProductFamilyTo($product, $family)
+    public function iSetProductFamilyTo($identifier, $family)
     {
-        $this
-            ->getProduct($product)
-            ->setFamily($this->getFamily($family));
-
+        $product = $this->getProduct($identifier);
+        $product->setFamily($this->getFamily($family));
+        $this->persist($product);
         $this->flush();
     }
 
