@@ -1,4 +1,4 @@
-Feature: Read a single product with applied rules
+Feature: Read a single product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
   I need that the relevant rules are executed and correctly applied to the product
