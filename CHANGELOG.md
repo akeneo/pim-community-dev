@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.7 (2015-04-03)
 
 ## Bug fixes
 - PIM-3961: Fix issue with validation of products when apply a rule
