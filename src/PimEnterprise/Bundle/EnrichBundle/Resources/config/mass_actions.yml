@@ -74,7 +74,7 @@ services:
     pim_enrich.mass_edit_handler.unpublish_product:
         class: %pimee_enrich.mass_edit_handler.unpublish_product.class%
         arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pimee_workflow.doctrine.query.published_product_query_factory'
             - '@pimee_workflow.manager.published_product'
             - '@pimee_workflow.repository.published_product'
             - '@pim_enrich.product.paginator'

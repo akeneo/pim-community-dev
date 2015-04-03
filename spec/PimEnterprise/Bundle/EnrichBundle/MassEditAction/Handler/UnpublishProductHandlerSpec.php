@@ -39,42 +39,14 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
     function it_is_a_configurable_step_element()
     {
         $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
+        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 
-    function it_executes_a_mass_unpublish_operation_with_a_configuration(
-        $manager,
-        $repository,
-        StepExecution $stepExecution,
-        PublishedProductInterface $pubProduct1,
-        PublishedProductInterface $pubProduct2
-    ) {
-        $configuration = [
-            'filters' => [
-                [
-                    'field'    => 'id',
-                    'operator' => 'IN',
-                    'value'    => ['55', '66']
-                ]
-            ],
-            'actions' => []
-        ];
-
-        $repository->findByIds(['55', '66'])->willReturn([$pubProduct1, $pubProduct2]);
-
-        $manager->unpublish($pubProduct1)->shouldBeCalled();
-        $manager->unpublish($pubProduct2)->shouldBeCalled();
-
-        $this->setStepExecution($stepExecution);
-        $this->execute($configuration);
-    }
-
-    function it_executes_a_mass_unpublish_operation_with_a_configuration_and_retrieve_published_from_originals(
-        $manager,
+    function it_executes_a_mass_publish_operation_with_a_configuration(
         $paginatorFactory,
+        $manager,
         $cursor,
         StepExecution $stepExecution,
-        ProductInterface $product1,
-        ProductInterface $product2,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2
     ) {
@@ -83,20 +55,17 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
                 [
                     'field'    => 'sku',
                     'operator' => 'IN',
-                    'value'    => ['1001', '1115']
+                    'value'    => ['1000', '1001']
                 ]
             ],
             'actions' => []
         ];
         $productsPage = [
             [
-                $product1,
-                $product2
+                $pubProduct1,
+                $pubProduct2
             ]
         ];
-        $manager->findPublishedProductByOriginal($product1)->willReturn($pubProduct1);
-        $manager->findPublishedProductByOriginal($product2)->willReturn($pubProduct2);
-
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
         $manager->unpublish($pubProduct1)->shouldBeCalled();
