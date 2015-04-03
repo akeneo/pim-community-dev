@@ -64,7 +64,7 @@ class ReferenceDataIdResolver
 
         if (null === $referenceData) {
             throw new \LogicException(
-                sprintf('No reference data "%s" with code "%s" has been found.', $referenceDataName, $code)
+                sprintf('No reference data "%s" with code "%s" has been found', $referenceDataName, $code)
             );
         }
 

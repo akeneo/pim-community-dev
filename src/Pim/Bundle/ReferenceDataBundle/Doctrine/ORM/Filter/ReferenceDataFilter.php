@@ -91,7 +91,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
             $this->checkValue($field, $value);
 
             if (FieldFilterHelper::CODE_PROPERTY === FieldFilterHelper::getProperty($field)) {
-                $value = $this->idResolver->resolve($attribute->getReferenceDataName(), $value);
+                $value = $this->valueCodesToIds($attribute, $value);
             }
 
             $this->addNonEmptyFilter($attribute, $operator, $value, $locale, $scope);
@@ -192,5 +192,29 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         foreach ($values as $value) {
             FieldFilterHelper::checkIdentifier($field, $value, 'reference_data');
         }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $value
+     *
+     * @return int
+     */
+    protected function valueCodesToIds(AttributeInterface $attribute, $value)
+    {
+        try {
+            $value = $this->idResolver->resolve($attribute->getReferenceDataName(), $value);
+        } catch (\LogicException $e) {
+            throw InvalidArgumentException::validEntityCodeExpected(
+                $attribute->getCode(),
+                'code',
+                $e->getMessage(),
+                'setter',
+                'reference data',
+                implode(',', $value)
+            );
+        }
+
+        return $value;
     }
 }

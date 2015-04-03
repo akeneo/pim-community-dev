@@ -104,9 +104,9 @@ class ReferenceDataSetterSpec extends ObjectBehavior
         $exception = InvalidArgumentException::validEntityCodeExpected(
             'lace_fabric',
             'code',
-            'The reference data does not exist',
+            'No reference data "customMaterials" with code "hulk_retriever" has been found',
             'setter',
-            'reference data simple select',
+            'reference data',
             'hulk_retriever'
         );
 

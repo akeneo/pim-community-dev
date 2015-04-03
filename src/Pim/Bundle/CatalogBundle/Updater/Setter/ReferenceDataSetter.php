@@ -61,9 +61,13 @@ class ReferenceDataSetter extends AbstractAttributeSetter
                 throw InvalidArgumentException::validEntityCodeExpected(
                     $attribute->getCode(),
                     'code',
-                    'The reference data does not exist',
+                    sprintf(
+                        'No reference data "%s" with code "%s" has been found',
+                        $attribute->getReferenceDataName(),
+                        $data
+                    ),
                     'setter',
-                    'reference data simple select',
+                    'reference data',
                     $data
                 );
             }

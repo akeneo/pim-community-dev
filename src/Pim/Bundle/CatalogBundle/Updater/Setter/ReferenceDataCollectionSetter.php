@@ -60,7 +60,11 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
                     'code',
-                    'The reference data does not exist',
+                    sprintf(
+                        'No reference data "%s" with code "%s" has been found',
+                        $attribute->getReferenceDataName(),
+                        $referenceDataCode
+                    ),
                     'setter',
                     'reference data collection',
                     $referenceDataCode
@@ -70,7 +74,13 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
             $referenceDataCollection[] = $referenceData;
         }
 
-        $this->setReferenceDataCollection($attribute, $product, $referenceDataCollection, $options['locale'], $options['scope']);
+        $this->setReferenceDataCollection(
+            $attribute,
+            $product,
+            $referenceDataCollection,
+            $options['locale'],
+            $options['scope']
+        );
     }
 
     /**
