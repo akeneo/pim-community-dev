@@ -36,9 +36,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        if ($data === null || $data === '') {
-            return null;
-        }
+        $data = '' === $data ? null : $data;
 
         $resolver = new OptionsResolver();
         $this->configContext($resolver);
