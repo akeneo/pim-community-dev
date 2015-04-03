@@ -78,7 +78,6 @@ services:
         arguments:
             - '@pimee_workflow.doctrine.query.published_product_query_factory'
             - '@pimee_workflow.manager.published_product'
-            - '@pimee_workflow.repository.published_product'
             - '@pim_enrich.product.paginator'
             - '@pim_validator'
             - '@akeneo_storage_utils.doctrine.object_detacher'

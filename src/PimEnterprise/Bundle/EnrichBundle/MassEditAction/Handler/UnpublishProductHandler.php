@@ -8,7 +8,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -20,9 +19,6 @@ class UnpublishProductHandler extends AbstractConfigurableStepElement implements
 {
     /** @var PublishedProductManager */
     protected $manager;
-
-    /** @var PublishedProductRepositoryInterface */
-    protected $repository;
 
     /** @var PaginatorFactoryInterface */
     protected $paginatorFactory;
@@ -38,17 +34,14 @@ class UnpublishProductHandler extends AbstractConfigurableStepElement implements
      *
      * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
      * @param PublishedProductManager             $manager
-     * @param PublishedProductRepositoryInterface $repository
      * @param PaginatorFactoryInterface           $paginatorFactory
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $publishedPqbFactory,
         PublishedProductManager $manager,
-        PublishedProductRepositoryInterface $repository,
         PaginatorFactoryInterface $paginatorFactory
     ) {
         $this->manager = $manager;
-        $this->repository = $repository;
         $this->paginatorFactory = $paginatorFactory;
         $this->publishedPqbFactory = $publishedPqbFactory;
     }
