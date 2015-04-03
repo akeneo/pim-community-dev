@@ -133,12 +133,22 @@ function($, _, __, ChoiceFilter, localeSettings) {
             var select = this.$el.find(e.currentTarget);
             var selectedValue = select.val();
 
+            this._displayFilterType(selectedValue);
+        },
+
+        /**
+         * Manage how to display a filter type
+         *
+         * @param {String} type
+         * @protected
+         */
+        _displayFilterType: function(type) {
             this.$el.find('.filter-separator').show().end().find('input').show();
-            if (this.typeValues.moreThan == parseInt(selectedValue)) {
+            if (this.typeValues.moreThan == parseInt(type)) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
-            } else if (this.typeValues.lessThan == parseInt(selectedValue)) {
+            } else if (this.typeValues.lessThan == parseInt(type)) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.start).hide();
-            } else if ('empty' === selectedValue) {
+            } else if ('empty' === type) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
             }
         },
@@ -370,7 +380,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
             if (newValue.type === 'empty') {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
             } else {
-                this.$el.find('.filter-separator').show().end().find(this.criteriaValueSelectors.value.end).show().end().find(this.criteriaValueSelectors.value.start).show();
+                this._displayFilterType(newValue.type);
             }
         }
     });
