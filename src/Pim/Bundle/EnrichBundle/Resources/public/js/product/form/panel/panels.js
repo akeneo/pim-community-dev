@@ -24,6 +24,7 @@ define(
             },
             configure: function() {
                 this.getRoot().addPanel = _.bind(this.addPanel, this);
+                this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -65,6 +66,13 @@ define(
             },
             closePanel: function () {
                 this.state.set('currentPanel', null);
+                this.closeFullPanel();
+            },
+            openFullPanel: function() {
+                this.getParent().state.set('fullPanel', true);
+            },
+            closeFullPanel: function() {
+                this.getParent().state.set('fullPanel', false);
             },
             resize: function() {
                 var panelContent = this.$('.panel-content');

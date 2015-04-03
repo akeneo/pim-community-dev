@@ -30,6 +30,8 @@ define(
                 } else {
                     this.getParent().state.set('currentPanel', event.currentTarget.dataset.panel);
                 }
+
+                this.getParent().closeFullPanel();
             }
         });
     }

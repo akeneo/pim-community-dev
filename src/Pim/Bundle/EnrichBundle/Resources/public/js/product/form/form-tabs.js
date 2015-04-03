@@ -64,6 +64,7 @@ define(
             },
             changeTab: function (event) {
                 this.state.set('currentTab', event.currentTarget.dataset.tab);
+                this.state.set('fullPanel', false);
             }
         });
     }

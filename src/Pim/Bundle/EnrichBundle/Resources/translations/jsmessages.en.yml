@@ -117,6 +117,7 @@ pim_enrich:
                 author: Author
                 logged_at: Logged at
                 more: More
+                less: Less
                 from: From
                 modified: Modified
                 property: Property
