@@ -26,8 +26,6 @@ Pim\Bundle\CatalogBundle\Entity\Family:
         attributes:
             targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
             inversedBy: families
-            cascade:
-                - persist
             joinTable:
                 name: pim_catalog_family_attribute
                 joinColumns:

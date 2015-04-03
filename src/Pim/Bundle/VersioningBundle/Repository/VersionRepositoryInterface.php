@@ -35,9 +35,9 @@ interface VersionRepositoryInterface
     /**
      * Returns newest (last) version for a resource
      *
-     * @param string  $resourceName
-     * @param string  $resourceId
-     * @param bool    $pending
+     * @param string $resourceName
+     * @param string $resourceId
+     * @param bool   $pending
      *
      * @return Version|null
      */

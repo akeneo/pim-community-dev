@@ -451,10 +451,9 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeLabelTranslations(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $this
-                ->getAttribute($data['attribute'])
-                ->setLocale($this->getLocaleCode($data['locale']))
-                ->setLabel($data['label']);
+            $attribute = $this->getAttribute($data['attribute']);
+            $attribute->setLocale($this->getLocaleCode($data['locale']))->setLabel($data['label']);
+            $this->persist($attribute);
         }
 
         $this->flush();
@@ -629,7 +628,8 @@ class FixturesContext extends RawMinkContext
                 $optionData[] = [
                     'attribute'   => sprintf($attCodePattern, $i),
                     'code'        => sprintf($optionCodePattern, $i, $j),
-                    'label-en_US' => sprintf($optionLabelPattern, $j, $i)
+                    'label-en_US' => sprintf($optionLabelPattern, $j, $i),
+                    'label-fr_FR' => sprintf($optionLabelPattern, $j, $i)
                 ];
             }
         }
@@ -895,7 +895,9 @@ class FixturesContext extends RawMinkContext
     {
         $attribute = $this->getAttribute(strtolower($attribute));
         foreach ($this->listToArray($options) as $option) {
-            $attribute->addOption($this->createOption($option));
+            $option = $this->createOption($option);
+            $attribute->addOption($option);
+            $this->persist($option);
         }
 
         $this->flush();
