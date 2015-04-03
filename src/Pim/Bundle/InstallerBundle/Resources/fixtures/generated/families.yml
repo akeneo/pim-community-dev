@@ -1,0 +1,5765 @@
+families:
+    pc_monitors:
+        labels:
+            en_US: 'PC Monitors'
+            fr_FR: Moniteurs
+            de_DE: 'PC Monitoren'
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - display_diagonal
+            - response_time
+            - display_srgb
+            - display_color
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+    led_tvs:
+        labels:
+            en_US: 'LED TVs'
+            fr_FR: 'TVs LED'
+            de_DE: 'TVs LED'
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - display_diagonal
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - display_diagonal
+    camcorders:
+        labels:
+            en_US: Camcorders
+            fr_FR: 'Caméscopes numériques'
+            de_DE: 'Digitale Videokameras'
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - sensor_type
+            - total_megapixels
+            - optical_zoom
+            - image_stabilizer
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - sensor_type
+                - total_megapixels
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - sensor_type
+                - total_megapixels
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - sensor_type
+                - total_megapixels
+    digital_cameras:
+        labels:
+            en_US: 'Digital cameras'
+            fr_FR: 'Caméras digitales'
+            de_DE: 'Digitale Kameras'
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - camera_type
+            - sensor_type
+            - total_megapixels
+            - optical_zoom
+            - weight
+            - power_requirements
+            - camera_brand
+            - camera_model_name
+            - short_description
+            - max_image_resolution
+            - image_resolutions
+            - supported_aspect_ratios
+            - supported_image_format
+            - lens_mount_interface
+            - focus
+            - focus_adjustement
+            - auto_focus_modes
+            - auto_focus_points
+            - auto_focus_lock
+            - auto_focus_assist_beam
+            - iso_sensitivity
+            - light_exposure_modes
+            - light_exposure_corrections
+            - light_metering
+            - auto_exposure
+            - iso_sensitivity_max
+            - iso_sensitivity_min
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - camera_type
+                - sensor_type
+                - total_megapixels
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - camera_type
+                - sensor_type
+                - total_megapixels
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - camera_type
+                - sensor_type
+                - total_megapixels
+                - camera_brand
+                - camera_model_name
+                - short_description
+                - max_image_resolution
+                - image_resolutions
+                - supported_aspect_ratios
+                - supported_image_format
+                - lens_mount_interface
+                - focus
+                - focus_adjustement
+                - auto_focus_modes
+                - auto_focus_points
+                - auto_focus_lock
+                - auto_focus_assist_beam
+                - iso_sensitivity
+                - light_exposure_modes
+                - light_exposure_corrections
+                - light_metering
+                - auto_exposure
+                - iso_sensitivity_max
+                - iso_sensitivity_min
+    webcams:
+        labels:
+            en_US: Webcams
+            fr_FR: Webcams
+            de_DE: Webcams
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - total_megapixels
+            - maximum_video_resolution
+            - maximum_frame_rate
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - total_megapixels
+                - maximum_video_resolution
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - total_megapixels
+                - maximum_video_resolution
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - total_megapixels
+                - maximum_video_resolution
+    headphones:
+        labels:
+            en_US: Headphones
+            fr_FR: 'Casques audio'
+            de_DE: Kopfhörer
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - thd
+            - snr
+            - headphone_connectivity
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - thd
+                - snr
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - thd
+                - snr
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - thd
+                - snr
+    mp3_players:
+        labels:
+            en_US: 'MP3 players'
+            fr_FR: 'Lecteurs et enregistreurs MP3'
+            de_DE: 'MP3/MP4 Player'
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+    loudspeakers:
+        labels:
+            en_US: Loudspeakers
+            fr_FR: Hauts-parleurs
+            de_DE: Lautsprecher
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+    multifunctionals:
+        labels:
+            en_US: Multifunctionals
+            fr_FR: Multifunctions
+            de_DE: Multifunktionsgeräte
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - color_scanning
+            - multifunctional_functions
+            - maximum_print_size
+            - weight
+            - power_requirements
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+                - multifunctional_functions
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+                - multifunctional_functions
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+                - multifunctional_functions
+    laser_led_printers:
+        labels:
+            en_US: 'Laser and LED printers'
+            fr_FR: 'Imprimantes laser et LED'
+            de_DE: Laserdrucker
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - maximum_print_size
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - maximum_print_size
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - maximum_print_size
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - maximum_print_size
+            - weight
+            - power_requirements
+    scanners:
+        labels:
+            en_US: Scanners
+            fr_FR: Scanners
+            de_DE: Scanners
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+                - color_scanning
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - color_scanning
+            - maximum_scan_size
+            - weight
+            - power_requirements
+    tablets:
+        labels:
+            en_US: Tablets
+            fr_FR: Tablettes
+            de_DE: Tablets
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+            - release_date
+            - picture
+            - weight
+            - power_requirements
+    mugs:
+        labels:
+            en_US: Mugs
+            fr_FR: Chopes/Mugs
+            de_DE: Tassen
+            es_ES: 'Veritatis est.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - main_color
+                - price
+            ecommerce:
+                - sku
+                - name
+                - description
+                - main_color
+                - price
+                - container_material
+        attributes:
+            - sku
+            - name
+            - description
+            - main_color
+            - price
+            - picture
+            - container_material
+
+    tshirts:
+        requirements:
+            print:
+                - sku
+                - name
+                - description
+                - price
+            mobile:
+                - sku
+                - name
+                - description
+                - main_color
+                - secondary_color
+                - price
+                - clothing_size
+            ecommerce:
+                - sku
+                - name
+                - description
+                - main_color
+                - secondary_color
+                - tshirt_materials
+                - clothing_size
+        attributes:
+            - sku
+            - name
+            - description
+            - main_color
+            - secondary_color
+            - price
+            - picture
+            - clothing_size
+            - tshirt_materials
+            - tshirt_style
+    fam_0:
+        labels:
+            de_DE: 'Ipsum et.'
+            en_US: 'Est suscipit perspiciatis.'
+            es_ES: 'Architecto aut.'
+            fr_FR: 'Rem voluptatem.'
+            it_IT: 'Corrupti quaerat quos.'
+            ja_JP: 'Dolorum non molestiae.'
+            ru_RU: 'Et quod voluptas.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_168
+            - attr_57
+            - attr_223
+            - attr_18
+            - attr_112
+            - attr_254
+            - attr_144
+            - attr_279
+            - attr_155
+            - attr_4
+            - attr_166
+            - attr_70
+            - attr_251
+            - attr_137
+            - attr_24
+            - attr_79
+            - attr_129
+            - attr_28
+            - attr_195
+            - attr_52
+            - attr_44
+            - attr_120
+            - attr_288
+            - attr_41
+            - attr_8
+            - attr_145
+            - attr_204
+            - attr_62
+            - attr_78
+            - attr_124
+            - attr_299
+            - attr_177
+            - attr_135
+            - attr_134
+            - attr_257
+            - attr_26
+            - attr_244
+            - attr_234
+            - attr_3
+            - attr_61
+            - attr_21
+            - attr_210
+            - attr_104
+            - attr_121
+            - attr_184
+            - attr_196
+            - attr_48
+            - attr_136
+            - attr_111
+        requirements:
+            channel4:
+                - sku
+                - attr_48
+                - attr_36
+                - attr_109
+                - attr_155
+                - attr_225
+                - attr_194
+                - attr_153
+                - attr_279
+                - attr_81
+            channel5:
+                - sku
+                - attr_154
+                - attr_226
+                - attr_180
+                - attr_92
+                - attr_159
+                - attr_297
+                - attr_260
+                - attr_238
+                - attr_25
+            channel6:
+                - sku
+                - attr_143
+                - attr_210
+                - attr_219
+                - attr_88
+                - attr_144
+                - attr_293
+                - attr_185
+                - attr_122
+                - attr_252
+            ecommerce:
+                - sku
+                - attr_212
+                - attr_222
+                - attr_292
+                - attr_100
+                - attr_159
+                - attr_244
+                - attr_295
+                - attr_202
+                - attr_241
+            mobile:
+                - sku
+                - attr_79
+                - attr_220
+                - attr_126
+                - attr_262
+                - attr_2
+                - attr_156
+                - attr_240
+                - attr_121
+                - attr_298
+            print:
+                - sku
+                - attr_244
+                - attr_230
+                - attr_152
+                - attr_162
+                - attr_94
+                - attr_55
+                - attr_220
+                - attr_278
+                - attr_119
+    fam_1:
+        labels:
+            de_DE: 'Et doloremque voluptatum.'
+            en_US: 'Aliquam nulla itaque.'
+            es_ES: 'Maiores aliquid.'
+            fr_FR: 'Nobis nemo.'
+            it_IT: 'Vel ex et.'
+            ja_JP: 'Velit error veritatis.'
+            ru_RU: 'Non tenetur impedit.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_151
+            - attr_157
+            - attr_198
+            - attr_171
+            - attr_68
+            - attr_34
+            - attr_136
+            - attr_63
+            - attr_74
+            - attr_77
+            - attr_54
+            - attr_189
+            - attr_274
+            - attr_116
+            - attr_203
+            - attr_105
+            - attr_250
+            - attr_280
+            - attr_167
+            - attr_97
+            - attr_141
+            - attr_267
+            - attr_30
+            - attr_55
+            - attr_118
+            - attr_219
+            - attr_32
+            - attr_176
+            - attr_127
+            - attr_126
+            - attr_103
+            - attr_201
+            - attr_100
+            - attr_70
+            - attr_64
+            - attr_279
+            - attr_248
+            - attr_246
+            - attr_285
+            - attr_142
+            - attr_239
+            - attr_16
+            - attr_236
+            - attr_31
+            - attr_134
+            - attr_143
+            - attr_286
+            - attr_207
+            - attr_253
+        requirements:
+            channel4:
+                - sku
+                - attr_160
+                - attr_279
+                - attr_216
+                - attr_167
+                - attr_223
+                - attr_127
+                - attr_88
+                - attr_254
+                - attr_272
+            channel5:
+                - sku
+                - attr_132
+                - attr_119
+                - attr_75
+                - attr_87
+                - attr_136
+                - attr_25
+                - attr_45
+                - attr_258
+                - attr_279
+            channel6:
+                - sku
+                - attr_44
+                - attr_237
+                - attr_81
+                - attr_4
+                - attr_13
+                - attr_110
+                - attr_251
+                - attr_241
+                - attr_147
+            ecommerce:
+                - sku
+                - attr_157
+                - attr_163
+                - attr_89
+                - attr_127
+                - attr_268
+                - attr_74
+                - attr_51
+                - attr_253
+                - attr_179
+            mobile:
+                - sku
+                - attr_251
+                - attr_225
+                - attr_202
+                - attr_231
+                - attr_177
+                - attr_2
+                - attr_110
+                - attr_292
+                - attr_16
+            print:
+                - sku
+                - attr_125
+                - attr_149
+                - attr_228
+                - attr_138
+                - attr_223
+                - attr_184
+                - attr_34
+                - attr_111
+                - attr_194
+    fam_2:
+        labels:
+            de_DE: 'Dolor et ipsum.'
+            en_US: 'Aut eaque esse.'
+            es_ES: 'Omnis perspiciatis ducimus.'
+            fr_FR: 'Deleniti quo.'
+            it_IT: 'Ratione hic est.'
+            ja_JP: 'Minima veritatis et.'
+            ru_RU: 'Laboriosam facere.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_147
+            - attr_103
+            - attr_87
+            - attr_162
+            - attr_128
+            - attr_51
+            - attr_197
+            - attr_252
+            - attr_20
+            - attr_100
+            - attr_286
+            - attr_135
+            - attr_205
+            - attr_189
+            - attr_288
+            - attr_244
+            - attr_149
+            - attr_241
+            - attr_50
+            - attr_256
+            - attr_6
+            - attr_94
+            - attr_222
+            - attr_18
+            - attr_243
+            - attr_173
+            - attr_257
+            - attr_281
+            - attr_223
+            - attr_96
+            - attr_125
+            - attr_156
+            - attr_261
+            - attr_48
+            - attr_208
+            - attr_69
+            - attr_277
+            - attr_239
+            - attr_175
+            - attr_112
+            - attr_49
+            - attr_163
+            - attr_216
+            - attr_212
+            - attr_159
+            - attr_194
+            - attr_167
+            - attr_165
+            - attr_107
+        requirements:
+            channel4:
+                - sku
+                - attr_213
+                - attr_201
+                - attr_41
+                - attr_283
+                - attr_244
+                - attr_15
+                - attr_217
+                - attr_106
+                - attr_109
+            channel5:
+                - sku
+                - attr_145
+                - attr_85
+                - attr_272
+                - attr_142
+                - attr_291
+                - attr_22
+                - attr_197
+                - attr_133
+                - attr_75
+            channel6:
+                - sku
+                - attr_7
+                - attr_126
+                - attr_172
+                - attr_62
+                - attr_258
+                - attr_278
+                - attr_127
+                - attr_261
+                - attr_297
+            ecommerce:
+                - sku
+                - attr_228
+                - attr_291
+                - attr_96
+                - attr_179
+                - attr_124
+                - attr_225
+                - attr_43
+                - attr_92
+                - attr_178
+            mobile:
+                - sku
+                - attr_174
+                - attr_210
+                - attr_44
+                - attr_143
+                - attr_95
+                - attr_86
+                - attr_282
+                - attr_21
+                - attr_48
+            print:
+                - sku
+                - attr_112
+                - attr_60
+                - attr_90
+                - attr_246
+                - attr_164
+                - attr_153
+                - attr_258
+                - attr_196
+                - attr_180
+    fam_3:
+        labels:
+            de_DE: 'Neque ullam sit.'
+            en_US: 'Ea debitis.'
+            es_ES: 'Fuga ipsum blanditiis.'
+            fr_FR: 'Vel rem.'
+            it_IT: 'Delectus sed.'
+            ja_JP: 'Temporibus sunt est.'
+            ru_RU: 'Mollitia hic omnis.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_251
+            - attr_191
+            - attr_168
+            - attr_287
+            - attr_6
+            - attr_121
+            - attr_98
+            - attr_51
+            - attr_141
+            - attr_280
+            - attr_74
+            - attr_196
+            - attr_186
+            - attr_180
+            - attr_133
+            - attr_77
+            - attr_119
+            - attr_37
+            - attr_130
+            - attr_250
+            - attr_226
+            - attr_132
+            - attr_199
+            - attr_273
+            - attr_47
+            - attr_189
+            - attr_235
+            - attr_233
+            - attr_10
+            - attr_263
+            - attr_261
+            - attr_257
+            - attr_24
+            - attr_169
+            - attr_40
+            - attr_281
+            - attr_18
+            - attr_61
+            - attr_107
+            - attr_111
+            - attr_45
+            - attr_239
+            - attr_170
+            - attr_236
+            - attr_293
+            - attr_134
+            - attr_153
+            - attr_60
+            - attr_125
+        requirements:
+            channel4:
+                - sku
+                - attr_123
+                - attr_34
+                - attr_154
+                - attr_22
+                - attr_225
+                - attr_276
+                - attr_242
+                - attr_179
+                - attr_227
+            channel5:
+                - sku
+                - attr_106
+                - attr_127
+                - attr_32
+                - attr_142
+                - attr_122
+                - attr_92
+                - attr_295
+                - attr_237
+                - attr_284
+            channel6:
+                - sku
+                - attr_296
+                - attr_84
+                - attr_80
+                - attr_197
+                - attr_108
+                - attr_189
+                - attr_297
+                - attr_165
+                - attr_125
+            ecommerce:
+                - sku
+                - attr_2
+                - attr_214
+                - attr_250
+                - attr_220
+                - attr_123
+                - attr_5
+                - attr_33
+                - attr_57
+                - attr_258
+            mobile:
+                - sku
+                - attr_173
+                - attr_100
+                - attr_83
+                - attr_153
+                - attr_49
+                - attr_156
+                - attr_291
+                - attr_209
+                - attr_171
+            print:
+                - sku
+                - attr_112
+                - attr_74
+                - attr_111
+                - attr_100
+                - attr_202
+                - attr_75
+                - attr_76
+                - attr_250
+                - attr_26
+    fam_4:
+        labels:
+            de_DE: 'Alias sit.'
+            en_US: 'Id voluptas.'
+            es_ES: 'Culpa recusandae.'
+            fr_FR: 'Sed assumenda ipsum.'
+            it_IT: 'Aperiam ea sed.'
+            ja_JP: 'Dolores dolor.'
+            ru_RU: 'Esse et possimus.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_174
+            - attr_173
+            - attr_95
+            - attr_97
+            - attr_180
+            - attr_263
+            - attr_84
+            - attr_211
+            - attr_278
+            - attr_34
+            - attr_269
+            - attr_172
+            - attr_60
+            - attr_258
+            - attr_220
+            - attr_205
+            - attr_102
+            - attr_286
+            - attr_254
+            - attr_118
+            - attr_0
+            - attr_126
+            - attr_148
+            - attr_116
+            - attr_198
+            - attr_204
+            - attr_243
+            - attr_268
+            - attr_146
+            - attr_35
+            - attr_249
+            - attr_157
+            - attr_103
+            - attr_197
+            - attr_152
+            - attr_166
+            - attr_182
+            - attr_156
+            - attr_41
+            - attr_216
+            - attr_77
+            - attr_38
+            - attr_21
+            - attr_4
+            - attr_54
+            - attr_274
+            - attr_228
+            - attr_74
+            - attr_10
+        requirements:
+            channel4:
+                - sku
+                - attr_23
+                - attr_99
+                - attr_190
+                - attr_5
+                - attr_246
+                - attr_102
+                - attr_73
+                - attr_92
+                - attr_150
+            channel5:
+                - sku
+                - attr_67
+                - attr_88
+                - attr_187
+                - attr_116
+                - attr_9
+                - attr_270
+                - attr_77
+                - attr_213
+                - attr_258
+            channel6:
+                - sku
+                - attr_119
+                - attr_228
+                - attr_26
+                - attr_61
+                - attr_170
+                - attr_246
+                - attr_295
+                - attr_280
+                - attr_16
+            ecommerce:
+                - sku
+                - attr_25
+                - attr_187
+                - attr_144
+                - attr_262
+                - attr_210
+                - attr_266
+                - attr_205
+                - attr_30
+                - attr_250
+            mobile:
+                - sku
+                - attr_181
+                - attr_232
+                - attr_179
+                - attr_41
+                - attr_286
+                - attr_156
+                - attr_36
+                - attr_119
+                - attr_244
+            print:
+                - sku
+                - attr_100
+                - attr_27
+                - attr_282
+                - attr_229
+                - attr_258
+                - attr_247
+                - attr_78
+                - attr_153
+                - attr_64
+    fam_5:
+        labels:
+            de_DE: 'Sit reprehenderit voluptas.'
+            en_US: 'Distinctio porro.'
+            es_ES: 'Modi voluptatibus voluptatem.'
+            fr_FR: 'Laudantium dolorem quo.'
+            it_IT: 'Odit consequuntur.'
+            ja_JP: 'Impedit est.'
+            ru_RU: 'Magni laborum.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_161
+            - attr_127
+            - attr_259
+            - attr_195
+            - attr_77
+            - attr_165
+            - attr_151
+            - attr_189
+            - attr_175
+            - attr_264
+            - attr_210
+            - attr_275
+            - attr_256
+            - attr_147
+            - attr_32
+            - attr_8
+            - attr_180
+            - attr_155
+            - attr_117
+            - attr_208
+            - attr_194
+            - attr_111
+            - attr_126
+            - attr_209
+            - attr_88
+            - attr_52
+            - attr_100
+            - attr_222
+            - attr_190
+            - attr_61
+            - attr_128
+            - attr_55
+            - attr_140
+            - attr_10
+            - attr_289
+            - attr_45
+            - attr_48
+            - attr_216
+            - attr_293
+            - attr_54
+            - attr_249
+            - attr_206
+            - attr_12
+            - attr_53
+            - attr_14
+            - attr_207
+            - attr_3
+            - attr_87
+            - attr_164
+        requirements:
+            channel4:
+                - sku
+                - attr_248
+                - attr_168
+                - attr_126
+                - attr_193
+                - attr_147
+                - attr_201
+                - attr_125
+                - attr_59
+                - attr_38
+            channel5:
+                - sku
+                - attr_247
+                - attr_43
+                - attr_282
+                - attr_237
+                - attr_145
+                - attr_206
+                - attr_13
+                - attr_159
+                - attr_63
+            channel6:
+                - sku
+                - attr_34
+                - attr_72
+                - attr_186
+                - attr_265
+                - attr_205
+                - attr_28
+                - attr_48
+                - attr_192
+                - attr_145
+            ecommerce:
+                - sku
+                - attr_150
+                - attr_43
+                - attr_231
+                - attr_50
+                - attr_10
+                - attr_158
+                - attr_276
+                - attr_106
+                - attr_193
+            mobile:
+                - sku
+                - attr_178
+                - attr_281
+                - attr_184
+                - attr_67
+                - attr_80
+                - attr_252
+                - attr_187
+                - attr_148
+                - attr_298
+            print:
+                - sku
+                - attr_270
+                - attr_37
+                - attr_195
+                - attr_125
+                - attr_139
+                - attr_127
+                - attr_225
+                - attr_297
+                - attr_274
+    fam_6:
+        labels:
+            de_DE: 'Quos occaecati voluptate.'
+            en_US: 'Excepturi explicabo non.'
+            es_ES: 'Molestiae dolor doloremque.'
+            fr_FR: 'Asperiores est autem.'
+            it_IT: 'Tempora earum.'
+            ja_JP: 'Id ea.'
+            ru_RU: 'Cum pariatur in.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_98
+            - attr_239
+            - attr_214
+            - attr_77
+            - attr_289
+            - attr_231
+            - attr_111
+            - attr_230
+            - attr_216
+            - attr_175
+            - attr_53
+            - attr_165
+            - attr_265
+            - attr_120
+            - attr_18
+            - attr_11
+            - attr_167
+            - attr_65
+            - attr_75
+            - attr_137
+            - attr_148
+            - attr_59
+            - attr_233
+            - attr_40
+            - attr_189
+            - attr_88
+            - attr_270
+            - attr_12
+            - attr_1
+            - attr_129
+            - attr_281
+            - attr_174
+            - attr_272
+            - attr_7
+            - attr_237
+            - attr_185
+            - attr_22
+            - attr_286
+            - attr_282
+            - attr_64
+            - attr_146
+            - attr_262
+            - attr_4
+            - attr_260
+            - attr_164
+            - attr_123
+            - attr_196
+            - attr_251
+            - attr_264
+        requirements:
+            channel4:
+                - sku
+                - attr_93
+                - attr_105
+                - attr_83
+                - attr_27
+                - attr_75
+                - attr_292
+                - attr_130
+                - attr_102
+                - attr_278
+            channel5:
+                - sku
+                - attr_146
+                - attr_86
+                - attr_68
+                - attr_203
+                - attr_33
+                - attr_129
+                - attr_260
+                - attr_167
+                - attr_85
+            channel6:
+                - sku
+                - attr_182
+                - attr_128
+                - attr_212
+                - attr_94
+                - attr_176
+                - attr_161
+                - attr_199
+                - attr_230
+                - attr_100
+            ecommerce:
+                - sku
+                - attr_125
+                - attr_61
+                - attr_10
+                - attr_35
+                - attr_143
+                - attr_103
+                - attr_52
+                - attr_110
+                - attr_65
+            mobile:
+                - sku
+                - attr_239
+                - attr_273
+                - attr_69
+                - attr_134
+                - attr_193
+                - attr_219
+                - attr_217
+                - attr_156
+                - attr_158
+            print:
+                - sku
+                - attr_100
+                - attr_2
+                - attr_157
+                - attr_61
+                - attr_270
+                - attr_28
+                - attr_83
+                - attr_295
+                - attr_85
+    fam_7:
+        labels:
+            de_DE: 'Ipsa eum delectus.'
+            en_US: 'Cumque ratione dolore.'
+            es_ES: 'Harum placeat ea.'
+            fr_FR: 'Nihil eum.'
+            it_IT: 'Impedit id debitis.'
+            ja_JP: 'Quia velit ut.'
+            ru_RU: 'Nihil atque similique.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_133
+            - attr_185
+            - attr_176
+            - attr_129
+            - attr_192
+            - attr_12
+            - attr_165
+            - attr_189
+            - attr_77
+            - attr_122
+            - attr_147
+            - attr_34
+            - attr_286
+            - attr_115
+            - attr_215
+            - attr_297
+            - attr_240
+            - attr_244
+            - attr_161
+            - attr_184
+            - attr_276
+            - attr_41
+            - attr_104
+            - attr_267
+            - attr_78
+            - attr_32
+            - attr_117
+            - attr_125
+            - attr_205
+            - attr_139
+            - attr_47
+            - attr_40
+            - attr_126
+            - attr_262
+            - attr_150
+            - attr_221
+            - attr_177
+            - attr_64
+            - attr_290
+            - attr_134
+            - attr_217
+            - attr_266
+            - attr_203
+            - attr_20
+            - attr_127
+            - attr_287
+            - attr_91
+            - attr_141
+            - attr_295
+        requirements:
+            channel4:
+                - sku
+                - attr_258
+                - attr_113
+                - attr_69
+                - attr_0
+                - attr_198
+                - attr_123
+                - attr_138
+                - attr_263
+                - attr_185
+            channel5:
+                - sku
+                - attr_123
+                - attr_104
+                - attr_30
+                - attr_161
+                - attr_59
+                - attr_298
+                - attr_89
+                - attr_52
+                - attr_54
+            channel6:
+                - sku
+                - attr_205
+                - attr_75
+                - attr_33
+                - attr_178
+                - attr_42
+                - attr_120
+                - attr_180
+                - attr_263
+                - attr_108
+            ecommerce:
+                - sku
+                - attr_10
+                - attr_186
+                - attr_46
+                - attr_87
+                - attr_235
+                - attr_28
+                - attr_205
+                - attr_43
+                - attr_285
+            mobile:
+                - sku
+                - attr_259
+                - attr_202
+                - attr_153
+                - attr_56
+                - attr_171
+                - attr_159
+                - attr_57
+                - attr_261
+                - attr_233
+            print:
+                - sku
+                - attr_162
+                - attr_115
+                - attr_122
+                - attr_200
+                - attr_164
+                - attr_126
+                - attr_107
+                - attr_133
+                - attr_296
+    fam_8:
+        labels:
+            de_DE: 'Placeat natus.'
+            en_US: 'A hic fugiat.'
+            es_ES: 'Magni est est.'
+            fr_FR: 'Dolor perferendis.'
+            it_IT: 'Enim id dolor.'
+            ja_JP: 'Sed quos.'
+            ru_RU: 'Voluptatem nesciunt aliquam.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_180
+            - attr_102
+            - attr_77
+            - attr_12
+            - attr_136
+            - attr_135
+            - attr_181
+            - attr_247
+            - attr_15
+            - attr_49
+            - attr_177
+            - attr_13
+            - attr_292
+            - attr_203
+            - attr_216
+            - attr_147
+            - attr_117
+            - attr_109
+            - attr_48
+            - attr_17
+            - attr_240
+            - attr_152
+            - attr_10
+            - attr_246
+            - attr_37
+            - attr_33
+            - attr_120
+            - attr_51
+            - attr_161
+            - attr_287
+            - attr_289
+            - attr_153
+            - attr_256
+            - attr_288
+            - attr_249
+            - attr_74
+            - attr_195
+            - attr_72
+            - attr_65
+            - attr_243
+            - attr_14
+            - attr_83
+            - attr_97
+            - attr_126
+            - attr_274
+            - attr_94
+            - attr_138
+            - attr_125
+            - attr_112
+        requirements:
+            channel4:
+                - sku
+                - attr_191
+                - attr_21
+                - attr_136
+                - attr_158
+                - attr_241
+                - attr_0
+                - attr_132
+                - attr_126
+                - attr_159
+            channel5:
+                - sku
+                - attr_104
+                - attr_194
+                - attr_243
+                - attr_107
+                - attr_263
+                - attr_289
+                - attr_238
+                - attr_117
+                - attr_80
+            channel6:
+                - sku
+                - attr_185
+                - attr_259
+                - attr_135
+                - attr_157
+                - attr_225
+                - attr_251
+                - attr_276
+                - attr_84
+                - attr_35
+            ecommerce:
+                - sku
+                - attr_156
+                - attr_103
+                - attr_189
+                - attr_122
+                - attr_49
+                - attr_214
+                - attr_244
+                - attr_71
+                - attr_83
+            mobile:
+                - sku
+                - attr_277
+                - attr_227
+                - attr_246
+                - attr_67
+                - attr_231
+                - attr_169
+                - attr_259
+                - attr_128
+                - attr_80
+            print:
+                - sku
+                - attr_142
+                - attr_41
+                - attr_68
+                - attr_140
+                - attr_287
+                - attr_202
+                - attr_27
+                - attr_5
+                - attr_118
+    fam_9:
+        labels:
+            de_DE: 'Et illum.'
+            en_US: 'Omnis error veniam.'
+            es_ES: 'Nihil facilis.'
+            fr_FR: 'Tenetur qui aut.'
+            it_IT: 'Nostrum ut rerum.'
+            ja_JP: 'Quas quia dolorum.'
+            ru_RU: 'Sapiente voluptas quis.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_165
+            - attr_152
+            - attr_62
+            - attr_251
+            - attr_74
+            - attr_164
+            - attr_111
+            - attr_172
+            - attr_38
+            - attr_103
+            - attr_257
+            - attr_194
+            - attr_6
+            - attr_49
+            - attr_90
+            - attr_67
+            - attr_33
+            - attr_153
+            - attr_34
+            - attr_208
+            - attr_248
+            - attr_60
+            - attr_283
+            - attr_61
+            - attr_287
+            - attr_281
+            - attr_227
+            - attr_84
+            - attr_206
+            - attr_267
+            - attr_221
+            - attr_16
+            - attr_209
+            - attr_272
+            - attr_289
+            - attr_64
+            - attr_141
+            - attr_136
+            - attr_17
+            - attr_191
+            - attr_138
+            - attr_110
+            - attr_72
+            - attr_222
+            - attr_125
+            - attr_147
+            - attr_12
+            - attr_224
+            - attr_55
+        requirements:
+            channel4:
+                - sku
+                - attr_46
+                - attr_227
+                - attr_275
+                - attr_70
+                - attr_93
+                - attr_148
+                - attr_264
+                - attr_287
+                - attr_234
+            channel5:
+                - sku
+                - attr_17
+                - attr_29
+                - attr_91
+                - attr_47
+                - attr_49
+                - attr_254
+                - attr_118
+                - attr_55
+                - attr_101
+            channel6:
+                - sku
+                - attr_222
+                - attr_92
+                - attr_132
+                - attr_0
+                - attr_236
+                - attr_12
+                - attr_64
+                - attr_158
+                - attr_208
+            ecommerce:
+                - sku
+                - attr_81
+                - attr_261
+                - attr_259
+                - attr_126
+                - attr_201
+                - attr_60
+                - attr_190
+                - attr_79
+                - attr_122
+            mobile:
+                - sku
+                - attr_101
+                - attr_107
+                - attr_50
+                - attr_53
+                - attr_167
+                - attr_142
+                - attr_292
+                - attr_57
+                - attr_218
+            print:
+                - sku
+                - attr_56
+                - attr_258
+                - attr_121
+                - attr_195
+                - attr_53
+                - attr_116
+                - attr_138
+                - attr_103
+                - attr_12
+    fam_10:
+        labels:
+            de_DE: 'Aperiam impedit.'
+            en_US: 'Earum ad est.'
+            es_ES: 'Animi dolor harum.'
+            fr_FR: 'Quia non.'
+            it_IT: 'Dolor eos.'
+            ja_JP: 'Suscipit omnis cupiditate.'
+            ru_RU: 'Quos eligendi aut.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_270
+            - attr_169
+            - attr_273
+            - attr_33
+            - attr_54
+            - attr_14
+            - attr_153
+            - attr_185
+            - attr_275
+            - attr_138
+            - attr_203
+            - attr_110
+            - attr_188
+            - attr_59
+            - attr_293
+            - attr_290
+            - attr_200
+            - attr_282
+            - attr_174
+            - attr_220
+            - attr_235
+            - attr_86
+            - attr_18
+            - attr_191
+            - attr_216
+            - attr_222
+            - attr_108
+            - attr_45
+            - attr_267
+            - attr_194
+            - attr_40
+            - attr_240
+            - attr_251
+            - attr_132
+            - attr_272
+            - attr_43
+            - attr_75
+            - attr_137
+            - attr_6
+            - attr_193
+            - attr_27
+            - attr_183
+            - attr_256
+            - attr_68
+            - attr_79
+            - attr_197
+            - attr_100
+            - attr_107
+            - attr_298
+        requirements:
+            channel4:
+                - sku
+                - attr_109
+                - attr_117
+                - attr_154
+                - attr_71
+                - attr_36
+                - attr_256
+                - attr_264
+                - attr_106
+                - attr_146
+            channel5:
+                - sku
+                - attr_110
+                - attr_239
+                - attr_269
+                - attr_33
+                - attr_87
+                - attr_102
+                - attr_99
+                - attr_257
+                - attr_169
+            channel6:
+                - sku
+                - attr_126
+                - attr_204
+                - attr_166
+                - attr_260
+                - attr_139
+                - attr_61
+                - attr_125
+                - attr_209
+                - attr_247
+            ecommerce:
+                - sku
+                - attr_34
+                - attr_232
+                - attr_151
+                - attr_86
+                - attr_46
+                - attr_112
+                - attr_117
+                - attr_122
+                - attr_286
+            mobile:
+                - sku
+                - attr_284
+                - attr_20
+                - attr_295
+                - attr_128
+                - attr_271
+                - attr_217
+                - attr_114
+                - attr_194
+                - attr_205
+            print:
+                - sku
+                - attr_293
+                - attr_126
+                - attr_259
+                - attr_211
+                - attr_206
+                - attr_70
+                - attr_62
+                - attr_17
+                - attr_98
+    fam_11:
+        labels:
+            de_DE: 'Dicta labore eum.'
+            en_US: 'Consequatur ut.'
+            es_ES: 'Quos impedit esse.'
+            fr_FR: 'Minima et fugit.'
+            it_IT: 'Adipisci alias itaque.'
+            ja_JP: 'Cumque ullam.'
+            ru_RU: 'Dolor nobis.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_209
+            - attr_183
+            - attr_26
+            - attr_175
+            - attr_139
+            - attr_240
+            - attr_93
+            - attr_27
+            - attr_94
+            - attr_39
+            - attr_294
+            - attr_246
+            - attr_122
+            - attr_258
+            - attr_157
+            - attr_70
+            - attr_223
+            - attr_74
+            - attr_176
+            - attr_182
+            - attr_17
+            - attr_270
+            - attr_99
+            - attr_131
+            - attr_92
+            - attr_273
+            - attr_15
+            - attr_57
+            - attr_55
+            - attr_47
+            - attr_229
+            - attr_143
+            - attr_169
+            - attr_149
+            - attr_216
+            - attr_103
+            - attr_49
+            - attr_244
+            - attr_104
+            - attr_29
+            - attr_289
+            - attr_36
+            - attr_200
+            - attr_83
+            - attr_50
+            - attr_199
+            - attr_201
+            - attr_219
+            - attr_34
+        requirements:
+            channel4:
+                - sku
+                - attr_57
+                - attr_208
+                - attr_299
+                - attr_38
+                - attr_21
+                - attr_251
+                - attr_190
+                - attr_34
+                - attr_179
+            channel5:
+                - sku
+                - attr_2
+                - attr_40
+                - attr_10
+                - attr_243
+                - attr_248
+                - attr_41
+                - attr_238
+                - attr_292
+                - attr_276
+            channel6:
+                - sku
+                - attr_44
+                - attr_115
+                - attr_203
+                - attr_241
+                - attr_214
+                - attr_171
+                - attr_64
+                - attr_16
+                - attr_33
+            ecommerce:
+                - sku
+                - attr_287
+                - attr_8
+                - attr_234
+                - attr_106
+                - attr_288
+                - attr_53
+                - attr_22
+                - attr_257
+                - attr_268
+            mobile:
+                - sku
+                - attr_46
+                - attr_202
+                - attr_284
+                - attr_291
+                - attr_218
+                - attr_22
+                - attr_112
+                - attr_99
+                - attr_194
+            print:
+                - sku
+                - attr_91
+                - attr_85
+                - attr_29
+                - attr_106
+                - attr_252
+                - attr_244
+                - attr_162
+                - attr_261
+                - attr_97
+    fam_12:
+        labels:
+            de_DE: 'Tenetur iure.'
+            en_US: 'Animi natus.'
+            es_ES: 'Est qui animi.'
+            fr_FR: 'Quaerat nisi.'
+            it_IT: 'Dolores repellat.'
+            ja_JP: 'Voluptatum quia et.'
+            ru_RU: 'Nostrum assumenda aperiam.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_95
+            - attr_7
+            - attr_134
+            - attr_108
+            - attr_36
+            - attr_15
+            - attr_206
+            - attr_178
+            - attr_27
+            - attr_2
+            - attr_117
+            - attr_212
+            - attr_175
+            - attr_152
+            - attr_202
+            - attr_290
+            - attr_277
+            - attr_54
+            - attr_288
+            - attr_283
+            - attr_181
+            - attr_170
+            - attr_65
+            - attr_121
+            - attr_164
+            - attr_279
+            - attr_275
+            - attr_131
+            - attr_185
+            - attr_87
+            - attr_19
+            - attr_85
+            - attr_29
+            - attr_92
+            - attr_273
+            - attr_222
+            - attr_190
+            - attr_224
+            - attr_42
+            - attr_244
+            - attr_14
+            - attr_179
+            - attr_293
+            - attr_145
+            - attr_189
+            - attr_26
+            - attr_16
+            - attr_103
+            - attr_234
+        requirements:
+            channel4:
+                - sku
+                - attr_176
+                - attr_38
+                - attr_269
+                - attr_226
+                - attr_30
+                - attr_283
+                - attr_232
+                - attr_98
+                - attr_227
+            channel5:
+                - sku
+                - attr_102
+                - attr_89
+                - attr_280
+                - attr_142
+                - attr_46
+                - attr_148
+                - attr_31
+                - attr_121
+                - attr_97
+            channel6:
+                - sku
+                - attr_157
+                - attr_116
+                - attr_69
+                - attr_95
+                - attr_201
+                - attr_231
+                - attr_27
+                - attr_169
+                - attr_81
+            ecommerce:
+                - sku
+                - attr_165
+                - attr_43
+                - attr_129
+                - attr_7
+                - attr_8
+                - attr_82
+                - attr_266
+                - attr_297
+                - attr_40
+            mobile:
+                - sku
+                - attr_136
+                - attr_164
+                - attr_111
+                - attr_276
+                - attr_133
+                - attr_49
+                - attr_123
+                - attr_66
+                - attr_278
+            print:
+                - sku
+                - attr_204
+                - attr_28
+                - attr_147
+                - attr_256
+                - attr_143
+                - attr_18
+                - attr_297
+                - attr_249
+                - attr_38
+    fam_13:
+        labels:
+            de_DE: 'Voluptas rerum quibusdam.'
+            en_US: 'Quam sit.'
+            es_ES: 'Aspernatur maiores.'
+            fr_FR: 'Minus totam.'
+            it_IT: 'Ratione omnis.'
+            ja_JP: 'Consequatur nihil.'
+            ru_RU: 'Id rerum.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_143
+            - attr_15
+            - attr_245
+            - attr_66
+            - attr_275
+            - attr_21
+            - attr_4
+            - attr_238
+            - attr_212
+            - attr_43
+            - attr_103
+            - attr_17
+            - attr_81
+            - attr_48
+            - attr_239
+            - attr_13
+            - attr_74
+            - attr_104
+            - attr_117
+            - attr_26
+            - attr_60
+            - attr_58
+            - attr_123
+            - attr_82
+            - attr_263
+            - attr_54
+            - attr_248
+            - attr_127
+            - attr_14
+            - attr_57
+            - attr_277
+            - attr_40
+            - attr_283
+            - attr_108
+            - attr_187
+            - attr_78
+            - attr_173
+            - attr_10
+            - attr_145
+            - attr_93
+            - attr_170
+            - attr_97
+            - attr_293
+            - attr_69
+            - attr_115
+            - attr_181
+            - attr_279
+            - attr_268
+            - attr_39
+        requirements:
+            channel4:
+                - sku
+                - attr_140
+                - attr_195
+                - attr_78
+                - attr_210
+                - attr_61
+                - attr_199
+                - attr_127
+                - attr_256
+                - attr_39
+            channel5:
+                - sku
+                - attr_226
+                - attr_54
+                - attr_244
+                - attr_5
+                - attr_130
+                - attr_166
+                - attr_169
+                - attr_228
+                - attr_143
+            channel6:
+                - sku
+                - attr_144
+                - attr_153
+                - attr_192
+                - attr_267
+                - attr_57
+                - attr_277
+                - attr_52
+                - attr_79
+                - attr_171
+            ecommerce:
+                - sku
+                - attr_39
+                - attr_18
+                - attr_227
+                - attr_210
+                - attr_179
+                - attr_186
+                - attr_250
+                - attr_217
+                - attr_139
+            mobile:
+                - sku
+                - attr_274
+                - attr_206
+                - attr_183
+                - attr_102
+                - attr_198
+                - attr_158
+                - attr_0
+                - attr_173
+                - attr_167
+            print:
+                - sku
+                - attr_213
+                - attr_285
+                - attr_123
+                - attr_266
+                - attr_221
+                - attr_227
+                - attr_168
+                - attr_189
+                - attr_215
+    fam_14:
+        labels:
+            de_DE: 'Officia est ut.'
+            en_US: 'Omnis ut commodi.'
+            es_ES: 'Reiciendis sed quos.'
+            fr_FR: 'Deleniti voluptas.'
+            it_IT: 'Repudiandae maiores et.'
+            ja_JP: 'Sed et.'
+            ru_RU: 'Illo veniam id.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_9
+            - attr_239
+            - attr_220
+            - attr_247
+            - attr_261
+            - attr_154
+            - attr_271
+            - attr_60
+            - attr_275
+            - attr_254
+            - attr_4
+            - attr_293
+            - attr_67
+            - attr_209
+            - attr_267
+            - attr_99
+            - attr_289
+            - attr_62
+            - attr_238
+            - attr_130
+            - attr_194
+            - attr_215
+            - attr_110
+            - attr_296
+            - attr_278
+            - attr_131
+            - attr_10
+            - attr_97
+            - attr_173
+            - attr_87
+            - attr_104
+            - attr_161
+            - attr_82
+            - attr_283
+            - attr_297
+            - attr_18
+            - attr_149
+            - attr_118
+            - attr_177
+            - attr_187
+            - attr_232
+            - attr_122
+            - attr_15
+            - attr_64
+            - attr_59
+            - attr_143
+            - attr_262
+            - attr_50
+            - attr_191
+        requirements:
+            channel4:
+                - sku
+                - attr_193
+                - attr_265
+                - attr_150
+                - attr_184
+                - attr_159
+                - attr_91
+                - attr_71
+                - attr_238
+                - attr_173
+            channel5:
+                - sku
+                - attr_18
+                - attr_1
+                - attr_37
+                - attr_291
+                - attr_113
+                - attr_84
+                - attr_240
+                - attr_60
+                - attr_175
+            channel6:
+                - sku
+                - attr_71
+                - attr_19
+                - attr_24
+                - attr_217
+                - attr_116
+                - attr_230
+                - attr_294
+                - attr_122
+                - attr_150
+            ecommerce:
+                - sku
+                - attr_165
+                - attr_247
+                - attr_33
+                - attr_37
+                - attr_156
+                - attr_246
+                - attr_299
+                - attr_13
+                - attr_236
+            mobile:
+                - sku
+                - attr_220
+                - attr_261
+                - attr_191
+                - attr_23
+                - attr_90
+                - attr_289
+                - attr_278
+                - attr_110
+                - attr_244
+            print:
+                - sku
+                - attr_50
+                - attr_30
+                - attr_109
+                - attr_102
+                - attr_269
+                - attr_63
+                - attr_41
+                - attr_147
+                - attr_258
+    fam_15:
+        labels:
+            de_DE: 'Enim voluptatum commodi.'
+            en_US: 'Totam voluptate.'
+            es_ES: 'Consectetur eum dolores.'
+            fr_FR: 'Cupiditate nemo dolorem.'
+            it_IT: 'Ut rerum.'
+            ja_JP: 'Exercitationem aut voluptate.'
+            ru_RU: 'Laborum et.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_192
+            - attr_29
+            - attr_148
+            - attr_180
+            - attr_294
+            - attr_225
+            - attr_265
+            - attr_39
+            - attr_184
+            - attr_280
+            - attr_178
+            - attr_173
+            - attr_22
+            - attr_262
+            - attr_268
+            - attr_129
+            - attr_83
+            - attr_107
+            - attr_160
+            - attr_133
+            - attr_55
+            - attr_242
+            - attr_137
+            - attr_239
+            - attr_252
+            - attr_88
+            - attr_145
+            - attr_46
+            - attr_244
+            - attr_19
+            - attr_241
+            - attr_73
+            - attr_181
+            - attr_96
+            - attr_158
+            - attr_188
+            - attr_206
+            - attr_250
+            - attr_267
+            - attr_238
+            - attr_111
+            - attr_275
+            - attr_119
+            - attr_31
+            - attr_1
+            - attr_165
+            - attr_223
+            - attr_197
+            - attr_91
+        requirements:
+            channel4:
+                - sku
+                - attr_224
+                - attr_193
+                - attr_153
+                - attr_146
+                - attr_73
+                - attr_298
+                - attr_175
+                - attr_225
+                - attr_208
+            channel5:
+                - sku
+                - attr_284
+                - attr_29
+                - attr_61
+                - attr_246
+                - attr_257
+                - attr_23
+                - attr_253
+                - attr_33
+                - attr_31
+            channel6:
+                - sku
+                - attr_217
+                - attr_70
+                - attr_105
+                - attr_58
+                - attr_161
+                - attr_94
+                - attr_280
+                - attr_164
+                - attr_133
+            ecommerce:
+                - sku
+                - attr_98
+                - attr_203
+                - attr_214
+                - attr_204
+                - attr_223
+                - attr_166
+                - attr_266
+                - attr_6
+                - attr_291
+            mobile:
+                - sku
+                - attr_150
+                - attr_243
+                - attr_26
+                - attr_30
+                - attr_147
+                - attr_275
+                - attr_261
+                - attr_195
+                - attr_270
+            print:
+                - sku
+                - attr_0
+                - attr_64
+                - attr_57
+                - attr_4
+                - attr_47
+                - attr_161
+                - attr_252
+                - attr_294
+                - attr_171
+    fam_16:
+        labels:
+            de_DE: 'Aut vero.'
+            en_US: 'Et veniam.'
+            es_ES: 'Consequuntur eos soluta.'
+            fr_FR: 'Qui voluptas.'
+            it_IT: 'Delectus numquam ex.'
+            ja_JP: 'Optio illum et.'
+            ru_RU: 'Sed iusto.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_4
+            - attr_274
+            - attr_14
+            - attr_69
+            - attr_182
+            - attr_230
+            - attr_48
+            - attr_62
+            - attr_191
+            - attr_63
+            - attr_289
+            - attr_38
+            - attr_122
+            - attr_286
+            - attr_162
+            - attr_220
+            - attr_292
+            - attr_60
+            - attr_74
+            - attr_154
+            - attr_283
+            - attr_24
+            - attr_111
+            - attr_184
+            - attr_172
+            - attr_16
+            - attr_118
+            - attr_161
+            - attr_237
+            - attr_169
+            - attr_23
+            - attr_7
+            - attr_18
+            - attr_70
+            - attr_11
+            - attr_170
+            - attr_3
+            - attr_216
+            - attr_112
+            - attr_166
+            - attr_165
+            - attr_52
+            - attr_104
+            - attr_269
+            - attr_287
+            - attr_176
+            - attr_231
+            - attr_67
+            - attr_31
+        requirements:
+            channel4:
+                - sku
+                - attr_268
+                - attr_198
+                - attr_280
+                - attr_214
+                - attr_107
+                - attr_165
+                - attr_234
+                - attr_31
+                - attr_70
+            channel5:
+                - sku
+                - attr_147
+                - attr_253
+                - attr_42
+                - attr_236
+                - attr_39
+                - attr_89
+                - attr_25
+                - attr_98
+                - attr_7
+            channel6:
+                - sku
+                - attr_161
+                - attr_299
+                - attr_77
+                - attr_244
+                - attr_147
+                - attr_23
+                - attr_276
+                - attr_153
+                - attr_131
+            ecommerce:
+                - sku
+                - attr_261
+                - attr_281
+                - attr_224
+                - attr_169
+                - attr_278
+                - attr_236
+                - attr_257
+                - attr_242
+                - attr_133
+            mobile:
+                - sku
+                - attr_61
+                - attr_89
+                - attr_139
+                - attr_145
+                - attr_256
+                - attr_82
+                - attr_224
+                - attr_153
+                - attr_133
+            print:
+                - sku
+                - attr_178
+                - attr_101
+                - attr_203
+                - attr_66
+                - attr_197
+                - attr_211
+                - attr_293
+                - attr_11
+                - attr_62
+    fam_17:
+        labels:
+            de_DE: 'Eligendi molestiae culpa.'
+            en_US: 'Eos ut.'
+            es_ES: 'Cumque exercitationem magnam.'
+            fr_FR: 'Inventore quia.'
+            it_IT: 'Accusantium a voluptates.'
+            ja_JP: 'Quod inventore laudantium.'
+            ru_RU: 'Expedita ab.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_4
+            - attr_216
+            - attr_200
+            - attr_259
+            - attr_197
+            - attr_44
+            - attr_100
+            - attr_144
+            - attr_95
+            - attr_167
+            - attr_230
+            - attr_210
+            - attr_229
+            - attr_70
+            - attr_116
+            - attr_147
+            - attr_27
+            - attr_18
+            - attr_275
+            - attr_71
+            - attr_277
+            - attr_242
+            - attr_152
+            - attr_7
+            - attr_219
+            - attr_115
+            - attr_258
+            - attr_65
+            - attr_47
+            - attr_25
+            - attr_12
+            - attr_77
+            - attr_189
+            - attr_137
+            - attr_169
+            - attr_103
+            - attr_6
+            - attr_56
+            - attr_154
+            - attr_82
+            - attr_282
+            - attr_255
+            - attr_58
+            - attr_113
+            - attr_168
+            - attr_212
+            - attr_31
+            - attr_205
+            - attr_298
+        requirements:
+            channel4:
+                - sku
+                - attr_216
+                - attr_111
+                - attr_14
+                - attr_55
+                - attr_293
+                - attr_265
+                - attr_138
+                - attr_103
+                - attr_190
+            channel5:
+                - sku
+                - attr_54
+                - attr_158
+                - attr_29
+                - attr_209
+                - attr_89
+                - attr_275
+                - attr_270
+                - attr_107
+                - attr_31
+            channel6:
+                - sku
+                - attr_125
+                - attr_282
+                - attr_181
+                - attr_272
+                - attr_216
+                - attr_251
+                - attr_53
+                - attr_112
+                - attr_59
+            ecommerce:
+                - sku
+                - attr_125
+                - attr_77
+                - attr_166
+                - attr_261
+                - attr_249
+                - attr_73
+                - attr_275
+                - attr_276
+                - attr_169
+            mobile:
+                - sku
+                - attr_152
+                - attr_218
+                - attr_168
+                - attr_287
+                - attr_134
+                - attr_271
+                - attr_143
+                - attr_0
+                - attr_204
+            print:
+                - sku
+                - attr_267
+                - attr_32
+                - attr_0
+                - attr_184
+                - attr_36
+                - attr_295
+                - attr_169
+                - attr_240
+                - attr_9
+    fam_18:
+        labels:
+            de_DE: 'Deleniti eos dicta.'
+            en_US: 'Neque dolorum.'
+            es_ES: 'Autem est.'
+            fr_FR: 'Fugiat quo exercitationem.'
+            it_IT: 'Maxime id nesciunt.'
+            ja_JP: 'Ut alias.'
+            ru_RU: 'Dolore nam consequatur.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_202
+            - attr_103
+            - attr_188
+            - attr_142
+            - attr_83
+            - attr_221
+            - attr_92
+            - attr_171
+            - attr_158
+            - attr_167
+            - attr_299
+            - attr_220
+            - attr_184
+            - attr_94
+            - attr_23
+            - attr_242
+            - attr_276
+            - attr_132
+            - attr_243
+            - attr_162
+            - attr_253
+            - attr_295
+            - attr_31
+            - attr_290
+            - attr_190
+            - attr_164
+            - attr_248
+            - attr_218
+            - attr_28
+            - attr_231
+            - attr_126
+            - attr_180
+            - attr_88
+            - attr_113
+            - attr_139
+            - attr_288
+            - attr_19
+            - attr_161
+            - attr_99
+            - attr_157
+            - attr_58
+            - attr_119
+            - attr_1
+            - attr_136
+            - attr_294
+            - attr_48
+            - attr_259
+            - attr_37
+            - attr_270
+        requirements:
+            channel4:
+                - sku
+                - attr_159
+                - attr_289
+                - attr_102
+                - attr_152
+                - attr_155
+                - attr_125
+                - attr_205
+                - attr_135
+                - attr_56
+            channel5:
+                - sku
+                - attr_266
+                - attr_179
+                - attr_246
+                - attr_287
+                - attr_69
+                - attr_215
+                - attr_85
+                - attr_21
+                - attr_201
+            channel6:
+                - sku
+                - attr_173
+                - attr_24
+                - attr_59
+                - attr_37
+                - attr_136
+                - attr_265
+                - attr_67
+                - attr_249
+                - attr_118
+            ecommerce:
+                - sku
+                - attr_61
+                - attr_291
+                - attr_242
+                - attr_132
+                - attr_155
+                - attr_141
+                - attr_228
+                - attr_262
+                - attr_295
+            mobile:
+                - sku
+                - attr_6
+                - attr_109
+                - attr_82
+                - attr_296
+                - attr_96
+                - attr_245
+                - attr_292
+                - attr_297
+                - attr_32
+            print:
+                - sku
+                - attr_281
+                - attr_221
+                - attr_286
+                - attr_220
+                - attr_236
+                - attr_191
+                - attr_255
+                - attr_167
+                - attr_109
+    fam_19:
+        labels:
+            de_DE: 'Et laborum.'
+            en_US: 'Reprehenderit aliquam occaecati.'
+            es_ES: 'Occaecati assumenda eligendi.'
+            fr_FR: 'Expedita iure autem.'
+            it_IT: 'Incidunt natus.'
+            ja_JP: 'Ut aliquam possimus.'
+            ru_RU: 'Nobis voluptas.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_204
+            - attr_90
+            - attr_15
+            - attr_137
+            - attr_115
+            - attr_179
+            - attr_87
+            - attr_205
+            - attr_250
+            - attr_249
+            - attr_119
+            - attr_103
+            - attr_151
+            - attr_172
+            - attr_28
+            - attr_270
+            - attr_135
+            - attr_258
+            - attr_189
+            - attr_286
+            - attr_133
+            - attr_227
+            - attr_238
+            - attr_166
+            - attr_23
+            - attr_180
+            - attr_8
+            - attr_221
+            - attr_138
+            - attr_141
+            - attr_117
+            - attr_81
+            - attr_3
+            - attr_128
+            - attr_273
+            - attr_246
+            - attr_260
+            - attr_112
+            - attr_245
+            - attr_235
+            - attr_10
+            - attr_75
+            - attr_21
+            - attr_188
+            - attr_239
+            - attr_237
+            - attr_290
+            - attr_88
+            - attr_53
+        requirements:
+            channel4:
+                - sku
+                - attr_163
+                - attr_176
+                - attr_57
+                - attr_261
+                - attr_93
+                - attr_110
+                - attr_205
+                - attr_175
+                - attr_108
+            channel5:
+                - sku
+                - attr_120
+                - attr_123
+                - attr_182
+                - attr_110
+                - attr_78
+                - attr_230
+                - attr_71
+                - attr_235
+                - attr_291
+            channel6:
+                - sku
+                - attr_281
+                - attr_32
+                - attr_115
+                - attr_21
+                - attr_171
+                - attr_52
+                - attr_36
+                - attr_200
+                - attr_29
+            ecommerce:
+                - sku
+                - attr_5
+                - attr_163
+                - attr_9
+                - attr_281
+                - attr_271
+                - attr_167
+                - attr_152
+                - attr_291
+                - attr_49
+            mobile:
+                - sku
+                - attr_224
+                - attr_289
+                - attr_199
+                - attr_201
+                - attr_15
+                - attr_183
+                - attr_88
+                - attr_90
+                - attr_126
+            print:
+                - sku
+                - attr_203
+                - attr_296
+                - attr_34
+                - attr_0
+                - attr_206
+                - attr_65
+                - attr_1
+                - attr_54
+                - attr_77
+    fam_20:
+        labels:
+            de_DE: 'Numquam in.'
+            en_US: 'Autem dicta.'
+            es_ES: 'Veritatis est.'
+            fr_FR: 'Repellendus pariatur ut.'
+            it_IT: 'Accusamus inventore.'
+            ja_JP: 'Ducimus magni.'
+            ru_RU: 'Odit autem vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_120
+            - attr_181
+            - attr_187
+            - attr_40
+            - attr_225
+            - attr_176
+            - attr_279
+            - attr_29
+            - attr_69
+            - attr_24
+            - attr_197
+            - attr_91
+            - attr_267
+            - attr_289
+            - attr_6
+            - attr_231
+            - attr_109
+            - attr_165
+            - attr_172
+            - attr_203
+            - attr_46
+            - attr_261
+            - attr_284
+            - attr_84
+            - attr_255
+            - attr_156
+            - attr_81
+            - attr_200
+            - attr_199
+            - attr_88
+            - attr_258
+            - attr_298
+            - attr_202
+            - attr_103
+            - attr_118
+            - attr_186
+            - attr_256
+            - attr_278
+            - attr_15
+            - attr_20
+            - attr_133
+            - attr_36
+            - attr_60
+            - attr_218
+            - attr_89
+            - attr_27
+            - attr_223
+            - attr_157
+            - attr_96
+        requirements:
+            channel4:
+                - sku
+                - attr_46
+                - attr_166
+                - attr_169
+                - attr_11
+                - attr_21
+                - attr_118
+                - attr_34
+                - attr_149
+                - attr_291
+            channel5:
+                - sku
+                - attr_141
+                - attr_294
+                - attr_142
+                - attr_266
+                - attr_260
+                - attr_204
+                - attr_101
+                - attr_71
+                - attr_133
+            channel6:
+                - sku
+                - attr_299
+                - attr_38
+                - attr_32
+                - attr_33
+                - attr_134
+                - attr_50
+                - attr_218
+                - attr_254
+                - attr_242
+            ecommerce:
+                - sku
+                - attr_37
+                - attr_167
+                - attr_75
+                - attr_226
+                - attr_19
+                - attr_276
+                - attr_147
+                - attr_110
+                - attr_231
+            mobile:
+                - sku
+                - attr_179
+                - attr_162
+                - attr_93
+                - attr_68
+                - attr_220
+                - attr_183
+                - attr_46
+                - attr_25
+                - attr_29
+            print:
+                - sku
+                - attr_96
+                - attr_72
+                - attr_53
+                - attr_107
+                - attr_148
+                - attr_212
+                - attr_46
+                - attr_280
+                - attr_27
+    fam_21:
+        labels:
+            de_DE: 'Facilis neque.'
+            en_US: 'Quia numquam.'
+            es_ES: 'Quos at.'
+            fr_FR: 'Eligendi accusantium.'
+            it_IT: 'Voluptatem iure aliquid.'
+            ja_JP: 'Quo vitae.'
+            ru_RU: 'Nihil voluptatem.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_177
+            - attr_44
+            - attr_65
+            - attr_245
+            - attr_174
+            - attr_119
+            - attr_190
+            - attr_176
+            - attr_243
+            - attr_121
+            - attr_162
+            - attr_184
+            - attr_249
+            - attr_43
+            - attr_288
+            - attr_185
+            - attr_178
+            - attr_242
+            - attr_89
+            - attr_103
+            - attr_268
+            - attr_194
+            - attr_21
+            - attr_133
+            - attr_57
+            - attr_150
+            - attr_234
+            - attr_164
+            - attr_2
+            - attr_101
+            - attr_295
+            - attr_192
+            - attr_293
+            - attr_86
+            - attr_160
+            - attr_147
+            - attr_233
+            - attr_231
+            - attr_90
+            - attr_95
+            - attr_296
+            - attr_75
+            - attr_274
+            - attr_139
+            - attr_223
+            - attr_259
+            - attr_286
+            - attr_96
+            - attr_196
+        requirements:
+            channel4:
+                - sku
+                - attr_263
+                - attr_249
+                - attr_216
+                - attr_71
+                - attr_248
+                - attr_239
+                - attr_70
+                - attr_261
+                - attr_198
+            channel5:
+                - sku
+                - attr_121
+                - attr_114
+                - attr_55
+                - attr_125
+                - attr_239
+                - attr_20
+                - attr_186
+                - attr_203
+                - attr_83
+            channel6:
+                - sku
+                - attr_11
+                - attr_31
+                - attr_131
+                - attr_219
+                - attr_136
+                - attr_277
+                - attr_128
+                - attr_127
+                - attr_37
+            ecommerce:
+                - sku
+                - attr_251
+                - attr_207
+                - attr_106
+                - attr_41
+                - attr_124
+                - attr_29
+                - attr_236
+                - attr_238
+                - attr_153
+            mobile:
+                - sku
+                - attr_31
+                - attr_144
+                - attr_42
+                - attr_19
+                - attr_65
+                - attr_24
+                - attr_222
+                - attr_79
+                - attr_191
+            print:
+                - sku
+                - attr_280
+                - attr_237
+                - attr_219
+                - attr_41
+                - attr_195
+                - attr_281
+                - attr_40
+                - attr_201
+                - attr_93
+    fam_22:
+        labels:
+            de_DE: 'Eius vel natus.'
+            en_US: 'Eligendi aliquam hic.'
+            es_ES: 'Ducimus aut deleniti.'
+            fr_FR: 'Eos modi qui.'
+            it_IT: 'Quia pariatur.'
+            ja_JP: 'Quia natus voluptatem.'
+            ru_RU: 'Consequuntur mollitia.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_251
+            - attr_295
+            - attr_22
+            - attr_102
+            - attr_92
+            - attr_126
+            - attr_260
+            - attr_54
+            - attr_281
+            - attr_234
+            - attr_203
+            - attr_111
+            - attr_278
+            - attr_41
+            - attr_37
+            - attr_27
+            - attr_195
+            - attr_29
+            - attr_220
+            - attr_157
+            - attr_261
+            - attr_285
+            - attr_35
+            - attr_235
+            - attr_299
+            - attr_125
+            - attr_202
+            - attr_120
+            - attr_282
+            - attr_148
+            - attr_262
+            - attr_47
+            - attr_233
+            - attr_66
+            - attr_13
+            - attr_73
+            - attr_88
+            - attr_274
+            - attr_264
+            - attr_107
+            - attr_106
+            - attr_131
+            - attr_83
+            - attr_187
+            - attr_100
+            - attr_56
+            - attr_70
+            - attr_39
+            - attr_201
+        requirements:
+            channel4:
+                - sku
+                - attr_232
+                - attr_20
+                - attr_197
+                - attr_123
+                - attr_63
+                - attr_96
+                - attr_72
+                - attr_277
+                - attr_120
+            channel5:
+                - sku
+                - attr_270
+                - attr_251
+                - attr_55
+                - attr_70
+                - attr_4
+                - attr_58
+                - attr_292
+                - attr_77
+                - attr_232
+            channel6:
+                - sku
+                - attr_274
+                - attr_30
+                - attr_36
+                - attr_254
+                - attr_62
+                - attr_112
+                - attr_243
+                - attr_298
+                - attr_272
+            ecommerce:
+                - sku
+                - attr_156
+                - attr_7
+                - attr_233
+                - attr_229
+                - attr_133
+                - attr_248
+                - attr_167
+                - attr_270
+                - attr_181
+            mobile:
+                - sku
+                - attr_293
+                - attr_115
+                - attr_110
+                - attr_151
+                - attr_174
+                - attr_16
+                - attr_95
+                - attr_52
+                - attr_102
+            print:
+                - sku
+                - attr_99
+                - attr_179
+                - attr_250
+                - attr_132
+                - attr_14
+                - attr_82
+                - attr_125
+                - attr_106
+                - attr_103
+    fam_23:
+        labels:
+            de_DE: 'Maxime repellat.'
+            en_US: 'Voluptatem quisquam quas.'
+            es_ES: 'Voluptatem soluta iste.'
+            fr_FR: 'Magni quas.'
+            it_IT: 'Ea ea.'
+            ja_JP: 'Eum et.'
+            ru_RU: 'Qui hic enim.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_103
+            - attr_165
+            - attr_140
+            - attr_166
+            - attr_199
+            - attr_240
+            - attr_8
+            - attr_173
+            - attr_23
+            - attr_230
+            - attr_97
+            - attr_236
+            - attr_233
+            - attr_28
+            - attr_146
+            - attr_106
+            - attr_148
+            - attr_282
+            - attr_50
+            - attr_213
+            - attr_202
+            - attr_34
+            - attr_24
+            - attr_193
+            - attr_121
+            - attr_161
+            - attr_226
+            - attr_147
+            - attr_99
+            - attr_286
+            - attr_2
+            - attr_25
+            - attr_70
+            - attr_138
+            - attr_291
+            - attr_253
+            - attr_180
+            - attr_81
+            - attr_170
+            - attr_281
+            - attr_37
+            - attr_113
+            - attr_288
+            - attr_245
+            - attr_80
+            - attr_268
+            - attr_114
+            - attr_251
+            - attr_151
+        requirements:
+            channel4:
+                - sku
+                - attr_231
+                - attr_32
+                - attr_117
+                - attr_158
+                - attr_287
+                - attr_57
+                - attr_170
+                - attr_216
+                - attr_243
+            channel5:
+                - sku
+                - attr_234
+                - attr_280
+                - attr_253
+                - attr_85
+                - attr_132
+                - attr_206
+                - attr_129
+                - attr_103
+                - attr_51
+            channel6:
+                - sku
+                - attr_142
+                - attr_165
+                - attr_24
+                - attr_57
+                - attr_16
+                - attr_215
+                - attr_97
+                - attr_136
+                - attr_227
+            ecommerce:
+                - sku
+                - attr_276
+                - attr_295
+                - attr_195
+                - attr_59
+                - attr_186
+                - attr_26
+                - attr_178
+                - attr_137
+                - attr_211
+            mobile:
+                - sku
+                - attr_120
+                - attr_276
+                - attr_121
+                - attr_45
+                - attr_151
+                - attr_186
+                - attr_216
+                - attr_228
+                - attr_87
+            print:
+                - sku
+                - attr_52
+                - attr_122
+                - attr_54
+                - attr_71
+                - attr_78
+                - attr_37
+                - attr_254
+                - attr_106
+                - attr_138
+    fam_24:
+        labels:
+            de_DE: 'Et qui voluptas.'
+            en_US: 'Delectus rerum.'
+            es_ES: 'Nobis non.'
+            fr_FR: 'Et consequatur natus.'
+            it_IT: 'Voluptas quo temporibus.'
+            ja_JP: 'Aut aut aliquam.'
+            ru_RU: 'Sed maiores.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_120
+            - attr_116
+            - attr_117
+            - attr_45
+            - attr_33
+            - attr_144
+            - attr_131
+            - attr_175
+            - attr_150
+            - attr_101
+            - attr_151
+            - attr_289
+            - attr_239
+            - attr_291
+            - attr_283
+            - attr_231
+            - attr_43
+            - attr_79
+            - attr_16
+            - attr_185
+            - attr_107
+            - attr_28
+            - attr_183
+            - attr_223
+            - attr_135
+            - attr_5
+            - attr_201
+            - attr_26
+            - attr_115
+            - attr_288
+            - attr_1
+            - attr_287
+            - attr_265
+            - attr_19
+            - attr_74
+            - attr_93
+            - attr_186
+            - attr_192
+            - attr_227
+            - attr_276
+            - attr_71
+            - attr_162
+            - attr_272
+            - attr_104
+            - attr_148
+            - attr_82
+            - attr_130
+            - attr_22
+            - attr_105
+        requirements:
+            channel4:
+                - sku
+                - attr_43
+                - attr_99
+                - attr_3
+                - attr_227
+                - attr_14
+                - attr_295
+                - attr_54
+                - attr_254
+                - attr_39
+            channel5:
+                - sku
+                - attr_298
+                - attr_2
+                - attr_99
+                - attr_19
+                - attr_96
+                - attr_168
+                - attr_263
+                - attr_205
+                - attr_198
+            channel6:
+                - sku
+                - attr_209
+                - attr_200
+                - attr_239
+                - attr_227
+                - attr_87
+                - attr_233
+                - attr_155
+                - attr_35
+                - attr_13
+            ecommerce:
+                - sku
+                - attr_218
+                - attr_113
+                - attr_161
+                - attr_240
+                - attr_88
+                - attr_85
+                - attr_121
+                - attr_185
+                - attr_40
+            mobile:
+                - sku
+                - attr_110
+                - attr_282
+                - attr_154
+                - attr_12
+                - attr_100
+                - attr_241
+                - attr_88
+                - attr_103
+                - attr_150
+            print:
+                - sku
+                - attr_269
+                - attr_206
+                - attr_198
+                - attr_9
+                - attr_80
+                - attr_191
+                - attr_204
+                - attr_31
+                - attr_283
+    fam_25:
+        labels:
+            de_DE: 'Ut et sit.'
+            en_US: 'Ad recusandae facere.'
+            es_ES: 'Ducimus voluptas.'
+            fr_FR: 'Debitis natus.'
+            it_IT: 'Ipsum id.'
+            ja_JP: 'In eos.'
+            ru_RU: 'Natus sed quos.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_178
+            - attr_244
+            - attr_232
+            - attr_251
+            - attr_80
+            - attr_186
+            - attr_42
+            - attr_79
+            - attr_220
+            - attr_167
+            - attr_206
+            - attr_38
+            - attr_192
+            - attr_158
+            - attr_160
+            - attr_109
+            - attr_293
+            - attr_172
+            - attr_139
+            - attr_23
+            - attr_69
+            - attr_253
+            - attr_25
+            - attr_37
+            - attr_94
+            - attr_43
+            - attr_164
+            - attr_185
+            - attr_155
+            - attr_77
+            - attr_140
+            - attr_57
+            - attr_143
+            - attr_16
+            - attr_18
+            - attr_254
+            - attr_64
+            - attr_45
+            - attr_4
+            - attr_2
+            - attr_281
+            - attr_187
+            - attr_198
+            - attr_74
+            - attr_121
+            - attr_137
+            - attr_210
+            - attr_190
+            - attr_116
+        requirements:
+            channel4:
+                - sku
+                - attr_152
+                - attr_224
+                - attr_246
+                - attr_232
+                - attr_184
+                - attr_23
+                - attr_92
+                - attr_16
+                - attr_52
+            channel5:
+                - sku
+                - attr_20
+                - attr_134
+                - attr_248
+                - attr_113
+                - attr_224
+                - attr_110
+                - attr_36
+                - attr_293
+                - attr_268
+            channel6:
+                - sku
+                - attr_202
+                - attr_257
+                - attr_138
+                - attr_126
+                - attr_245
+                - attr_263
+                - attr_50
+                - attr_65
+                - attr_227
+            ecommerce:
+                - sku
+                - attr_122
+                - attr_91
+                - attr_213
+                - attr_159
+                - attr_65
+                - attr_22
+                - attr_25
+                - attr_15
+                - attr_289
+            mobile:
+                - sku
+                - attr_185
+                - attr_211
+                - attr_66
+                - attr_81
+                - attr_223
+                - attr_114
+                - attr_179
+                - attr_170
+                - attr_124
+            print:
+                - sku
+                - attr_110
+                - attr_191
+                - attr_257
+                - attr_95
+                - attr_62
+                - attr_63
+                - attr_229
+                - attr_7
+                - attr_143
+    fam_26:
+        labels:
+            de_DE: 'Rerum perferendis dignissimos.'
+            en_US: 'Perspiciatis in.'
+            es_ES: 'Et incidunt inventore.'
+            fr_FR: 'Velit dicta in.'
+            it_IT: 'Debitis quis maiores.'
+            ja_JP: 'Sit repellendus.'
+            ru_RU: 'Perferendis enim.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_263
+            - attr_73
+            - attr_96
+            - attr_191
+            - attr_105
+            - attr_251
+            - attr_87
+            - attr_112
+            - attr_28
+            - attr_164
+            - attr_81
+            - attr_289
+            - attr_245
+            - attr_24
+            - attr_52
+            - attr_280
+            - attr_121
+            - attr_141
+            - attr_254
+            - attr_211
+            - attr_179
+            - attr_103
+            - attr_84
+            - attr_142
+            - attr_287
+            - attr_21
+            - attr_131
+            - attr_38
+            - attr_200
+            - attr_232
+            - attr_270
+            - attr_243
+            - attr_220
+            - attr_71
+            - attr_252
+            - attr_259
+            - attr_99
+            - attr_172
+            - attr_62
+            - attr_127
+            - attr_136
+            - attr_111
+            - attr_199
+            - attr_276
+            - attr_61
+            - attr_266
+            - attr_48
+            - attr_106
+            - attr_50
+        requirements:
+            channel4:
+                - sku
+                - attr_217
+                - attr_106
+                - attr_259
+                - attr_268
+                - attr_8
+                - attr_285
+                - attr_7
+                - attr_1
+                - attr_89
+            channel5:
+                - sku
+                - attr_165
+                - attr_236
+                - attr_44
+                - attr_118
+                - attr_27
+                - attr_116
+                - attr_71
+                - attr_285
+                - attr_255
+            channel6:
+                - sku
+                - attr_223
+                - attr_230
+                - attr_162
+                - attr_3
+                - attr_59
+                - attr_189
+                - attr_119
+                - attr_94
+                - attr_124
+            ecommerce:
+                - sku
+                - attr_196
+                - attr_183
+                - attr_224
+                - attr_12
+                - attr_46
+                - attr_254
+                - attr_152
+                - attr_235
+                - attr_147
+            mobile:
+                - sku
+                - attr_53
+                - attr_69
+                - attr_245
+                - attr_82
+                - attr_236
+                - attr_205
+                - attr_264
+                - attr_79
+                - attr_119
+            print:
+                - sku
+                - attr_227
+                - attr_236
+                - attr_134
+                - attr_67
+                - attr_50
+                - attr_71
+                - attr_7
+                - attr_6
+                - attr_145
+    fam_27:
+        labels:
+            de_DE: 'Corrupti totam.'
+            en_US: 'Est rem.'
+            es_ES: 'Et dolor quia.'
+            fr_FR: 'Velit id.'
+            it_IT: 'Aspernatur dolorem.'
+            ja_JP: 'Architecto voluptas.'
+            ru_RU: 'Suscipit voluptate in.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_132
+            - attr_112
+            - attr_189
+            - attr_241
+            - attr_169
+            - attr_138
+            - attr_84
+            - attr_278
+            - attr_109
+            - attr_96
+            - attr_178
+            - attr_48
+            - attr_257
+            - attr_259
+            - attr_168
+            - attr_247
+            - attr_261
+            - attr_1
+            - attr_61
+            - attr_237
+            - attr_215
+            - attr_51
+            - attr_233
+            - attr_125
+            - attr_76
+            - attr_87
+            - attr_78
+            - attr_216
+            - attr_13
+            - attr_299
+            - attr_49
+            - attr_105
+            - attr_116
+            - attr_149
+            - attr_29
+            - attr_204
+            - attr_202
+            - attr_77
+            - attr_25
+            - attr_2
+            - attr_11
+            - attr_56
+            - attr_158
+            - attr_266
+            - attr_280
+            - attr_121
+            - attr_275
+            - attr_226
+            - attr_244
+        requirements:
+            channel4:
+                - sku
+                - attr_96
+                - attr_61
+                - attr_23
+                - attr_10
+                - attr_177
+                - attr_260
+                - attr_267
+                - attr_40
+                - attr_3
+            channel5:
+                - sku
+                - attr_122
+                - attr_199
+                - attr_178
+                - attr_29
+                - attr_213
+                - attr_185
+                - attr_143
+                - attr_264
+                - attr_2
+            channel6:
+                - sku
+                - attr_34
+                - attr_260
+                - attr_126
+                - attr_105
+                - attr_66
+                - attr_161
+                - attr_180
+                - attr_291
+                - attr_46
+            ecommerce:
+                - sku
+                - attr_283
+                - attr_13
+                - attr_73
+                - attr_299
+                - attr_18
+                - attr_110
+                - attr_50
+                - attr_140
+                - attr_74
+            mobile:
+                - sku
+                - attr_11
+                - attr_175
+                - attr_219
+                - attr_258
+                - attr_273
+                - attr_148
+                - attr_213
+                - attr_45
+                - attr_262
+            print:
+                - sku
+                - attr_186
+                - attr_119
+                - attr_201
+                - attr_184
+                - attr_238
+                - attr_129
+                - attr_94
+                - attr_243
+                - attr_274
+    fam_28:
+        labels:
+            de_DE: 'Repellendus at.'
+            en_US: 'Sunt ducimus praesentium.'
+            es_ES: 'In omnis illo.'
+            fr_FR: 'Omnis veritatis nam.'
+            it_IT: 'Rerum expedita.'
+            ja_JP: 'Doloremque odit aperiam.'
+            ru_RU: 'Omnis et voluptatibus.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_175
+            - attr_139
+            - attr_259
+            - attr_117
+            - attr_244
+            - attr_106
+            - attr_41
+            - attr_89
+            - attr_172
+            - attr_129
+            - attr_217
+            - attr_162
+            - attr_98
+            - attr_48
+            - attr_72
+            - attr_299
+            - attr_164
+            - attr_145
+            - attr_88
+            - attr_151
+            - attr_101
+            - attr_258
+            - attr_267
+            - attr_232
+            - attr_64
+            - attr_47
+            - attr_184
+            - attr_131
+            - attr_9
+            - attr_202
+            - attr_207
+            - attr_280
+            - attr_292
+            - attr_223
+            - attr_12
+            - attr_103
+            - attr_286
+            - attr_16
+            - attr_56
+            - attr_4
+            - attr_125
+            - attr_40
+            - attr_74
+            - attr_174
+            - attr_81
+            - attr_31
+            - attr_11
+            - attr_254
+            - attr_60
+        requirements:
+            channel4:
+                - sku
+                - attr_69
+                - attr_165
+                - attr_205
+                - attr_128
+                - attr_55
+                - attr_170
+                - attr_260
+                - attr_7
+                - attr_223
+            channel5:
+                - sku
+                - attr_65
+                - attr_149
+                - attr_222
+                - attr_29
+                - attr_209
+                - attr_212
+                - attr_94
+                - attr_176
+                - attr_112
+            channel6:
+                - sku
+                - attr_220
+                - attr_239
+                - attr_72
+                - attr_207
+                - attr_194
+                - attr_187
+                - attr_274
+                - attr_248
+                - attr_106
+            ecommerce:
+                - sku
+                - attr_69
+                - attr_150
+                - attr_141
+                - attr_90
+                - attr_42
+                - attr_277
+                - attr_45
+                - attr_188
+                - attr_177
+            mobile:
+                - sku
+                - attr_296
+                - attr_291
+                - attr_276
+                - attr_40
+                - attr_223
+                - attr_265
+                - attr_47
+                - attr_19
+                - attr_127
+            print:
+                - sku
+                - attr_296
+                - attr_152
+                - attr_72
+                - attr_64
+                - attr_41
+                - attr_295
+                - attr_258
+                - attr_63
+                - attr_257
+    fam_29:
+        labels:
+            de_DE: 'Totam vel.'
+            en_US: 'Aut et id.'
+            es_ES: 'Qui voluptatibus tenetur.'
+            fr_FR: 'Itaque mollitia perferendis.'
+            it_IT: 'Voluptatem qui.'
+            ja_JP: 'Delectus recusandae atque.'
+            ru_RU: 'Enim eos esse.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_242
+            - attr_185
+            - attr_214
+            - attr_235
+            - attr_7
+            - attr_149
+            - attr_196
+            - attr_202
+            - attr_229
+            - attr_134
+            - attr_177
+            - attr_274
+            - attr_69
+            - attr_178
+            - attr_34
+            - attr_171
+            - attr_87
+            - attr_16
+            - attr_143
+            - attr_251
+            - attr_141
+            - attr_95
+            - attr_90
+            - attr_91
+            - attr_132
+            - attr_100
+            - attr_173
+            - attr_112
+            - attr_238
+            - attr_270
+            - attr_298
+            - attr_271
+            - attr_103
+            - attr_142
+            - attr_280
+            - attr_272
+            - attr_145
+            - attr_236
+            - attr_106
+            - attr_294
+            - attr_281
+            - attr_120
+            - attr_62
+            - attr_60
+            - attr_197
+            - attr_198
+            - attr_88
+            - attr_287
+            - attr_211
+        requirements:
+            channel4:
+                - sku
+                - attr_229
+                - attr_33
+                - attr_273
+                - attr_137
+                - attr_64
+                - attr_122
+                - attr_261
+                - attr_243
+                - attr_228
+            channel5:
+                - sku
+                - attr_224
+                - attr_104
+                - attr_97
+                - attr_53
+                - attr_61
+                - attr_30
+                - attr_179
+                - attr_190
+                - attr_170
+            channel6:
+                - sku
+                - attr_222
+                - attr_196
+                - attr_230
+                - attr_246
+                - attr_273
+                - attr_138
+                - attr_2
+                - attr_286
+                - attr_242
+            ecommerce:
+                - sku
+                - attr_259
+                - attr_88
+                - attr_5
+                - attr_275
+                - attr_12
+                - attr_149
+                - attr_290
+                - attr_251
+                - attr_114
+            mobile:
+                - sku
+                - attr_188
+                - attr_23
+                - attr_201
+                - attr_68
+                - attr_120
+                - attr_131
+                - attr_195
+                - attr_239
+                - attr_208
+            print:
+                - sku
+                - attr_214
+                - attr_275
+                - attr_82
+                - attr_76
+                - attr_153
+                - attr_85
+                - attr_80
+                - attr_296
+                - attr_10
+    fam_30:
+        labels:
+            de_DE: 'Vitae nostrum.'
+            en_US: 'Officia saepe modi.'
+            es_ES: 'Voluptas deleniti ad.'
+            fr_FR: 'Commodi ut nulla.'
+            it_IT: 'Blanditiis et.'
+            ja_JP: 'Quae id.'
+            ru_RU: 'Quidem itaque repellendus.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_219
+            - attr_200
+            - attr_42
+            - attr_263
+            - attr_24
+            - attr_283
+            - attr_199
+            - attr_201
+            - attr_9
+            - attr_239
+            - attr_65
+            - attr_249
+            - attr_274
+            - attr_289
+            - attr_277
+            - attr_293
+            - attr_89
+            - attr_122
+            - attr_290
+            - attr_257
+            - attr_210
+            - attr_120
+            - attr_76
+            - attr_298
+            - attr_155
+            - attr_272
+            - attr_43
+            - attr_36
+            - attr_41
+            - attr_102
+            - attr_169
+            - attr_226
+            - attr_278
+            - attr_45
+            - attr_39
+            - attr_173
+            - attr_291
+            - attr_30
+            - attr_273
+            - attr_187
+            - attr_57
+            - attr_228
+            - attr_190
+            - attr_209
+            - attr_259
+            - attr_145
+            - attr_151
+            - attr_203
+            - attr_98
+        requirements:
+            channel4:
+                - sku
+                - attr_120
+                - attr_59
+                - attr_217
+                - attr_58
+                - attr_36
+                - attr_136
+                - attr_275
+                - attr_52
+                - attr_151
+            channel5:
+                - sku
+                - attr_252
+                - attr_287
+                - attr_205
+                - attr_281
+                - attr_11
+                - attr_152
+                - attr_265
+                - attr_129
+                - attr_183
+            channel6:
+                - sku
+                - attr_61
+                - attr_222
+                - attr_41
+                - attr_116
+                - attr_132
+                - attr_15
+                - attr_14
+                - attr_267
+                - attr_269
+            ecommerce:
+                - sku
+                - attr_178
+                - attr_164
+                - attr_129
+                - attr_86
+                - attr_279
+                - attr_250
+                - attr_38
+                - attr_251
+                - attr_192
+            mobile:
+                - sku
+                - attr_22
+                - attr_37
+                - attr_20
+                - attr_15
+                - attr_74
+                - attr_83
+                - attr_9
+                - attr_106
+                - attr_172
+            print:
+                - sku
+                - attr_264
+                - attr_11
+                - attr_122
+                - attr_219
+                - attr_43
+                - attr_257
+                - attr_14
+                - attr_5
+                - attr_54
+    fam_31:
+        labels:
+            de_DE: 'Enim sed quia.'
+            en_US: 'Reiciendis ab.'
+            es_ES: 'Eum assumenda et.'
+            fr_FR: 'Molestiae neque.'
+            it_IT: 'Beatae iure.'
+            ja_JP: 'Beatae aperiam.'
+            ru_RU: 'Fugit illo.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_265
+            - attr_130
+            - attr_160
+            - attr_127
+            - attr_297
+            - attr_173
+            - attr_56
+            - attr_284
+            - attr_7
+            - attr_225
+            - attr_147
+            - attr_63
+            - attr_293
+            - attr_243
+            - attr_24
+            - attr_38
+            - attr_200
+            - attr_245
+            - attr_78
+            - attr_57
+            - attr_16
+            - attr_81
+            - attr_267
+            - attr_117
+            - attr_213
+            - attr_120
+            - attr_62
+            - attr_244
+            - attr_275
+            - attr_25
+            - attr_281
+            - attr_197
+            - attr_106
+            - attr_165
+            - attr_199
+            - attr_101
+            - attr_138
+            - attr_282
+            - attr_43
+            - attr_193
+            - attr_92
+            - attr_4
+            - attr_237
+            - attr_176
+            - attr_234
+            - attr_13
+            - attr_155
+            - attr_51
+            - attr_137
+        requirements:
+            channel4:
+                - sku
+                - attr_135
+                - attr_144
+                - attr_5
+                - attr_62
+                - attr_106
+                - attr_230
+                - attr_195
+                - attr_130
+                - attr_203
+            channel5:
+                - sku
+                - attr_178
+                - attr_64
+                - attr_227
+                - attr_298
+                - attr_18
+                - attr_108
+                - attr_63
+                - attr_92
+                - attr_283
+            channel6:
+                - sku
+                - attr_134
+                - attr_271
+                - attr_103
+                - attr_232
+                - attr_257
+                - attr_34
+                - attr_68
+                - attr_21
+                - attr_215
+            ecommerce:
+                - sku
+                - attr_294
+                - attr_248
+                - attr_272
+                - attr_208
+                - attr_4
+                - attr_9
+                - attr_96
+                - attr_50
+                - attr_284
+            mobile:
+                - sku
+                - attr_28
+                - attr_282
+                - attr_255
+                - attr_19
+                - attr_179
+                - attr_157
+                - attr_1
+                - attr_102
+                - attr_159
+            print:
+                - sku
+                - attr_203
+                - attr_159
+                - attr_131
+                - attr_214
+                - attr_239
+                - attr_201
+                - attr_176
+                - attr_285
+                - attr_222
+    fam_32:
+        labels:
+            de_DE: 'Iure non consequatur.'
+            en_US: 'Rerum eaque mollitia.'
+            es_ES: 'Nihil exercitationem asperiores.'
+            fr_FR: 'Distinctio officiis.'
+            it_IT: 'Nisi fugit.'
+            ja_JP: 'Illum optio quibusdam.'
+            ru_RU: 'Consequatur quia dolore.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_92
+            - attr_295
+            - attr_180
+            - attr_205
+            - attr_74
+            - attr_47
+            - attr_240
+            - attr_4
+            - attr_220
+            - attr_170
+            - attr_264
+            - attr_121
+            - attr_267
+            - attr_45
+            - attr_266
+            - attr_164
+            - attr_213
+            - attr_138
+            - attr_63
+            - attr_286
+            - attr_216
+            - attr_203
+            - attr_149
+            - attr_8
+            - attr_17
+            - attr_239
+            - attr_65
+            - attr_270
+            - attr_49
+            - attr_1
+            - attr_166
+            - attr_97
+            - attr_226
+            - attr_255
+            - attr_185
+            - attr_154
+            - attr_61
+            - attr_225
+            - attr_144
+            - attr_126
+            - attr_282
+            - attr_20
+            - attr_21
+            - attr_173
+            - attr_105
+            - attr_232
+            - attr_58
+            - attr_195
+            - attr_54
+        requirements:
+            channel4:
+                - sku
+                - attr_91
+                - attr_64
+                - attr_76
+                - attr_195
+                - attr_19
+                - attr_93
+                - attr_23
+                - attr_70
+                - attr_54
+            channel5:
+                - sku
+                - attr_120
+                - attr_105
+                - attr_206
+                - attr_239
+                - attr_215
+                - attr_187
+                - attr_168
+                - attr_121
+                - attr_288
+            channel6:
+                - sku
+                - attr_173
+                - attr_138
+                - attr_38
+                - attr_251
+                - attr_41
+                - attr_80
+                - attr_76
+                - attr_21
+                - attr_31
+            ecommerce:
+                - sku
+                - attr_195
+                - attr_165
+                - attr_290
+                - attr_106
+                - attr_77
+                - attr_16
+                - attr_298
+                - attr_218
+                - attr_104
+            mobile:
+                - sku
+                - attr_172
+                - attr_256
+                - attr_17
+                - attr_120
+                - attr_112
+                - attr_97
+                - attr_229
+                - attr_73
+                - attr_141
+            print:
+                - sku
+                - attr_134
+                - attr_234
+                - attr_101
+                - attr_71
+                - attr_259
+                - attr_72
+                - attr_255
+                - attr_295
+                - attr_139
+    fam_33:
+        labels:
+            de_DE: 'Facere quia.'
+            en_US: 'Neque dolores facilis.'
+            es_ES: 'Sunt voluptatibus.'
+            fr_FR: 'Aut vitae sunt.'
+            it_IT: 'Aliquam iure.'
+            ja_JP: 'Enim sapiente ullam.'
+            ru_RU: 'Ut sunt voluptas.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_0
+            - attr_74
+            - attr_279
+            - attr_207
+            - attr_239
+            - attr_203
+            - attr_270
+            - attr_67
+            - attr_298
+            - attr_5
+            - attr_134
+            - attr_1
+            - attr_281
+            - attr_288
+            - attr_247
+            - attr_223
+            - attr_222
+            - attr_180
+            - attr_41
+            - attr_172
+            - attr_96
+            - attr_113
+            - attr_233
+            - attr_55
+            - attr_150
+            - attr_275
+            - attr_204
+            - attr_120
+            - attr_229
+            - attr_264
+            - attr_209
+            - attr_148
+            - attr_152
+            - attr_263
+            - attr_254
+            - attr_39
+            - attr_108
+            - attr_219
+            - attr_20
+            - attr_116
+            - attr_210
+            - attr_188
+            - attr_54
+            - attr_32
+            - attr_246
+            - attr_292
+            - attr_126
+            - attr_18
+            - attr_168
+        requirements:
+            channel4:
+                - sku
+                - attr_235
+                - attr_169
+                - attr_8
+                - attr_209
+                - attr_103
+                - attr_74
+                - attr_67
+                - attr_200
+                - attr_197
+            channel5:
+                - sku
+                - attr_14
+                - attr_90
+                - attr_281
+                - attr_202
+                - attr_179
+                - attr_199
+                - attr_192
+                - attr_203
+                - attr_189
+            channel6:
+                - sku
+                - attr_207
+                - attr_38
+                - attr_85
+                - attr_92
+                - attr_241
+                - attr_1
+                - attr_190
+                - attr_66
+                - attr_134
+            ecommerce:
+                - sku
+                - attr_133
+                - attr_137
+                - attr_108
+                - attr_64
+                - attr_116
+                - attr_48
+                - attr_228
+                - attr_155
+                - attr_261
+            mobile:
+                - sku
+                - attr_70
+                - attr_111
+                - attr_225
+                - attr_202
+                - attr_119
+                - attr_67
+                - attr_150
+                - attr_65
+                - attr_126
+            print:
+                - sku
+                - attr_92
+                - attr_96
+                - attr_246
+                - attr_200
+                - attr_171
+                - attr_275
+                - attr_162
+                - attr_73
+                - attr_209
+    fam_34:
+        labels:
+            de_DE: 'Ea eum.'
+            en_US: 'Nihil ut.'
+            es_ES: 'Aut sint.'
+            fr_FR: 'Voluptate repellat.'
+            it_IT: 'Suscipit dolorum.'
+            ja_JP: 'Maiores quos dolorem.'
+            ru_RU: 'Explicabo vel.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_230
+            - attr_102
+            - attr_276
+            - attr_67
+            - attr_16
+            - attr_14
+            - attr_200
+            - attr_222
+            - attr_285
+            - attr_160
+            - attr_155
+            - attr_91
+            - attr_288
+            - attr_123
+            - attr_5
+            - attr_147
+            - attr_205
+            - attr_184
+            - attr_75
+            - attr_169
+            - attr_217
+            - attr_127
+            - attr_282
+            - attr_176
+            - attr_84
+            - attr_129
+            - attr_21
+            - attr_255
+            - attr_77
+            - attr_273
+            - attr_153
+            - attr_131
+            - attr_283
+            - attr_89
+            - attr_72
+            - attr_260
+            - attr_232
+            - attr_277
+            - attr_28
+            - attr_43
+            - attr_20
+            - attr_209
+            - attr_264
+            - attr_249
+            - attr_225
+            - attr_110
+            - attr_152
+            - attr_257
+            - attr_296
+        requirements:
+            channel4:
+                - sku
+                - attr_166
+                - attr_232
+                - attr_185
+                - attr_11
+                - attr_5
+                - attr_85
+                - attr_0
+                - attr_42
+                - attr_97
+            channel5:
+                - sku
+                - attr_19
+                - attr_64
+                - attr_257
+                - attr_12
+                - attr_131
+                - attr_264
+                - attr_61
+                - attr_15
+                - attr_194
+            channel6:
+                - sku
+                - attr_292
+                - attr_2
+                - attr_89
+                - attr_0
+                - attr_60
+                - attr_64
+                - attr_193
+                - attr_75
+                - attr_181
+            ecommerce:
+                - sku
+                - attr_62
+                - attr_130
+                - attr_141
+                - attr_89
+                - attr_248
+                - attr_197
+                - attr_137
+                - attr_76
+                - attr_12
+            mobile:
+                - sku
+                - attr_245
+                - attr_8
+                - attr_212
+                - attr_192
+                - attr_137
+                - attr_191
+                - attr_124
+                - attr_146
+                - attr_60
+            print:
+                - sku
+                - attr_0
+                - attr_105
+                - attr_210
+                - attr_186
+                - attr_230
+                - attr_235
+                - attr_173
+                - attr_17
+                - attr_296
+    fam_35:
+        labels:
+            de_DE: 'Incidunt blanditiis.'
+            en_US: 'Quos voluptate nesciunt.'
+            es_ES: 'Voluptatem reprehenderit.'
+            fr_FR: 'Voluptas sapiente.'
+            it_IT: 'Quod est repellendus.'
+            ja_JP: 'Voluptatibus ut autem.'
+            ru_RU: 'Nesciunt placeat.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_204
+            - attr_210
+            - attr_186
+            - attr_97
+            - attr_283
+            - attr_68
+            - attr_146
+            - attr_58
+            - attr_19
+            - attr_256
+            - attr_149
+            - attr_23
+            - attr_192
+            - attr_15
+            - attr_14
+            - attr_243
+            - attr_88
+            - attr_40
+            - attr_176
+            - attr_252
+            - attr_41
+            - attr_241
+            - attr_30
+            - attr_289
+            - attr_52
+            - attr_38
+            - attr_27
+            - attr_80
+            - attr_11
+            - attr_102
+            - attr_59
+            - attr_8
+            - attr_154
+            - attr_10
+            - attr_190
+            - attr_121
+            - attr_127
+            - attr_257
+            - attr_244
+            - attr_224
+            - attr_45
+            - attr_148
+            - attr_280
+            - attr_51
+            - attr_46
+            - attr_220
+            - attr_285
+            - attr_158
+            - attr_34
+        requirements:
+            channel4:
+                - sku
+                - attr_75
+                - attr_100
+                - attr_25
+                - attr_114
+                - attr_4
+                - attr_237
+                - attr_207
+                - attr_15
+                - attr_17
+            channel5:
+                - sku
+                - attr_261
+                - attr_20
+                - attr_163
+                - attr_214
+                - attr_222
+                - attr_144
+                - attr_28
+                - attr_34
+                - attr_152
+            channel6:
+                - sku
+                - attr_212
+                - attr_110
+                - attr_14
+                - attr_63
+                - attr_242
+                - attr_244
+                - attr_47
+                - attr_287
+                - attr_127
+            ecommerce:
+                - sku
+                - attr_128
+                - attr_244
+                - attr_150
+                - attr_116
+                - attr_41
+                - attr_25
+                - attr_162
+                - attr_22
+                - attr_272
+            mobile:
+                - sku
+                - attr_275
+                - attr_69
+                - attr_149
+                - attr_7
+                - attr_77
+                - attr_194
+                - attr_156
+                - attr_227
+                - attr_74
+            print:
+                - sku
+                - attr_291
+                - attr_205
+                - attr_227
+                - attr_210
+                - attr_59
+                - attr_13
+                - attr_220
+                - attr_277
+                - attr_133
+    fam_36:
+        labels:
+            de_DE: 'Ipsam possimus.'
+            en_US: 'Ex nulla.'
+            es_ES: 'Sit sunt dolorem.'
+            fr_FR: 'Ipsam quo.'
+            it_IT: 'Ipsam laboriosam.'
+            ja_JP: 'Saepe ipsum.'
+            ru_RU: 'Quos et corrupti.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_186
+            - attr_114
+            - attr_172
+            - attr_64
+            - attr_216
+            - attr_237
+            - attr_175
+            - attr_198
+            - attr_39
+            - attr_236
+            - attr_291
+            - attr_248
+            - attr_40
+            - attr_180
+            - attr_58
+            - attr_138
+            - attr_122
+            - attr_257
+            - attr_28
+            - attr_1
+            - attr_0
+            - attr_56
+            - attr_202
+            - attr_188
+            - attr_251
+            - attr_109
+            - attr_13
+            - attr_53
+            - attr_232
+            - attr_12
+            - attr_128
+            - attr_253
+            - attr_44
+            - attr_49
+            - attr_17
+            - attr_234
+            - attr_131
+            - attr_110
+            - attr_173
+            - attr_190
+            - attr_283
+            - attr_211
+            - attr_275
+            - attr_263
+            - attr_29
+            - attr_3
+            - attr_165
+            - attr_123
+            - attr_130
+        requirements:
+            channel4:
+                - sku
+                - attr_45
+                - attr_157
+                - attr_109
+                - attr_278
+                - attr_285
+                - attr_104
+                - attr_16
+                - attr_130
+                - attr_163
+            channel5:
+                - sku
+                - attr_178
+                - attr_217
+                - attr_134
+                - attr_88
+                - attr_166
+                - attr_249
+                - attr_124
+                - attr_75
+                - attr_224
+            channel6:
+                - sku
+                - attr_208
+                - attr_262
+                - attr_263
+                - attr_30
+                - attr_113
+                - attr_115
+                - attr_256
+                - attr_275
+                - attr_266
+            ecommerce:
+                - sku
+                - attr_165
+                - attr_207
+                - attr_214
+                - attr_92
+                - attr_239
+                - attr_281
+                - attr_102
+                - attr_238
+                - attr_166
+            mobile:
+                - sku
+                - attr_68
+                - attr_10
+                - attr_58
+                - attr_149
+                - attr_43
+                - attr_31
+                - attr_152
+                - attr_39
+                - attr_168
+            print:
+                - sku
+                - attr_29
+                - attr_207
+                - attr_153
+                - attr_245
+                - attr_6
+                - attr_42
+                - attr_39
+                - attr_176
+                - attr_28
+    fam_37:
+        labels:
+            de_DE: 'Et similique quo.'
+            en_US: 'Sequi quo.'
+            es_ES: 'Facere aut.'
+            fr_FR: 'Repellat dolor impedit.'
+            it_IT: 'Dolorem consequatur.'
+            ja_JP: 'Odit ut.'
+            ru_RU: 'Praesentium consequatur.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_9
+            - attr_181
+            - attr_23
+            - attr_150
+            - attr_71
+            - attr_30
+            - attr_117
+            - attr_166
+            - attr_121
+            - attr_167
+            - attr_299
+            - attr_155
+            - attr_50
+            - attr_176
+            - attr_154
+            - attr_86
+            - attr_62
+            - attr_94
+            - attr_12
+            - attr_180
+            - attr_153
+            - attr_31
+            - attr_72
+            - attr_286
+            - attr_225
+            - attr_234
+            - attr_119
+            - attr_148
+            - attr_278
+            - attr_198
+            - attr_75
+            - attr_123
+            - attr_108
+            - attr_96
+            - attr_92
+            - attr_182
+            - attr_227
+            - attr_81
+            - attr_255
+            - attr_290
+            - attr_37
+            - attr_174
+            - attr_76
+            - attr_263
+            - attr_135
+            - attr_221
+            - attr_236
+            - attr_269
+            - attr_237
+        requirements:
+            channel4:
+                - sku
+                - attr_11
+                - attr_66
+                - attr_80
+                - attr_58
+                - attr_268
+                - attr_5
+                - attr_34
+                - attr_286
+                - attr_146
+            channel5:
+                - sku
+                - attr_262
+                - attr_43
+                - attr_210
+                - attr_64
+                - attr_25
+                - attr_105
+                - attr_257
+                - attr_11
+                - attr_106
+            channel6:
+                - sku
+                - attr_191
+                - attr_48
+                - attr_131
+                - attr_269
+                - attr_182
+                - attr_171
+                - attr_124
+                - attr_115
+                - attr_24
+            ecommerce:
+                - sku
+                - attr_7
+                - attr_229
+                - attr_116
+                - attr_220
+                - attr_118
+                - attr_29
+                - attr_196
+                - attr_94
+                - attr_132
+            mobile:
+                - sku
+                - attr_84
+                - attr_272
+                - attr_13
+                - attr_181
+                - attr_265
+                - attr_21
+                - attr_147
+                - attr_107
+                - attr_53
+            print:
+                - sku
+                - attr_284
+                - attr_198
+                - attr_65
+                - attr_2
+                - attr_179
+                - attr_120
+                - attr_213
+                - attr_160
+                - attr_282
+    fam_38:
+        labels:
+            de_DE: 'Ipsam recusandae velit.'
+            en_US: 'Ut aspernatur.'
+            es_ES: 'Ut aspernatur.'
+            fr_FR: 'Repellat eligendi.'
+            it_IT: 'Non repudiandae animi.'
+            ja_JP: 'Tempore placeat.'
+            ru_RU: 'Enim consequuntur sunt.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_252
+            - attr_42
+            - attr_81
+            - attr_187
+            - attr_129
+            - attr_200
+            - attr_23
+            - attr_280
+            - attr_223
+            - attr_83
+            - attr_11
+            - attr_214
+            - attr_299
+            - attr_265
+            - attr_90
+            - attr_170
+            - attr_174
+            - attr_156
+            - attr_171
+            - attr_153
+            - attr_157
+            - attr_239
+            - attr_226
+            - attr_112
+            - attr_95
+            - attr_8
+            - attr_79
+            - attr_86
+            - attr_292
+            - attr_38
+            - attr_167
+            - attr_53
+            - attr_261
+            - attr_271
+            - attr_47
+            - attr_230
+            - attr_40
+            - attr_35
+            - attr_70
+            - attr_215
+            - attr_232
+            - attr_7
+            - attr_231
+            - attr_287
+            - attr_33
+            - attr_34
+            - attr_186
+            - attr_259
+            - attr_169
+        requirements:
+            channel4:
+                - sku
+                - attr_39
+                - attr_298
+                - attr_286
+                - attr_221
+                - attr_280
+                - attr_154
+                - attr_160
+                - attr_244
+                - attr_48
+            channel5:
+                - sku
+                - attr_152
+                - attr_134
+                - attr_288
+                - attr_228
+                - attr_1
+                - attr_69
+                - attr_148
+                - attr_80
+                - attr_203
+            channel6:
+                - sku
+                - attr_180
+                - attr_299
+                - attr_23
+                - attr_145
+                - attr_191
+                - attr_48
+                - attr_227
+                - attr_192
+                - attr_271
+            ecommerce:
+                - sku
+                - attr_121
+                - attr_111
+                - attr_192
+                - attr_198
+                - attr_45
+                - attr_103
+                - attr_240
+                - attr_152
+                - attr_281
+            mobile:
+                - sku
+                - attr_10
+                - attr_26
+                - attr_108
+                - attr_37
+                - attr_104
+                - attr_129
+                - attr_253
+                - attr_71
+                - attr_30
+            print:
+                - sku
+                - attr_250
+                - attr_51
+                - attr_296
+                - attr_109
+                - attr_252
+                - attr_94
+                - attr_248
+                - attr_190
+                - attr_91
+    fam_39:
+        labels:
+            de_DE: 'Cumque alias repellat.'
+            en_US: 'Voluptatum minus dolorem.'
+            es_ES: 'Ut et.'
+            fr_FR: 'In minima.'
+            it_IT: 'Animi est quam.'
+            ja_JP: 'Omnis ipsam expedita.'
+            ru_RU: 'Ipsum exercitationem.'
+        attributeAsLabel: name
+        attributes:
+            - sku
+            - name
+            - attr_143
+            - attr_176
+            - attr_6
+            - attr_38
+            - attr_171
+            - attr_208
+            - attr_8
+            - attr_134
+            - attr_135
+            - attr_227
+            - attr_276
+            - attr_295
+            - attr_279
+            - attr_223
+            - attr_228
+            - attr_78
+            - attr_93
+            - attr_37
+            - attr_261
+            - attr_67
+            - attr_282
+            - attr_146
+            - attr_180
+            - attr_34
+            - attr_89
+            - attr_69
+            - attr_82
+            - attr_90
+            - attr_4
+            - attr_46
+            - attr_35
+            - attr_103
+            - attr_272
+            - attr_293
+            - attr_243
+            - attr_58
+            - attr_30
+            - attr_32
+            - attr_60
+            - attr_133
+            - attr_75
+            - attr_20
+            - attr_174
+            - attr_29
+            - attr_283
+            - attr_42
+            - attr_31
+            - attr_151
+            - attr_231
+        requirements:
+            channel4:
+                - sku
+                - attr_222
+                - attr_266
+                - attr_103
+                - attr_32
+                - attr_186
+                - attr_221
+                - attr_95
+                - attr_108
+                - attr_41
+            channel5:
+                - sku
+                - attr_156
+                - attr_128
+                - attr_182
+                - attr_142
+                - attr_277
+                - attr_91
+                - attr_298
+                - attr_246
+                - attr_76
+            channel6:
+                - sku
+                - attr_296
+                - attr_72
+                - attr_126
+                - attr_81
+                - attr_176
+                - attr_68
+                - attr_182
+                - attr_41
+                - attr_278
+            ecommerce:
+                - sku
+                - attr_118
+                - attr_38
+                - attr_271
+                - attr_223
+                - attr_236
+                - attr_13
+                - attr_212
+                - attr_161
+                - attr_276
+            mobile:
+                - sku
+                - attr_84
+                - attr_193
+                - attr_49
+                - attr_265
+                - attr_240
+                - attr_241
+                - attr_200
+                - attr_9
+                - attr_126
+            print:
+                - sku
+                - attr_295
+                - attr_242
+                - attr_141
+                - attr_158
+                - attr_102
+                - attr_157
+                - attr_83
+                - attr_132
+                - attr_236

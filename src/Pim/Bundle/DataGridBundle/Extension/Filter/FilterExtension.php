@@ -127,10 +127,11 @@ class FilterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $cache = $this->cache;
-        $cacheKey = ('filterExtension');
+        $cacheKey = 'filters.' . md5(serialize($config->toArray()));
         $cachedData = $cache->fetch($cacheKey);
 
         if (false === $cachedData) {
+//        if (true) {
             $filtersState    = $data->offsetGetByPath('[state][filters]', []);
             $filtersMetaData = [];
 
@@ -161,7 +162,7 @@ class FilterExtension extends AbstractExtension
                 'state' => $filtersState,
                 'metadata' =>$filtersMetaData
             ];
-            $cache->save($cacheKey, $cachedData, 30);
+            $cache->save($cacheKey, $cachedData, 600);
         } else {
             $filtersState    = $cachedData['state'];
             $filtersMetaData = $cachedData['metadata'];

@@ -114,7 +114,7 @@ services:
             - '@pim_catalog.remover.attribute'
             - '@pim_catalog.saver.attribute_option'
             - %akeneo_measure.measures_config%
-            - %pim_catalog.entity.attribute.class%
+            - '@doctrine_cache.providers.pim_apc_metadata_cache'
 
     pim_enrich.controller.attribute_option:
         scope: request

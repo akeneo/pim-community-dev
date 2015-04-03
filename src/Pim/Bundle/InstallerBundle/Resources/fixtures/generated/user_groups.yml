@@ -1,0 +1,15 @@
+user_groups:
+    it_support:
+        name: IT support
+    manager:
+        name: Manager
+    furniture_manager:
+        name: Furniture manager
+    clothes_manager:
+        name: Clothes manager
+    redactor:
+        name: Redactor
+    english_translator:
+        name: English translator
+    all:
+        name: All

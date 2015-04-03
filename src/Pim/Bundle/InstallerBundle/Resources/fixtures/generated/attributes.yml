@@ -1,0 +1,5077 @@
+attributes:
+    sku:
+        labels:
+            en_US: SKU
+            fr_FR: SKU
+            de_DE: SKU
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_identifier
+        group: marketing
+        unique: true
+        useableAsGridFilter: true
+        sortOrder: 1
+    name:
+        labels:
+            en_US: Name
+            fr_FR: Nom
+            de_DE: Name
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder: 2
+    description:
+        labels:
+            en_US: Description
+            fr_FR: Description
+            de_DE: Beschreibung
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_textarea
+        group: marketing
+        localizable: true
+        scopable: true
+        sortOrder: 3
+        wysiwyg_enabled: true
+        useableAsGridFilter: true
+    weight:
+        labels:
+            en_US: Weight
+            fr_FR: Poids
+            de_DE: Gewicht
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_metric
+        group: technical
+        sortOrder: 4
+        metricFamily: Weight
+        defaultMetricUnit: KILOGRAM
+        decimalsAllowed: true
+        useableAsGridFilter: true
+    maximum_scan_size:
+        labels:
+            en_US: 'Maximum scan size'
+            fr_FR: 'Surface maximal de numérisation'
+            de_DE: 'Maximale Scan-Abmessung'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_metric
+        group: technical
+        sortOrder: 5
+        metricFamily: Length
+        defaultMetricUnit: MILLIMETER
+        useableAsGridFilter: true
+    color_scanning:
+        labels:
+            en_US: 'Color scanning'
+            fr_FR: 'Numérisation couleur'
+            de_DE: Farbscannen
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 6
+    power_requirements:
+        labels:
+            en_US: 'Power requirements'
+            fr_FR: 'Exigences d''alimentation'
+            de_DE: Energiebedarf
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 7
+    maximum_print_size:
+        labels:
+            en_US: 'Maximum print size'
+            fr_FR: 'Format d’impression maximale'
+            de_DE: 'Maximale Druckgröße'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 8
+    sensor_type:
+        labels:
+            en_US: 'Sensor type'
+            fr_FR: 'Type de capteur'
+            de_DE: CCD-Bildsensor
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 9
+    total_megapixels:
+        labels:
+            en_US: 'Total megapixels'
+            fr_FR: 'Total des megapixels'
+            de_DE: 'Total megapixels'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 10
+        decimalsAllowed: true
+        negativeAllowed: false
+    optical_zoom:
+        labels:
+            en_US: 'Optical zoom'
+            fr_FR: 'Zoom optique'
+            de_DE: 'Optischer Zoom'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 11
+        decimalsAllowed: true
+        negativeAllowed: false
+    image_stabilizer:
+        labels:
+            en_US: 'Image stabilizer'
+            fr_FR: 'Stabilisateur d''image'
+            de_DE: Bildstabilisator
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 12
+    camera_type:
+        labels:
+            en_US: 'Camera type'
+            fr_FR: 'Type d''appareil photo'
+            de_DE: Kamera-Typ
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 13
+    thd:
+        labels:
+            en_US: 'Total Harmonic Distortion (THD)'
+            fr_FR: 'DHT, distorsion harmonique totale'
+            de_DE: 'THD, totalklirren'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 14
+        decimalsAllowed: false
+        negativeAllowed: false
+    snr:
+        labels:
+            en_US: 'Signal-to-Noise Ratio (SNR)'
+            fr_FR: 'Rapport de signal-à-bruit'
+            de_DE: 'Signal-zu-Geräusche Verhältnis (SNR)'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 21
+        decimalsAllowed: false
+        negativeAllowed: false
+    headphone_connectivity:
+        labels:
+            en_US: 'Headphone connectivity'
+            fr_FR: Casque
+            de_DE: Kopfhörerausgang
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 16
+    maximum_video_resolution:
+        labels:
+            en_US: 'Maximum video resolution'
+            fr_FR: 'Résolution vidéo maximale'
+            de_DE: 'Maximale Video-Auflösung'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 17
+    maximum_frame_rate:
+        labels:
+            en_US: 'Maximum frame rate'
+            fr_FR: 'Cadence maximale'
+            de_DE: 'Maximale Bildfrequenz'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 18
+        decimalsAllowed: false
+        negativeAllowed: false
+    multifunctional_functions:
+        labels:
+            en_US: 'All-in-one functions'
+            fr_FR: 'Fonctions tout-en-un'
+            de_DE: 'Functies all-in-one'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_multiselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 19
+    response_time:
+        labels:
+            en_US: 'Response time (ms)'
+            fr_FR: 'Temps de réponse (ms)'
+            de_DE: Erscheinungstermin
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder: 20
+    display_srgb:
+        labels:
+            en_US: 'Display sRGB'
+            fr_FR: sRGB
+            de_DE: sRGB
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 22
+    display_color:
+        labels:
+            en_US: Color
+            fr_FR: Couleur
+            de_DE: Farbe
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 23
+        decimalsAllowed: true
+    display_diagonal:
+        labels:
+            en_US: 'Display diagonal'
+            fr_FR: 'Taille de l''écran'
+            de_DE: Bildschirmdiagonale
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_metric
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 24
+        metricFamily: Length
+        defaultMetricUnit: INCH
+    release_date:
+        labels:
+            en_US: 'Release date'
+            fr_FR: 'Date de sortie'
+            de_DE: Erscheinungstermin
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_date
+        group: marketing
+        scopable: true
+        useableAsGridFilter: true
+        sortOrder: 25
+    viewing_area:
+        labels:
+            en_US: 'Effective viewing area'
+            fr_FR: 'Zone d''affichage active'
+            de_DE: 'Effektive Bildfläche'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_metric
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 24
+        metricFamily: Length
+        defaultMetricUnit: MILLIMETER
+    price:
+        labels:
+            en_US: Price
+            fr_FR: Prix
+            de_DE: Preis
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_price_collection
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder: 25
+        decimalsAllowed: true
+    picture:
+        labels:
+            en_US: Picture
+            fr_FR: Photographie
+            de_DE: Photography
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_image
+        group: media
+        useableAsGridFilter: true
+        sortOrder: 27
+        allowedExtensions: 'jpg,jpeg,gif'
+    pdf_description:
+        labels:
+            en_US: PDF description
+            fr_FR: Description PDF
+            de_DE: PDF Bezeichnung
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_file
+        group: media
+        useableAsGridFilter: true
+        sortOrder: 28
+        allowedExtensions: 'pdf'
+    container_material:
+        labels:
+            en_US: 'Container material'
+            fr_FR: 'Matériau du récipient'
+            de_DE: 'Behältermaterial'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        useableAsGridFilter: true
+        sortOrder: 29
+    main_color:
+        labels:
+            en_US: 'Main color'
+            fr_FR: 'Couleur principale'
+            de_DE: 'Hauptfarbe'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: color
+        useableAsGridFilter: true
+        sortOrder: 30
+    secondary_color:
+        labels:
+            en_US: 'Secondary color'
+            fr_FR: 'Couleur secondaire'
+            de_DE: 'Sekundärfarbe'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: color
+        sortOrder: 31
+        useableAsGridFilter: true
+    clothing_size:
+        labels:
+            en_US: 'Clothing size'
+            fr_FR: 'Taille du vêtement'
+            de_DE: 'Größe Kleidung'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: size
+        sortOrder: 32
+        useableAsGridFilter: true
+    tshirt_materials:
+        labels:
+            en_US: 'T-Shirt material'
+            fr_FR: 'Matière T-Shirt'
+            de_DE: 'T-Shirt gewebe'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        sortOrder: 33
+        useableAsGridFilter: true
+    tshirt_style:
+        labels:
+            en_US: 'T-Shirt style'
+            fr_FR: 'Style du T-Shirt'
+            de_DE: 'T-Shirt stil'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_multiselect
+        group: design
+        sortOrder: 34
+        useableAsGridFilter: true
+    camera_brand:
+        labels:
+            en_US: 'Brand'
+            fr_FR: 'Marque'
+            de_DE: 'Hersteller'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_simpleselect
+        group: technical
+        sortOrder: 35
+        useableAsGridFilter: true
+    camera_model_name:
+        labels:
+            en_US: 'Model name'
+            fr_FR: 'Modèle'
+            de_DE: 'Modelname'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 35
+        useableAsGridFilter: true
+    short_description:
+        labels:
+            en_US: 'Short description'
+            fr_FR: 'Description courte'
+            de_DE: 'Kurze Beschreibung'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_textarea
+        group: technical
+        sortOrder: 36
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    max_image_resolution:
+        labels:
+            en_US: 'Maximum image resolution'
+            fr_FR: 'Résolution maximum'
+            de_DE: 'Maximale Bildauflösung'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 37
+        useableAsGridFilter: true
+    image_resolutions:
+        labels:
+            en_US: 'Still image resolution(s)'
+            fr_FR: 'Résolution de la capture Photo'
+            de_DE: 'Festbild Auflösung(en)'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 38
+        useableAsGridFilter: true
+    supported_aspect_ratios:
+        labels:
+            en_US: 'Supported aspect ratios'
+            fr_FR: 'Rapports d''aspect pris en charge'
+            de_DE: 'Unterstützte Seitenverhältnisse'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 39
+        useableAsGridFilter: true
+    supported_image_format:
+        labels:
+            en_US: 'Supported image format'
+            fr_FR: 'Format d''image supportée'
+            de_DE: 'Unterstützte Bildformate'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 40
+        useableAsGridFilter: true
+    lens_mount_interface:
+        labels:
+            en_US: 'Lens mount interface'
+            fr_FR: 'Monture d''objectif d''interface'
+            de_DE: 'Linsen Montageanschluss'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 41
+        useableAsGridFilter: true
+    focus:
+        labels:
+            en_US: 'Focus'
+            fr_FR: 'Mise au point'
+            de_DE: 'Fokus'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 42
+        useableAsGridFilter: true
+    focus_adjustement:
+        labels:
+            en_US: 'Focus adjustment'
+            fr_FR: 'Ajustement mise au point'
+            de_DE: 'Fokus-Apassung'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 43
+        localizable: true
+        useableAsGridFilter: true
+    auto_focus_modes:
+        labels:
+            en_US: 'Auto focus modes'
+            fr_FR: 'Auto focus modes'
+            de_DE: 'Auto focus modes'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 44
+        localizable: true
+        useableAsGridFilter: true
+    auto_focus_points:
+        labels:
+            en_US: 'Auto focus points'
+            fr_FR: 'Auto focus points'
+            de_DE: 'Auto focus points'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        sortOrder: 45
+        useableAsGridFilter: true
+    auto_focus_lock:
+        labels:
+            en_US: 'Auto focus lock'
+            fr_FR: 'Auto focus lock'
+            de_DE: 'Auto focus lock'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        sortOrder: 46
+        useableAsGridFilter: true
+    auto_focus_assist_beam:
+        labels:
+            en_US: 'Auto focus beam'
+            fr_FR: 'Auto focus beam'
+            de_DE: 'Auto focus beam'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        sortOrder: 47
+        useableAsGridFilter: true
+    iso_sensitivity:
+        labels:
+            en_US: 'Iso sensitivity'
+            fr_FR: 'Iso sensitivity'
+            de_DE: 'Iso sensitivity'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_text
+        group: technical
+        sortOrder: 48
+        useableAsGridFilter: true
+    light_exposure_modes:
+         labels:
+            en_US: 'Light exposure modes'
+            fr_FR: 'Light exposure modes'
+            de_DE: 'Light exposure modes'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+         type: pim_catalog_text
+         group: technical
+         sortOrder: 49
+         localizable: true
+         useableAsGridFilter: true
+    light_exposure_corrections:
+         labels:
+            en_US: 'Light exposure corrections'
+            fr_FR: 'Light exposure corrections'
+            de_DE: 'Light exposure corrections'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+         type: pim_catalog_text
+         group: technical
+         sortOrder: 50
+         useableAsGridFilter: true
+    light_metering:
+         labels:
+            en_US: 'Light metering'
+            fr_FR: 'Light metering'
+            de_DE: 'Light metering'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+         type: pim_catalog_text
+         group: technical
+         sortOrder: 51
+         localizable: true
+         useableAsGridFilter: true
+    auto_exposure:
+        labels:
+            en_US: 'Auto exposure'
+            fr_FR: 'Auto exposure'
+            de_DE: 'Auto exposure'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_boolean
+        group: technical
+        sortOrder: 52
+        useableAsGridFilter: true
+    iso_sensitivity_max:
+        labels:
+            en_US: 'ISO sensitivity (max)'
+            fr_FR: 'ISO sensitivity (max)'
+            de_DE: 'ISO sensitivity (max)'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        sortOrder: 53
+        useableAsGridFilter: true
+    iso_sensitivity_min:
+        labels:
+            en_US: 'ISO sensitivity (min)'
+            fr_FR: 'ISO sensitivity (min)'
+            de_DE: 'ISO sensitivity (min)'
+            es_ES: 'Voluptates iure magni.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        type: pim_catalog_number
+        group: technical
+        sortOrder: 54
+        useableAsGridFilter: true
+    attr_0:
+        type: pim_catalog_multiselect
+        group: design
+        labels:
+            de_DE: 'Accusamus voluptas.'
+            en_US: 'Quidem commodi corrupti.'
+            es_ES: 'Laborum modi non.'
+            fr_FR: 'Possimus molestias.'
+            it_IT: 'Et sed aut.'
+            ja_JP: 'Occaecati deleniti autem.'
+            ru_RU: 'Velit fugit nihil.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+        useableAsGridFilter: true
+    attr_1:
+        type: pim_catalog_metric
+        group: design
+        labels:
+            de_DE: 'Molestiae et corrupti.'
+            en_US: 'Odio nobis placeat.'
+            es_ES: 'Adipisci qui.'
+            fr_FR: 'Consequuntur dolorem.'
+            it_IT: 'Dolore eum.'
+            ja_JP: 'Unde sequi.'
+            ru_RU: 'Repellat tempore.'
+        sortOrder: 5
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+        useableAsGridFilter: true
+    attr_2:
+        type: pim_catalog_simpleselect
+        group: other
+        labels:
+            de_DE: 'Nam et.'
+            en_US: 'Suscipit maxime.'
+            es_ES: 'Voluptates iure magni.'
+            fr_FR: 'Nihil quas.'
+            it_IT: 'Rerum doloremque consequatur.'
+            ja_JP: 'Soluta non aperiam.'
+            ru_RU: 'Qui non.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+        useableAsGridFilter: true
+    attr_3:
+        type: pim_catalog_number
+        group: design
+        labels:
+            de_DE: 'Quis porro.'
+            en_US: 'Blanditiis et vitae.'
+            es_ES: 'Impedit sint doloribus.'
+            fr_FR: 'Voluptatibus fugit dolorem.'
+            it_IT: 'Recusandae esse.'
+            ja_JP: 'Aut dolore recusandae.'
+            ru_RU: 'Commodi nihil.'
+        sortOrder: 7
+        localizable: false
+        scopable: false
+        useableAsGridFilter: true
+    attr_4:
+        type: pim_catalog_date
+        group: other
+        labels:
+            de_DE: 'Consequatur saepe culpa.'
+            en_US: 'Labore sapiente et.'
+            es_ES: 'Ut sit corporis.'
+            fr_FR: 'Quis impedit molestiae.'
+            it_IT: 'Reiciendis optio quasi.'
+            ja_JP: 'Neque tempore.'
+            ru_RU: 'Iste mollitia rerum.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+        useableAsGridFilter: true
+    attr_5:
+        type: pim_catalog_metric
+        group: color
+        labels:
+            de_DE: 'Aperiam nisi.'
+            en_US: 'Sed nostrum mollitia.'
+            es_ES: 'Atque ut autem.'
+            fr_FR: 'Odio excepturi.'
+            it_IT: 'Blanditiis reiciendis.'
+            ja_JP: 'Magnam aut quas.'
+            ru_RU: 'Maiores hic delectus.'
+        sortOrder: 1
+        localizable: false
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+        useableAsGridFilter: true
+    attr_6:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Rem ut voluptatibus.'
+            en_US: 'Provident quis voluptate.'
+            es_ES: 'Possimus officia dolorum.'
+            fr_FR: 'Et mollitia qui.'
+            it_IT: 'Voluptas nihil.'
+            ja_JP: 'Ratione ea.'
+            ru_RU: 'Repudiandae quo eos.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_7:
+        type: pim_catalog_date
+        group: manufacturing
+        labels:
+            de_DE: 'Nemo quo.'
+            en_US: 'Unde molestiae iure.'
+            es_ES: 'Fuga voluptatem.'
+            fr_FR: 'Accusamus mollitia enim.'
+            it_IT: 'Dolorem id quo.'
+            ja_JP: 'Voluptatem et architecto.'
+            ru_RU: 'Molestiae sed.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+        useableAsGridFilter: true
+    attr_8:
+        type: pim_catalog_metric
+        group: manufacturing
+        labels:
+            de_DE: 'Qui odio nulla.'
+            en_US: 'Aut eaque.'
+            es_ES: 'Excepturi corporis dolore.'
+            fr_FR: 'Vel nostrum.'
+            it_IT: 'Temporibus voluptatum unde.'
+            ja_JP: 'Voluptate fugiat.'
+            ru_RU: 'In ipsum.'
+        sortOrder: 5
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+        useableAsGridFilter: true
+    attr_9:
+        type: pim_catalog_metric
+        group: color
+        labels:
+            de_DE: 'Voluptate dolore.'
+            en_US: 'Aut dolor voluptas.'
+            es_ES: 'Optio est ut.'
+            fr_FR: 'Culpa veritatis ut.'
+            it_IT: 'Ut itaque.'
+            ja_JP: 'Libero incidunt reiciendis.'
+            ru_RU: 'At magnam eum.'
+        sortOrder: 8
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+        useableAsGridFilter: true
+    attr_10:
+        type: pim_catalog_textarea
+        group: marketing
+        labels:
+            de_DE: 'Et harum.'
+            en_US: 'Hic voluptatem.'
+            es_ES: 'Labore sapiente et.'
+            fr_FR: 'Quod quia.'
+            it_IT: 'Beatae quos.'
+            ja_JP: 'Asperiores facere commodi.'
+            ru_RU: 'Quia quasi consequuntur.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+        useableAsGridFilter: true
+    attr_11:
+        type: pim_catalog_price_collection
+        group: design
+        labels:
+            de_DE: 'Mollitia quia.'
+            en_US: 'In eum autem.'
+            es_ES: 'Mollitia iure a.'
+            fr_FR: 'Sunt eveniet.'
+            it_IT: 'Consequatur consectetur voluptatem.'
+            ja_JP: 'Quia itaque ratione.'
+            ru_RU: 'Ipsam rem.'
+        sortOrder: 7
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_12:
+        type: pim_catalog_simpleselect
+        group: technical
+        labels:
+            de_DE: 'Error nesciunt quidem.'
+            en_US: 'Perspiciatis tempora.'
+            es_ES: 'Necessitatibus quae et.'
+            fr_FR: 'Id unde saepe.'
+            it_IT: 'Repudiandae nihil.'
+            ja_JP: 'Culpa voluptatem minus.'
+            ru_RU: 'Ut quaerat.'
+        sortOrder: 5
+        localizable: false
+        scopable: false
+    attr_13:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Consequuntur aliquam.'
+            en_US: 'Cupiditate placeat quis.'
+            es_ES: 'Molestiae fugit.'
+            fr_FR: 'Et libero aliquid.'
+            it_IT: 'Eveniet aliquam aut.'
+            ja_JP: 'Non sit.'
+            ru_RU: 'Qui nesciunt architecto.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+        allowedExtensions: 'png,jpg'
+    attr_14:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Omnis labore.'
+            en_US: 'Qui eaque totam.'
+            es_ES: 'Illo vitae.'
+            fr_FR: 'Deserunt optio.'
+            it_IT: 'Et et ipsa.'
+            ja_JP: 'Voluptatem deleniti.'
+            ru_RU: 'Illo vel laboriosam.'
+        sortOrder: 7
+        localizable: false
+        scopable: false
+        useableAsGridFilter: true
+    attr_15:
+        type: pim_catalog_image
+        group: manufacturing
+        labels:
+            de_DE: 'Doloribus minima.'
+            en_US: 'Atque et aperiam.'
+            es_ES: 'Dignissimos nam itaque.'
+            fr_FR: 'Provident aut.'
+            it_IT: 'Nihil delectus fugiat.'
+            ja_JP: 'Laudantium quasi.'
+            ru_RU: 'Velit dolorem facere.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_16:
+        type: pim_catalog_date
+        group: other
+        labels:
+            de_DE: 'Illum illo qui.'
+            en_US: 'Numquam qui.'
+            es_ES: 'Natus placeat illo.'
+            fr_FR: 'Fugiat fuga.'
+            it_IT: 'Accusamus deleniti soluta.'
+            ja_JP: 'Impedit quos laborum.'
+            ru_RU: 'Corrupti et.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+        useableAsGridFilter: true
+    attr_17:
+        type: pim_catalog_textarea
+        group: color
+        labels:
+            de_DE: 'Corporis nesciunt minima.'
+            en_US: 'Officia consectetur.'
+            es_ES: 'Tempore sit.'
+            fr_FR: 'Non nam rerum.'
+            it_IT: 'Quia velit voluptates.'
+            ja_JP: 'Aut repellat et.'
+            ru_RU: 'Nostrum aut dolor.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_18:
+        type: pim_catalog_simpleselect
+        group: marketing
+        labels:
+            de_DE: 'Omnis vel dolorum.'
+            en_US: 'Eos sit id.'
+            es_ES: 'Et recusandae libero.'
+            fr_FR: 'Consequatur qui.'
+            it_IT: 'Et dolore.'
+            ja_JP: 'Voluptas molestias.'
+            ru_RU: 'Incidunt non ut.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_19:
+        type: pim_catalog_simpleselect
+        group: other
+        labels:
+            de_DE: 'Neque fugiat.'
+            en_US: 'Vero iusto.'
+            es_ES: 'Earum excepturi.'
+            fr_FR: 'Minima hic eligendi.'
+            it_IT: 'Nisi laudantium aspernatur.'
+            ja_JP: 'Quis exercitationem eveniet.'
+            ru_RU: 'Autem voluptatum animi.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+        useableAsGridFilter: true
+    attr_20:
+        type: pim_catalog_multiselect
+        group: marketing
+        labels:
+            de_DE: 'Corrupti pariatur sint.'
+            en_US: 'Rerum alias dolorem.'
+            es_ES: 'Vero quis.'
+            fr_FR: 'Error ut.'
+            it_IT: 'Debitis minus totam.'
+            ja_JP: 'Est quis et.'
+            ru_RU: 'Ipsum earum.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+        useableAsGridFilter: true
+    attr_21:
+        type: pim_catalog_number
+        group: manufacturing
+        labels:
+            de_DE: 'Omnis aut.'
+            en_US: 'Placeat nemo.'
+            es_ES: 'Voluptatem eos et.'
+            fr_FR: 'Vero quae.'
+            it_IT: 'Occaecati eum aut.'
+            ja_JP: 'Unde sequi.'
+            ru_RU: 'Sed quo molestiae.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_22:
+        type: pim_catalog_text
+        group: media
+        labels:
+            de_DE: 'Saepe quia tenetur.'
+            en_US: 'Ullam nemo officiis.'
+            es_ES: 'Eligendi enim.'
+            fr_FR: 'Eveniet ullam.'
+            it_IT: 'Sit voluptas.'
+            ja_JP: 'Et minus repellendus.'
+            ru_RU: 'Eos quis.'
+        sortOrder: 2
+        localizable: false
+        scopable: false
+        useableAsGridFilter: true
+    attr_23:
+        type: pim_catalog_multiselect
+        group: size
+        labels:
+            de_DE: 'Quia odio.'
+            en_US: 'Nostrum quasi.'
+            es_ES: 'Cum numquam sit.'
+            fr_FR: 'Quos perspiciatis non.'
+            it_IT: 'Dolores sit.'
+            ja_JP: 'Magnam maiores.'
+            ru_RU: 'Ratione qui.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+        useableAsGridFilter: true
+    attr_24:
+        type: pim_catalog_date
+        group: size
+        labels:
+            de_DE: 'Non necessitatibus quis.'
+            en_US: 'Non totam optio.'
+            es_ES: 'Sed animi.'
+            fr_FR: 'Est possimus ut.'
+            it_IT: 'Dolores ad voluptas.'
+            ja_JP: 'Dolorem repellat ad.'
+            ru_RU: 'Voluptatum voluptates.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_25:
+        type: pim_catalog_price_collection
+        group: marketing
+        labels:
+            de_DE: 'Corrupti facere.'
+            en_US: 'Sed enim omnis.'
+            es_ES: 'Praesentium maxime.'
+            fr_FR: 'Laborum sequi ipsa.'
+            it_IT: 'Qui et.'
+            ja_JP: 'Quos molestiae veritatis.'
+            ru_RU: 'Aut quam dicta.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+        useableAsGridFilter: true
+    attr_26:
+        type: pim_catalog_image
+        group: size
+        labels:
+            de_DE: 'Quae et.'
+            en_US: 'Et quas.'
+            es_ES: 'Voluptas voluptatem unde.'
+            fr_FR: 'Voluptatibus minima eligendi.'
+            it_IT: 'Ea quia.'
+            ja_JP: 'Corrupti iusto sunt.'
+            ru_RU: 'Reprehenderit quasi.'
+        sortOrder: 2
+        localizable: false
+        scopable: false
+        allowedExtensions: 'jpg,png'
+    attr_27:
+        type: pim_catalog_textarea
+        group: size
+        labels:
+            de_DE: 'Voluptas nostrum.'
+            en_US: 'Vitae dolorem possimus.'
+            es_ES: 'Qui sunt eligendi.'
+            fr_FR: 'Nisi nihil ut.'
+            it_IT: 'Minus rerum fuga.'
+            ja_JP: 'Eaque suscipit ut.'
+            ru_RU: 'Et et.'
+        sortOrder: 8
+        localizable: false
+        scopable: true
+        useableAsGridFilter: true
+    attr_28:
+        type: pim_catalog_image
+        group: media
+        labels:
+            de_DE: 'Explicabo perspiciatis repudiandae.'
+            en_US: 'Non perferendis tenetur.'
+            es_ES: 'Minima voluptatem labore.'
+            fr_FR: 'Autem expedita.'
+            it_IT: 'Et officiis sit.'
+            ja_JP: 'Nostrum totam.'
+            ru_RU: 'Quidem voluptatum.'
+        sortOrder: 9
+        localizable: false
+        scopable: true
+        allowedExtensions: 'pdf,jpg'
+    attr_29:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Facere molestiae est.'
+            en_US: 'Temporibus adipisci.'
+            es_ES: 'Impedit est.'
+            fr_FR: 'Aliquid aliquam neque.'
+            it_IT: 'Animi nostrum.'
+            ja_JP: 'Rerum excepturi accusantium.'
+            ru_RU: 'Qui aut.'
+        sortOrder: 1
+        localizable: false
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_30:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Vitae autem nemo.'
+            en_US: 'Eos qui magnam.'
+            es_ES: 'Impedit qui.'
+            fr_FR: 'Molestiae modi.'
+            it_IT: 'Eos rerum et.'
+            ja_JP: 'Quia animi.'
+            ru_RU: 'Fugiat aliquid labore.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+        useableAsGridFilter: true
+    attr_31:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Soluta accusamus recusandae.'
+            en_US: 'Laborum quos sit.'
+            es_ES: 'Placeat optio.'
+            fr_FR: 'Omnis numquam.'
+            it_IT: 'Suscipit quisquam.'
+            ja_JP: 'Ut modi.'
+            ru_RU: 'Occaecati voluptas et.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+        useableAsGridFilter: true
+    attr_32:
+        type: pim_catalog_boolean
+        group: media
+        labels:
+            de_DE: 'Aut ea ut.'
+            en_US: 'Ad sunt fugit.'
+            es_ES: 'Animi accusantium nemo.'
+            fr_FR: 'Voluptas maxime.'
+            it_IT: 'Aut reiciendis suscipit.'
+            ja_JP: 'Deserunt vitae asperiores.'
+            ru_RU: 'Doloremque vitae error.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+        useableAsGridFilter: true
+    attr_33:
+        type: pim_catalog_boolean
+        group: design
+        labels:
+            de_DE: 'Sed et dolores.'
+            en_US: 'Enim dolores quos.'
+            es_ES: 'Quam voluptatem eveniet.'
+            fr_FR: 'Ut ut omnis.'
+            it_IT: 'Delectus nulla.'
+            ja_JP: 'Culpa ut.'
+            ru_RU: 'Libero maxime.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        useableAsGridFilter: true
+    attr_34:
+        type: pim_catalog_boolean
+        group: size
+        labels:
+            de_DE: 'Quibusdam nam.'
+            en_US: 'Ut tempora quia.'
+            es_ES: 'Non dolorem quisquam.'
+            fr_FR: 'Quibusdam nulla.'
+            it_IT: 'Ut dolores itaque.'
+            ja_JP: 'Ullam voluptatem qui.'
+            ru_RU: 'Repudiandae fuga.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+    attr_35:
+        type: pim_catalog_image
+        group: size
+        labels:
+            de_DE: 'Aut minima.'
+            en_US: 'Qui totam dolore.'
+            es_ES: 'At dolorem adipisci.'
+            fr_FR: 'Amet consequatur quia.'
+            it_IT: 'Ratione sunt aut.'
+            ja_JP: 'Voluptatum nemo.'
+            ru_RU: 'Occaecati et.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+        allowedExtensions: 'pdf,png'
+    attr_36:
+        type: pim_catalog_boolean
+        group: size
+        labels:
+            de_DE: 'Facilis nesciunt iusto.'
+            en_US: 'Atque non soluta.'
+            es_ES: 'Dolores voluptates quod.'
+            fr_FR: 'Cum recusandae.'
+            it_IT: 'Beatae corporis.'
+            ja_JP: 'Est totam officia.'
+            ru_RU: 'Cumque aut quaerat.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+    attr_37:
+        type: pim_catalog_image
+        group: manufacturing
+        labels:
+            de_DE: 'Rerum ducimus totam.'
+            en_US: 'Aliquid debitis sequi.'
+            es_ES: 'Repellat error.'
+            fr_FR: 'Voluptatem impedit architecto.'
+            it_IT: 'Repudiandae a.'
+            ja_JP: 'Eligendi sit consequatur.'
+            ru_RU: 'Culpa perferendis accusamus.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,png'
+    attr_38:
+        type: pim_catalog_multiselect
+        group: technical
+        labels:
+            de_DE: 'Vel dolorum accusamus.'
+            en_US: 'Pariatur amet.'
+            es_ES: 'Ut tenetur.'
+            fr_FR: 'Qui asperiores corrupti.'
+            it_IT: 'Possimus voluptatem.'
+            ja_JP: 'Suscipit cum quis.'
+            ru_RU: 'Aspernatur quaerat sed.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+    attr_39:
+        type: pim_catalog_file
+        group: media
+        labels:
+            de_DE: 'Suscipit eligendi.'
+            en_US: 'Aperiam tempora.'
+            es_ES: 'Aperiam eos.'
+            fr_FR: 'Omnis possimus esse.'
+            it_IT: 'Quaerat quis quas.'
+            ja_JP: 'Aut sit.'
+            ru_RU: 'Commodi dolorum.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_40:
+        type: pim_catalog_text
+        group: marketing
+        labels:
+            de_DE: 'Illo dolores.'
+            en_US: 'Laboriosam illo sit.'
+            es_ES: 'Numquam laboriosam.'
+            fr_FR: 'Et explicabo.'
+            it_IT: 'Ipsa quaerat.'
+            ja_JP: 'Facere sit adipisci.'
+            ru_RU: 'Hic nulla quia.'
+        sortOrder: 9
+        localizable: false
+        scopable: true
+    attr_41:
+        type: pim_catalog_multiselect
+        group: technical
+        labels:
+            de_DE: 'Aut quod.'
+            en_US: 'Illum et in.'
+            es_ES: 'Ab sunt nisi.'
+            fr_FR: 'Non consectetur.'
+            it_IT: 'Reprehenderit iste.'
+            ja_JP: 'Repudiandae enim.'
+            ru_RU: 'Deleniti distinctio consequatur.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_42:
+        type: pim_catalog_multiselect
+        group: design
+        labels:
+            de_DE: 'Quia qui.'
+            en_US: 'Officiis vitae.'
+            es_ES: 'Hic vel.'
+            fr_FR: 'Voluptatem dolores sed.'
+            it_IT: 'Qui sit.'
+            ja_JP: 'Ipsa distinctio.'
+            ru_RU: 'Commodi labore a.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+    attr_43:
+        type: pim_catalog_date
+        group: technical
+        labels:
+            de_DE: 'Est ad.'
+            en_US: 'Et nisi labore.'
+            es_ES: 'Ad blanditiis odio.'
+            fr_FR: 'Cumque nobis et.'
+            it_IT: 'Atque voluptatem iure.'
+            ja_JP: 'Facilis eos minus.'
+            ru_RU: 'Rerum non.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_44:
+        type: pim_catalog_number
+        group: marketing
+        labels:
+            de_DE: 'Temporibus sapiente qui.'
+            en_US: 'Culpa dicta mollitia.'
+            es_ES: 'Aperiam minima.'
+            fr_FR: 'Maxime dolores.'
+            it_IT: 'Itaque dolorem.'
+            ja_JP: 'Et nostrum voluptate.'
+            ru_RU: 'Corrupti tempore.'
+        sortOrder: 6
+        localizable: true
+        scopable: false
+    attr_45:
+        type: pim_catalog_price_collection
+        group: color
+        labels:
+            de_DE: 'Quas nihil.'
+            en_US: 'Libero at.'
+            es_ES: 'Aut dolorem.'
+            fr_FR: 'Non et.'
+            it_IT: 'Ratione voluptas.'
+            ja_JP: 'Et asperiores.'
+            ru_RU: 'Quas commodi natus.'
+        sortOrder: 2
+        localizable: false
+        scopable: false
+    attr_46:
+        type: pim_catalog_number
+        group: manufacturing
+        labels:
+            de_DE: 'Et consequatur.'
+            en_US: 'Doloribus adipisci.'
+            es_ES: 'Esse voluptatem.'
+            fr_FR: 'Quia et aspernatur.'
+            it_IT: 'Officia nemo qui.'
+            ja_JP: 'Velit molestias.'
+            ru_RU: 'Iusto amet cupiditate.'
+        sortOrder: 5
+        localizable: true
+        scopable: true
+    attr_47:
+        type: pim_catalog_date
+        group: manufacturing
+        labels:
+            de_DE: 'Et beatae.'
+            en_US: 'Tempora qui qui.'
+            es_ES: 'Dolores et quis.'
+            fr_FR: 'Nemo itaque totam.'
+            it_IT: 'Magni est et.'
+            ja_JP: 'Doloribus vitae enim.'
+            ru_RU: 'Ipsa voluptas quia.'
+        sortOrder: 1
+        localizable: false
+        scopable: true
+    attr_48:
+        type: pim_catalog_price_collection
+        group: marketing
+        labels:
+            de_DE: 'Unde eum itaque.'
+            en_US: 'Exercitationem velit.'
+            es_ES: 'Ut voluptatem voluptas.'
+            fr_FR: 'Velit distinctio.'
+            it_IT: 'Sint optio.'
+            ja_JP: 'Veritatis et rerum.'
+            ru_RU: 'Iste facere nihil.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_49:
+        type: pim_catalog_number
+        group: manufacturing
+        labels:
+            de_DE: 'Temporibus ea rerum.'
+            en_US: 'Velit qui praesentium.'
+            es_ES: 'Recusandae et.'
+            fr_FR: 'Soluta reprehenderit doloremque.'
+            it_IT: 'Libero voluptas aperiam.'
+            ja_JP: 'Dolores harum officiis.'
+            ru_RU: 'Ut accusamus.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+    attr_50:
+        type: pim_catalog_textarea
+        group: manufacturing
+        labels:
+            de_DE: 'Voluptate quia.'
+            en_US: 'Non ab non.'
+            es_ES: 'Voluptas necessitatibus est.'
+            fr_FR: 'Ut veniam.'
+            it_IT: 'Hic esse.'
+            ja_JP: 'Totam itaque culpa.'
+            ru_RU: 'Voluptatem pariatur.'
+        sortOrder: 9
+        localizable: false
+        scopable: true
+    attr_51:
+        type: pim_catalog_price_collection
+        group: design
+        labels:
+            de_DE: 'Quas sed aliquam.'
+            en_US: 'Qui deleniti voluptatum.'
+            es_ES: 'Earum itaque.'
+            fr_FR: 'Omnis optio.'
+            it_IT: 'Quos vitae quo.'
+            ja_JP: 'Dolor est minus.'
+            ru_RU: 'Vitae ut consequatur.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+    attr_52:
+        type: pim_catalog_date
+        group: technical
+        labels:
+            de_DE: 'Quidem nemo fuga.'
+            en_US: 'Nulla consequuntur aut.'
+            es_ES: 'Dolorum nulla illum.'
+            fr_FR: 'Neque aut modi.'
+            it_IT: 'Quia labore.'
+            ja_JP: 'In sint.'
+            ru_RU: 'Voluptatum atque.'
+        sortOrder: 3
+        localizable: true
+        scopable: false
+    attr_53:
+        type: pim_catalog_metric
+        group: color
+        labels:
+            de_DE: 'Dolor inventore.'
+            en_US: 'Ratione saepe doloribus.'
+            es_ES: 'Dolorum eos.'
+            fr_FR: 'Qui qui aut.'
+            it_IT: 'Et expedita non.'
+            ja_JP: 'Qui molestiae assumenda.'
+            ru_RU: 'Unde similique.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_54:
+        type: pim_catalog_text
+        group: technical
+        labels:
+            de_DE: 'Reiciendis est.'
+            en_US: 'Omnis quia.'
+            es_ES: 'Quasi aliquam sunt.'
+            fr_FR: 'Nulla commodi voluptatibus.'
+            it_IT: 'Omnis explicabo.'
+            ja_JP: 'Nesciunt vel.'
+            ru_RU: 'A qui et.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_55:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Vel reiciendis.'
+            en_US: 'Quia quas.'
+            es_ES: 'Vitae quae.'
+            fr_FR: 'Aut consectetur.'
+            it_IT: 'Sint in ipsam.'
+            ja_JP: 'Dolores doloremque ut.'
+            ru_RU: 'Eligendi velit omnis.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+        allowedExtensions: 'png,jpg'
+    attr_56:
+        type: pim_catalog_simpleselect
+        group: other
+        labels:
+            de_DE: 'Nulla similique.'
+            en_US: 'At ullam quo.'
+            es_ES: 'Id eius.'
+            fr_FR: 'Porro unde.'
+            it_IT: 'Rerum velit.'
+            ja_JP: 'Aut rerum nemo.'
+            ru_RU: 'Nemo voluptatibus sit.'
+        sortOrder: 3
+        localizable: false
+        scopable: false
+    attr_57:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Quidem doloribus molestias.'
+            en_US: 'Id nam iusto.'
+            es_ES: 'Veniam et qui.'
+            fr_FR: 'Explicabo sunt.'
+            it_IT: 'Et qui quo.'
+            ja_JP: 'Nemo pariatur occaecati.'
+            ru_RU: 'Molestiae et.'
+        sortOrder: 4
+        localizable: true
+        scopable: true
+    attr_58:
+        type: pim_catalog_number
+        group: color
+        labels:
+            de_DE: 'Dignissimos velit.'
+            en_US: 'Et exercitationem.'
+            es_ES: 'Magni ipsam.'
+            fr_FR: 'Aliquid adipisci id.'
+            it_IT: 'Error assumenda.'
+            ja_JP: 'Magni nisi rerum.'
+            ru_RU: 'Id ut cupiditate.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_59:
+        type: pim_catalog_simpleselect
+        group: other
+        labels:
+            de_DE: 'Exercitationem odit.'
+            en_US: 'Magnam quod.'
+            es_ES: 'Consequatur incidunt.'
+            fr_FR: 'Dolorem autem.'
+            it_IT: 'Error totam aut.'
+            ja_JP: 'Doloremque architecto.'
+            ru_RU: 'Et id eveniet.'
+        sortOrder: 8
+        localizable: false
+        scopable: true
+    attr_60:
+        type: pim_catalog_file
+        group: design
+        labels:
+            de_DE: 'Totam autem sed.'
+            en_US: 'Harum atque.'
+            es_ES: 'Porro quis.'
+            fr_FR: 'Quia voluptatem.'
+            it_IT: 'Sed ex similique.'
+            ja_JP: 'Quas placeat et.'
+            ru_RU: 'Et debitis occaecati.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,pdf'
+    attr_61:
+        type: pim_catalog_image
+        group: media
+        labels:
+            de_DE: 'Reiciendis non dolorum.'
+            en_US: 'Atque fugit officiis.'
+            es_ES: 'Ducimus quaerat harum.'
+            fr_FR: 'Fugit itaque sint.'
+            it_IT: 'Velit nam dignissimos.'
+            ja_JP: 'Aut voluptatibus dolores.'
+            ru_RU: 'Et odio.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+        allowedExtensions: 'png,jpg'
+    attr_62:
+        type: pim_catalog_text
+        group: manufacturing
+        labels:
+            de_DE: 'Delectus sed.'
+            en_US: 'Ullam ipsam.'
+            es_ES: 'Quae aliquid aut.'
+            fr_FR: 'Quis voluptatibus.'
+            it_IT: 'Quia quis sunt.'
+            ja_JP: 'Quasi magni.'
+            ru_RU: 'Officiis adipisci sint.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_63:
+        type: pim_catalog_price_collection
+        group: design
+        labels:
+            de_DE: 'Velit tempora sit.'
+            en_US: 'Harum ab dolorum.'
+            es_ES: 'Eum dolorem.'
+            fr_FR: 'Omnis ut accusamus.'
+            it_IT: 'Qui minima.'
+            ja_JP: 'Velit inventore minus.'
+            ru_RU: 'Placeat itaque.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_64:
+        type: pim_catalog_price_collection
+        group: technical
+        labels:
+            de_DE: 'Est non.'
+            en_US: 'Aut facere incidunt.'
+            es_ES: 'Odio officia et.'
+            fr_FR: 'Quo omnis aut.'
+            it_IT: 'Dignissimos sint nisi.'
+            ja_JP: 'Aut porro odio.'
+            ru_RU: 'Similique ex.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_65:
+        type: pim_catalog_date
+        group: size
+        labels:
+            de_DE: 'Consectetur laborum aliquid.'
+            en_US: 'Repudiandae atque non.'
+            es_ES: 'Quasi officiis exercitationem.'
+            fr_FR: 'Ad quis.'
+            it_IT: 'Sit nihil quibusdam.'
+            ja_JP: 'Ut veritatis temporibus.'
+            ru_RU: 'Dolores quia.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+    attr_66:
+        type: pim_catalog_multiselect
+        group: design
+        labels:
+            de_DE: 'Laudantium alias.'
+            en_US: 'Laborum fugit vero.'
+            es_ES: 'Iste qui minima.'
+            fr_FR: 'Quidem et quos.'
+            it_IT: 'Ex nobis magnam.'
+            ja_JP: 'Fugiat nesciunt sapiente.'
+            ru_RU: 'Et architecto minima.'
+        sortOrder: 4
+        localizable: true
+        scopable: true
+    attr_67:
+        type: pim_catalog_image
+        group: design
+        labels:
+            de_DE: 'Eos autem.'
+            en_US: 'Consectetur quia debitis.'
+            es_ES: 'Facilis et.'
+            fr_FR: 'Vel perferendis officiis.'
+            it_IT: 'Aut iusto.'
+            ja_JP: 'Quo quo molestias.'
+            ru_RU: 'A reprehenderit.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+        allowedExtensions: 'png,pdf'
+    attr_68:
+        type: pim_catalog_simpleselect
+        group: design
+        labels:
+            de_DE: 'Ipsam sed quidem.'
+            en_US: 'Sint iste.'
+            es_ES: 'Non qui.'
+            fr_FR: 'Atque accusamus tenetur.'
+            it_IT: 'Ipsa a ut.'
+            ja_JP: 'Omnis et.'
+            ru_RU: 'Occaecati quod blanditiis.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_69:
+        type: pim_catalog_price_collection
+        group: media
+        labels:
+            de_DE: 'Sint odio.'
+            en_US: 'Voluptatem quis.'
+            es_ES: 'Iste voluptatum.'
+            fr_FR: 'Possimus vel accusamus.'
+            it_IT: 'Et voluptatibus et.'
+            ja_JP: 'Et cupiditate.'
+            ru_RU: 'Molestiae incidunt sint.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+    attr_70:
+        type: pim_catalog_image
+        group: manufacturing
+        labels:
+            de_DE: 'A et.'
+            en_US: 'Enim eaque velit.'
+            es_ES: 'Perferendis a.'
+            fr_FR: 'Labore soluta.'
+            it_IT: 'Eum facilis.'
+            ja_JP: 'Aperiam dolorem.'
+            ru_RU: 'Laudantium quisquam.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+        allowedExtensions: 'png,jpg'
+    attr_71:
+        type: pim_catalog_text
+        group: marketing
+        labels:
+            de_DE: 'Voluptatem aut.'
+            en_US: 'Inventore repellendus ut.'
+            es_ES: 'Consequatur ea.'
+            fr_FR: 'Non incidunt.'
+            it_IT: 'Odio magnam.'
+            ja_JP: 'Qui a qui.'
+            ru_RU: 'Asperiores dolor ad.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_72:
+        type: pim_catalog_multiselect
+        group: media
+        labels:
+            de_DE: 'Quas nobis veniam.'
+            en_US: 'Et enim.'
+            es_ES: 'Eos quia facere.'
+            fr_FR: 'Enim error.'
+            it_IT: 'Consequatur eum.'
+            ja_JP: 'Ratione enim.'
+            ru_RU: 'Et dolorem.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_73:
+        type: pim_catalog_boolean
+        group: other
+        labels:
+            de_DE: 'Quidem nihil.'
+            en_US: 'Quo fugiat unde.'
+            es_ES: 'Iure aspernatur.'
+            fr_FR: 'Nostrum commodi.'
+            it_IT: 'Eos est quos.'
+            ja_JP: 'Consequatur quo laboriosam.'
+            ru_RU: 'Ut id distinctio.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_74:
+        type: pim_catalog_date
+        group: size
+        labels:
+            de_DE: 'Excepturi nesciunt id.'
+            en_US: 'Nihil reiciendis.'
+            es_ES: 'Omnis reiciendis adipisci.'
+            fr_FR: 'Aspernatur nobis.'
+            it_IT: 'Asperiores ut et.'
+            ja_JP: 'Harum nam.'
+            ru_RU: 'Qui sit impedit.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+    attr_75:
+        type: pim_catalog_file
+        group: color
+        labels:
+            de_DE: 'Sit minus ut.'
+            en_US: 'Enim aliquam.'
+            es_ES: 'Adipisci quibusdam quidem.'
+            fr_FR: 'Illum nam est.'
+            it_IT: 'Illum ipsam.'
+            ja_JP: 'Eos illo.'
+            ru_RU: 'Quam nemo.'
+        sortOrder: 7
+        localizable: true
+        scopable: true
+        allowedExtensions: 'pdf,png'
+    attr_76:
+        type: pim_catalog_date
+        group: media
+        labels:
+            de_DE: 'Voluptas nesciunt odit.'
+            en_US: 'Illum consequatur ea.'
+            es_ES: 'Optio autem dolores.'
+            fr_FR: 'Doloremque fuga.'
+            it_IT: 'Qui veritatis.'
+            ja_JP: 'Quidem ut architecto.'
+            ru_RU: 'Quo veritatis aspernatur.'
+        sortOrder: 4
+        localizable: true
+        scopable: false
+    attr_77:
+        type: pim_catalog_price_collection
+        group: color
+        labels:
+            de_DE: 'Cum eligendi.'
+            en_US: 'Veritatis et sunt.'
+            es_ES: 'Hic expedita.'
+            fr_FR: 'Odit nihil dolorem.'
+            it_IT: 'Harum est.'
+            ja_JP: 'Est doloremque.'
+            ru_RU: 'Eaque qui.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+    attr_78:
+        type: pim_catalog_metric
+        group: technical
+        labels:
+            de_DE: 'Est dolorem voluptatem.'
+            en_US: 'Doloremque saepe.'
+            es_ES: 'Aspernatur eaque.'
+            fr_FR: 'Esse quas dolor.'
+            it_IT: 'Ullam pariatur aperiam.'
+            ja_JP: 'Dolores quisquam.'
+            ru_RU: 'Nobis adipisci natus.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_79:
+        type: pim_catalog_boolean
+        group: marketing
+        labels:
+            de_DE: 'Nesciunt blanditiis.'
+            en_US: 'Et voluptatem voluptatem.'
+            es_ES: 'Illum et omnis.'
+            fr_FR: 'Totam sint.'
+            it_IT: 'Magni est.'
+            ja_JP: 'Ipsam quo.'
+            ru_RU: 'Autem harum.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_80:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Esse voluptatum distinctio.'
+            en_US: 'Natus similique.'
+            es_ES: 'Dolorum qui.'
+            fr_FR: 'Deleniti reiciendis.'
+            it_IT: 'Eaque atque.'
+            ja_JP: 'Consectetur suscipit.'
+            ru_RU: 'Dolorem fuga sunt.'
+        sortOrder: 3
+        localizable: false
+        scopable: false
+    attr_81:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Impedit minima.'
+            en_US: 'Nostrum suscipit.'
+            es_ES: 'Molestiae velit ullam.'
+            fr_FR: 'Quo voluptates.'
+            it_IT: 'Harum qui iure.'
+            ja_JP: 'Ut esse voluptatum.'
+            ru_RU: 'Nisi in.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_82:
+        type: pim_catalog_number
+        group: manufacturing
+        labels:
+            de_DE: 'Itaque et.'
+            en_US: 'Laboriosam quis.'
+            es_ES: 'Quas veniam voluptas.'
+            fr_FR: 'Laudantium libero.'
+            it_IT: 'Commodi placeat.'
+            ja_JP: 'Cumque quia assumenda.'
+            ru_RU: 'Beatae ipsum.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_83:
+        type: pim_catalog_multiselect
+        group: other
+        labels:
+            de_DE: 'Quod quaerat.'
+            en_US: 'Perferendis ab.'
+            es_ES: 'Aliquid animi quis.'
+            fr_FR: 'Quam quia nam.'
+            it_IT: 'Nihil illum.'
+            ja_JP: 'Aut ut.'
+            ru_RU: 'Quibusdam exercitationem.'
+        sortOrder: 4
+        localizable: false
+        scopable: true
+    attr_84:
+        type: pim_catalog_price_collection
+        group: manufacturing
+        labels:
+            de_DE: 'Non doloremque minus.'
+            en_US: 'Molestiae magni.'
+            es_ES: 'Ut quaerat aliquam.'
+            fr_FR: 'Rem reiciendis tempora.'
+            it_IT: 'Inventore sed sit.'
+            ja_JP: 'Esse facilis modi.'
+            ru_RU: 'Maxime maiores et.'
+        sortOrder: 2
+        localizable: false
+        scopable: false
+    attr_85:
+        type: pim_catalog_boolean
+        group: manufacturing
+        labels:
+            de_DE: 'Libero hic asperiores.'
+            en_US: 'Enim sapiente.'
+            es_ES: 'Rem molestias.'
+            fr_FR: 'Enim non est.'
+            it_IT: 'Reprehenderit ea.'
+            ja_JP: 'Excepturi enim.'
+            ru_RU: 'Expedita veniam ullam.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+    attr_86:
+        type: pim_catalog_image
+        group: design
+        labels:
+            de_DE: 'Esse est.'
+            en_US: 'Ut at.'
+            es_ES: 'Autem cum.'
+            fr_FR: 'Nesciunt vitae suscipit.'
+            it_IT: 'Qui sint.'
+            ja_JP: 'Reiciendis blanditiis.'
+            ru_RU: 'Vero excepturi et.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+        allowedExtensions: 'pdf,png'
+    attr_87:
+        type: pim_catalog_image
+        group: other
+        labels:
+            de_DE: 'Et soluta.'
+            en_US: 'Id explicabo distinctio.'
+            es_ES: 'Magni aut.'
+            fr_FR: 'Ea sint.'
+            it_IT: 'Veniam iure.'
+            ja_JP: 'Ipsa labore.'
+            ru_RU: 'Dolor tempore vel.'
+        sortOrder: 6
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,png'
+    attr_88:
+        type: pim_catalog_price_collection
+        group: manufacturing
+        labels:
+            de_DE: 'Rerum officia et.'
+            en_US: 'Sapiente quia.'
+            es_ES: 'Perferendis iure.'
+            fr_FR: 'Alias dolorem.'
+            it_IT: 'At optio.'
+            ja_JP: 'Facere asperiores doloremque.'
+            ru_RU: 'Ratione labore voluptas.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+    attr_89:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Nesciunt soluta.'
+            en_US: 'Quis aperiam sunt.'
+            es_ES: 'Ea et.'
+            fr_FR: 'Veritatis enim.'
+            it_IT: 'Autem autem minima.'
+            ja_JP: 'Rerum consequatur illo.'
+            ru_RU: 'Aut amet est.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+    attr_90:
+        type: pim_catalog_textarea
+        group: size
+        labels:
+            de_DE: 'Dolores placeat est.'
+            en_US: 'Illum sunt eveniet.'
+            es_ES: 'Nobis quo.'
+            fr_FR: 'Eum quia.'
+            it_IT: 'Culpa quidem est.'
+            ja_JP: 'Ut ut perferendis.'
+            ru_RU: 'Nesciunt eos.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+    attr_91:
+        type: pim_catalog_metric
+        group: media
+        labels:
+            de_DE: 'Delectus maiores a.'
+            en_US: 'Pariatur recusandae.'
+            es_ES: 'Quas qui aut.'
+            fr_FR: 'Ut nesciunt.'
+            it_IT: 'Eveniet sit numquam.'
+            ja_JP: 'Dolores ex.'
+            ru_RU: 'Omnis quo saepe.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_92:
+        type: pim_catalog_number
+        group: media
+        labels:
+            de_DE: 'Quo repudiandae.'
+            en_US: 'Quis sed.'
+            es_ES: 'Velit et.'
+            fr_FR: 'Aperiam eum sit.'
+            it_IT: 'Qui ea.'
+            ja_JP: 'Esse officiis commodi.'
+            ru_RU: 'Et eos ut.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+    attr_93:
+        type: pim_catalog_image
+        group: technical
+        labels:
+            de_DE: 'Et culpa.'
+            en_US: 'Est quo nulla.'
+            es_ES: 'Architecto architecto deleniti.'
+            fr_FR: 'Corrupti perspiciatis.'
+            it_IT: 'Qui ut.'
+            ja_JP: 'Eius culpa.'
+            ru_RU: 'Sunt ut assumenda.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_94:
+        type: pim_catalog_boolean
+        group: manufacturing
+        labels:
+            de_DE: 'Et aperiam.'
+            en_US: 'Maxime quisquam.'
+            es_ES: 'Quidem sit.'
+            fr_FR: 'Quas quos.'
+            it_IT: 'Ipsum quam praesentium.'
+            ja_JP: 'Ut est omnis.'
+            ru_RU: 'Error est laudantium.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+    attr_95:
+        type: pim_catalog_metric
+        group: design
+        labels:
+            de_DE: 'Mollitia consequatur.'
+            en_US: 'Quidem rerum.'
+            es_ES: 'Nam aliquam quos.'
+            fr_FR: 'Dolorum rem.'
+            it_IT: 'Ipsum deleniti voluptas.'
+            ja_JP: 'Sunt odit tempore.'
+            ru_RU: 'Optio qui minus.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_96:
+        type: pim_catalog_boolean
+        group: manufacturing
+        labels:
+            de_DE: 'Quos aspernatur quo.'
+            en_US: 'Nostrum temporibus veritatis.'
+            es_ES: 'Et et.'
+            fr_FR: 'Sed autem.'
+            it_IT: 'Magni id.'
+            ja_JP: 'Unde ea consequatur.'
+            ru_RU: 'Occaecati in nobis.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+    attr_97:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Quis deserunt.'
+            en_US: 'Beatae eius.'
+            es_ES: 'Perferendis et.'
+            fr_FR: 'Nulla est.'
+            it_IT: 'Magni enim.'
+            ja_JP: 'Alias non.'
+            ru_RU: 'Eos eligendi sed.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_98:
+        type: pim_catalog_multiselect
+        group: marketing
+        labels:
+            de_DE: 'Alias distinctio asperiores.'
+            en_US: 'Velit quia nisi.'
+            es_ES: 'Ut perferendis atque.'
+            fr_FR: 'Debitis tempora nostrum.'
+            it_IT: 'Perspiciatis sed.'
+            ja_JP: 'Tenetur excepturi.'
+            ru_RU: 'Odio dolor.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_99:
+        type: pim_catalog_text
+        group: other
+        labels:
+            de_DE: 'Aut autem.'
+            en_US: 'Aut rerum non.'
+            es_ES: 'Ut quasi ut.'
+            fr_FR: 'A cupiditate.'
+            it_IT: 'Qui distinctio fugit.'
+            ja_JP: 'Voluptas quidem.'
+            ru_RU: 'Autem illum ullam.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+    attr_100:
+        type: pim_catalog_simpleselect
+        group: media
+        labels:
+            de_DE: 'Repellendus ut dolor.'
+            en_US: 'Est aut.'
+            es_ES: 'Consequatur consequatur.'
+            fr_FR: 'Qui in ex.'
+            it_IT: 'Provident perspiciatis molestias.'
+            ja_JP: 'Enim eius.'
+            ru_RU: 'Rerum itaque.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+    attr_101:
+        type: pim_catalog_metric
+        group: color
+        labels:
+            de_DE: 'Quidem quaerat.'
+            en_US: 'Voluptatem sit libero.'
+            es_ES: 'Perspiciatis ea.'
+            fr_FR: 'Fugit suscipit perferendis.'
+            it_IT: 'In et.'
+            ja_JP: 'Corrupti quo.'
+            ru_RU: 'Quibusdam et.'
+        sortOrder: 5
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_102:
+        type: pim_catalog_textarea
+        group: color
+        labels:
+            de_DE: 'Omnis porro eveniet.'
+            en_US: 'Ratione eius.'
+            es_ES: 'Modi voluptate aliquam.'
+            fr_FR: 'Voluptatibus sit quae.'
+            it_IT: 'Quidem et sed.'
+            ja_JP: 'Consectetur iusto iusto.'
+            ru_RU: 'Cupiditate rerum.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_103:
+        type: pim_catalog_simpleselect
+        group: design
+        labels:
+            de_DE: 'Ab distinctio est.'
+            en_US: 'Quia provident.'
+            es_ES: 'Commodi sit neque.'
+            fr_FR: 'Voluptatem quis.'
+            it_IT: 'Sed minima dolores.'
+            ja_JP: 'Nihil voluptas vel.'
+            ru_RU: 'Aut modi.'
+        sortOrder: 1
+        localizable: false
+        scopable: true
+    attr_104:
+        type: pim_catalog_file
+        group: color
+        labels:
+            de_DE: 'Ut facilis.'
+            en_US: 'Ratione aliquid.'
+            es_ES: 'Odit iure.'
+            fr_FR: 'Qui libero beatae.'
+            it_IT: 'Dicta fugiat aut.'
+            ja_JP: 'Eveniet laborum autem.'
+            ru_RU: 'Dolore magni neque.'
+        sortOrder: 3
+        localizable: false
+        scopable: false
+        allowedExtensions: 'png,pdf'
+    attr_105:
+        type: pim_catalog_price_collection
+        group: color
+        labels:
+            de_DE: 'Est dicta.'
+            en_US: 'Est architecto aperiam.'
+            es_ES: 'Vel sequi.'
+            fr_FR: 'Tenetur veniam minima.'
+            it_IT: 'Alias delectus tempora.'
+            ja_JP: 'Ad minima.'
+            ru_RU: 'Provident est aut.'
+        sortOrder: 7
+        localizable: false
+        scopable: false
+    attr_106:
+        type: pim_catalog_price_collection
+        group: color
+        labels:
+            de_DE: 'Saepe beatae.'
+            en_US: 'Optio aut facilis.'
+            es_ES: 'Cum ut.'
+            fr_FR: 'Quidem qui.'
+            it_IT: 'Et molestiae.'
+            ja_JP: 'Quas consequatur.'
+            ru_RU: 'Perspiciatis ut quia.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_107:
+        type: pim_catalog_multiselect
+        group: other
+        labels:
+            de_DE: 'Qui quo.'
+            en_US: 'Molestias aliquid cumque.'
+            es_ES: 'Sapiente architecto.'
+            fr_FR: 'Perferendis fugit.'
+            it_IT: 'Dolore quo.'
+            ja_JP: 'Odit qui.'
+            ru_RU: 'Ad sunt placeat.'
+        sortOrder: 8
+        localizable: true
+        scopable: true
+    attr_108:
+        type: pim_catalog_multiselect
+        group: media
+        labels:
+            de_DE: 'Aspernatur atque.'
+            en_US: 'Voluptatem assumenda facere.'
+            es_ES: 'Quae delectus molestiae.'
+            fr_FR: 'Veniam voluptatem ad.'
+            it_IT: 'Nostrum repudiandae.'
+            ja_JP: 'Laudantium omnis reiciendis.'
+            ru_RU: 'Praesentium voluptas.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_109:
+        type: pim_catalog_boolean
+        group: media
+        labels:
+            de_DE: 'In vel voluptates.'
+            en_US: 'Sunt ea.'
+            es_ES: 'Laboriosam dicta.'
+            fr_FR: 'Eaque natus.'
+            it_IT: 'Quia dolorem laboriosam.'
+            ja_JP: 'Magni ullam labore.'
+            ru_RU: 'Et ad.'
+        sortOrder: 9
+        localizable: true
+        scopable: false
+    attr_110:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Laboriosam maxime.'
+            en_US: 'Deleniti delectus.'
+            es_ES: 'Incidunt modi doloremque.'
+            fr_FR: 'Repellat doloremque quo.'
+            it_IT: 'Sit mollitia.'
+            ja_JP: 'Quam odit.'
+            ru_RU: 'Beatae nam ratione.'
+        sortOrder: 3
+        localizable: true
+        scopable: false
+    attr_111:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Consequatur atque.'
+            en_US: 'Voluptas facere rem.'
+            es_ES: 'Qui enim quidem.'
+            fr_FR: 'Architecto ut.'
+            it_IT: 'Nesciunt beatae qui.'
+            ja_JP: 'Sed minima.'
+            ru_RU: 'Impedit et.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+        allowedExtensions: 'png,pdf'
+    attr_112:
+        type: pim_catalog_price_collection
+        group: other
+        labels:
+            de_DE: 'Delectus et perferendis.'
+            en_US: 'Quas atque.'
+            es_ES: 'Aliquid iusto.'
+            fr_FR: 'Minima vel.'
+            it_IT: 'Nam non.'
+            ja_JP: 'Dolore nisi dolor.'
+            ru_RU: 'Ut praesentium.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_113:
+        type: pim_catalog_boolean
+        group: manufacturing
+        labels:
+            de_DE: 'Exercitationem eligendi velit.'
+            en_US: 'Est omnis nihil.'
+            es_ES: 'Ea id eveniet.'
+            fr_FR: 'Maiores deleniti.'
+            it_IT: 'Laudantium sapiente at.'
+            ja_JP: 'Aut voluptatem.'
+            ru_RU: 'Placeat distinctio.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_114:
+        type: pim_catalog_textarea
+        group: marketing
+        labels:
+            de_DE: 'Qui omnis repudiandae.'
+            en_US: 'Odio tenetur.'
+            es_ES: 'Consequatur quas ut.'
+            fr_FR: 'Iure veritatis.'
+            it_IT: 'In sapiente.'
+            ja_JP: 'Ut debitis qui.'
+            ru_RU: 'Quia qui maxime.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_115:
+        type: pim_catalog_file
+        group: color
+        labels:
+            de_DE: 'Id consectetur voluptatibus.'
+            en_US: 'A quam eos.'
+            es_ES: 'Nostrum corporis quia.'
+            fr_FR: 'Ab architecto suscipit.'
+            it_IT: 'Dicta laborum sit.'
+            ja_JP: 'Illum voluptatem.'
+            ru_RU: 'Ut labore.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_116:
+        type: pim_catalog_textarea
+        group: size
+        labels:
+            de_DE: 'Dolores vel.'
+            en_US: 'Dolorem quibusdam quasi.'
+            es_ES: 'Est sit.'
+            fr_FR: 'Fugit quaerat.'
+            it_IT: 'Aperiam quia qui.'
+            ja_JP: 'Eaque voluptatum ab.'
+            ru_RU: 'A optio.'
+        sortOrder: 4
+        localizable: false
+        scopable: true
+    attr_117:
+        type: pim_catalog_text
+        group: media
+        labels:
+            de_DE: 'Commodi ipsa nihil.'
+            en_US: 'Itaque illum omnis.'
+            es_ES: 'Harum ut.'
+            fr_FR: 'Expedita molestiae voluptatibus.'
+            it_IT: 'Nam laudantium id.'
+            ja_JP: 'Voluptatem qui.'
+            ru_RU: 'Optio ex dolorum.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+    attr_118:
+        type: pim_catalog_price_collection
+        group: design
+        labels:
+            de_DE: 'Aut quam sunt.'
+            en_US: 'Non et.'
+            es_ES: 'Placeat ipsa qui.'
+            fr_FR: 'Et voluptas.'
+            it_IT: 'Sit consequatur.'
+            ja_JP: 'Nihil non.'
+            ru_RU: 'Ut rerum.'
+        sortOrder: 9
+        localizable: true
+        scopable: false
+    attr_119:
+        type: pim_catalog_multiselect
+        group: color
+        labels:
+            de_DE: 'Et vitae.'
+            en_US: 'Inventore hic consequatur.'
+            es_ES: 'Dolorem voluptatem.'
+            fr_FR: 'Quo quia.'
+            it_IT: 'Provident ratione voluptatum.'
+            ja_JP: 'Enim voluptatibus.'
+            ru_RU: 'Architecto possimus illo.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+    attr_120:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Dicta nihil.'
+            en_US: 'Quis et.'
+            es_ES: 'Quaerat magnam.'
+            fr_FR: 'Eos earum.'
+            it_IT: 'Nisi error sit.'
+            ja_JP: 'Unde molestiae dolores.'
+            ru_RU: 'Voluptatem blanditiis placeat.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_121:
+        type: pim_catalog_price_collection
+        group: size
+        labels:
+            de_DE: 'Consequuntur ex commodi.'
+            en_US: 'Illo nulla omnis.'
+            es_ES: 'Error porro facere.'
+            fr_FR: 'Non quos.'
+            it_IT: 'Ut aperiam.'
+            ja_JP: 'Laudantium quis sed.'
+            ru_RU: 'Voluptatum repudiandae.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+    attr_122:
+        type: pim_catalog_textarea
+        group: other
+        labels:
+            de_DE: 'Magnam fuga non.'
+            en_US: 'Aut in.'
+            es_ES: 'Praesentium eveniet fuga.'
+            fr_FR: 'Dicta omnis ut.'
+            it_IT: 'Id necessitatibus.'
+            ja_JP: 'Neque accusamus quos.'
+            ru_RU: 'Doloremque mollitia ratione.'
+        sortOrder: 8
+        localizable: false
+        scopable: true
+    attr_123:
+        type: pim_catalog_date
+        group: size
+        labels:
+            de_DE: 'Minima omnis.'
+            en_US: 'Eligendi vel nobis.'
+            es_ES: 'Illum voluptas aliquid.'
+            fr_FR: 'Aspernatur cum deleniti.'
+            it_IT: 'Eum corporis.'
+            ja_JP: 'Accusamus dignissimos.'
+            ru_RU: 'Veniam cumque a.'
+        sortOrder: 4
+        localizable: true
+        scopable: false
+    attr_124:
+        type: pim_catalog_simpleselect
+        group: other
+        labels:
+            de_DE: 'Est asperiores.'
+            en_US: 'Et tenetur molestiae.'
+            es_ES: 'Rerum et.'
+            fr_FR: 'Incidunt qui non.'
+            it_IT: 'Qui molestiae.'
+            ja_JP: 'Quia voluptatem.'
+            ru_RU: 'Deleniti natus assumenda.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_125:
+        type: pim_catalog_number
+        group: size
+        labels:
+            de_DE: 'Ullam odit repellat.'
+            en_US: 'Itaque sit.'
+            es_ES: 'Nulla accusamus repellat.'
+            fr_FR: 'Odio saepe sit.'
+            it_IT: 'Esse quia ad.'
+            ja_JP: 'Corrupti perspiciatis deserunt.'
+            ru_RU: 'Rerum animi.'
+        sortOrder: 9
+        localizable: false
+        scopable: true
+    attr_126:
+        type: pim_catalog_file
+        group: size
+        labels:
+            de_DE: 'Quo ea.'
+            en_US: 'Aliquam eveniet.'
+            es_ES: 'Dolorem dolores est.'
+            fr_FR: 'Voluptatibus eos.'
+            it_IT: 'Culpa totam.'
+            ja_JP: 'Reiciendis nesciunt odio.'
+            ru_RU: 'Cupiditate in.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_127:
+        type: pim_catalog_multiselect
+        group: design
+        labels:
+            de_DE: 'Est tenetur reiciendis.'
+            en_US: 'Velit numquam a.'
+            es_ES: 'Non tenetur placeat.'
+            fr_FR: 'Omnis ea.'
+            it_IT: 'Voluptatem voluptas.'
+            ja_JP: 'Fugit voluptas.'
+            ru_RU: 'Placeat nisi quia.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+    attr_128:
+        type: pim_catalog_boolean
+        group: other
+        labels:
+            de_DE: 'Unde neque omnis.'
+            en_US: 'Rerum incidunt veritatis.'
+            es_ES: 'Et suscipit.'
+            fr_FR: 'Dolore labore.'
+            it_IT: 'Voluptatibus earum.'
+            ja_JP: 'Minima dolor ducimus.'
+            ru_RU: 'Non consequatur.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+    attr_129:
+        type: pim_catalog_boolean
+        group: marketing
+        labels:
+            de_DE: 'Sunt numquam.'
+            en_US: 'Labore qui eius.'
+            es_ES: 'Rerum voluptatum.'
+            fr_FR: 'Rerum at perspiciatis.'
+            it_IT: 'Eveniet laborum.'
+            ja_JP: 'Nulla voluptatibus.'
+            ru_RU: 'Accusantium voluptatem.'
+        sortOrder: 3
+        localizable: true
+        scopable: false
+    attr_130:
+        type: pim_catalog_price_collection
+        group: technical
+        labels:
+            de_DE: 'Libero molestias qui.'
+            en_US: 'Corporis neque qui.'
+            es_ES: 'Qui iste.'
+            fr_FR: 'Omnis cupiditate error.'
+            it_IT: 'Molestiae quo.'
+            ja_JP: 'Distinctio est sed.'
+            ru_RU: 'Et voluptatem.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_131:
+        type: pim_catalog_image
+        group: color
+        labels:
+            de_DE: 'Voluptas est.'
+            en_US: 'Odio saepe.'
+            es_ES: 'Officiis repellendus.'
+            fr_FR: 'Perspiciatis eveniet nesciunt.'
+            it_IT: 'Nobis et rerum.'
+            ja_JP: 'Qui officia.'
+            ru_RU: 'Voluptatem laboriosam facere.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        allowedExtensions: 'pdf,jpg'
+    attr_132:
+        type: pim_catalog_number
+        group: design
+        labels:
+            de_DE: 'Alias eos.'
+            en_US: 'Porro accusantium voluptas.'
+            es_ES: 'Reiciendis suscipit.'
+            fr_FR: 'Corporis earum totam.'
+            it_IT: 'Cum et dolorem.'
+            ja_JP: 'Sit et.'
+            ru_RU: 'Sapiente consequuntur nemo.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_133:
+        type: pim_catalog_number
+        group: other
+        labels:
+            de_DE: 'Qui voluptatem quisquam.'
+            en_US: 'Quia ut.'
+            es_ES: 'Sint velit.'
+            fr_FR: 'Perferendis nam quo.'
+            it_IT: 'Deleniti corrupti.'
+            ja_JP: 'Ipsum odit libero.'
+            ru_RU: 'Ut quia molestias.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+    attr_134:
+        type: pim_catalog_price_collection
+        group: other
+        labels:
+            de_DE: 'Sunt deleniti ut.'
+            en_US: 'Blanditiis recusandae voluptatum.'
+            es_ES: 'Voluptas praesentium.'
+            fr_FR: 'Ut eveniet sit.'
+            it_IT: 'Inventore voluptatem.'
+            ja_JP: 'Accusamus ipsum.'
+            ru_RU: 'Maxime aut delectus.'
+        sortOrder: 5
+        localizable: false
+        scopable: false
+    attr_135:
+        type: pim_catalog_metric
+        group: manufacturing
+        labels:
+            de_DE: 'Mollitia illum.'
+            en_US: 'Similique nesciunt.'
+            es_ES: 'Doloribus nihil.'
+            fr_FR: 'Aut provident magnam.'
+            it_IT: 'Quo pariatur nisi.'
+            ja_JP: 'Recusandae qui quod.'
+            ru_RU: 'Dolorum sunt.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_136:
+        type: pim_catalog_textarea
+        group: size
+        labels:
+            de_DE: 'Ut corporis.'
+            en_US: 'Hic rerum neque.'
+            es_ES: 'Consequatur at harum.'
+            fr_FR: 'Et enim.'
+            it_IT: 'Est libero.'
+            ja_JP: 'Molestiae est eos.'
+            ru_RU: 'Quia et assumenda.'
+        sortOrder: 5
+        localizable: false
+        scopable: false
+    attr_137:
+        type: pim_catalog_textarea
+        group: color
+        labels:
+            de_DE: 'Nesciunt et.'
+            en_US: 'Maiores et occaecati.'
+            es_ES: 'Qui ullam enim.'
+            fr_FR: 'Sint autem.'
+            it_IT: 'Ut dolorem est.'
+            ja_JP: 'Nemo voluptatum iure.'
+            ru_RU: 'Tempore nesciunt et.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_138:
+        type: pim_catalog_multiselect
+        group: design
+        labels:
+            de_DE: 'Nesciunt ea.'
+            en_US: 'Corrupti amet voluptas.'
+            es_ES: 'Animi voluptatem enim.'
+            fr_FR: 'Debitis minus.'
+            it_IT: 'Alias corporis illum.'
+            ja_JP: 'Adipisci ipsam.'
+            ru_RU: 'Deleniti sed voluptate.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+    attr_139:
+        type: pim_catalog_price_collection
+        group: size
+        labels:
+            de_DE: 'Animi incidunt.'
+            en_US: 'Molestiae aut.'
+            es_ES: 'Excepturi harum asperiores.'
+            fr_FR: 'Eligendi et voluptates.'
+            it_IT: 'Laudantium delectus.'
+            ja_JP: 'Consequuntur est rerum.'
+            ru_RU: 'Voluptas harum.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+    attr_140:
+        type: pim_catalog_image
+        group: other
+        labels:
+            de_DE: 'Rerum autem.'
+            en_US: 'Consequatur officia nostrum.'
+            es_ES: 'Qui facilis.'
+            fr_FR: 'Et ut.'
+            it_IT: 'Quibusdam sed doloribus.'
+            ja_JP: 'Dolores ex.'
+            ru_RU: 'Est atque.'
+        sortOrder: 4
+        localizable: true
+        scopable: true
+        allowedExtensions: 'png,jpg'
+    attr_141:
+        type: pim_catalog_boolean
+        group: design
+        labels:
+            de_DE: 'Vel corporis.'
+            en_US: 'Est corporis.'
+            es_ES: 'Nihil ipsam.'
+            fr_FR: 'Quo non alias.'
+            it_IT: 'Ea quo.'
+            ja_JP: 'Sint mollitia.'
+            ru_RU: 'Atque voluptas.'
+        sortOrder: 2
+        localizable: false
+        scopable: false
+    attr_142:
+        type: pim_catalog_date
+        group: size
+        labels:
+            de_DE: 'Consequatur ut nam.'
+            en_US: 'Id reprehenderit.'
+            es_ES: 'Corrupti molestiae modi.'
+            fr_FR: 'Voluptate nisi ut.'
+            it_IT: 'Et sint.'
+            ja_JP: 'Aliquid nam dolor.'
+            ru_RU: 'Eveniet eum voluptatem.'
+        sortOrder: 5
+        localizable: true
+        scopable: true
+    attr_143:
+        type: pim_catalog_number
+        group: design
+        labels:
+            de_DE: 'Fugiat sit et.'
+            en_US: 'Modi ipsum.'
+            es_ES: 'Ut quasi doloribus.'
+            fr_FR: 'Aut ut et.'
+            it_IT: 'Deserunt et adipisci.'
+            ja_JP: 'Odio aut itaque.'
+            ru_RU: 'Ut ut.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+    attr_144:
+        type: pim_catalog_boolean
+        group: color
+        labels:
+            de_DE: 'Vel excepturi consectetur.'
+            en_US: 'Temporibus cum.'
+            es_ES: 'Quisquam odio.'
+            fr_FR: 'Modi ex veniam.'
+            it_IT: 'Quod ad quasi.'
+            ja_JP: 'Vero explicabo voluptatibus.'
+            ru_RU: 'Earum eos.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+    attr_145:
+        type: pim_catalog_multiselect
+        group: design
+        labels:
+            de_DE: 'Et laboriosam.'
+            en_US: 'Molestias dolores.'
+            es_ES: 'Laboriosam voluptatum voluptas.'
+            fr_FR: 'Sed nulla.'
+            it_IT: 'Modi aut placeat.'
+            ja_JP: 'Quibusdam officiis aperiam.'
+            ru_RU: 'Consequatur dolorem quas.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+    attr_146:
+        type: pim_catalog_number
+        group: design
+        labels:
+            de_DE: 'Ut qui delectus.'
+            en_US: 'Consequatur iure.'
+            es_ES: 'Fugiat voluptates quod.'
+            fr_FR: 'Saepe totam reiciendis.'
+            it_IT: 'Laboriosam tempora aut.'
+            ja_JP: 'Est molestiae ut.'
+            ru_RU: 'Et consequatur distinctio.'
+        sortOrder: 3
+        localizable: false
+        scopable: false
+    attr_147:
+        type: pim_catalog_price_collection
+        group: marketing
+        labels:
+            de_DE: 'Natus unde.'
+            en_US: 'Expedita autem voluptatem.'
+            es_ES: 'Repellat voluptatem debitis.'
+            fr_FR: 'Inventore exercitationem dolorem.'
+            it_IT: 'Pariatur expedita aut.'
+            ja_JP: 'Commodi alias.'
+            ru_RU: 'In facilis.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_148:
+        type: pim_catalog_image
+        group: color
+        labels:
+            de_DE: 'Atque sint.'
+            en_US: 'Quis aut.'
+            es_ES: 'Facilis dignissimos.'
+            fr_FR: 'Sint nesciunt veniam.'
+            it_IT: 'Nostrum odit voluptas.'
+            ja_JP: 'Totam deleniti eum.'
+            ru_RU: 'Ratione et laboriosam.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,pdf'
+    attr_149:
+        type: pim_catalog_date
+        group: manufacturing
+        labels:
+            de_DE: 'Nemo beatae tempore.'
+            en_US: 'Vitae minus.'
+            es_ES: 'Et laboriosam maiores.'
+            fr_FR: 'Esse est.'
+            it_IT: 'Nihil quis.'
+            ja_JP: 'At quod.'
+            ru_RU: 'Voluptatem laudantium adipisci.'
+        sortOrder: 8
+        localizable: false
+        scopable: false
+    attr_150:
+        type: pim_catalog_boolean
+        group: design
+        labels:
+            de_DE: 'Ipsa officia.'
+            en_US: 'Quia dicta.'
+            es_ES: 'Perferendis rerum rem.'
+            fr_FR: 'Consequuntur numquam.'
+            it_IT: 'Beatae numquam.'
+            ja_JP: 'Est impedit natus.'
+            ru_RU: 'Cum accusamus voluptatem.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+    attr_151:
+        type: pim_catalog_metric
+        group: marketing
+        labels:
+            de_DE: 'Maiores sunt.'
+            en_US: 'Eaque culpa quia.'
+            es_ES: 'Aliquid dolorem.'
+            fr_FR: 'Qui reiciendis.'
+            it_IT: 'Unde unde.'
+            ja_JP: 'At nobis eligendi.'
+            ru_RU: 'Necessitatibus sint modi.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_152:
+        type: pim_catalog_textarea
+        group: color
+        labels:
+            de_DE: 'Corrupti et.'
+            en_US: 'Quod sapiente.'
+            es_ES: 'Quidem aut sint.'
+            fr_FR: 'Expedita et voluptas.'
+            it_IT: 'Nesciunt ex sit.'
+            ja_JP: 'Error quam ut.'
+            ru_RU: 'Incidunt dolor aperiam.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_153:
+        type: pim_catalog_file
+        group: other
+        labels:
+            de_DE: 'Sit ut quam.'
+            en_US: 'Aut tempore eos.'
+            es_ES: 'Ut excepturi enim.'
+            fr_FR: 'Velit impedit.'
+            it_IT: 'Ut eaque cum.'
+            ja_JP: 'Voluptas animi.'
+            ru_RU: 'Non vero.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+        allowedExtensions: 'png,jpg'
+    attr_154:
+        type: pim_catalog_text
+        group: design
+        labels:
+            de_DE: 'Libero culpa ex.'
+            en_US: 'Dignissimos nam.'
+            es_ES: 'Amet fugiat repellat.'
+            fr_FR: 'Ipsam molestiae.'
+            it_IT: 'Itaque voluptas.'
+            ja_JP: 'Et omnis.'
+            ru_RU: 'Earum veniam impedit.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+    attr_155:
+        type: pim_catalog_file
+        group: color
+        labels:
+            de_DE: 'Quia sint.'
+            en_US: 'Consequatur et magni.'
+            es_ES: 'Quo dolorem.'
+            fr_FR: 'Ut ex.'
+            it_IT: 'Incidunt voluptatum.'
+            ja_JP: 'Dignissimos harum.'
+            ru_RU: 'Non cumque.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_156:
+        type: pim_catalog_simpleselect
+        group: media
+        labels:
+            de_DE: 'Qui eum enim.'
+            en_US: 'Dolorum harum.'
+            es_ES: 'Culpa omnis sint.'
+            fr_FR: 'Asperiores eos nihil.'
+            it_IT: 'Voluptatem laboriosam.'
+            ja_JP: 'Doloribus est.'
+            ru_RU: 'Similique atque.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+    attr_157:
+        type: pim_catalog_text
+        group: technical
+        labels:
+            de_DE: 'Soluta cupiditate nisi.'
+            en_US: 'Sapiente nesciunt.'
+            es_ES: 'Dolorum dolor nihil.'
+            fr_FR: 'Maiores eius illo.'
+            it_IT: 'Ducimus laudantium est.'
+            ja_JP: 'Totam illum.'
+            ru_RU: 'Qui iusto.'
+        sortOrder: 8
+        localizable: false
+        scopable: true
+    attr_158:
+        type: pim_catalog_price_collection
+        group: size
+        labels:
+            de_DE: 'Molestiae quia.'
+            en_US: 'Quas optio odit.'
+            es_ES: 'Non vel optio.'
+            fr_FR: 'Sunt nam voluptate.'
+            it_IT: 'Occaecati explicabo dolorem.'
+            ja_JP: 'Deserunt aliquam.'
+            ru_RU: 'Velit delectus.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+    attr_159:
+        type: pim_catalog_textarea
+        group: technical
+        labels:
+            de_DE: 'Deleniti aut.'
+            en_US: 'Commodi alias recusandae.'
+            es_ES: 'Id iure sunt.'
+            fr_FR: 'Repudiandae enim.'
+            it_IT: 'Repellendus consequatur vitae.'
+            ja_JP: 'Rem earum quia.'
+            ru_RU: 'Reprehenderit sunt quas.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+    attr_160:
+        type: pim_catalog_date
+        group: design
+        labels:
+            de_DE: 'Dolor enim necessitatibus.'
+            en_US: 'Quos qui.'
+            es_ES: 'Exercitationem et.'
+            fr_FR: 'Officiis unde.'
+            it_IT: 'Tenetur iusto inventore.'
+            ja_JP: 'Dolore qui.'
+            ru_RU: 'Quia qui.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_161:
+        type: pim_catalog_textarea
+        group: design
+        labels:
+            de_DE: 'Nobis voluptate.'
+            en_US: 'Rem iusto.'
+            es_ES: 'Ipsa modi voluptas.'
+            fr_FR: 'In rem perferendis.'
+            it_IT: 'Aut veniam ducimus.'
+            ja_JP: 'Consequatur rerum.'
+            ru_RU: 'Explicabo adipisci ut.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_162:
+        type: pim_catalog_date
+        group: design
+        labels:
+            de_DE: 'Impedit quidem.'
+            en_US: 'Velit quia laudantium.'
+            es_ES: 'Officia et est.'
+            fr_FR: 'Tempore soluta autem.'
+            it_IT: 'Aut sint enim.'
+            ja_JP: 'Debitis voluptates.'
+            ru_RU: 'Quis deserunt.'
+        sortOrder: 8
+        localizable: false
+        scopable: false
+    attr_163:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Corrupti facilis tempore.'
+            en_US: 'Odit a.'
+            es_ES: 'Voluptatibus molestias.'
+            fr_FR: 'Itaque sed nam.'
+            it_IT: 'Deleniti et.'
+            ja_JP: 'Fugit tenetur consectetur.'
+            ru_RU: 'Non animi.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+    attr_164:
+        type: pim_catalog_file
+        group: design
+        labels:
+            de_DE: 'Natus quasi.'
+            en_US: 'Nesciunt laborum.'
+            es_ES: 'Enim et.'
+            fr_FR: 'Quisquam eos ut.'
+            it_IT: 'Numquam corrupti et.'
+            ja_JP: 'Velit rerum expedita.'
+            ru_RU: 'Qui atque.'
+        sortOrder: 6
+        localizable: true
+        scopable: false
+        allowedExtensions: 'jpg,png'
+    attr_165:
+        type: pim_catalog_price_collection
+        group: manufacturing
+        labels:
+            de_DE: 'Et aut.'
+            en_US: 'Ipsa natus.'
+            es_ES: 'Recusandae eum corporis.'
+            fr_FR: 'Et quia.'
+            it_IT: 'Atque laborum.'
+            ja_JP: 'Rem reprehenderit est.'
+            ru_RU: 'Non nihil.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_166:
+        type: pim_catalog_image
+        group: size
+        labels:
+            de_DE: 'Consequuntur commodi.'
+            en_US: 'Aperiam est.'
+            es_ES: 'Dolorem cupiditate.'
+            fr_FR: 'Tenetur laborum.'
+            it_IT: 'Est voluptatem ut.'
+            ja_JP: 'Corrupti nihil.'
+            ru_RU: 'Illum est modi.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+        allowedExtensions: 'png,pdf'
+    attr_167:
+        type: pim_catalog_image
+        group: other
+        labels:
+            de_DE: 'Cupiditate quidem.'
+            en_US: 'Temporibus qui.'
+            es_ES: 'Consectetur dolores.'
+            fr_FR: 'Ipsa labore voluptatibus.'
+            it_IT: 'Saepe aliquid accusantium.'
+            ja_JP: 'Facere excepturi quis.'
+            ru_RU: 'Possimus et qui.'
+        sortOrder: 8
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_168:
+        type: pim_catalog_metric
+        group: manufacturing
+        labels:
+            de_DE: 'Id quis.'
+            en_US: 'Dolor consequatur.'
+            es_ES: 'Reiciendis laborum.'
+            fr_FR: 'Illum alias dolores.'
+            it_IT: 'Ea inventore suscipit.'
+            ja_JP: 'Natus quod sequi.'
+            ru_RU: 'Autem maiores et.'
+        sortOrder: 9
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_169:
+        type: pim_catalog_number
+        group: other
+        labels:
+            de_DE: 'Aliquam quo ut.'
+            en_US: 'Vitae sit.'
+            es_ES: 'Fuga eius illo.'
+            fr_FR: 'Explicabo sunt ducimus.'
+            it_IT: 'Aliquid magni ipsa.'
+            ja_JP: 'Voluptatibus asperiores.'
+            ru_RU: 'Officiis qui.'
+        sortOrder: 5
+        localizable: true
+        scopable: true
+    attr_170:
+        type: pim_catalog_boolean
+        group: media
+        labels:
+            de_DE: 'Et eos.'
+            en_US: 'Cumque quos et.'
+            es_ES: 'Magnam eveniet.'
+            fr_FR: 'Similique facilis.'
+            it_IT: 'Voluptas corrupti quos.'
+            ja_JP: 'Quisquam repellendus.'
+            ru_RU: 'Quos expedita quod.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+    attr_171:
+        type: pim_catalog_price_collection
+        group: design
+        labels:
+            de_DE: 'Voluptatem fuga.'
+            en_US: 'Praesentium vero eveniet.'
+            es_ES: 'Laudantium ut expedita.'
+            fr_FR: 'Velit quas.'
+            it_IT: 'Consequatur similique.'
+            ja_JP: 'Blanditiis eligendi.'
+            ru_RU: 'Voluptatum expedita alias.'
+        sortOrder: 9
+        localizable: true
+        scopable: false
+    attr_172:
+        type: pim_catalog_multiselect
+        group: media
+        labels:
+            de_DE: 'Similique ratione.'
+            en_US: 'Vitae blanditiis.'
+            es_ES: 'Ab nobis.'
+            fr_FR: 'Fuga qui.'
+            it_IT: 'Magni porro id.'
+            ja_JP: 'Commodi ea.'
+            ru_RU: 'In vitae.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_173:
+        type: pim_catalog_date
+        group: manufacturing
+        labels:
+            de_DE: 'Et inventore tempore.'
+            en_US: 'Occaecati ut.'
+            es_ES: 'A et.'
+            fr_FR: 'Tempore accusamus.'
+            it_IT: 'Facilis qui facilis.'
+            ja_JP: 'Omnis non.'
+            ru_RU: 'Nemo qui voluptas.'
+        sortOrder: 6
+        localizable: true
+        scopable: false
+    attr_174:
+        type: pim_catalog_boolean
+        group: other
+        labels:
+            de_DE: 'Totam explicabo.'
+            en_US: 'Qui vero quia.'
+            es_ES: 'Eveniet inventore sequi.'
+            fr_FR: 'Veritatis ex sint.'
+            it_IT: 'Quidem harum.'
+            ja_JP: 'Quod eum.'
+            ru_RU: 'Ab odio.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+    attr_175:
+        type: pim_catalog_simpleselect
+        group: other
+        labels:
+            de_DE: 'Consequatur ipsam.'
+            en_US: 'Minima eligendi.'
+            es_ES: 'Aspernatur veritatis eos.'
+            fr_FR: 'Cumque quidem ipsum.'
+            it_IT: 'Facilis quis.'
+            ja_JP: 'Omnis deleniti corrupti.'
+            ru_RU: 'Quia corporis.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_176:
+        type: pim_catalog_date
+        group: other
+        labels:
+            de_DE: 'Veniam nesciunt fugit.'
+            en_US: 'Possimus voluptatem.'
+            es_ES: 'Ducimus aliquid nihil.'
+            fr_FR: 'Amet rerum modi.'
+            it_IT: 'Voluptatem debitis.'
+            ja_JP: 'Atque cumque.'
+            ru_RU: 'Ex beatae quae.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_177:
+        type: pim_catalog_image
+        group: technical
+        labels:
+            de_DE: 'Voluptatem quos cumque.'
+            en_US: 'Natus ut voluptatibus.'
+            es_ES: 'Sit ad ipsam.'
+            fr_FR: 'Ad nam excepturi.'
+            it_IT: 'Odit rem.'
+            ja_JP: 'Id fugiat itaque.'
+            ru_RU: 'Rerum aut.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+        allowedExtensions: 'pdf,jpg'
+    attr_178:
+        type: pim_catalog_metric
+        group: size
+        labels:
+            de_DE: 'Sed illo.'
+            en_US: 'Nobis esse.'
+            es_ES: 'Tempora delectus at.'
+            fr_FR: 'Assumenda amet aut.'
+            it_IT: 'Odio et velit.'
+            ja_JP: 'Aut quo.'
+            ru_RU: 'Tenetur rerum nisi.'
+        sortOrder: 1
+        localizable: false
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_179:
+        type: pim_catalog_textarea
+        group: color
+        labels:
+            de_DE: 'Dolores quaerat nobis.'
+            en_US: 'Et sint.'
+            es_ES: 'Ullam nihil.'
+            fr_FR: 'Nesciunt a.'
+            it_IT: 'Eos dolor culpa.'
+            ja_JP: 'Quas nihil.'
+            ru_RU: 'Similique nulla.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_180:
+        type: pim_catalog_date
+        group: technical
+        labels:
+            de_DE: 'Accusamus laudantium ullam.'
+            en_US: 'Dolores sint dolorem.'
+            es_ES: 'Culpa dolorem.'
+            fr_FR: 'Quas minima.'
+            it_IT: 'Quo architecto.'
+            ja_JP: 'Quam aut.'
+            ru_RU: 'Possimus dolore aut.'
+        sortOrder: 6
+        localizable: false
+        scopable: false
+    attr_181:
+        type: pim_catalog_file
+        group: color
+        labels:
+            de_DE: 'Quis est quia.'
+            en_US: 'Dolore quasi.'
+            es_ES: 'Magni ad.'
+            fr_FR: 'Enim impedit molestiae.'
+            it_IT: 'Beatae reprehenderit.'
+            ja_JP: 'Delectus in.'
+            ru_RU: 'Omnis qui eum.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        allowedExtensions: 'pdf,jpg'
+    attr_182:
+        type: pim_catalog_multiselect
+        group: media
+        labels:
+            de_DE: 'Odit rerum inventore.'
+            en_US: 'Reprehenderit minus.'
+            es_ES: 'Consequatur voluptatem.'
+            fr_FR: 'Minima in.'
+            it_IT: 'Et possimus.'
+            ja_JP: 'Pariatur et enim.'
+            ru_RU: 'Alias et quia.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+    attr_183:
+        type: pim_catalog_metric
+        group: marketing
+        labels:
+            de_DE: 'Nostrum ut.'
+            en_US: 'Recusandae nihil consequuntur.'
+            es_ES: 'Quia neque.'
+            fr_FR: 'Omnis sequi et.'
+            it_IT: 'Id cumque.'
+            ja_JP: 'Optio pariatur.'
+            ru_RU: 'Quia dolores.'
+        sortOrder: 3
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_184:
+        type: pim_catalog_number
+        group: design
+        labels:
+            de_DE: 'Deleniti enim.'
+            en_US: 'Eius similique.'
+            es_ES: 'Voluptate rerum.'
+            fr_FR: 'Voluptate blanditiis quam.'
+            it_IT: 'Libero provident.'
+            ja_JP: 'Laborum eius ut.'
+            ru_RU: 'Deserunt illo.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_185:
+        type: pim_catalog_multiselect
+        group: color
+        labels:
+            de_DE: 'Accusamus voluptas autem.'
+            en_US: 'Autem laboriosam.'
+            es_ES: 'Occaecati deleniti aut.'
+            fr_FR: 'Illum error.'
+            it_IT: 'Sit dolore.'
+            ja_JP: 'Nam rem.'
+            ru_RU: 'Quis est.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+    attr_186:
+        type: pim_catalog_file
+        group: marketing
+        labels:
+            de_DE: 'Minus ipsam.'
+            en_US: 'Ut explicabo quo.'
+            es_ES: 'Facilis aut amet.'
+            fr_FR: 'Mollitia tempore.'
+            it_IT: 'Quia harum.'
+            ja_JP: 'Nihil ut.'
+            ru_RU: 'Veniam voluptatum odio.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_187:
+        type: pim_catalog_metric
+        group: marketing
+        labels:
+            de_DE: 'Dolorem aperiam enim.'
+            en_US: 'Corrupti soluta est.'
+            es_ES: 'Molestiae soluta.'
+            fr_FR: 'Ut et.'
+            it_IT: 'Cumque ut.'
+            ja_JP: 'Dolorem ut.'
+            ru_RU: 'Esse dolor enim.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_188:
+        type: pim_catalog_textarea
+        group: manufacturing
+        labels:
+            de_DE: 'Et repudiandae.'
+            en_US: 'Porro in eum.'
+            es_ES: 'Aperiam animi praesentium.'
+            fr_FR: 'Et rerum magnam.'
+            it_IT: 'Sit quod dolor.'
+            ja_JP: 'Ratione nihil.'
+            ru_RU: 'Accusantium ea.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_189:
+        type: pim_catalog_image
+        group: technical
+        labels:
+            de_DE: 'Animi dolores voluptas.'
+            en_US: 'Expedita quia.'
+            es_ES: 'Nisi qui.'
+            fr_FR: 'Molestiae quia eaque.'
+            it_IT: 'Eos aut beatae.'
+            ja_JP: 'Voluptatem repellat.'
+            ru_RU: 'Voluptatum molestiae.'
+        sortOrder: 7
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,png'
+    attr_190:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Voluptas et.'
+            en_US: 'Voluptatem consequuntur.'
+            es_ES: 'Saepe praesentium earum.'
+            fr_FR: 'Dolore quaerat saepe.'
+            it_IT: 'Dolores quo tempore.'
+            ja_JP: 'Maxime aut magni.'
+            ru_RU: 'Voluptatem vitae cupiditate.'
+        sortOrder: 8
+        localizable: false
+        scopable: false
+    attr_191:
+        type: pim_catalog_multiselect
+        group: other
+        labels:
+            de_DE: 'Est ipsam eius.'
+            en_US: 'Eaque assumenda odit.'
+            es_ES: 'Omnis illo.'
+            fr_FR: 'Nam mollitia doloribus.'
+            it_IT: 'Sed repellat.'
+            ja_JP: 'Et fugit est.'
+            ru_RU: 'Quas molestiae id.'
+        sortOrder: 6
+        localizable: true
+        scopable: false
+    attr_192:
+        type: pim_catalog_multiselect
+        group: size
+        labels:
+            de_DE: 'Sequi qui.'
+            en_US: 'Repudiandae quae.'
+            es_ES: 'Tempore mollitia.'
+            fr_FR: 'Adipisci quo et.'
+            it_IT: 'Quos et.'
+            ja_JP: 'Rerum inventore id.'
+            ru_RU: 'Ratione vero.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+    attr_193:
+        type: pim_catalog_text
+        group: manufacturing
+        labels:
+            de_DE: 'Qui nihil veritatis.'
+            en_US: 'Ullam sed non.'
+            es_ES: 'Ex vel aut.'
+            fr_FR: 'Nisi officia.'
+            it_IT: 'A voluptas iure.'
+            ja_JP: 'Incidunt occaecati perferendis.'
+            ru_RU: 'Non et dignissimos.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+    attr_194:
+        type: pim_catalog_metric
+        group: other
+        labels:
+            de_DE: 'Perferendis suscipit.'
+            en_US: 'Aut iusto sed.'
+            es_ES: 'Harum aliquid molestiae.'
+            fr_FR: 'Nihil libero aut.'
+            it_IT: 'Voluptas nemo.'
+            ja_JP: 'Qui voluptatem.'
+            ru_RU: 'Culpa sint dolor.'
+        sortOrder: 4
+        localizable: false
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_195:
+        type: pim_catalog_image
+        group: size
+        labels:
+            de_DE: 'Voluptatibus quasi nesciunt.'
+            en_US: 'Ipsum adipisci dolore.'
+            es_ES: 'Id corporis.'
+            fr_FR: 'Architecto id molestiae.'
+            it_IT: 'Odit unde.'
+            ja_JP: 'Qui laborum eos.'
+            ru_RU: 'Optio iure.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+        allowedExtensions: 'png,pdf'
+    attr_196:
+        type: pim_catalog_number
+        group: marketing
+        labels:
+            de_DE: 'Eos accusantium.'
+            en_US: 'Corporis ut itaque.'
+            es_ES: 'Incidunt voluptas.'
+            fr_FR: 'Iusto consequatur modi.'
+            it_IT: 'Perferendis recusandae quod.'
+            ja_JP: 'Ut aut tenetur.'
+            ru_RU: 'Nesciunt tempore.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_197:
+        type: pim_catalog_price_collection
+        group: marketing
+        labels:
+            de_DE: 'Et officiis et.'
+            en_US: 'Unde ex deserunt.'
+            es_ES: 'Eum vel.'
+            fr_FR: 'Est rerum eligendi.'
+            it_IT: 'Perferendis soluta.'
+            ja_JP: 'Quia expedita ut.'
+            ru_RU: 'Est ullam.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_198:
+        type: pim_catalog_price_collection
+        group: technical
+        labels:
+            de_DE: 'Nihil sed.'
+            en_US: 'Dolorem dolorem.'
+            es_ES: 'Nihil vitae.'
+            fr_FR: 'Voluptatem fugiat ut.'
+            it_IT: 'Assumenda ea aut.'
+            ja_JP: 'Molestias occaecati quaerat.'
+            ru_RU: 'Eveniet totam.'
+        sortOrder: 4
+        localizable: true
+        scopable: true
+    attr_199:
+        type: pim_catalog_boolean
+        group: size
+        labels:
+            de_DE: 'Culpa odio.'
+            en_US: 'Velit ut accusamus.'
+            es_ES: 'Aut consequatur.'
+            fr_FR: 'Repellendus harum consequatur.'
+            it_IT: 'Non necessitatibus reprehenderit.'
+            ja_JP: 'Ad earum totam.'
+            ru_RU: 'Qui reiciendis aliquam.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_200:
+        type: pim_catalog_file
+        group: design
+        labels:
+            de_DE: 'Sed earum.'
+            en_US: 'Dolorum error.'
+            es_ES: 'Consequatur voluptatem est.'
+            fr_FR: 'Odio necessitatibus.'
+            it_IT: 'Repellat ut.'
+            ja_JP: 'Aut voluptatem est.'
+            ru_RU: 'Eaque accusamus.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_201:
+        type: pim_catalog_textarea
+        group: marketing
+        labels:
+            de_DE: 'Libero reprehenderit pariatur.'
+            en_US: 'Necessitatibus rerum.'
+            es_ES: 'Enim ut.'
+            fr_FR: 'Mollitia quia.'
+            it_IT: 'Quos sequi.'
+            ja_JP: 'Doloremque dolorem sunt.'
+            ru_RU: 'Voluptatibus omnis sed.'
+        sortOrder: 9
+        localizable: true
+        scopable: false
+    attr_202:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Sed qui.'
+            en_US: 'Quas et.'
+            es_ES: 'Earum eius.'
+            fr_FR: 'Ut sint veniam.'
+            it_IT: 'Iure voluptates.'
+            ja_JP: 'Quae molestiae ullam.'
+            ru_RU: 'Sit iste velit.'
+        sortOrder: 6
+        localizable: true
+        scopable: false
+    attr_203:
+        type: pim_catalog_file
+        group: other
+        labels:
+            de_DE: 'Velit ut eveniet.'
+            en_US: 'Non suscipit.'
+            es_ES: 'Voluptates in.'
+            fr_FR: 'Eum aperiam.'
+            it_IT: 'Corporis sunt.'
+            ja_JP: 'In omnis qui.'
+            ru_RU: 'Consequatur blanditiis.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,png'
+    attr_204:
+        type: pim_catalog_image
+        group: size
+        labels:
+            de_DE: 'Nostrum quo.'
+            en_US: 'Modi ut.'
+            es_ES: 'Nostrum fuga.'
+            fr_FR: 'Et et.'
+            it_IT: 'Tempore ad.'
+            ja_JP: 'Dolore dolorum.'
+            ru_RU: 'Placeat blanditiis quia.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+        allowedExtensions: 'png,pdf'
+    attr_205:
+        type: pim_catalog_price_collection
+        group: other
+        labels:
+            de_DE: 'Et dicta.'
+            en_US: 'Quos vitae mollitia.'
+            es_ES: 'Atque autem qui.'
+            fr_FR: 'Saepe nostrum est.'
+            it_IT: 'Facilis modi.'
+            ja_JP: 'Reiciendis provident dolorem.'
+            ru_RU: 'Sit quod.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_206:
+        type: pim_catalog_file
+        group: color
+        labels:
+            de_DE: 'Unde ea voluptates.'
+            en_US: 'Pariatur distinctio.'
+            es_ES: 'Aut enim consequatur.'
+            fr_FR: 'Perspiciatis quia in.'
+            it_IT: 'Harum sint id.'
+            ja_JP: 'Qui eaque.'
+            ru_RU: 'Recusandae asperiores.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_207:
+        type: pim_catalog_image
+        group: other
+        labels:
+            de_DE: 'Quibusdam magnam.'
+            en_US: 'Aut aut tempore.'
+            es_ES: 'Maiores et.'
+            fr_FR: 'Aut sed.'
+            it_IT: 'Id sint.'
+            ja_JP: 'Optio totam.'
+            ru_RU: 'Esse est.'
+        sortOrder: 3
+        localizable: true
+        scopable: false
+        allowedExtensions: 'png,jpg'
+    attr_208:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Voluptatem voluptas et.'
+            en_US: 'Blanditiis quos reiciendis.'
+            es_ES: 'Corrupti repellat reprehenderit.'
+            fr_FR: 'Nesciunt dolores provident.'
+            it_IT: 'Placeat id.'
+            ja_JP: 'Modi at.'
+            ru_RU: 'Vel quis corrupti.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_209:
+        type: pim_catalog_metric
+        group: size
+        labels:
+            de_DE: 'Quisquam ipsam omnis.'
+            en_US: 'Et doloremque.'
+            es_ES: 'Et ullam.'
+            fr_FR: 'At rerum earum.'
+            it_IT: 'Consequatur cum est.'
+            ja_JP: 'Sit soluta sint.'
+            ru_RU: 'Aperiam in.'
+        sortOrder: 9
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_210:
+        type: pim_catalog_multiselect
+        group: marketing
+        labels:
+            de_DE: 'Velit id et.'
+            en_US: 'Possimus error.'
+            es_ES: 'Tempora ut.'
+            fr_FR: 'Modi sunt quia.'
+            it_IT: 'Quo hic vitae.'
+            ja_JP: 'Cupiditate nobis.'
+            ru_RU: 'Voluptas dolores dolore.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+    attr_211:
+        type: pim_catalog_text
+        group: size
+        labels:
+            de_DE: 'Ut officiis.'
+            en_US: 'Quas sed rem.'
+            es_ES: 'Quasi veritatis et.'
+            fr_FR: 'Distinctio aspernatur.'
+            it_IT: 'Ipsam expedita.'
+            ja_JP: 'Quo deserunt doloribus.'
+            ru_RU: 'Ratione nobis.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_212:
+        type: pim_catalog_boolean
+        group: media
+        labels:
+            de_DE: 'Culpa in.'
+            en_US: 'Pariatur rem.'
+            es_ES: 'Eos ut.'
+            fr_FR: 'Quasi incidunt.'
+            it_IT: 'Ut et nihil.'
+            ja_JP: 'Consectetur ut vel.'
+            ru_RU: 'Inventore saepe sunt.'
+        sortOrder: 7
+        localizable: true
+        scopable: true
+    attr_213:
+        type: pim_catalog_multiselect
+        group: media
+        labels:
+            de_DE: 'Natus fugiat.'
+            en_US: 'Autem voluptates.'
+            es_ES: 'Non et.'
+            fr_FR: 'Recusandae similique.'
+            it_IT: 'Voluptatem reprehenderit commodi.'
+            ja_JP: 'Aut saepe.'
+            ru_RU: 'Totam vero.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_214:
+        type: pim_catalog_text
+        group: manufacturing
+        labels:
+            de_DE: 'Iure voluptate minus.'
+            en_US: 'Numquam ea.'
+            es_ES: 'Vitae deleniti.'
+            fr_FR: 'Velit iusto.'
+            it_IT: 'Et magnam rerum.'
+            ja_JP: 'Dicta qui.'
+            ru_RU: 'Esse aut.'
+        sortOrder: 8
+        localizable: false
+        scopable: true
+    attr_215:
+        type: pim_catalog_multiselect
+        group: size
+        labels:
+            de_DE: 'Amet a.'
+            en_US: 'Et et.'
+            es_ES: 'Repellendus vitae.'
+            fr_FR: 'Consequuntur rerum qui.'
+            it_IT: 'Rem voluptatem distinctio.'
+            ja_JP: 'Architecto magnam.'
+            ru_RU: 'Ut sint.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_216:
+        type: pim_catalog_image
+        group: manufacturing
+        labels:
+            de_DE: 'A eos ea.'
+            en_US: 'Aperiam nemo.'
+            es_ES: 'Suscipit dolores non.'
+            fr_FR: 'Rem odit.'
+            it_IT: 'Dolores sit aliquam.'
+            ja_JP: 'Consequatur non voluptatibus.'
+            ru_RU: 'Et doloremque blanditiis.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_217:
+        type: pim_catalog_textarea
+        group: media
+        labels:
+            de_DE: 'Modi eligendi eveniet.'
+            en_US: 'Officia necessitatibus.'
+            es_ES: 'Delectus consectetur.'
+            fr_FR: 'Doloremque tempora vel.'
+            it_IT: 'Consequatur alias.'
+            ja_JP: 'Ipsa nisi in.'
+            ru_RU: 'Voluptatibus tenetur eaque.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_218:
+        type: pim_catalog_image
+        group: color
+        labels:
+            de_DE: 'Officia voluptas.'
+            en_US: 'Nemo sit blanditiis.'
+            es_ES: 'Commodi accusantium qui.'
+            fr_FR: 'Laudantium quas.'
+            it_IT: 'Aut cupiditate.'
+            ja_JP: 'Voluptatibus cumque.'
+            ru_RU: 'Error quae.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,pdf'
+    attr_219:
+        type: pim_catalog_metric
+        group: marketing
+        labels:
+            de_DE: 'Dolorum ea reiciendis.'
+            en_US: 'Enim temporibus.'
+            es_ES: 'Quam aliquam.'
+            fr_FR: 'Voluptatem minima iste.'
+            it_IT: 'Quis dolor ea.'
+            ja_JP: 'Magni vel.'
+            ru_RU: 'Cum quaerat.'
+        sortOrder: 5
+        localizable: false
+        scopable: false
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_220:
+        type: pim_catalog_textarea
+        group: size
+        labels:
+            de_DE: 'Laudantium nisi ea.'
+            en_US: 'Ut molestias.'
+            es_ES: 'Incidunt dicta.'
+            fr_FR: 'Sunt numquam suscipit.'
+            it_IT: 'Eveniet et voluptas.'
+            ja_JP: 'Non laborum.'
+            ru_RU: 'Quibusdam earum fuga.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+    attr_221:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Cupiditate consequatur quo.'
+            en_US: 'Libero iusto fuga.'
+            es_ES: 'Dolores ducimus facere.'
+            fr_FR: 'Ut molestias.'
+            it_IT: 'Qui id dolor.'
+            ja_JP: 'Voluptas natus.'
+            ru_RU: 'Atque expedita debitis.'
+        sortOrder: 1
+        localizable: false
+        scopable: false
+    attr_222:
+        type: pim_catalog_number
+        group: color
+        labels:
+            de_DE: 'Vitae ut.'
+            en_US: 'Et dolores quaerat.'
+            es_ES: 'Quae nulla optio.'
+            fr_FR: 'Vel voluptatum fuga.'
+            it_IT: 'Voluptas sed aut.'
+            ja_JP: 'Consequatur velit.'
+            ru_RU: 'Distinctio consequatur quia.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+    attr_223:
+        type: pim_catalog_price_collection
+        group: design
+        labels:
+            de_DE: 'Repellat eum minus.'
+            en_US: 'Nihil nisi.'
+            es_ES: 'Tempore modi nobis.'
+            fr_FR: 'Omnis et ex.'
+            it_IT: 'Officiis ut corrupti.'
+            ja_JP: 'Blanditiis similique.'
+            ru_RU: 'Et fugit ea.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_224:
+        type: pim_catalog_multiselect
+        group: size
+        labels:
+            de_DE: 'Veritatis vero.'
+            en_US: 'Ut voluptatem ipsum.'
+            es_ES: 'Expedita quasi.'
+            fr_FR: 'Doloremque perferendis voluptas.'
+            it_IT: 'Officiis beatae.'
+            ja_JP: 'Est voluptatem sed.'
+            ru_RU: 'Debitis numquam.'
+        sortOrder: 8
+        localizable: true
+        scopable: true
+    attr_225:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Enim provident molestiae.'
+            en_US: 'Neque consequatur harum.'
+            es_ES: 'Soluta excepturi eos.'
+            fr_FR: 'Quaerat quo modi.'
+            it_IT: 'Aliquid dolorem dignissimos.'
+            ja_JP: 'Ipsa voluptatum alias.'
+            ru_RU: 'Natus praesentium molestias.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+    attr_226:
+        type: pim_catalog_text
+        group: manufacturing
+        labels:
+            de_DE: 'Reiciendis et magnam.'
+            en_US: 'Blanditiis quis et.'
+            es_ES: 'Qui est.'
+            fr_FR: 'Nesciunt in.'
+            it_IT: 'Repellat vero suscipit.'
+            ja_JP: 'Qui incidunt.'
+            ru_RU: 'Quia voluptatem ut.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+    attr_227:
+        type: pim_catalog_multiselect
+        group: color
+        labels:
+            de_DE: 'Sit non.'
+            en_US: 'Aut provident.'
+            es_ES: 'Nesciunt quia.'
+            fr_FR: 'Rerum soluta.'
+            it_IT: 'Error saepe molestiae.'
+            ja_JP: 'Perspiciatis recusandae totam.'
+            ru_RU: 'Esse voluptatem.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_228:
+        type: pim_catalog_number
+        group: size
+        labels:
+            de_DE: 'Et at distinctio.'
+            en_US: 'Iste eos aut.'
+            es_ES: 'Aut totam eos.'
+            fr_FR: 'Eaque et accusamus.'
+            it_IT: 'Perspiciatis sunt.'
+            ja_JP: 'Odio nihil reprehenderit.'
+            ru_RU: 'Sit nulla molestiae.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_229:
+        type: pim_catalog_multiselect
+        group: media
+        labels:
+            de_DE: 'Perferendis nesciunt.'
+            en_US: 'Et voluptatum dolores.'
+            es_ES: 'Est quia id.'
+            fr_FR: 'Eum et.'
+            it_IT: 'Vel blanditiis non.'
+            ja_JP: 'Quo est.'
+            ru_RU: 'Maxime consequuntur possimus.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+    attr_230:
+        type: pim_catalog_simpleselect
+        group: marketing
+        labels:
+            de_DE: 'Quia quos distinctio.'
+            en_US: 'Nihil nulla impedit.'
+            es_ES: 'Quisquam est et.'
+            fr_FR: 'Excepturi dolorem adipisci.'
+            it_IT: 'Accusamus et aliquid.'
+            ja_JP: 'Doloribus tempore.'
+            ru_RU: 'Omnis repudiandae.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_231:
+        type: pim_catalog_text
+        group: media
+        labels:
+            de_DE: 'Adipisci doloremque.'
+            en_US: 'Dolore soluta.'
+            es_ES: 'Inventore quam sit.'
+            fr_FR: 'Reprehenderit nobis ex.'
+            it_IT: 'Ea amet fugit.'
+            ja_JP: 'Aut quia.'
+            ru_RU: 'Consequuntur doloremque error.'
+        sortOrder: 6
+        localizable: true
+        scopable: true
+    attr_232:
+        type: pim_catalog_price_collection
+        group: marketing
+        labels:
+            de_DE: 'Dolor perferendis recusandae.'
+            en_US: 'Facere eos possimus.'
+            es_ES: 'Praesentium expedita.'
+            fr_FR: 'Repellat est et.'
+            it_IT: 'Quia alias voluptatem.'
+            ja_JP: 'Quia qui rerum.'
+            ru_RU: 'Voluptatem omnis.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+    attr_233:
+        type: pim_catalog_text
+        group: size
+        labels:
+            de_DE: 'Eum ab quia.'
+            en_US: 'Sit quam.'
+            es_ES: 'Minus libero.'
+            fr_FR: 'In perferendis et.'
+            it_IT: 'Cumque rerum dolor.'
+            ja_JP: 'Doloribus explicabo.'
+            ru_RU: 'Nisi quidem atque.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_234:
+        type: pim_catalog_file
+        group: manufacturing
+        labels:
+            de_DE: 'Voluptates rerum ducimus.'
+            en_US: 'Beatae exercitationem magni.'
+            es_ES: 'Veritatis laudantium.'
+            fr_FR: 'Quo aut.'
+            it_IT: 'Rerum in.'
+            ja_JP: 'Molestiae saepe distinctio.'
+            ru_RU: 'Voluptate et quod.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+        allowedExtensions: 'pdf,jpg'
+    attr_235:
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        labels:
+            de_DE: 'Deleniti corporis tempore.'
+            en_US: 'Quia placeat ea.'
+            es_ES: 'Repellat laboriosam et.'
+            fr_FR: 'Sunt officiis.'
+            it_IT: 'Necessitatibus beatae repellat.'
+            ja_JP: 'Libero pariatur illum.'
+            ru_RU: 'Qui eaque.'
+        sortOrder: 3
+        localizable: true
+        scopable: false
+    attr_236:
+        type: pim_catalog_image
+        group: marketing
+        labels:
+            de_DE: 'Possimus ipsam libero.'
+            en_US: 'Facere assumenda.'
+            es_ES: 'Sequi sit molestiae.'
+            fr_FR: 'Ut fuga eligendi.'
+            it_IT: 'Eius voluptatibus inventore.'
+            ja_JP: 'Magnam tempora fugit.'
+            ru_RU: 'Itaque non.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+        allowedExtensions: 'jpg,pdf'
+    attr_237:
+        type: pim_catalog_date
+        group: marketing
+        labels:
+            de_DE: 'Consectetur omnis fuga.'
+            en_US: 'Excepturi similique possimus.'
+            es_ES: 'Labore sit quae.'
+            fr_FR: 'Cupiditate labore.'
+            it_IT: 'Ut suscipit.'
+            ja_JP: 'Nam tenetur.'
+            ru_RU: 'Similique ullam est.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+    attr_238:
+        type: pim_catalog_textarea
+        group: size
+        labels:
+            de_DE: 'Saepe rerum.'
+            en_US: 'Sunt tenetur enim.'
+            es_ES: 'Alias et veniam.'
+            fr_FR: 'Est quos.'
+            it_IT: 'Vitae atque rerum.'
+            ja_JP: 'Maxime nam.'
+            ru_RU: 'Cum dolorum.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+    attr_239:
+        type: pim_catalog_date
+        group: manufacturing
+        labels:
+            de_DE: 'Dicta facere.'
+            en_US: 'Sint veritatis.'
+            es_ES: 'Adipisci et.'
+            fr_FR: 'Mollitia quia exercitationem.'
+            it_IT: 'Aut mollitia et.'
+            ja_JP: 'Ratione qui.'
+            ru_RU: 'Qui earum omnis.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_240:
+        type: pim_catalog_date
+        group: technical
+        labels:
+            de_DE: 'Temporibus possimus tempore.'
+            en_US: 'Distinctio ut eaque.'
+            es_ES: 'Minima enim.'
+            fr_FR: 'Omnis voluptatem et.'
+            it_IT: 'Nihil deleniti.'
+            ja_JP: 'Et doloribus.'
+            ru_RU: 'Facilis provident.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+    attr_241:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Soluta et reprehenderit.'
+            en_US: 'Facere mollitia.'
+            es_ES: 'Numquam odit ut.'
+            fr_FR: 'Est non.'
+            it_IT: 'Nesciunt quos optio.'
+            ja_JP: 'Aliquam aut eum.'
+            ru_RU: 'Ea voluptatem illo.'
+        sortOrder: 6
+        localizable: false
+        scopable: false
+    attr_242:
+        type: pim_catalog_multiselect
+        group: marketing
+        labels:
+            de_DE: 'Quia labore.'
+            en_US: 'Enim ut.'
+            es_ES: 'Omnis voluptatibus.'
+            fr_FR: 'Dignissimos earum deserunt.'
+            it_IT: 'Molestiae culpa eos.'
+            ja_JP: 'Aut veniam alias.'
+            ru_RU: 'Provident quia id.'
+        sortOrder: 9
+        localizable: false
+        scopable: false
+    attr_243:
+        type: pim_catalog_image
+        group: manufacturing
+        labels:
+            de_DE: 'Fuga nisi.'
+            en_US: 'Omnis aut.'
+            es_ES: 'Voluptate porro adipisci.'
+            fr_FR: 'Neque officiis.'
+            it_IT: 'Et labore voluptatum.'
+            ja_JP: 'Ipsum porro necessitatibus.'
+            ru_RU: 'Non itaque.'
+        sortOrder: 4
+        localizable: true
+        scopable: true
+        allowedExtensions: 'pdf,jpg'
+    attr_244:
+        type: pim_catalog_number
+        group: marketing
+        labels:
+            de_DE: 'Nam earum.'
+            en_US: 'Est eveniet velit.'
+            es_ES: 'Sunt eveniet vitae.'
+            fr_FR: 'Quos possimus suscipit.'
+            it_IT: 'Neque cumque.'
+            ja_JP: 'Et molestiae.'
+            ru_RU: 'Illo enim quia.'
+        sortOrder: 9
+        localizable: false
+        scopable: false
+    attr_245:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Et consequatur impedit.'
+            en_US: 'Accusantium blanditiis possimus.'
+            es_ES: 'Asperiores fugiat.'
+            fr_FR: 'Molestiae laborum.'
+            it_IT: 'Minus odit repellendus.'
+            ja_JP: 'Sunt eos.'
+            ru_RU: 'Quia officiis omnis.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+    attr_246:
+        type: pim_catalog_text
+        group: media
+        labels:
+            de_DE: 'Optio porro.'
+            en_US: 'Voluptatem nobis.'
+            es_ES: 'In sapiente.'
+            fr_FR: 'Similique consequatur.'
+            it_IT: 'Ullam placeat illo.'
+            ja_JP: 'Voluptatem corporis adipisci.'
+            ru_RU: 'Eveniet odit sunt.'
+        sortOrder: 8
+        localizable: false
+        scopable: false
+    attr_247:
+        type: pim_catalog_price_collection
+        group: size
+        labels:
+            de_DE: 'Qui aliquam nemo.'
+            en_US: 'Magni et.'
+            es_ES: 'Nostrum rerum.'
+            fr_FR: 'Nisi eos.'
+            it_IT: 'Quibusdam occaecati qui.'
+            ja_JP: 'Illo sit.'
+            ru_RU: 'Maxime deserunt in.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_248:
+        type: pim_catalog_boolean
+        group: size
+        labels:
+            de_DE: 'Et beatae sed.'
+            en_US: 'Veritatis quae.'
+            es_ES: 'Totam et fuga.'
+            fr_FR: 'Asperiores labore voluptas.'
+            it_IT: 'Velit voluptatibus.'
+            ja_JP: 'Quod error maxime.'
+            ru_RU: 'Dolorem corrupti.'
+        sortOrder: 7
+        localizable: false
+        scopable: false
+    attr_249:
+        type: pim_catalog_boolean
+        group: technical
+        labels:
+            de_DE: 'Veritatis molestiae qui.'
+            en_US: 'Tempora omnis eum.'
+            es_ES: 'Perferendis quasi perspiciatis.'
+            fr_FR: 'Sequi unde.'
+            it_IT: 'Praesentium voluptas repellendus.'
+            ja_JP: 'Quidem nesciunt laboriosam.'
+            ru_RU: 'Totam sed.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_250:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Optio esse ex.'
+            en_US: 'Provident adipisci quis.'
+            es_ES: 'Ea laborum.'
+            fr_FR: 'Perferendis explicabo et.'
+            it_IT: 'Corrupti molestias.'
+            ja_JP: 'Eaque sit debitis.'
+            ru_RU: 'Delectus fugiat.'
+        sortOrder: 7
+        localizable: true
+        scopable: false
+    attr_251:
+        type: pim_catalog_simpleselect
+        group: size
+        labels:
+            de_DE: 'Nihil deleniti impedit.'
+            en_US: 'Qui at.'
+            es_ES: 'Pariatur in.'
+            fr_FR: 'Voluptatem repellendus.'
+            it_IT: 'Quis et autem.'
+            ja_JP: 'Deserunt possimus ipsam.'
+            ru_RU: 'Qui soluta consectetur.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_252:
+        type: pim_catalog_boolean
+        group: color
+        labels:
+            de_DE: 'Quia error.'
+            en_US: 'Modi modi ea.'
+            es_ES: 'Molestias aut qui.'
+            fr_FR: 'Voluptatum cumque.'
+            it_IT: 'Ipsam laborum.'
+            ja_JP: 'Voluptas at incidunt.'
+            ru_RU: 'Eaque doloremque.'
+        sortOrder: 7
+        localizable: false
+        scopable: true
+    attr_253:
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        labels:
+            de_DE: 'Nostrum excepturi porro.'
+            en_US: 'Earum nobis placeat.'
+            es_ES: 'Possimus quisquam.'
+            fr_FR: 'Non et aut.'
+            it_IT: 'Temporibus commodi.'
+            ja_JP: 'Aut ullam molestiae.'
+            ru_RU: 'Reiciendis neque.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_254:
+        type: pim_catalog_image
+        group: media
+        labels:
+            de_DE: 'Mollitia magnam voluptatum.'
+            en_US: 'Et dolorem.'
+            es_ES: 'Rerum sed ut.'
+            fr_FR: 'Molestiae est.'
+            it_IT: 'Et et.'
+            ja_JP: 'Unde repudiandae.'
+            ru_RU: 'Expedita accusamus.'
+        sortOrder: 9
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_255:
+        type: pim_catalog_metric
+        group: other
+        labels:
+            de_DE: 'Nisi est porro.'
+            en_US: 'Ut aut architecto.'
+            es_ES: 'Et ea.'
+            fr_FR: 'A possimus id.'
+            it_IT: 'Aliquid enim.'
+            ja_JP: 'Quasi animi.'
+            ru_RU: 'Distinctio porro corrupti.'
+        sortOrder: 9
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_256:
+        type: pim_catalog_textarea
+        group: color
+        labels:
+            de_DE: 'Cum qui.'
+            en_US: 'Earum nostrum consequuntur.'
+            es_ES: 'Consectetur laborum id.'
+            fr_FR: 'Quam nulla.'
+            it_IT: 'Ut incidunt ut.'
+            ja_JP: 'Necessitatibus deserunt.'
+            ru_RU: 'Rerum minus facere.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_257:
+        type: pim_catalog_price_collection
+        group: other
+        labels:
+            de_DE: 'Omnis odio voluptatum.'
+            en_US: 'Recusandae aut.'
+            es_ES: 'Voluptatem ducimus sit.'
+            fr_FR: 'Enim facilis quae.'
+            it_IT: 'Fugiat velit.'
+            ja_JP: 'Est vitae necessitatibus.'
+            ru_RU: 'Tempore qui non.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+    attr_258:
+        type: pim_catalog_date
+        group: media
+        labels:
+            de_DE: 'In dolor harum.'
+            en_US: 'Minus neque corrupti.'
+            es_ES: 'Est ut totam.'
+            fr_FR: 'Eligendi quo numquam.'
+            it_IT: 'Iusto illum.'
+            ja_JP: 'Ex quo dolores.'
+            ru_RU: 'Non dolores.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+    attr_259:
+        type: pim_catalog_number
+        group: technical
+        labels:
+            de_DE: 'Hic repellat.'
+            en_US: 'Quisquam consequatur.'
+            es_ES: 'Et et voluptatem.'
+            fr_FR: 'Tempora magni nobis.'
+            it_IT: 'Omnis eum dolor.'
+            ja_JP: 'Dolorem dicta iure.'
+            ru_RU: 'Magni perferendis pariatur.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+    attr_260:
+        type: pim_catalog_boolean
+        group: color
+        labels:
+            de_DE: 'Dolor aut delectus.'
+            en_US: 'Est omnis omnis.'
+            es_ES: 'Enim officiis praesentium.'
+            fr_FR: 'Ut quia.'
+            it_IT: 'Sunt quisquam et.'
+            ja_JP: 'Tempora omnis.'
+            ru_RU: 'Unde alias tenetur.'
+        sortOrder: 9
+        localizable: false
+        scopable: true
+    attr_261:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Cumque repudiandae.'
+            en_US: 'Aut quam.'
+            es_ES: 'In beatae rerum.'
+            fr_FR: 'Tenetur omnis.'
+            it_IT: 'Nostrum iusto.'
+            ja_JP: 'Dolor dolorem.'
+            ru_RU: 'Non fuga.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+        allowedExtensions: 'png,jpg'
+    attr_262:
+        type: pim_catalog_textarea
+        group: manufacturing
+        labels:
+            de_DE: 'Molestias temporibus.'
+            en_US: 'Sed nobis.'
+            es_ES: 'Voluptate iure aliquid.'
+            fr_FR: 'Sit itaque velit.'
+            it_IT: 'Est enim est.'
+            ja_JP: 'Natus dolor.'
+            ru_RU: 'Autem sequi quod.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+    attr_263:
+        type: pim_catalog_simpleselect
+        group: technical
+        labels:
+            de_DE: 'Magnam vel.'
+            en_US: 'Possimus quo.'
+            es_ES: 'At est.'
+            fr_FR: 'Nemo odio.'
+            it_IT: 'Et necessitatibus laborum.'
+            ja_JP: 'Ipsum non.'
+            ru_RU: 'Ipsum cumque et.'
+        sortOrder: 6
+        localizable: false
+        scopable: false
+    attr_264:
+        type: pim_catalog_textarea
+        group: manufacturing
+        labels:
+            de_DE: 'Rerum ut tenetur.'
+            en_US: 'Culpa ratione.'
+            es_ES: 'Consequatur est.'
+            fr_FR: 'Suscipit expedita facere.'
+            it_IT: 'Iure rerum consequatur.'
+            ja_JP: 'Aut et et.'
+            ru_RU: 'Molestias beatae voluptatem.'
+        sortOrder: 4
+        localizable: true
+        scopable: false
+    attr_265:
+        type: pim_catalog_date
+        group: media
+        labels:
+            de_DE: 'Minima totam consequuntur.'
+            en_US: 'Quia aspernatur.'
+            es_ES: 'Et repellendus.'
+            fr_FR: 'Eius voluptas rerum.'
+            it_IT: 'Perferendis ratione.'
+            ja_JP: 'Consequuntur incidunt excepturi.'
+            ru_RU: 'Voluptas nihil.'
+        sortOrder: 6
+        localizable: false
+        scopable: false
+    attr_266:
+        type: pim_catalog_metric
+        group: marketing
+        labels:
+            de_DE: 'Aut facilis autem.'
+            en_US: 'Inventore omnis.'
+            es_ES: 'Cum adipisci ut.'
+            fr_FR: 'Id velit.'
+            it_IT: 'Beatae dolores.'
+            ja_JP: 'Maiores sed quibusdam.'
+            ru_RU: 'Tempore ut repudiandae.'
+        sortOrder: 3
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_267:
+        type: pim_catalog_file
+        group: manufacturing
+        labels:
+            de_DE: 'Nostrum est dolores.'
+            en_US: 'Maiores laudantium sequi.'
+            es_ES: 'Suscipit necessitatibus.'
+            fr_FR: 'Animi molestiae velit.'
+            it_IT: 'Quis nostrum ipsam.'
+            ja_JP: 'Fuga nobis velit.'
+            ru_RU: 'Iusto architecto et.'
+        sortOrder: 2
+        localizable: false
+        scopable: true
+        allowedExtensions: 'png,pdf'
+    attr_268:
+        type: pim_catalog_textarea
+        group: technical
+        labels:
+            de_DE: 'Accusantium fugiat quis.'
+            en_US: 'Quos sed.'
+            es_ES: 'Saepe aut.'
+            fr_FR: 'Esse consequatur sed.'
+            it_IT: 'Est fugit.'
+            ja_JP: 'Aut nostrum similique.'
+            ru_RU: 'Error tempore ea.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_269:
+        type: pim_catalog_boolean
+        group: color
+        labels:
+            de_DE: 'Et et.'
+            en_US: 'Sit saepe.'
+            es_ES: 'Officiis numquam.'
+            fr_FR: 'Sunt omnis.'
+            it_IT: 'Ad iure.'
+            ja_JP: 'Libero voluptas et.'
+            ru_RU: 'Dolores et dolorem.'
+        sortOrder: 5
+        localizable: true
+        scopable: true
+    attr_270:
+        type: pim_catalog_price_collection
+        group: color
+        labels:
+            de_DE: 'Voluptatem quo quibusdam.'
+            en_US: 'Ipsa ad temporibus.'
+            es_ES: 'Ut nesciunt maiores.'
+            fr_FR: 'Accusamus sit.'
+            it_IT: 'Sit unde.'
+            ja_JP: 'Consequuntur quidem.'
+            ru_RU: 'Et sunt dignissimos.'
+        sortOrder: 2
+        localizable: false
+        scopable: false
+    attr_271:
+        type: pim_catalog_text
+        group: technical
+        labels:
+            de_DE: 'Voluptatem a qui.'
+            en_US: 'Quia et.'
+            es_ES: 'Maxime rerum odio.'
+            fr_FR: 'Rerum qui.'
+            it_IT: 'Est ut voluptatem.'
+            ja_JP: 'Laboriosam nihil.'
+            ru_RU: 'Doloremque rerum.'
+        sortOrder: 5
+        localizable: true
+        scopable: true
+    attr_272:
+        type: pim_catalog_file
+        group: manufacturing
+        labels:
+            de_DE: 'Dicta enim architecto.'
+            en_US: 'Doloremque et voluptatum.'
+            es_ES: 'Ut et blanditiis.'
+            fr_FR: 'Nesciunt quae.'
+            it_IT: 'Deserunt velit quis.'
+            ja_JP: 'Architecto autem.'
+            ru_RU: 'Dicta quo.'
+        sortOrder: 4
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_273:
+        type: pim_catalog_metric
+        group: size
+        labels:
+            de_DE: 'Quos voluptatem eum.'
+            en_US: 'Eius quo incidunt.'
+            es_ES: 'Est fuga inventore.'
+            fr_FR: 'Consequatur perspiciatis velit.'
+            it_IT: 'Impedit non.'
+            ja_JP: 'Rerum sint.'
+            ru_RU: 'Repellendus corporis.'
+        sortOrder: 3
+        localizable: false
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_274:
+        type: pim_catalog_file
+        group: other
+        labels:
+            de_DE: 'Est earum incidunt.'
+            en_US: 'Et quia.'
+            es_ES: 'Voluptates aut similique.'
+            fr_FR: 'Et quasi perferendis.'
+            it_IT: 'Omnis pariatur.'
+            ja_JP: 'A aut ad.'
+            ru_RU: 'Consequatur numquam temporibus.'
+        sortOrder: 1
+        localizable: true
+        scopable: false
+        allowedExtensions: 'jpg,pdf'
+    attr_275:
+        type: pim_catalog_image
+        group: size
+        labels:
+            de_DE: 'Earum odit doloremque.'
+            en_US: 'Autem minus.'
+            es_ES: 'Est sequi earum.'
+            fr_FR: 'Non error ea.'
+            it_IT: 'Aliquid dolor.'
+            ja_JP: 'Quo odio.'
+            ru_RU: 'Excepturi eligendi.'
+        sortOrder: 4
+        localizable: true
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_276:
+        type: pim_catalog_price_collection
+        group: other
+        labels:
+            de_DE: 'Vero possimus at.'
+            en_US: 'Nostrum iusto quia.'
+            es_ES: 'Fuga architecto esse.'
+            fr_FR: 'Est illum.'
+            it_IT: 'Velit ut.'
+            ja_JP: 'Delectus repellendus.'
+            ru_RU: 'Architecto eum nihil.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+    attr_277:
+        type: pim_catalog_textarea
+        group: technical
+        labels:
+            de_DE: 'Vel sit consequatur.'
+            en_US: 'Occaecati quia quae.'
+            es_ES: 'Recusandae voluptatem iusto.'
+            fr_FR: 'Maiores unde.'
+            it_IT: 'Voluptatem in.'
+            ja_JP: 'Illo id.'
+            ru_RU: 'Nobis accusantium quia.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+    attr_278:
+        type: pim_catalog_number
+        group: size
+        labels:
+            de_DE: 'Sapiente velit.'
+            en_US: 'Excepturi voluptatem eum.'
+            es_ES: 'Quam suscipit necessitatibus.'
+            fr_FR: 'Suscipit minima rem.'
+            it_IT: 'Esse ullam voluptas.'
+            ja_JP: 'Autem dolor.'
+            ru_RU: 'Repudiandae inventore.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+    attr_279:
+        type: pim_catalog_price_collection
+        group: size
+        labels:
+            de_DE: 'Saepe odit recusandae.'
+            en_US: 'Et quia.'
+            es_ES: 'Quo incidunt et.'
+            fr_FR: 'Voluptatem nihil dignissimos.'
+            it_IT: 'Nam dicta.'
+            ja_JP: 'Nihil quia.'
+            ru_RU: 'Et voluptas exercitationem.'
+        sortOrder: 2
+        localizable: true
+        scopable: true
+    attr_280:
+        type: pim_catalog_simpleselect
+        group: technical
+        labels:
+            de_DE: 'Eveniet nihil accusamus.'
+            en_US: 'Sit ut.'
+            es_ES: 'Voluptas deserunt eveniet.'
+            fr_FR: 'Iste pariatur aliquam.'
+            it_IT: 'Eos unde.'
+            ja_JP: 'Est quam autem.'
+            ru_RU: 'Ipsam voluptatem.'
+        sortOrder: 8
+        localizable: true
+        scopable: true
+    attr_281:
+        type: pim_catalog_image
+        group: other
+        labels:
+            de_DE: 'Vitae sapiente.'
+            en_US: 'Non aspernatur.'
+            es_ES: 'Enim sit.'
+            fr_FR: 'Voluptas provident.'
+            it_IT: 'Soluta ex dolorum.'
+            ja_JP: 'Corporis alias.'
+            ru_RU: 'Sequi veniam eaque.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+        allowedExtensions: 'jpg,png'
+    attr_282:
+        type: pim_catalog_number
+        group: manufacturing
+        labels:
+            de_DE: 'Saepe et.'
+            en_US: 'Quia commodi.'
+            es_ES: 'Provident et aut.'
+            fr_FR: 'Voluptatem corrupti.'
+            it_IT: 'Odit numquam sunt.'
+            ja_JP: 'At excepturi ipsum.'
+            ru_RU: 'Fuga aperiam.'
+        sortOrder: 4
+        localizable: false
+        scopable: true
+    attr_283:
+        type: pim_catalog_date
+        group: other
+        labels:
+            de_DE: 'Velit aliquam fugiat.'
+            en_US: 'Dolor minima.'
+            es_ES: 'Rem quam quam.'
+            fr_FR: 'Qui molestias.'
+            it_IT: 'Deleniti sit fugiat.'
+            ja_JP: 'Velit et fuga.'
+            ru_RU: 'Ullam repudiandae.'
+        sortOrder: 9
+        localizable: false
+        scopable: true
+    attr_284:
+        type: pim_catalog_file
+        group: technical
+        labels:
+            de_DE: 'Accusamus et perferendis.'
+            en_US: 'Eaque consequatur sint.'
+            es_ES: 'Quibusdam quasi.'
+            fr_FR: 'Sit est optio.'
+            it_IT: 'Et maiores ducimus.'
+            ja_JP: 'Non nesciunt dolore.'
+            ru_RU: 'Voluptas tempore.'
+        sortOrder: 10
+        localizable: false
+        scopable: true
+        allowedExtensions: 'jpg,pdf'
+    attr_285:
+        type: pim_catalog_text
+        group: media
+        labels:
+            de_DE: 'Omnis omnis.'
+            en_US: 'Amet necessitatibus corporis.'
+            es_ES: 'Ut vel sed.'
+            fr_FR: 'Suscipit earum.'
+            it_IT: 'Voluptatem rem quaerat.'
+            ja_JP: 'Hic illo.'
+            ru_RU: 'Temporibus voluptatem cupiditate.'
+        sortOrder: 6
+        localizable: false
+        scopable: false
+    attr_286:
+        type: pim_catalog_simpleselect
+        group: color
+        labels:
+            de_DE: 'Voluptatibus ullam.'
+            en_US: 'Ut officia asperiores.'
+            es_ES: 'Numquam quia beatae.'
+            fr_FR: 'Laborum nobis nesciunt.'
+            it_IT: 'Voluptatem maiores.'
+            ja_JP: 'Repudiandae quam.'
+            ru_RU: 'Velit voluptate vitae.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+    attr_287:
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        labels:
+            de_DE: 'Voluptates quas provident.'
+            en_US: 'Qui amet fugiat.'
+            es_ES: 'Accusantium neque.'
+            fr_FR: 'Dolorem debitis nam.'
+            it_IT: 'Rerum perspiciatis ut.'
+            ja_JP: 'Ducimus iure.'
+            ru_RU: 'Et sit.'
+        sortOrder: 9
+        localizable: true
+        scopable: false
+    attr_288:
+        type: pim_catalog_date
+        group: color
+        labels:
+            de_DE: 'Quaerat sunt.'
+            en_US: 'Molestiae recusandae.'
+            es_ES: 'Occaecati animi.'
+            fr_FR: 'Voluptatibus accusantium numquam.'
+            it_IT: 'Et officiis.'
+            ja_JP: 'Dicta rerum esse.'
+            ru_RU: 'Iste cupiditate.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+    attr_289:
+        type: pim_catalog_text
+        group: color
+        labels:
+            de_DE: 'Dignissimos expedita tempore.'
+            en_US: 'Qui consequuntur magni.'
+            es_ES: 'Sint eligendi quod.'
+            fr_FR: 'Consequatur quas.'
+            it_IT: 'Repellat occaecati ratione.'
+            ja_JP: 'Dolorem et dolor.'
+            ru_RU: 'Minima molestiae unde.'
+        sortOrder: 5
+        localizable: true
+        scopable: false
+    attr_290:
+        type: pim_catalog_text
+        group: technical
+        labels:
+            de_DE: 'Ut ea neque.'
+            en_US: 'Quibusdam voluptas.'
+            es_ES: 'Velit ipsa.'
+            fr_FR: 'Aliquam dolore adipisci.'
+            it_IT: 'Sunt voluptatem reiciendis.'
+            ja_JP: 'Ut et dolorem.'
+            ru_RU: 'Omnis impedit qui.'
+        sortOrder: 10
+        localizable: true
+        scopable: false
+    attr_291:
+        type: pim_catalog_text
+        group: technical
+        labels:
+            de_DE: 'Nihil et est.'
+            en_US: 'Similique non fugiat.'
+            es_ES: 'A expedita ipsam.'
+            fr_FR: 'Itaque blanditiis nemo.'
+            it_IT: 'Voluptatem quae.'
+            ja_JP: 'Ut magni.'
+            ru_RU: 'Numquam voluptate fuga.'
+        sortOrder: 2
+        localizable: true
+        scopable: false
+    attr_292:
+        type: pim_catalog_simpleselect
+        group: color
+        labels:
+            de_DE: 'Libero officiis sed.'
+            en_US: 'Quia corrupti magnam.'
+            es_ES: 'Sit maxime.'
+            fr_FR: 'A molestias placeat.'
+            it_IT: 'Qui minus.'
+            ja_JP: 'Officia explicabo.'
+            ru_RU: 'Quos accusamus.'
+        sortOrder: 10
+        localizable: true
+        scopable: true
+    attr_293:
+        type: pim_catalog_text
+        group: other
+        labels:
+            de_DE: 'Tempora ea debitis.'
+            en_US: 'Qui rerum et.'
+            es_ES: 'Magni earum.'
+            fr_FR: 'Voluptatem est repudiandae.'
+            it_IT: 'Voluptas sint.'
+            ja_JP: 'Inventore rerum molestiae.'
+            ru_RU: 'Harum iste.'
+        sortOrder: 3
+        localizable: true
+        scopable: false
+    attr_294:
+        type: pim_catalog_file
+        group: design
+        labels:
+            de_DE: 'Delectus ut.'
+            en_US: 'Repudiandae quisquam.'
+            es_ES: 'Et quisquam amet.'
+            fr_FR: 'Rem et.'
+            it_IT: 'Consequatur sed quia.'
+            ja_JP: 'Saepe sed.'
+            ru_RU: 'Voluptas consequuntur provident.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
+        allowedExtensions: 'jpg,pdf'
+    attr_295:
+        type: pim_catalog_boolean
+        group: manufacturing
+        labels:
+            de_DE: 'Atque iusto quae.'
+            en_US: 'Soluta eum impedit.'
+            es_ES: 'Dolorum qui quis.'
+            fr_FR: 'Accusantium voluptatem.'
+            it_IT: 'Neque accusamus et.'
+            ja_JP: 'Dolorem occaecati.'
+            ru_RU: 'Nobis quia possimus.'
+        sortOrder: 5
+        localizable: false
+        scopable: true
+    attr_296:
+        type: pim_catalog_boolean
+        group: size
+        labels:
+            de_DE: 'Animi et vel.'
+            en_US: 'Quis quam.'
+            es_ES: 'Neque alias assumenda.'
+            fr_FR: 'Odio fuga.'
+            it_IT: 'Cum ut.'
+            ja_JP: 'Ea laboriosam exercitationem.'
+            ru_RU: 'Rerum qui.'
+        sortOrder: 8
+        localizable: true
+        scopable: false
+    attr_297:
+        type: pim_catalog_image
+        group: manufacturing
+        labels:
+            de_DE: 'Non omnis.'
+            en_US: 'Praesentium quod.'
+            es_ES: 'Est dolorem.'
+            fr_FR: 'Tempora eligendi voluptatum.'
+            it_IT: 'Illo et.'
+            ja_JP: 'Porro temporibus.'
+            ru_RU: 'Corrupti quidem.'
+        sortOrder: 10
+        localizable: false
+        scopable: false
+        allowedExtensions: 'pdf,jpg'
+    attr_298:
+        type: pim_catalog_metric
+        group: technical
+        labels:
+            de_DE: 'Porro cumque non.'
+            en_US: 'Voluptas et.'
+            es_ES: 'Non nisi.'
+            fr_FR: 'Laborum sit natus.'
+            it_IT: 'Consectetur unde.'
+            ja_JP: 'Praesentium odit rerum.'
+            ru_RU: 'Odit provident.'
+        sortOrder: 1
+        localizable: true
+        scopable: true
+        metricFamily: Length
+        defaultMetricUnit: METER
+    attr_299:
+        type: pim_catalog_simpleselect
+        group: media
+        labels:
+            de_DE: 'A magni.'
+            en_US: 'Et beatae nesciunt.'
+            es_ES: 'Autem est.'
+            fr_FR: 'Neque sed.'
+            it_IT: 'Excepturi reiciendis.'
+            ja_JP: 'Nisi ut architecto.'
+            ru_RU: 'Sint a.'
+        sortOrder: 6
+        localizable: false
+        scopable: true
