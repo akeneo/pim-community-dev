@@ -6,9 +6,14 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -29,21 +34,39 @@ class UnpublishProductHandler extends AbstractConfigurableStepElement implements
     /** @var ProductQueryBuilderFactoryInterface */
     protected $publishedPqbFactory;
 
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
+
+    /** @var UserManager */
+    protected $userManager;
+
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
     /**
      * Constructor.
      *
      * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param ObjectDetacherInterface             $objectDetacher
+     * @param UserManager                         $userManager
+     * @param SecurityContextInterface            $securityContext
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $publishedPqbFactory,
         PublishedProductManager $manager,
-        PaginatorFactoryInterface $paginatorFactory
+        PaginatorFactoryInterface $paginatorFactory,
+        ObjectDetacherInterface $objectDetacher,
+        UserManager $userManager,
+        SecurityContextInterface $securityContext
     ) {
-        $this->manager = $manager;
-        $this->paginatorFactory = $paginatorFactory;
+        $this->manager             = $manager;
+        $this->paginatorFactory    = $paginatorFactory;
         $this->publishedPqbFactory = $publishedPqbFactory;
+        $this->userManager         = $userManager;
+        $this->securityContext     = $securityContext;
+        $this->objectDetacher      = $objectDetacher;
     }
 
     /**
@@ -51,15 +74,34 @@ class UnpublishProductHandler extends AbstractConfigurableStepElement implements
      */
     public function execute(array $configuration)
     {
+        $this->initSecurityContext($this->stepExecution);
+
         $cursor = $this->getPublishedProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
-        foreach ($paginator as $publishedProductsPage) {
-            foreach ($publishedProductsPage as $publishedProduct) {
-                $this->manager->unpublish($publishedProduct);
-                $this->stepExecution->incrementSummaryInfo('mass_published');
-                // TODO: validation & skip
+        foreach ($paginator as $productsPage) {
+            $invalidProducts = [];
+            foreach ($productsPage as $index => $product) {
+                $isAuthorized = $this->securityContext->isGranted(Attributes::OWN, $product);
+
+                if ($isAuthorized) {
+                    $this->stepExecution->incrementSummaryInfo('mass_unpublished');
+                } else {
+                    $invalidProducts[$index] = $product;
+                    $this->stepExecution->incrementSummaryInfo('skipped_products');
+                    $this->stepExecution->addWarning(
+                        $this->getName(),
+                        'pim_enrich.mass_edit_action.unpublish.message.error',
+                        [],
+                        $product
+                    );
+                }
             }
+
+            $productsPage = array_diff_key($productsPage, $invalidProducts);
+            $this->detachProducts($invalidProducts);
+            $this->manager->unpublishAll($productsPage);
+            $this->detachProducts($productsPage);
         }
     }
 
@@ -79,6 +121,30 @@ class UnpublishProductHandler extends AbstractConfigurableStepElement implements
         $this->stepExecution = $stepExecution;
 
         return $this;
+    }
+
+    /**
+     * Initialize the SecurityContext from the given $stepExecution
+     *
+     * @param StepExecution $stepExecution
+     */
+    protected function initSecurityContext(StepExecution $stepExecution)
+    {
+        $username = $stepExecution->getJobExecution()->getUser();
+        $user = $this->userManager->findUserByUsername($username);
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->securityContext->setToken($token);
+    }
+
+    /**
+     * @param array $productsPage
+     */
+    protected function detachProducts(array $productsPage)
+    {
+        foreach ($productsPage as $product) {
+            $this->objectDetacher->detach($product);
+        }
     }
 
     /**
