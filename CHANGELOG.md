@@ -1,5 +1,12 @@
 # 1.4.x
 
+## Features
+
+## Technical improvements
+- In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Attribute, Attribute Option)
+- Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack 
+
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
 - PIM-3771: Create version when modifying variant group attribute
@@ -69,6 +76,7 @@
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
 - Change arguments of Pim/Bundle/EnrichBundle/Controller/AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
 - Remove arguments ChannelRepositoryInterface, LocaleRepositoryInterface, add argument AttributeValuesResolver in Pim/Bundle/CatalogBundle/Builder/ProductBuilder constructor
+- Remove arguments DenormalizerInterface, ValidatorInterface, ObjectDetacherInterface, $class from the constructor of Pim/Bundle/BaseConnectorBundle/Processor/Denormalization/AbstractProcessor
 
 # 1.3.x
 
