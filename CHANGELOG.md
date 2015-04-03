@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-3961: Fix inconsistencies in unique value constraint validator
+
 # 1.3.6 (2015-04-01)
 
 ## Bug fixes
