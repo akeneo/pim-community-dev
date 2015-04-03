@@ -18,6 +18,6 @@ class FilesystemCache extends BaseFilesystemCache
     {
         $id = preg_replace('@[\\\/:"*?<>|]+@', '', $id);
 
-        return $this->directory . DIRECTORY_SEPARATOR . $id . $this->extension;
+        return $this->directory . DIRECTORY_SEPARATOR . $id . self::EXTENSION;
     }
 }
