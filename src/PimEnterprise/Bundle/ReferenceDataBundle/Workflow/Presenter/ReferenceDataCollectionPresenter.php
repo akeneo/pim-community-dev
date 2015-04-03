@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -28,25 +28,19 @@ class ReferenceDataCollectionPresenter extends AbstractProductValuePresenter
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ConfigurationRegistryInterface */
-    protected $registry;
-
-    /** @var RegistryInterface */
-    protected $doctrine;
+    /** @var ReferenceDataRepositoryResolver */
+    protected $repositoryResolver;
 
     /**
-     * @param AttributeRepositoryInterface   $attributeRepository
-     * @param ConfigurationRegistryInterface $registry
-     * @param RegistryInterface              $doctrine
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param ReferenceDataRepositoryResolver $repositoryResolver
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        ConfigurationRegistryInterface $registry,
-        RegistryInterface $doctrine
+        ReferenceDataRepositoryResolver $repositoryResolver
     ) {
         $this->attributeRepository = $attributeRepository;
-        $this->registry            = $registry;
-        $this->doctrine            = $doctrine;
+        $this->repositoryResolver  = $repositoryResolver;
     }
 
     /**
@@ -84,8 +78,8 @@ class ReferenceDataCollectionPresenter extends AbstractProductValuePresenter
 
         $result = [];
         $referenceDataName = $attribute->getReferenceDataName();
-        $referenceDataClass = $this->registry->get($referenceDataName)->getClass();
-        $references = $this->doctrine->getRepository($referenceDataClass)->findBy(['id' => explode(',', $change[$referenceDataName])]);
+        $repository = $this->repositoryResolver->resolve($referenceDataName);
+        $references = $repository->findBy(['id' => explode(',', $change[$referenceDataName])]);
 
         foreach ($references as $reference) {
             $result[] = (string) $reference;

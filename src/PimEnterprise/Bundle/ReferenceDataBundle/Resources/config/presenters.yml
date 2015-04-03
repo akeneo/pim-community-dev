@@ -7,8 +7,7 @@ services:
         class: %pimee_reference_data.workflow.presenter.reference_data.class%
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_reference_data.registry'
-            - '@doctrine'
+            - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pimee_workflow.presenter }
 
@@ -16,7 +15,6 @@ services:
         class: %pimee_reference_data.workflow.presenter.reference_data_collection.class%
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_reference_data.registry'
-            - '@doctrine'
+            - '@pim_reference_data.repository_resolver'
         tags:
             - { name: pimee_workflow.presenter }
