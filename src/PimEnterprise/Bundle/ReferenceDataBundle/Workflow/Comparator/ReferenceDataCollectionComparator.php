@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Comparator;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\ReferenceData\MethodNameGuesser;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 
 /**
@@ -47,21 +48,24 @@ class ReferenceDataCollectionComparator implements ComparatorInterface
             return;
         }
 
-        $getter = 'get' . ucfirst($referenceDataName);
-        $references = $value->$getter();
+        $getter = MethodNameGuesser::guess('get', $referenceDataName);
+        $referenceDataIds = $value->$getter();
         $getIds = function ($reference) {
             return $reference->getId();
         };
 
-        $references = $references->map($getIds)->toArray();
-        sort($references);
+        $referenceDataIds = $referenceDataIds->map($getIds)->toArray();
+        sort($referenceDataIds);
 
-        $submittedReferences = explode(',', $submittedData[$referenceDataName]);
-        sort($submittedReferences);
+        $submittedReferenceDataIds = explode(',', $submittedData[$referenceDataName]);
+        sort($submittedReferenceDataIds);
 
-        if ($references != $submittedReferences) {
+        if (
+            count(array_diff($referenceDataIds, $submittedReferenceDataIds)) > 0 ||
+            count(array_diff($submittedReferenceDataIds, $referenceDataIds)) > 0
+        ) {
             return [
-                $referenceDataName => join(',', $submittedReferences),
+                $referenceDataName => join(',', $submittedReferenceDataIds),
             ];
         }
     }
