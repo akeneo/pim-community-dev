@@ -138,9 +138,15 @@ define(
                 }
             },
             deleteItem: function() {
-                Dialog.confirm(__('pim_enrich.item.delete.confirm.content'), __('pim_enrich.item.delete.confirm.title'), _.bind(function () {
-                    this.parent.deleteItem(this);
-                }, this));
+                var itemCode = this.el.firstChild.innerText;
+
+                Dialog.confirm(
+                    __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
+                    __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
+                    _.bind(function () {
+                            this.parent.deleteItem(this);
+                    }, this)
+                );
             },
             updateItem: function() {
                 this.inLoading(true);
