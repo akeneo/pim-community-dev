@@ -34,6 +34,6 @@ class AttributeOptionReaderSpec extends ObjectBehavior
         $qb->addOrderBy('ao.sortOrder')->willReturn($qb)->shouldBeCalled();
         $qb->getQuery()->willReturn($query)->shouldBeCalled();
 
-        $this->getQuery()->shouldNotBeNull();
+        $this->getQuery();
     }
 }
