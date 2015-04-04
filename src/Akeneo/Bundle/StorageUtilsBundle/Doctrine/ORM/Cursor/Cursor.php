@@ -58,7 +58,7 @@ class Cursor extends AbstractCursor
         EntityManager $entityManager,
         $pageSize
     ) {
-        $this->queryBuilder = clone $queryBuilder;
+        $this->queryBuilder = $queryBuilder;
         $this->entityManager = $entityManager;
         $this->pageSize = $pageSize;
     }
