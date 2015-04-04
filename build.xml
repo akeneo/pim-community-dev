@@ -318,7 +318,7 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta10@dev" />
+            <arg value="v1.0.0-beta12@dev" />
         </exec>
     </target>
 
