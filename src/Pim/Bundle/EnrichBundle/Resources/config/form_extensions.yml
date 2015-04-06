@@ -20,6 +20,11 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
 
+    delete:
+        module: pim/product-edit-form/delete
+        parent: product-edit-form
+        targetZone: buttons
+
     save:
         module: pim/product-edit-form/save
         parent: product-edit-form

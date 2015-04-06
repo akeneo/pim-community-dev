@@ -112,10 +112,14 @@ pim_enrich:
                 enabled: Enabled
                 disable: Disable
                 disabled: Disabled
+            info:
+                deletion_successful: Product successfully deleted.
+                deletion_failed: The product could not be deleted.
 
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
+        delete_item:     Confirm deletion
 
     info:
         entity:
