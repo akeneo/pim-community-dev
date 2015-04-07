@@ -10,6 +10,8 @@ define(
 
             if (loadedModules[attribute.type]) {
                 promise.resolve(loadedModules[attribute.type]);
+
+                return promise.promise();
             }
 
             ConfigProvider.getAttributeFields().done(function (attributeFields) {
@@ -34,6 +36,8 @@ define(
 
                 if (fields[attributeCode]) {
                     promise.resolve(fields[attributeCode]);
+
+                    return promise.promise();
                 }
 
                 ConfigManager.getEntity('attributes', attributeCode).done(function (attribute) {
