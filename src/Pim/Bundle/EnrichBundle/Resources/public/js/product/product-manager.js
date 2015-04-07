@@ -25,6 +25,14 @@ define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, Att
                 data: JSON.stringify(data)
             }).promise();
         },
+        remove: function (id) {
+            return $.ajax({
+                type: 'POST',
+                url: Routing.generate('pim_enrich_product_remove', {id: id}),
+                headers: { accept: 'application/json' },
+                data: { _method: 'DELETE' }
+            }).promise();
+        },
         getValues: function(product) {
             var promise = $.Deferred();
 
