@@ -36,8 +36,8 @@ class AssociationRepository extends EntityRepository implements
             ->where('pa.associationType = :association_type')
             ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->isNotNull('products'),
-                    $qb->expr()->isNotNull('groups')
+                    $qb->expr()->isNotNull('products.id'),
+                    $qb->expr()->isNotNull('groups.id')
                 )
             )
             ->setParameter('association_type', $associationType);
