@@ -2,37 +2,52 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UnpublishProductHandlerSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
-        PublishedProductRepositoryInterface $repository,
         PaginatorFactoryInterface $paginatorFactory,
         ProductQueryBuilder $pqb,
-        CursorInterface $cursor
+        CursorInterface $cursor,
+        ObjectDetacherInterface $objectDetacher,
+        UserManager $userManager,
+        SecurityContextInterface $securityContext,
+        UserInterface $userJulia,
+        UserInterface $userMary
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::any(), Argument::any(), Argument::any(), Argument::any())->willReturn($pqb);
         $pqbFactory->create()->willReturn($pqb);
 
+        $userJulia->getRoles()->willReturn(['ProductOwner']);
+        $userMary->getRoles()->willReturn(['NotProductOwner']);
+        $userManager->findUserByUsername('julia')->willReturn($userJulia);
+        $userManager->findUserByUsername('mary')->willReturn($userMary);
+
         $this->beConstructedWith(
             $pqbFactory,
             $manager,
-            $repository,
-            $paginatorFactory
+            $paginatorFactory,
+            $objectDetacher,
+            $userManager,
+            $securityContext
         );
     }
 
@@ -46,7 +61,53 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $paginatorFactory,
         $manager,
         $cursor,
+        $securityContext,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        PublishedProductInterface $pubProduct1,
+        PublishedProductInterface $pubProduct2
+    ) {
+        $configuration = [
+            'filters' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'IN',
+                    'value'    => ['1000', '1001']
+                ]
+            ],
+            'actions' => []
+        ];
+        $productsPage = [
+            [
+                $pubProduct1,
+                $pubProduct2
+            ]
+        ];
+
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('julia');
+
+        $securityContext->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
+        $securityContext->setToken(Argument::any())->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
+
+        $manager->unpublishAll([$pubProduct1, $pubProduct2])->shouldBeCalled();
+
+        $this->setStepExecution($stepExecution);
+        $this->execute($configuration);
+    }
+
+    function it_skips_product_when_user_does_not_have_own_right_on_it(
+        $paginatorFactory,
+        $manager,
+        $cursor,
+        $securityContext,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
         PublishedProductInterface $pubProduct1,
         PublishedProductInterface $pubProduct2
     ) {
@@ -68,8 +129,19 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $manager->unpublish($pubProduct1)->shouldBeCalled();
-        $manager->unpublish($pubProduct2)->shouldBeCalled();
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('mary');
+
+        $securityContext->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);
+        $securityContext->setToken(Argument::any())->shouldBeCalled();
+
+        $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
+
+        $stepExecution->addWarning('unpublish_product_handler', Argument::any(), [], $pubProduct2)->shouldBeCalled();
+
+        $manager->unpublishAll([$pubProduct1])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute($configuration);

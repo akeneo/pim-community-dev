@@ -2,16 +2,21 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Prophecy\Argument;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -26,18 +31,29 @@ class PublishProductHandlerSpec extends ObjectBehavior
         ProductQueryBuilder $pqb,
         CursorInterface $cursor,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $objectDetacher
+        ObjectDetacherInterface $objectDetacher,
+        UserManager $userManager,
+        SecurityContextInterface $securityContext,
+        UserInterface $userJulia,
+        UserInterface $userMary
     ) {
         $pqb->execute()->willReturn($cursor);
         $pqb->addFilter(Argument::any(), Argument::any(), Argument::any(), Argument::any())->willReturn($pqb);
         $pqbFactory->create()->willReturn($pqb);
+
+        $userJulia->getRoles()->willReturn(['ProductOwner']);
+        $userMary->getRoles()->willReturn(['NotProductOwner']);
+        $userManager->findUserByUsername('julia')->willReturn($userJulia);
+        $userManager->findUserByUsername('mary')->willReturn($userMary);
 
         $this->beConstructedWith(
             $pqbFactory,
             $manager,
             $paginatorFactory,
             $validator,
-            $objectDetacher
+            $objectDetacher,
+            $userManager,
+            $securityContext
         );
     }
 
@@ -52,7 +68,9 @@ class PublishProductHandlerSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
+        $securityContext,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ConstraintViolationListInterface $violations
@@ -75,8 +93,17 @@ class PublishProductHandlerSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('julia');
+
+        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $securityContext->setToken(Argument::any())->shouldBeCalled();
+
         $validator->validate($product1)->willReturn($violations);
         $validator->validate($product2)->willReturn($violations);
+
+        $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(2);
 
         $violations->count()->willReturn(0);
 
@@ -91,7 +118,9 @@ class PublishProductHandlerSpec extends ObjectBehavior
         $manager,
         $cursor,
         $validator,
+        $securityContext,
         StepExecution $stepExecution,
+        JobExecution $jobExecution,
         ProductInterface $product1,
         ProductInterface $product2,
         ObjectDetacherInterface $objectDetacher
@@ -114,6 +143,13 @@ class PublishProductHandlerSpec extends ObjectBehavior
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('julia');
+
+        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $securityContext->setToken(Argument::any())->shouldBeCalled();
+
         $violation1 = new ConstraintViolation('error1', 'spec', [], '', '', $product1);
         $violation2 = new ConstraintViolation('error2', 'spec', [], '', '', $product2);
 
@@ -131,6 +167,59 @@ class PublishProductHandlerSpec extends ObjectBehavior
         $stepExecution->addWarning('publish_product_handler', Argument::any(), [], $product2)->shouldBeCalledTimes(2);
 
         $manager->publishAll([])->shouldBeCalled();
+
+        $this->setStepExecution($stepExecution);
+        $this->execute($configuration);
+    }
+
+    function it_skips_product_when_user_does_not_have_own_right_on_it(
+        $paginatorFactory,
+        $manager,
+        $cursor,
+        $validator,
+        $securityContext,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ConstraintViolationListInterface $violations
+    ) {
+        $configuration = [
+            'filters' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'IN',
+                    'value'    => ['1000', '1001']
+                ]
+            ],
+            'actions' => []
+        ];
+        $productsPage = [
+            [
+                $product1,
+                $product2
+            ]
+        ];
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('mary');
+
+        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(false);
+        $securityContext->setToken(Argument::any())->shouldBeCalled();
+
+        $validator->validate($product1)->willReturn($violations);
+        $validator->validate($product2)->willReturn($violations);
+
+        $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
+
+        $stepExecution->addWarning('publish_product_handler', Argument::any(), [], $product2)->shouldBeCalled();
+
+        $violations->count()->willReturn(0);
+
+        $manager->publishAll([$product1])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute($configuration);

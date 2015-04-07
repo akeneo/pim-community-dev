@@ -13,35 +13,36 @@ Feature: Unpublish many products at once
       | teafortwo | tees    | My tee     | tees       |
 
   Scenario: Successfully unpublish all products
-    And I am logged in as "Julia"
+    Given I am logged in as "Julia"
     And I am on the published page
     And I mass-edit products unionjack and jackadi
     When I choose the "Unpublish products" operation
     Then I should see "The 2 selected products will be unpublished"
-    And I should see "Confirm"
-    When I apply the following mass-edit operation with the given configuration:
-      | operation | filters                                                               | actions |
-      | unpublish | [{"field":"sku", "operator":"IN", "value": ["unionjack", "jackadi"]}] | []      |
+    And I move on to the next step
+    And I wait for the "unpublish_product" mass-edit job to finish
     And I am on the published page
     Then I should not see products unionjack and jackadi
 
-  # TODO: Re enable this scenario when security context check will be done in backend and
-  # results available on reporting screen.
-  @skip
-  Scenario: Successfully unpublish few products of selected
-    And I am logged in as "Julia"
+  Scenario: Only unpublish products on which user is the owner
+    Given I am logged in as "Julia"
     And I am on the published page
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Unpublish products" operation
-    Then I should see "You're not the owner of all the selected products. You can't unpublish the products \"teafortwo\""
-    And I should see "Confirm"
+    And I move on to the next step
+    And I wait for the "unpublish_product" mass-edit job to finish
+    Then I should see "You're not the owner of the product, you can't unpublish it"
+    And I should see "skipped products 1"
+    When I am on the published index page
+    Then the grid should contain 1 elements
 
-  # TODO: Re enable this scenario when security context check will be done in backend and
-  # results available on reporting screen.
-  @skip
-  Scenario: Forbid to unpublish if user is not the owner of at least one product
-    And I am logged in as "Mary"
+  Scenario: Unpublish nothing if the user is the owner of no product
+    Given I am logged in as "Mary"
     And I am on the published page
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Unpublish products" operation
-    Then I should see "You're not the owner of the selected products, you can't unpublish them"
+    And I move on to the next step
+    And I wait for the "unpublish_product" mass-edit job to finish
+    Then I should see "You're not the owner of the product, you can't unpublish it"
+    And I should see "skipped products 3"
+    When I am on the published index page
+    Then the grid should contain 3 elements
