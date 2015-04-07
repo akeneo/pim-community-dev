@@ -23,6 +23,7 @@ class VersionNormalizer implements NormalizerInterface
     public function normalize($version, $format = null, array $context = array())
     {
         return [
+            'id'           => $version->getId(),
             'author'       => $version->getAuthor(),
             'resource_id'  => (string) $version->getResourceId(),
             'snapshot'     => $version->getSnapshot(),

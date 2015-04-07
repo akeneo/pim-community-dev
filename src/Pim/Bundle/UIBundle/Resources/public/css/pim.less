@@ -578,6 +578,7 @@ span.link-label {
       padding-right: 25px;
 
       &:hover {
+        cursor: pointer;
         border-bottom: none;
         background: @color-new-purple-light;
       }
@@ -780,7 +781,7 @@ body {
     .display-flex();
 
     & > .tab-container {
-      .flex();
+      .flex(1);
       border-top: 3px solid @color-new-purple-medium;
 
       & > .tab-pane {
@@ -874,6 +875,18 @@ body {
 
 .panel-content {
   overflow: auto;
+  position: relative;
+}
+
+.form-container.full-panel {
+  & > .tab-container {
+    .flex(0);
+  }
+
+  & > .panel-container {
+    width: auto;
+    .flex(1);
+  }
 }
 
 .completeness-block {
@@ -1316,33 +1329,31 @@ body {
   .box-sizing();
 }
 
-.history-modal {
-  max-height: 90%;
-  overflow: hidden;
-
+.history-panel {
   .display-flex();
   .flex-direction(column);
+  height: 100%;
+  padding-bottom: 20px;
 
-  .modal-footer {
-    padding: 14px 15px 25px;
+  & > .btn {
+    .align-self(flex-end);
   }
 
-  .modal-header {
-    padding: 9px 15px 20px;
+  .history-block {
+    .flex(1);
+    overflow-y: auto;
+    min-height: 150px;
+    margin-bottom: 10px;
+
+    table {
+      border-left: 1px solid #ddd;
+      text-align: left;
+      margin-bottom: 0px;
+    }
   }
 
-  .modal-body {
-    overflow: auto;
-  }
-
-  table {
-    width: 100%;
-    border-left: 1px solid #ddd;
-    text-align: left;
-  }
-
-  .logged-at {
-    min-width: 200px;
+  .logged-at, .version {
+    white-space: nowrap;
   }
 
   .table-history-details {
@@ -1359,7 +1370,6 @@ body {
     text-transform: uppercase;
     padding: 7px 15px;
   }
-
 
   .table-condensed:not(.grid) td, .table-condensed:not(.grid) td, td, th {
     border-left: none;

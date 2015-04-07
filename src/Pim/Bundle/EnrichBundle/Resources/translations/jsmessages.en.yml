@@ -112,6 +112,18 @@ pim_enrich:
                 enabled: Enabled
                 disable: Disable
                 disabled: Disabled
+            history:
+                version: Version
+                author: Author
+                logged_at: Logged at
+                more: More
+                less: Less
+                from: From
+                modified: Modified
+                property: Property
+                old_values: Old values
+                new_values: New values
+                actions: Actions
             info:
                 deletion_successful: Product successfully deleted.
                 deletion_failed: The product could not be deleted.

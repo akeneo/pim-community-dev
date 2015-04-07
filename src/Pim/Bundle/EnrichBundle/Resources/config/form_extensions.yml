@@ -136,6 +136,8 @@ extensions:
         module: pim/product-edit-form/panel/history
         targetZone: panel-content
         insertAction: append
+        zones:
+            history: self
 
     selector:
         parent: panels

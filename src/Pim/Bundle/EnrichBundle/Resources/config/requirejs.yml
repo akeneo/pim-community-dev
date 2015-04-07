@@ -99,7 +99,6 @@ config:
         pim/template/product/panel/completeness:                     pimenrich/templates/product/panel/completeness.html
         pim/template/product/panel/history:                          pimenrich/templates/product/panel/history.html
         pim/template/product/panel/comments:                         pimenrich/templates/product/panel/comments.html
-        pim/template/product/panel/history-modal:                    pimenrich/templates/product/panel/history-modal.html
         pim/template/product/locale-switcher:                        pimenrich/templates/product/locale-switcher.html
         pim/template/product/form-tabs:                              pimenrich/templates/product/form-tabs.html
         pim/template/product/save:                                   pimenrich/templates/product/save.html
