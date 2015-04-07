@@ -1,82 +1,53 @@
 "use strict";
 
-define([
-        'pim/config-manager',
-        'pim/boolean-field',
-        'pim/date-field',
-        'pim/media-field',
-        'pim/metric-field',
-        'pim/multi-select-field',
-        'pim/number-field',
-        'pim/price-collection-field',
-        'pim/simple-select-field',
-        'pim/text-field',
-        'pim/textarea-field'
-    ],
-    function (
-        ConfigManager,
-        BooleanField,
-        DateField,
-        MediaField,
-        MetricField,
-        MultiSelectField,
-        NumberField,
-        PriceCollectionField,
-        SimpleSelectField,
-        TextField,
-        TextareaField
-    ) {
-    return {
-        fields: {},
-        getField: function (attributeCode) {
+define(
+    ['pim/config-manager', 'pim/form-config-provider'],
+    function (ConfigManager, ConfigProvider) {
+        var fields = {};
+        var loadedModules = {};
+        var getFieldForAttribute = function (attribute) {
             var promise = $.Deferred();
 
-            if (this.fields[attributeCode]) {
-                promise.resolve(this.fields[attributeCode]);
-
-                return promise.promise();
+            if (loadedModules[attribute.type]) {
+                promise.resolve(loadedModules[attribute.type]);
             }
 
-            ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function(attribute) {
-                var field = this.getFieldForAttribute(attribute);
+            ConfigProvider.getAttributeFields().done(function (attributeFields) {
+                var fieldModule = attributeFields[attribute.type];
 
-                this.fields[attributeCode] = field;
-                promise.resolve(this.fields[attributeCode]);
-            }, this));
+                if (!fieldModule) {
+                    throw new Error('No field defined for attribute type "' + attribute.type + '"');
+                }
+
+                require([fieldModule], function (Field) {
+                    loadedModules[attribute.type] = Field;
+                    promise.resolve(Field);
+                });
+            });
 
             return promise.promise();
-        },
-        getFields: function() {
-            return this.fields;
-        },
-        getFieldForAttribute: function (attribute)
-        {
-            switch(attribute.type) {
-                case 'pim_catalog_boolean':
-                    return new BooleanField(attribute);
-                case 'pim_catalog_date':
-                    return new DateField(attribute);
-                case 'pim_catalog_file':
-                case 'pim_catalog_image':
-                    return new MediaField(attribute);
-                case 'pim_catalog_metric':
-                    return new MetricField(attribute);
-                case 'pim_catalog_multiselect':
-                    return new MultiSelectField(attribute);
-                case 'pim_catalog_number':
-                    return new NumberField(attribute);
-                case 'pim_catalog_price_collection':
-                    return new PriceCollectionField(attribute);
-                case 'pim_catalog_simpleselect':
-                    return new SimpleSelectField(attribute);
-                case 'pim_catalog_identifier':
-                case 'pim_catalog_text':
-                    return new TextField(attribute);
-                case 'pim_catalog_textarea':
-                    return new TextareaField(attribute);
-                default:
-                    throw new Error(JSON.stringify(attribute));
-            }
-        }
-    };
-});
+        };
+
+        return {
+            getField: function (attributeCode) {
+                var promise = $.Deferred();
+
+                if (fields[attributeCode]) {
+                    promise.resolve(fields[attributeCode]);
+                }
+
+                ConfigManager.getEntity('attributes', attributeCode).done(function (attribute) {
+                    getFieldForAttribute(attribute).done(function (Field) {
+                        fields[attributeCode] = new Field(attribute);
+                        promise.resolve(fields[attributeCode]);
+                    });
+                });
+
+                return promise.promise();
+            },
+            getFields: function () {
+                return fields;
+            },
+        };
+    }
+);

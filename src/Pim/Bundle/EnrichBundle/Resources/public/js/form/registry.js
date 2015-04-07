@@ -1,29 +1,12 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'routing'],
-    function($, _, Routing) {
-        var extensionMap = [];
-
-        var getExtensionMap = function () {
-            var promise = $.Deferred();
-
-            if (extensionMap.length) {
-                promise.resolve(extensionMap);
-            } else {
-                $.getJSON(Routing.generate('pim_enrich_form_extension_rest_index')).done(function (data) {
-                    extensionMap = data;
-                    promise.resolve(extensionMap);
-                });
-            }
-
-            return promise.promise();
-        };
-
+    ['jquery', 'underscore', 'pim/form-config-provider'],
+    function($, _, ConfigProvider) {
         var getExtensionMeta = function (formName) {
             var promise = $.Deferred();
 
-            getExtensionMap().done(function (extensionMap) {
+            ConfigProvider.getExtensionMap().done(function (extensionMap) {
                 var form = _.first(_.where(extensionMap, { module: formName }));
                 var meta = {
                     zones: form.zones,
