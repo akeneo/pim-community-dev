@@ -1331,6 +1331,23 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
+     *
+     * @param string $code
+     */
+    public function iWaitForTheMassEditJobToFinish($code)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        // Force to retrieve its job executions
+        $jobInstance->getJobExecutions()->setInitialized(false);
+        $jobExecution = $jobInstance->getJobExecutions()->last();
+
+        $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
+
+        $this->iWaitForTheJobToFinish($code);
+    }
+
+    /**
      * @Given /^I wait for (the )?widgets to load$/
      */
     public function iWaitForTheWidgetsToLoad()
