@@ -34,6 +34,7 @@ parameters:
     pim_enrich.controller.completeness_rest.class: Pim\Bundle\EnrichBundle\Controller\CompletenessRestController
     pim_enrich.controller.versioning_rest.class: Pim\Bundle\EnrichBundle\Controller\VersioningRestController
     pim_enrich.controller.product_comment_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentRestController
+    pim_enrich.controller.association_type_rest.class: Pim\Bundle\EnrichBundle\Controller\AssociationTypeRestController
     pim_enrich.controller.form_extension_rest.class: Pim\Bundle\EnrichBundle\Controller\FormExtensionRestController
 
 services:
@@ -377,6 +378,13 @@ services:
             - '@pim_comment.builder.comment'
             - '@pim_serializer'
             - '@validator'
+
+    pim_enrich.controller.association_type_rest:
+        scope: request
+        class: %pim_enrich.controller.association_type_rest.class%
+        arguments:
+            - '@pim_catalog.repository.association_type'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.form_extension_rest:
         scope: request

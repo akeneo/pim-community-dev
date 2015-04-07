@@ -124,3 +124,14 @@ pim_enrich:
     info:
         entity:
             updated: There are unsaved changes.
+
+    form:
+        product:
+            tab:
+                associations:
+                    title: Associations
+                    info:
+                        none_exist: No association types exist.
+                        show_products: Show products
+                        show_groups: Show groups
+                        number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"

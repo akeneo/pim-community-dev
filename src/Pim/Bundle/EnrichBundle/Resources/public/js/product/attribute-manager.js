@@ -31,6 +31,17 @@ define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
 
             return promise.promise();
         },
+        getIdentifierAttribute: function () {
+            var promise = $.Deferred();
+
+            ConfigManager.getEntityList('attributes').done(function (attributes) {
+                var identifier = _.findWhere(attributes, { type: 'pim_catalog_identifier' });
+
+                promise.resolve(identifier);
+            });
+
+            return promise.promise();
+        },
         isOptional: function(attribute, product, families) {
             return !product.family ? true : !_.contains(families[product.family].attributes, attribute);
         },
