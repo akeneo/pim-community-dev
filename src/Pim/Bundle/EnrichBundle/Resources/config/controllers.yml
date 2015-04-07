@@ -21,6 +21,7 @@ parameters:
     pim_enrich.controller.product_attribute.class: Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
     pim_enrich.controller.product_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductRestController
+    pim_enrich.controller.product_category_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductCategoryRestController
     pim_enrich.controller.media_rest.class: Pim\Bundle\EnrichBundle\Controller\MediaRestController
     pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
     pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
@@ -285,13 +286,17 @@ services:
         class: %pim_enrich.controller.product_rest.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.product_category'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'
             - '@pim_validator'
             - '@pim_user.context.user'
-            - '@templating'
+
+    pim_enrich.controller.product_category_rest:
+        class: %pim_enrich.controller.product_category_rest.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.product_category'
 
     pim_enrich.controller.media_rest:
         class: %pim_enrich.controller.media_rest.class%

@@ -53,7 +53,7 @@ define(
                 var promise = $.Deferred();
 
                 $.getJSON(
-                    Routing.generate('pim_enrich_product_rest_list_categories', {id: this.getData().meta.id })
+                    Routing.generate('pim_enrich_product_category_rest_list', {id: this.getData().meta.id })
                 ).done(_.bind(function(data) {
                     _.each(data.categories, _.bind(function(category) {
                         this.cache[category.id] = category.code;
