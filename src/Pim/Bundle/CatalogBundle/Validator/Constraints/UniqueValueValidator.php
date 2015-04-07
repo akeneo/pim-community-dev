@@ -56,7 +56,9 @@ class UniqueValueValidator extends ConstraintValidator
         }
 
         if ($productValue instanceof ProductValueInterface && $this->productManager->valueExists($productValue)) {
-            $this->context->addViolation($constraint->message);
+            if ($productValue->getData() !== null && $productValue->getData() !== '') {
+                $this->context->addViolation($constraint->message);
+            }
         }
     }
 
