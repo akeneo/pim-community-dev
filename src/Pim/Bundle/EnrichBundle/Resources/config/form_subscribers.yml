@@ -14,6 +14,8 @@ services:
         class: %pim_enrich.form.subscriber.add_attribute_type.class%
         arguments:
             - '@pim_catalog.registry.attribute_type'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.repository.attribute_group'
 
     pim_enrich.form.subscriber.attribute_requirements:
         class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
