@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface;
 
 /**
  * Registry of mass edit action operators indexed by gridName alias
@@ -54,7 +55,7 @@ class OperatorRegistry
      *
      * @param string $gridName
      *
-     * @return AbstractMassEditOperator
+     * @return MassEditOperatorInterface
      */
     public function getOperator($gridName)
     {

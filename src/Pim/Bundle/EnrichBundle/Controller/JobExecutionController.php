@@ -37,7 +37,7 @@ class JobExecutionController extends AbstractDoctrineController
     protected $batchLogHandler;
 
     /** @var JobExecutionArchivist */
-    protected $archivist;
+    protected $archiver;
 
     /** @var string */
     protected $jobType;
@@ -50,6 +50,7 @@ class JobExecutionController extends AbstractDoctrineController
 
     /**
      * Constructor
+     *
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router

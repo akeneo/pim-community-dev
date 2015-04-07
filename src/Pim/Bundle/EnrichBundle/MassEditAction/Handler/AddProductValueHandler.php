@@ -178,9 +178,9 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
      * @param ProductInterface $product
      * @param array            $actions
      *
-     * @return $this
+     * @return AddProductValueHandler
      */
-    protected function addData($product, array $actions)
+    protected function addData(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
             $this->productUpdater->addData($product, $action['field'], $action['value']);

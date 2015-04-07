@@ -30,16 +30,16 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function transform(Request $request)
+    public function adapt(Request $request)
     {
         $products =  $this->massActionDispatcher->dispatch($request);
 
-        $objectIds = [];
+        $productIds = [];
         foreach ($products as $product) {
-            $objectIds[] = $product->getId();
+            $productIds[] = $product->getId();
         }
 
-        $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $objectIds];
+        $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $productIds];
 
         return [$filter];
     }

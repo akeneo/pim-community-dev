@@ -32,9 +32,9 @@ class MassEditFormResolverSpec extends ObjectBehavior
         ConfigurableOperationInterface $duplicateOperation,
         ConfigurableOperationInterface $eraseOperation
     ) {
-        $gridname = 'awesome-grid';
+        $gridName = 'awesome-grid';
 
-        $operationRegistry->getAllByGridName($gridname)->willReturn([
+        $operationRegistry->getAllByGridName($gridName)->willReturn([
             'duplicate' => $duplicateOperation,
             'erase'     => $eraseOperation
         ]);
@@ -47,7 +47,7 @@ class MassEditFormResolverSpec extends ObjectBehavior
             ]
         ])->shouldBeCalled();
 
-        $this->getAvailableOperationsForm($gridname);
+        $this->getAvailableOperationsForm($gridName);
     }
 
     function it_returns_the_operation_configuration_form(
@@ -64,7 +64,7 @@ class MassEditFormResolverSpec extends ObjectBehavior
 
         $operationRegistry->get($operationAlias)->willReturn($operation);
 
-        $formFactory->create($chooseActionFormType, null, [])->willReturn($form);
+        $formFactory->create($chooseActionFormType)->willReturn($form);
         $form->add('operation', 'add_to_group_type', [])->shouldBeCalled();
 
         $this->getConfigurationForm($operationAlias)->shouldReturn($form);

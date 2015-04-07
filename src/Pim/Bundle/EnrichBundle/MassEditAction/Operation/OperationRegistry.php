@@ -29,7 +29,7 @@ class OperationRegistry implements OperationRegistryInterface
         }
 
         if (null !== $gridName) {
-            if (false === isset($this->gridOperations[$gridName])) {
+            if (!isset($this->gridOperations[$gridName])) {
                 $this->gridOperations[$gridName] = [];
             }
 

@@ -18,5 +18,5 @@ interface GridFilterAdapterInterface
      *
      * @return array
      */
-    public function transform(Request $request);
+    public function adapt(Request $request);
 }

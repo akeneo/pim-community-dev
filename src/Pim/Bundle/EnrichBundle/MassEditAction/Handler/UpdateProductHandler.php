@@ -178,9 +178,9 @@ class UpdateProductHandler extends AbstractConfigurableStepElement implements St
      * @param ProductInterface $product
      * @param array            $actions
      *
-     * @return $this
+     * @return UpdateProductHandler
      */
-    protected function setData($product, array $actions)
+    protected function setData(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
             $this->productUpdater->setData($product, $action['field'], $action['value']);
@@ -193,7 +193,7 @@ class UpdateProductHandler extends AbstractConfigurableStepElement implements St
      * @param ConstraintViolationListInterface $violations
      * @param ProductInterface                 $product
      */
-    protected function addWarningMessage($violations, $product)
+    protected function addWarningMessage(ConstraintViolationListInterface $violations, ProductInterface $product)
     {
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint

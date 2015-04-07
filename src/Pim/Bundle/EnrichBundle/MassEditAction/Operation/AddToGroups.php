@@ -32,7 +32,7 @@ class AddToGroups extends AbstractMassEditOperation implements
      *
      * @param ArrayCollection $groups
      *
-     * @return $this
+     * @return AddToGroups
      */
     public function setGroups(ArrayCollection $groups)
     {

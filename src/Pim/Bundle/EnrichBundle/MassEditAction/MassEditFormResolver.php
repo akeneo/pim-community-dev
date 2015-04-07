@@ -6,8 +6,11 @@ use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
+ * Retrieve the appropriate form corresponding to the operation
+ *
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -42,22 +45,22 @@ class MassEditFormResolver
 
     /**
      * Get the form to select the operation to apply on items.
-     * It contains available mass edit operation for the given $gridname.
+     * It contains available mass edit operation for the given $gridName.
      *
-     * @param string $gridname
+     * @param string $gridName
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function getAvailableOperationsForm($gridname)
+    public function getAvailableOperationsForm($gridName)
     {
         $choices = [];
-        $availableOperations = $this->operationRegistry->getAllByGridName($gridname);
+        $availableOperations = $this->operationRegistry->getAllByGridName($gridName);
 
         foreach (array_keys($availableOperations) as $alias) {
             $choices[$alias] = sprintf('pim_enrich.mass_edit_action.%s.label', $alias);
         }
 
-        return $this->createForm($this->chooseActionFormType, null, ['operations' => $choices]);
+        return $this->formFactory->create($this->chooseActionFormType, null, ['operations' => $choices]);
     }
 
     /**
@@ -78,23 +81,9 @@ class MassEditFormResolver
             ));
         }
 
-        $form = $this->createForm($this->chooseActionFormType);
+        $form = $this->formFactory->create($this->chooseActionFormType);
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
 
         return $form;
-    }
-
-    /**
-     * Creates and returns a Form instance from the type of the form.
-     *
-     * @param string|FormTypeInterface $type    The built type of the form
-     * @param mixed                    $data    The initial data for the form
-     * @param array                    $options Options for the form
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createForm($type, $data = null, array $options = [])
-    {
-        return $this->formFactory->create($type, $data, $options);
     }
 }
