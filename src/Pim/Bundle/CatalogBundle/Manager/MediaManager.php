@@ -218,8 +218,12 @@ class MediaManager
      */
     public function createFromFilePath($filePath)
     {
-        $media = $this->factory->createMedia();
-        $media->setFilename(pathinfo($filePath, PATHINFO_BASENAME));
+        $media    = $this->factory->createMedia();
+        $fileName = pathinfo($filePath, PATHINFO_BASENAME);
+
+        if ('' !== $fileName) {
+            $media->setFilename(pathinfo($filePath, PATHINFO_BASENAME));
+        }
 
         return $media;
     }
