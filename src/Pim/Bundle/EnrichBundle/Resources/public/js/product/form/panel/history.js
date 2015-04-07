@@ -25,13 +25,13 @@ define(
             configure: function () {
                 this.getRoot().addPanel('history', 'History');
 
-                mediator.on('post_save', _.bind(this.updateHistory, this));
+                mediator.on('post_save', _.bind(this.refreshHistory, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 if (0 === this.versions.length) {
-                    this.updateHistory();
+                    this.refreshHistory();
 
                     return this;
                 }
@@ -62,7 +62,7 @@ define(
 
                 return this;
             },
-            updateHistory: function () {
+            refreshHistory: function () {
                 if (this.getRoot().model.get('meta')) {
                     $.get(
                         Routing.generate(
