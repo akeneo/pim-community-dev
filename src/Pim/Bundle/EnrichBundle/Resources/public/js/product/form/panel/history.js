@@ -47,7 +47,7 @@ define(
 
                     this.$el.html(
                         this.template({
-                            versions: this.versions.slice(0, 10),
+                            versions: this.versions,
                             expanded: this.getParent().getParent().state.get('fullPanel'),
                             hasAction: this.actions
                         })

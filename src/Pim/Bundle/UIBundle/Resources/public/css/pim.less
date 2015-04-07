@@ -874,6 +874,7 @@ body {
 
 .panel-content {
   overflow: auto;
+  position: relative;
 }
 
 .form-container.full-panel {
@@ -1328,9 +1329,26 @@ body {
 }
 
 .history-panel {
-  table {
-    border-left: 1px solid #ddd;
-    text-align: left;
+  .display-flex();
+  .flex-direction(column);
+  height: 100%;
+  padding-bottom: 20px;
+
+  & > .btn {
+    .align-self(flex-end);
+  }
+
+  .history-block {
+    .flex(1);
+    overflow-y: auto;
+    min-height: 150px;
+    margin-bottom: 10px;
+
+    table {
+      border-left: 1px solid #ddd;
+      text-align: left;
+      margin-bottom: 0px;
+    }
   }
 
   .logged-at, .version {
