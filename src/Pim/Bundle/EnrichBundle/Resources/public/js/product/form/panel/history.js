@@ -22,13 +22,6 @@ define(
                 'click .collapse-history': 'collapseHistory',
                 'click .expanded tbody tr:not(.changeset)': 'toggleVersion'
             },
-            initialize: function() {
-                this.actions = {};
-
-                mediator.on('post_save', _.bind(this.updateHistory, this));
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
             configure: function () {
                 this.getRoot().addPanel('history', 'History');
 
