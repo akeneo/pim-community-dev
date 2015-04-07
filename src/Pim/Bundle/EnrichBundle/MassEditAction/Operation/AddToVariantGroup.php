@@ -20,14 +20,6 @@ class AddToVariantGroup extends AbstractMassEditOperation implements
     protected $group;
 
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->groups = new ArrayCollection();
-    }
-
-    /**
      * Set group
      *
      * @param GroupInterface $group

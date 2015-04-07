@@ -202,7 +202,6 @@ class MassEditActionController extends AbstractDoctrineController
             $pimFilters = $this->gridFilterAdapter->transform($this->request);
             $operation->setFilters($pimFilters);
 
-            $rawConfiguration = $operation->getBatchConfig();
             //TODO: to remove !
             $jobCode = $operation->getBatchJobCode();
             $jobInstance = $this->jobRepository->getJobManager()
@@ -212,6 +211,8 @@ class MassEditActionController extends AbstractDoctrineController
             if (null === $jobInstance) {
                 throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));
             }
+
+            $rawConfiguration = $operation->getBatchConfig();
 
             // TODO: Fixme, we should be able to remove this line without having an error
             $jobInstance = $this->getJobInstance($jobInstance->getId());
@@ -255,7 +256,7 @@ class MassEditActionController extends AbstractDoctrineController
         $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
 
         // Fixme: should look at the job execution to see the status of a job instance execution
-        if ($checkStatus && $jobInstance->getStatus() === JobInstance::STATUS_IN_PROGRESS) {
+        if (JobInstance::STATUS_IN_PROGRESS === $checkStatus && $jobInstance->getStatus()) {
             throw $this->createNotFoundException(
                 sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
             );
@@ -263,7 +264,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $job = $this->connectorRegistry->getJob($jobInstance);
 
-        if (!$job) {
+        if (null !== $job) {
             throw $this->createNotFoundException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .

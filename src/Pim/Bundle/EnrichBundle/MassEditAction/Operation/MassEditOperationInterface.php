@@ -27,6 +27,8 @@ interface MassEditOperationInterface
 
     /**
      * @param array $filters
+     *
+     * @return MassEditOperationInterface
      */
     public function setFilters(array $filters);
 
@@ -39,6 +41,13 @@ interface MassEditOperationInterface
 
     /**
      * @param array $actions
+     *
+     * @return MassEditOperationInterface
      */
     public function setActions(array $actions);
+
+    /**
+     * @return string
+     */
+    public function getItemsName();
 }

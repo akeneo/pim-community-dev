@@ -60,6 +60,9 @@ class CommandContext extends RawMinkContext
 
     /**
      * @Then /^I should get the following products after apply the following updater to it:$/
+     * @param TableNode $updates
+     *
+     * @throws \Exception
      */
     public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {
@@ -128,6 +131,9 @@ class CommandContext extends RawMinkContext
 
     /**
      * @Given /^I apply the following mass-edit operation with the given configuration:$/
+     * @param TableNode $updates
+     *
+     * @throws \Exception
      */
     public function iApplyTheFollowingMassEditOperationWithTheGivenConfiguration(TableNode $updates)
     {
@@ -141,7 +147,6 @@ class CommandContext extends RawMinkContext
         $operationRegistry = $this->getContainer()->get('pim_enrich.mass_edit_action.operation.registry');
 
         foreach ($updates->getHash() as $update) {
-
             $operation = $operationRegistry->get($update['operation']);
 
             if (!$operation instanceof BatchableOperationInterface) {
@@ -170,6 +175,9 @@ class CommandContext extends RawMinkContext
 
     /**
      * @Then /^I should get the following products after apply the following mass-edit operation to it:$/
+     * @param TableNode $updates
+     *
+     * @throws \Exception
      */
     public function iShouldGetTheFollowingProductsAfterApplyTheFollowingMassEditOperationToIt(TableNode $updates)
     {
@@ -189,7 +197,6 @@ class CommandContext extends RawMinkContext
         $pqbFactory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
 
         foreach ($updates->getHash() as $update) {
-
             $operation = $operationRegistry->get($update['operation']);
             $productQueryBuilder = $pqbFactory->create();
 
@@ -229,7 +236,6 @@ class CommandContext extends RawMinkContext
                     ]
                 );
 
-                $expected = json_decode($update['result'], true);
                 $actual   = json_decode($getCommandTester->getDisplay(), true);
 
                 if (null === $actual) {
@@ -238,6 +244,8 @@ class CommandContext extends RawMinkContext
                         $getCommandTester->getDisplay()
                     ));
                 }
+
+                $expected = json_decode($update['result'], true);
 
                 if (null === $expected) {
                     throw new \Exception(sprintf(

@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Mass edit execution controller
+ * Display the resume of a mass edit execution
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
