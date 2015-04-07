@@ -30,6 +30,11 @@ class FormExtensionRestController
      */
     public function getAction()
     {
-        return new JsonResponse($this->extensionProvider->getExtensions());
+        return new JsonResponse(
+            [
+                'extensions'       => $this->extensionProvider->getExtensions(),
+                'attribute_fields' => $this->extensionProvider->getAttributeFields()
+            ]
+        );
     }
 }

@@ -32,6 +32,7 @@ config:
         # Form
         pim/form-builder:                                          pimenrich/js/form/builder
         pim/form-registry:                                         pimenrich/js/form/registry
+        pim/form-config-provider:                                  pimenrich/js/form/config-provider
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
         pim/product-edit-form/attributes/copy:                     pimenrich/js/product/form/attributes/copy
         pim/product-edit-form/attributes/copyfield:                pimenrich/js/product/form/attributes/copy-field
@@ -52,6 +53,7 @@ config:
         pim/product-edit-form/panel/history:                       pimenrich/js/product/form/panel/history
         pim/product-edit-form/panel/comments:                      pimenrich/js/product/form/panel/comments
         pim/product-edit-form/save:                                pimenrich/js/product/form/save
+        pim/product-edit-form/delete:                              pimenrich/js/product/form/delete
         pim/product-edit-form/change-family:                       pimenrich/js/product/form/change-family
         pim/product-edit-form/state:                               pimenrich/js/product/form/state
         pim/product-edit-form/status-switcher:                     pimenrich/js/product/form/status-switcher
@@ -97,6 +99,7 @@ config:
         pim/template/product/locale-switcher:                        pimenrich/templates/product/locale-switcher.html
         pim/template/product/form-tabs:                              pimenrich/templates/product/form-tabs.html
         pim/template/product/save:                                   pimenrich/templates/product/save.html
+        pim/template/product/delete:                                 pimenrich/templates/product/delete.html
         pim/template/product/status-switcher:                        pimenrich/templates/product/status-switcher.html
         pim/template/product/change-family:                          pimenrich/templates/product/change-family.html
         pim/template/product/state:                                  pimenrich/templates/product/state.html

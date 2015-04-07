@@ -15,6 +15,9 @@ class FormExtensionProvider
     protected $extensions = [];
 
     /** @var array */
+    protected $attributeFields = [];
+
+    /** @var array */
     protected $defaults = [
         'module'       => null,
         'parent'       => null,
@@ -40,5 +43,22 @@ class FormExtensionProvider
     public function getExtensions()
     {
         return $this->extensions;
+    }
+
+    /**
+     * @param string $attributeType
+     * @param string $module
+     */
+    public function addAttributeField($attributeType, $module)
+    {
+        $this->attributeFields[$attributeType] = $module;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributeFields()
+    {
+        return $this->attributeFields;
     }
 }

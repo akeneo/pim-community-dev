@@ -20,6 +20,11 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
 
+    delete:
+        module: pim/product-edit-form/delete
+        parent: product-edit-form
+        targetZone: buttons
+
     save:
         module: pim/product-edit-form/save
         parent: product-edit-form
@@ -141,3 +146,17 @@ extensions:
         parent: copy
         targetZone: context-selectors
         insertAction: append
+
+attribute_fields:
+    pim_catalog_boolean:          pim/boolean-field
+    pim_catalog_date:             pim/date-field
+    pim_catalog_file:             pim/media-field
+    pim_catalog_image:            pim/media-field
+    pim_catalog_metric:           pim/metric-field
+    pim_catalog_multiselect:      pim/multi-select-field
+    pim_catalog_number:           pim/number-field
+    pim_catalog_price_collection: pim/price-collection-field
+    pim_catalog_simpleselect:     pim/simple-select-field
+    pim_catalog_identifier:       pim/text-field
+    pim_catalog_text:             pim/text-field
+    pim_catalog_textarea:         pim/textarea-field
