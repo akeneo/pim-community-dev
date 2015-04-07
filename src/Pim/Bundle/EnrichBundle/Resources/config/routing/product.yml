@@ -99,9 +99,9 @@ pim_enrich_product_rest_post:
         id: '[0-9a-f]+'
     methods: [POST]
 
-pim_enrich_product_rest_list_categories:
+pim_enrich_product_category_rest_list:
     path: /rest/{id}/categories
-    defaults: { _controller: pim_enrich.controller.product_rest:listCategoriesAction }
+    defaults: { _controller: pim_enrich.controller.product_category_rest:listAction }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
