@@ -377,7 +377,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
          */
         _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
-            if (newValue.type === 'empty') {
+            if ('empty' === newValue.type) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
             } else {
                 this._displayFilterType(newValue.type);
