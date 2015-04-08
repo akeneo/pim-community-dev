@@ -1,0 +1,254 @@
+/* Header ***********************************************************************************************************/
+
+#oroplatform-header {
+  .navbar-inner {
+    display: block;
+    width: 100%;
+    clear: both;
+    position: relative;
+    z-index: 900;
+    .divider-vertical {
+      border:none;
+      margin:9px 6px;
+      height:22px;
+    }
+    .logo {
+      position: relative;
+      height: 40px;
+      padding: 0 14px 0 0;
+      margin: 0 5px 0 0;
+      line-height:36px;
+      a {
+        &:hover,
+        &:focus,
+        &:active {
+          color: #fff;
+          outline: 0;
+        }
+      }
+    } // Ends .logo
+    .btn-group {
+      margin: 0;
+    }
+    .nav {
+      margin:0;
+      >li {
+        > a {
+          color: #fff;
+          font-weight: normal;
+          text-shadow: none;
+        }
+      }
+      a.help {
+        margin: 0 10px 0 0;
+        padding: 9px 4px;
+        color:#fff;
+        font-size:16px;
+      }
+    }
+    .dark {
+      border:1px solid #eaeaea;
+      border-width:1px 0;
+      background-color: #fbfbfb;
+      padding:15px 15px 7px;
+    }
+  }
+  > .navbar-inner {
+    .border-radius(0);
+    border:none;
+    margin:0;
+    padding:0;
+  }
+}
+header {
+  &:after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+  &.navbar {
+    margin: 0;
+    z-index: 800;
+  }
+}
+
+#oroplatform-header {
+  .divider-vertical {
+    float: left;
+    margin-right: 0;
+  }
+  /* Header right */
+  .nav.pull-right {
+    li.dropdown {
+      > a {
+        padding:10px;
+        color:#fff;
+        text-shadow:none;
+        [class^='icon-'] {
+          vertical-align:top;
+          font-size:14px
+        }
+      }
+      .dropdown-menu {
+        width:100px;
+        margin:-4px -4px 0 0;
+        li {
+          a {
+            padding:2px 12px;
+            color: @bodyColor;
+            &:hover { color: @bodyColor; }
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Header Application Menu */
+#oroplatform-header {
+  .oroplatform-menu {
+    > li.dropdown {
+      margin:0 3px;
+      z-index: 900;
+      > a {
+        margin:6px 0px 6px;
+        padding:4px 10px;
+        font-size:13px;
+        color:#fff;
+        text-shadow:none;
+      }
+      &.active {
+        > a {
+          margin:6px 0 6px;
+          padding:4px 10px;
+          .border-radius(4px);
+        }
+      }
+      &:hover,
+      &:focus {
+        > a {
+          margin:6px 0 0;
+          //border:1px solid #fff;
+          padding-bottom:10px;
+          background:#fff;
+          .border-radius(4px 4px 0 0);
+          color:#444;
+          &:hover {
+            background:#fff;
+            color:#444;
+          }
+        }
+      }
+      .dropdown-menu { /* All 2+ level */
+        border:none;
+        .border-radius(0 3px 3px 3px);
+        width:auto;
+        padding:0;
+        font-size:13px;
+        .box-shadow(0 2px 3px rgba(0, 0, 0, 0.3));
+        &:after,
+        &:before { border:none; }
+        li {
+          line-height:1.3em;
+          a {
+            padding:5px 10px;
+            color: @bodyColor;
+          }
+          &.active a { background:none; }
+          a:hover,
+          &.active a:hover { background:#f3f3f3 }
+          &:first-child a { .border-radius(0 3px 0 0)}
+          &:last-child a { .border-radius(0 0 3px 3px)}
+        }
+      }
+    }
+    li.dropdown:hover .dropdown-menu { /* Opens on hover for all 2+ levels */
+      display:block;
+    }
+    li.dropdown .dropdown-menu {
+      left:140px;
+    }
+    > li.dropdown > .dropdown-menu {
+      left:auto;
+      top:39px;
+    }
+  }
+}
+
+#oroplatform-header {
+  div.navbar-inner {
+    background: @color-new-purple-medium;
+    .logo {
+      &:before, &:after {
+        border: none;
+      }
+      a {
+        padding: 0;
+        background-color: transparent;
+        img {
+          height: 40px;
+        }
+      }
+    }
+    .nav.top-search {
+      .dropdown > .dropdown-toggle {
+        [class^='icon-'] {
+          text-shadow: 0 1px 1px @color-header_bottom;
+        }
+        &:hover [class^='icon-'] {
+          #gradient > .vertical(@color-header_top, darken(@color-header_bottom, 5%));
+          border: 1px solid darken(@color-header_bottom, 10%);
+        }
+      }
+      .dropdown > .dropdown-toggle:active > [class^=icon-],
+      .dropdown > .dropdown-toggle:focus > [class^=icon-],
+      .dropdown.open > .dropdown-toggle > [class^=icon-] {
+        #gradient > .vertical(@color-header_top, @color-header_bottom);
+        border: 1px solid darken(@color-header_bottom, 22%);
+      }
+    }
+    a.help i {
+      padding-top: 3px;
+    }
+  }
+  .oroplatform-menu>li.dropdown:not(:hover).active>a {
+    background: @color-new-purple-dark;
+  }
+}
+
+.navbar .small-divider {
+  width: 2px;
+}
+
+/* Pin bar and menus ************************************************************************************************/
+
+.pin-bar {
+  background-color: @color-new-purple-dark;
+  background-image: none;
+  .list-bar {
+    li.active{
+      background-color: #6800A9;
+    }
+  }
+  .pin-menus {
+    .oro-dropdown-toggle {
+      &:hover {
+        #gradient > .vertical(@color-purple_dark, darken(@color-purple_dark, 10%));
+      }
+    }
+    .dropdown-menu .tabs-left.tabbable {
+      background-color: @color-grey_tab;
+      >ul.nav-tabs {
+        li a {
+          background-color: @color-grey_tab;
+          &:hover {
+            background-color: @color-purple_hover;
+          }
+        }
+        li.active a {
+          background-color: @color-purple_hover;
+        }
+      }
+    }
+  }
+}
