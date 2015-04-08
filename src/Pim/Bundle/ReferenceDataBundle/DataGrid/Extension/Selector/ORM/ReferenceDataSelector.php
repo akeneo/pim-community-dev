@@ -33,7 +33,7 @@ class ReferenceDataSelector implements SelectorInterface
     public function apply(DatasourceInterface $dataSource, DatagridConfiguration $configuration)
     {
         $this->predecessor->apply($dataSource, $configuration);
-        $referencesData = $this->buildReferenceData($dataSource, $configuration);
+        $this->buildReferenceData($dataSource, $configuration);
     }
 
     /**
@@ -47,7 +47,7 @@ class ReferenceDataSelector implements SelectorInterface
         $source = $configuration->offsetGet('source');
         $qb = $dataSource->getQueryBuilder();
 
-        foreach ($source['displayed_columns'] as $column) {
+        foreach ($configuration->offsetGet('columns') as $column => $config) {
             $this->buildQueryBuilder($qb, $source, $column);
         }
     }
@@ -69,11 +69,14 @@ class ReferenceDataSelector implements SelectorInterface
 
         if (isset($attribute['properties']['reference_data_name'])) {
             $referenceDataName = $attribute['properties']['reference_data_name'];
-            $qbJoins = $this->getQbJoins($qb);
 
-            if (null !== $referenceDataName && !in_array($referenceDataName, $qbJoins)) {
-                $qb->leftJoin('values.' . $referenceDataName, $referenceDataName)
-                    ->addSelect($referenceDataName);
+            if (null !== $referenceDataName) {
+                $qbJoins = $this->getQbJoins($qb);
+
+                if (!in_array($referenceDataName, $qbJoins)) {
+                    $qb->leftJoin('values.' . $referenceDataName, $referenceDataName)
+                        ->addSelect($referenceDataName);
+                }
             }
         }
     }
