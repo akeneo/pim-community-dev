@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
+namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractProductValueRelationshipChecker;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
@@ -13,27 +13,8 @@ use Pim\Component\ReferenceData\Model\ConfigurationInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueRelationshipChecker implements CheckerInterface
+class ProductValueRelationshipChecker extends AbstractProductValueRelationshipChecker
 {
-    /** @var string */
-    protected $productValueClass;
-
-    /** @var ObjectManager */
-    protected $om;
-
-    /** @var string */
-    protected $failure;
-
-    /**
-     * @param ObjectManager $om
-     * @param string        $productValueClass
-     */
-    public function __construct(ObjectManager $om, $productValueClass)
-    {
-        $this->om                = $om;
-        $this->productValueClass = $productValueClass;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -72,39 +53,10 @@ class ProductValueRelationshipChecker implements CheckerInterface
     /**
      * {@inheritdoc}
      */
-    public function getDescription()
-    {
-        return 'Relation between the Product Value and the Reference Data must be configured.';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFailure()
-    {
-        return $this->failure;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isBlockingOnFailure()
-    {
-        return false;
-    }
-
-    /**
-     * Get the Doctrine mapping of the relationship between Product Value and the Reference Data.
-     *
-     * @param string $referenceData
-     *
-     * @return array
-     */
     protected function getAssociationMapping($referenceData)
     {
         $metadata = $this->om->getClassMetadata($this->productValueClass);
 
-        // TODO: this is pure ORM stuff, maybe that should go in a Doctrine/ directory
         return $metadata->getAssociationMapping($referenceData);
     }
 }

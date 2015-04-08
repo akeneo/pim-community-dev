@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
+namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;

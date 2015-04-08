@@ -13,7 +13,7 @@ use Pim\Component\ReferenceData\Model\ConfigurationInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataUniqueCodeChecker implements CheckerInterface
+abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterface
 {
     /** @var ObjectManager */
     protected $om;
@@ -77,16 +77,11 @@ class ReferenceDataUniqueCodeChecker implements CheckerInterface
 
     /**
      * Get the Doctrine mapping of the "code" field.
+     * Depending on Doctrine's storage, this method has to be changed.
      *
      * @param string $referenceDataClass
      *
      * @return array
      */
-    protected function getCodeFieldMapping($referenceDataClass)
-    {
-        $metadata = $this->om->getClassMetadata($referenceDataClass);
-
-        // TODO: this is pure ORM stuff, maybe that should go in a Doctrine/ directory
-        return $metadata->getFieldMapping('code');
-    }
+    abstract protected function getCodeFieldMapping($referenceDataClass);
 }

@@ -2,13 +2,16 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Command;
 
+use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\RequirementChecker\ProductValueRelationshipChecker as MongoProductValueRelationshipChecker;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ProductValueRelationshipChecker as OrmProductValueRelationshipChecker;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueAccessorsChecker;
-use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueRelationshipChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataInterfaceChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataNameChecker;
-use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataUniqueCodeChecker;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -17,7 +20,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Checks if a reference data is correctly configured.
- *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -41,26 +43,41 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     {
         foreach ($this->getRegistry()->all() as $configuration) {
             $output->writeln('');
-            $output->writeln(sprintf('<comment>Checking configuration of "%s"...</comment>', $configuration->getName()));
+            $output->writeln(
+                sprintf('<comment>Checking configuration of "%s"...</comment>', $configuration->getName())
+            );
 
-            $this->checkConfiguration(new ReferenceDataNameChecker(), $configuration, $output);
-            $this->checkConfiguration(new ReferenceDataInterfaceChecker(), $configuration, $output);
-            $this->checkConfiguration(
-                new ReferenceDataUniqueCodeChecker($this->getDoctrineProductManager()),
-                $configuration,
-                $output
+            foreach ($this->getCheckers() as $checker) {
+                $this->checkConfiguration($checker, $configuration, $output);
+            }
+        }
+    }
+
+    /**
+     * @return CheckerInterface[]
+     */
+    protected function getCheckers()
+    {
+        $checkers   = [];
+        $checkers[] = new ReferenceDataNameChecker();
+        $checkers[] = new ReferenceDataInterfaceChecker();
+        $checkers[] = new ReferenceDataUniqueCodeChecker($this->getDoctrineEntityManager());
+        $checkers[] = new ProductValueAccessorsChecker($this->getProductValueClass());
+
+        $storageDriver = $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
+        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver) {
+            $checkers[] = new OrmProductValueRelationshipChecker(
+                $this->getDoctrineProductManager(),
+                $this->getProductValueClass()
             );
-            $this->checkConfiguration(
-                new ProductValueAccessorsChecker($this->getProductValueClass()),
-                $configuration,
-                $output
-            );
-            $this->checkConfiguration(
-                new ProductValueRelationshipChecker($this->getDoctrineProductManager(), $this->getProductValueClass()),
-                $configuration,
-                $output
+        } else {
+            $checkers[] = new MongoProductValueRelationshipChecker(
+                $this->getDoctrineProductManager(),
+                $this->getProductValueClass()
             );
         }
+
+        return $checkers;
     }
 
     /**
@@ -109,5 +126,13 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function getProductValueClass()
     {
         return $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
+    }
+
+    /**
+     * @return EntityManagerInterface
+     */
+    protected function getDoctrineEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.default_entity_manager');
     }
 }

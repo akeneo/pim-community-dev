@@ -1,17 +1,20 @@
 <?php
 
-namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
+namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\RequirementChecker;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\Mapping\MappingException;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
+use Doctrine\ODM\MongoDB\Mapping\MappingException;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Prophecy\Argument;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Query\Builder
+ */
 class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 {
-    public function let(EntityManagerInterface $em, ClassMetadataInfo $classMetadata)
+    public function let(DocumentManager $em, ClassMetadataInfo $classMetadata)
     {
         $em->getClassMetadata(Argument::any())->willReturn($classMetadata);
         $this->beConstructedWith($em, 'spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue');
@@ -20,8 +23,8 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
     function it_checks_a_valid_many_to_one_relationship($classMetadata, ConfigurationInterface $configuration)
     {
-        $classMetadata->getAssociationMapping('color')->willReturn([
-            'type' => ClassMetadataInfo::MANY_TO_ONE,
+        $classMetadata->getFieldMapping('color')->willReturn([
+            'type' => 'entity',
             'isOwningSide' => true,
         ]);
 
@@ -34,9 +37,14 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
     function it_checks_a_valid_many_to_many_relationship($classMetadata, ConfigurationInterface $configuration)
     {
-        $classMetadata->getAssociationMapping('fabrics')->willReturn([
-            'type' => ClassMetadataInfo::MANY_TO_MANY,
+        $classMetadata->getFieldMapping('fabrics')->willReturn([
+            'type' => 'entities',
             'isOwningSide' => true,
+            'idsField' => 'fabricIds'
+        ]);
+
+        $classMetadata->getFieldMapping('fabricIds')->willReturn([
+            'type' => 'collection'
         ]);
 
         $configuration->getType()->willReturn(ConfigurationInterface::TYPE_MULTI);
@@ -48,22 +56,23 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
     function it_checks_a_non_existent_mapping_relationship($classMetadata, ConfigurationInterface $configuration)
     {
+        $configuration->getType()->willReturn(ConfigurationInterface::TYPE_MULTI);
         $configuration->getName()->willReturn('foo');
-        $classMetadata->getAssociationMapping('foo')->willThrow(
+        $classMetadata->getFieldMapping('foo')->willThrow(
             MappingException::mappingNotFound('spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue', 'foo')
         );
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            "No mapping found for field 'foo' on class ".
+            "No mapping found for field 'foo' in class ".
             "'spec\\Pim\\Bundle\\ReferenceDataBundle\\RequirementChecker\\CustomValidProductValue'."
         );
     }
 
     function it_checks_an_invalid_many_to_one_relationship($classMetadata, ConfigurationInterface $configuration)
     {
-        $classMetadata->getAssociationMapping('color')->willReturn([
-            'type' => ClassMetadataInfo::MANY_TO_MANY,
+        $classMetadata->getFieldMapping('color')->willReturn([
+            'type' => 'invalid',
             'isOwningSide' => true,
         ]);
 
@@ -72,16 +81,20 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure your Product Value relation "color" correctly. ' .
+            'Please configure the type and the owning side correctly in your Product Value "color" relation. ' .
             'You can take the relation "option" as example.'
         );
     }
 
-    function it_checks_an_invalid_many_to_many_relationship($classMetadata, ConfigurationInterface $configuration)
+    function it_checks_an_invalid_many_to_many_collection_relationship($classMetadata, ConfigurationInterface $configuration)
     {
-        $classMetadata->getAssociationMapping('fabrics')->willReturn([
-            'type' => ClassMetadataInfo::MANY_TO_MANY,
-            'isOwningSide' => false,
+        $classMetadata->getFieldMapping('fabrics')->willReturn([
+            'type' => 'entities',
+            'isOwningSide' => true,
+        ]);
+
+        $classMetadata->getFieldMapping('fabricIds')->willReturn([
+            'type' => 'invalid'
         ]);
 
         $configuration->getType()->willReturn(ConfigurationInterface::TYPE_MULTI);
@@ -89,7 +102,29 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure your Product Value relation "fabrics" correctly. ' .
+            'Please configure the "idsField" in your Product Value "fabrics" relation. ' .
+            'You can take the relation "options" as example.'
+        );
+    }
+
+    function it_checks_an_invalid_many_to_many_relationship($classMetadata, ConfigurationInterface $configuration)
+    {
+        $classMetadata->getFieldMapping('fabrics')->willReturn([
+            'type' => 'entities',
+            'isOwningSide' => false,
+            'idsField' => 'fabricIds'
+        ]);
+
+        $classMetadata->getFieldMapping('fabricIds')->willReturn([
+            'type' => 'collection'
+        ]);
+
+        $configuration->getType()->willReturn(ConfigurationInterface::TYPE_MULTI);
+        $configuration->getName()->willReturn('fabrics');
+
+        $this->check($configuration)->shouldReturn(false);
+        $this->getFailure()->shouldReturn(
+            'Please configure the type and the owning side correctly in your Product Value "fabrics" relation. ' .
             'You can take the relation "options" as example.'
         );
     }
