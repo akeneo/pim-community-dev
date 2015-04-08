@@ -58,6 +58,7 @@ define(
                             mediator.trigger('validation_error', response.responseJSON);
                         break;
                         case 500:
+                            /* global console */
                             console.log('Errors:', response.responseJSON);
                         break;
                         default:

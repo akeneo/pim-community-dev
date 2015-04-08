@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
 function(_, messenger, __, Modal, AbstractAction) {
     'use strict';

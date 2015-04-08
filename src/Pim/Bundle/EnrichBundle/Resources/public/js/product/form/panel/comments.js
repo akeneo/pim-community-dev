@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -10,7 +11,7 @@ define(
         'routing',
         'oro/messenger'
     ],
-    function (_, Backbone, BaseForm, usercontext, template, Routing, messenger) {
+    function ($, _, Backbone, BaseForm, usercontext, template, Routing, messenger) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',

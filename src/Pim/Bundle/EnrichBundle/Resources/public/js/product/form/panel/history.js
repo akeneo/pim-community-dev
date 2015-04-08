@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -10,7 +11,7 @@ define(
         'oro/mediator',
         'backbone/bootstrap-modal'
     ],
-    function(_, Backbone, BaseForm, template, Routing, mediator) {
+    function($, _, Backbone, BaseForm, template, Routing, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',

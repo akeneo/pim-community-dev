@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-define(['routing'], function (Routing) {
+define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
     return {
         urls: {
             'get_variant_group': 'pim_enrich_variant_group_rest_get',
@@ -13,7 +13,7 @@ define(['routing'], function (Routing) {
 
             if (!(variantGroupCode in this.variantGroupPromises)) {
                 this.variantGroupPromises[variantGroupCode] = $.ajax(
-                    Routing.generate(this.urls['get_variant_group'], {'identifier': variantGroupCode}),
+                    Routing.generate(this.urls.get_variant_group, {'identifier': variantGroupCode}),
                     {
                         method: 'GET'
                     }

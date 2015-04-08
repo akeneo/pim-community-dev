@@ -1,4 +1,3 @@
-/* global define */
 define(['oro/navigation/collection', 'oro/navigation/pinbar/model'],
 function(NavigationCollection, PinbarModel) {
     'use strict';

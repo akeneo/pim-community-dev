@@ -1,6 +1,8 @@
-"use strict";
+'use strict';
 
-define(['routing', 'pim/config-manager', 'pim/attribute-manager'], function (Routing, ConfigManager, AttributeManager) {
+define(
+    ['jquery', 'underscore', 'routing', 'pim/config-manager', 'pim/attribute-manager'],
+    function ($, _, Routing, ConfigManager, AttributeManager) {
     return {
         getAttributeGroupsForProduct: function(product)
         {

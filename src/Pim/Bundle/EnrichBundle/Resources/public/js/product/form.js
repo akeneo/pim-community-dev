@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['underscore', 'backbone'],
-    function(_, Backbone) {
+    ['jquery', 'underscore', 'backbone'],
+    function($, _, Backbone) {
         return Backbone.View.extend({
             code: 'form',
             initialize: function () {
@@ -84,6 +84,7 @@ define(
             renderExtensions: function () {
                 _.each(this.extensions, function(extension) {
                     extension.getTargetElement()[extension.insertAction](extension.el);
+                    /* global console */
                     console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                     extension.render();
                 });

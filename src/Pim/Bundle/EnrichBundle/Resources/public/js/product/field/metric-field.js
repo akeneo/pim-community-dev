@@ -1,13 +1,14 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'pim/field',
         'underscore',
         'pim/config-manager',
         'pim/attribute-manager',
         'text!pim/template/product/field/metric',
         'jquery.select2'
-        ], function (Field, _, ConfigManager, AttributeManager, fieldTemplate) {
+        ], function ($, Field, _, ConfigManager, AttributeManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'metric',

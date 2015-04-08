@@ -1,12 +1,13 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'backbone',
         'underscore',
         'text!pim/template/product/field/field',
         'pim/attribute-manager',
         'pim/i18n'
-        ], function (Backbone, _, fieldTemplate, AttributeManager, i18n) {
+        ], function ($, Backbone, _, fieldTemplate, AttributeManager, i18n) {
     var FieldModel = Backbone.Model.extend({
         'values': []
     });

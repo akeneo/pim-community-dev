@@ -1,5 +1,4 @@
-/* jshint browser:true */
-/* global define */
+/* jshint unused:vars, eqeqeq:false */
 define(['jquery', 'underscore', 'backbone', 'oro/navigation', 'oro/mediator', 'oro/navigation/abstract-view',
     'oro/navigation/pinbar/item-view', 'oro/navigation/pinbar/collection', 'oro/navigation/pinbar/model'],
 function($, _, Backbone, Navigation, mediator, AbstractView,
@@ -28,7 +27,7 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
         massAdd: false,
 
         templates: {
-            noItemsMessage: _.template($("#template-no-pins-message").html())
+            noItemsMessage: _.template($('#template-no-pins-message').html())
         },
 
         initialize: function() {
@@ -41,7 +40,9 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
                 this.options.collection = new PinbarCollection();
             }
 
-            this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
+            this.listenTo(this.options.collection, 'add', function(item) {
+                this.setItemPosition(item);
+            });
             this.listenTo(this.options.collection, 'remove', this.onPageClose);
             this.listenTo(this.options.collection, 'reset', this.addAll);
             this.listenTo(this.options.collection, 'all', this.render);
@@ -54,7 +55,7 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
              * Changing pinbar state after grid is loaded
              */
             mediator.bind(
-                "grid_load:complete",
+                'grid_load:complete',
                 this.updatePinbarState,
                 this
             );
@@ -63,7 +64,7 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
              * Change pinbar icon state after hash navigation request is completed
              */
             mediator.bind(
-                "hash_navigation_request:complete",
+                'hash_navigation_request:complete',
                 this.checkPinbarIcon,
                 this
             );
@@ -268,22 +269,22 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
             var position = item.get('position');
             var type = position >= this.options.maxItems ? 'tab': 'list';
 
-            if (item.get('display_type') != type) {
+            if (item.get('displayType') !== type) {
                 this.cleanup();
-                item.set('display_type', type);
+                item.set('displayType', type);
 
                 var view = new PinbarItemView({
                     type: type,
                     model: item
                 });
 
-                if (type == 'tab') {
+                if (type === 'tab') {
                     this.addItemToTab(view, !this.massAdd);
                     /**
                      * Backbone event. Fired when tab is changed
                      * @event tab:changed
                      */
-                    mediator.trigger("tab:changed", this.options.tabId);
+                    mediator.trigger('tab:changed', this.options.tabId);
                 } else {
                     var rowEl = view.render().el;
                     if (this.massAdd || position > 0) {
@@ -322,14 +323,14 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
          */
         render: function() {
             if (!this.massAdd) {
-                if (this.options.collection.length == 0) {
+                if (this.options.collection.length === 0) {
                     this.requireCleanup = true;
                     this.$listBar.html(this.templates.noItemsMessage());
                     /**
                      * Backbone event. Fired when pinbar help link is shown
                      * @event pinbar_help:shown
                      */
-                    mediator.trigger("pinbar_help:shown");
+                    mediator.trigger('pinbar_help:shown');
                 }
 
                 this.checkTabContent();
@@ -337,7 +338,7 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
                  * Backbone event. Fired when tab is changed
                  * @event tab:changed
                  */
-                mediator.trigger("tab:changed", this.options.tabId);
+                mediator.trigger('tab:changed', this.options.tabId);
             }
         }
     });

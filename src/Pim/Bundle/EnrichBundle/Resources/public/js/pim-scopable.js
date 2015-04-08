@@ -1,5 +1,16 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/optionform', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    [
+        'jquery',
+        'backbone',
+        'underscore',
+        'oro/mediator',
+        'wysiwyg',
+        'pim/optionform',
+        'pim/fileinput',
+        'bootstrap',
+        'bootstrap.bootstrapswitch',
+        'jquery.select2'
+    ],
     function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
         /**
@@ -20,7 +31,8 @@ define(
                     '<div class="controls input-prepend<%= isMetric ? " metric input-append" : "" %>">' +
                         '<label class="control-label add-on" for="<%= field.id %>" title="<%= field.scope %>"' +
                             '<% if (field.color) { %>' +
-                                ' style="background-color:rgba(<%= field.color %>)<%= field.fontColor ? ";color:" + field.fontColor : "" %>;"' +
+                                ' style="background-color:rgba(<%= field.color %>)' +
+                                    '<%= field.fontColor ? ";color:" + field.fontColor : "" %>;"' +
                             '<% } %>' +
                         '>' +
                             '<%= field.scope[0].toUpperCase() %>' +

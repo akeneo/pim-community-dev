@@ -1,4 +1,3 @@
-/* global define, require*/
 define(['underscore'],
 function (_) {
     'use strict';

@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'routing'], function ($, Routing) {
+define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
     return {
         completenesses: {},
         completenessPromises: {},

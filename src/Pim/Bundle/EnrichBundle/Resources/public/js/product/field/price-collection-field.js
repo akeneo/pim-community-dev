@@ -1,12 +1,13 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'pim/field',
         'underscore',
         'pim/config-manager',
         'text!pim/template/product/field/price-collection'
     ],
-    function (Field, _, ConfigManager, fieldTemplate) {
+    function ($, Field, _, ConfigManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
@@ -18,7 +19,8 @@ define([
         },
         updateModel: function (event) {
             var data = [];
-            _.each($(event.currentTarget).parents('.price-collection-field').find('.price-input'), _.bind(function(element) {
+            var $elements = $(event.currentTarget).parents('.price-collection-field').find('.price-input');
+            _.each($elements, _.bind(function(element) {
                 var input = $(element).children('input');
 
                 var inputData = input.val();

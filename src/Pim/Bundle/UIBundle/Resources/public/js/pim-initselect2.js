@@ -1,3 +1,4 @@
+/* jshint unused:vars */
 define(
     ['jquery', 'underscore', 'jquery.select2'],
     function ($, _) {
@@ -34,9 +35,8 @@ define(
                 var options = {
                         multiple: false,
                         allowClear: false
-                    },
-                    self = this,
-                    values = null;
+                    };
+                var self = this;
                 if ($select.attr('data-multiple')) {
                     options.multiple = true;
                 }
@@ -44,7 +44,7 @@ define(
                     if (!$select.attr('data-required')) {
                         options.allowClear = true;
                     }
-                    options.placeholder = " ";
+                    options.placeholder = ' ';
                 }
                 options.minimumInputLength = $select.attr('data-min-input-length');
                 options.query = function (options) {
@@ -68,7 +68,7 @@ define(
                         });
                     } else {
                         $.ajax({
-                            url: $select.attr("data-url"),
+                            url: $select.attr('data-url'),
                             data: {
                                 search: options.term,
                                 options: {
@@ -93,7 +93,7 @@ define(
                     }
                 };
                 options.initSelection = function(element, callback) {
-                    var choices = $.parseJSON($select.attr("data-choices"));
+                    var choices = $.parseJSON($select.attr('data-choices'));
                     callback(choices);
                 };
                 $select.select2(options);

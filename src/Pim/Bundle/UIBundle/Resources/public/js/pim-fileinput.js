@@ -27,7 +27,9 @@ define(
                 }
 
                 if (filename) {
-                    var title = filename.length > maxFilenameLength ? filename.substring(0, maxFilenameLength-3) + '...' : filename;
+                    var title = filename.length > maxFilenameLength ?
+                        filename.substring(0, maxFilenameLength-3) + '...' :
+                        filename;
                     $filename.html(title);
                     $zone.removeClass('empty');
                     $preview.removeClass('empty').attr('title', filename);

@@ -2,12 +2,13 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
         'text!pim/template/product/panel/container'
     ],
-    function(_, Backbone, BaseForm, template) {
+    function($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-container closed',
@@ -51,6 +52,7 @@ define(
 
                 if (this.state.get('currentPanel')) {
                     var currentPanel = this.extensions[this.state.get('currentPanel')];
+                    /* global console */
                     console.log(this.code, 'triggered the rendering of', currentPanel.code);
                     currentPanel.getTargetElement()[currentPanel.insertAction](currentPanel.el);
                     currentPanel.render();

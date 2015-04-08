@@ -1,5 +1,15 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'pim/ui', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'routing',
+        'oro/loading-mask',
+        'oro/error',
+        'pim/ui',
+        'jquery.jstree',
+        'jstree/jquery.jstree.tree_selector'
+    ],
     function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
         'use strict';
 
@@ -40,7 +50,15 @@ define(
                 },
                 tree_selector: {
                     ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_listtree', { _format: 'json', select_node_id: selectedNodeOrTree, context: 'manage', with_products_count: 0 })
+                        url: Routing.generate(
+                            'pim_enrich_categorytree_listtree',
+                            {
+                                _format: 'json',
+                                select_node_id: selectedNodeOrTree,
+                                context: 'manage',
+                                with_products_count: 0
+                            }
+                        )
                     },
                     auto_open_root: true,
                     node_label_field: 'label',
@@ -53,7 +71,13 @@ define(
                 },
                 json_data: {
                     ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_children', { _format: 'json', context: 'manage' }),
+                        url: Routing.generate(
+                            'pim_enrich_categorytree_children',
+                            {
+                                _format: 'json',
+                                context: 'manage'
+                            }
+                        ),
                         data: function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = null;
@@ -103,7 +127,8 @@ define(
                             data: {
                                 id: $(this).attr('id').replace('node_', ''),
                                 parent: data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
-                                prev_sibling: this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
+                                prev_sibling: this_jstree._get_prev(this, true) ?
+                                    this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
                                 position: data.rslt.cp + i,
                                 code: data.rslt.name,
                                 copy: data.rslt.cy ? 1 : 0

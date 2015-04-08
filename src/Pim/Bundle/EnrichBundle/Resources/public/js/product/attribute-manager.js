@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-define(['pim/config-manager', 'pim/channel-manager'], function (ConfigManager) {
+define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], function ($, _, ConfigManager) {
     return {
         getAttributesForProduct: function(product) {
             var promise = $.Deferred();

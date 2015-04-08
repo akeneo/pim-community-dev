@@ -155,6 +155,7 @@ define(
 
                 product.values[attributeCode] = [];
 
+                /* jshint sub:true */
                 this.extensions['copy'].generateCopyFields();
 
                 this.setData(product);
@@ -168,6 +169,7 @@ define(
                 this.extensions['add-attribute'].updateOptionalAttributes(product);
                 delete product.values[attributeCode];
                 delete fields[attributeCode];
+                /* jshint sub:true */
                 this.extensions['copy'].generateCopyFields();
 
                 this.setData(product);
@@ -175,7 +177,9 @@ define(
                 this.getRoot().model.trigger('change');
             },
             getValuesData: function () {
-                //We will have to decide if we keep this behavior (not sure if getting the field value is the good strategie)
+                // We will have to decide if we keep this behavior
+                // (not sure if getting the field value is the good strategy)
+                /* global console */
                 console.log(this.getData().values);
                 return this.getData().values;
             },

@@ -13,8 +13,9 @@ define(
                 if (!$target) {
                     $target = $('body');
                 }
+                var $container = $('.scrollable-container');
                 $target.find('.fullheight').filter(':visible').each(function () {
-                    $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                    $(this).height($container.height() - $(this).position().top + $container.position().top);
                 });
             };
             var pageInit = function ($target) {
@@ -35,7 +36,9 @@ define(
 
                 // Toogle accordion icon
                 $target.find('.accordion').on('show hide', function (e) {
-                    $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
+                    $(e.target).siblings('.accordion-heading')
+                        .find('.accordion-toggle i')
+                        .toggleClass('icon-collapse-alt icon-expand-alt');
                 });
 
                 var $localizableIcon = $('<i>', {
@@ -79,14 +82,14 @@ define(
                     }
                 });
 
-                var secret = "38384040373937396665";
-                var input = "";
+                var secret = '38384040373937396665';
+                var input = '';
                 var timer;
                 $(document).keyup(function(e) {
                     input += e.which;
                     clearTimeout(timer);
-                    timer = setTimeout(function() { input = ""; }, 500);
-                    if (input == secret) {
+                    timer = setTimeout(function() { input = ''; }, 500);
+                    if (input === secret) {
                         $(document.body).addClass('konami');
                     }
                 });
@@ -99,7 +102,15 @@ define(
                         doAction = function () {
 
                             var loadingMask = new LoadingMask();
-                            loadingMask.render().$el.appendTo($(document.body)).css({ 'position': 'absolute', 'top': '0px', 'left': '0px', 'width': '100%', 'height': '100%'});
+                            loadingMask.render().$el.appendTo($(document.body)).css(
+                                {
+                                    'position': 'absolute',
+                                    'top': '0px',
+                                    'left': '0px',
+                                    'width': '100%',
+                                    'height': '100%'
+                                }
+                            );
                             loadingMask.show();
 
                             $.ajax({

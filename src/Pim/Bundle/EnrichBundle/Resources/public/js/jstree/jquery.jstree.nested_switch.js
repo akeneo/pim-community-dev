@@ -1,3 +1,4 @@
+/* global jQuery */
 /**
  * Allow to select on which tree to work and manage creation and deletion of trees
  * File: jstree.nested_switch.js

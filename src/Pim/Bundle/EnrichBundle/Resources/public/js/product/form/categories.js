@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -9,7 +10,7 @@ define(
         'routing',
         'pim/tree/associate'
     ],
-    function(_, Backbone, BaseForm, formTemplate, Routing, TreeAssociate) {
+    function($, _, Backbone, BaseForm, formTemplate, Routing, TreeAssociate) {
         return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tab-pane active',

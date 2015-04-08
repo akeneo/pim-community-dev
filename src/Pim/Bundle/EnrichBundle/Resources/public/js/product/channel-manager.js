@@ -1,9 +1,14 @@
-"use strict";
+'use strict';
 
-define([
+define(
+    [
+        'jquery',
+        'underscore',
         'pim/config-manager'
     ],
     function (
+        $,
+        _,
         ConfigManager
     ) {
     return {

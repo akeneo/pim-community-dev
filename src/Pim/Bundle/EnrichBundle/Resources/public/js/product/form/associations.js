@@ -47,7 +47,8 @@ define(
                             var params = {
                                 product: this.getRoot().model.get('meta').id
                             };
-                            params[this.datagrids.products.paramName] = this.datagrids.products.getParamValue(associationType);
+                            var paramValue = this.datagrids.products.getParamValue(associationType);
+                            params[this.datagrids.products.paramName] = paramValue;
                             params.dataLocale = UserContext.getUserContext().get('catalogLocale');
 
                             return params;
@@ -100,7 +101,11 @@ define(
                     _.each(this.datagrids, function (datagrid) {
                         if ($('#grid-' + datagrid.name).length) {
                             mediator
-                                .trigger('datagrid:setParam:' + datagrid.name, datagrid.paramName, datagrid.getParamValue(associationType))
+                                .trigger(
+                                    'datagrid:setParam:' + datagrid.name,
+                                    datagrid.paramName,
+                                    datagrid.getParamValue(associationType)
+                                )
                                 .trigger('datagrid:doRefresh:' + datagrid.name);
                         }
                     });
@@ -118,7 +123,10 @@ define(
                     AttributeManager.getIdentifierAttribute()
                 ).done(_.bind(function (associationTypes, identifierAttribute) {
                     this.setAssociationCount(associationTypes);
-                    this.state.set('currentAssociationType', associationTypes.length ? _.first(associationTypes).code : null);
+                    this.state.set(
+                        'currentAssociationType',
+                        associationTypes.length ? _.first(associationTypes).code : null
+                    );
                     this.state.set('associationTypes', associationTypes);
                     this.identifierAttribute = identifierAttribute;
                     this.$el.html(
@@ -132,7 +140,10 @@ define(
 
                     if (associationTypes.length) {
                         _.each(this.datagrids, _.bind(function (datagrid) {
-                            this.renderGrid(datagrid.name, datagrid.getInitialParams(this.state.get('currentAssociationType')));
+                            this.renderGrid(
+                                datagrid.name,
+                                datagrid.getInitialParams(this.state.get('currentAssociationType'))
+                            );
                         }, this));
                         this.setListenerSelectors();
                     }
@@ -148,11 +159,11 @@ define(
             setAssociationCount: function (associationTypes) {
                 var associations = this.getData().associations;
 
-                _.each(associationTypes, function (associationType) {
-                    var association = associations[associationType.code];
+                _.each(associationTypes, function (assocType) {
+                    var association = associations[assocType.code];
 
-                    associationType.productCount = association && association.products ? association.products.length : 0;
-                    associationType.groupCount = association && association.groups ? association.groups.length : 0;
+                    assocType.productCount = association && association.products ? association.products.length : 0;
+                    assocType.groupCount = association && association.groups ? association.groups.length : 0;
                 });
             },
             changeAssociationType: function (event) {
@@ -169,7 +180,11 @@ define(
 
                 _.each(this.datagrids, function (datagrid) {
                     mediator
-                        .trigger('datagrid:setParam:' + datagrid.name, datagrid.paramName, datagrid.getParamValue(associationType))
+                        .trigger(
+                            'datagrid:setParam:' + datagrid.name,
+                            datagrid.paramName,
+                            datagrid.getParamValue(associationType)
+                        )
                         .trigger('datagrid:doRefresh:' + datagrid.name);
                 });
             },
@@ -231,17 +246,17 @@ define(
                 }
             },
             getCurrentAssociations: function () {
-                var associationType = this.state.get('currentAssociationType');
-                var associationTarget = this.state.get('associationTarget');
+                var assocType = this.state.get('currentAssociationType');
+                var assocTarget = this.state.get('associationTarget');
                 var associations = this.getRoot().model.get('associations');
                 if (_.isArray(associations)) {
                     associations = {};
                     this.getRoot().model.set('associations', associations, {silent: true});
                 }
-                associations[associationType] = associations[associationType] || {};
-                associations[associationType][associationTarget] = associations[associationType][associationTarget] || [];
+                associations[assocType] = associations[assocType] || {};
+                associations[assocType][assocTarget] = associations[assocType][assocTarget] || [];
 
-                return associations[associationType][associationTarget];
+                return associations[assocType][assocTarget];
             }
         });
     }

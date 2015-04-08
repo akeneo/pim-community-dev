@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, AttributeManager) {
+define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($, _, Routing, AttributeManager) {
     return {
         productValues: null,
         get: function (id) {

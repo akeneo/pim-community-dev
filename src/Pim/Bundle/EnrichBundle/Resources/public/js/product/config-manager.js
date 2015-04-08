@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
     return {

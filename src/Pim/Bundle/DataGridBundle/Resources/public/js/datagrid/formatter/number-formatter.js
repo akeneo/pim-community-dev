@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'oro/datagrid/cell-formatter', 'oro/formatter/number'],
 function(_, CellFormatter, formatter) {
     'use strict';

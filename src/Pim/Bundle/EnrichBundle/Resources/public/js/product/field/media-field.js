@@ -1,12 +1,13 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'pim/field',
         'underscore',
         'routing',
         'text!pim/template/product/field/media'
     ],
-    function (Field, _, Routing, fieldTemplate) {
+    function ($, Field, _, Routing, fieldTemplate) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',

@@ -1,6 +1,8 @@
-"use strict";
+'use strict';
 
-define(['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'bootstrap.bootstrapswitch'], function (Field, _, fieldTemplate) {
+define(
+    ['pim/field', 'underscore', 'text!pim/template/product/field/boolean', 'bootstrap.bootstrapswitch'],
+    function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'boolean',

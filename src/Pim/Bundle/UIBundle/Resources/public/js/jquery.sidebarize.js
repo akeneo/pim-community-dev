@@ -1,3 +1,5 @@
+/* global jQuery */
+
 /**
  * jQuery hideable sidebar plugin
  *
@@ -78,7 +80,8 @@
 
         $element.addClass('sidebarized').css('position', 'absolute');
 
-        $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar-content', 'height': '100%' })).parent().css('overflow', 'auto');
+        $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar-content', 'height': '100%' }))
+                           .parent().css('overflow', 'auto');
         $sidebar = $sidebar.wrap($('<div>', { 'class': 'sidebar' })).parent().width(sidebarWidth);
 
         $content.addClass('content').css({

@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter', 'jquery.select2'],
 function($, _, __, app, TextFilter) {
     'use strict';

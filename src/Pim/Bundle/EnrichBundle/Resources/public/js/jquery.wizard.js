@@ -1,3 +1,4 @@
+/* global jQuery */
 (function ($) {
     'use strict';
 
@@ -27,10 +28,10 @@
             if (i !== 0) {
                 $steps.eq(i).find('.progress-start').addClass('active');
             }
-            if (i != currentStep - 1) {
+            if (i !== currentStep - 1) {
                 $steps.eq(i).find('.progress-end').addClass('active');
             }
-            if (i == currentStep - 1) {
+            if (i === currentStep - 1) {
                 $steps.eq(i).append('<div class="dot"><i class="icon-circle"></i></div>');
             }
         }

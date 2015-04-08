@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/mediator', 'jquery.multiselect', 'jquery.multiselect.filter'],
 function($, _, mediator) {
     'use strict';

@@ -1,13 +1,15 @@
-"use strict";
+'use strict';
 
-define([
+define(
+    [
+        'jquery',
         'backbone',
         'underscore',
         'pim/form',
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute'
     ],
-    function (Backbone, _, BaseForm, AttributeManager, template) {
+    function ($, Backbone, _, BaseForm, AttributeManager, template) {
         return BaseForm.extend({
             tagName: 'div',
             className: 'btn-group add-attribute',

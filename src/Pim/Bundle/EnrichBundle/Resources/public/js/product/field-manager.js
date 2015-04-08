@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
 define(
-    ['pim/config-manager', 'pim/form-config-provider'],
-    function (ConfigManager, ConfigProvider) {
+    ['jquery', 'pim/config-manager', 'pim/form-config-provider'],
+    function ($, ConfigManager, ConfigProvider) {
         var fields = {};
         var loadedModules = {};
         var getFieldForAttribute = function (attribute) {

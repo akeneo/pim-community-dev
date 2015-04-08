@@ -1,6 +1,15 @@
-"use strict";
+'use strict';
 
-define(['pim/field', 'underscore', 'text!pim/template/product/field/simple-select', 'routing', 'jquery.select2'], function (Field, _, fieldTemplate, Routing) {
+define(
+    [
+        'jquery',
+        'pim/field',
+        'underscore',
+        'text!pim/template/product/field/simple-select',
+        'routing',
+        'jquery.select2'
+    ],
+    function ($, Field, _, fieldTemplate, Routing) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'simple-select',

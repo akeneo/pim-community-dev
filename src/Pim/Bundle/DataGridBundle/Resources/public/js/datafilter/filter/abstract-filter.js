@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/app'],
 function($, _, Backbone, app) {
     'use strict';

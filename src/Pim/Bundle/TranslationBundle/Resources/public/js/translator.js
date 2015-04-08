@@ -1,8 +1,7 @@
-/* jshint devel:true */
-/* global define */
+/* global console */
 define(['underscore', 'translator', 'json'],
 function(_, Translator) {
-    "use strict";
+    'use strict';
 
     var dict = {},
         debug = false,
@@ -44,7 +43,7 @@ function(_, Translator) {
      * @returns {Object} Translator
      */
     Translator.fromJSON = function (data) {
-        if (typeof data === "string") {
+        if (typeof data === 'string') {
             data = JSON.parse(data);
         }
         debug = data.debug || false;

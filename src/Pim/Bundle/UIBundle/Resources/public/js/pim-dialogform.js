@@ -1,3 +1,4 @@
+/* global console */
 define(
     ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
     function ($, Navigation, LoadingMask, initSelect2) {
@@ -88,7 +89,7 @@ define(
                             }
                         });
                     },
-                    close: function(event, ui) {
+                    close: function() {
                         $(this).remove();
                     }
                 });

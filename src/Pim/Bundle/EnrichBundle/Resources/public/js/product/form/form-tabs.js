@@ -53,6 +53,7 @@ define(
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
                 currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);
+                /* global console */
                 console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
                 currentTab.render();
 

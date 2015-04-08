@@ -1,13 +1,15 @@
-"use strict";
+'use strict';
 
-define([
+define(
+    [
+        'jquery',
         'backbone',
         'underscore',
         'pim/form',
         'pim/attribute-group-manager',
         'text!pim/template/product/tab/attribute/attribute-group-selector'
     ],
-    function (Backbone, _, BaseForm, AttributeGroupManager, template) {
+    function ($, Backbone, _, BaseForm, AttributeGroupManager, template) {
         return BaseForm.extend({
             tagName: 'ul',
             className: 'nav nav-tabs attribute-group-selector',

@@ -1,4 +1,3 @@
- /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'oro/navigation', 'oro/translator', 'oro/mediator',
     'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher'],
 function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Modal, ActionLauncher) {

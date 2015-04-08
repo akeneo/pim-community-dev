@@ -1,5 +1,3 @@
-/*jslint nomen: true, vars: true*/
-/*global define*/
 define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'oro/loading-mask',
     'oro/datagrid/header', 'oro/datagrid/body', 'oro/datagrid/toolbar', 'oro/datagrid/action-column',
     'oro/datagrid/select-row-cell', 'oro/datagrid/select-all-header-cell',

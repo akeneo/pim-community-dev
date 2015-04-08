@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'pim/form',
         'text!pim/template/product/tab/attribute/copy',
@@ -10,7 +11,7 @@ define(
         'pim/attribute-manager',
         'pim/product-manager'
     ],
-    function(_, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager) {
+    function($, _, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 define(['pim/field', 'underscore', 'text!pim/template/product/field/textarea'], function (Field, _, fieldTemplate) {
     return Field.extend({
