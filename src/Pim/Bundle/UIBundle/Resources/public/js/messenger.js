@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore'],
 function($, _) {
     'use strict';
@@ -29,8 +28,13 @@ function($, _) {
          * Get flash messages from localStorage or cookie
          */
         getStoredMessages = function() {
-            var messages = localStorage ? localStorage.getItem(storageKey) : $.cookie(storageKey);
-            return JSON.parse(messages) || [];
+            var messages = [];
+            if (localStorage) {
+                messages = JSON.parse(localStorage.getItem(storageKey));
+            } else if ($.cookie) {
+                messages = JSON.parse($.cookie(storageKey));
+            }
+            return messages;
         },
 
         /**
@@ -38,9 +42,11 @@ function($, _) {
          */
         setStoredMessages = function(flashMessages) {
             var messages = JSON.stringify(flashMessages);
-            localStorage ?
-                localStorage.setItem(storageKey, messages) :
+            if (localStorage) {
+                localStorage.setItem(storageKey, messages);
+            } else if ($.cookie)  {
                 $.cookie(storageKey, messages);
+            }
             return true;
         };
 

@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'backgrid', 'oro/formatter/datetime'],
 function(_, Backgrid, DateTimeFormatter) {
     'use strict';

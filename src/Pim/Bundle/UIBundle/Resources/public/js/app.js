@@ -1,4 +1,4 @@
-/* global define */
+/* jshint eqeqeq:false */
 define(['jquery', 'underscore'],
     function($, _) {
         'use strict';
@@ -35,8 +35,8 @@ define(['jquery', 'underscore'],
                 var setValue = function (root, path, value) {
                     if (path.length > 1) {
                         var dir = path.shift();
-                        if (typeof root[dir] == 'undefined') {
-                            root[dir] = path[0] == '' ? [] : {};
+                        if (typeof root[dir] === 'undefined') {
+                            root[dir] = path[0] === '' ? [] : {};
                         }
                         setValue(root[dir], path, value);
                     } else {
@@ -121,7 +121,7 @@ define(['jquery', 'underscore'],
                 if (!_.isObject(value1)) {
                     if (_.isNumber(value1) || _.isNumber(value2)) {
                         var toNumber = function (v) {
-                            if (_.isString(v) && v == '') {
+                            if (_.isString(v) && v === '') {
                                 return NaN;
                             }
                             return Number(v);

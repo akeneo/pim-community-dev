@@ -1,4 +1,3 @@
-/* global define */
 define(['oro/datagrid/abstract-listener'],
 function(AbstractListener) {
     'use strict';

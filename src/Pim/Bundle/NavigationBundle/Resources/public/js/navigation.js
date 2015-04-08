@@ -1,6 +1,3 @@
-/*jslint browser: true, vars: true, nomen: true*/
-/*jshint browser: true, devel: true*/
-/*global define*/
 define(function (require) {
     'use strict';
 

@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'routing', 'backbone'],
 function(_, routing, Backbone) {
     'use strict';

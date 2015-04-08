@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/multiselect-decorator'],
 function($, _, Backbone, mediator, MultiselectDecorator) {
     'use strict';

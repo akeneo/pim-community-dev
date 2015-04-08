@@ -36,7 +36,8 @@ define(
                             '<% if (scopable && index === 0) { %>' +
                                 '<label class="control-label add-on" title="<%= item.scope %>"' +
                                     '<% if (item.color) { %>' +
-                                        ' style="background-color:rgba(<%= item.color %>)<%= item.fontColor ? ";color:" + item.fontColor : "" %>;"' +
+                                        ' style="background-color:rgba(<%= item.color %>)' +
+                                            '<%= item.fontColor ? ";color:" + item.fontColor : "" %>;"' +
                                     '<% } %>' +
                                 '>' +
                                     '<%= item.scope[0].toUpperCase() %>' +
@@ -124,7 +125,8 @@ define(
                         scopable:     this.scopable,
                         first:        this.first,
                         collapseIcon: this.collapseIcon,
-                        inputClass:   this.currencies.length > this.inputThreshold ? this.smallInputClass : this.inputClass
+                        inputClass:   this.currencies.length > this.inputThreshold ?
+                                        this.smallInputClass : this.inputClass
                     })
                 );
 

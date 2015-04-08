@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'backgrid', 'oro/datagrid/action-cell'],
 function(_, Backgrid, ActionCell) {
     'use strict';

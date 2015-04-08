@@ -39,7 +39,9 @@ define(
                                 '<td><%= localeResult.ratio %>%</td>',
                                 '<td class="progress-cell">',
                                     '<div class="progress">',
-                                        '<div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%;"></div>',
+                                        '<div class="bar ' + '<%= localeResult.ratio === 100 ? ' +
+                                            'options.completeBar : options.inCompleteBar %>" ' +
+                                            'style="width: <%= localeResult.ratio %>%;"></div>',
                                     '</div>',
                                     '<small><%= localeResult.complete %>/<%= channelResult.total %></small>',
                                 '</td>',

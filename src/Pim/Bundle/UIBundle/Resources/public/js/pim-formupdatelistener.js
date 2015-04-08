@@ -1,3 +1,4 @@
+/* global console */
 define(
     ['jquery', 'backbone', 'pim/dialog', 'oro/navigation'],
     function ($, Backbone, Dialog, Navigation) {
@@ -14,7 +15,10 @@ define(
                 self  = this,
                 formUpdated = function (e) {
                     var $target = $(e.target);
-                    if ($target.parents('div.filter-box').length || $target.parents('ul.icons-holder').length || $target.hasClass('exclude')) {
+                    if ($target.parents('div.filter-box').length ||
+                        $target.parents('ul.icons-holder').length ||
+                        $target.hasClass('exclude')) {
+
                         return;
                     }
                     self.updated = true;

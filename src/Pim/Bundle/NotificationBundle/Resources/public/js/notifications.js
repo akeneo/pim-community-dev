@@ -88,7 +88,7 @@ define(
                         this.freezeCount = false;
                         return;
                     }
-                    if (this.indicator.get('value') != count) {
+                    if (this.indicator.get('value') !== count) {
                         this.indicator.set('value', count);
                         if (reset) {
                             this.collection.hasMore = true;

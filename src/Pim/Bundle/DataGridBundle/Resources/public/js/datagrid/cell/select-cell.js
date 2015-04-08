@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'backgrid'],
 function(_, Backgrid) {
     'use strict';

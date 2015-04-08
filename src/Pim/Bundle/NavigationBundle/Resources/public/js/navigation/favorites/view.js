@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'backbone', 'oro/app', 'oro/mediator', 'oro/error',
     'oro/navigation/abstract-view', 'oro/navigation/model', 'oro/navigation/collection'],
 function(_, Backbone, app, mediator, error,

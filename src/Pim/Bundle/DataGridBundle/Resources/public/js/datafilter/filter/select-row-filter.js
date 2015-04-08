@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'backbone', 'oro/datafilter/select-filter'],
 function(_, Backbone, SelectFilter) {
     'use strict';

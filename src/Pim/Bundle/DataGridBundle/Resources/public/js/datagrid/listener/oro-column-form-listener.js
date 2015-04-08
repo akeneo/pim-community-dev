@@ -1,4 +1,3 @@
-/*global define*/
 define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/datagrid/abstract-listener'],
 function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';

@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'oro/datafilter/filters-manager'],
 function(_, FiltersManager) {
     'use strict';

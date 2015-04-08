@@ -1,5 +1,13 @@
 define(
-    ['jquery', 'underscore', 'oro/translator', 'routing', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/nested_switch'],
+    [
+        'jquery',
+        'underscore',
+        'oro/translator',
+        'routing',
+        'jquery.jstree',
+        'jstree/jquery.jstree.tree_selector',
+        'jstree/nested_switch'
+    ],
     function ($, _, __, Routing) {
         'use strict';
 

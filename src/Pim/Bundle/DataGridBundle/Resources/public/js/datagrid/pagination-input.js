@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
 function($, _, Pagination) {
     'use strict';

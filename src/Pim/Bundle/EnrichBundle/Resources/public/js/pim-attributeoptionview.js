@@ -1,5 +1,15 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pim/dialog', 'jquery-ui-full'],
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/translator',
+        'routing',
+        'oro/mediator',
+        'oro/loading-mask',
+        'pim/dialog',
+        'jquery-ui-full'
+    ],
     function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
         'use strict';
 
@@ -28,7 +38,9 @@ define(
                 '<% _.each(locales, function(locale) { %>' +
                 '<td >' +
                     '<% if (item.optionValues[locale]) { %>' +
-                        '<span title="<%= item.optionValues[locale].value %>"><%= item.optionValues[locale].value %></span>' +
+                        '<span title="<%= item.optionValues[locale].value %>">' +
+                            '<%= item.optionValues[locale].value %>' +
+                        '</span>' +
                     '<% } %>' +
                 '</td>' +
                 '<% }); %>' +
@@ -45,9 +57,11 @@ define(
                 '<% _.each(locales, function(locale) { %>' +
                 '<td class="field-cell">' +
                     '<% if (item.optionValues[locale]) { %>' +
-                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" value="<%= item.optionValues[locale].value %>"/>' +
+                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
+                            'value="<%= item.optionValues[locale].value %>"/>' +
                     '<% } else { %>' +
-                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" value=""/>' +
+                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
+                            'value=""/>' +
                     '<% } %>' +
                 '</td>' +
                 '<% }); %>' +
@@ -144,7 +158,7 @@ define(
                     __('pim_enrich.item.delete.confirm.content', {'itemName': itemCode}),
                     __('pim_enrich.item.delete.confirm.title', {'itemName': itemCode}),
                     _.bind(function () {
-                            this.parent.deleteItem(this);
+                        this.parent.deleteItem(this);
                     }, this)
                 );
             },
@@ -190,7 +204,7 @@ define(
                 );
             },
             cancelSubmit: function(e) {
-                if(e.keyCode == 13) {
+                if(e.keyCode === 13) {
                     this.updateItem();
 
                     return false;
@@ -314,7 +328,7 @@ define(
                 }
 
                 this.$el.sortable({
-                    items: "tbody tr",
+                    items: 'tbody tr',
                     axis: 'y',
                     connectWith: this.$el,
                     containment: this.$el,
@@ -327,7 +341,7 @@ define(
 
                         return ui;
                     },
-                    stop: _.bind(function(e, ui) {
+                    stop: _.bind(function() {
                         this.updateSorting();
                     }, this)
                 });

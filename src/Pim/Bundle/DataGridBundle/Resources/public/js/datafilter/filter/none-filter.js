@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
 function($, _, __, AbstractFilter) {
     'use strict';

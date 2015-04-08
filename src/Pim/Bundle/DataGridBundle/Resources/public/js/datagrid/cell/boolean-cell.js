@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'backgrid'],
 function($, _, Backgrid) {
     'use strict';

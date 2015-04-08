@@ -1,25 +1,24 @@
-/* global define */
 define(['underscore', 'backbone', 'routing', 'oro/app', 'oro/modal'],
 function(_, Backbone, routing, app, Modal) {
     'use strict';
 
     var defaults = {
-            header: 'Server error',
-            message: 'Error! Incorrect server response.',
-            forbidden_access: 'You don\'t have the permission to open this page'
-        },
+        header: 'Server error',
+        message: 'Error! Incorrect server response.',
+        forbiddenAccess: 'You don\'t have the permission to open this page',
+    },
 
-        /**
-         * @export oro/error
-         * @name oro.error
-         */
-        error = {
-            dispatch: function(model, xhr, options) {
-                var self = error.dispatch;
-                self.init(model, xhr, _.extend({}, defaults, options));
-            }
-        },
-        sync = Backbone.sync;
+    /**
+     * @export oro/error
+     * @name oro.error
+     */
+    error = {
+        dispatch: function(model, xhr, options) {
+            var self = error.dispatch;
+            self.init(model, xhr, _.extend({}, defaults, options));
+        }
+    },
+    sync = Backbone.sync;
 
     // Override default Backbone.sync
     Backbone.sync = function(method, model, options) {
@@ -44,7 +43,7 @@ function(_, Backbone, routing, app, Modal) {
                 this._processRedirect();
             } else if (xhr.readyState === 4) {
                 if (xhr.status === 403) {
-                    options.message = options.forbidden_access;
+                    options.message = options.forbiddenAccess;
                 }
                 this._processModal(xhr, options);
             }
@@ -68,6 +67,7 @@ function(_, Backbone, routing, app, Modal) {
                 content: message,
                 cancelText: false
             });
+
             modal.open();
         },
 
@@ -79,6 +79,5 @@ function(_, Backbone, routing, app, Modal) {
             document.location.href = routing.generate('oro_user_security_login');
         }
     });
-
     return error;
 });

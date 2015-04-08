@@ -1,4 +1,3 @@
-/* global define */
 define(['oro/datagrid/abstract-action'],
 function(AbstractAction) {
     'use strict';

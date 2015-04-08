@@ -1,4 +1,3 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/navigation/dotmenu/item-view'],
 function($, _, Backbone, mediator, DotmenuItemView) {
     'use strict';

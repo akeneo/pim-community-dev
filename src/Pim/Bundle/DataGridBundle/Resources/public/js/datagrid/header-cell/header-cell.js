@@ -1,7 +1,6 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'backgrid', 'oro/pageable-collection'],
 function ($, _, Backbone, Backgrid, PageableCollection) {
-    "use strict";
+    'use strict';
 
     /**
      * Datagrid header cell

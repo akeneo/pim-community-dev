@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/navigation', 'oro/mediator', 'oro/error'],
 function($, _, Backbone, app, Navigation, mediator, error) {
     'use strict';
@@ -33,7 +31,7 @@ function($, _, Backbone, app, Navigation, mediator, error) {
 
         initialize: function() {
             this.listenTo(this.model, 'destroy', this.removeItem);
-            this.listenTo(this.model, 'change:display_type', this.removeItem);
+            this.listenTo(this.model, 'change:displayType', this.removeItem);
             this.listenTo(this.model, 'change:remove', this.unpin);
             /**
              * Change active pinbar item after hash navigation request is completed

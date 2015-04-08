@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'oro/datafilter/choice-filter', 'oro/datafilter/number-formatter'],
 function(_, ChoiceFilter, NumberFormatter) {
     'use strict';

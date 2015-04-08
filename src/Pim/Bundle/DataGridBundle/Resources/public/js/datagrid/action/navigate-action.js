@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'oro/mediator', 'oro/datagrid/model-action'],
 function(_, mediator, ModelAction) {
     'use strict';

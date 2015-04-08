@@ -1,5 +1,3 @@
-/* jshint browser:true */
-/* global define */
 define(['underscore', 'backbone', 'oro/navigation', 'oro/navigation/dotmenu/view'],
 function(_, Backbone, Navigation, DotmenuView) {
     'use strict';

@@ -10,7 +10,12 @@ define(
             }
 
             var pickerId = 'date_selector_' + id;
-            var $picker = $('<input>', { type: 'text', id: pickerId, name: pickerId, placeholder: $field.attr('placeholder') });
+            var $picker = $('<input>', {
+                type: 'text',
+                id: pickerId,
+                name: pickerId,
+                placeholder: $field.attr('placeholder')
+            });
             $picker.insertAfter($field);
             $field.addClass('hasPicker').wrap($('<span>', { 'class': 'hide' }));
 
