@@ -13,6 +13,7 @@
 - PIM-2743: keep page per view on datagrids
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
 - PIM-3929: Categories with circular references are skipped in processor during import
+- PIM-4024: Fix for metric and price denormalizer
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
