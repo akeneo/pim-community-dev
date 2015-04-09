@@ -134,6 +134,7 @@ pim_enrich:
         delete_item:     Confirm deletion
 
     info:
+        not_applicable: N/A
         entity:
             updated: There are unsaved changes.
 
