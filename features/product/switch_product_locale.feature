@@ -1,3 +1,4 @@
+@javascript
 Feature: Switch product locale
   In order to manage product information in different languages
   as Mary
@@ -23,9 +24,8 @@ Feature: Switch product locale
     And I save the product
     Then the product Name should be "My cool jacket"
 
-  @javascript
   Scenario: Successfully edit a product in another locale
-    Given I switch the locale to "German (Germany)"
+    Given I switch the locale to "de_DE"
     Then the product Name should be empty
     When I change the Name to "Meine Jacke"
     And I save the product

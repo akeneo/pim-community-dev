@@ -133,7 +133,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->openPage($page);
-        $this->wait();
     }
 
     /**
@@ -296,7 +295,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheImportJobPage(JobInstance $job)
     {
         $this->openPage('Import show', array('id' => $job->getId()));
-        $this->wait();
     }
 
     /**
@@ -307,7 +305,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheExportJobPage(JobInstance $job)
     {
         $this->openPage('Export show', array('id' => $job->getId()));
-        $this->wait();
     }
 
     /**
@@ -318,7 +315,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheImportJobEditPage(JobInstance $job)
     {
         $this->openPage('Import edit', array('id' => $job->getId()));
-        $this->wait();
     }
 
     /**
@@ -329,7 +325,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheExportJobEditPage(JobInstance $job)
     {
         $this->openPage('Export edit', array('id' => $job->getId()));
-        $this->wait();
     }
 
     /**

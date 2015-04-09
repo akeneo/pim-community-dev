@@ -13,7 +13,7 @@ Feature: Display the product history
       | SKU | sandals-001 |
     And I press the "Save" button in the popin
     And I edit the "sandals-001" product
-    When I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property | value       |
@@ -27,7 +27,7 @@ Feature: Display the product history
       | boots | cold,snowy         |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property           | value      |
@@ -37,7 +37,7 @@ Feature: Display the product history
     And I remove the "snowy" option
     And I save the attribute
     And I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 updates
     And I should see history:
       | version | property           | value      |
@@ -50,7 +50,7 @@ Feature: Display the product history
       | boots | winter_boots |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property   | value        |
@@ -59,7 +59,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property   | value |
@@ -72,7 +72,7 @@ Feature: Display the product history
       | boots | men_2014,men_2015_autumn,men_2015_winter |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property   | value                                    |
@@ -81,7 +81,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property   | value    |
@@ -95,7 +95,7 @@ Feature: Display the product history
       | boots | Converse     |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property     | value    |
@@ -104,7 +104,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 updates
     And I should see history:
       | version | property     | value    |
@@ -118,7 +118,7 @@ Feature: Display the product history
       | boots | cold,snowy         | nice boots |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property           | value      |
@@ -131,7 +131,7 @@ Feature: Display the product history
     And I press the "Delete" button
     And I confirm the deletion
     And I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 updates
     And I should see history:
       | version | property           | value      |
@@ -146,25 +146,26 @@ Feature: Display the product history
       | boots | 10 EUR, 20 USD |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property  | value |
-      | 1       | price-EUR | 10    |
-      | 1       | price-USD | 20    |
+      | 1       | price-EUR | 10.00 |
+      | 1       | price-USD | 20.00 |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
-    And I change the "$ Price" to "19"
+    And I change the "USD Price" to "19"
     And I save the product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property  | value |
-      | 2       | price-USD | 19    |
+      | 2       | price-USD | 19.00 |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I remove the "Price" attribute
-    And I visit the "History" tab
+    And I save the product
+    When I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property  | value |
@@ -179,23 +180,24 @@ Feature: Display the product history
       | boots | 30 CENTIMETER |
     And I am logged in as "Julia"
     When I edit the "boots" product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 1 update
     And I should see history:
       | version | property    | value      |
-      | 1       | length      | 30.0000    |
+      | 1       | length      | 30\.0000    |
       | 1       | length-unit | CENTIMETER |
     When I visit the "Attributes" tab
-    And I change the "Length" to "35"
+    And I change the "Length" to "35 CENTIMETER"
     And I save the product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
-      | 2       | length   | 35.0000 |
+      | 2       | length   | 35\.0000 |
     When I visit the "Attributes" tab
     And I remove the "Length" attribute
-    And I visit the "History" tab
+    And I save the product
+    When I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property    | value |
@@ -210,18 +212,18 @@ Feature: Display the product history
     When I edit the "boots" product
     And I add available attribute Side view
     And I visit the "Media" group
-    And I attach file "SNKRS-1R.png" to "Side view"
+    And I attach file "SNKRS-1R.png" to "side_view"
     And I save the product
-    When I visit the "History" tab
+    When I open the history
     Then there should be 2 updates
     And I should see history:
-      | version | property  | value            |
-      | 2       | side_view | (.)*SNKRS-1R.png |
+      | version | property  | value           |
+      | 2       | side_view | .*SNKRS-1R\.png |
     When I visit the "Attributes" tab
     And I visit the "Media" group
-    And I remove the "Side view" file
+    And I remove the "side_view" file
     And I save the product
-    And I visit the "History" tab
+    When I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property  | value |

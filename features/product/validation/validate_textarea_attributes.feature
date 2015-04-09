@@ -26,34 +26,31 @@ Feature: Validate textarea attributes of a product
     Given I change the Info to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 5 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute
-    Given I change the "ecommerce Description" to "information"
+    Given I switch the scope to "ecommerce"
+    And I change the Description to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 5 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
-    Given I change the "Longinfo" to "information"
+    Given I change the "long_info" to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
-    Given I change the "ecommerce Longdescription" to "information"
+    Given I switch the scope to "ecommerce"
+    And I change the "long_description" to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3447
+  @skip @info This generates an unresponsive script, should be checked on the backend @jira https://akeneo.atlassian.net/browse/PIM-3447
   Scenario: Validate the max database value length of textarea attribute
     Given I change the Longtext to an invalid value
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 65535 characters or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab

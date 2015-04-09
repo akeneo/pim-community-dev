@@ -26,8 +26,12 @@ class Form extends Base
             array(
                 'Tabs'                            => array('css' => '#form-navbar'),
                 'Oro tabs'                        => array('css' => '.navbar.scrollspy-nav'),
+                'Form tabs'                       => array('css' => '.nav-tabs.form-tabs'),
+                'Associations list'               => array('css' => '#associations-list'),
                 'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
+                'Panel selector'                  => array('css' => '.panel-selector'),
                 'Groups'                          => array('css' => '.tab-groups'),
+                'Form Groups'                     => array('css' => '.attribute-group-selector'),
                 'Validation errors'               => array('css' => '.validation-tooltip'),
                 'Available attributes form'       => array('css' => '#pim_available_attributes'),
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
@@ -65,9 +69,25 @@ class Form extends Base
     {
         $tabs = $this->find('css', $this->elements['Tabs']['css']);
         if (!$tabs) {
-            $tabs = $this->getElement('Oro tabs');
+            $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+        }
+        if (!$tabs) {
+            $tabs = $this->find('css', $this->elements['Form tabs']['css']);
         }
         $tabs->clickLink($tab);
+    }
+
+    /**
+     * Open the specified panel
+     *
+     * @param string $panel
+     */
+    public function openPanel($panel)
+    {
+        $elt = $this->getElement('Panel selector');
+        if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
+            $elt->pressButton($panel);
+        }
     }
 
     /**
@@ -86,13 +106,41 @@ class Form extends Base
     }
 
     /**
+     * Get the specified tab
+     *
+     * @return NodeElement[]
+     */
+    public function getTab($tab)
+    {
+        return $this->find('css', sprintf('a:contains("%s")', $tab));
+    }
+
+    /**
      * Visit the specified group
      *
      * @param string $group
      */
     public function visitGroup($group)
     {
-        $this->getElement('Groups')->clickLink($group);
+        $groups = $this->find('css', $this->elements['Groups']['css']);
+        if (!$groups) {
+            $groups = $this->getElement('Form Groups');
+            $button = $groups
+                ->find('css', sprintf('li[data-attribute-group="%s"] a', strtolower($group)));
+
+            if (!$button) {
+                throw new \Exception(sprintf('Could not find group "%s".', $group));
+            }
+            $button->click();
+        } else {
+            $groups->clickLink($group);
+        }
+    }
+
+    public function selectAssociation($assocation)
+    {
+        $associations = $this->find('css', $this->elements['Associations list']['css']);
+        $associations->clickLink($assocation);
     }
 
     /**
@@ -477,12 +525,12 @@ class Form extends Base
      * $value can be a string of multiple values. Each value must be separated with comma, eg :
      * 'Hot, Dry, Fresh'
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      *
      * @throws InvalidArgumentException
      */
-    protected function fillMultiSelect2Field($label, $value)
+    protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
         $allValues = explode(',', $value);
         $selectedValues = $label->getParent()->findAll('css', '.select2-search-choice');
@@ -545,12 +593,12 @@ class Form extends Base
     /**
      * Fills a simple (unique value) select2 field with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      *
      * @throws InvalidArgumentException
      */
-    protected function fillSelect2Field($label, $value)
+    protected function fillSelect2Field(NodeElement $label, $value)
     {
         if (trim($value)) {
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
@@ -573,10 +621,10 @@ class Form extends Base
     /**
      * Fills a select element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillSelectField($label, $value)
+    protected function fillSelectField(NodeElement$label, $value)
     {
         $field = $label->getParent()->find('css', 'select');
 
@@ -586,10 +634,10 @@ class Form extends Base
     /**
      * Fills a Wysiwyg editor element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillWysiwygField($label, $value)
+    protected function fillWysiwygField(NodeElement $label, $value)
     {
         $for = $label->getAttribute('for');
 
@@ -601,10 +649,10 @@ class Form extends Base
     /**
      * Fills a date field element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillDateField($label, $value)
+    protected function fillDateField(NodeElement $label, $value)
     {
         $for = $label->getAttribute('for');
 
@@ -616,10 +664,10 @@ class Form extends Base
     /**
      * Fills a text field element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillTextField($label, $value)
+    protected function fillTextField(NodeElement $label, $value)
     {
         $for = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
@@ -635,12 +683,12 @@ class Form extends Base
      * We have a field "$" embedded inside a "Price" field
      * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      *
      * @throws ElementNotFoundException
      */
-    protected function fillCompoundField($label, $value)
+    protected function fillCompoundField(NodeElement $label, $value)
     {
         if (! $label->subLabelContent) {
             throw new \InvalidArgumentException(

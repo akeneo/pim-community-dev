@@ -22,65 +22,56 @@ Feature: Validate price attributes of a product
     And I am on the "foo" product page
 
   Scenario: Validate the negative allowed constraint of price attribute
-    Given I change the "$ Cost" to "-10"
+    Given I change the "USD Cost" to "-10"
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the negative allowed constraint of scopable price attribute
-    Given I change the "$ Price" to "-10"
+    Given I change the "USD Price" to "-10"
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of price attribute
-    Given I change the "$ Cost" to "2.7"
+    Given I change the "USD Cost" to "2.7"
     And I save the product
     Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable price attribute
-    Given I change the "$ Price" to "4.9"
+    Given I change the "USD Price" to "4.9"
     And I save the product
     Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of price attribute
-    Given I change the "$ Tax" to "5.5"
+    Given I change the "USD Tax" to "5.5"
     And I save the product
     Then I should see validation tooltip "This value should be 10 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of scopable price attribute
-    Given I change the "$ Customs" to "9.9"
+    Given I change the "USD Customs" to "9.9"
     And I save the product
     Then I should see validation tooltip "This value should be 10 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of price attribute
-    Given I change the "$ Tax" to "110"
+    Given I change the "USD Tax" to "110"
     And I save the product
     Then I should see validation tooltip "This value should be 100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of scopable price attribute
-    Given I change the "$ Customs" to "222.2"
+    Given I change the "USD Customs" to "222.2"
     And I save the product
     Then I should see validation tooltip "This value should be 100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the type constraint of price attribute
-    Given I change the "$ Tax" to "bar"
-    And I change the "€ Tax" to "qux"
+    Given I change the "USD Tax" to "bar"
+    And I change the "EUR Tax" to "qux"
     And I save the product
     Then I should see validation tooltip "This value should be a valid number.; This value should be a valid number."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab

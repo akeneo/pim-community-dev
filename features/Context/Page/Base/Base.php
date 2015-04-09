@@ -18,6 +18,7 @@ class Base extends Page
     protected $elements = array(
         'Dialog'         => array('css' => 'div.modal'),
         'Title'          => array('css' => '.navbar-title'),
+        'Product title'  => array('css' => '.product-title'),
         'HeadTitle'      => array('css' => 'title'),
         'Flash messages' => array('css' => '.flash-messages-holder'),
         'Navigation Bar' => array('css' => 'header#oroplatform-header'),
@@ -108,7 +109,13 @@ class Base extends Page
         $name      = $elt->find('css', '.product-name');
 
         if (!$subtitle || !$separator || !$name) {
-            throw new \Exception('Could not find the page title');
+            $title = $this->getElement('Product title')
+                ->find('css', '.product-label')->getText();
+            if (!$title) {
+                throw new \Exception('Could not find the page title');
+            }
+
+            return $title;
         }
 
         return sprintf(

@@ -218,6 +218,29 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I open the history$/
+     */
+    public function iOpenTheHistory()
+    {
+        $this->getCurrentPage()->openPanel('History');
+        $this->wait();
+
+        $this->getCurrentPage()->find('css', '.expand-history')->click();
+        $this->wait();
+    }
+
+    /**
+     * @param string $panel
+     *
+     * @Given /^I open the "([^"]*)" panel$/
+     */
+    public function iOpenThePanel($panel)
+    {
+        $this->getCurrentPage()->openPanel($panel);
+        $this->wait();
+    }
+
+    /**
      * @param string $group
      *
      * @Given /^I visit the "([^"]*)" group$/
@@ -226,6 +249,51 @@ class WebUser extends RawMinkContext
     {
         $this->getCurrentPage()->visitGroup($group);
         $this->wait();
+    }
+
+    /**
+     * @param string $association
+     *
+     * @Given /^I select the "([^"]*)" association$/
+     */
+    public function iSelectTheAssociation($association)
+    {
+        $this->getCurrentPage()->selectAssociation($association);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^there should be (\d+) errors? in the "([^"]*)" tab$/
+     */
+    public function thereShouldBeErrorsInTheTab($number, $name)
+    {
+        $tab = $this->getCurrentPage()->getTab($name);
+        if (!$tab) {
+            throw $this->createExpectationException(
+                sprintf('Tab "%s" not found', $name)
+            );
+        }
+        $badge = $tab->find('css', 'span.invalid-badge');
+        if (!$badge) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to find "%d" errors in the tab "%s", no errors found',
+                    $number,
+                    $name
+                )
+            );
+        }
+        $errors = $badge->getText();
+        if ($errors != $number) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting to find "%d" errors in the tab "%s", found %s instead',
+                    $number,
+                    $name,
+                    $errors
+                )
+            );
+        }
     }
 
     /* -------------------- Other methods -------------------- */
@@ -251,6 +319,17 @@ class WebUser extends RawMinkContext
     public function iSwitchTheLocaleTo($locale)
     {
         $this->getCurrentPage()->switchLocale($locale);
+        $this->wait();
+    }
+
+    /**
+     * @param string $scope
+     *
+     * @When /^I switch the scope to "([^"]*)"$/
+     */
+    public function iSwitchTheScopeTo($scope)
+    {
+        $this->getCurrentPage()->switchScope($scope);
         $this->wait();
     }
 
@@ -393,7 +472,7 @@ class WebUser extends RawMinkContext
 
         $group = $this->getFixturesContext()->findAttributeGroup($group);
 
-        if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
+        if (count($attributes) !== $actual = $page->getFieldsCount()) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected to see %d fields in group "%s", actually saw %d',
@@ -408,7 +487,7 @@ class WebUser extends RawMinkContext
             function ($field) {
                 return str_replace('*', '', $field->getText());
             },
-            $page->getFieldsForGroup($group)
+            $page->getFields()
         );
 
         if (count(array_diff($attributes, $labels))) {
@@ -447,10 +526,11 @@ class WebUser extends RawMinkContext
      *
      * @Then /^the product (.*) should be empty$/
      * @Then /^the product (.*) should be "([^"]*)"$/
-     * @Then /^the field (.*) should contain "([^"]*)"$/
+     * @Then /^the field ([^"]*) should contain "([^"]*)"$/
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
+        $this->wait();
         $field = $this->getCurrentPage()->findField($fieldName);
         $class = $field->getAttribute('class');
         if (strpos($class, 'select2-focusser') !== false) {
@@ -487,6 +567,8 @@ class WebUser extends RawMinkContext
             sort($expected);
             $actual   = implode(', ', $actual);
             $expected = implode(', ', $expected);
+        } elseif (strpos($class, 'datepicker') !== false) {
+            $actual = $field->getAttribute('value');
         } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
             // We are dealing with an upload field
             if (null === $filename = $parent->find('css', '.upload-filename')) {
@@ -635,8 +717,8 @@ class WebUser extends RawMinkContext
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
         $removeLink = $this->getPage('Product edit')->getRemoveLinkFor($field);
-        if (!$not) {
-            if (!$removeLink) {
+        if ($not) {
+            if ($removeLink) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Remove link on field "%s" should not be displayed.',
@@ -645,7 +727,7 @@ class WebUser extends RawMinkContext
                 );
             }
         } else {
-            if ($removeLink) {
+            if (!$removeLink) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Remove link on field "%s" should be displayed.',
@@ -673,7 +755,6 @@ class WebUser extends RawMinkContext
         }
 
         $link->click();
-        $this->getSession()->getPage()->clickLink('OK');
         $this->wait();
     }
 
@@ -974,7 +1055,6 @@ class WebUser extends RawMinkContext
     /**
      * @param string $link
      *
-     * @return Step\Given
      * @Given /^I open "([^"]*)" in the current window$/
      */
     public function iOpenInTheCurrentWindow($link)
@@ -984,8 +1064,11 @@ class WebUser extends RawMinkContext
                 "$('[target]').removeAttr('target');"
             );
             $this->wait();
-
-            return new Step\Given(sprintf('I follow "%s"', $link));
+            $this->getCurrentPage()
+                ->find('css', sprintf('div.file span:contains("%s")', $link))
+                ->getParent()
+                ->getParent()
+                ->click();
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');
         }
@@ -1509,7 +1592,6 @@ class WebUser extends RawMinkContext
     public function iShouldSeeTheCompletenessSummary()
     {
         $this->getCurrentPage()->findCompletenessContent();
-        $this->getCurrentPage()->findCompletenessLegend();
     }
 
     /**
@@ -1520,13 +1602,13 @@ class WebUser extends RawMinkContext
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $channel = strtoupper($data['channel']);
+            $channel = $data['channel'];
             $locale  = $data['locale'];
 
             try {
                 $this->getCurrentPage()->checkCompletenessState($channel, $locale, $data['state']);
                 $this->getCurrentPage()->checkCompletenessRatio($channel, $locale, $data['ratio']);
-                $this->getCurrentPage()->checkCompletenessMessage($channel, $locale, $data['message']);
+                $this->getCurrentPage()->checkCompletenessMissingValues($channel, $locale, $data['missing_values']);
             } catch (\InvalidArgumentException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
@@ -1947,9 +2029,8 @@ class WebUser extends RawMinkContext
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
         $comment = $this->getCurrentPage()->findComment($message, $authorName);
 
-        // doing that because $commment->mouseOver() has no effect
-        $this->getMainContext()->executeScript("$('.comment-buttons').css('display', 'inherit');");
         $this->getCurrentPage()->deleteComment($comment);
+        $this->wait();
     }
 
     /**
