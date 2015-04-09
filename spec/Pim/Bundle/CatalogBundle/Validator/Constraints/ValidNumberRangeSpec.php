@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 
-class ValidDateRangeSpec extends ObjectBehavior
+class ValidNumberRangeSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\ValidDateRange');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\ValidNumberRange');
     }
 
     function it_is_a_validator_constraint()
@@ -19,12 +19,12 @@ class ValidDateRangeSpec extends ObjectBehavior
 
     function it_has_a_message()
     {
-        $this->message->shouldBe('The max date must be greater than the min date');
+        $this->message->shouldBe('The max number must be greater than the min number');
     }
 
-    function it_has_an_invalid_date_message()
+    function it_has_an_invalid_number_message()
     {
-        $this->invalidDateMessage->shouldBe('This date is not valid');
+        $this->invalidNumberMessage->shouldBe('This number is not valid');
     }
 
     function it_is_a_class_constraint()
