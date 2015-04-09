@@ -17,6 +17,9 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
     /** @var string */
     protected $code;
 
+    /** @var int */
+    protected $sortOrder = 1;
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +42,26 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
     public function setCode($code)
     {
         $this->code = $code;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSortOrder()
+    {
+        return $this->sortOrder;
+    }
+
+    /**
+     * @param $sortOrder
+     *
+     * @return ReferenceDataInterface
+     */
+    public function setSortOrder($sortOrder)
+    {
+        $this->sortOrder = $sortOrder;
+
+        return $this;
     }
 
     /**

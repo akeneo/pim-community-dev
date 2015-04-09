@@ -211,12 +211,4 @@ class Color extends AbstractReferenceData implements ReferenceDataInterface
     {
         return 'color';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSortOrder()
-    {
-        return 0;
-    }
 }

@@ -27,7 +27,7 @@ Feature: Display the completeness of a product
       | high-heels  | highheels |            |             |                          |                          |                          |                          |                    |                    |                  |                  |
     And I launched the completeness calculator
 
-  Scenario: Successfully display the completeness of the products
+  Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
     When I visit the "Completeness" tab
     Then I should see the completeness summary
@@ -65,7 +65,7 @@ Feature: Display the completeness of a product
       | tablet  | English (United States) | warning | 3 missing values | 25%   |
       | tablet  | French (France)         | warning | 3 missing values | 25%   |
 
-  Scenario: Successfully display the completeness of the products in the grid
+  Scenario: Successfully display the completeness of the products with reference data in the grid
     Given I am on the products page
     And I switch the locale to "English (United States)"
     And I filter by "Channel" with value "Mobile"

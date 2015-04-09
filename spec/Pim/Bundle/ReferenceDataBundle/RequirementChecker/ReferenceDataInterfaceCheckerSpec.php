@@ -9,6 +9,11 @@ use Prophecy\Argument;
 
 class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith('Pim\Component\ReferenceData\Model\ReferenceDataInterface');
+    }
+
     function it_checks_a_valid_reference_data(ConfigurationInterface $configuration)
     {
         $configuration->getClass()->willReturn('spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\ReferenceDataColor');

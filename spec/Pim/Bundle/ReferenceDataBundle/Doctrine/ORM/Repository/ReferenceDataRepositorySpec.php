@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Prophecy\Argument;
 
 class ReferenceDataRepositorySpec extends ObjectBehavior
@@ -33,9 +32,10 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
         $qb->select('rd.id as id, rd.code as text')->willReturn($qb);
-        $qb->from(Argument::any(), Argument::any())->willReturn($qb);
+        $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
+        $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
+        $qb->addOrderBy('rd.code')->willReturn($qb);
 
-        $qb->setMaxResults(ReferenceDataRepositoryInterface::LIMIT_IF_NO_SEARCH)->willReturn($qb);
         $qb->getQuery()->willReturn($query);
 
         $query->getArrayResult()->shouldBeCalled();
@@ -48,7 +48,9 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
         $qb->select('rd.id as id, rd.code as text')->willReturn($qb);
-        $qb->from(Argument::any(), Argument::any())->willReturn($qb);
+        $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
+        $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
+        $qb->addOrderBy('rd.code')->willReturn($qb);
         $qb->andWhere('rd.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', 'my-search%')->willReturn($qb);
 
@@ -64,7 +66,9 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
         $qb->select('rd.id as id, rd.code as text')->willReturn($qb);
-        $qb->from(Argument::any(), Argument::any())->willReturn($qb);
+        $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
+        $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
+        $qb->addOrderBy('rd.code')->willReturn($qb);
         $qb->andWhere('rd.code LIKE :search')->willReturn($qb);
         $qb->setParameter('search', 'my-search%')->willReturn($qb);
 

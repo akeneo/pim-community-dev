@@ -1,5 +1,5 @@
 @javascript
-Feature: Sort products per references data
+Feature: Sort products
   In order to enrich my catalog
   As a regular user
   I need to be able to manually sort products per attributes

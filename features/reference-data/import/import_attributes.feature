@@ -1,5 +1,5 @@
 @javascript
-Feature: Import attributes with reference data
+Feature: Import attributes
   In order to reuse the attributes of my products
   As a product manager
   I need to be able to import attributes
@@ -26,7 +26,7 @@ Feature: Import attributes with reference data
       | reference_data_simpleselect | mycolor    | My color     | info    | 0      | 1                      | 0           | 0        |                    |               |                     | color               |
       | reference_data_multiselect  | myfabrics  | My fabrics   | info    | 0      | 1                      | 0           | 0        |                    |               |                     | fabrics             |
 
-  Scenario: Fail to import attributes with unregistered reference
+  Scenario: Fail to import attributes with unregistered reference data
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:

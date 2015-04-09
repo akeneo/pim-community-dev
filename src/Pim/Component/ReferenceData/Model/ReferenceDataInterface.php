@@ -33,9 +33,6 @@ interface ReferenceDataInterface
      */
     public function getType();
 
-    // TODO-CR: should not be there, used in OptionMultiSelectType,
-    // TODO-CR: to remove when extension OptionMultiSelectType by ReferenceDataMultiSelectType
-    // TODO-CR: is deleted and if reference data are not sortable
     /**
      * @return int
      */

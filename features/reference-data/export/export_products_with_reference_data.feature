@@ -1,5 +1,5 @@
 @javascript
-Feature: Export products with reference data
+Feature: Export products
   In order to use the reference data
   As a product manager
   I need to be able to export the products that have reference data

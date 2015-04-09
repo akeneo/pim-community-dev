@@ -61,7 +61,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     {
         $checkers   = [];
         $checkers[] = new ReferenceDataNameChecker();
-        $checkers[] = new ReferenceDataInterfaceChecker();
+        $checkers[] = new ReferenceDataInterfaceChecker($this->getReferenceDataInterface());
         $checkers[] = new ReferenceDataUniqueCodeChecker($this->getDoctrineEntityManager());
         $checkers[] = new ProductValueAccessorsChecker($this->getProductValueClass());
 
@@ -127,6 +127,14 @@ class CheckRequirementsCommand extends ContainerAwareCommand
     protected function getProductValueClass()
     {
         return $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
+    }
+
+    /**
+     * @return string
+     */
+    protected function getReferenceDataInterface()
+    {
+        return $this->getContainer()->getParameter('pim_reference_data.model.reference_data.interface');
     }
 
     /**
