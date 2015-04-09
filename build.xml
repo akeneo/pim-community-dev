@@ -4,7 +4,7 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
+    <target name="build-phpunit" depends="prepare,prepare-grunt,composer,require-mongo,vendors,phpunit,phpspec,phpspec-junit,grunt-test"/>
 
     <target name="build-coverage" depends="prepare,composer,require-mongo,coverage"/>
 
@@ -12,7 +12,7 @@
 
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
-    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,composer,vendors,prepare-grunt,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc,grunt-codestyle"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -85,6 +85,37 @@
             </fileset>
         </replaceregexp>
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
+    </target>
+
+    <target name="prepare-grunt" description="Prepare grunt">
+        <exec executable="app/console" failonerror="true">
+            <arg value="oro:requirejs:generate-config" />
+            <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+            <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+            <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+        </exec>
+        <exec executable="npm" failonerror="true">
+            <arg value="install" />
+            <arg value="-g" />
+            <arg value="grunt-cli" />
+        </exec>
+        <exec executable="npm" failonerror="true">
+            <arg value="install" />
+        </exec>
+    </target>
+
+    <target name="grunt-test" description="Run jasmine specs">
+        <exec executable="grunt" failonerror="true">
+            <arg value="test" />
+        </exec>
+    </target>
+
+    <target name="grunt-codestyle" description="Check JS code style">
+        <exec executable="grunt" failonerror="true">
+            <arg value="codestyle" />
+        </exec>
     </target>
 
     <target name="lint" description="Perform syntax check of sourcecode files">
@@ -334,17 +365,6 @@
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
             <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-    </target>
-
-    <target name="vendors-no-scripts" description="Install vendors">
-        <exec executable="${basedir}/composer.phar" failonerror="true">
-            <arg value="install" />
-            <arg value="--no-progress" />
-            <arg value="--no-interaction" />
-            <arg value="--prefer-dist" />
-            <arg value="--optimize-autoloader" />
-            <arg value="--no-scripts" />
         </exec>
     </target>
 
