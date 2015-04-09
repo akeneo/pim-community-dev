@@ -63,7 +63,7 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
          $this->validate($attribute, $constraint);
     }
 
-    function it_adds_a_violation_if_an_identifier_is_created_whereas_one_exists(
+    function it_adds_a_violation_if_attribute_identifier_already_exists(
         $context,
         $attributeRepository,
         AttributeInterface $attribute,
