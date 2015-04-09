@@ -18,11 +18,11 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
-            var selectedNode       = $el.attr('data-node-id') || -1,
-                selectedTree       = $el.attr('data-tree-id') || -1,
-                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode,
-                preventFirst       = selectedNode > 0,
-                loadingMask        = new LoadingMask();
+            var selectedNode       = $el.attr('data-node-id') || -1;
+            var selectedTree       = $el.attr('data-tree-id') || -1;
+            var selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
+            var preventFirst       = selectedNode > 0;
+            var loadingMask        = new LoadingMask();
 
             loadingMask.render().$el.appendTo($('#container'));
 
@@ -98,7 +98,7 @@ define(
                 types: {
                     max_depth: -2,
                     max_children: -2,
-                    valid_children: [ 'folder' ],
+                    valid_children: ['folder'],
                     types: {
                         'default': {
                             valid_children: 'folder'
@@ -149,8 +149,8 @@ define(
                     if (!$el.attr('data-editable')) {
                         return;
                     }
-                    var id  = data.rslt.obj.attr('id').replace('node_', ''),
-                        url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
+                    var id  = data.rslt.obj.attr('id').replace('node_', '');
+                    var url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
                     if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
                         return;
@@ -179,10 +179,10 @@ define(
                     }
                 }).bind('create.jstree', function (e, data) {
                     $.jstree._focused().lock();
-                    var id       = data.rslt.parent.attr('id').replace('node_', ''),
-                        url      = Routing.generate('pim_enrich_categorytree_create', { parent: id }),
-                        position = data.rslt.position,
-                        label    = data.rslt.name;
+                    var id       = data.rslt.parent.attr('id').replace('node_', '');
+                    var url      = Routing.generate('pim_enrich_categorytree_create', { parent: id });
+                    var position = data.rslt.position;
+                    var label    = data.rslt.name;
 
                     url = url + '?label=' + label + '&position=' + position;
                     loadingMask.show();

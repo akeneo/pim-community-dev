@@ -1,5 +1,5 @@
 define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmation', 'oro/modal', 'oro/datagrid/model-action'],
-    function(_, messenger, __, DeleteConfirmation, Modal, ModelAction) {
+    function (_, messenger, __, DeleteConfirmation, Modal, ModelAction) {
         'use strict';
 
         /**
@@ -20,22 +20,22 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmatio
             /**
              * Execute delete model
              */
-            execute: function() {
+            execute: function () {
                 this.getConfirmDialog().open();
             },
 
             /**
              * Confirm delete item
              */
-            doDelete: function() {
+            doDelete: function () {
                 var self = this;
                 this.model.destroy({
                     url: this.getLink(),
                     wait: true,
-                    error: function() {
+                    error: function () {
                         self.getErrorDialog().open();
                     },
-                    success: function() {
+                    success: function () {
                         var messageText = __('flash.' + self.getEntityHint() + '.removed');
                         messenger.notificationFlashMessage('success', messageText);
                     }
@@ -47,7 +47,7 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmatio
              *
              * @return {oro.Modal}
              */
-            getConfirmDialog: function() {
+            getConfirmDialog: function () {
                 if (!this.confirmModal) {
                     this.confirmModal = new DeleteConfirmation({
                         content: __('confirmation.remove.' + this.getEntityHint())
@@ -62,7 +62,7 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmatio
              *
              * @return {oro.Modal}
              */
-            getErrorDialog: function() {
+            getErrorDialog: function () {
                 if (!this.errorModal) {
                     this.errorModal = new Modal({
                         title: __('Delete Error'),
@@ -73,7 +73,7 @@ define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmatio
                 return this.errorModal;
             },
 
-            getEntityHint: function() {
+            getEntityHint: function () {
                 return this.datagrid && this.datagrid.entityHint ? this.datagrid.entityHint : 'item';
             }
         });

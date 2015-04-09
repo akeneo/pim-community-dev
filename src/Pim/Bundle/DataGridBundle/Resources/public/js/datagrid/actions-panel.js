@@ -1,5 +1,5 @@
 define(['underscore', 'backbone'],
-function(_, Backbone) {
+function (_, Backbone) {
     'use strict';
 
     /**
@@ -25,7 +25,7 @@ function(_, Backbone) {
          * @param {Object} options
          * @param {Array} [options.actions] List of actions
          */
-        initialize: function(options) {
+        initialize: function (options) {
             options = options || {};
 
             if (options.actions) {
@@ -43,7 +43,7 @@ function(_, Backbone) {
         render: function () {
             this.$el.empty();
 
-            _.each(this.launchers, function(launcher) {
+            _.each(this.launchers, function (launcher) {
                 this.$el.append(launcher.render().$el);
             }, this);
 
@@ -55,10 +55,10 @@ function(_, Backbone) {
          *
          * @param {Array.<oro.datagrid.AbstractAction>} actions
          */
-        setActions: function(actions) {
+        setActions: function (actions) {
             this.actions = [];
             this.launchers = [];
-            _.each(actions, function(action) {
+            _.each(actions, function (action) {
                 this.addAction(action);
             }, this);
         },
@@ -68,7 +68,7 @@ function(_, Backbone) {
          *
          * @param {oro.datagrid.AbstractAction} action
          */
-        addAction: function(action) {
+        addAction: function (action) {
             this.actions.push(action);
             this.launchers.push(action.createLauncher());
         },
@@ -78,8 +78,8 @@ function(_, Backbone) {
          *
          * @return {*}
          */
-        disable: function() {
-            _.each(this.launchers, function(launcher) {
+        disable: function () {
+            _.each(this.launchers, function (launcher) {
                 launcher.disable();
             });
 
@@ -91,8 +91,8 @@ function(_, Backbone) {
          *
          * @return {*}
          */
-        enable: function() {
-            _.each(this.launchers, function(launcher) {
+        enable: function () {
+            _.each(this.launchers, function (launcher) {
                 launcher.enable();
             });
 

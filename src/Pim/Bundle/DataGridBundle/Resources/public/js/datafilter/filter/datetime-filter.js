@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settings'],
-    function($, _, DateFilter, localeSettings) {
+    function ($, _, DateFilter, localeSettings) {
     'use strict';
     /**
      * Datetime filter: filter type as option + interval begin and end dates
@@ -31,11 +31,11 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settin
         /**
          * @inheritDoc
          */
-        _initializeDateWidget: function(widgetSelector) {
+        _initializeDateWidget: function (widgetSelector) {
             this.$(widgetSelector).datetimepicker(this.dateWidgetOptions);
             var widget = this.$(widgetSelector).datetimepicker('widget');
             widget.addClass(this.dateWidgetOptions.className);
-            $(this.dateWidgetSelector).on('click', function(e) {
+            $(this.dateWidgetSelector).on('click', function (e) {
                 e.stopImmediatePropagation();
             });
             return widget;
@@ -44,7 +44,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settin
         /**
          * @inheritDoc
          */
-        _formatDisplayValue: function(value) {
+        _formatDisplayValue: function (value) {
             var dateFromFormat = this.dateWidgetOptions.altFormat;
             var dateToFormat = this.dateWidgetOptions.dateFormat;
             var timeFromFormat = this.dateWidgetOptions.altTimeFormat;
@@ -55,7 +55,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settin
         /**
          * @inheritDoc
          */
-        _formatRawValue: function(value) {
+        _formatRawValue: function (value) {
             var dateFromFormat = this.dateWidgetOptions.dateFormat;
             var dateToFormat = this.dateWidgetOptions.altFormat;
             var timeFromFormat = this.dateWidgetOptions.timeFormat;
@@ -74,7 +74,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settin
          * @return {Object}
          * @protected
          */
-        _formatValueDatetimes: function(value, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat) {
+        _formatValueDatetimes: function (value, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat) {
             if (value.value && value.value.start) {
                 value.value.start = this._formatDatetime(
                     value.value.start, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat
@@ -99,7 +99,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settin
          * @return {String}
          * @protected
          */
-        _formatDatetime: function(value, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat) {
+        _formatDatetime: function (value, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat) {
             var datePart = this._formatDate(value, dateFromFormat, dateToFormat);
             var dateBefore = this._formatDate(datePart, dateToFormat, dateFromFormat);
             var timePart = value.substr(dateBefore.length + this.dateWidgetOptions.altSeparator.length);
@@ -116,7 +116,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settin
          * @return {String}
          * @protected
          */
-        _formatTime: function(value, fromFormat, toFormat) {
+        _formatTime: function (value, fromFormat, toFormat) {
             var fromValue = $.datepicker.parseTime(fromFormat, value);
             if (!fromValue) {
                 fromValue = $.datepicker.parseTime(toFormat, value);

@@ -1,5 +1,5 @@
 define(['oro/navigation/model'],
-function(NavigationModel) {
+function (NavigationModel) {
     'use strict';
 
     /**

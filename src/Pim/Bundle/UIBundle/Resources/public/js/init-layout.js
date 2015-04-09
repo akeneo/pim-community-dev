@@ -40,8 +40,8 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
         });
 
         $('html').click(function (e) {
-            var $target = $(e.target),
-                clickingTarget = null;
+            var $target = $(e.target);
+            var clickingTarget = null;
             if ($target.hasClass('dropdown') || $target.hasClass('oro-drop')) {
                 clickingTarget = $target;
             } else {
@@ -70,9 +70,9 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
      * ============================================================ */
     (function () {
         /* dynamic height for central column */
-        var debugBar = $('.sf-toolbar'),
-            anchor = $('#bottom-anchor'),
-            content = false;
+        var debugBar = $('.sf-toolbar');
+        var anchor = $('#bottom-anchor');
+        var content = false;
 
         var initializeContent = function () {
             if (!content) {
@@ -84,8 +84,8 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
         var adjustHeight = function () {
             initializeContent();
 
-            var debugBarHeight = debugBar.length && debugBar.is(':visible') ? debugBar.height() : 0,
-                anchorTop = anchor.position().top;
+            var debugBarHeight = debugBar.length && debugBar.is(':visible') ? debugBar.height() : 0;
+            var anchorTop = anchor.position().top;
 
             $(content.get().reverse()).each(function (pos, el) {
                 el = $(el);
@@ -149,9 +149,9 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
      * ============================================================ */
     $(function () {
         $(document).on('click', '.remove-button', function () {
-            var confirm,
-                el = $(this),
-                message = el.data('message');
+            var confirm;
+            var el = $(this);
+            var message = el.data('message');
 
             confirm = new DeleteConfirmation({
                 content: message

@@ -41,7 +41,7 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(urlParams, gridName) {
+            initialize: function (urlParams, gridName) {
                 this.$el.remove();
                 this.$el = $(this.container);
 

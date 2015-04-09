@@ -74,9 +74,9 @@
     function prepare($element, opts) {
         $('body').css('overflow', 'hidden');
 
-        var $sidebar     = $element.children().first(),
-            $content     = $element.children().last(),
-            sidebarWidth = parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth;
+        var $sidebar     = $element.children().first();
+        var $content     = $element.children().last();
+        var sidebarWidth = parseInt(getState(opts.widthStorageKey), 10) || opts.sidebarWidth;
 
         $element.addClass('sidebarized').css('position', 'absolute');
 
@@ -152,9 +152,9 @@
             prepare($element, opts);
 
             function doSplit(e) {
-                var windowWidth = $(window).width(),
-                    maxWidth    = opts.maxSidebarWidth || windowWidth - opts.separatorWidth,
-                    position    = e.pageX;
+                var windowWidth = $(window).width();
+                var maxWidth    = opts.maxSidebarWidth || windowWidth - opts.separatorWidth;
+                var position    = e.pageX;
 
                 position = Math.min(Math.max(position, opts.minSidebarWidth), maxWidth);
 

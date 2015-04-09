@@ -1,5 +1,5 @@
 define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'],
-function(_, Backbone, BackbonePageableCollection, app) {
+function (_, Backbone, BackbonePageableCollection, app) {
     'use strict';
 
     /**
@@ -77,11 +77,11 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param models
          * @param options
          */
-        initialize: function(models, options) {
+        initialize: function (models, options) {
             options = options || {};
             if (options.state) {
                 if (options.state.sorters) {
-                    _.each(options.state.sorters, function(direction, field) {
+                    _.each(options.state.sorters, function (direction, field) {
                         options.state.sorters[field] = this.getSortDirectionKey(direction);
                     }, this);
                 }
@@ -119,7 +119,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          *
          * @protected
          */
-        onRemove: function() {
+        onRemove: function () {
             if (this.state.totalRecords > 0) {
                 this.state.totalRecords--;
             }
@@ -131,7 +131,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {Object} stateObject
          * @return {String}
          */
-        encodeStateData: function(stateObject) {
+        encodeStateData: function (stateObject) {
             var data = _.pick(stateObject, _.keys(this.stateShortKeys));
             data.gridName = this.inputName;
             data = app.invertKeys(data, this.stateShortKeys);
@@ -144,7 +144,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} stateString
          * @return {Object}
          */
-        decodeStateData: function(stateString) {
+        decodeStateData: function (stateString) {
             var data = app.unpackFromQueryString(stateString);
             data = app.invertKeys(data, _.invert(this.stateShortKeys));
             return data;
@@ -158,7 +158,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} prefix
          * @return {Object}
          */
-        processFiltersParams: function(data, state, prefix) {
+        processFiltersParams: function (data, state, prefix) {
             if (!state) {
                 state = this.state;
             }
@@ -186,7 +186,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             var state = app.deepClone(state);
             state.parameters = state.parameters || {};
 
-            _.each(this.additionalParameters, _.bind(function(value, key) {
+            _.each(this.additionalParameters, _.bind(function (value, key) {
                 if (!_.isUndefined(state[value])) {
                     state.parameters[key] = state[value]
                 }
@@ -202,10 +202,10 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} prefix
          * @return {Object}
          */
-        generateParameterStrings: function(parameters, prefix) {
+        generateParameterStrings: function (parameters, prefix) {
             var localStrings = {};
             var localPrefix = prefix;
-            _.each(parameters, function(filterParameters, filterKey) {
+            _.each(parameters, function (filterParameters, filterKey) {
                 filterKey = filterKey.toString();
                 if (filterKey.substr(0, 2) != '__') {
                     var filterKeyString = localPrefix + '[' + filterKey + ']';
@@ -230,7 +230,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param options
          * @return {Object}
          */
-        parse: function(resp, options) {
+        parse: function (resp, options) {
             this.state.totalRecords = resp.options.totalRecords;
             this.state = this._checkState(this.state);
             return resp.data;
@@ -242,7 +242,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param models
          * @param options
          */
-        reset: function(models, options) {
+        reset: function (models, options) {
             this.trigger('beforeReset', this, options);
             BackbonePageableCollection.prototype.reset.apply(this, arguments);
         },
@@ -252,7 +252,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          *
          * @param {Object} state
          */
-        updateState: function(state) {
+        updateState: function (state) {
             var newState = _.extend({}, this.state, state);
             this.state = this._checkState(newState);
             this.trigger('updateState', this, this.state);
@@ -331,7 +331,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Number}
          * @protected
          */
-        finiteInt: function(val, name) {
+        finiteInt: function (val, name) {
             val *= 1;
             if (!_.isNumber(val) || _.isNaN(val) || !_.isFinite(val) || ~~val !== val) {
                 throw new TypeError('`' + name + '` must be a finite integer');
@@ -426,7 +426,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {Object} state
          * @return {Object}
          */
-        processQueryParams: function(data, state) {
+        processQueryParams: function (data, state) {
             state = this.processAdditionalParams(state);
             var pageablePrototype = PageableCollection.prototype;
 
@@ -446,7 +446,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             // set sorting parameters
             if (state.sorters) {
-                _.each(state.sorters, function(direction, field) {
+                _.each(state.sorters, function (direction, field) {
                     var key = this.queryParams.sortBy.replace('%field%', field);
                     data[key] = this.queryParams.directions[direction];
                 }, this);
@@ -475,9 +475,9 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} directionValue
          * @return {String}
          */
-        getSortDirectionKey: function(directionValue) {
+        getSortDirectionKey: function (directionValue) {
             var directionKey = null;
-            _.each(this.queryParams.directions, function(value, key) {
+            _.each(this.queryParams.directions, function (value, key) {
                 if (value == directionValue) {
                     directionKey = key;
                 }
@@ -553,7 +553,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          *
          * @return {PageableCollection}
          */
-        clone: function() {
+        clone: function () {
             var collectionOptions = {};
             collectionOptions.url = this.url;
             collectionOptions.inputName = this.inputName;

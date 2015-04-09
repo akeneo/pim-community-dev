@@ -1,5 +1,5 @@
 define(['underscore', 'backgrid'],
-function(_, Backgrid) {
+function (_, Backgrid) {
     'use strict';
 
     /**

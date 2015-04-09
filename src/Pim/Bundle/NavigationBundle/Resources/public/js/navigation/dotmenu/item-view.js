@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+function ($, _, Backbone) {
     'use strict';
 
     /**
@@ -17,20 +17,20 @@ function($, _, Backbone) {
             'click span': 'activate'
         },
 
-        initialize: function() {
+        initialize: function () {
             this.listenTo(this.model, 'destroy', this.remove);
         },
 
-        activate: function(e) {
+        activate: function (e) {
             var el = Backbone.$(e.currentTarget);
             window.location.href = el.data('url');
         },
 
-        close: function() {
+        close: function () {
             this.model.destroy({wait: true});
         },
 
-        render: function() {
+        render: function () {
             this.$el.html(
                 this.template(this.model.toJSON())
             );
