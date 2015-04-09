@@ -54,6 +54,7 @@ class ImmutableValidatorSpec extends ObjectBehavior
 
         $entityManager->getUnitOfWork()->willReturn($unitOfWork);
         $unitOfWork->getOriginalEntityData($family)->willReturn(['code' => 'MyOriginalCode']);
+
         $context->addViolationAt(Argument::any(), Argument::any())
             ->shouldNotBeCalled();
 
