@@ -1,5 +1,5 @@
 @javascript
-Feature: Edit common attributes of many products containing reference data at once
+Feature: Edit common attributes of many products at once
   In order to update many products with the same reference data
   As a product manager
   I need to be able to edit common attributes of many products at once
@@ -21,7 +21,7 @@ Feature: Edit common attributes of many products containing reference data at on
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Allow editing only common attributes
+  Scenario: Allow editing only common attributes (with reference data)
     Given I mass-edit products heels and platform_shoes
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name and Description in group "Product information"

@@ -11,7 +11,7 @@ Feature: Display the attribute history
       | code      | label-en_US |
       | technical | Technical   |
 
-  Scenario: Successfully edit a attribute and see the history
+  Scenario: Successfully edit a reference data attribute and see the history
     Given I am on the attributes page
     And I create a "Reference data simple select" attribute
     And I fill in the following information:
