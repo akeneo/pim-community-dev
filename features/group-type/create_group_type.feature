@@ -15,6 +15,7 @@ Feature: Group type creation
     When I fill in the following information in the popin:
       | Code | special |
     And I press the "Save" button
+    And I wait 5 seconds
     Then I should be on the "special" group type page
     And I should see "special"
 

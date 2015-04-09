@@ -34,11 +34,9 @@ class MetricDenormalizer extends AbstractValueDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    public function denormalize($data, $class, $format = null, array $context = [])
     {
-        if ($data === null || $data === '') {
-            return null;
-        }
+        $data = ('' === $data) ? null : $data;
 
         $resolver = new OptionsResolver();
         $this->configContext($resolver);
