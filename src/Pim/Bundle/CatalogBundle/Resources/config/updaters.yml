@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
     pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
+    pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
 
     pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
     # TODO useful to use this abstract?
@@ -49,6 +50,7 @@ parameters:
     pim_catalog.updater.remover.group_field.class:            Pim\Bundle\CatalogBundle\Updater\Remover\GroupFieldRemover
 
 services:
+    # Updaters
     pim_catalog.updater.product:
         class: %pim_catalog.updater.product.class%
         arguments:
@@ -62,6 +64,12 @@ services:
         class: %pim_catalog.updater.product_template.class%
         arguments:
             - @pim_catalog.updater.product
+
+    pim_catalog.updater.attribute_option:
+        class: %pim_catalog.updater.attribute_option.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+            - @validator
 
     # Setters
     pim_catalog.updater.setter.registry:
@@ -386,6 +394,8 @@ services:
             - @pim_catalog.validator.helper.attribute
             - @pim_catalog.manager.currency
             - ['pim_catalog_price_collection']
+        tags:
+            - { name: 'pim_catalog.updater.remover' }
 
     pim_catalog.updater.remover.group_field:
         class: %pim_catalog.updater.remover.group_field.class%

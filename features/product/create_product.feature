@@ -19,6 +19,7 @@ Feature: Product creation
     And I fill in the following information in the popin:
       | SKU | caterpillar_1 |
     And I press the "Save" button in the popin
+    And I wait 5 seconds
     Then I should be on the product "caterpillar_1" edit page
     And I should see "caterpillar_1"
 
