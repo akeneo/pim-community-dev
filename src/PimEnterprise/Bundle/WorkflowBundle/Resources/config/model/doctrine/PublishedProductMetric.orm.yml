@@ -33,3 +33,11 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
             length: 20
             nullable: true
             column: family
+    oneToOne:
+        value:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
+            mappedBy: metric
+            joinColumns:
+                value_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
