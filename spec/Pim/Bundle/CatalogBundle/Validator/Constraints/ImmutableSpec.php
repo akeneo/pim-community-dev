@@ -16,13 +16,13 @@ class ImmutableSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Validator\Constraint');
     }
 
-    function it_has_properties()
-    {
-        $this->properties->shouldBe(null);
-    }
-
     function it_has_message()
     {
         $this->message->shouldBe('This property cannot be changed.');
+    }
+
+    function it_can_get_targets()
+    {
+        $this->getTargets()->shouldReturn('class');
     }
 }

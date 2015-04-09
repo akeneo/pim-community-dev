@@ -21,4 +21,3 @@ class SingleIdentifierAttributeSpec extends ObjectBehavior
         $this->message->shouldBe('An identifier attribute already exists.');
     }
 }
-
