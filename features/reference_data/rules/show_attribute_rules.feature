@@ -1,5 +1,5 @@
 @javascript
-Feature: Show all rules related to a reference data attribute
+Feature: Show all rules related to an attribute
   In order ease the enrichment of the catalog
   As a regular user
   I need to know which rules are linked to a reference data attribute
@@ -21,7 +21,7 @@ Feature: Show all rules related to a reference data attribute
       | set_sole | sole_fabric | PVC, Nylon, Neoprene |
     And I am logged in as "Julia"
 
-  Scenario: Successfully show rules of an attribute
+  Scenario: Successfully show rules of a reference data attribute
     Given I am on the "sole_color" attribute page
     And I visit the "Rules" tab
     Then I should see the following rule conditions:

@@ -1,5 +1,5 @@
 @javascript
-Feature: Unpublish a product with reference data
+Feature: Unpublish a product
   In order to unfroze the product data
   As a product manager
   I need to be able to unpublish a product
@@ -19,7 +19,7 @@ Feature: Unpublish a product with reference data
       | yellow-heels | Yellow     | Wool                    |
     And I am logged in as "Julia"
 
-  Scenario: Successfully unpublish a product
+  Scenario: Successfully unpublish a product with reference data
     And I am on the "red-heels" published show page
     When I press the "Unpublish" button
     And I confirm the publishing

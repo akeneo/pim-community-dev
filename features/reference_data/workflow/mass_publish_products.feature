@@ -1,5 +1,5 @@
 @javascript
-Feature: Publish many products with reference data at once
+Feature: Publish many products at once
   In order to froze the product data I would use to export
   As a product manager
   I need to be able to publish several products at the same time
@@ -21,7 +21,7 @@ Feature: Publish many products with reference data at once
     And I am logged in as "Julia"
 
 
-  Scenario: Successfully publish all products
+  Scenario: Successfully publish several products with reference data
     Given I am on the published index page
     Then the grid should contain 0 elements
     When I am on the products page

@@ -10,7 +10,7 @@ Feature: On a product edit/show display impacted attributes
     And the following "sole_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
     And I am logged in as "Julia"
 
-  Scenario: Successfully create, edit and save a product
+  Scenario: Successfully create, edit and save a product with reference data
     Given the following products:
       | sku       | family |
       | red-heels | heels  |

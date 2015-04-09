@@ -1,5 +1,5 @@
 @javascript
-Feature: Import rules with reference data
+Feature: Import rules
   In order to fix incorrect product data
   As an administrator
   I need to know which rules are incorrect and why
