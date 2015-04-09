@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Checks if a reference data is correctly configured.
+ *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -90,7 +91,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         ConfigurationInterface $configuration,
         OutputInterface $output
     ) {
-        if (true === $checker->check($configuration)) {
+        if ($checker->check($configuration)) {
             $output->write('<info>[OK]</info>    ');
             $output->writeln($checker->getDescription());
         } else {

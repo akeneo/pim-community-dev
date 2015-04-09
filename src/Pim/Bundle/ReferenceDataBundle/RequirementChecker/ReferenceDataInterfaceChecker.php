@@ -6,6 +6,7 @@ use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
  * Checks if the ReferenceData implements the interface.
+ *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -13,6 +14,7 @@ use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 class ReferenceDataInterfaceChecker implements CheckerInterface
 {
     /** @var string */
+    //TODO: put this in the constructor
     protected $interface = 'Pim\Component\ReferenceData\Model\ReferenceDataInterface';
 
     /** @var string */

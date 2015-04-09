@@ -15,7 +15,6 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
     {
         $em->getClassMetadata(Argument::any())->willReturn($classMetadata);
         $this->beConstructedWith($em, 'spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue');
-
     }
 
     function it_checks_a_valid_many_to_one_relationship($classMetadata, ConfigurationInterface $configuration)

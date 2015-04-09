@@ -20,6 +20,7 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
     public function check(ConfigurationInterface $configuration)
     {
         try {
+            $isFieldCollectionOk = true;
             $isFieldOk = $this->checkFieldMapping($configuration->getName(), $configuration->getType());
 
             if (ConfigurationInterface::TYPE_MULTI === $configuration->getType()) {
@@ -31,7 +32,7 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
             return false;
         }
 
-        if (!$isFieldOk || (isset($isFieldCollectionOk) && !$isFieldCollectionOk)) {
+        if (!$isFieldOk || !$isFieldCollectionOk) {
             $relationExample = ConfigurationInterface::TYPE_MULTI === $configuration->getType() ? 'options' : 'option';
             $this->failure .= sprintf(
                 ' You can take the relation "%s" as example.',
