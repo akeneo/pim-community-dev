@@ -21,8 +21,6 @@ parameters:
     pim_catalog.updater.setter.multiselect_value.class:               Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectAttributeSetter
     pim_catalog.updater.setter.price_collection_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionAttributeSetter
     pim_catalog.updater.setter.media_value.class:                     Pim\Bundle\CatalogBundle\Updater\Setter\MediaAttributeSetter
-    pim_catalog.updater.setter.reference_data_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\ReferenceDataSetter
-    pim_catalog.updater.setter.reference_data_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\ReferenceDataCollectionSetter
 
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     # TODO useful to use this abstract?
@@ -210,24 +208,6 @@ services:
             - @pim_catalog.factory.media
             - ['pim_catalog_file', 'pim_catalog_image']
             - %upload_dir%
-        tags:
-            - { name: 'pim_catalog.updater.setter' }
-
-    pim_catalog.updater.setter.reference_data_value:
-        class: %pim_catalog.updater.setter.reference_data_value.class%
-        parent: pim_catalog.updater.setter.abstract
-        arguments:
-            - '@pim_reference_data.repository_resolver'
-            - ['pim_reference_data_simpleselect']
-        tags:
-            - { name: 'pim_catalog.updater.setter' }
-            
-    pim_catalog.updater.setter.reference_data_collection_value:
-        class: %pim_catalog.updater.setter.reference_data_collection_value.class%
-        parent: pim_catalog.updater.setter.abstract
-        arguments:
-            - '@pim_reference_data.repository_resolver'
-            - ['pim_reference_data_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
 
