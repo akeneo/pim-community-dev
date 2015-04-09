@@ -14,14 +14,18 @@ use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 class ReferenceDataInterfaceChecker implements CheckerInterface
 {
     /** @var string */
-    //TODO: put this in the constructor
-    protected $interface = 'Pim\Component\ReferenceData\Model\ReferenceDataInterface';
+    protected $interface;
 
     /** @var string */
     protected $model;
 
     /** @var string */
     protected $failure;
+
+    public function __construct($referenceDataInterface)
+    {
+        $this->interface = $referenceDataInterface;
+    }
 
     /**
      * {@inheritdoc}
