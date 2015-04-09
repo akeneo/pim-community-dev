@@ -147,4 +147,12 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     {
         return 'set-attribute-requirements';
     }
+
+    /**
+     * @return string
+     */
+    public function getItemsName()
+    {
+        return 'family';
+    }
 }

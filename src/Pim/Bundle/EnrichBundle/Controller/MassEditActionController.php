@@ -199,7 +199,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         if ($form->isValid()) {
             $operation = $form->getData()['operation'];
-            $pimFilters = $this->gridFilterAdapter->transform($this->request);
+            $pimFilters = $this->gridFilterAdapter->adapt($this->request);
             $operation->setFilters($pimFilters);
 
             //TODO: to remove !
@@ -256,7 +256,7 @@ class MassEditActionController extends AbstractDoctrineController
         $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
 
         // Fixme: should look at the job execution to see the status of a job instance execution
-        if (JobInstance::STATUS_IN_PROGRESS === $checkStatus && $jobInstance->getStatus()) {
+        if ($checkStatus && JobInstance::STATUS_IN_PROGRESS === $jobInstance->getStatus()) {
             throw $this->createNotFoundException(
                 sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
             );
@@ -264,7 +264,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $job = $this->connectorRegistry->getJob($jobInstance);
 
-        if (null !== $job) {
+        if (null === $job) {
             throw $this->createNotFoundException(
                 sprintf(
                     'The following %s does not exist anymore. Please check configuration:<br />' .

@@ -370,4 +370,12 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         return 'edit-common-attributes';
     }
+
+    /**
+     * @return string
+     */
+    public function getItemsName()
+    {
+        return 'product';
+    }
 }
