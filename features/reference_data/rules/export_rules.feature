@@ -1,10 +1,10 @@
 @javascript
-Feature: Export rules with reference data
+Feature: Export rules
   In order to be able to access and modify rules outside PIM
   As an administrator
   I need to be able to export rules
 
-  Scenario: Successfully export rules
+  Scenario: Successfully export rules with reference data
     Given a "clothing" catalog configuration
     And I add the "french" locale to the "mobile" channel
     And I add the "french" locale to the "tablet" channel

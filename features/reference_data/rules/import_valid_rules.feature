@@ -1,5 +1,5 @@
 @javascript
-Feature: Import rules with reference data
+Feature: Import rules
   In order ease the enrichment of the catalog
   As an administrator
   I need to be able to import rules

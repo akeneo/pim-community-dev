@@ -1,5 +1,5 @@
 @javascript
-Feature: Publish a product with reference data
+Feature: Publish a product
   In order to froze the product data I would use to export
   As a product manager
   I need to be able to publish a product
@@ -18,7 +18,7 @@ Feature: Publish a product with reference data
       | red-heels   | Red        | Spandex, Neoprene, Wool |
     And I am logged in as "Julia"
 
-  Scenario: Successfully publish a product
+  Scenario: Successfully publish a product with reference data
     Given I am on the "red-heels" product page
     When I press the "Publish" button
     And I confirm the publishing
@@ -26,7 +26,7 @@ Feature: Publish a product with reference data
     Then the grid should contain 1 elements
     And I should see product red-heels
 
-  Scenario: Successfully edit a published product
+  Scenario: Successfully edit a published product with reference data
     Given I am on the "red-heels" product page
     When I press the "Publish" button
     And I confirm the publishing

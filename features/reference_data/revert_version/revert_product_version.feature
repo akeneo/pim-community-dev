@@ -1,5 +1,5 @@
 @javascript
-Feature: Revert a product with reference data to a previous version
+Feature: Revert a product to a previous version
   In order to manage versioning products
   As a product manager
   I need to be able to revert a product to a previous version
