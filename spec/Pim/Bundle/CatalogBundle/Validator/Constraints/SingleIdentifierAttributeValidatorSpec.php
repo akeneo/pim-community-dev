@@ -7,11 +7,8 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ExecutionContextInterface;
 use Prophecy\Argument;
-
 use Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttribute;
-
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-
 
 class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
 {
