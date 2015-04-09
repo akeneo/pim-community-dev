@@ -13,8 +13,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface ReferenceDataRepositoryInterface extends ObjectRepository
 {
-    const LIMIT_IF_NO_SEARCH = 20;
-
     /**
      * Returns an array of reference data ids and codes according to the search that was performed
      *

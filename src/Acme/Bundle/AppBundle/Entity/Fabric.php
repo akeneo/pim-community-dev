@@ -63,12 +63,4 @@ class Fabric extends AbstractReferenceData implements ReferenceDataInterface
     {
         return 'fabric';
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getSortOrder()
-    {
-        return 0;
-    }
 }

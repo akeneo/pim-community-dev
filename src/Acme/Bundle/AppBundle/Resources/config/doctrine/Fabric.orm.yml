@@ -12,6 +12,8 @@ Acme\Bundle\AppBundle\Entity\Fabric:
             type: string
             length: 255
             unique: true
+        sortOrder:
+            type: integer
         name:
             type: string
             length: 255

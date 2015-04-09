@@ -25,14 +25,15 @@ class ReferenceDataRepository extends EntityRepository implements
     public function findBySearch($search = null, array $options = [])
     {
         $qb = $this->createQueryBuilder($this->getAlias());
-        $qb->select(sprintf('%s.id as id, %s.code as text', $this->getAlias(), $this->getAlias()));
+        $qb
+            ->select(sprintf('%s.id as id, %s.code as text', $this->getAlias(), $this->getAlias()))
+            ->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC')
+            ->addOrderBy(sprintf('%s.code', $this->getAlias()))
+        ;
 
         if (null !== $search) {
             $qb->andWhere(sprintf('%s.code LIKE :search', $this->getAlias()))
                 ->setParameter('search', "$search%");
-        } else {
-            // TODO-RD: fix the select2 search so that we can use the limit
-//            $options['limit'] = ReferenceDataRepositoryInterface::LIMIT_IF_NO_SEARCH;
         }
 
         if (isset($options['limit'])) {
