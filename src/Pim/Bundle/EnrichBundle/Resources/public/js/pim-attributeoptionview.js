@@ -22,7 +22,7 @@ define(
 
         var ItemCollection = Backbone.Collection.extend({
             model: AttributeOptionItem,
-            initialize: function(options) {
+            initialize: function (options) {
                 this.url = options.url;
             }
         });
@@ -35,7 +35,7 @@ define(
                     '<span class="handle"><i class="icon-reorder"></i></span>' +
                     '<span class="option-code"><%= item.code %></span>' +
                 '</td>' +
-                '<% _.each(locales, function(locale) { %>' +
+                '<% _.each(locales, function (locale) { %>' +
                 '<td >' +
                     '<% if (item.optionValues[locale]) { %>' +
                         '<span title="<%= item.optionValues[locale].value %>">' +
@@ -54,7 +54,7 @@ define(
                     '<input type="text" class="attribute_option_code exclude" value="<%= item.code %>"/>' +
                     '<i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>' +
                 '</td>' +
-                '<% _.each(locales, function(locale) { %>' +
+                '<% _.each(locales, function (locale) { %>' +
                 '<td class="field-cell">' +
                     '<% if (item.optionValues[locale]) { %>' +
                         '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
@@ -82,14 +82,14 @@ define(
             parent: null,
             loading: false,
             locales: [],
-            initialize: function(options) {
+            initialize: function (options) {
                 this.locales       = options.locales;
                 this.parent        = options.parent;
                 this.model.urlRoot = this.parent.updateUrl;
 
                 this.render();
             },
-            render: function() {
+            render: function () {
                 var template = null;
 
                 if (this.editable) {
@@ -110,31 +110,31 @@ define(
 
                 return this;
             },
-            showReadableItem: function() {
+            showReadableItem: function () {
                 this.editable = false;
                 this.parent.showReadableItem(this);
                 this.clean();
                 this.render();
             },
-            showEditableItem: function() {
+            showEditableItem: function () {
                 this.editable = true;
                 this.render();
                 this.model.set(this.loadModelFromView().attributes);
             },
-            startEditItem: function() {
+            startEditItem: function () {
                 var rowIsEditable = this.parent.requestRowEdition(this);
 
                 if (rowIsEditable) {
                     this.showEditableItem();
                 }
             },
-            stopEditItem: function() {
+            stopEditItem: function () {
                 if (!this.model.id || this.dirty) {
                     if (this.dirty) {
                         Dialog.confirm(
                             __('confirm.attribute_option.cancel_edition_on_new_option_text'),
                             __('confirm.attribute_option.cancel_edition_on_new_option_title'),
-                            _.bind(function() {
+                            _.bind(function () {
                                 this.showReadableItem(this);
                                 if (!this.model.id) {
                                     this.deleteItem();
@@ -151,7 +151,7 @@ define(
                     this.showReadableItem();
                 }
             },
-            deleteItem: function() {
+            deleteItem: function () {
                 var itemCode = this.el.firstChild.innerText;
 
                 Dialog.confirm(
@@ -162,7 +162,7 @@ define(
                     }, this)
                 );
             },
-            updateItem: function() {
+            updateItem: function () {
                 this.inLoading(true);
 
                 var editedModel = this.loadModelFromView();
@@ -171,13 +171,13 @@ define(
                     {},
                     {
                         url: this.model.url(),
-                        success: _.bind(function() {
+                        success: _.bind(function () {
                             this.inLoading(false);
                             this.model.set(editedModel.attributes);
                             this.clean();
                             this.stopEditItem();
                         }, this),
-                        error: _.bind(function(data, xhr) {
+                        error: _.bind(function (data, xhr) {
                             this.inLoading(false);
 
                             var response = xhr.responseJSON;
@@ -203,21 +203,20 @@ define(
                     }
                 );
             },
-            cancelSubmit: function(e) {
-                if(e.keyCode === 13) {
+            cancelSubmit: function (e) {
+                if (e.keyCode === 13) {
                     this.updateItem();
 
                     return false;
                 }
             },
-            loadModelFromView: function()
-            {
+            loadModelFromView: function () {
                 var attributeOptions = {};
                 var editedModel = this.model.clone();
 
                 editedModel.urlRoot = this.model.urlRoot;
 
-                _.each(this.$el.find('.attribute-option-value'), function(input) {
+                _.each(this.$el.find('.attribute-option-value'), function (input) {
                     var locale = input.dataset.locale;
 
                     attributeOptions[locale] = {
@@ -234,17 +233,17 @@ define(
 
                 return editedModel;
             },
-            inLoading: function(loading) {
+            inLoading: function (loading) {
                 this.parent.inLoading(loading);
             },
-            soil: function() {
+            soil: function () {
                 if (JSON.stringify(this.model.attributes) !== JSON.stringify(this.loadModelFromView().attributes)) {
                     this.dirty = true;
                 } else {
                     this.dirty = false;
                 }
             },
-            clean: function() {
+            clean: function () {
                 this.dirty = false;
             }
         });
@@ -262,7 +261,7 @@ define(
                 '<thead>' +
                     '<tr>' +
                         '<th><%= code_label %></th>' +
-                        '<% _.each(locales, function(locale) { %>' +
+                        '<% _.each(locales, function (locale) { %>' +
                         '<th>' +
                             '<%= locale %>' +
                         '</th>' +
@@ -290,7 +289,7 @@ define(
             currentlyEditedItemView: null,
             itemViews: [],
             rendered: false,
-            initialize: function(options) {
+            initialize: function (options) {
                 this.$target    = options.$target;
                 this.collection = new ItemCollection({url: options.updateUrl});
                 this.locales    = options.locales;
@@ -301,7 +300,7 @@ define(
                 this.render();
                 this.load();
             },
-            render: function() {
+            render: function () {
                 this.$el.empty();
 
                 this.currentlyEditedItemView = null;
@@ -313,7 +312,7 @@ define(
                     code_label: __('Code')
                 }));
 
-                _.each(this.collection.models, function(attributeOptionItem) {
+                _.each(this.collection.models, function (attributeOptionItem) {
                     this.addItem({item: attributeOptionItem});
                 }, this);
 
@@ -334,14 +333,14 @@ define(
                     containment: this.$el,
                     distance: 5,
                     cursor: 'move',
-                    helper: function(e, ui) {
-                        ui.children().each(function() {
+                    helper: function (e, ui) {
+                        ui.children().each(function () {
                             $(this).width($(this).width());
                         });
 
                         return ui;
                     },
-                    stop: _.bind(function() {
+                    stop: _.bind(function () {
                         this.updateSorting();
                     }, this)
                 });
@@ -350,18 +349,18 @@ define(
 
                 return this;
             },
-            load: function() {
+            load: function () {
                 this.itemViews = [];
                 this.inLoading(true);
                 this.collection
                     .fetch({
-                        success: _.bind(function() {
+                        success: _.bind(function () {
                             this.inLoading(false);
                             this.render();
                         }, this)
                     });
             },
-            addItem: function(opts) {
+            addItem: function (opts) {
                 var options = opts || {};
 
                 //If no item model provided we create one
@@ -378,7 +377,7 @@ define(
                     this.$el.children('tbody').append(newItemView.$el);
                 }
             },
-            createItemView: function(item) {
+            createItemView: function (item) {
                 var itemView = new EditableItemView({
                     model:    item,
                     url:      this.updateUrl,
@@ -424,11 +423,11 @@ define(
                     this.updateEditionStatus();
                 }
             },
-            deleteItem: function(item) {
+            deleteItem: function (item) {
                 this.inLoading(true);
 
                 item.model.destroy({
-                    success: _.bind(function() {
+                    success: _.bind(function () {
                         this.inLoading(false);
 
                         this.collection.remove(item);
@@ -444,7 +443,7 @@ define(
                             item.$el.hide(500);
                         }
                     }, this),
-                    error: _.bind(function(data, response) {
+                    error: _.bind(function (data, response) {
                         this.inLoading(false);
                         var message;
 
@@ -458,14 +457,14 @@ define(
                     }, this)
                 });
             },
-            updateEditionStatus: function() {
+            updateEditionStatus: function () {
                 if (this.currentlyEditedItemView) {
                     this.$el.addClass('in-edition');
                 } else {
                     this.$el.removeClass('in-edition');
                 }
             },
-            updateSortableStatus: function(sortable) {
+            updateSortableStatus: function (sortable) {
                 this.sortable = sortable;
 
                 if (sortable) {
@@ -474,7 +473,7 @@ define(
                     this.$el.sortable('disable');
                 }
             },
-            updateSorting: function() {
+            updateSorting: function () {
                 this.inLoading(true);
                 var sorting = [];
 
@@ -487,11 +486,11 @@ define(
                     url: this.sortingUrl,
                     type: 'PUT',
                     data: JSON.stringify(sorting)
-                }).done(_.bind(function() {
+                }).done(_.bind(function () {
                     this.inLoading(false);
                 }, this));
             },
-            inLoading: function(loading) {
+            inLoading: function (loading) {
                 if (loading) {
                     var loadingMask = new LoadingMask();
                     loadingMask.render().$el.appendTo(this.$el);
@@ -502,7 +501,7 @@ define(
             }
         });
 
-        return function($element) {
+        return function ($element) {
             var itemCollectionView = new ItemCollectionView(
             {
                 $target: $element,
@@ -518,7 +517,7 @@ define(
                 sortable: $element.data('sortable')
             });
 
-            mediator.on('attribute:auto_option_sorting:changed', _.bind(function(autoSorting) {
+            mediator.on('attribute:auto_option_sorting:changed', _.bind(function (autoSorting) {
                 itemCollectionView.updateSortableStatus(!autoSorting);
             }, this));
         };

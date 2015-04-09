@@ -11,7 +11,7 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                 {
                     method: 'GET'
                 }
-            ).done(function(product) {
+            ).done(function (product) {
                 promise.resolve(product);
             });
 
@@ -33,11 +33,11 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                 data: { _method: 'DELETE' }
             }).promise();
         },
-        getValues: function(product) {
+        getValues: function (product) {
             var promise = $.Deferred();
 
-            AttributeManager.getAttributesForProduct(product).done(function(attributes) {
-                _.each(attributes, _.bind(function(attributeCode) {
+            AttributeManager.getAttributesForProduct(product).done(function (attributes) {
+                _.each(attributes, _.bind(function (attributeCode) {
                     if (!product.values[attributeCode]) {
                         product.values[attributeCode] = [];
                     }

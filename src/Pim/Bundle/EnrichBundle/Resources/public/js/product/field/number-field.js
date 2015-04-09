@@ -7,7 +7,7 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/number'], fu
         events: {
             'change input': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {

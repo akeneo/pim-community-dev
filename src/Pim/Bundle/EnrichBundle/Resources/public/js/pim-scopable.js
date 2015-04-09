@@ -54,9 +54,9 @@ define(
                     field.id = null;
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
                 } else if (this.$el.find('.switch').length) {
-                    var $original = this.$el.find('.switch'),
-                        $wrap = $original.clone().empty().removeClass('has-switch'),
-                        $input = $original.find('input');
+                    var $original = this.$el.find('.switch');
+                    var $wrap = $original.clone().empty().removeClass('has-switch');
+                    var $input = $original.find('input');
 
                     field.id = $input.attr('id');
                     $input.appendTo($wrap);
@@ -79,7 +79,7 @@ define(
 
                     field.input = $field.get(0).outerHTML;
 
-                    _.each($field.siblings('input, select'), function(el) {
+                    _.each($field.siblings('input, select'), function (el) {
                         field.input += el.outerHTML;
                     });
 
@@ -91,7 +91,7 @@ define(
                         field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
                     }
 
-                    _.each($field.siblings('.validation-tooltip'), function(icon) {
+                    _.each($field.siblings('.validation-tooltip'), function (icon) {
                         $(icon).appendTo(this.$el.find('.icons-container'));
                     }, this);
                 }
@@ -196,7 +196,7 @@ define(
                     );
 
                     if (this.fieldViews.length > 1) {
-                        var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                        var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon });
                         this.$el.find('label').removeAttr('for').prepend($toggleIcon);
                     }
 
@@ -359,7 +359,7 @@ define(
             },
 
             events: {
-                'click label i.field-toggle' : '_toggle'
+                'click label i.field-toggle': '_toggle'
             }
         });
     }

@@ -18,13 +18,13 @@ define(
             events: {
                 'change input': 'updateModel'
             },
-            renderInput: function(context) {
+            renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            render: function() {
+            render: function () {
                 Field.prototype.render.apply(this, arguments);
 
-                setTimeout(_.bind(function() {
+                setTimeout(_.bind(function () {
                     this.$('.datepicker').datepicker();
                 }, this), 0);
             },

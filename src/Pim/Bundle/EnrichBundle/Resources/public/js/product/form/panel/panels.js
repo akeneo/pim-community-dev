@@ -8,7 +8,7 @@ define(
         'pim/form',
         'text!pim/template/product/panel/container'
     ],
-    function($, _, Backbone, BaseForm, template) {
+    function ($, _, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-container closed',
@@ -23,7 +23,7 @@ define(
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            configure: function() {
+            configure: function () {
                 this.getRoot().addPanel = _.bind(this.addPanel, this);
                 this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
 
@@ -70,13 +70,13 @@ define(
                 this.state.set('currentPanel', null);
                 this.closeFullPanel();
             },
-            openFullPanel: function() {
+            openFullPanel: function () {
                 this.getParent().state.set('fullPanel', true);
             },
-            closeFullPanel: function() {
+            closeFullPanel: function () {
                 this.getParent().state.set('fullPanel', false);
             },
-            resize: function() {
+            resize: function () {
                 var panelContent = this.$('.panel-content');
                 if (panelContent.length) {
                     panelContent.css(

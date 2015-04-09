@@ -77,7 +77,7 @@ function ($, _, Backgrid, SelectRowCell) {
          *
          * @returns {{selectedModels: *, inset: boolean}}
          */
-        getSelectionState: function() {
+        getSelectionState: function () {
             return {
                 selectedModels: this.selectedModels,
                 inset: this.inset

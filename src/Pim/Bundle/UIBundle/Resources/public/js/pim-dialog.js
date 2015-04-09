@@ -50,11 +50,11 @@ define(
                         okText: okText
                     });
 
-                    redirectModal.on('ok', function() {
+                    redirectModal.on('ok', function () {
                         Navigation.getInstance().setLocation(location);
                     });
 
-                    $('.modal-body a', redirectModal.el).on('click', function() {
+                    $('.modal-body a', redirectModal.el).on('click', function () {
                         redirectModal.close();
                     });
 

@@ -3,9 +3,9 @@
     'use strict';
 
     $.fn.wizard = function (options) {
-        var opts = $.extend({}, $.fn.wizard.defaults, options),
-            $steps = $(this).find('li'),
-            currentStep = opts.currentStep;
+        var opts = $.extend({}, $.fn.wizard.defaults, options);
+        var $steps = $(this).find('li');
+        var currentStep = opts.currentStep;
 
         if (!$(this).hasClass('wizard')) {
             $(this).addClass('wizard');

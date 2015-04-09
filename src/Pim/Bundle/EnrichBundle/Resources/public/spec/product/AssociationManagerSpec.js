@@ -37,6 +37,6 @@ define(
                 expect($.getJSON).not.toHaveBeenCalled();
                 expect(result).toEqual(['foo']);
             });
-        }
-    );
-});
+        });
+    }
+);

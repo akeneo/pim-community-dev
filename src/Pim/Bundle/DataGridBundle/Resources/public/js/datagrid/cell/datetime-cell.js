@@ -1,5 +1,5 @@
 define(['oro/datagrid/string-cell', 'oro/datagrid/datetime-formatter'],
-function(StringCell, DatagridDateTimeFormatter) {
+function (StringCell, DatagridDateTimeFormatter) {
     'use strict';
 
     /**
@@ -33,7 +33,7 @@ function(StringCell, DatagridDateTimeFormatter) {
          *
          * @return {oro.datagrid.DateTimeFormatter}
          */
-        createFormatter: function() {
+        createFormatter: function () {
             return new this.formatterPrototype({type: this.type});
         }
     });

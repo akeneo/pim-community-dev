@@ -14,13 +14,13 @@ define([
         events: {
             'change input': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {
             var data = [];
             var $elements = $(event.currentTarget).parents('.price-collection-field').find('.price-input');
-            _.each($elements, _.bind(function(element) {
+            _.each($elements, _.bind(function (element) {
                 var input = $(element).children('input');
 
                 var inputData = input.val();
@@ -34,11 +34,11 @@ define([
 
             this.setCurrentValue(data);
         },
-        getTemplateContext: function() {
+        getTemplateContext: function () {
             var promise = $.Deferred();
 
             $.when(Field.prototype.getTemplateContext.apply(this, arguments), ConfigManager.getEntityList('currencies'))
-                .done(function(templateContext, currencies) {
+                .done(function (templateContext, currencies) {
                     templateContext.currencies = currencies;
 
                     promise.resolve(templateContext);

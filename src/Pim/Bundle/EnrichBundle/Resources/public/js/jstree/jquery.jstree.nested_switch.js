@@ -35,7 +35,7 @@
 
                     var switch_wrapper = $('<div>', {
                         'class': 'switch switch-small pull-right',
-                        'attr' : {
+                        'attr': {
                             'data-on-label':  __('switch_on'),
                             'data-off-label': __('switch_off'),
                             'data-animated':  false
@@ -48,9 +48,9 @@
                         'class': 'control-label pull-left'
                     });
 
-                    switch_wrapper.on('switch-change', function(e, data) {
+                    switch_wrapper.on('switch-change', function (e, data) {
                         // Execute callback with a timeout to give bootstrapSwitch time to change the switch
-                        setTimeout(function() {
+                        setTimeout(function () {
                             var callback = _this.data.nested_switch.callback;
                             if (callback) {
                                 callback(data.value);

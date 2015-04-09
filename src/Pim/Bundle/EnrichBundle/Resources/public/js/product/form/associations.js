@@ -193,7 +193,7 @@ define(
                 this.state.set('associationTarget', associationTarget);
 
                 _.each(this.datagrids, function (datagrid, gridType) {
-                    $('#' + datagrid.name)[gridType === associationTarget ? 'removeClass': 'addClass']('hide');
+                    $('#' + datagrid.name)[gridType === associationTarget ? 'removeClass' : 'addClass']('hide');
                 });
 
                 $(event.currentTarget).addClass('hide').siblings('[data-association-target]').removeClass('hide');

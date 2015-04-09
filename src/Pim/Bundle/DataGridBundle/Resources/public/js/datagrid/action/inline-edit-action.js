@@ -9,7 +9,7 @@ define(
         'pim/form-builder',
         'pim/product-manager'
     ],
-    function($, _, ModelAction, LoadingMask, FormBuilder, ProductManager) {
+    function ($, _, ModelAction, LoadingMask, FormBuilder, ProductManager) {
         return ModelAction.extend({
             template: _.template(
                 '<div id="product-edit-form"></div>'
@@ -19,7 +19,7 @@ define(
 
                 return ModelAction.prototype.initialize.apply(this, arguments);
             },
-            run: function() {
+            run: function () {
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo($('#container'));
                 loadingMask.show();
@@ -27,7 +27,7 @@ define(
                 $.when(
                     FormBuilder.build('pim/product-edit-form'),
                     ProductManager.get(this.model.get('id'))
-                ).done(_.bind(function(form, product) {
+                ).done(_.bind(function (form, product) {
                     this.$el.html(this.template())
                         .appendTo('body')
                         .css({

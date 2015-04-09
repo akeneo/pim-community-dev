@@ -7,7 +7,7 @@ define(
         'pim/form',
         'text!pim/template/product/form-tabs'
     ],
-    function(_, Backbone, BaseForm, template) {
+    function (_, Backbone, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'tabbable tabs-top',
@@ -21,7 +21,7 @@ define(
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            configure: function() {
+            configure: function () {
                 this.getRoot().addTab = _.bind(this.addTab, this);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
@@ -49,7 +49,6 @@ define(
                     })
                 );
                 this.delegateEvents();
-
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
                 currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);

@@ -16,10 +16,10 @@ define(
         events: {
             'change input': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             return this.fieldTemplate(context);
         },
-        render: function() {
+        render: function () {
             Field.prototype.render.apply(this, arguments);
 
             var $elem = this.$('input.select-field');
@@ -36,14 +36,14 @@ define(
                         }
                     ),
                     cache: true,
-                    data: function(term) {
+                    data: function (term) {
                         return {search: term};
                     },
-                    results: function(data) {
+                    results: function (data) {
                         return data;
                     }
                 },
-                initSelection: function(element, callback) {
+                initSelection: function (element, callback) {
                     var id = $(element).val();
                     if (id !== '') {
                         callback({'id': id, 'text': id});

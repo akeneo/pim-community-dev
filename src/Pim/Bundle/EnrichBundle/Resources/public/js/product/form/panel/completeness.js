@@ -10,7 +10,7 @@ define(
         'pim/i18n',
         'oro/mediator'
     ],
-    function($, _, BaseForm, CompletenessManager, template, i18n, mediator) {
+    function ($, _, BaseForm, CompletenessManager, template, i18n, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -29,7 +29,7 @@ define(
             render: function () {
                 if (this.getRoot().model.get('meta')) {
                     CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id)
-                        .done(_.bind(function(completenesses) {
+                        .done(_.bind(function (completenesses) {
                             this.$el.html(
                                 this.template({
                                     completenesses: completenesses,
@@ -42,7 +42,7 @@ define(
 
                 return this;
             },
-            switchChannel: function(event) {
+            switchChannel: function (event) {
                 var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
                 if ($completenessBlock.attr('data-closed') === 'false') {
                     $completenessBlock.attr('data-closed', 'true');
@@ -50,7 +50,7 @@ define(
                     $completenessBlock.attr('data-closed', 'false');
                 }
             },
-            showAttribute: function(event) {
+            showAttribute: function (event) {
                 mediator.trigger(
                     'show_attribute',
                     {
@@ -60,7 +60,7 @@ define(
                     }
                 );
             },
-            update: function() {
+            update: function () {
                 if (this.getRoot().model.get('meta')) {
                     CompletenessManager.invalidateCache(this.getRoot().model.get('meta').id);
                 }

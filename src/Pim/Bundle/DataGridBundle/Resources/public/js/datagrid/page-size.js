@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 'oro/translator'],
-function($, _, Backbone, __) {
+function ($, _, Backbone, __) {
     'use strict';
 
     /**
@@ -74,7 +74,7 @@ function($, _, Backbone, __) {
          *
          * @return {*}
          */
-        disable: function() {
+        disable: function () {
             this.enabled = false;
             this.render();
             return this;
@@ -85,7 +85,7 @@ function($, _, Backbone, __) {
          *
          * @return {*}
          */
-        enable: function() {
+        enable: function () {
             this.enabled = true;
             this.render();
             return this;
@@ -104,20 +104,20 @@ function($, _, Backbone, __) {
             }
         },
 
-        changePageSize: function(pageSize) {
+        changePageSize: function (pageSize) {
             this.collection.state.pageSize = pageSize;
             this.collection.fetch();
 
             return this;
         },
 
-        render: function() {
+        render: function () {
             this.$el.empty();
 
             var currentSizeLabel = _.filter(
                 this.items,
                 _.bind(
-                    function(item) {
+                    function (item) {
                         return item.size == undefined ? this.collection.state.pageSize == item : this.collection.state.pageSize == item.size;
                     },
                     this

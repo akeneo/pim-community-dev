@@ -1,5 +1,5 @@
 define(['underscore', 'backbone', 'backbone/bootstrap-modal'],
-function(_, Backbone) {
+function (_, Backbone) {
     'use strict';
 
     /**
@@ -14,10 +14,10 @@ function(_, Backbone) {
         /** @property {String} */
         className: 'modal oro-modal-danger',
 
-        open: function() {
+        open: function () {
             Backbone.BootstrapModal.prototype.open.apply(this, arguments);
 
-            this.once('cancel', _.bind(function() {
+            this.once('cancel', _.bind(function () {
                 this.$el.trigger('hidden');
             }, this));
         }

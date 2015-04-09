@@ -7,7 +7,7 @@ define(
         'text!pim/template/product/form',
         'pim/form'
     ],
-    function(
+    function (
         _,
         Backbone,
         template,

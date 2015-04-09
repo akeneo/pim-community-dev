@@ -11,7 +11,7 @@ define(
         'oro/mediator',
         'backbone/bootstrap-modal'
     ],
-    function($, _, Backbone, BaseForm, template, Routing, mediator) {
+    function ($, _, Backbone, BaseForm, template, Routing, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',
@@ -49,8 +49,8 @@ define(
 
                     mediator.trigger('history:rendered:before');
                     if (this.getParent().getParent().state.get('fullPanel') && this.actions) {
-                        _.each(this.$el.find('td.actions'), _.bind(function(element) {
-                            _.each(this.actions, _.bind(function(action) {
+                        _.each(this.$el.find('td.actions'), _.bind(function (element) {
+                            _.each(this.actions, _.bind(function (action) {
                                 $(element).append(action.clone(true));
                             }, this));
                         }, this));
@@ -72,20 +72,20 @@ define(
                                 entityId: this.getData().meta.id
                             }
                         )
-                    ).done(_.bind(function(versions) {
+                    ).done(_.bind(function (versions) {
                         this.versions = versions;
                         this.render();
                     }, this));
                 }
             },
-            addAction: function(code, element) {
+            addAction: function (code, element) {
                 this.actions[code] = element;
             },
-            expandHistory: function() {
+            expandHistory: function () {
                 this.getParent().openFullPanel();
                 this.render();
             },
-            collapseHistory: function() {
+            collapseHistory: function () {
                 this.getParent().closeFullPanel();
                 this.render();
             },

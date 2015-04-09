@@ -7,14 +7,14 @@ define(['pim/field', 'underscore', 'text!pim/template/product/field/textarea'], 
         events: {
             'change textarea': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {
             var data = event.currentTarget.value;
             this.setCurrentValue(data);
         },
-        setFocus: function() {
+        setFocus: function () {
             this.$('textarea').first().focus();
         }
     });

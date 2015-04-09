@@ -1,5 +1,5 @@
 define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
-function(_, messenger, __, Modal, AbstractAction) {
+function (_, messenger, __, Modal, AbstractAction) {
     'use strict';
 
     /**
@@ -20,7 +20,7 @@ function(_, messenger, __, Modal, AbstractAction) {
             empty_selection: __('Please, select items to perform mass action.')
         },
 
-        initialize: function(options) {
+        initialize: function (options) {
             AbstractAction.prototype.initialize.apply(this, arguments);
             this.route_parameters = _.extend(this.route_parameters, {gridName: this.datagrid.name, actionName: this.name});
         },
@@ -28,7 +28,7 @@ function(_, messenger, __, Modal, AbstractAction) {
         /**
          * Ask a confirmation and execute mass action.
          */
-        execute: function() {
+        execute: function () {
             var selectionState = this.datagrid.getSelectionState();
             if (_.isEmpty(selectionState.selectedModels) && selectionState.inset) {
                 messenger.notificationFlashMessage('warning', this.messages.empty_selection);
@@ -43,11 +43,11 @@ function(_, messenger, __, Modal, AbstractAction) {
          * @returns {Object}
          * @private
          */
-        getActionParameters: function() {
+        getActionParameters: function () {
             var selectionState = this.datagrid.getSelectionState();
             var collection     = this.datagrid.collection;
 
-            var idValues = _.map(selectionState.selectedModels, function(model) {
+            var idValues = _.map(selectionState.selectedModels, function (model) {
                 return model.get(this.identifierFieldName);
             }, this);
             var params = {
@@ -73,7 +73,7 @@ function(_, messenger, __, Modal, AbstractAction) {
          *
          * @return {object}
          */
-        getExtraParameters: function(params, state) {
+        getExtraParameters: function (params, state) {
             params[this.datagrid.name] = {};
 
             if (state !== undefined) {
@@ -90,7 +90,7 @@ function(_, messenger, __, Modal, AbstractAction) {
          *
          * @return {object}
          */
-        getActiveSorters: function(state) {
+        getActiveSorters: function (state) {
             var result = {};
 
             if (state.parameters !== undefined && state.parameters.view !== undefined) {
@@ -108,7 +108,7 @@ function(_, messenger, __, Modal, AbstractAction) {
          *
          * @return {object}
          */
-        getActiveColumns: function(state) {
+        getActiveColumns: function (state) {
             var result = {};
 
             if (state.sorters !== undefined) {
@@ -120,7 +120,7 @@ function(_, messenger, __, Modal, AbstractAction) {
             return result;
         },
 
-        _onAjaxSuccess: function(data, textStatus, jqXHR) {
+        _onAjaxSuccess: function (data, textStatus, jqXHR) {
             this.datagrid.resetSelectionState();
             AbstractAction.prototype._onAjaxSuccess.apply(this, arguments);
         },
@@ -130,7 +130,7 @@ function(_, messenger, __, Modal, AbstractAction) {
          *
          * @return {oro.Modal}
          */
-        getConfirmDialog: function(callback) {
+        getConfirmDialog: function (callback) {
             return new Modal({
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,

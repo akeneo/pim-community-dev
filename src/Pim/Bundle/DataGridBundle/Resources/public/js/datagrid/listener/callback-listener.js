@@ -1,5 +1,5 @@
 define(['oro/datagrid/abstract-listener'],
-function(AbstractListener) {
+function (AbstractListener) {
     'use strict';
 
     /**
@@ -18,7 +18,7 @@ function(AbstractListener) {
          *
          * @param {Object} options
          */
-        initialize: function(options) {
+        initialize: function (options) {
             if (!_.has(options, 'processCallback')) {
                 throw new Error('Process callback is not specified');
             }
@@ -35,7 +35,7 @@ function(AbstractListener) {
          * @param {Backbone.Model} model
          * @protected
          */
-        _processValue: function(value, model) {
+        _processValue: function (value, model) {
             this.processCallback(value, model, this);
         }
     });

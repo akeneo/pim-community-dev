@@ -51,7 +51,7 @@ define(
             },
             getFields: function () {
                 return fields;
-            },
+            }
         };
     }
 );

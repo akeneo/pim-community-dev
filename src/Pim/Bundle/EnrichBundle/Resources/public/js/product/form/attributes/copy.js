@@ -11,7 +11,7 @@ define(
         'pim/attribute-manager',
         'pim/product-manager'
     ],
-    function($, _, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager) {
+    function ($, _, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',
@@ -26,7 +26,7 @@ define(
                 'click .select-all-visible': 'selectAllVisible',
                 'click .copy': 'copy'
             },
-            initialize: function() {
+            initialize: function () {
                 this.copyFields = {};
 
                 BaseForm.prototype.initialize.apply(this, arguments);
@@ -68,13 +68,13 @@ define(
 
                 return this;
             },
-            generateCopyFields: function() {
+            generateCopyFields: function () {
                 this.copyFields = {};
 
                 $.when(
                     ConfigManager.getEntityList('attributes'),
                     ProductManager.getValues(this.getData())
-                ).done(_.bind(function(attributes, productValues) {
+                ).done(_.bind(function (attributes, productValues) {
                     _.each(productValues, _.bind(function (values, code) {
                         var attribute = _.findWhere(attributes, {code: code});
 
@@ -100,7 +100,7 @@ define(
                     }, this));
                 }, this));
             },
-            copy: function(){
+            copy: function () {
                 _.each(this.copyFields, function (copyField) {
                     if (copyField.selected && copyField.field && 'edit' === copyField.field.getEditMode()) {
                         copyField.field.setCurrentValue(copyField.data);
@@ -110,16 +110,16 @@ define(
 
                 this.getParent().render();
             },
-            startCopying: function() {
+            startCopying: function () {
                 this.copying = true;
                 this.generateCopyFields();
 
                 this.render();
             },
-            stopCopying: function() {
+            stopCopying: function () {
                 this.copying = false;
 
-                _.each(this.copyFields, _.bind(function(copyField) {
+                _.each(this.copyFields, _.bind(function (copyField) {
                     if (copyField.field) {
                         copyField.field.removeElement('comparision', 'copy');
                     }
@@ -128,27 +128,27 @@ define(
                 this.copyFields = {};
                 this.render();
             },
-            setLocale: function(locale) {
+            setLocale: function (locale) {
                 this.locale = locale;
 
                 this.generateCopyFields();
                 this.render();
             },
-            setScope: function(scope) {
+            setScope: function (scope) {
                 this.scope = scope;
 
                 this.generateCopyFields();
                 this.render();
             },
-            selectAll: function() {
-                _.each(this.copyFields, function(copyField) {
+            selectAll: function () {
+                _.each(this.copyFields, function (copyField) {
                     copyField.selected = true;
                 });
 
                 this.getParent().render();
             },
-            selectAllVisible: function() {
-                _.each(this.copyFields, _.bind(function(copyField, attributeCode) {
+            selectAllVisible: function () {
+                _.each(this.copyFields, _.bind(function (copyField, attributeCode) {
                     if (this.getParent().visibleFields[attributeCode]) {
                         copyField.selected = true;
                     }
@@ -156,10 +156,10 @@ define(
 
                 this.getParent().render();
             },
-            getLocale: function() {
+            getLocale: function () {
                 return this.locale;
             },
-            getScope: function() {
+            getScope: function () {
                 return this.scope;
             }
         });

@@ -5,7 +5,7 @@ define(
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog
-        $.ui.dialog.prototype._allowInteraction = function(e) {
+        $.ui.dialog.prototype._allowInteraction = function (e) {
             return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;
         };
 
@@ -89,7 +89,7 @@ define(
                             }
                         });
                     },
-                    close: function() {
+                    close: function () {
                         $(this).remove();
                     }
                 });

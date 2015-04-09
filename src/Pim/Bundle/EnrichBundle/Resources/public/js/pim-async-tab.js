@@ -21,7 +21,7 @@ define(
                     .css({ 'position': 'absolute', 'width': '100%', 'height': '80%' });
                 loadingMask.show();
 
-                $.get($target.attr('data-url'), function(data) {
+                $.get($target.attr('data-url'), function (data) {
                     $target.html(data).attr('data-loaded', 1).removeAttr('data-loading');
                     loadingMask.hide().$el.remove();
                     $target.closest('form').trigger('tab.loaded', $target);

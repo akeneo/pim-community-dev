@@ -26,7 +26,7 @@ define(
                 '<span class="btn-refresh pull-right"><i class="icon-refresh"></i></span>'
             ),
 
-            initialize: function(options) {
+            initialize: function (options) {
                 this.options = _.extend({}, this.defaults, this.options, options);
 
                 mediator.on('hash_navigation_request:complete', function () {
@@ -36,13 +36,13 @@ define(
                 }, this);
             },
 
-            render: function() {
+            render: function () {
                 this.$el.html(this.template({ data: this.data, options: this.options }));
 
                 return this;
             },
 
-            setElement: function() {
+            setElement: function () {
                 Backbone.View.prototype.setElement.apply(this, arguments);
 
                 this._createLoadingMask();
@@ -51,11 +51,11 @@ define(
                 return this;
             },
 
-            isDashboardPage: function() {
+            isDashboardPage: function () {
                 return Navigation.getInstance().url === Routing.generate('oro_default');
             },
 
-            loadData: function() {
+            loadData: function () {
                 if (!this.needsData || !this.isDashboardPage()) {
                     this.loadTimeout = null;
 
@@ -65,44 +65,44 @@ define(
                 this._beforeLoad();
 
                 $.get(Routing.generate('pim_dashboard_widget_data', { alias: this.options.alias }))
-                    .then(_.bind(function(resp) {
+                    .then(_.bind(function (resp) {
                         this.data = this._processResponse(resp);
                         this.render();
                         this._afterLoad();
                     }, this));
             },
 
-            reload: function() {
+            reload: function () {
                 this.needsData = true;
 
                 this.loadData();
             },
 
-            delayedLoad: function() {
+            delayedLoad: function () {
                 if (!this.loadTimeout) {
-                    this.loadTimeout = setTimeout(_.bind(function() {
+                    this.loadTimeout = setTimeout(_.bind(function () {
                         this.loadData();
                     }, this), this.options.delayedLoadTimeout);
                 }
             },
 
-            _beforeLoad: function() {
+            _beforeLoad: function () {
                 this.$el.parent().addClass('loading');
                 this.$refreshBtn.prop('disabled', true).find('i').addClass('icon-spin');
                 this.loadingMask.show();
             },
 
-            _afterLoad: function() {
+            _afterLoad: function () {
                 this.$el.parent().removeClass('loading');
                 this.loadingMask.hide();
                 this.$refreshBtn.prop('disabled', false).find('i').removeClass('icon-spin');
                 this.loadTimeout = null;
-                setTimeout(_.bind(function() {
+                setTimeout(_.bind(function () {
                     this.needsData = true;
                 }, this), this.options.minRefreshInterval);
             },
 
-            _createLoadingMask: function() {
+            _createLoadingMask: function () {
                 if (this.loadingMask) {
                     this.loadingMask.remove();
                 }
@@ -110,7 +110,7 @@ define(
                 this.loadingMask.render().$el.insertAfter(this.$el);
             },
 
-            _createRefreshBtn: function() {
+            _createRefreshBtn: function () {
                 if (this.$refreshBtn) {
                     this.$refreshBtn.remove();
                 }
@@ -121,7 +121,7 @@ define(
                 this.$el.parent().siblings('.widget-header').append(this.$refreshBtn);
             },
 
-            _processResponse: function(data) {
+            _processResponse: function (data) {
                 return data;
             }
         });

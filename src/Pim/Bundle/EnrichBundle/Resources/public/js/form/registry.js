@@ -2,7 +2,7 @@
 
 define(
     ['jquery', 'underscore', 'pim/form-config-provider'],
-    function($, _, ConfigProvider) {
+    function ($, _, ConfigProvider) {
         var getExtensionMeta = function (formName) {
             var promise = $.Deferred();
 
@@ -23,7 +23,7 @@ define(
             getForm: function getForm (formName) {
                 var promise = $.Deferred();
 
-                require([formName], function(Form) {
+                require([formName], function (Form) {
                     promise.resolve(Form);
                 });
 

@@ -2,7 +2,7 @@
 
 define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], function ($, _, ConfigManager) {
     return {
-        getAttributesForProduct: function(product) {
+        getAttributesForProduct: function (product) {
             var promise = $.Deferred();
 
             ConfigManager.getEntityList('families').done(function (families) {
@@ -15,11 +15,11 @@ define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], fu
 
             return promise.promise();
         },
-        getOptionalAttributes: function(product) {
+        getOptionalAttributes: function (product) {
             var promise = $.Deferred();
 
             $.when(ConfigManager.getEntityList('attributes'), this.getAttributesForProduct(product))
-                .done(function(attributes, productAttributes) {
+                .done(function (attributes, productAttributes) {
                     var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),
                         function (attributeCode) {
@@ -42,20 +42,19 @@ define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], fu
 
             return promise.promise();
         },
-        isOptional: function(attribute, product, families) {
+        isOptional: function (attribute, product, families) {
             return !product.family ? true : !_.contains(families[product.family].attributes, attribute);
         },
-        getAttribute: function(attributeCode) {
+        getAttribute: function (attributeCode) {
             var promise = $.Deferred();
 
-            ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function(attribute) {
+            ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function (attribute) {
                 promise.resolve(attribute);
             }, this));
 
             return promise.promise();
         },
-        getEmptyValue: function(attribute)
-        {
+        getEmptyValue: function (attribute) {
             switch (attribute.type) {
                 case 'pim_catalog_date':
                 case 'pim_catalog_number':
@@ -82,13 +81,13 @@ define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], fu
                     throw new Error(JSON.stringify(attribute));
             }
         },
-        getValue: function(values, attribute, locale, scope) {
+        getValue: function (values, attribute, locale, scope) {
             locale = attribute.localizable ? locale : null;
             scope  = attribute.scopable ? scope : null;
 
             var result = null;
 
-            _.each(values, _.bind(function(value) {
+            _.each(values, _.bind(function (value) {
                 if (value.scope === scope && value.locale === locale) {
                     result = value;
                 }

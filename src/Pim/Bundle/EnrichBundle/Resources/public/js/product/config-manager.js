@@ -13,8 +13,7 @@ define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
             'measures': 'pim_enrich_measures_rest_index',
             'currencies': 'pim_enrich_currency_rest_index'
         },
-        getEntityList: function(entityType)
-        {
+        getEntityList: function (entityType) {
             var promise = $.Deferred();
 
             //If we never called the backend we call it and set the promise
@@ -30,7 +29,7 @@ define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
             //If entities are not initialized we have to wait for the promise to be resolved
             //and if not we directly resolve
             if (!(entityType in this.entities)) {
-                this.promises[entityType].done(_.bind(function(data) {
+                this.promises[entityType].done(_.bind(function (data) {
                     this.entities[entityType] = data;
 
                     promise.resolve(this.entities[entityType]);
@@ -41,18 +40,16 @@ define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
 
             return promise.promise();
         },
-        getEntity: function(entityType, entityIdentifier)
-        {
+        getEntity: function (entityType, entityIdentifier) {
             var promise = $.Deferred();
 
-            this.getEntityList(entityType).done(function(entities) {
+            this.getEntityList(entityType).done(function (entities) {
                 promise.resolve(_.findWhere(entities, {code: entityIdentifier}));
             });
 
             return promise.promise();
         },
-        getConfig: function()
-        {
+        getConfig: function () {
             var promise = $.Deferred();
 
             $.when(
@@ -63,7 +60,7 @@ define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
                 this.getEntityList('measures'),
                 this.getEntityList('currencies'),
                 this.getEntityList('families')
-            ).done(_.bind(function() {
+            ).done(_.bind(function () {
                 promise.resolve(this.entities);
             }, this));
 

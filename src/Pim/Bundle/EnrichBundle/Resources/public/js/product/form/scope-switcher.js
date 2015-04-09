@@ -7,15 +7,15 @@ define(
         'text!pim/template/product/scope-switcher',
         'pim/channel-manager'
     ],
-    function(_, BaseForm, template, ChannelManager) {
+    function (_, BaseForm, template, ChannelManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group scope-switcher',
             events: {
-                'click li a': 'changeScope',
+                'click li a': 'changeScope'
             },
             render: function () {
-                ChannelManager.getChannels().done(_.bind(function(channels) {
+                ChannelManager.getChannels().done(_.bind(function (channels) {
                     if (!this.getParent().getScope()) {
                         this.getParent().setScope(channels[0].code, {silent: true});
                     }

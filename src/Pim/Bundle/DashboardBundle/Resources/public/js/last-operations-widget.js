@@ -45,7 +45,7 @@ define(
                             '</tr>',
                         '</thead>',
                         '<tbody>',
-                            '<% _.each(data, function(operation) { %>',
+                            '<% _.each(data, function (operation) { %>',
                                 '<tr>',
                                     '<td>',
                                         '<%= operation.date %>',
@@ -81,7 +81,7 @@ define(
                 'click a.btn': 'followLink'
             },
 
-            followLink: function(e) {
+            followLink: function (e) {
                 e.preventDefault();
 
                 Navigation.getInstance().setLocation(
@@ -92,10 +92,10 @@ define(
                 );
             },
 
-            _processResponse: function(data) {
+            _processResponse: function (data) {
                 this.options.contentLoaded = true;
 
-                _.each(data, function(operation) {
+                _.each(data, function (operation) {
                     operation.labelClass = this.labelClasses[operation.status] ?
                         'label-' + this.labelClasses[operation.status]
                         : '';
@@ -118,7 +118,7 @@ define(
         var instance = null;
 
         return {
-            init: function(options) {
+            init: function (options) {
                 if (!instance) {
                     instance = new LastOperationsWidget(options);
                 } else if (_.has(options, 'el')) {

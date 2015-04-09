@@ -20,7 +20,7 @@ define(
             events: {
                 'keyup .comment-create textarea, .reply-to-comment textarea': 'toggleButtons',
                 'click .comment-create .send-comment': 'saveComment',
-                'click .remove-comment' : 'removeComment',
+                'click .remove-comment': 'removeComment',
                 'click .comment-thread .send-comment': 'saveReply',
                 'click .comment-thread .cancel-comment': 'cancelComment'
             },
@@ -93,7 +93,7 @@ define(
                 $.ajax({
                     url: Routing.generate('pim_comment_comment_delete', { id: event.currentTarget.dataset.commentId }),
                     type: 'POST',
-                    headers: { accept:'application/json' },
+                    headers: { accept: 'application/json' },
                     data: { _method: 'DELETE' }
                 }).done(_.bind(function () {
                     this.render();

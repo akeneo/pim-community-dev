@@ -1,5 +1,5 @@
 define(['jquery', 'oro/translator', 'oro/locale-settings', 'jquery-ui'],
-function($, __, localeSettings) {
+function ($, __, localeSettings) {
     'use strict';
 
     var locale = localeSettings.getLocale();

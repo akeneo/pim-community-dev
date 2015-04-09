@@ -9,10 +9,10 @@ define(
         events: {
             'change input': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             return this.fieldTemplate(context);
         },
-        render: function() {
+        render: function () {
             Field.prototype.render.apply(this, arguments);
 
             this.$('.switch').bootstrapSwitch();

@@ -46,7 +46,7 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function() {
+            initialize: function () {
                 mediator.once('datagrid_filters:rendered', this._init, this);
 
                 NumberFilter.prototype.initialize.apply(this, arguments);
@@ -55,7 +55,7 @@ define(
             /**
              * @inheritDoc
              */
-            render: function() {
+            render: function () {
             },
 
             /**
@@ -63,7 +63,7 @@ define(
              *
              * @param {Object} options
              */
-            _init: function(collection) {
+            _init: function (collection) {
                 this.$el.remove();
                 this.$el = $(this.container);
 
@@ -78,7 +78,7 @@ define(
                 this.$el.on('tree.updated', _.bind(this._onTreeUpdated, this));
                 TreeView.init(this.$el, this._getInitialState());
 
-                mediator.on('grid_action_execute:' + collection.inputName + ':delete', function() {
+                mediator.on('grid_action_execute:' + collection.inputName + ':delete', function () {
                     TreeView.refresh();
                 });
             },
@@ -86,7 +86,7 @@ define(
             /**
              * Get the current tree state
              */
-            _getTreeState: function() {
+            _getTreeState: function () {
                 var state = TreeView.getState();
 
                 return {
@@ -101,7 +101,7 @@ define(
             /**
              * Get initial state for the tree
              */
-            _getInitialState: function() {
+            _getInitialState: function () {
                 return {
                     selectedNode: +this.value.value.categoryId,
                     selectedTree: +this.value.value.treeId,
@@ -112,7 +112,7 @@ define(
             /**
              * Sync the tree state with the filter value
              */
-            _updateState: function() {
+            _updateState: function () {
                 this.value = this._getTreeState();
             },
 
@@ -129,49 +129,49 @@ define(
             /**
              * @inheritDoc
              */
-            _triggerUpdate: function() {
+            _triggerUpdate: function () {
                 this.trigger('update');
             },
 
             /**
              * @inheritDoc
              */
-            isEmpty: function() {
+            isEmpty: function () {
                 return _.isEqual(this.emptyValue, this._getTreeState());
             },
 
             /**
              * @inheritDoc
              */
-            enable: function() {
+            enable: function () {
                 return this;
             },
 
             /**
              * @inheritDoc
              */
-            disable: function() {
+            disable: function () {
                 return this;
             },
 
             /**
              * @inheritDoc
              */
-            show: function() {
+            show: function () {
                 return this;
             },
 
             /**
              * @inheritDoc
              */
-            hide: function() {
+            hide: function () {
                 return this;
             },
 
             /**
              * @inheritDoc
              */
-            reset: function() {
+            reset: function () {
                 TreeView.reset();
                 NumberFilter.prototype.reset.apply(this, arguments);
             }

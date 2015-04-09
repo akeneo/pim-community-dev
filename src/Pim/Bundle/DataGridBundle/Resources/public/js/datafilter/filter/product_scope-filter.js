@@ -22,12 +22,12 @@ define(
              */
             contextSearch: false,
 
-            initialize: function() {
+            initialize: function () {
                 SelectFilter.prototype.initialize.apply(this, arguments);
 
                 mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));
 
-                mediator.bind('grid_load:complete', function(collection) {
+                mediator.bind('grid_load:complete', function (collection) {
                     $('#grid-' + collection.inputName).find('div.toolbar').show();
                 });
             },
