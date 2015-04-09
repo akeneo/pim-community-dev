@@ -1,14 +1,15 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'backbone',
         'underscore',
         'text!pim/template/product/field/field',
         'pim/attribute-manager',
         'pim/i18n'
-        ], function (Backbone, _, fieldTemplate, AttributeManager, i18n) {
+        ], function ($, Backbone, _, fieldTemplate, AttributeManager, i18n) {
     var FieldModel = Backbone.Model.extend({
-        'values': []
+        values: []
     });
 
     return Backbone.View.extend({
@@ -23,8 +24,7 @@ define([
         editable: true,
         enabled: true,
         valid: true,
-        initialize: function(attribute)
-        {
+        initialize: function (attribute) {
             this.attribute    = attribute;
             this.model        = new FieldModel({values: []});
             this.elements     = {};
@@ -32,9 +32,8 @@ define([
 
             return this;
         },
-        render: function()
-        {
-            this.getTemplateContext().done(_.bind(function(templateContext) {
+        render: function () {
+            this.getTemplateContext().done(_.bind(function (templateContext) {
                 this.$el.empty();
 
                 this.$el.html(this.template(templateContext));
@@ -43,7 +42,7 @@ define([
                 _.each(this.elements, _.bind(function (elements, position) {
                     var $container = this.$('.' + position + '-elements-container');
                     $container.empty();
-                    _.each(elements, _.bind(function(element) {
+                    _.each(elements, _.bind(function (element) {
                         if (typeof element.render === 'function') {
                             $container.append(element.render().$el);
                         } else {
@@ -56,10 +55,10 @@ define([
 
             return this;
         },
-        renderInput: function() {
+        renderInput: function () {
             throw new Error('You should implement your field template');
         },
-        getTemplateContext: function() {
+        getTemplateContext: function () {
             var promise = $.Deferred();
 
             promise.resolve({
@@ -77,19 +76,17 @@ define([
 
             return promise.promise();
         },
-        updateModel: function() {
+        updateModel: function () {
             this.valid = true;
         },
-        getData: function()
-        {
+        getData: function () {
             if (this.editable && this.enabled) {
                 return this.model.get('values');
             } else {
                 return [];
             }
         },
-        setValues: function(values)
-        {
+        setValues: function (values) {
             if (values.length === 0) {
                 values.push(AttributeManager.getValue(
                     [],
@@ -101,13 +98,12 @@ define([
 
             this.model.set('values', values);
         },
-        setContext: function(context)
-        {
+        setContext: function (context) {
             this.context = context;
 
             this.render();
         },
-        addElement: function(position, code, element) {
+        addElement: function (position, code, element) {
             if (!this.elements[position]) {
                 this.elements[position] = {};
             }
@@ -115,42 +111,38 @@ define([
 
             this.render();
         },
-        removeElement: function(position, code) {
+        removeElement: function (position, code) {
             if (this.elements[position] && this.elements[position][code]) {
                 delete this.elements[position][code];
             }
 
             this.render();
         },
-        setValid: function(valid)
-        {
+        setValid: function (valid) {
             this.valid = valid;
         },
-        getValid: function()
-        {
+        getValid: function () {
             return this.valid;
         },
-        complete: function()
-        {
+        complete: function () {
             return true;
         },
-        setFocus: function() {
+        setFocus: function () {
             this.$('input').first().focus();
         },
-        setEditable: function(editable) {
+        setEditable: function (editable) {
             this.editable = editable;
         },
-        getEditable: function() {
+        getEditable: function () {
             return this.editable;
         },
-        setEnabled: function(enabled) {
+        setEnabled: function (enabled) {
             this.enabled = enabled;
         },
-        getEnabled: function() {
+        getEnabled: function () {
             return this.enabled;
         },
-        getEditMode: function()
-        {
+        getEditMode: function () {
             if (this.editable) {
                 if (this.enabled) {
                     return 'edit';
@@ -161,8 +153,7 @@ define([
                 return 'view';
             }
         },
-        getCurrentValue: function()
-        {
+        getCurrentValue: function () {
             return AttributeManager.getValue(
                 this.model.get('values'),
                 this.attribute,
@@ -170,11 +161,10 @@ define([
                 this.context.scope
             );
         },
-        getEmptyData: function() {
+        getEmptyData: function () {
             return null;
         },
-        setCurrentValue: function(value)
-        {
+        setCurrentValue: function (value) {
             var productValue = this.getCurrentValue();
 
             productValue.value = value;

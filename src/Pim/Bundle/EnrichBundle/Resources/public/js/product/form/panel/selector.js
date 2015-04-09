@@ -6,7 +6,7 @@ define(
         'pim/form',
         'text!pim/template/product/panel/selector'
     ],
-    function(_, BaseForm, template) {
+    function (_, BaseForm, template) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-selector btn-group',

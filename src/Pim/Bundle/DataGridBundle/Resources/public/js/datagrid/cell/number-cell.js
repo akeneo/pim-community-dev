@@ -1,6 +1,5 @@
-/* global define */
 define(['underscore', 'backgrid', 'oro/datagrid/number-formatter'],
-    function(_, Backgrid, NumberFormatter) {
+    function (_, Backgrid, NumberFormatter) {
         'use strict';
 
         /**
@@ -31,7 +30,7 @@ define(['underscore', 'backgrid', 'oro/datagrid/number-formatter'],
              *
              * @return {oro.datagrid.NumberFormatter}
              */
-            createFormatter: function() {
+            createFormatter: function () {
                 return new this.formatterPrototype({style: this.style});
             },
 

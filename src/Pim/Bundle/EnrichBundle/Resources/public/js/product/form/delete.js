@@ -27,7 +27,7 @@ define(
             className: 'btn-group',
             template: _.template(template),
             events: {
-                'click .delete-product': 'delete',
+                'click .delete-product': 'delete'
             },
             render: function () {
                 this.$el.html(this.template());

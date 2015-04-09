@@ -1,24 +1,26 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'pim/field',
         'underscore',
         'pim/config-manager',
         'text!pim/template/product/field/price-collection'
     ],
-    function (Field, _, ConfigManager, fieldTemplate) {
+    function ($, Field, _, ConfigManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
         events: {
             'change input': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {
             var data = [];
-            _.each($(event.currentTarget).parents('.price-collection-field').find('.price-input'), _.bind(function(element) {
+            var $elements = $(event.currentTarget).parents('.price-collection-field').find('.price-input');
+            _.each($elements, _.bind(function (element) {
                 var input = $(element).children('input');
 
                 var inputData = input.val();
@@ -32,11 +34,11 @@ define([
 
             this.setCurrentValue(data);
         },
-        getTemplateContext: function() {
+        getTemplateContext: function () {
             var promise = $.Deferred();
 
             $.when(Field.prototype.getTemplateContext.apply(this, arguments), ConfigManager.getEntityList('currencies'))
-                .done(function(templateContext, currencies) {
+                .done(function (templateContext, currencies) {
                     templateContext.currencies = currencies;
 
                     promise.resolve(templateContext);

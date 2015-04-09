@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
-function($, _, Pagination) {
+function ($, _, Pagination) {
     'use strict';
 
     /**
@@ -43,7 +42,7 @@ function($, _, Pagination) {
             "click a": "onChangePage",
             "blur input": "onChangePageByInput",
             "change input": "onChangePageByInput",
-            'keyup input': function(e) {
+            'keyup input': function (e) {
                 if (e.which == 13) {
                     // fix for IE 8, bacause change event is not fired when enter is pressed
                     this.onChangePageByInput(e);
@@ -66,7 +65,7 @@ function($, _, Pagination) {
          *
          * @param {Event} e
          */
-        onChangePageByInput: function(e) {
+        onChangePageByInput: function (e) {
             e.preventDefault();
 
             var pageIndex = parseInt($(e.target).val());
@@ -112,7 +111,7 @@ function($, _, Pagination) {
         /**
          * Render pagination view and add validation for input with positive integer value
          */
-        render: function() {
+        render: function () {
             Pagination.prototype.render.apply(this, arguments);
             this.$('input').numeric({ decimal: false, negative: false });
             return this;

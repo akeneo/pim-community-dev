@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'routing'], function ($, Routing) {
+define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
     return {
         completenesses: {},
         completenessPromises: {},
@@ -17,7 +17,7 @@ define(['jquery', 'routing'], function ($, Routing) {
             }
 
             if (!(productId in this.completenesses)) {
-                this.completenessPromises[productId].done(_.bind(function(product) {
+                this.completenessPromises[productId].done(_.bind(function (product) {
                     this.completenesses[productId] = product;
 
                     promise.resolve(this.completenesses[productId]);
@@ -28,7 +28,7 @@ define(['jquery', 'routing'], function ($, Routing) {
 
             return promise.promise();
         },
-        invalidateCache: function(productId) {
+        invalidateCache: function (productId) {
             if (productId) {
                 delete this.completenesses[productId];
                 delete this.completenessPromises[productId];

@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -9,7 +10,7 @@ define(
         'routing',
         'pim/tree/associate'
     ],
-    function(_, Backbone, BaseForm, formTemplate, Routing, TreeAssociate) {
+    function ($, _, Backbone, BaseForm, formTemplate, Routing, TreeAssociate) {
         return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tab-pane active',
@@ -54,8 +55,8 @@ define(
 
                 $.getJSON(
                     Routing.generate('pim_enrich_product_category_rest_list', {id: this.getData().meta.id })
-                ).done(_.bind(function(data) {
-                    _.each(data.categories, _.bind(function(category) {
+                ).done(_.bind(function (data) {
+                    _.each(data.categories, _.bind(function (category) {
                         this.cache[category.id] = category.code;
                     }, this));
                     if (_.isEmpty(this.state.get('selectedCategories'))) {

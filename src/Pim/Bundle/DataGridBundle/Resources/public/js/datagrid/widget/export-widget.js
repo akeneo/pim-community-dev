@@ -1,17 +1,17 @@
 define(
     ['backbone'],
-    function( Backbone) {
+    function ( Backbone) {
         'use strict';
 
         var ExportWidget = Backbone.View.extend({
 
             action: null,
 
-            initialize: function(action) {
+            initialize: function (action) {
                 this.action = action;
             },
 
-            run: function() {
+            run: function () {
                 window.location = this.action.getLinkWithParameters();
             }
         });

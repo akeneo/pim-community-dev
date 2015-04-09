@@ -60,7 +60,7 @@ define(
             render: function () {
                 this.$el.html(
                     this.template({
-                        message: this.message,
+                        message: this.message
                     })
                 ).css('opacity', this.hasModelChanged() ? 1 : 0);
 

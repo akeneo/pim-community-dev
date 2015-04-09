@@ -2,8 +2,8 @@
 
 define(
     ['jquery', 'underscore', 'pim/form-registry'],
-    function($, _, FormRegistry) {
-        var buildForm = function  (formName) {
+    function ($, _, FormRegistry) {
+        var buildForm = function (formName) {
             var promise = $.Deferred();
 
             $.when(
@@ -15,18 +15,23 @@ define(
                 form.setZones(extensionMeta.zones);
 
                 var extensionPromises = [];
-                _.each(extensionMeta.extensions, function(extension) {
+                _.each(extensionMeta.extensions, function (extension) {
                     var extensionPromise = buildForm(extension.module);
-                    extensionPromise.done(function(loadedModule) {
+                    extensionPromise.done(function (loadedModule) {
                         extension.loadedModule = loadedModule;
                     });
 
                     extensionPromises.push(extensionPromise);
                 });
 
-                $.when.apply($, extensionPromises).done(function() {
-                    _.each(extensionMeta.extensions, function(extension) {
-                        form.addExtension(extension.code, extension.loadedModule, extension.targetZone, extension.insertAction);
+                $.when.apply($, extensionPromises).done(function () {
+                    _.each(extensionMeta.extensions, function (extension) {
+                        form.addExtension(
+                            extension.code,
+                            extension.loadedModule,
+                            extension.targetZone,
+                            extension.insertAction
+                        );
                     });
 
                     promise.resolve(form);
@@ -40,7 +45,7 @@ define(
             build: function buildRootForm (formName) {
                 var promise = $.Deferred();
 
-                buildForm(formName).done(function(form) {
+                buildForm(formName).done(function (form) {
                     form.configure().done(function () {
                         promise.resolve(form);
                     });

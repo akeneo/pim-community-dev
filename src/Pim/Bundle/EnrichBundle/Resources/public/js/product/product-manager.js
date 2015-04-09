@@ -1,6 +1,6 @@
 'use strict';
 
-define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, AttributeManager) {
+define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($, _, Routing, AttributeManager) {
     return {
         productValues: null,
         get: function (id) {
@@ -11,7 +11,7 @@ define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, Att
                 {
                     method: 'GET'
                 }
-            ).done(function(product) {
+            ).done(function (product) {
                 promise.resolve(product);
             });
 
@@ -33,11 +33,11 @@ define(['jquery', 'routing', 'pim/attribute-manager'], function ($, Routing, Att
                 data: { _method: 'DELETE' }
             }).promise();
         },
-        getValues: function(product) {
+        getValues: function (product) {
             var promise = $.Deferred();
 
-            AttributeManager.getAttributesForProduct(product).done(function(attributes) {
-                _.each(attributes, _.bind(function(attributeCode) {
+            AttributeManager.getAttributesForProduct(product).done(function (attributes) {
+                _.each(attributes, _.bind(function (attributeCode) {
                     if (!product.values[attributeCode]) {
                         product.values[attributeCode] = [];
                     }

@@ -1,6 +1,5 @@
-/* global define */
 define(['backgrid', 'oro/datagrid/cell-formatter'],
-function(Backgrid, CellFormatter) {
+function (Backgrid, CellFormatter) {
     'use strict';
 
     /**

@@ -2,7 +2,7 @@
 
 define(
     ['underscore'],
-    function(_) {
+    function (_) {
         return {
             flagTemplate: _.template(
                 '<span class="flag-language">' +
@@ -10,7 +10,7 @@ define(
                     '<span class="language"><%= language %></span>' +
                 '</span>'
             ),
-            getFlag: function(locale) {
+            getFlag: function (locale) {
                 if (locale) {
                     var info = locale.split('_');
 

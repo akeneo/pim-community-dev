@@ -3,14 +3,14 @@
 
 define(
     ['jquery', 'pim/config-manager', 'routing'],
-    function($, ConfigManager, Routing) {
-        describe('Config manager', function() {
+    function ($, ConfigManager, Routing) {
+        describe('Config manager', function () {
 
-            it('has a method to load a list of entities', function() {
+            it('has a method to load a list of entities', function () {
                 expect(ConfigManager.getEntityList).toBeDefined();
             });
 
-            it('is aware of entity routes', function() {
+            it('is aware of entity routes', function () {
                 expect(ConfigManager.urls.attributegroups).toEqual('pim_enrich_attributegroup_rest_index');
                 expect(ConfigManager.urls.attributes).toEqual('pim_enrich_attribute_rest_index');
                 expect(ConfigManager.urls.families).toEqual('pim_enrich_family_rest_index');
@@ -20,7 +20,7 @@ define(
                 expect(ConfigManager.urls.currencies).toEqual('pim_enrich_currency_rest_index');
             });
 
-            it('can load the requested entity list', function() {
+            it('can load the requested entity list', function () {
                 spyOn(Routing, 'generate').and.callThrough();
 
                 var promise = $.Deferred();
@@ -42,7 +42,7 @@ define(
                 expect(result).toBe('foo');
             });
 
-            it('caches loaded entity lists', function() {
+            it('caches loaded entity lists', function () {
                 spyOn($, 'ajax');
 
                 var result = null;
@@ -52,6 +52,6 @@ define(
                 expect($.ajax).not.toHaveBeenCalled();
                 expect(result).toBe('foo');
             });
-        }
-    );
-});
+        });
+    }
+);

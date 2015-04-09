@@ -3,8 +3,7 @@
 define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
     return {
         promise: null,
-        getAssociationTypes: function ()
-        {
+        getAssociationTypes: function () {
             if (null !== this.promise) {
                 return this.promise.promise();
             }

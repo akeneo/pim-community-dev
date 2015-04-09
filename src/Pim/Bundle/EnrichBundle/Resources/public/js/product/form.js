@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['underscore', 'backbone'],
-    function(_, Backbone) {
+    ['jquery', 'underscore', 'backbone'],
+    function ($, _, Backbone) {
         return Backbone.View.extend({
             code: 'form',
             initialize: function () {
@@ -26,11 +26,11 @@ define(
                 var promise = $.Deferred();
 
                 var extensionPromises = [];
-                _.each(this.extensions, function(extension) {
+                _.each(this.extensions, function (extension) {
                     extensionPromises.push(extension.configure());
                 });
 
-                $.when.apply($, extensionPromises).done(_.bind(function() {
+                $.when.apply($, extensionPromises).done(_.bind(function () {
                     this.configured = true;
                     promise.resolve();
                 }, this));
@@ -51,11 +51,13 @@ define(
 
                 return this;
             },
-            getParent: function() {
+            getParent: function () {
                 return this.parent;
             },
-            getRoot: function() {
+            getRoot: function () {
+                /* jscs:disable safeContextKeyword */
                 var root = this;
+                /* jscs:enable safeContextKeyword */
                 var parent = this.getParent();
                 while (parent) {
                     root = parent;
@@ -82,8 +84,9 @@ define(
                 return this.renderExtensions();
             },
             renderExtensions: function () {
-                _.each(this.extensions, function(extension) {
+                _.each(this.extensions, function (extension) {
                     extension.getTargetElement()[extension.insertAction](extension.el);
+                    /* global console */
                     console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                     extension.render();
                 });

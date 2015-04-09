@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/multiselect-decorator'],
-function($, _, Backbone, mediator, MultiselectDecorator) {
+function ($, _, Backbone, mediator, MultiselectDecorator) {
     'use strict';
 
     /**
@@ -44,7 +43,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         addButtonTemplate: _.template(
             '<select id="add-filter-select" multiple>' +
                 '<%  var groups = [_.__("system_filter_group")];' +
-                    '_.each(filters, function(filter) {' +
+                    '_.each(filters, function (filter) {' +
                         'if (filter.group) {' +
                             'var key = filter.groupOrder !== null ? filter.groupOrder : "last";' +
                             'if (_.isUndefined(groups[key])) {' +
@@ -111,13 +110,13 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param {Object} [options.filters]
          * @param {String} [options.addButtonHint]
          */
-        initialize: function(options)
+        initialize: function (options)
         {
             if (options.filters) {
                 this.filters = options.filters;
             }
 
-            _.each(this.filters, function(filter) {
+            _.each(this.filters, function (filter) {
                 this.listenTo(filter, "update", this._onFilterUpdated);
                 this.listenTo(filter, "disable", this._onFilterDisabled);
             }, this);
@@ -129,8 +128,8 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             Backbone.View.prototype.initialize.apply(this, arguments);
 
             // destroy events bindings
-            mediator.once('hash_navigation_request:start', function() {
-                _.each(this.filters, function(filter) {
+            mediator.once('hash_navigation_request:start', function () {
+                _.each(this.filters, function (filter) {
                     this.stopListening(filter, "update", this._onFilterUpdated);
                     this.stopListening(filter, "disable", this._onFilterDisabled);
                 }, this);
@@ -143,7 +142,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param {oro.datafilter.AbstractFilter} filter
          * @protected
          */
-        _onFilterUpdated: function(filter) {
+        _onFilterUpdated: function (filter) {
             this.trigger('updateFilter', filter);
         },
 
@@ -153,7 +152,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param {oro.datafilter.AbstractFilter} filter
          * @protected
          */
-        _onFilterDisabled: function(filter) {
+        _onFilterDisabled: function (filter) {
             this.trigger('disableFilter', filter);
             this.disableFilter(filter);
         },
@@ -161,9 +160,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         /**
          * Returns list of filter raw values
          */
-        getValues: function() {
+        getValues: function () {
             var values = {};
-            _.each(this.filters, function(filter) {
+            _.each(this.filters, function (filter) {
                 if (filter.enabled) {
                     values[filter.name] = filter.getValue();
                 }
@@ -175,8 +174,8 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         /**
          * Sets raw values for filters
          */
-        setValues: function(values) {
-            _.each(values, function(value, name) {
+        setValues: function (values) {
+            _.each(values, function (value, name) {
                 if (_.has(this.filters, name)) {
                     this.filters[name].setValue(value);
                 }
@@ -188,7 +187,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @protected
          */
-        _onChangeFilterSelect: function() {
+        _onChangeFilterSelect: function () {
             this.trigger('updateList', this);
             this._processFilterStatus();
         },
@@ -199,7 +198,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param {oro.datafilter.AbstractFilter} filter
          * @return {*}
          */
-        enableFilter: function(filter) {
+        enableFilter: function (filter) {
             return this.enableFilters([filter]);
         },
 
@@ -209,7 +208,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param {oro.datafilter.AbstractFilter} filter
          * @return {*}
          */
-        disableFilter: function(filter) {
+        disableFilter: function (filter) {
             return this.disableFilters([filter]);
         },
 
@@ -219,13 +218,13 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param filters []
          * @return {*}
          */
-        enableFilters: function(filters) {
+        enableFilters: function (filters) {
             if (_.isEmpty(filters)) {
                 return this;
             }
             var optionsSelectors = [];
 
-            _.each(filters, function(filter) {
+            _.each(filters, function (filter) {
                 filter.enable();
                 optionsSelectors.push('option[value="' + filter.name + '"]:not(:selected)');
             }, this);
@@ -248,13 +247,13 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          * @param filters []
          * @return {*}
          */
-        disableFilters: function(filters) {
+        disableFilters: function (filters) {
             if (_.isEmpty(filters)) {
                 return this;
             }
             var optionsSelectors = [];
 
-            _.each(filters, function(filter) {
+            _.each(filters, function (filter) {
                 filter.disable();
                 optionsSelectors.push('option[value="' + filter.name + '"]:selected');
             }, this);
@@ -280,7 +279,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             this.$el.empty();
             var fragment = document.createDocumentFragment();
 
-            _.each(this.filters, function(filter) {
+            _.each(this.filters, function (filter) {
                 filter.render();
                 if (!filter.enabled) {
                     filter.hide();
@@ -306,7 +305,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @protected
          */
-        _initializeSelectWidget: function() {
+        _initializeSelectWidget: function () {
             this.selectWidget = new MultiselectDecorator({
                 element: this.$(this.filterSelector),
                 parameters: {
@@ -314,7 +313,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                     selectedList: 0,
                     selectedText: this.addButtonHint,
                     classes: 'filter-list select-filter-widget',
-                    open: $.proxy(function() {
+                    open: $.proxy(function () {
                         this.selectWidget.onOpenDropdown();
                         this._setDropdownWidth();
                         this._updateDropdownPosition();
@@ -335,7 +334,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @protected
          */
-        _setDropdownWidth: function() {
+        _setDropdownWidth: function () {
             var widget = this.selectWidget.getWidget();
             var requiredWidth = this.selectWidget.getMinimumDropdownWidth() + 24;
             widget.width(requiredWidth).css('min-width', requiredWidth + 'px');
@@ -347,10 +346,10 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @protected
          */
-        _processFilterStatus: function() {
+        _processFilterStatus: function () {
             var activeFilters = this.$(this.filterSelector).val();
 
-            _.each(this.filters, function(filter, name) {
+            _.each(this.filters, function (filter, name) {
                 if (!filter.enabled && _.indexOf(activeFilters, name) != -1) {
                     this.enableFilter(filter);
                 } else if (filter.enabled && _.indexOf(activeFilters, name) == -1) {
@@ -366,7 +365,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @protected
          */
-        _updateDropdownPosition: function() {
+        _updateDropdownPosition: function () {
             var button = this.$(this.buttonSelector);
             var buttonPosition = button.offset();
             var widgetWidth = this.selectWidget.getWidget().outerWidth();

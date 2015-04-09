@@ -2,7 +2,7 @@
 
 define(
     ['jquery', 'routing'],
-    function($, Routing) {
+    function ($, Routing) {
         var promise = null;
 
         var loadConfig = function () {

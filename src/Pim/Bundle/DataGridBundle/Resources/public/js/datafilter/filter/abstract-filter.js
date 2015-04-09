@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/app'],
-function($, _, Backbone, app) {
+function ($, _, Backbone, app) {
     'use strict';
 
     /**
@@ -94,7 +93,7 @@ function($, _, Backbone, app) {
          * @param {Object} options
          * @param {Boolean} [options.enabled]
          */
-        initialize: function(options) {
+        initialize: function (options) {
             options = options || {};
             if (_.has(options, 'enabled')) {
                 this.enabled = options.enabled;
@@ -125,7 +124,7 @@ function($, _, Backbone, app) {
          *
          * @return {*}
          */
-        enable: function() {
+        enable: function () {
             if (!this.enabled) {
                 this.enabled = true;
                 this.show();
@@ -139,7 +138,7 @@ function($, _, Backbone, app) {
          *
          * @return {*}
          */
-        disable: function() {
+        disable: function () {
             if (this.enabled) {
                 this.enabled = false;
                 this.hide();
@@ -154,7 +153,7 @@ function($, _, Backbone, app) {
          *
          * @return {*}
          */
-        show: function() {
+        show: function () {
             this.$el.css('display', 'inline-block');
             return this;
         },
@@ -164,7 +163,7 @@ function($, _, Backbone, app) {
          *
          * @return {*}
          */
-        hide: function() {
+        hide: function () {
             this.$el.hide();
             return this;
         },
@@ -174,7 +173,7 @@ function($, _, Backbone, app) {
          *
          * @return {*}
          */
-        reset: function() {
+        reset: function () {
             this.setValue(this.emptyValue);
             return this;
         },
@@ -184,7 +183,7 @@ function($, _, Backbone, app) {
          *
          * @return {Object}
          */
-        getValue: function() {
+        getValue: function () {
             return app.deepClone(this.value);
         },
 
@@ -194,7 +193,7 @@ function($, _, Backbone, app) {
          * @param value
          * @return {*}
          */
-        setValue: function(value) {
+        setValue: function (value) {
             if (this._isNewValueUpdated(value)) {
                 var oldValue = this.value;
                 this.value = app.deepClone(value);
@@ -212,7 +211,7 @@ function($, _, Backbone, app) {
          * @return {*}
          * @protected
          */
-        _formatRawValue: function(value) {
+        _formatRawValue: function (value) {
             return value;
         },
 
@@ -223,7 +222,7 @@ function($, _, Backbone, app) {
          * @return {*}
          * @protected
          */
-        _formatDisplayValue: function(value) {
+        _formatDisplayValue: function (value) {
             return value;
         },
 
@@ -234,7 +233,7 @@ function($, _, Backbone, app) {
          * @return {Boolean}
          * @protected
          */
-        _isNewValueUpdated: function(newValue) {
+        _isNewValueUpdated: function (newValue) {
             return !app.isEqualsLoosely(this.value, newValue)
         },
 
@@ -245,7 +244,7 @@ function($, _, Backbone, app) {
          * @param {*} oldValue
          * @protected
          */
-        _onValueUpdated: function(newValue, oldValue) {
+        _onValueUpdated: function (newValue, oldValue) {
             this._triggerUpdate(newValue, oldValue);
         },
 
@@ -256,7 +255,7 @@ function($, _, Backbone, app) {
          * @param {*} oldValue
          * @protected
          */
-        _triggerUpdate: function(newValue, oldValue) {
+        _triggerUpdate: function (newValue, oldValue) {
             this.trigger('update');
         },
 
@@ -265,7 +264,7 @@ function($, _, Backbone, app) {
          *
          * @return {Boolean}
          */
-        isEmpty: function() {
+        isEmpty: function () {
             return app.isEqualsLoosely(this.getValue(), this.emptyValue);
         },
 
@@ -277,7 +276,7 @@ function($, _, Backbone, app) {
          *
          * @return {Boolean}
          */
-        isEmptyValue: function() {
+        isEmptyValue: function () {
             if (_.has(this.emptyValue, 'value') && _.has(this.value, 'value')) {
                 return app.isEqualsLoosely(this.value.value, this.emptyValue.value);
             }
@@ -291,12 +290,12 @@ function($, _, Backbone, app) {
          * @return {*}
          * @protected
          */
-        _getInputValue: function(input) {
+        _getInputValue: function (input) {
             var result = undefined;
             var $input = this.$(input);
             switch ($input.attr('type')) {
                 case 'radio':
-                    $input.each(function() {
+                    $input.each(function () {
                         if ($(this).is(':checked')) {
                             result = $(this).val();
                         }
@@ -317,11 +316,11 @@ function($, _, Backbone, app) {
          * @protected
          * @return {*}
          */
-        _setInputValue: function(input, value) {
+        _setInputValue: function (input, value) {
             var $input = this.$(input);
             switch ($input.attr('type')) {
                 case 'radio':
-                    $input.each(function() {
+                    $input.each(function () {
                         var $input = $(this);
                         if ($input.attr('value') == value) {
                             $input.attr('checked', true);
@@ -344,7 +343,7 @@ function($, _, Backbone, app) {
          * @return {*}
          * @protected
          */
-        _updateDOMValue: function() {
+        _updateDOMValue: function () {
             return this._writeDOMValue(this._getDisplayValue());
         },
 
@@ -353,7 +352,7 @@ function($, _, Backbone, app) {
          *
          * @return {String}
          */
-        _getCriteriaHint: function() {
+        _getCriteriaHint: function () {
             return '';
         },
 
@@ -363,7 +362,7 @@ function($, _, Backbone, app) {
          * @return {*}
          * @protected
          */
-        _getDisplayValue: function() {
+        _getDisplayValue: function () {
             var value = (arguments.length > 0) ? arguments[0] : this.getValue();
             return this._formatDisplayValue(value);
         },
@@ -376,7 +375,7 @@ function($, _, Backbone, app) {
          * @protected
          * @return {*}
          */
-        _writeDOMValue: function(value) {
+        _writeDOMValue: function (value) {
             throw new Error("Method _writeDOMValue is abstract and must be implemented");
             //this._setInputValue(inputValueSelector, value.value);
             //return this
@@ -388,7 +387,7 @@ function($, _, Backbone, app) {
          * @return {Object}
          * @protected
          */
-        _readDOMValue: function() {
+        _readDOMValue: function () {
             throw new Error("Method _readDOMValue is abstract and must be implemented");
             //return { value: this._getInputValue(this.inputValueSelector) }
         },
@@ -400,7 +399,7 @@ function($, _, Backbone, app) {
          * @param {Boolean} status
          * @protected
          */
-        _setButtonPressed: function(element, status) {
+        _setButtonPressed: function (element, status) {
             var $element = $(element);
             var rightOffset = ($(window).width() - ($element.offset().left + $element.outerWidth()));
 
@@ -425,7 +424,7 @@ function($, _, Backbone, app) {
          * @param {Event} e
          * @private
          */
-        _preventEnterProcessing: function(e) {
+        _preventEnterProcessing: function (e) {
             if (e.keyCode == 13) {
                 e.preventDefault();
                 e.stopPropagation();

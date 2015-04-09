@@ -1,13 +1,15 @@
-"use strict";
+'use strict';
 
-define([
+define(
+    [
+        'jquery',
         'backbone',
         'underscore',
         'pim/form',
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute'
     ],
-    function (Backbone, _, BaseForm, AttributeManager, template) {
+    function ($, Backbone, _, BaseForm, AttributeManager, template) {
         return BaseForm.extend({
             tagName: 'div',
             className: 'btn-group add-attribute',
@@ -17,16 +19,14 @@ define([
             events: {
                 'click li a': 'addAttribute'
             },
-            initialize: function()
-            {
+            initialize: function () {
                 this.state = new Backbone.Model({});
                 this.listenTo(this.state, 'change', this.render);
                 this.product = null;
 
                 return this;
             },
-            render: function()
-            {
+            render: function () {
                 this.$el.empty();
                 this.$el.html(this.template({
                     attributes: this.state.get('attributes'),
@@ -37,15 +37,15 @@ define([
 
                 return this;
             },
-            addAttribute: function(event) {
+            addAttribute: function (event) {
                 this.getParent().addAttribute(event.currentTarget.dataset.attribute);
             },
-            updateOptionalAttributes: function(product) {
+            updateOptionalAttributes: function (product) {
                 var promise = $.Deferred();
 
                 this.product = product;
                 AttributeManager.getOptionalAttributes(product)
-                    .done(_.bind(function(attributes) {
+                    .done(_.bind(function (attributes) {
                         this.state.set('attributes', attributes);
 
                         promise.resolve(this.state.get('attributes'));

@@ -1,30 +1,31 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'pim/field',
         'underscore',
         'pim/config-manager',
         'pim/attribute-manager',
         'text!pim/template/product/field/metric',
         'jquery.select2'
-        ], function (Field, _, ConfigManager, AttributeManager, fieldTemplate) {
+        ], function ($, Field, _, ConfigManager, AttributeManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'metric',
         events: {
             'change .data, .unit': 'updateModel'
         },
-        renderInput: function(context) {
+        renderInput: function (context) {
             var $element = $(this.fieldTemplate(context));
             $element.find('.unit').select2('destroy').select2({});
 
             return $element;
         },
-        getTemplateContext: function() {
+        getTemplateContext: function () {
             var promise = $.Deferred();
 
             $.when(Field.prototype.getTemplateContext.apply(this, arguments), ConfigManager.getEntityList('measures'))
-                .done(function(templateContext, measures) {
+                .done(function (templateContext, measures) {
                     templateContext.measures = measures;
 
                     promise.resolve(templateContext);

@@ -8,15 +8,15 @@ define(
         'pim/config-manager',
         'pim/i18n'
     ],
-    function(_, BaseForm, template, ConfigManager, i18n) {
+    function (_, BaseForm, template, ConfigManager, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group locale-switcher',
             events: {
-                'click li a': 'changeLocale',
+                'click li a': 'changeLocale'
             },
             render: function () {
-                ConfigManager.getEntityList('locales').done(_.bind(function(locales) {
+                ConfigManager.getEntityList('locales').done(_.bind(function (locales) {
                     if (!this.getParent().getLocale()) {
                         this.getParent().setLocale('en_US', {silent: true});
                     }

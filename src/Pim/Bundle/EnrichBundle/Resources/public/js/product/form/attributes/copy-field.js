@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 define([
         'backbone',
@@ -18,15 +18,13 @@ define([
             events: {
                 'change .copy-field-selector': 'selectionChanged'
             },
-            initialize: function()
-            {
+            initialize: function () {
                 this.selected = false;
                 this.field    = null;
 
                 return this;
             },
-            render: function()
-            {
+            render: function () {
                 this.$el.empty();
 
                 var templateContext = {
@@ -47,31 +45,29 @@ define([
 
                 return this;
             },
-            getData: function()
-            {
+            getData: function () {
                 if (this.editable && this.enabled) {
                     return this.model.get('values');
                 } else {
                     return [];
                 }
             },
-            setData: function(data) {
+            setData: function (data) {
                 this.data = data;
             },
-            setLocale: function(locale) {
+            setLocale: function (locale) {
                 this.locale = locale;
             },
-            setScope: function(scope) {
+            setScope: function (scope) {
                 this.scope = scope;
             },
-            setField: function(field)
-            {
+            setField: function (field) {
                 this.field = field;
             },
-            selectionChanged: function(event) {
+            selectionChanged: function (event) {
                 this.selected = event.currentTarget.checked;
             },
-            setSelected: function(selected) {
+            setSelected: function (selected) {
                 this.selected = selected;
             }
         });

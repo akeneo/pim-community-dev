@@ -1,3 +1,5 @@
+/* global jQuery */
+/* jshint unused:vars */
 /**
  * Allow to select on which tree to work and manage creation and deletion of trees
  * File: jstree.tree_selector.js
@@ -6,13 +8,13 @@
 (function ($) {
     'use strict';
 
-    var tree_select_id = "tree_select";
+    var tree_select_id = 'tree_select';
 
-    $.jstree.plugin("tree_selector", {
-        __init : function () {
+    $.jstree.plugin('tree_selector', {
+        __init: function () {
             this.get_container()
                 // Create the tree toolbar and load trees in tree selector
-                .bind("init.jstree", $.proxy(function () {
+                .bind('init.jstree', $.proxy(function () {
                     var _this = this;
                     var settings = this._get_settings().tree_selector;
                     this.data.tree_selector.ajax = settings.ajax;
@@ -33,7 +35,7 @@
                     });
                     tree_select.addClass('jstree-tree-select');
 
-                    tree_select.bind('change', function() {
+                    tree_select.bind('change', function () {
                         _this.switch_tree();
                     });
 
@@ -44,14 +46,14 @@
 
                 }, this))
                 // Rewrite the root node to link it to the selected tree
-                .bind("loaded.jstree", $.proxy(function (event, data) {
-                    if (event.namespace == 'jstree') {
+                .bind('loaded.jstree', $.proxy(function (event, data) {
+                    if (event.namespace === 'jstree') {
                         this.switch_tree();
                     }
-                // Select the node marked as "toselect" from the server
+                    // Select the node marked as 'toselect' from the server
 
                 }, this))
-                .bind("clean_node.jstree", $.proxy(function (e, data) {
+                .bind('clean_node.jstree', $.proxy(function (e, data) {
                     // Switch to node clicked when requested by the data for this node
                     var _this = this;
                     if (data.rslt.obj) {
@@ -65,22 +67,22 @@
                 }, this))
                 ;
         },
-        defaults : {
-            ajax : false,
-            data : false,
-            tree_selector_buttons : false,
-            no_tree_message : false,
-            node_label_field : 'code',
-            preselect_node_id : false
+        defaults: {
+            ajax: false,
+            data: false,
+            tree_selector_buttons: false,
+            no_tree_message: false,
+            node_label_field: 'code',
+            preselect_node_id: false
 
         },
-        _fn : {
-            refresh : function (obj) {
+        _fn: {
+            refresh: function (obj) {
                 this.refresh_trees();
 
                 return this.__call_old();
             },
-            switch_tree : function () {
+            switch_tree: function () {
                 // Create new root node, place it into the tree and
                 // open it if setup to auto_open_root
                 var selected_tree = this.get_tree_select().find(':selected');
@@ -111,8 +113,8 @@
 
                 this.get_container().trigger('after_tree_loaded.jstree', root_node_id);
             },
-            get_tree_select : function () {
-                return $("#" + tree_select_id);
+            get_tree_select: function () {
+                return $('#' + tree_select_id);
             },
             load_trees: function () {
                 var _this = this;
@@ -123,7 +125,7 @@
                 } else if (this.data.tree_selector.ajax) {
                     trees = this._load_ajax_trees();
                 } else {
-                    throw "jquery.jstree.tree_selector : Neither data nor ajax settings supplied for trees.";
+                    throw 'jquery.jstree.tree_selector : Neither data nor ajax settings supplied for trees.';
                 }
 
                 this.get_tree_select().empty();
@@ -150,13 +152,13 @@
                         text: option_text
                     });
 
-                    if (tree.selected == "true") {
+                    if (tree.selected === 'true') {
                         option.prop('defaultSelected', true);
                         _this._get_settings().json_data.data = [
                             {
-                                "data": option_text,
-                                "state": "closed",
-                                "attr" : { "id" : 'node_' + tree.id}
+                                'data': option_text,
+                                'state': 'closed',
+                                'attr': { 'id': 'node_' + tree.id}
                             }
                         ];
                     }
@@ -181,7 +183,7 @@
                     async: false,
                     dataType: 'json',
                     data: trees_url_parameters
-                }).done( function(ajax_trees) {
+                }).done(function (ajax_trees) {
                     trees = ajax_trees;
                 });
 
@@ -194,28 +196,28 @@
                     rel: 'folder'
                 });
 
-                // Make the node "openable" by switching back to initial state
-                node.prepend("<ins class='jstree-icon'>&#160;</ins>");
+                // Make the node 'openable' by switching back to initial state
+                node.prepend('<ins class="jstree-icon">&#160;</ins>');
                 node.removeClass('jstree-leaf');
                 node.addClass('jstree-close');
                 node.addClass('jstree-closed');
 
                 var node_link = $('<a>', {
-                    href: "#",
+                    href: '#',
                     text: node_name
                 });
 
-                node_link.prepend("<ins class='jstree-icon'>&#160;</ins>");
+                node_link.prepend('<ins class="jstree-icon">&#160;</ins>');
                 node.append(node_link);
 
                 return node;
             },
-            refresh_trees: function() {
+            refresh_trees: function () {
                 this.get_tree_select().empty();
                 this.load_trees();
                 this.switch_tree();
             },
-            get_tree_id: function() {
+            get_tree_id: function () {
                 var root_node = this.get_container_ul().find('li')[0];
 
                 return $(root_node).attr('id');
@@ -224,5 +226,5 @@
         }
     });
     // include the tree_selector plugin by default on available plugins list
-    $.jstree.defaults.plugins.push("tree_selector");
+    $.jstree.defaults.plugins.push('tree_selector');
 })(jQuery);

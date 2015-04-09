@@ -7,7 +7,7 @@ define(
         'pim/form',
         'text!pim/template/product/status-switcher'
     ],
-    function(
+    function (
         _,
         mediator,
         BaseForm,
@@ -17,7 +17,7 @@ define(
             className: 'btn-group status-switcher',
             template: _.template(template),
             events: {
-                'click li a': 'updateStatus',
+                'click li a': 'updateStatus'
             },
             render: function () {
                 var status = this.getRoot().getData().enabled;
@@ -31,7 +31,7 @@ define(
 
                 return this;
             },
-            updateStatus: function(event) {
+            updateStatus: function (event) {
                 var newStatus = event.currentTarget.dataset.status === 'enable';
                 this.getRoot().model.set('enabled', newStatus);
                 this.render();

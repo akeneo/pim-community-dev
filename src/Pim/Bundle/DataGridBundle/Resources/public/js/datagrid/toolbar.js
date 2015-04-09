@@ -1,7 +1,6 @@
-/* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/pagination-input',
     'oro/datagrid/page-size', 'oro/datagrid/actions-panel'],
-function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
+function (_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     'use strict';
 
     /**
@@ -85,7 +84,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
          *
          * @return {*}
          */
-        enable: function() {
+        enable: function () {
             this.pagination.enable();
             this.pageSize.enable();
             this.actionsPanel.enable();
@@ -98,7 +97,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
          *
          * @return {*}
          */
-        disable: function() {
+        disable: function () {
             this.pagination.disable();
             this.pageSize.disable();
             this.actionsPanel.disable();
@@ -111,7 +110,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
          *
          * @return {*}
          */
-        hide: function() {
+        hide: function () {
             this.$el.hide();
             return this;
         },
@@ -119,7 +118,7 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
         /**
          * Render toolbar with pager and other views
          */
-        render: function() {
+        render: function () {
             this.$el.empty();
             this.$el.append(this.template());
 

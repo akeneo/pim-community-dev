@@ -1,26 +1,27 @@
-"use strict";
+'use strict';
 
 define([
+        'jquery',
         'pim/field',
         'underscore',
         'routing',
         'text!pim/template/product/field/media'
     ],
-    function (Field, _, Routing, fieldTemplate) {
+    function ($, Field, _, Routing, fieldTemplate) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
             events: {
                 'change .edit input[type="file"]': 'updateModel'
             },
-            renderInput: function(context) {
+            renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            getTemplateContext: function() {
+            getTemplateContext: function () {
                 var promise = $.Deferred();
 
                 Field.prototype.getTemplateContext.apply(this, arguments)
-                    .done(_.bind(function(templateContext) {
+                    .done(_.bind(function (templateContext) {
                         if (this.getCurrentValue().value && this.getCurrentValue().value.filePath) {
                             var filename = this.getCurrentValue().value.filePath;
                             filename = filename.substring(filename.lastIndexOf('/') + 1);
@@ -49,24 +50,24 @@ define([
                     data: formData,
                     contentType: false,
                     cache: false,
-                    processData:false,
-                    xhr: _.bind(function() {
+                    processData: false,
+                    xhr: _.bind(function () {
                         var myXhr = $.ajaxSettings.xhr();
-                        if(myXhr.upload){
+                        if (myXhr.upload) {
                             myXhr.upload.addEventListener('progress', _.bind(this.handleProcess, this), false);
                         }
 
                         return myXhr;
                     }, this)
-                }).done(_.bind(function(data) {
+                }).done(_.bind(function (data) {
                     this.setCurrentValue(data);
                     this.render();
                     this.$('.progress').css({opacity: 0});
                 }, this));
             },
-            handleProcess: function(e) {
+            handleProcess: function (e) {
                 this.$('.progress .bar').css({
-                    width: ((e.loaded/e.total) * 100) + '%'
+                    width: ((e.loaded / e.total) * 100) + '%'
                 });
             }
         });
