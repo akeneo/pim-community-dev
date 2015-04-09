@@ -31,7 +31,6 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         AttributeInterface $attribute,
         Constraint $constraint
     ) {
-
         $attribute->getAttributeType()->willReturn('pim_catalog_text');
 
         $context
@@ -48,7 +47,6 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
          AttributeInterface $identifier,
          Constraint $constraint
      ) {
-
          $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
          $attribute->getId()->willReturn(1);
 
@@ -70,7 +68,6 @@ class SingleIdentifierAttributeValidatorSpec extends ObjectBehavior
         AttributeInterface $identifier,
         SingleIdentifierAttribute $constraint
     ) {
-
         $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
         $attribute->getId()->willReturn(2);
 
