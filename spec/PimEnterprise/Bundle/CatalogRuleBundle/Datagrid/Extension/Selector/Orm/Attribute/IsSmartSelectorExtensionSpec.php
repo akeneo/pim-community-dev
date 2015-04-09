@@ -57,7 +57,7 @@ class IsSmartSelectorExtensionSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($qb);
 
-        $qb->addSelect('CASE WHEN r IS NULL THEN false ELSE true END AS is_smart')
+        $qb->addSelect('CASE WHEN r.resourceId IS NULL THEN false ELSE true END AS is_smart')
             ->shouldBeCalled();
 
         $this->visitDatasource($config, $ds);

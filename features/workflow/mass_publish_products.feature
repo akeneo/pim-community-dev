@@ -42,12 +42,16 @@ Feature: Publish many products at once
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
     And I check the row "jackadi"
+    And I wait 3 seconds
     And I press the "Save working copy" button
+    And I wait 3 seconds
     And I edit the "jackadi" product
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
     And I check the row "unionjack"
+    And I wait 3 seconds
     And I press the "Save working copy" button
+    And I wait 3 seconds
     And I am on the products page
     And I mass-edit products unionjack and jackadi
     When I choose the "Publish products" operation
@@ -74,18 +78,24 @@ Feature: Publish many products at once
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
     And I check the row "jackadi"
+    And I wait 3 seconds
     And I press the "Save working copy" button
+    And I wait 3 seconds
     And I edit the "teafortwo" product
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
     And I check the row "jackadi"
     And I check the row "unionjack"
+    And I wait 3 seconds
     And I press the "Save working copy" button
+    And I wait 3 seconds
     And I edit the "jackadi" product
     When I visit the "Associations" tab
     And I visit the "Cross sell" group
     And I check the row "teafortwo"
+    And I wait 3 seconds
     And I press the "Save working copy" button
+    And I wait 3 seconds
     And I am on the products page
     And I mass-edit products unionjack and jackadi
     When I choose the "Publish products" operation
