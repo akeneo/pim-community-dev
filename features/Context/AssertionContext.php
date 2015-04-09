@@ -57,6 +57,20 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param string $error
+     *
+     * @Then /^I should not see(?: a)? validation (?:error|tooltip) "([^"]*)"$/
+     */
+    public function iShouldNotSeeValidationError($error)
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
+            $found = $this->getSession()->evaluateScript(sprintf($script, $error));
+            assertFalse($found, sprintf('Expecting to not see validation error, "%s" found', $error));
+        }
+    }
+
+    /**
      * @param string $tab
      *
      * @Then /^the "([^"]*)" tab should (?:be red|have errors)$/

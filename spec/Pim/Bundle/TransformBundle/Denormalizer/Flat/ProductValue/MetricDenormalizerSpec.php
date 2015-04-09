@@ -65,9 +65,11 @@ class MetricDenormalizerSpec extends ObjectBehavior
         $this->denormalize('100 KILOGRAM', 'className', null, $context)->shouldReturn($metric);
     }
 
-    function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
+    function it_returns_a_metric_if_the_data_is_empty(ProductValueInterface $metricValue, MetricInterface $metric)
     {
-        $this->denormalize('', 'className', null, [])->shouldReturn(null);
-        $this->denormalize(null, 'className', null, [])->shouldReturn(null);
+        $metricValue->getMetric()->willReturn($metric);
+
+        $this->denormalize('', 'className', null, ['value' => $metricValue])->shouldReturn($metric);
+        $this->denormalize(null, 'className', null, ['value' => $metricValue])->shouldReturn($metric);
     }
 }

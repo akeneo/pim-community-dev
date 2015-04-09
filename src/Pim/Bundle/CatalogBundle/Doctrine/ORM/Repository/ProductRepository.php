@@ -345,10 +345,10 @@ class ProductRepository extends EntityRepository implements
         $qb->andWhere($qb->expr()->neq('p', ':product'));
 
         $isCheckedExpr =
-            'CASE WHEN (pa IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) ' .
+            'CASE WHEN (pa.id IS NOT NULL OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
-        $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
+        $isAssociatedExpr = 'CASE WHEN pa.id IS NOT NULL THEN true ELSE false END';
 
         $qb
             ->addSelect($isCheckedExpr.' AS is_checked')
