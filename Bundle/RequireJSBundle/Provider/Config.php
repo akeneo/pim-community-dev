@@ -5,8 +5,6 @@ namespace Oro\Bundle\RequireJSBundle\Provider;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Cache\CacheProvider;
-use Symfony\Component\Templating\TemplateReferenceInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 class Config
 {
@@ -23,25 +21,11 @@ class Config
     protected $container;
 
     /**
-     * @var EngineInterface
-     */
-    protected $templating;
-
-    /**
-     * @var string|TemplateReferenceInterface
-     */
-    protected $template;
-
-    /**
      * @param ContainerInterface $container
-     * @param EngineInterface $templating
-     * @param $template
      */
-    public function __construct(ContainerInterface $container, EngineInterface $templating, $template)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->templating = $templating;
-        $this->template = $template;
     }
 
     /**
@@ -94,7 +78,7 @@ class Config
                 }
             }
         }
-        return $this->templating->render($this->template, array('config' => $config));
+        return sprintf('require(%s);', json_encode($config));
     }
 
     /**
