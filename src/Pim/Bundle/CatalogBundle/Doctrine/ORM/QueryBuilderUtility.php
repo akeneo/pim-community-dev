@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
 /**
@@ -46,9 +47,7 @@ class QueryBuilderUtility
 
         $categoryMapping = $productMetadata->getAssociationMapping('categories');
         $familyMapping   = $productMetadata->getAssociationMapping('family');
-        $valueMapping    = $productMetadata->getAssociationMapping('values');
-
-        $valueMetadata = $em->getClassMetadata($valueMapping['targetEntity']);
+        $valueMetadata = self::getProductValueMetadata($em, $entityName);
 
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $em->getClassMetadata($attributeMapping['targetEntity']);
@@ -68,5 +67,21 @@ class QueryBuilderUtility
                 '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
             ]
         );
+    }
+
+    /**
+     * Get metadata of product value table
+     *
+     * @param EntityManager $em
+     * @param string        $entityName
+     *
+     * @return \Doctrine\ORM\Mapping\ClassMetadata
+     */
+    public static function getProductValueMetadata(EntityManager $em, $entityName)
+    {
+        $productMetadata = $em->getClassMetadata($entityName);
+        $valueMapping  = $productMetadata->getAssociationMapping('values');
+
+        return $em->getClassMetadata($valueMapping['targetEntity']);
     }
 }
