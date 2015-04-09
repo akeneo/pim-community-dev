@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace AcmeEnterprise\Bundle\AppBundle;
 
 use Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle;
@@ -10,9 +19,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 /**
  * Acme Enterprise application bundle
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 class AcmeEnterpriseAppBundle extends Bundle
 {
