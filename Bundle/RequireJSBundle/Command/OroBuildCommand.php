@@ -3,17 +3,16 @@
 namespace Oro\Bundle\RequireJSBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use Oro\Bundle\RequireJSBundle\Provider\Config as RequireJSConfigProvider;
 
 class OroBuildCommand extends ContainerAwareCommand
 {
     const MAIN_CONFIG_FILE_NAME = 'js/require-config.js';
     const BUILD_CONFIG_FILE_NAME = 'build.js';
     const OPTIMIZER_FILE_PATH = 'bundles/ororequirejs/lib/r.js';
-
 
     /**
      * {@inheritdoc}
@@ -30,22 +29,12 @@ class OroBuildCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var string $webRoot */
+        $configCommand = $this->getApplication()->find('oro:requirejs:generate-config');
+        $configCommand->run(new ArrayInput(['command' => 'oro:requirejs:generate-config']), $output);
+
         $webRoot = $this->getContainer()->getParameter('oro_require_js.web_root');
-        /** @var array $config */
         $config = $this->getContainer()->getParameter('oro_require_js');
-
-        /** @var RequireJSConfigProvider $configProvider */
         $configProvider = $this->getContainer()->get('oro_requirejs_config_provider');
-
-        $output->writeln('Generating require.js main config');
-        $mainConfigContent = $configProvider->generateMainConfig();
-        // for some reason built application gets broken with configuration in "oneline-json"
-        $mainConfigContent = str_replace(',', ",\n", $mainConfigContent);
-        $mainConfigFilePath = $webRoot . DIRECTORY_SEPARATOR . self::MAIN_CONFIG_FILE_NAME;
-        if (false === @file_put_contents($mainConfigFilePath, $mainConfigContent)) {
-            throw new \RuntimeException('Unable to write file ' . $mainConfigFilePath);
-        }
 
         $output->writeln('Generating require.js build config');
         $buildConfigContent = $configProvider->generateBuildConfig(self::MAIN_CONFIG_FILE_NAME);
