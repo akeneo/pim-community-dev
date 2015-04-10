@@ -1,8 +1,8 @@
-@import "bootstrap_variables";
-@import "bootstrap_mixins";
-@import "variables";
-@import "mixins";
-@import "layout";
+@import 'bootstrap_variables';
+@import 'bootstrap_mixins';
+@import 'variables';
+@import 'mixins';
+
 
 // Base
 * {
@@ -164,7 +164,7 @@ input[type="email"],
 input[type="url"],
 input[type="search"],
 select {
-  .box-sizing();
+  .box-sizing(content-box);
   border-color:#ddd;
   color:#333;
   font-size:13px;
@@ -1382,14 +1382,16 @@ select {
   line-height: 26px;
 }
 
-.responsive-section {
-  .btn {
-    font-size:12px;
-  }
-  .inner-grid {
-    margin:-20px -20px 20px -20px;
-  }
+.responsive-section .inner-grid {
+  margin:-20px -20px 20px -20px;
 }
+.layout-content .responsive-section {
+  padding: 0 0 35px;
+}
+.container-fluid > .responsive-section .scrollspy-title {
+  margin-left:0;
+}
+
 .row-fluid.row-fluid-divider {
   background: url("../../img/vertical-separator.png") repeat-y 50% 0;
   .forScreen(@mediumScreen, background, none);
