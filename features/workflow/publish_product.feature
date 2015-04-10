@@ -79,3 +79,14 @@ Feature: Publish a product
     And I should see "9"
     And I should see "Customs"
     Then I should see "100.00 EUR"
+    Given the following product values:
+      | product   | attribute  | value         | scope     |
+      | my-jacket | release    | 2014-03-25    |           |
+    And I edit the "my-jacket" product
+    When I press the "Publish" button
+    And I confirm the publishing
+    And I am on the published index page
+    Then the grid should contain 1 elements
+    And I should see product my-jacket
+    And I am on the "my-jacket" published show page
+    And I should see "March 25, 2014"

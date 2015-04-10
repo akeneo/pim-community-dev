@@ -12,7 +12,7 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository as BaseProductMassActionRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository\ProductMassActionRepository as BaseMassActionRepository;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\PublishedProductRepository;
 
@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\Published
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class ProductMassActionRepository extends BaseProductMassActionRepository
+class ProductMassActionRepository extends BaseMassActionRepository
 {
     /** @var PublishedProductRepository */
     protected $publishedRepository;

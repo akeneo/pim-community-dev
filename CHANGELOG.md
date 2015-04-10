@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
+- PIM-3296: Better display of options changes in Proposals
 
 ## BC Breaks
 - Move PimEnterprise/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepository
@@ -15,6 +16,12 @@
 - Add ProductBuilderInterface argument of the constructor of PimEnterprise/Bundle/CatalogRuleBundle/Validator/Constraints/ProductRule/ValueActionValidator
 
 # 1.3.x
+
+## Bug fixes
+- PIM-3935: Fix "working copy value" tooltip is always empty
+- PIM-3957: Unable to publish a product already published
+
+# 1.3.5 (2015-03-19)
 
 ## Bug fixes
 - PIM-3925: do not show system menu if no item allowed
