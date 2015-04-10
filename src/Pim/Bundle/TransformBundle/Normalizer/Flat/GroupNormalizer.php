@@ -22,6 +22,21 @@ class GroupNormalizer extends Structured\GroupNormalizer
     /**
      * {@inheritdoc}
      */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        $result = parent::normalize($object, $format, $context);
+
+        if (isset($result['values'])) {
+            $result = $result + $result['values'];
+            unset($result['values']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function normalizeAxisAttributes(GroupInterface $group)
     {
         $attributes = parent::normalizeAxisAttributes($group);

@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Prophecy\Argument;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
@@ -27,7 +26,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface');
     }
 
-    function it_supports_associations_field() {
+    function it_supports_associations_field()
+    {
         $this->supportsField('associations')->shouldReturn(true);
         $this->supportsField('groups')->shouldReturn(false);
     }
@@ -56,20 +56,6 @@ class AssociationFieldSetterSpec extends ObjectBehavior
                 ['assoc_type_code' => []]
             )
         )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => []]]);
-
-        $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
-                'associations',
-                ['assoc_type_code' => ['products' => []]]
-            )
-        )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => ['products' => []]]]);
-
-        $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
-                'associations',
-                ['assoc_type_code' => ['groups' => []]]
-            )
-        )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => ['groups' => []]]]);
 
         $this->shouldThrow(
             InvalidArgumentException::associationFormatExpected(
@@ -134,7 +120,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             'associations',
             [
                 'xsell' => [
-                    'products' => ['assocProductOne','assocProductTwo'],
+                    'products' => ['assocProductOne', 'assocProductTwo'],
                     'groups' => ['assocGroupOne']
                 ],
                 'upsell' => [
