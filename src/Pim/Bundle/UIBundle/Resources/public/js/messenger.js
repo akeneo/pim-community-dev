@@ -28,13 +28,13 @@ function ($, _) {
      * Get flash messages from localStorage or cookie
      */
     var getStoredMessages = function () {
-        var messages = [];
+        var messages;
         if (localStorage) {
             messages = JSON.parse(localStorage.getItem(storageKey));
         } else if ($.cookie) {
             messages = JSON.parse($.cookie(storageKey));
         }
-        return messages;
+        return messages || [];
     };
 
     /**

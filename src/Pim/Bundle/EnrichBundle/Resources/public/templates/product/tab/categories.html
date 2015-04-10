@@ -14,7 +14,9 @@
             <div id="trees" data-id="<%= product.meta.id %>" data-datalocale="<%= locale %>" data-selected-tree="<%= trees[0].id %>">
                 <% _.each(trees, function (tree) { %>
                     <div class="tree root-unselectable" data-tree-id="<%= tree.id %>">
-                        <h3><%= tree.label %></h3>
+                        <header class="tab-header">
+                            <h3><%= tree.label %></h3>
+                        </header>
                         <div id="tree-<%= tree.id %>" class="buffer-small-left"></div>
                     </div>
                 <% }); %>
