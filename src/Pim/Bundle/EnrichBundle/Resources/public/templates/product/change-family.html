@@ -7,6 +7,6 @@ Family:
         <option value=""<%= product.family === '' ? ' selected' : '' %>>None</option>
     </select>
 <% } else { %>
-    <%= product.family %>
+    <%= product.family || _.__('pim_enrich.info.not_applicable') %>
     <i class="icon-pencil"></i>
 <% } %>
