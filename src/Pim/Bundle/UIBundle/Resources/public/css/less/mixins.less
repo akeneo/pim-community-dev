@@ -58,14 +58,9 @@
 
 .forScreen (@size; @_; @value) {}
 
-.border-radius(@radius:0px) {
-  -webkit-border-radius: @radius;
-     -moz-border-radius: @radius;
-          border-radius: @radius;
-
-  -webkit-background-clip: padding-box;
-     -moz-background-clip: padding;
-          background-clip: padding-box;
+.border-radius(@radius: 0px) {
+  border-radius: @radius;
+  background-clip: padding-box;
 }
 
 .box-sizing(@value: border-box) {

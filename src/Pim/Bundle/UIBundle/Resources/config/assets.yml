@@ -11,7 +11,9 @@ css:
     pim_ui:
         - bundles/pimui/css/less/oro.less
         - bundles/pimui/css/all.less
+        - bundles/pimui/css/sidebarized.less
         - bundles/pimui/css/jquery-ui.grid.less
         - bundles/pimui/css/pim.less
+        - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less
         - bundles/pimui/css/style.less
