@@ -651,16 +651,28 @@ body {
   overflow: auto;
 }
 
-.attribute-actions {
+header.tab-header {
   height: 44px;
   border-left: none;
   border-bottom: solid 1px #e5e5e5;
   background: #f9f9f9;
   padding: 0 20px;
-
   .display-flex();
   justify-content: flex-start;
+  h3 {
+    line-height: 24px;
+  }
+}
 
+h3.tab-header {
+  height: 44px;
+  border-left: none;
+  border-bottom: solid 1px #e5e5e5;
+  background: #f9f9f9;
+  padding: 0 20px;
+}
+
+.attribute-actions {
   .attribute-edit-actions {
     margin-right: 10px;
   }
