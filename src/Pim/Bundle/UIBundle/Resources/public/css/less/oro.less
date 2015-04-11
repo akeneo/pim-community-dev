@@ -470,7 +470,6 @@ select {
   display: table-cell;
   text-align: left;
   text-shadow: 0 -1px 2px #37485f;
-  filter: dropshadow(color=#37485f, offx=1, offy=1);
   line-height: 24px;
   font-size: 11px;
   padding: 0 25px 0 11px;
@@ -782,7 +781,6 @@ select {
 #loading-wrapper {
   background: #000;
   opacity: 0.6;
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)";
   position: absolute;
   top: 0;
   left: 0;
@@ -977,7 +975,7 @@ select {
     .close {
       font-size: 18px;
       color: @warningClose;
-      .opacity(100,1);
+      .opacity(1);
     }
   }
   .alert-success {
@@ -1449,7 +1447,7 @@ select:focus:invalid:focus {
     .close {
       font-size: 18px;
       color: @warningClose;
-      .opacity(100,1);
+      .opacity(1);
     }
   }
   .alert-success {
@@ -1487,7 +1485,7 @@ select:focus:invalid:focus {
 
   .box-sizing(border-box);
   padding: 0 10px;
-  .opacity(90,.9)
+  .opacity(.9);
 }
 
 /* validation-error */
