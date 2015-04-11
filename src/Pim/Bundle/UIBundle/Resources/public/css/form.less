@@ -393,33 +393,6 @@ div.btn-group > .has-switch {
   border-top: 1px solid #e5e5e5;
 }
 
-.modal{
-  top: 20%;
-  background-color: @backgroundColor-white;
-}
-.modal .modal-header{
-  background-color: @color-purple_light;
-  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  border-radius: 6px 6px 0 0;
-}
-.modal-header h3{
-  color: @backgroundColor-white;
-}
-
-.modal-primary {
-  top: 20%;
-  background-color: @backgroundColor-white;
-
-  .modal-header {
-    background-color: @color-purple_light;
-    #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-    border-radius: 6px 6px 0 0;
-  }
-  .modal-header h3 {
-    font: @backgroundColor-white;
-  }
-}
-
 .form-inline {
   label {
     width: 200px;
@@ -509,9 +482,6 @@ table i {
     margin-top: 0;
     background-color: @color-grey_tab;
     border-bottom: 1px solid #e5e5e5;
-  }
-  .modal-header h3 {
-    background-color: @color-purple_light;
   }
 }
 
@@ -1148,17 +1118,9 @@ table#progress-table {
 }
 
 /** datagrid columns configuration ***********************************************************************************/
-.modal-large {
-  width: 90%;
-  left: 5%;
-  margin-left: 0;
-  top: 5%;
-  .modal-body {
-    max-height: inherit;
-  }
-}
 .column-configurator-modal .modal-body {
-  max-height: inherit;
+  padding: 0;
+  background-color: #edf1f2;
 }
 #column-configurator {
   h4 {

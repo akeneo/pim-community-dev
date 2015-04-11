@@ -21,6 +21,7 @@ css:
         - bundles/pimui/css/tree.less
         - bundles/pimui/css/tinymce.less
         - bundles/pimui/css/dialog.less
+        - bundles/pimui/css/modal.less
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less
