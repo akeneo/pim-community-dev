@@ -34,7 +34,8 @@ module.exports = function (grunt) {
         },
         recess: {
             all: [
-                'src/Pim/Bundle/UIBundle/Resources/public/css/signin.less'
+                'src/Pim/Bundle/UIBundle/Resources/public/css/signin.less',
+                'src/Pim/Bundle/UIBundle/Resources/public/css/icons.less'
                 // Would be very nice to run on all these files
                 // 'src/**/*.css',
                 // 'src/**/*.less',

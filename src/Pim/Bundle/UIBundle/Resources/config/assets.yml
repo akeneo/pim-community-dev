@@ -13,6 +13,13 @@ css:
         - bundles/pimui/css/all.less
         - bundles/pimui/css/sidebarized.less
         - bundles/pimui/css/jquery-ui.grid.less
+        - bundles/pimui/css/icons.less
+        - bundles/pimui/css/header.less
+        - bundles/pimui/css/select2.less
+        - bundles/pimui/css/form.less
+        - bundles/pimui/css/wizard.less
+        - bundles/pimui/css/tree.less
+        - bundles/pimui/css/tinymce.less
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less
