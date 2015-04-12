@@ -34,19 +34,14 @@ module.exports = function (grunt) {
         },
         recess: {
             all: [
-                'src/Pim/Bundle/UIBundle/Resources/public/css/signin.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/icons.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/dialog.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/modal.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/sidebarized.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/progress.less',
-                'src/Pim/Bundle/UserBundle/Resources/public/css/permissions.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/pinbar.less'
-                // Would be very nice to run on all these files
-                // 'src/**/*.css',
-                // 'src/**/*.less',
-                // '!src/**/lib/**/*.css',
-                // '!src/**/lib/**/*.less'
+                'src/**/*.css',
+                'src/**/*.less',
+                '!src/**/lib/**/*.css',
+                '!src/**/lib/**/*.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/less/oro.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/pim.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/form.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/flags.less'
             ],
             options: {
                 strictPropertyOrder: false,

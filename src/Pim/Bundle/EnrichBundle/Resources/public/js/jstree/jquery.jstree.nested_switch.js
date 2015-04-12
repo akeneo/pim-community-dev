@@ -21,7 +21,7 @@
                     var _this = this;
 
                     var nested_switch_bar = $('<div>', {
-                        id: 'nested_switch'
+                        id: 'nested-switch'
                     });
 
                     var nested_switch = $('<input>', {
