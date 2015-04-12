@@ -46,7 +46,7 @@
         "liip/imagine-bundle": "0.17.1",
         "monolog/monolog": "1.10.0",
         "nelmio/api-doc-bundle": "2.4.4",
-        "oro/platform": "dev-pim-1.4@dev",
+        "oro/platform": "dev-bump-symfony",
         "sensio/distribution-bundle": "2.3.7",
         "sensio/framework-extra-bundle": "2.3.4",
         "sensio/generator-bundle": "2.3.5",
