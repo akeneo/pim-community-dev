@@ -43,9 +43,9 @@ We bumped the following dependencies: [TODO]
 
 Yaml::parse($path) now expects the file content, so we replace the uses by Yaml::parse(file_get_contents($path)). 
 
-### DependencyInjection Component
+### DependencyInjection Component [TODO]
 
-
+Change factory_service configuration, cf YamlFileLoader
 
 ### OptionsResolver Component
 
@@ -65,11 +65,13 @@ The use of SecurityFacade may be replaced by http://symfony.com/doc/current/bund
 
 ### Validator Component [TODO]
 
-We hot fixed the %validator.class% parameters by using the "old one" in pim_validator. 
+For now, to be able to install the PIM,
+ - we introduce a %deprecated_validator_25.class% parameter to define the old validator class and use it in 'pim_validator'
+ - we hot fix the ProductImportValidator by injecting the 'pim_validator' inside
 
 The validation engine has been replaced, both options are:
  - use the deprecated one (will be removed in 3.0)
- - try to direct upgrade to the new one
+ - try to direct update our code to use the new one
 
 ### Extra details
 
