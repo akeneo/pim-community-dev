@@ -49,14 +49,10 @@ class GroupSavingOptionsResolver implements SavingOptionsResolverInterface
     {
         $resolver = new OptionsResolver();
         $resolver->setDefined(['flush', 'copy_values_to_products', 'add_products', 'remove_products']);
-        $resolver->setAllowedTypes(
-            [
-                'flush'                   => 'bool',
-                'copy_values_to_products' => 'bool',
-                'add_products'            => 'array',
-                'remove_products'         => 'array',
-            ]
-        );
+        $resolver->setAllowedTypes('flush', 'bool');
+        $resolver->setAllowedTypes('copy_values_to_products', 'bool');
+        $resolver->setAllowedTypes('add_products', 'array');
+        $resolver->setAllowedTypes('remove_products', 'array');
 
         return $resolver;
     }

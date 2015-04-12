@@ -37,6 +37,8 @@ Yaml::parse($path) now expects the file content, so we replace the uses by Yaml:
 
 Replace deprecated uses of OptionsResolver::setOptional() by OptionsResolver::setDefined()
 
+Replace deprecated uses of OptionsResolver::setAllowedTypes(array) by calls with a single option OptionsResolver::setAllowedTypes($option, $type)  
+
 For more details, please refers to:
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.5.md
