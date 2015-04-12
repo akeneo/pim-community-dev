@@ -15,6 +15,7 @@ css:
         - bundles/pimui/css/jquery-ui.grid.less
         - bundles/pimui/css/icons.less
         - bundles/pimui/css/header.less
+        - bundles/pimui/css/pinbar.less
         - bundles/pimui/css/select2.less
         - bundles/pimui/css/form.less
         - bundles/pimui/css/wizard.less
@@ -22,6 +23,7 @@ css:
         - bundles/pimui/css/tinymce.less
         - bundles/pimui/css/dialog.less
         - bundles/pimui/css/modal.less
+        - bundles/pimui/css/progress.less
         - bundles/pimui/css/pim.less
         - bundles/pimui/css/signin.less
         - bundles/pimui/css/flags.less

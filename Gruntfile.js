@@ -38,7 +38,10 @@ module.exports = function (grunt) {
                 'src/Pim/Bundle/UIBundle/Resources/public/css/icons.less',
                 'src/Pim/Bundle/UIBundle/Resources/public/css/dialog.less',
                 'src/Pim/Bundle/UIBundle/Resources/public/css/modal.less',
-                'src/Pim/Bundle/UIBundle/Resources/public/css/sidebarized.less'
+                'src/Pim/Bundle/UIBundle/Resources/public/css/sidebarized.less',
+                'src/Pim/Bundle/UIBundle/Resources/public/css/progress.less',
+                'src/Pim/Bundle/UserBundle/Resources/public/css/permissions.less',
+                'src/Pim/Bundle/UIBundle/Resources/public/css/pinbar.less'
                 // Would be very nice to run on all these files
                 // 'src/**/*.css',
                 // 'src/**/*.less',
@@ -47,7 +50,8 @@ module.exports = function (grunt) {
             ],
             options: {
                 strictPropertyOrder: false,
-                noIDs: false
+                noIDs:               false,
+                noOverqualifying:    false
             }
         },
         jasmine: {
