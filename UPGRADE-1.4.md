@@ -65,6 +65,8 @@ The use of SecurityFacade may be replaced by http://symfony.com/doc/current/bund
 
 ### Validator Component [TODO]
 
+We hot fixed the %validator.class% parameters by using the "old one" in pim_validator. 
+
 The validation engine has been replaced, both options are:
  - use the deprecated one (will be removed in 3.0)
  - try to direct upgrade to the new one
