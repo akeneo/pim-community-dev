@@ -6,13 +6,17 @@
 
 ## UPGRADE OF DOCTRINE ORM FROM 2.4.7 TO 2.5.*
 
-We bumped the related dependencies of related depende
+### Dependencies
+
+We bumped the following dependencies:
 +        "doctrine/cache": "1.4.0",
 +        "doctrine/common": "2.5.0",
 +        "doctrine/data-fixtures": "1.1.1",
 +        "doctrine/doctrine-bundle": "1.4.0",
 +        "doctrine/orm": "2.5.0",
-+        "symfony/console": "~2.5.0",
++        "symfony/console": "~2.5.0", // notice, and we bumped again with the use of Symfony 2.7
+
+### isNull/isNotNull
 
 The main change is that we cannot rely on a simple join alias with isNull and isNotNull:
     $qb
@@ -25,13 +29,23 @@ The main change is that we cannot rely on a simple join alias with isNull and is
             )
         );
 
+### Extra Details
+
 You can found more details of what have been fixed in the following PR https://github.com/akeneo/pim-community-dev/pull/2470
 
 ## UPGRADE OF SYMFONY FROM 2.3.* TO 2.7.*
 
+### Dependencies [WIP]
+
+We bumped the following dependencies: [TODO]
+
 ### Yaml Component
 
 Yaml::parse($path) now expects the file content, so we replace the uses by Yaml::parse(file_get_contents($path)). 
+
+### DependencyInjection Component
+
+
 
 ### OptionsResolver Component
 
@@ -55,7 +69,7 @@ The validation engine has been replaced, both options are:
  - use the deprecated one (will be removed in 3.0)
  - try to direct upgrade to the new one
 
-### More information
+### Extra details
 
 For more details, please refer to official Symfony upgrade docs:
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md
