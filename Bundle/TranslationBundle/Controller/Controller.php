@@ -3,10 +3,10 @@ namespace Oro\Bundle\TranslationBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-//use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\TranslationBundle\Translation\Translator;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class Controller
 {
@@ -37,7 +37,7 @@ class Controller
      * @param array $options array('domains' => array(), 'debug' => true|false)
      * @throws \InvalidArgumentException
      */
-    public function __construct(Translator $translator, EngineInterface $templating, $template, $options)
+    public function __construct(TranslatorInterface $translator, EngineInterface $templating, $template, $options)
     {
         $this->translator = $translator;
         $this->templating = $templating;
