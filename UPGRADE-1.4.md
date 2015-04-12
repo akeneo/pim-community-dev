@@ -39,6 +39,8 @@ Replace deprecated uses of OptionsResolver::setOptional() by OptionsResolver::se
 
 Replace deprecated uses of OptionsResolver::setAllowedTypes(array) by calls with a single option OptionsResolver::setAllowedTypes($option, $type)  
 
+Replace uses of InvalidOptionsException by UndefinedOptionsException.
+
 For more details, please refers to:
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.5.md
