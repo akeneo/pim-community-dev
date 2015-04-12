@@ -3,12 +3,6 @@
 /* Collapsable sidebar **********************************************************************************************/
 
 .sidebarized {
-  .sidebar-separator {
-    background-color: #f3f3f3;
-    i {
-      cursor: pointer;
-    }
-  }
   .sidebar-controls {
     background-color: #f7f7f7;
     i {
@@ -42,33 +36,34 @@
   }
   .sidebar-content {
     background-color: #fcfcfc;
-    .sidebar-list {
-      ul {
-        margin: 0;
-        li {
-          padding: 0 10px;
-          line-height: 35px;
-          list-style: none;
-          cursor: pointer;
-          &:hover {
-            background-color: @color-grey_tab;
-          }
-          &.active, &.active:hover {
-            background-color: @color-purple_hover;
-          }
-          a {
-            display: block;
-            color: @textColor;
-            &:hover {
-              text-decoration: none;
-            }
-          }
-          span.handle {
-            float: left;
-            padding-right: 5px;
-          }
-        }
+  }
+}
+.sidebar-list {
+  ul {
+    margin: 0;
+  }
+  li {
+    padding: 0 10px;
+    line-height: 35px;
+    list-style: none;
+    cursor: pointer;
+    &:hover {
+      background-color: @color-grey_tab;
+    }
+    a {
+      display: block;
+      color: @textColor;
+      &:hover {
+        text-decoration: none;
       }
     }
+  }
+  .active,
+  .active:hover {
+    background-color: @color-purple_hover;
+  }
+  .handle {
+    float: left;
+    padding-right: 5px;
   }
 }
