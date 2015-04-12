@@ -29,7 +29,13 @@ You can found more details of what have been fixed in the following PR https://g
 
 ## UPGRADE OF SYMFONY FROM 2.3.* TO 2.7.*
 
+### Yaml Component
+
 Yaml::parse($path) now expects the file content, so we replace the uses by Yaml::parse(file_get_contents($path)). 
+
+### OptionsResolver Component
+
+Replace deprecated uses of OptionsResolver::setOptional() by OptionsResolver::setDefined()
 
 For more details, please refers to:
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md

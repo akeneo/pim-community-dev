@@ -21,7 +21,7 @@ class BaseSavingOptionsResolver implements SavingOptionsResolverInterface
     public function resolveSaveOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
-        $resolver->setOptional(['flush_only_object']);
+        $resolver->setDefined(['flush_only_object']);
         $resolver->setAllowedTypes(['flush_only_object' => 'bool']);
         $resolver->setDefaults(['flush_only_object' => false]);
         $options = $resolver->resolve($options);
@@ -46,7 +46,7 @@ class BaseSavingOptionsResolver implements SavingOptionsResolverInterface
     protected function createOptionsResolver()
     {
         $resolver = new OptionsResolver();
-        $resolver->setOptional(['flush']);
+        $resolver->setDefined(['flush']);
         $resolver->setAllowedTypes(['flush' => 'bool']);
         $resolver->setDefaults(['flush' => true]);
 

@@ -127,7 +127,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         $resolver = new OptionsResolver();
         $resolver->setRequired(['type']);
         $resolver->setAllowedValues(['type' => ['set_data', 'copy_data', 'add_data', 'remove_data']]);
-        $resolver->setOptional(
+        $resolver->setDefined(
             [
                 'field',
                 'data',

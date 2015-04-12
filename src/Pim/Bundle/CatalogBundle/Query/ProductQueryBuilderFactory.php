@@ -127,7 +127,7 @@ class ProductQueryBuilderFactory implements ProductQueryBuilderFactoryInterface
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setOptional(
+        $resolver->setDefined(
             [
                 'repository_method',
                 'repository_parameters',

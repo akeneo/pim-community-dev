@@ -127,7 +127,7 @@ class QueryProductCommand extends ContainerAwareCommand
 
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['locale', 'scope']);
+        $resolver->setDefined(['locale', 'scope']);
         $resolver->setDefaults(['locale' => null, 'scope' => null]);
 
         foreach ($filters as $filter) {

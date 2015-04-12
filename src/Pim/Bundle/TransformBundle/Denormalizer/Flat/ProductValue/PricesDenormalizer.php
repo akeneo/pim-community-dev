@@ -98,6 +98,6 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     {
         $resolver
             ->setRequired(['value', 'price_currency'])
-            ->setOptional(['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path']);
+            ->setDefined(['entity', 'locale_code', 'product', 'scope_code', 'use_relative_media_path']);
     }
 }
