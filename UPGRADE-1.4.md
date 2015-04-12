@@ -4,6 +4,29 @@
 
 > Please perform a backup of your codebase if you don't use any VCS.
 
+# UPGRADE OF DOCTRINE ORM FROM 2.4.7 TO 2.5.*
+
+We bumped the related dependencies of related depende
++        "doctrine/cache": "1.4.0",
++        "doctrine/common": "2.5.0",
++        "doctrine/data-fixtures": "1.1.1",
++        "doctrine/doctrine-bundle": "1.4.0",
++        "doctrine/orm": "2.5.0",
++        "symfony/console": "~2.5.0",
+
+The main change is that we cannot rely on a simple join alias with isNull and isNotNull:
+    $qb
+        ->leftJoin('pa.products', 'products')
+        ->leftJoin('pa.groups', 'groups')
+        ->where(
+            $qb->expr()->orX(
+                $qb->expr()->isNotNull('products'), // we now need to use products.id 
+                $qb->expr()->isNotNull('groups') // we now need to use groups.id
+            )
+        );
+
+You can found more details of what have been fixed in the following PR https://github.com/akeneo/pim-community-dev/pull/2470
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
