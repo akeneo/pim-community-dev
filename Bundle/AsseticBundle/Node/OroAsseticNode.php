@@ -138,7 +138,7 @@ class OroAsseticNode extends \Twig_Node
      */
     protected function compileCombineDebugAssetUrl(\Twig_Compiler $compiler, $path, $name)
     {
-        $compiler->raw('$this->env->getExtension(\'assets\')->getAssetUrl(')
+        $compiler->raw('$this->env->getExtension(\'asset\')->getAssetUrl(')
             ->repr($path)
             ->raw(')');
     }
