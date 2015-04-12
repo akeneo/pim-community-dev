@@ -55,7 +55,7 @@ class OroAsseticExtension extends Extension
         foreach ($bundles as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/assets.yml')) {
-                $bundleConfig = Yaml::parse(realpath($file));
+                $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
                 if (isset($bundleConfig['css'])) {
                     $css = array_merge_recursive($css, $bundleConfig['css']);
                 }

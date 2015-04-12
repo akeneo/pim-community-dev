@@ -35,7 +35,7 @@ class OroDistributionExtension extends Extension
             $reflection = new \ReflectionClass($bundle);
 
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/oro/twig.yml')) {
-                $data = array_merge($data, Yaml::parse(realpath($file))['bundles']);
+                $data = array_merge($data, Yaml::parse(file_get_contents(realpath($file)))['bundles']);
             }
         }
 

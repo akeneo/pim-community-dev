@@ -44,7 +44,7 @@ class ConfigurationPass implements CompilerPassInterface
                 $reflection = new \ReflectionClass($bundle);
                 $file       = dirname($reflection->getFilename()) . '/Resources/config/' . self::CONFIG_FILE_NAME;
                 if (is_file($file)) {
-                    $bundleConfig = Yaml::parse(realpath($file));
+                    $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
                     if (isset($bundleConfig[self::ROOT_PARAMETER]) && is_array($bundleConfig[self::ROOT_PARAMETER])) {
                         $config = array_merge_recursive($config, $bundleConfig[self::ROOT_PARAMETER]);
                     }

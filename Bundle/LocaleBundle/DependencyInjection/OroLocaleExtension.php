@@ -124,22 +124,22 @@ class OroLocaleExtension extends Extension
 
             // read name format files
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/name_format.yml')) {
-                $externalNameFormat = array_merge($externalNameFormat, Yaml::parse(realpath($file)));
+                $externalNameFormat = array_merge($externalNameFormat, Yaml::parse(file_get_contents(realpath($file))));
             }
 
             // read address format files
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/address_format.yml')) {
-                $externalAddressFormat = array_merge($externalAddressFormat, Yaml::parse(realpath($file)));
+                $externalAddressFormat = array_merge($externalAddressFormat, Yaml::parse(file_get_contents(realpath($file))));
             }
 
             // read locale data files
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/locale_data.yml')) {
-                $externalLocaleData = array_merge($externalLocaleData, Yaml::parse(realpath($file)));
+                $externalLocaleData = array_merge($externalLocaleData, Yaml::parse(file_get_contents(realpath($file))));
             }
 
             // read currency data files
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/currency_data.yml')) {
-                $externalCurrencyData = array_merge($externalCurrencyData, Yaml::parse(realpath($file)));
+                $externalCurrencyData = array_merge($externalCurrencyData, Yaml::parse(file_get_contents(realpath($file))));
             }
         }
 

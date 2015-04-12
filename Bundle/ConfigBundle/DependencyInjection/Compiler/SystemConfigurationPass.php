@@ -24,7 +24,7 @@ class SystemConfigurationPass implements CompilerPassInterface
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);
             if (is_file($file = dirname($reflection->getFilename()) . '/Resources/config/' . self::CONFIG_FILE_NAME)) {
-                $bundleConfig = Yaml::parse(realpath($file));
+                $bundleConfig = Yaml::parse(file_get_contents(realpath($file)));
 
                 $config = $processor->merge($config, $bundleConfig);
             }
