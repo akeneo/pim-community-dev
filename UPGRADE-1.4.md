@@ -4,7 +4,7 @@
 
 > Please perform a backup of your codebase if you don't use any VCS.
 
-# UPGRADE OF DOCTRINE ORM FROM 2.4.7 TO 2.5.*
+## UPGRADE OF DOCTRINE ORM FROM 2.4.7 TO 2.5.*
 
 We bumped the related dependencies of related depende
 +        "doctrine/cache": "1.4.0",
@@ -26,6 +26,16 @@ The main change is that we cannot rely on a simple join alias with isNull and is
         );
 
 You can found more details of what have been fixed in the following PR https://github.com/akeneo/pim-community-dev/pull/2470
+
+## UPGRADE OF SYMFONY FROM 2.3.* TO 2.7.*
+
+Yaml::parse($path) now expects the file content, so we replace the uses by Yaml::parse(file_get_contents($path)). 
+
+For more details, please refers to:
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.5.md
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.6.md
+  - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.7.md
 
 ## Partially fix BC breaks
 

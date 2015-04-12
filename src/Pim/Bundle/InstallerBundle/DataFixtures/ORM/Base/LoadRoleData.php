@@ -29,7 +29,7 @@ class LoadRoleData extends AbstractInstallerFixture
     {
         $this->om   = $manager;
         $aclManager = $this->getAclManager();
-        $dataRoles  = Yaml::parse(realpath($this->getFilePath()));
+        $dataRoles  = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
         $roles      = [];
 
         $roleAnonymous = $this->buildRole(['role' => 'IS_AUTHENTICATED_ANONYMOUSLY', 'label' => 'Anonymous']);

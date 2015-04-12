@@ -34,7 +34,7 @@ class PimVersioningExtension extends Extension
         }
 
         $file = __DIR__.'/../Resources/config/pim_versioning_entities.yml';
-        $entities = Yaml::parse(realpath($file));
+        $entities = Yaml::parse(file_get_contents(realpath($file)));
         $container->setParameter('pim_versioning.versionable_entities', $entities['versionable']);
 
         $this->loadSerializerConfig($configs, $container);

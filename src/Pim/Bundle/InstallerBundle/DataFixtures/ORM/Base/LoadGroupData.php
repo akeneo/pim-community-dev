@@ -27,7 +27,7 @@ class LoadGroupData extends AbstractInstallerFixture
     public function load(ObjectManager $manager)
     {
         $this->om = $manager;
-        $dataGroups = Yaml::parse(realpath($this->getFilePath()));
+        $dataGroups = Yaml::parse(file_get_contents(realpath($this->getFilePath())));
         foreach ($dataGroups['user_groups'] as $dataGroup) {
             $group = $this->buildGroup($dataGroup);
             $manager->persist($group);
