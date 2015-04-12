@@ -41,7 +41,23 @@ Replace deprecated uses of OptionsResolver::setAllowedTypes(array) by calls with
 
 Replace uses of InvalidOptionsException by UndefinedOptionsException.
 
-For more details, please refers to:
+### Security Component [TODO]
+
+Re-think the deprecated SecurityContextInterface topic which has been splitted in two interfaces AuthorizationCheckerInterface and TokenStorageInterface.
+
+We don't often use both interfaces in the same service.
+
+The use of SecurityFacade may be replaced by http://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/annotations/security.html
+
+### Validator Component [TODO]
+
+The validation engine has been replaced, both options are:
+ - use the deprecated one (will be removed in 3.0)
+ - try to direct upgrade to the new one
+
+### More information
+
+For more details, please refer to official Symfony upgrade docs:
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.4.md
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.5.md
   - https://github.com/symfony/symfony/blob/2.7/UPGRADE-2.6.md
