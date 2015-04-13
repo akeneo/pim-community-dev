@@ -39,7 +39,7 @@ class ChangeStatusSpec extends ObjectBehavior
 
     function it_provides_an_alias()
     {
-        $this->getAlias()->shouldReturn('change-status');
+        $this->getOperationAlias()->shouldReturn('change-status');
     }
 
     function it_provides_correct_actions_to_apply_on_products()

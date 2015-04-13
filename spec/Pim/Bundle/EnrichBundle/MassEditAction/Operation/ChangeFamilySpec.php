@@ -41,7 +41,7 @@ class ChangeFamilySpec extends ObjectBehavior
 
     function it_provides_an_alias()
     {
-        $this->getAlias()->shouldReturn('change-family');
+        $this->getOperationAlias()->shouldReturn('change-family');
     }
 
     function it_provides_correct_actions_to_apply_on_products(FamilyInterface $mugs)

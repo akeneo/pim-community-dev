@@ -48,7 +48,7 @@ class AddToGroupsSpec extends ObjectBehavior
 
     function it_provides_an_alias()
     {
-        $this->getAlias()->shouldReturn('add-to-groups');
+        $this->getOperationAlias()->shouldReturn('add-to-groups');
     }
 
     function it_provides_correct_actions_to_apply_on_products(

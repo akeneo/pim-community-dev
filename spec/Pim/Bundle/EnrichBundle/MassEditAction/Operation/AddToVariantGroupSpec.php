@@ -22,7 +22,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
     function it_provides_an_alias()
     {
-        $this->getAlias()->shouldReturn('add-to-variant-group');
+        $this->getOperationAlias()->shouldReturn('add-to-variant-group');
     }
 
     function it_provides_form_options()
