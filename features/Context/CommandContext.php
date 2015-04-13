@@ -152,7 +152,7 @@ class CommandContext extends RawMinkContext
             if (!$operation instanceof BatchableOperationInterface) {
                 throw new \Exception(sprintf(
                     'Operation with alias %s must implement the BatchableOperationInterface to be tested this way',
-                    $operation->getAlias()
+                    $operation->getOperationAlias()
                 ));
             }
 
@@ -203,7 +203,7 @@ class CommandContext extends RawMinkContext
             if (!$operation instanceof BatchableOperationInterface) {
                 throw new \Exception(sprintf(
                     'Operation with alias %s must implement the BatchableOperationInterface to be tested this way',
-                    $operation->getAlias()
+                    $operation->getOperationAlias()
                 ));
             }
 
