@@ -69,6 +69,6 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
      */
     public function __toString()
     {
-        return $this->code;
+        return '[' . $this->code . ']';
     }
 }
