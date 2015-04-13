@@ -6,13 +6,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -36,9 +37,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var ProductBuilder */
     protected $productBuilder;
 
-    /** @var ProductMassActionManager */
-    protected $massActionManager;
-
     /** @var UserContext */
     protected $userContext;
 
@@ -46,51 +44,55 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $catalogContext;
 
     /** @var array */
-    protected $commonAttributes;
-
-    /** @var array */
-    protected $warningMessages;
-
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    protected $allAttributes;
 
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /** @var MediaManager */
+    protected $mediaManager;
+
+    /** @var string */
+    protected $uploadDir;
+
+    /** @var ProductMassActionManager */
+    protected $massActionManager;
+
     /**
      * Constructor
      *
-     * @param ProductBuilder           $productBuilder
-     * @param ProductUpdaterInterface  $productUpdater
-     * @param UserContext              $userContext
-     * @param CatalogContext           $catalogContext
-     * @param ProductMassActionManager $massActionManager
-     * @param NormalizerInterface      $normalizer
+     * @param ProductBuilder               $productBuilder
+     * @param UserContext                  $userContext
+     * @param CatalogContext               $catalogContext
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param NormalizerInterface          $normalizer
+     * @param MediaManager                 $mediaManager
+     * @param ProductMassActionManager     $massActionManager
+     * @param                              $uploadDir
      */
     public function __construct(
         ProductBuilder $productBuilder,
-        ProductUpdaterInterface $productUpdater,
         UserContext $userContext,
         CatalogContext $catalogContext,
+        AttributeRepositoryInterface $attributeRepository,
+        NormalizerInterface $normalizer,
+        MediaManager $mediaManager,
         ProductMassActionManager $massActionManager,
-        NormalizerInterface $normalizer
+        $uploadDir
     ) {
         $this->productBuilder      = $productBuilder;
-        $this->productUpdater      = $productUpdater;
         $this->userContext         = $userContext;
         $this->catalogContext      = $catalogContext;
-        $this->massActionManager   = $massActionManager;
         $this->displayedAttributes = new ArrayCollection();
         $this->values              = new ArrayCollection();
         $this->normalizer          = $normalizer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function affectsCompleteness()
-    {
-        return true;
+        $this->attributeRepository = $attributeRepository;
+        $this->mediaManager        = $mediaManager;
+        $this->uploadDir           = $uploadDir;
+        $this->massActionManager   = $massActionManager;
     }
 
     /**
@@ -178,16 +180,14 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Get form options
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFormOptions()
     {
         return [
-            'locales'           => $this->userContext->getUserLocales(),
-            'common_attributes' => $this->getCommonAttributes(),
-            'current_locale'    => $this->getLocale()->getCode()
+            'locales'        => $this->userContext->getUserLocales(),
+            'all_attributes' => $this->getAllAttributes(),
+            'current_locale' => $this->getLocale()->getCode()
         ];
     }
 
@@ -198,138 +198,74 @@ class EditCommonAttributes extends AbstractMassEditOperation
     {
         $locale = $this->getLocale()->getCode();
         $this->catalogContext->setLocaleCode($locale);
+        $this->allAttributes = null;
+        $this->values = new ArrayCollection();
 
-        $this->warningMessages  = null;
-        $this->commonAttributes = null;
-
-        $commonAttributes = $this->getCommonAttributes();
+        $allAttributes = $this->getAllAttributes();
 
         $this->values = new ArrayCollection();
-        foreach ($commonAttributes as $attribute) {
+        foreach ($allAttributes as $attribute) {
             $this->addValues($attribute, $this->getLocale());
         }
     }
 
     /**
-     * Initializes self::commonAtributes with values from the repository
-     * Attribute is not available for mass editing if:
-     *   - it is an identifier
-     *   - it is unique
-     *   - without value AND not link to family
-     *   - is not common to every products
+     * {@inheritdoc}
+     *
+     * Before sending configuration to the job, we move uploaded files
+     * from '/tmp/' directory to the upload directory.
+     *
+     * This way, the job process can have access to uploaded files.
+     */
+    public function finalize()
+    {
+        foreach ($this->values as $productValue) {
+            $media = $productValue->getMedia();
+
+            if (null !== $media && null !== $media->getFile()) {
+                $tmpFile = $media->getFile();
+                $name = sprintf('%s-%s', uniqid(), time());
+                $movedFile = $tmpFile->move($this->uploadDir, $name);
+
+                $jobFile = new UploadedFile(
+                    $movedFile->getPathname(),
+                    $tmpFile->getClientOriginalName(),
+                    $tmpFile->getClientMimeType(),
+                    $tmpFile->getClientSize(),
+                    $tmpFile->getError()
+                );
+
+                $media->setFile($jobFile);
+                $productValue->setMedia($media);
+            }
+        }
+    }
+
+    /**
+     * Initializes self::allAtributes with values from the repository
      *
      * @return array
      */
-    public function getCommonAttributes()
+    public function getAllAttributes()
     {
-        if (null === $this->commonAttributes) {
-            $locale   = $this->getLocale()->getCode();
-            $products = $this->objects;
+        if (null === $this->allAttributes) {
+            $locale = $this->getLocale()->getCode();
+            $allAttributes = $this->attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]]);
 
-            $this->commonAttributes = $this->generateCommonAttributes($products, $locale);
-        }
+            foreach ($allAttributes as $attribute) {
+                $attribute->setLocale($locale);
+                $attribute->getGroup()->setLocale($locale);
+            }
 
-        return $this->commonAttributes;
-    }
-
-    /**
-     * Generate common attributes
-     * @param array  $products
-     * @param string $locale
-     *
-     * @return AttributeInterface[]
-     */
-    protected function generateCommonAttributes(array $products, $locale)
-    {
-        $commonAttributes = $this->massActionManager->findCommonAttributes($products);
-
-        foreach ($commonAttributes as $attribute) {
-            $attribute->setLocale($locale);
-            $attribute->getGroup()->setLocale($locale);
-        }
-
-        $commonAttributes = $this->massActionManager->filterLocaleSpecificAttributes(
-            $commonAttributes,
-            $locale
-        );
-
-        $commonAttributes = $this->massActionManager->filterAttributesComingFromVariant(
-            $commonAttributes,
-            $products
-        );
-
-        return $commonAttributes;
-    }
-
-    /**
-     * Get warning messages
-     *
-     * @return string[]
-     */
-    public function getWarningMessages()
-    {
-        if (null === $this->warningMessages) {
-            $this->warningMessages = $this->generateWarningMessages($this->objects);
-        }
-
-        return $this->warningMessages;
-    }
-
-    /**
-     * Get warning messages to display during the mass edit action
-     * @param ProductInterface[] $products
-     *
-     * @return string[]
-     */
-    protected function generateWarningMessages(array $products)
-    {
-        $messages = [];
-
-        $variantAttrCodes = $this->massActionManager->getCommonAttributeCodesInVariant($products);
-        $rootMessageKey = 'pim_enrich.mass_edit_action.edit-common-attributes';
-        if (count($variantAttrCodes) > 0) {
-            $messages[] = [
-                'key'     => $rootMessageKey.'.truncated_by_variant_attribute.warning',
-                'options' => ['%attributes%' => implode(', ', $variantAttrCodes)]
-            ];
-        }
-
-        if (count($this->getCommonAttributes()) < 1) {
-            $messages[] = [
-                'key' => $rootMessageKey.'.no_attribute.warning',
-                'options' => []
-            ];
-        }
-
-        return $messages;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(ProductInterface $product)
-    {
-        $this->setProductValues($product);
-    }
-
-    /**
-     * Set product values with the one stored inside $this->values
-     *
-     * @param ProductInterface $product
-     */
-    protected function setProductValues(ProductInterface $product)
-    {
-        foreach ($this->values as $value) {
-            $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
-            // if the value is localizable, let's use the locale the user has chosen in the form
-            $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
-            $this->productUpdater->setData(
-                $product,
-                $value->getAttribute()->getCode(),
-                $rawData,
-                ['locale' => $locale, 'scope' => $value->getScope()]
+            $allAttributes = $this->massActionManager->filterLocaleSpecificAttributes(
+                $allAttributes,
+                $locale
             );
+
+            $this->allAttributes = $allAttributes;
         }
+
+        return $this->allAttributes;
     }
 
     /**
@@ -366,12 +302,46 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'edit-common-attributes';
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getActions()
+    {
+        $actions = [];
+
+        foreach ($this->values as $value) {
+            $rawData = $this->normalizer->normalize($value->getData(), 'json', ['entity' => 'product']);
+            // if the value is localizable, let's use the locale the user has chosen in the form
+            $locale = null !== $value->getLocale() ? $this->getLocale()->getCode() : null;
+
+            $actions[] = [
+                'field'   => $value->getAttribute()->getCode(),
+                'value'   => $rawData,
+                'options' => ['locale' => $locale, 'scope' => $value->getScope()]
+            ];
+        }
+
+        return $actions;
+    }
+
+    /**
+     * Get the code of the JobInstance
+     *
+     * @return string
+     */
+    public function getBatchJobCode()
+    {
+        return 'edit_common_attributes';
+    }
+
+    /**
+     * Get the name of items this operation applies to
+     *
      * @return string
      */
     public function getItemsName()

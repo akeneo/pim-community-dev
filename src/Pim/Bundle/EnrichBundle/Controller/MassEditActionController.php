@@ -163,11 +163,12 @@ class MassEditActionController extends AbstractDoctrineController
         $productCount = $this->request->get('objectsCount');
 
         $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
-        $form->remove('operationAlias');
 
         if ($this->request->isMethod('POST')) {
+            $form->remove('operationAlias');
             $form->submit($this->request);
             $form = $this->massEditFormResolver->getConfigurationForm($operationAlias, $form->getNormData());
+            $operation = $form->getNormData();
         }
 
         return $this->render(

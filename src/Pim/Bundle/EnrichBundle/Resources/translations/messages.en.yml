@@ -122,8 +122,12 @@ pim_enrich:
             description:   The selected product's attributes will be edited with following data for the chosen locale.
             empty:         Please select the attribute(s) you want to edit
             success_flash: The job updating product(s) status is currently running
+            launched_flash: The job updating product(s) common attributes is currently running
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
+                invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
+                no_valid_attribute: None of selected attribute is common with selected product.
+
         classify:
             label:          Classify products in categories
             description:    The products will be positioned into following categories, the existing placement is kept.
@@ -924,8 +928,11 @@ job_execution.summary:
     mass_edited:      Mass edited
     skip:             skipped
     skipped_products: skipped products
+    skipped_attributes: Skipped attributes
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
+
+edit_common_attributes.steps.edit_common_attributes_handler.title: Edit common attributes
 
 mass_edit report:
     overview: Mass edit reports
