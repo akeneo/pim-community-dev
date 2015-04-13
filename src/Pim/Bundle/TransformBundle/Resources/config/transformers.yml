@@ -96,7 +96,7 @@ services:
     pim_transform.transformer.property.reference_data:
         class: %pim_transform.transformer.property.reference_data.class%
         arguments:
-            - '@pim_reference_data.registry'
+            - '@?pim_reference_data.registry'
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.product_value.class% }
 

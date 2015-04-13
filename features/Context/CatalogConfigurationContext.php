@@ -112,8 +112,11 @@ class CatalogConfigurationContext extends RawMinkContext
             $this->runLoader($loader, $file);
         }
 
-        $referenceDataLoader = new ReferenceDataLoader();
-        $referenceDataLoader->load($this->getEntityManager());
+        $bundles = $this->getContainer()->getParameter('kernel.bundles');
+        if (isset($bundles['AcmeAppBundle'])) {
+            $referenceDataLoader = new ReferenceDataLoader();
+            $referenceDataLoader->load($this->getEntityManager());
+        }
     }
 
     /**
