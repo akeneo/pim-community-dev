@@ -6,9 +6,10 @@ define(
         'underscore',
         'pim/form',
         'pim/config-manager',
-        'text!pim/template/product/change-family'
+        'text!pim/template/product/change-family',
+        'pim/dialog'
     ],
-    function ($, _, BaseForm, ConfigManager, formTemplate) {
+    function ($, _, BaseForm, ConfigManager, formTemplate, Dialog) {
         var FormView = BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
@@ -26,6 +27,10 @@ define(
             render: function () {
                 if (!this.configured) {
                     return this;
+                }
+
+                if (this.$('select').length) {
+                    this.$('select').select2('destroy');
                 }
 
                 this.$el.html(
@@ -50,11 +55,20 @@ define(
                 }, this));
             },
             changeFamily: function () {
-                var selectedFamily = this.$('select').select2('val');
-                this.$('select').select2('destroy');
-                this.showFamilyList = false;
-
-                this.getRoot().model.set('family', selectedFamily);
+                Dialog.confirm(
+                    [
+                        _.__('pim_enrich.entity.product.confirmation.change_family.message'),
+                        _.__('pim_enrich.entity.product.confirmation.change_family.merge_attributes'),
+                        _.__('pim_enrich.entity.product.confirmation.change_family.keep_attributes')
+                    ].join('</br>'),
+                    _.__('pim_enrich.entity.product.confirmation.change_family.title')
+                ).done(_.bind(function () {
+                    var selectedFamily = this.$('select').select2('val') || null;
+                    this.getRoot().model.set('family', selectedFamily);
+                }, this)).always(_.bind(function () {
+                    this.showFamilyList = false;
+                    this.render();
+                }, this));
             }
         });
 

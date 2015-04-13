@@ -72,16 +72,28 @@ define(
              * @param function callback
              */
             confirm: function (content, title, callback) {
+                var promise = $.Deferred();
+
+                var success = function () {
+                    promise.resolve();
+                    (callback || $.noop)();
+                };
+                var cancel = function () {
+                    promise.reject();
+                };
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
                         title: title,
                         content: content
                     });
-                    confirm.on('ok', callback);
+                    confirm.on('ok', success);
+                    confirm.on('cancel', cancel);
                     confirm.open();
-                } else if (window.confirm(content)) {
-                    callback();
+                } else {
+                    (window.confirm(content) ? success : cancel)();
                 }
+
+                return promise.promise();
             }
         };
     }
