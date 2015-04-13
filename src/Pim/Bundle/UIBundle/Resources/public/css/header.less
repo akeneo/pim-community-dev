@@ -3,6 +3,33 @@
 
 /* Header ***********************************************************************************************************/
 
+#main-menu {
+  li.dropdown {
+    ul {
+      display: none !important;
+      ul {
+        top: 5px;
+        border: 1px solid #bbb !important;
+        margin: 0;
+        border-radius:3px !important;
+      }
+    }
+    &:hover > .menu-level-1 {
+      display: block !important;
+    }
+    .menu-level-2 li:hover > .menu-level-3,
+    .menu-level-1 li:hover > .menu-level-2 {
+      display: block !important;
+    }
+  }
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  background:none;
+}
+
 #oroplatform-header {
   .navbar-inner {
     display: block;

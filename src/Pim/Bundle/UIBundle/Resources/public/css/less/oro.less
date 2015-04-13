@@ -194,33 +194,6 @@ select {
   background:#f3f3f3;
 }
 
-#main-menu{
-  li.dropdown{
-    ul{
-      display: none !important;
-      ul{
-        top: 5px;
-        border: 1px solid #bbb !important;
-        margin: 0;
-        border-radius:3px !important;
-      }
-    }
-    &:hover > .menu_level_1{
-      display: block !important;
-    }
-    .menu_level_2 li:hover > .menu_level_3,
-    .menu_level_1 li:hover > .menu_level_2{
-      display: block !important;
-    }
-  }
-}
-
-.navbar .nav li.dropdown.open > .dropdown-toggle,
-.navbar .nav li.dropdown.active > .dropdown-toggle,
-.navbar .nav li.dropdown.open.active > .dropdown-toggle {
-  background:none;
-}
-
 // Bootstrap - Table
 .table thead th { padding-top:2px; padding-bottom:2px; }
 
@@ -240,7 +213,6 @@ select {
 
 // GLOBAL LAYOUT ELEMENTS
 
-/* Header */
 .navbar .navbar-inner .divider-vertical {
   border:none;
 }
@@ -259,7 +231,6 @@ select {
 }
 
 .layout-content {
-  margin: 0 !important;
   .navbar-inner {
     z-index:1;
   }
@@ -301,7 +272,10 @@ select {
 .icons-holder [class*=" icon-"] {
   margin: 0 -3px;
 }
-.navbar .nav > li a { padding-top:7px; padding-bottom:7px; }
+.navbar .nav > li a {
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
 .navbar .nav > li > a:focus,
 .navbar .nav > li > a:hover {
   color: #fff;
@@ -947,11 +921,6 @@ select:focus:invalid:focus {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
   color: #555;
 }
-.separator-btn {
-  border-left: 1px solid #e9e9e9;
-  margin: 4px 8px 0;
-  height: 24px;
-}
 .pagination-centered > label {
   margin-right: -4px;
   padding-left: 5px;
@@ -1211,6 +1180,6 @@ span.validation-failed {
     margin-left: -14px;
   }
 }
-.input-addon{
+.input-addon {
   width: 258px;
 }
