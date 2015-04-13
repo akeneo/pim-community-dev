@@ -1,12 +1,12 @@
-Family:
+<%= _.__('pim_enrich.entity.product.meta.family.change')%>:
 <% if (showFamilyList) { %>
     <select>
         <% _.each(families, function (family) {  %>
             <option value="<%= family.code %>"<%= family.code === product.family ? ' selected' : '' %>><%= family.label.en_US || '[' + family.code + ']' %></option>
         <% }); %>
-        <option value=""<%= product.family === '' ? ' selected' : '' %>><%= _.__('pim_enrich.info.not_applicable') %></option>
+        <option value=""<%= product.family === '' ? ' selected' : '' %>><%= _.__('pim_enrich.entity.product.meta.family.none')%></option>
     </select>
 <% } else { %>
-    <%= product.family || _.__('pim_enrich.info.not_applicable') %>
+    <%= product.family || _.__('pim_enrich.entity.product.meta.family.none') %>
     <i class="icon-pencil"></i>
 <% } %>

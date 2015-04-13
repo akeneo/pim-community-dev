@@ -769,7 +769,7 @@ h3.tab-header {
       font-size: 11px;
       color: @color-form-info;
 
-      &:not(:last-child):after {
+      &:not(:last-child) > *:after {
         margin: 0 10px;
         content: "|";
       }
@@ -1432,8 +1432,14 @@ h3.tab-header {
 .product-edit-form > header .btn-dropdown {
   .btn.dropdown-toggle {
     padding: 0;
+
     &:first-child {
       .display-flex();
+    }
+
+    &:not(:first-child) {
+      margin-left: 0px;
+      border-left: none;
     }
 
     .caret {
@@ -1469,12 +1475,6 @@ h3.tab-header {
 
 .product-status {
   padding: 4px 0 4px 15px;
-}
-
-.btn-publish:not(.disabled) {
-  background-color: #4a90e2;
-  color: white;
-  border: 1px solid #276dbf;
 }
 
 .updated-status {
