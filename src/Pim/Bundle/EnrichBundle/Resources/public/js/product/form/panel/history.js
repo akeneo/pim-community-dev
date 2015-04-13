@@ -26,7 +26,7 @@ define(
             configure: function () {
                 this.getRoot().addPanel('history', 'History');
 
-                mediator.on('post_save', _.bind(this.refreshHistory, this));
+                mediator.on('product:action:post_update', _.bind(this.refreshHistory, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

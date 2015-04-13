@@ -14,7 +14,7 @@ define(
         template
     ) {
         return BaseForm.extend({
-            className: 'btn-group status-switcher',
+            className: 'btn-group status-switcher btn-dropdown',
             template: _.template(template),
             events: {
                 'click li a': 'updateStatus'

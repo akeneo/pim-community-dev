@@ -40,7 +40,7 @@ define(
                 this.listenTo(this.getRoot().model, 'all', this.collectState);
                 this.listenTo(this.getRoot().model, 'all', this.render);
 
-                mediator.on('post_save', _.bind(function (data) {
+                mediator.on('product:action:post_update', _.bind(function (data) {
                     this.state = JSON.stringify(data);
                     this.render();
                 }, this));

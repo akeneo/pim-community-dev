@@ -51,8 +51,8 @@ define(
                     navigation.afterRequest();
 
                     this.setData(data);
-                    mediator.trigger('post_save', data);
-                }, this)).fail(function (response) {
+                    mediator.trigger('product:action:post_update', data);
+                }, this)).fail(function(response) {
                     switch (response.status) {
                         case 400:
                             mediator.trigger('validation_error', response.responseJSON);
