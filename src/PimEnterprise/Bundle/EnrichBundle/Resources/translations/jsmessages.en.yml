@@ -24,13 +24,17 @@ pimee_enrich:
                 published: Published
             smart_attribute:
                 come_from: "This attribute can be updated by a rule:"
-            publish: Publish
-            publish_this_version: Publish this version
-            unpublish: Unpublish
-            product_well_unpublished: Product well unpublished
-            product_well_published: Product well published
-            product_not_well_published: Product not well published
-            product_not_well_unpublished: Product not well unpublished
+            btn:
+                publish: Publish
+                publish_this_version: Publish this version
+                unpublish: Unpublish
+            flash:
+                product_well_unpublished: Product well unpublished
+                product_well_published: Product well published
+                product_not_well_published: Product not well published
+                product_not_well_unpublished: Product not well unpublished
+            meta:
+                published: Published version
     confirmation:
         revert:
             product:

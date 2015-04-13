@@ -79,7 +79,7 @@ define(
                             navigation.addFlashMessage(
                                 'success',
                                 _.__(
-                                    'pimee_enrich.entity.product.product_well_' +
+                                    'pimee_enrich.entity.product.flash.product_well_' +
                                     (publish ? 'published' : 'unpublished')
                                 )
                             );
@@ -95,7 +95,7 @@ define(
                         navigation.addFlashMessage(
                             'error',
                             _.__(
-                                'pimee_enrich.entity.product.product_not_well_' +
+                                'pimee_enrich.entity.product.flash.product_not_well_' +
                                 (publish ? 'published' : 'unpublished')
                             )
                         );

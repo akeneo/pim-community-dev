@@ -19,3 +19,9 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
         insertAction: prepend
+
+    published:
+        module: pimee/product-edit-form/meta/published
+        parent: product-edit-form
+        insertAction: append
+        targetZone: meta
