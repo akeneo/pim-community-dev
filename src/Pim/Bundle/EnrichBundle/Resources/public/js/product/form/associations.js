@@ -214,7 +214,7 @@ define(
             setListenerSelectors: function () {
                 var gridNames = _.pluck(this.datagrids, 'name');
 
-                mediator.on('column_form_listener:initialized', _.bind(function onColumnListenerReady (gridName) {
+                mediator.on('column_form_listener:initialized', _.bind(function onColumnListenerReady(gridName) {
                     gridNames = _.without(gridNames, gridName);
                     if (!gridNames.length) {
                         mediator.off('column_form_listener:initialized', onColumnListenerReady);

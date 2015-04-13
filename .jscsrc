@@ -8,6 +8,9 @@
     "disallowSpaceBeforeBinaryOperators": [
         ","
     ],
+    "disallowSpacesInNamedFunctionExpression": {
+        "beforeOpeningRoundBrace": true
+    },
     "disallowMixedSpacesAndTabs": true,
     "disallowTrailingWhitespace": true,
     "disallowTrailingComma": true,

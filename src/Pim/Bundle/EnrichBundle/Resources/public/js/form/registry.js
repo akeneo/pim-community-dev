@@ -20,7 +20,7 @@ define(
         };
 
         return {
-            getForm: function getForm (formName) {
+            getForm: function getForm(formName) {
                 var promise = $.Deferred();
 
                 require([formName], function (Form) {
@@ -29,7 +29,7 @@ define(
 
                 return promise.promise();
             },
-            getFormExtensions: function getFormExtensions (formName) {
+            getFormExtensions: function getFormExtensions(formName) {
                 var promise = $.Deferred();
 
                 getExtensionMeta(formName).done(function (extensionMeta) {

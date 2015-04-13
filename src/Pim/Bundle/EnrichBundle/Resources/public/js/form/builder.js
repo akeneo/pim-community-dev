@@ -42,7 +42,7 @@ define(
         };
 
         return {
-            build: function buildRootForm (formName) {
+            build: function buildRootForm(formName) {
                 var promise = $.Deferred();
 
                 buildForm(formName).done(function (form) {
