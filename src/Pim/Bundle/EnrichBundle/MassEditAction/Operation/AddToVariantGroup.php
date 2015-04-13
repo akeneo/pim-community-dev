@@ -12,9 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToVariantGroup extends AbstractMassEditOperation implements
-    ConfigurableOperationInterface,
-    BatchableOperationInterface
+class AddToVariantGroup extends AbstractMassEditOperation
 {
     /** @var GroupInterface */
     protected $group;
@@ -58,24 +56,9 @@ class AddToVariantGroup extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'add-to-variant-group';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchConfig()
-    {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions(),
-                ]
-            )
-        );
     }
 
     /**

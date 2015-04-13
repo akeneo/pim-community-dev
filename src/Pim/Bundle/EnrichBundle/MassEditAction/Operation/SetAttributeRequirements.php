@@ -143,16 +143,24 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'set-attribute-requirements';
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getItemsName()
     {
         return 'family';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        // TODO: Implement getBatchJobCode() method.
     }
 }

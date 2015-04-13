@@ -11,9 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeFamily extends AbstractMassEditOperation implements
-    ConfigurableOperationInterface,
-    BatchableOperationInterface
+class ChangeFamily extends AbstractMassEditOperation
 {
     /** @var FamilyInterface $family The family to change the product family to */
     protected $family;
@@ -65,7 +63,7 @@ class ChangeFamily extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'change-family';
     }
@@ -83,21 +81,6 @@ class ChangeFamily extends AbstractMassEditOperation implements
                 'value' => null !== $family ? $family->getCode() : null,
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchConfig()
-    {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions()
-                ]
-            )
-        );
     }
 
     /**

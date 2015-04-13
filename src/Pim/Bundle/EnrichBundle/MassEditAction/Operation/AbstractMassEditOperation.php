@@ -9,18 +9,16 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractMassEditOperation implements MassEditOperationInterface
+abstract class AbstractMassEditOperation implements
+    MassEditOperationInterface,
+    ConfigurableOperationInterface,
+    BatchableOperationInterface
 {
     /** @var array */
     protected $filters;
 
     /** @var array */
     protected $actions;
-
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getAlias();
 
     /**
      * {@inheritdoc}
@@ -56,5 +54,44 @@ abstract class AbstractMassEditOperation implements MassEditOperationInterface
         $this->actions = $actions;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperation()
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchConfig()
+    {
+        return addslashes(
+            json_encode(
+                [
+                    'filters' => $this->getFilters(),
+                    'actions' => $this->getActions(),
+                ]
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finalize()
+    {
+
     }
 }

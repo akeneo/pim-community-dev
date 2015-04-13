@@ -66,13 +66,16 @@ class MassEditFormResolver
     /**
      * Get the configuration form for the given $operationAlias.
      *
-     * @param string $operationAlias
+     * @param string                              $operationAlias
+     * @param ConfigurableOperationInterface|null $operation
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function getConfigurationForm($operationAlias)
+    public function getConfigurationForm($operationAlias, $operation = null)
     {
-        $operation = $this->operationRegistry->get($operationAlias);
+        if (null === $operation) {
+            $operation = $this->operationRegistry->get($operationAlias);
+        }
 
         if (!$operation instanceof ConfigurableOperationInterface) {
             throw new \LogicException(sprintf(
@@ -81,7 +84,9 @@ class MassEditFormResolver
             ));
         }
 
-        $form = $this->formFactory->create($this->chooseActionFormType);
+        $operation->initialize();
+
+        $form = $this->formFactory->create($this->chooseActionFormType, $operation);
         $form->add('operation', $operation->getFormType(), $operation->getFormOptions());
 
         return $form;

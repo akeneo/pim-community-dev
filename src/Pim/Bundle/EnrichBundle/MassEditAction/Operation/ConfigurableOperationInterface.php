@@ -31,4 +31,16 @@ interface ConfigurableOperationInterface
      * @return string
      */
     public function getItemsName();
+
+    /**
+     * Initialize the operation, allowing to retrieve entities or whatever useful
+     * to configure this operation
+     */
+    public function initialize();
+
+    /**
+     * Finalize the operation configuration, apply actions right before being
+     * called by the batch job cli
+     */
+    public function finalize();
 }
