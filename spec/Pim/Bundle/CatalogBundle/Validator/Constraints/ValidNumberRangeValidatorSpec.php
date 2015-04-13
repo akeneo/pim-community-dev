@@ -38,15 +38,16 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $this->validate($attribute,$constraint);
     }
 
-    function it_adds_violation_when_min_is_not_valid(
+    function it_adds_violation_when_min_is_negative_allowed_but_decimal_not_allowed(
         $context,
         AttributeInterface $attribute,
         ValidNumberRange $constraint
     ) {
-        $attribute->getNumberMin()->willReturn(-1);
-        $attribute->getNumberMax()->willReturn(1);
+        $attribute->isNegativeAllowed()->willReturn(true);
+        $attribute->isDecimalsAllowed()->willReturn(false);
 
-        $attribute->isNegativeAllowed()->willReturn(false);
+        $attribute->getNumberMin()->willReturn(-1.2);
+        $attribute->getNumberMax()->willReturn(1);
 
         $context
             ->addViolationAt('numberMin', $constraint->invalidNumberMessage)
@@ -55,19 +56,36 @@ class ValidNumberRangeValidatorSpec extends ObjectBehavior
         $this->validate($attribute,$constraint);
     }
 
-    function it_adds_violation_when_max_is_not_valid(
+    function it_adds_violation_when_max_is_negative_allowed_but_decimal_not_allowed(
         $context,
         AttributeInterface $attribute,
         ValidNumberRange $constraint
     ) {
-        $attribute->getNumberMin()->willReturn(1);
-        $attribute->getNumberMax()->willReturn(4.2);
-
-        $attribute->isNegativeAllowed()->willReturn(false);
+        $attribute->isNegativeAllowed()->willReturn(true);
         $attribute->isDecimalsAllowed()->willReturn(false);
+
+        $attribute->getNumberMin()->willReturn(-2);
+        $attribute->getNumberMax()->willReturn(-1.2);
 
         $context
             ->addViolationAt('numberMax', $constraint->invalidNumberMessage)
+            ->shouldBeCalled();
+
+        $this->validate($attribute,$constraint);
+    }
+
+    function it_adds_violation_when_min_is_not_negative_allowed(
+        $context,
+        AttributeInterface $attribute,
+        ValidNumberRange $constraint
+    ) {
+        $attribute->isNegativeAllowed()->willReturn(false);
+
+        $attribute->getNumberMin()->willReturn(-1);
+        $attribute->getNumberMax()->willReturn(1);
+
+        $context
+            ->addViolationAt('numberMin', $constraint->invalidNumberMessage)
             ->shouldBeCalled();
 
         $this->validate($attribute,$constraint);
