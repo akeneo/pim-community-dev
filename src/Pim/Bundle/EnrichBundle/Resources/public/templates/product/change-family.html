@@ -4,7 +4,7 @@ Family:
         <% _.each(families, function (family) {  %>
             <option value="<%= family.code %>"<%= family.code === product.family ? ' selected' : '' %>><%= family.label.en_US || '[' + family.code + ']' %></option>
         <% }); %>
-        <option value=""<%= product.family === '' ? ' selected' : '' %>>None</option>
+        <option value=""<%= product.family === '' ? ' selected' : '' %>><%= _.__('pim_enrich.info.not_applicable') %></option>
     </select>
 <% } else { %>
     <%= product.family || _.__('pim_enrich.info.not_applicable') %>
