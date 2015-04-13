@@ -21,13 +21,13 @@ class ReferenceDataProperty extends FieldProperty
         $referenceData = $value[$value['attribute']['properties']['reference_data_name']];
 
         if (isset($referenceData['code'])) {
-            return $referenceData['code'];
+            return '[' . $referenceData['code'] . ']';
         }
 
         if (is_array($referenceData)) {
             $codes = [];
             foreach ($referenceData as $data) {
-                $codes[] = $data['code'];
+                $codes[] = '[' . $data['code']. ']';
             }
 
             return implode(', ', $codes);
