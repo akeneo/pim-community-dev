@@ -55,7 +55,7 @@ define(
                             }
                         ).done(
                             _.bind(function() {
-                                ProductManager.get(this.getRoot().getData().meta.id).done(_.bind(function(product) {
+                                ProductManager.get(this.getData().meta.id).done(_.bind(function(product) {
                                     this.getRoot().setData(product);
 
                                     navigation.addFlashMessage(
@@ -65,8 +65,8 @@ define(
                                     navigation.afterRequest();
 
                                     loadingMask.hide().$el.remove();
-                                    mediator.trigger('post_revert', product);
-                                    mediator.trigger('post_save', product);
+                                    mediator.trigger('product:action:post_revert', product);
+                                    mediator.trigger('product:action:post_update', product);
                                 }, this));
                             }, this)
                         ).fail(

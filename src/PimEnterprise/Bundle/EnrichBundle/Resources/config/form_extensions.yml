@@ -13,3 +13,9 @@ extensions:
         module: pimee/product-edit-form/panel/history/revert
         parent: history
         targetZone: history
+
+    publish:
+        module: pimee/product-edit-form/publish
+        parent: product-edit-form
+        targetZone: buttons
+        insertAction: prepend
