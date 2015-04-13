@@ -42,21 +42,6 @@
       margin:9px 6px;
       height:22px;
     }
-    .logo {
-      position: relative;
-      height: 40px;
-      padding: 0 14px 0 0;
-      margin: 0 5px 0 0;
-      line-height:36px;
-      a {
-        &:hover,
-        &:focus,
-        &:active {
-          color: #fff;
-          outline: 0;
-        }
-      }
-    } // Ends .logo
     .btn-group {
       margin: 0;
     }
@@ -208,18 +193,6 @@ header {
 #oroplatform-header {
   div.navbar-inner {
     #gradient .vertical(@color-header_top, @color-header_bottom);
-    .logo {
-      &:before, &:after {
-        border: none;
-      }
-      a {
-        padding: 0;
-        background-color: transparent;
-        img {
-          height: 41px;
-        }
-      }
-    }
     .nav.top-search {
       .dropdown > .dropdown-toggle {
         [class^='icon-'] {
@@ -251,4 +224,19 @@ header {
 
 .navbar .small-divider {
   width: 2px;
+}
+
+.logo {
+  margin: 0;
+  float: left;
+  a {
+    &:hover,
+    &:focus,
+    &:active {
+      outline: 0;
+    }
+  }
+  img {
+    height: 41px;
+  }
 }
