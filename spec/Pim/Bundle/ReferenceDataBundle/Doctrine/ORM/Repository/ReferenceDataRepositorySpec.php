@@ -31,7 +31,7 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
-        $qb->select('rd.id as id, rd.code as text')->willReturn($qb);
+        $qb->select('rd.id as id, CONCAT(\'[\', rd.code, \']\') as text')->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('rd.code')->willReturn($qb);
@@ -47,7 +47,7 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
-        $qb->select('rd.id as id, rd.code as text')->willReturn($qb);
+        $qb->select('rd.id as id, CONCAT(\'[\', rd.code, \']\') as text')->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('rd.code')->willReturn($qb);
@@ -65,7 +65,7 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
     {
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
-        $qb->select('rd.id as id, rd.code as text')->willReturn($qb);
+        $qb->select('rd.id as id, CONCAT(\'[\', rd.code, \']\') as text')->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('rd.code')->willReturn($qb);
