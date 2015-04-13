@@ -62,7 +62,7 @@ class FamilyTypeSpec extends ObjectBehavior
     function it_adds_attribute_requirements_to_the_form($builder)
     {
         $this->buildForm($builder, []);
-        $builder->add('attributeRequirements', 'collection', Argument::any())->shouldHaveBeenCalled();
+        $builder->add('indexedAttributeRequirements', 'collection', ['type' => 'pim_enrich_attribute_requirement'])->shouldHaveBeenCalled();
     }
 
     function it_sets_the_default_form_data_class(OptionsResolverInterface $resolver)

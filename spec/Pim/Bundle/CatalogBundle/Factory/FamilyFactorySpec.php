@@ -26,49 +26,50 @@ class FamilyFactorySpec extends ObjectBehavior
         $channelManager,
         $factory,
         AttributeInterface $identifierAttribute,
+        AttributeInterface $nameAttribute,
         ChannelInterface $printChannel,
         ChannelInterface $ecommerceChannel,
         AttributeRequirementInterface $printRequirement,
         AttributeRequirementInterface $ecommerceRequirement
     ) {
-        $attributeRepository->getIdentifier()
-            ->willReturn($identifierAttribute)
-            ->shouldBeCalled();
+        $attributeRepository->getIdentifier()->willReturn($identifierAttribute);
 
-        $printRequirement->setFamily(Argument::any())
-            ->willReturn(null);
-        $printRequirement->getAttributeCode()
-            ->willReturn('anyCode');
-        $printRequirement->getChannelCode()
-            ->willReturn('print');
+        $channelManager->getChannels()->willReturn([$printChannel, $ecommerceChannel]);
+        $printChannel->getId()->willReturn(3);
 
-        $ecommerceRequirement->setFamily(Argument::any())
-            ->willReturn(null);
-        $ecommerceRequirement->getAttributeCode()
-            ->willReturn('anyCode');
-        $ecommerceRequirement->getChannelCode()
-            ->willReturn('ecommerce');
+        $printRequirement->getAttribute()->willReturn($nameAttribute);
+        $printRequirement->getChannel()->willReturn($printChannel);
+        $printRequirement->getChannelCode()->willReturn('print');
+        $printRequirement->getAttributeCode()->willReturn('name');
+        $printRequirement->setFamily(Argument::any())->willReturn(null);
 
-        $channelManager->getChannels()
-            ->willReturn([$printChannel, $ecommerceChannel])
-            ->shouldBeCalled();
+        $ecommerceRequirement->getAttribute()->willReturn($nameAttribute);
+        $ecommerceRequirement->getChannel()->willReturn($ecommerceChannel);
+        $ecommerceRequirement->getChannelCode()->willReturn('ecommerce');
+        $ecommerceRequirement->getAttributeCode()->willReturn('name');
+        $ecommerceRequirement->setFamily(Argument::any())->willReturn(null);
+
+        $nameAttribute->getId()->willReturn(2);
 
         $factory->createAttributeRequirement($identifierAttribute, $printChannel, true)
-            ->willReturn($printRequirement)
-            ->shouldBeCalled();
+            ->willReturn($printRequirement);
 
         $factory->createAttributeRequirement($identifierAttribute, $ecommerceChannel, true)
-            ->willReturn($ecommerceRequirement)
-            ->shouldBeCalled();
+            ->willReturn($ecommerceRequirement);
 
         $family = $this->createFamily();
         $family->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\FamilyInterface');
         $family->getAttributes()->shouldHaveCount(1);
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
-        $family->getAttributeRequirements()->shouldHaveCount(2);
-        $family->getAttributeRequirements()->shouldBeEqualTo([
-            'anyCode_print' => $printRequirement,
-            'anyCode_ecommerce' => $ecommerceRequirement
+        $family->getIndexedAttributeRequirements()->shouldHaveCount(2);
+        $family->getIndexedAttributeRequirements()->shouldBeEqualTo([
+            'name_print'     => $printRequirement,
+            'name_ecommerce' => $ecommerceRequirement
+        ]);
+        $family->getAttributeRequirements()->toArray()->shouldHaveCount(2);
+        $family->getAttributeRequirements()->toArray()->shouldBeEqualTo([
+            $printRequirement,
+            $ecommerceRequirement
         ]);
     }
 }

@@ -115,7 +115,11 @@ class FamilyType extends AbstractType
      */
     protected function addAttributeRequirementsField(FormBuilderInterface $builder)
     {
-        $builder->add('attributeRequirements', 'collection', ['type' => 'pim_enrich_attribute_requirement']);
+        $builder->add(
+            'indexedAttributeRequirements',
+            'collection',
+            ['type' => 'pim_enrich_attribute_requirement']
+        );
 
         return $this;
     }

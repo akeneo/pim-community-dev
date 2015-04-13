@@ -347,15 +347,16 @@ class Family implements FamilyInterface
      */
     public function addAttributeRequirement(AttributeRequirementInterface $requirement)
     {
-        $requirementKey = $this->getAttributeRequirementKey($requirement);
-        $requirements = $this->getAttributeRequirements();
-
-        if (!isset($requirements[$requirementKey])) {
-            $requirement->setFamily($this);
-            $this->requirements->add($requirement);
-        } else {
-            $requirements[$requirementKey]->setRequired($requirement->isRequired());
+        foreach ($this->requirements as $existingRequirement) {
+            if ($existingRequirement->getAttribute() === $requirement->getAttribute() &&
+                $existingRequirement->getChannel() === $requirement->getChannel()
+            ) {
+                $this->requirements->removeElement($existingRequirement);
+            }
         }
+
+        $requirement->setFamily($this);
+        $this->requirements->add($requirement);
 
         return $this;
     }
@@ -365,6 +366,7 @@ class Family implements FamilyInterface
      */
     public function removeAttributeRequirement(AttributeRequirementInterface $requirement)
     {
+        $requirement->setRequired(false);
         $this->requirements->removeElement($requirement);
 
         return $this;
@@ -375,10 +377,11 @@ class Family implements FamilyInterface
      */
     public function setAttributeRequirements(array $requirements)
     {
+        $this->requirements->clear();
         foreach ($requirements as $requirement) {
             $requirement->setFamily($this);
+            $this->requirements->add($requirement);
         }
-        $this->requirements = new ArrayCollection($requirements);
 
         return $this;
     }
@@ -388,7 +391,15 @@ class Family implements FamilyInterface
      */
     public function getAttributeRequirements()
     {
-        $result = array();
+        return $this->requirements;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getIndexedAttributeRequirements()
+    {
+        $result = [];
 
         foreach ($this->requirements as $requirement) {
             $key = $this->getAttributeRequirementKey($requirement);

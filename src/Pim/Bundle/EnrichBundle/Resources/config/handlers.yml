@@ -1,6 +1,6 @@
 parameters:
-    pim_enrich.form.handler.base.class:             Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
-    pim_enrich.form.handler.group.class:            Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
+    pim_enrich.form.handler.base.class:  Pim\Bundle\EnrichBundle\Form\Handler\BaseHandler
+    pim_enrich.form.handler.group.class: Pim\Bundle\EnrichBundle\Form\Handler\GroupHandler
 
 services:
     pim_enrich.form.handler.attribute:

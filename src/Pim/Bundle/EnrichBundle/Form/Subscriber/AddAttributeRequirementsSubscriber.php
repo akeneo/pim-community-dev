@@ -21,9 +21,7 @@ use Symfony\Component\Form\FormEvents;
  */
 class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var ChannelInterface[]
-     */
+    /** @var ChannelInterface[] */
     protected $channels;
 
     /**
@@ -58,19 +56,17 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $requirements = array();
-
+        $requirements = [];
         foreach ($family->getAttributes() as $attribute) {
             foreach ($this->channels as $channel) {
                 $requirement = $this->createAttributeRequirement($channel, $attribute, $family);
-
                 $key = $family->getAttributeRequirementKey($requirement);
+
                 $requirements[$key] = $requirement;
             }
         }
 
-        $requirements = array_merge($requirements, $family->getAttributeRequirements());
-
+        $requirements = array_merge($requirements, $family->getIndexedAttributeRequirements());
         $family->setAttributeRequirements($requirements);
     }
 
@@ -89,10 +85,10 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
 
-        foreach ($family->getAttributeRequirements() as $key => $requirement) {
+        foreach ($family->getIndexedAttributeRequirements() as $key => $requirement) {
             if ('pim_catalog_identifier' === $requirement->getAttribute()->getAttributeType()) {
                 $requirement->setRequired(true);
-                $form->get('attributeRequirements')->remove($key);
+                $form->get('indexedAttributeRequirements')->remove($key);
             }
         }
     }

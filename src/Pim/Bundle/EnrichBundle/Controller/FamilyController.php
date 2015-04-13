@@ -292,7 +292,6 @@ class FamilyController extends AbstractDoctrineController
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->getAttribute() === $attribute) {
                     $family->removeAttributeRequirement($requirement);
-                    $this->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
                 }
             }
 
