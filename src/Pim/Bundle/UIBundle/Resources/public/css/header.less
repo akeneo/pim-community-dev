@@ -1,4 +1,34 @@
+@import 'less/variables';
+@import 'less/mixins';
+
 /* Header ***********************************************************************************************************/
+
+#main-menu {
+  li.dropdown {
+    ul {
+      display: none !important;
+      ul {
+        top: 5px;
+        border: 1px solid #bbb !important;
+        margin: 0;
+        border-radius:3px !important;
+      }
+    }
+    &:hover > .menu-level-1 {
+      display: block !important;
+    }
+    .menu-level-2 li:hover > .menu-level-3,
+    .menu-level-1 li:hover > .menu-level-2 {
+      display: block !important;
+    }
+  }
+}
+
+.navbar .nav li.dropdown.open > .dropdown-toggle,
+.navbar .nav li.dropdown.active > .dropdown-toggle,
+.navbar .nav li.dropdown.open.active > .dropdown-toggle {
+  background:none;
+}
 
 #oroplatform-header {
   .navbar-inner {
@@ -12,21 +42,6 @@
       margin:9px 6px;
       height:22px;
     }
-    .logo {
-      position: relative;
-      height: 40px;
-      padding: 0 14px 0 0;
-      margin: 0 5px 0 0;
-      line-height:36px;
-      a {
-        &:hover,
-        &:focus,
-        &:active {
-          color: #fff;
-          outline: 0;
-        }
-      }
-    } // Ends .logo
     .btn-group {
       margin: 0;
     }
@@ -178,18 +193,6 @@ header {
 #oroplatform-header {
   div.navbar-inner {
     #gradient .vertical(@color-header_top, @color-header_bottom);
-    .logo {
-      &:before, &:after {
-        border: none;
-      }
-      a {
-        padding: 0;
-        background-color: transparent;
-        img {
-          height: 41px;
-        }
-      }
-    }
     .nav.top-search {
       .dropdown > .dropdown-toggle {
         [class^='icon-'] {
@@ -223,35 +226,17 @@ header {
   width: 2px;
 }
 
-/* Pin bar and menus ************************************************************************************************/
-
-.pin-bar {
-  background-color: @color-purple_dark;
-  background-image: none;
-  .list-bar {
-    li.active{
-      background-color: #6800A9;
+.logo {
+  margin: 0;
+  float: left;
+  a {
+    &:hover,
+    &:focus,
+    &:active {
+      outline: 0;
     }
   }
-  .pin-menus {
-    .oro-dropdown-toggle {
-      &:hover {
-        #gradient > .vertical(@color-purple_dark, darken(@color-purple_dark, 10%));
-      }
-    }
-    .dropdown-menu .tabs-left.tabbable {
-      background-color: @color-grey_tab;
-      >ul.nav-tabs {
-        li a {
-          background-color: @color-grey_tab;
-          &:hover {
-            background-color: @color-purple_hover;
-          }
-        }
-        li.active a {
-          background-color: @color-purple_hover;
-        }
-      }
-    }
+  img {
+    height: 41px;
   }
 }

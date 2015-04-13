@@ -1,16 +1,5 @@
-@import "less/bootstrap_variables";
-@import 'less/bootstrap_mixins';
 @import 'less/variables';
-@import 'variables';
-@import 'icons';
-@import 'header';
-@import 'select2';
-@import 'form';
-@import 'wizard';
-@import 'tree';
-@import 'tinymce';
-
-@import 'pim-mixins';
+@import 'less/mixins';
 
 /* General **********************************************************************************************************/
 
@@ -79,7 +68,7 @@ table.grid {
     i {
       opacity: 0;
       margin: 0 2px;
-      padding: 0px 5px;
+      padding: 0 5px;
       border: 1px solid #ccc;
       .border-radius(3px);
     }
@@ -341,7 +330,7 @@ span.link-label {
   font-weight: bold;
   margin:6px;
   .progress {
-    margin-bottom: 0px;
+    margin-bottom: 0;
     .bar {
         #gradient .horizontal(@color-purple_light, @color-purple_dark);
     }
@@ -370,10 +359,10 @@ span.link-label {
     .badge-square {
       font-size: 11px;
       font-weight: initial;
-      padding: 0px 3px;
+      padding: 0 3px;
       background: linear-gradient(#f93a43, darken(#f93a43, 20%));
-      box-shadow: 0px 0.7px 0px RGBa(0, 0, 0, 0.3), 0px 0px 3px rGBa(0, 0, 0, 0.35);
-      text-shadow: 0px 1px 0px darken(#f93a43, 20%);
+      box-shadow: 0 0.7px 0 RGBa(0, 0, 0, 0.3), 0 0 3px rGBa(0, 0, 0, 0.35);
+      text-shadow: 0 1px 0 darken(#f93a43, 20%);
     }
   }
 
@@ -493,14 +482,14 @@ span.link-label {
     }
 
     &.ui-sortable-helper {
-      box-shadow: 0px 0px 20px RGBa(0, 0, 0, 0.7);
+      box-shadow: 0 0 20px RGBa(0, 0, 0, 0.7);
       border-radius: 3px;
     }
   }
 
   th {
     text-align: center;
-    padding: 5px 0px !important;
+    padding: 5px 0 !important;
     background: #f3f3f3;
   }
 
@@ -522,7 +511,7 @@ span.link-label {
     margin-right: 3px;
 
     &:last-child {
-      margin-right: 0px;
+      margin-right: 0;
     }
 
     i {
@@ -610,7 +599,6 @@ span.link-label {
     border-color: #ddd;
     margin-bottom: 0;
     line-height: 28px;
-    width: 150px;
     word-wrap: break-word;
     overflow: hidden;
     white-space: nowrap;
@@ -918,7 +906,6 @@ h3.tab-header {
       -ms-transform: rotate(90deg);
       -o-transform: rotate(90deg);
       transform: rotate(90deg);
-      filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
     }
   }
 
@@ -940,7 +927,7 @@ h3.tab-header {
     .btn {
       border: none;
       border-left: 1px solid #e5e5e5;
-      border-radius: 0px;
+      border-radius: 0;
       opacity: 1;
       background: none;
       box-shadow: none;
@@ -1233,6 +1220,7 @@ h3.tab-header {
 .attribute-group-selector {
   li > a {
     .display-flex();
+    width: 150px;
 
     .attribute-group-label {
       .flex(1);
@@ -1294,7 +1282,7 @@ h3.tab-header {
       background-color: white;
       line-height: 22px;
       border: 1px solid #ccc;
-      padding: 0px;
+      padding: 0;
       .display-flex();
 
       div {
@@ -1360,7 +1348,7 @@ h3.tab-header {
     table {
       border-left: 1px solid #ddd;
       text-align: left;
-      margin-bottom: 0px;
+      margin-bottom: 0;
     }
   }
 

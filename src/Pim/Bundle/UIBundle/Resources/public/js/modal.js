@@ -11,9 +11,6 @@ function (_, Backbone) {
      * @extends Backbone.BootstrapModal
      */
     return Backbone.BootstrapModal.extend({
-        /** @property {String} */
-        className: 'modal oro-modal-danger',
-
         open: function () {
             Backbone.BootstrapModal.prototype.open.apply(this, arguments);
 

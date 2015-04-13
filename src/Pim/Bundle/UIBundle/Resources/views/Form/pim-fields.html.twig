@@ -411,13 +411,13 @@
                 {{ form_widget(form.identity.id) }}
                 {{ form_widget(form.permissions) }}
             {% else %}
-                <div class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field' : '' }}">
+                <div class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field hide' : '' }}">
                     {{ form_widget(form.identity) }}
                     {{ form_widget(form.permissions) }}
                 </div>
             {% endif %}
         {% else %}
-            <tr class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field' : '' }}">
+            <tr class="acl-permission{{ form.vars.value.identity.name == '(default)' ? ' default-field hide' : '' }}">
                 <td>
                     {{ form_widget(form.identity) }}
                 </td>
@@ -436,7 +436,7 @@
     {% if 'entity' == form.parent.vars.value.extensionKey %}
         {% for field in privileges_config['permissions'] %}
             {% for permission in form if permission.vars.value.name == field %}
-                {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field' : '' %}
+                {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field hide' : '' %}
                 {% if 'entity:Oro\\Bundle\\UserBundle\\Entity\\Role' == form.parent.vars.value.identity.id %}
                     {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
                 {% endif %}
@@ -463,12 +463,4 @@
 
 {% block oro_acl_label_widget %}
     <strong>{{ value|trans }}</strong>
-{% endblock %}
-
-{% block oro_acl_collection_widget %}
-    {% for child in form %}
-        <div class="security-row">
-            {{ form_widget(child) }}
-        </div>
-    {% endfor %}
 {% endblock %}

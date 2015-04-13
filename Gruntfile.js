@@ -32,6 +32,23 @@ module.exports = function (grunt) {
                 reporter: require('jscs-stylish').path
             }
         },
+        recess: {
+            all: [
+                'src/**/*.css',
+                'src/**/*.less',
+                '!src/**/lib/**/*.css',
+                '!src/**/lib/**/*.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/less/oro.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/pim.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/form.less',
+                '!src/Pim/Bundle/UIBundle/Resources/public/css/flags.less'
+            ],
+            options: {
+                strictPropertyOrder: false,
+                noIDs:               false,
+                noOverqualifying:    false
+            }
+        },
         jasmine: {
             specs: {
                 src: '/bundles/ororequirejs/lib/require.js',
@@ -70,10 +87,11 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-recess');
     grunt.loadNpmTasks('grunt-jscs');
 
     grunt.registerTask('test', ['jasmine']);
-    grunt.registerTask('codestyle', ['jshint', 'jscs']);
+    grunt.registerTask('codestyle', ['jshint', 'jscs', 'recess']);
     grunt.registerTask('travis', ['codestyle', 'test']);
     grunt.registerTask('default', ['codestyle', 'test']);
 };
