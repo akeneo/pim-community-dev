@@ -26,7 +26,7 @@ class ReferenceDataRepository extends EntityRepository implements
     {
         $qb = $this->createQueryBuilder($this->getAlias());
         $qb
-            ->select(sprintf('%s.id as id, %s.code as text', $this->getAlias(), $this->getAlias()))
+            ->select(sprintf('%s.id as id, CONCAT(\'[\', %s.code, \']\') as text', $this->getAlias(), $this->getAlias()))
             ->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC')
             ->addOrderBy(sprintf('%s.code', $this->getAlias()))
         ;

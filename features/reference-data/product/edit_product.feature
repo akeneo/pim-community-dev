@@ -1,3 +1,4 @@
+@javascript
 Feature: Edit a product
   In order to enrich the catalog
   As a regular user
@@ -11,7 +12,6 @@ Feature: Edit a product
     And the following "sole_color" attribute reference data: Red, Blue and Green
     And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
 
-  @javascript
   Scenario: Successfully add reference data values to a product
     Given I am logged in as "Mary"
     And I am on the "high-heels" product page
@@ -21,10 +21,9 @@ Feature: Edit a product
       | Sole fabric | Neoprene, Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "Red"
-    Then the product Sole fabric should be "Neoprene, Silk"
+    Then the product Heel color should be "[Red]"
+    Then the product Sole fabric should be "[Neoprene], [Silk]"
 
-  @javascript
   Scenario: Successfully edit reference data values to a product
     Given I am logged in as "Mary"
     And the following product values:
@@ -38,10 +37,9 @@ Feature: Edit a product
       | Sole fabric | Cashmerewool, Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "Blue"
-    Then the product Sole fabric should be "Cashmerewool, Silk"
+    Then the product Heel color should be "[Blue]"
+    Then the product Sole fabric should be "[Cashmerewool], [Silk]"
 
-  @javascript
   Scenario: Successfully remove reference data values to a product
     Given I am logged in as "Mary"
     And the following product values:

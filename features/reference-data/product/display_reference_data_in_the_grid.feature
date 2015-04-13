@@ -21,9 +21,9 @@ Feature: Display reference data in the grid
     And I am on the products page
     When I display the columns sku, sole_color and sole_fabric
     Then the row "high-heels" should contain:
-      | column      | value                  |
-      | Sole color  | Red                    |
-      | Sole fabric | Cashmerewool, Neoprene |
+      | column      | value                      |
+      | Sole color  | [Red]                      |
+      | Sole fabric | [Cashmerewool], [Neoprene] |
 
   Scenario: Successfully edit reference data values to a product with scope
     Given the following products:
@@ -40,11 +40,11 @@ Feature: Display reference data in the grid
     And I am on the products page
     When I display the columns sku, cap_color and lace_fabric
     Then the row "high-heels" should contain:
-      | column      | value         |
-      | Cap color   | Purple        |
-      | Lace fabric | Cotton, Straw |
+      | column      | value             |
+      | Cap color   | [Purple]          |
+      | Lace fabric | [Cotton], [Straw] |
     When I filter by "Channel" with value "Mobile"
       Then the row "high-heels" should contain:
-      | column      | value         |
-      | Cap color   | Orange        |
-      | Lace fabric | Cotton, Flax  |
+      | column      | value            |
+      | Cap color   | [Orange]         |
+      | Lace fabric | [Cotton], [Flax] |
