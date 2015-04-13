@@ -20,7 +20,7 @@ class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
      */
     public function __construct(
         array $supportedTypes,
-        ReferenceDataRepositoryResolver $repositoryResolver
+        ReferenceDataRepositoryResolver $repositoryResolver = null
     ) {
         parent::__construct($supportedTypes);
         $this->repositoryResolver = $repositoryResolver;
@@ -32,7 +32,7 @@ class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
     public function denormalize($data, $referenceDataClass, $format = null, array $context = array())
     {
         $collection = new ArrayCollection();
-        if (empty($data)) {
+        if (null === $this->repositoryResolver || empty($data)) {
             return $collection;
         }
 

@@ -21,7 +21,7 @@ class ReferenceDataTransformer implements PropertyTransformerInterface
      *
      * @param ConfigurationRegistryInterface $registry
      */
-    public function __construct($registry) {
+    public function __construct(ConfigurationRegistryInterface $registry = null) {
         $this->registry = $registry;
     }
 
@@ -30,6 +30,10 @@ class ReferenceDataTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = [])
     {
+        if (null === $this->registry) {
+            return;
+        }
+
         $value = trim($value);
         if (empty($value)) {
             return;

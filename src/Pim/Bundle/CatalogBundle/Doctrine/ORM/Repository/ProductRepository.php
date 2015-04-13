@@ -69,7 +69,7 @@ class ProductRepository extends EntityRepository implements
      *
      * @return ProductRepositoryInterface
      */
-    public function setReferenceDataRegistry(ConfigurationRegistryInterface $registry)
+    public function setReferenceDataRegistry(ConfigurationRegistryInterface $registry = null)
     {
         $this->referenceDataRegistry = $registry;
 
@@ -407,14 +407,16 @@ class ProductRepository extends EntityRepository implements
             'WHERE ga.group_id = :groupId AND gt.code = "VARIANT" ' .
             'AND (v.option_id IS NOT NULL';
 
-        $references = $this->referenceDataRegistry->all();
-        if (!empty($references)) {
-            $valueMetadata = QueryBuilderUtility::getProductValueMetadata($this->_em, $this->_entityName);
+        if (null !== $this->referenceDataRegistry) {
+            $references = $this->referenceDataRegistry->all();
+            if (!empty($references)) {
+                $valueMetadata = QueryBuilderUtility::getProductValueMetadata($this->_em, $this->_entityName);
 
-            foreach ($references as $code => $referenceData) {
-                if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
-                    if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
-                        $sql.= ' OR v.' . $valueMetadata->getSingleAssociationJoinColumnName($code) . ' IS NOT NULL';
+                foreach ($references as $code => $referenceData) {
+                    if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
+                        if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
+                            $sql.= ' OR v.' . $valueMetadata->getSingleAssociationJoinColumnName($code) . ' IS NOT NULL';
+                        }
                     }
                 }
             }
