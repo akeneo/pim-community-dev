@@ -64,7 +64,7 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
         $referenceData->getId()->willReturn(13);
         $referenceData->getCode()->willReturn('Good luck');
 
-        $this->getOptions($referenceData)->shouldReturn(['id' => 13, 'text' => 'Good luck']);
+        $this->getOptions($referenceData)->shouldReturn(['id' => 13, 'text' => '[Good luck]']);
     }
 
     function it_get_the_labels_of_multiple_values(
@@ -81,8 +81,8 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
         $referenceData2->getCode()->willReturn('Random label');
 
         $this->getOptions([$referenceData1, $referenceData2])->shouldReturn([
-            ['id' => 13, 'text' => 'Good luck'],
-            ['id' => 456, 'text' => 'Random label'],
+            ['id' => 13, 'text' => '[Good luck]'],
+            ['id' => 456, 'text' => '[Random label]'],
         ]);
     }
 
