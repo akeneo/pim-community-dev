@@ -92,7 +92,7 @@
                 {{ block('spanElement') }}
             {%- endif %}
             {# render the list of children#}
-            {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+            {%- set childrenClasses = childrenClasses|merge(['menu-level-' ~ item.level]) %}
             {%- set listAttributes = childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
             {{ block('list') }}
         </li>

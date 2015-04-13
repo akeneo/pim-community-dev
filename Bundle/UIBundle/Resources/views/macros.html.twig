@@ -136,34 +136,14 @@
 {% endmacro %}
 
 {#
-    Separator between buttons
-#}
-{% macro buttonSeparator() %}
-    <div class="pull-left">
-        <div class="separator-btn"></div>
-    </div>
-{% endmacro %}
-
-{#
     Create scroll sub block for scroll block
     Parameters:
         title - title of sub block
         data - array with data fields (i.e. form_row() or attibuteRow() data)
         isForm - flag what scroll block mut contain the form
-        useSpan - flag to indicate is subblock must have css class specified in spanClass parameter or not
-        spanClass - css class name of subblock, if this parameter is not specified the css class is span6
 #}
-{% macro scrollSubblock(title, data, isForm, useSpan, spanClass) %}
-    {% set spanClass = spanClass|default('responsive-cell') %}
-    {#% if useSpan is not defined or useSpan == true %}
-        {% set span = spanClass %}
-    {% else %}
-        {% set span = '' %}
-    {% endif %}
-    {% if span %}
-        <div class="{{ span }}">
-    {% endif %#}
-    <div class="{{ spanClass }}">
+{% macro scrollSubblock(title, data, isForm) %}
+    <div>
     {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
@@ -200,7 +180,7 @@
                 <div class="form-horizontal">
             {% endif %}
                 {% for subblock in subblocks %}
-                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true, subblock.spanClass is defined ? subblock.spanClass : '') }}
+                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, true) }}
                 {% endfor %}
             {% if isForm is defined and isForm == true %}
                 </fieldset>

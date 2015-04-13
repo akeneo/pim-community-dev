@@ -180,7 +180,6 @@ class DataBlocks
         $subBlock->setTitle($this->accessor->getValue($config, '[title]'));
         $subBlock->setPriority($this->accessor->getValue($config, '[priority]'));
         $subBlock->setDescription($this->accessor->getValue($config, '[description]'));
-        $subBlock->setUseSpan($this->accessor->getValue($config, '[useSpan]'));
 
         return $subBlock;
     }
