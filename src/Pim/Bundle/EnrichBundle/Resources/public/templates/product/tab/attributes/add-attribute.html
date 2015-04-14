@@ -1,15 +1,11 @@
-<% if (attributes.length) { %>
-<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-    Add attribute
-    <span class="caret"></span>
-</a>
-<ul class="dropdown-menu">
-    <% _.each(attributes, function (attribute) { %>
-        <li>
-            <a data-attribute="<%= attribute.code %>">
-                <%= attribute.label[locale] ? attribute.label[locale] : '[' + attribute.code + ']' %>
-            </a>
-        </li>
+<select multiple="multiple">
+    <% _.each(groupedAttributes, function (group) { %>
+        <optgroup label="<%= group.label[locale] ? group.label[locale] : '[' + group.code + ']' %>">
+            <% _.each(group.attributes, function (attribute) { %>
+                <option value="<%= attribute.code %>">
+                    <%= attribute.label[locale] ? attribute.label[locale] : '[' + attribute.code + ']' %>
+                </option>
+            <% }); %>
+        </optgroup>
     <% }); %>
-</ul>
-<% } %>
+</select>
