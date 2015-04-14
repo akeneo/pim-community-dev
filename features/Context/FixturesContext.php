@@ -1951,7 +1951,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param $code
+     * @param string $code
      *
      * @return Color
      */
@@ -1977,7 +1977,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param $code
+     * @param string $code
      *
      * @return Fabric
      */

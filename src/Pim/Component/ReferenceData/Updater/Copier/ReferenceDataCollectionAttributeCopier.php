@@ -32,6 +32,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
         array $supportedToTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
+
         $this->supportedFromTypes = $supportedFromTypes;
         $this->supportedToTypes   = $supportedToTypes;
     }
@@ -167,7 +168,7 @@ class ReferenceDataCollectionAttributeCopier extends AbstractAttributeCopier
     ) {
         $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), $singularify);
 
-        if (false === method_exists($value, $method)) {
+        if (!method_exists($value, $method)) {
             throw new \LogicException(
                 sprintf('ProductValue method "%s" is not implemented', $method)
             );

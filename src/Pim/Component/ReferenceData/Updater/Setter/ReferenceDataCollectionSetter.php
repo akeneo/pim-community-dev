@@ -143,9 +143,9 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $removeMethod = MethodNameGuesser::guess('remove', $referenceDataName, true);
         $getMethod = MethodNameGuesser::guess('get', $referenceDataName);
 
-        if (false === method_exists($value, $addMethod) ||
-            false === method_exists($value, $removeMethod) ||
-            false === method_exists($value, $getMethod)
+        if (!method_exists($value, $addMethod) ||
+            !method_exists($value, $removeMethod) ||
+            !method_exists($value, $getMethod)
         ) {
             throw new \LogicException(
                 sprintf(

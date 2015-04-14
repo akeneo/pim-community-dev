@@ -251,14 +251,14 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function setData($data)
     {
-        $backendType = $this->attribute->getBackendType();
+        $setter = $this->attribute->getBackendType();
         if ($this->isBackendTypeReferenceData()) {
-            $backendType = $this->attribute->getReferenceDataName();
+            $setter = $this->attribute->getReferenceDataName();
         }
 
-        $name = 'set'.ucfirst($backendType);
+        $setter = 'set'.ucfirst($setter);
 
-        return $this->$name($data);
+        return $this->$setter($data);
     }
 
     /**
@@ -266,14 +266,14 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function getData()
     {
-        $backendType = $this->attribute->getBackendType();
+        $getter = $this->attribute->getBackendType();
         if ($this->isBackendTypeReferenceData()) {
-            $backendType = $this->attribute->getReferenceDataName();
+            $getter = $this->attribute->getReferenceDataName();
         }
 
-        $name = 'get'.ucfirst($backendType);
+        $getter = 'get'.ucfirst($getter);
 
-        return $this->$name();
+        return $this->$getter();
     }
 
     /**

@@ -5,22 +5,22 @@ parameters:
 
     pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
     # TODO useful to use this abstract?
-    pim_catalog.updater.setter.abstract.class:                        Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter
-    pim_catalog.updater.setter.text_value.class:                      Pim\Bundle\CatalogBundle\Updater\Setter\TextAttributeSetter
-    pim_catalog.updater.setter.metric_value.class:                    Pim\Bundle\CatalogBundle\Updater\Setter\MetricAttributeSetter
-    pim_catalog.updater.setter.boolean_value.class:                   Pim\Bundle\CatalogBundle\Updater\Setter\BooleanAttributeSetter
-    pim_catalog.updater.setter.date_value.class:                      Pim\Bundle\CatalogBundle\Updater\Setter\DateAttributeSetter
-    pim_catalog.updater.setter.number_value.class:                    Pim\Bundle\CatalogBundle\Updater\Setter\NumberAttributeSetter
-    pim_catalog.updater.setter.category_field.class:                  Pim\Bundle\CatalogBundle\Updater\Setter\CategoryFieldSetter
-    pim_catalog.updater.setter.group_field.class:                     Pim\Bundle\CatalogBundle\Updater\Setter\GroupFieldSetter
-    pim_catalog.updater.setter.variant_group_field.class:             Pim\Bundle\CatalogBundle\Updater\Setter\VariantGroupFieldSetter
-    pim_catalog.updater.setter.family_field.class:                    Pim\Bundle\CatalogBundle\Updater\Setter\FamilyFieldSetter
-    pim_catalog.updater.setter.association_field.class:               Pim\Bundle\CatalogBundle\Updater\Setter\AssociationFieldSetter
-    pim_catalog.updater.setter.enabled_field.class:                   Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
-    pim_catalog.updater.setter.simpleselect_value.class:              Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectAttributeSetter
-    pim_catalog.updater.setter.multiselect_value.class:               Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectAttributeSetter
-    pim_catalog.updater.setter.price_collection_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionAttributeSetter
-    pim_catalog.updater.setter.media_value.class:                     Pim\Bundle\CatalogBundle\Updater\Setter\MediaAttributeSetter
+    pim_catalog.updater.setter.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter
+    pim_catalog.updater.setter.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\TextAttributeSetter
+    pim_catalog.updater.setter.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\MetricAttributeSetter
+    pim_catalog.updater.setter.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\BooleanAttributeSetter
+    pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateAttributeSetter
+    pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberAttributeSetter
+    pim_catalog.updater.setter.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Setter\CategoryFieldSetter
+    pim_catalog.updater.setter.group_field.class:            Pim\Bundle\CatalogBundle\Updater\Setter\GroupFieldSetter
+    pim_catalog.updater.setter.variant_group_field.class:    Pim\Bundle\CatalogBundle\Updater\Setter\VariantGroupFieldSetter
+    pim_catalog.updater.setter.family_field.class:           Pim\Bundle\CatalogBundle\Updater\Setter\FamilyFieldSetter
+    pim_catalog.updater.setter.association_field.class:      Pim\Bundle\CatalogBundle\Updater\Setter\AssociationFieldSetter
+    pim_catalog.updater.setter.enabled_field.class:          Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
+    pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectAttributeSetter
+    pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectAttributeSetter
+    pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionAttributeSetter
+    pim_catalog.updater.setter.media_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\MediaAttributeSetter
 
     pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     # TODO useful to use this abstract?

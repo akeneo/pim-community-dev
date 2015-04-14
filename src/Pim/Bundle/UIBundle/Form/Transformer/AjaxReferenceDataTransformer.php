@@ -83,14 +83,14 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
             $options = [];
 
             foreach ($value as $row) {
-                $options[] = ['id' => $row->getId(), 'text' => '[' . $row->getCode() . ']'];
+                $options[] = ['id' => $row->getId(), 'text' => sprintf('[%s]', $row->getCode())];
             }
 
             return $options;
         }
 
         return $value
-            ? ['id' => $value->getId(), 'text' => '[' . $value->getCode() . ']']
+            ? ['id' => $value->getId(), 'text' => sprintf('[%s]', $value->getCode())]
             : null;
     }
 }

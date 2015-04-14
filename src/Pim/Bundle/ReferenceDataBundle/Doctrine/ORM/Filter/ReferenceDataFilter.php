@@ -33,7 +33,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $supportedAttributes;
 
     /** @var ReferenceDataIdResolver */
-    protected $idResolver;
+    protected $idsResolver;
 
     /** @var OptionsResolverInterface */
     protected $optionsResolver;
@@ -54,7 +54,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
-        $this->idResolver = $idsResolver;
+        $this->idsResolver = $idsResolver;
         $this->supportedOperators = $supportedOperators;
 
         $this->optionsResolver = new OptionsResolver();
@@ -120,7 +120,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->leftJoin(
-            $this->qb->getRootAlias() . '.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $condition
@@ -156,7 +156,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
 
         $this->qb->innerJoin(
-            $this->qb->getRootAlias() . '.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $condition
@@ -203,7 +203,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected function valueCodesToIds(AttributeInterface $attribute, $value)
     {
         try {
-            $value = $this->idResolver->resolve($attribute->getReferenceDataName(), $value);
+            $value = $this->idsResolver->resolve($attribute->getReferenceDataName(), $value);
         } catch (\LogicException $e) {
             throw InvalidArgumentException::validEntityCodeExpected(
                 $attribute->getCode(),

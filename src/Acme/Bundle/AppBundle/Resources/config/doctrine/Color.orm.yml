@@ -1,7 +1,7 @@
 Acme\Bundle\AppBundle\Entity\Color:
     repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     type: entity
-    table: null
+    table: acme_reference_data_color
     fields:
         id:
             type: integer

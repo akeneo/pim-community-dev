@@ -70,9 +70,9 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function unregister($type)
+    public function unregister($name)
     {
-        unset(self::$configurations[$type]);
+        unset(self::$configurations[$name]);
 
         return $this;
     }

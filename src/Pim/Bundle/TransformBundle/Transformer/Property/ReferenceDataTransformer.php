@@ -31,12 +31,12 @@ class ReferenceDataTransformer implements PropertyTransformerInterface
     public function transform($value, array $options = [])
     {
         if (null === $this->registry) {
-            return;
+            return null;
         }
 
         $value = trim($value);
         if (empty($value)) {
-            return;
+            return null;
         }
 
         if (!$this->registry->has($value)) {

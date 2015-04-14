@@ -29,7 +29,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected $registry;
 
     /** @var ReferenceDataIdResolver */
-    protected $idResolver;
+    protected $idsResolver;
 
     /** @var array */
     protected $supportedAttributes;
@@ -39,18 +39,18 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
      *
      * @param AttributeValidatorHelper       $attrValidatorHelper
      * @param ConfigurationRegistryInterface $registry
-     * @param ReferenceDataIdResolver        $idResolver
+     * @param ReferenceDataIdResolver        $idsResolver
      * @param array                          $supportedOperators
      */
     public function __construct(
         AttributeValidatorHelper $attrValidatorHelper,
         ConfigurationRegistryInterface $registry,
-        ReferenceDataIdResolver $idResolver,
+        ReferenceDataIdResolver $idsResolver,
         array $supportedOperators = []
     ) {
         $this->attrValidatorHelper = $attrValidatorHelper;
         $this->registry = $registry;
-        $this->idResolver = $idResolver;
+        $this->idsResolver = $idsResolver;
         $this->supportedOperators  = $supportedOperators;
     }
 
@@ -140,7 +140,7 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     protected function valueCodesToIds(AttributeInterface $attribute, $value)
     {
         try {
-            $value = $this->idResolver->resolve($attribute->getReferenceDataName(), $value);
+            $value = $this->idsResolver->resolve($attribute->getReferenceDataName(), $value);
         } catch (\LogicException $e) {
             throw InvalidArgumentException::validEntityCodeExpected(
                 $attribute->getCode(),

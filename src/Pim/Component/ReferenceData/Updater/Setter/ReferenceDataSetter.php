@@ -125,7 +125,7 @@ class ReferenceDataSetter extends AbstractAttributeSetter
 
         $setMethod = MethodNameGuesser::guess('set', $attribute->getReferenceDataName(), true);
 
-        if (false === method_exists($value, $setMethod)) {
+        if (!method_exists($value, $setMethod)) {
             throw new \LogicException(
                 sprintf('ProductValue method "%s" is not implemented', $setMethod)
             );

@@ -25,6 +25,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
         ReferenceDataRepositoryResolver $repositoryResolver = null
     ) {
         parent::__construct($supportedTypes);
+
         $this->repositoryResolver = $repositoryResolver;
     }
 
