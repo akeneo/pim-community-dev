@@ -12,25 +12,37 @@ Feature: Display reference data in the grid
     Given the following products:
       | sku        | family |
       | high-heels | heels  |
-    And the following "sole_color" attribute reference data: Red, Blue and Green
-    And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
+    And the following reference data:
+      | type   | code         | label        |
+      | color  | red          | Red          |
+      | color  | blue         |              |
+      | color  | green        | Green        |
+      | fabric | cashmerewool | Cashmerewool |
+      | fabric | neoprene     |              |
+      | fabric | silk         | Silk         |
     Given the following product values:
       | product    | attribute   | value                  |
-      | high-heels | sole_fabric | Cashmerewool, Neoprene |
-      | high-heels | sole_color  | Red                    |
+      | high-heels | sole_fabric | cashmerewool, neoprene |
+      | high-heels | sole_color  | red                    |
     And I am on the products page
     When I display the columns sku, sole_color and sole_fabric
     Then the row "high-heels" should contain:
-      | column      | value                      |
-      | Sole color  | [Red]                      |
-      | Sole fabric | [Cashmerewool], [Neoprene] |
+      | column      | value                    |
+      | Sole color  | Red                      |
+      | Sole fabric | Cashmerewool, [neoprene] |
 
   Scenario: Successfully edit reference data values to a product with scope
     Given the following products:
       | sku        | family |
       | high-heels | heels  |
-    And the following "cap_color" attribute reference data: Black, Purple and Orange
-    And the following "lace_fabric" attribute reference data: Cotton, Flax and Straw
+    And the following reference data:
+      | type   | code   | label  |
+      | color  | black  | Black  |
+      | color  | purple | Purple |
+      | color  | orange |        |
+      | fabric | cotton |        |
+      | fabric | flax   | Flax   |
+      | fabric | straw  | Straw  |
     Given the following product values:
       | product    | attribute   | value         | scope  | locale |
       | high-heels | lace_fabric | Cotton, Straw | tablet | en_US  |
@@ -40,11 +52,11 @@ Feature: Display reference data in the grid
     And I am on the products page
     When I display the columns sku, cap_color and lace_fabric
     Then the row "high-heels" should contain:
-      | column      | value             |
-      | Cap color   | [Purple]          |
-      | Lace fabric | [Cotton], [Straw] |
+      | column      | value         |
+      | Cap color   | Purple        |
+      | Lace fabric | [cotton], Straw |
     When I filter by "Channel" with value "Mobile"
-      Then the row "high-heels" should contain:
-      | column      | value            |
-      | Cap color   | [Orange]         |
-      | Lace fabric | [Cotton], [Flax] |
+    Then the row "high-heels" should contain:
+      | column      | value          |
+      | Cap color   | [orange]       |
+      | Lace fabric | [cotton], Flax |

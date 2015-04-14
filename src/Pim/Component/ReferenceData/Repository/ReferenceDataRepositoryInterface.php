@@ -14,11 +14,12 @@ use Doctrine\Common\Persistence\ObjectRepository;
 interface ReferenceDataRepositoryInterface extends ObjectRepository
 {
     /**
-     * Returns an array of reference data ids and codes according to the search that was performed
+     * Returns an array of reference data ids and codes/labels according to the search that was performed
      *
      *  return array(
      *      array('id' => 1, 'text' => 'Reference Data 1'),
-     *      array('id' => 2, 'text' => 'Reference Data 2'),
+     *      array('id' => 2, 'text' => '[code2]'),
+     *      array('id' => 3, 'text' => 'Reference Data 3'),
      *  );
      *
      * @param string $search

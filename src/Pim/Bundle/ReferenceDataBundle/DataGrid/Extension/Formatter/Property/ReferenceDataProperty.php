@@ -3,6 +3,8 @@
 namespace Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Formatter\Property;
 
 use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FieldProperty;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Able to render a reference data type
@@ -13,26 +15,77 @@ use Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FieldPro
  */
 class ReferenceDataProperty extends FieldProperty
 {
+    /** @var ConfigurationRegistryInterface */
+    protected $referenceDataRegistry;
+
+    /**
+     * @param TranslatorInterface            $translator
+     * @param ConfigurationRegistryInterface $registry
+     */
+    public function __construct(TranslatorInterface $translator, ConfigurationRegistryInterface $registry)
+    {
+        $this->translator = $translator;
+        $this->referenceDataRegistry = $registry;
+    }
+
     /**
      * {@inheritdoc}
      */
     protected function convertValue($value)
     {
-        $referenceData = $value[$value['attribute']['properties']['reference_data_name']];
+        $referenceDataType = $value['attribute']['properties']['reference_data_name'];
+        $referenceData = $value[$referenceDataType];
 
         if (isset($referenceData['code'])) {
-            return sprintf('[%s]', $referenceData['code']);
+            return $this->getReferenceDataLabel($referenceData, $referenceDataType);
         }
 
         if (is_array($referenceData)) {
-            $codes = [];
+            $labels = [];
             foreach ($referenceData as $data) {
-                $codes[] = sprintf('[%s]', $data['code']);
+                $labels[] = $this->getReferenceDataLabel($data, $referenceDataType);
             }
 
-            return implode(', ', $codes);
+            return implode(', ', $labels);
         }
 
         return null;
+    }
+
+    /**
+     * Get the reference data label (or the [code] is no label is present).
+     *
+     * @param array  $referenceData
+     * @param string $referenceDataType
+     *
+     * @return string
+     */
+    protected function getReferenceDataLabel(array $referenceData, $referenceDataType)
+    {
+        $referenceDataClass = $this->getReferenceDataClass($referenceDataType);
+
+        if (null !== $labelProperty = $referenceDataClass::getLabelProperty()) {
+            $label = $referenceData[$labelProperty];
+
+            if (!empty($label)) {
+                return $label;
+            }
+        }
+
+        return sprintf('[%s]', $referenceData['code']);
+    }
+
+    /**
+     * Get the class of a reference data type
+     *
+     * @param string $referenceDataType
+     *
+     * @return string
+     */
+    protected function getReferenceDataClass($referenceDataType)
+    {
+        $configuration = $this->referenceDataRegistry->get($referenceDataType);
+
+        return $configuration->getClass();
     }
 }

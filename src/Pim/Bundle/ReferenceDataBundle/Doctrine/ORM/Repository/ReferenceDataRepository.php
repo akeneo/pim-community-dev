@@ -24,22 +24,45 @@ class ReferenceDataRepository extends EntityRepository implements
      */
     public function findBySearch($search = null, array $options = [])
     {
+        if (null !== $labelProperty = $this->getReferenceDataLabelProperty()) {
+            $selectDql = sprintf(
+                '%s.id as id, ' .
+                'CASE WHEN %s.%s IS NULL OR %s.%s = \'\' THEN CONCAT(\'[\', %s.code, \']\') ELSE %s.%s END AS text',
+                $this->getAlias(),
+                $this->getAlias(),
+                $labelProperty,
+                $this->getAlias(),
+                $labelProperty,
+                $this->getAlias(),
+                $this->getAlias(),
+                $labelProperty
+            );
+        } else {
+            $selectDql = sprintf(
+                '%s.id as id, CONCAT(\'[\', %s.code, \']\') as text',
+                $this->getAlias(),
+                $this->getAlias()
+            );
+        }
+
         $qb = $this->createQueryBuilder($this->getAlias());
         $qb
-            ->select(sprintf('%s.id as id, CONCAT(\'[\', %s.code, \']\') as text', $this->getAlias(), $this->getAlias()))
+            ->select($selectDql)
             ->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC')
-            ->addOrderBy(sprintf('%s.code', $this->getAlias()))
-        ;
+            ->addOrderBy(sprintf('%s.code', $this->getAlias()));
 
         if (null !== $search) {
-            $qb->andWhere(sprintf('%s.code LIKE :search', $this->getAlias()))
-                ->setParameter('search', "$search%");
+            $searchDql = sprintf('%s.code LIKE :search', $this->getAlias());
+            if (null !== $labelProperty) {
+                $searchDql .= sprintf(' OR %s.%s LIKE :search', $this->getAlias(), $labelProperty);
+            }
+            $qb->andWhere($searchDql)->setParameter('search', "%$search%");
         }
 
         if (isset($options['limit'])) {
-            $qb->setMaxResults((int) $options['limit']);
+            $qb->setMaxResults((int)$options['limit']);
             if (isset($options['page'])) {
-                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] -1));
+                $qb->setFirstResult((int)$options['limit'] * ((int)$options['page'] - 1));
             }
         }
 
@@ -74,5 +97,17 @@ class ReferenceDataRepository extends EntityRepository implements
     protected function getAlias()
     {
         return 'rd';
+    }
+
+    /**
+     * The list of label property of the reference data
+     *
+     * @return string|null
+     */
+    private function getReferenceDataLabelProperty()
+    {
+        $referenceDataClass = $this->getEntityName();
+
+        return $referenceDataClass::getLabelProperty();
     }
 }

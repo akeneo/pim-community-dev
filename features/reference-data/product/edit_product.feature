@@ -9,20 +9,26 @@ Feature: Edit a product
     And the following products:
       | sku        | family |
       | high-heels | heels  |
-    And the following "sole_color" attribute reference data: Red, Blue and Green
-    And the following "sole_fabric" attribute reference data: Cashmerewool, Neoprene and Silk
+    And the following reference data:
+      | type   | code         | label        |
+      | color  | red          | Red          |
+      | color  | blue         |              |
+      | color  | green        | Green        |
+      | fabric | cashmerewool | Cashmerewool |
+      | fabric | neoprene     |              |
+      | fabric | silk         | Silk         |
 
   Scenario: Successfully add reference data values to a product
     Given I am logged in as "Mary"
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | Red            |
-      | Sole fabric | Neoprene, Silk |
+      | Heel color  | Red              |
+      | Sole fabric | [neoprene], Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "[Red]"
-    Then the product Sole fabric should be "[Neoprene], [Silk]"
+    Then the product Heel color should be "Red"
+    Then the product Sole fabric should be "[neoprene], Silk"
 
   Scenario: Successfully edit reference data values to a product
     Given I am logged in as "Mary"
@@ -33,12 +39,12 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Heel color  | Blue               |
+      | Heel color  | [blue]             |
       | Sole fabric | Cashmerewool, Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "[Blue]"
-    Then the product Sole fabric should be "[Cashmerewool], [Silk]"
+    Then the product Heel color should be "[blue]"
+    Then the product Sole fabric should be "Cashmerewool, Silk"
 
   Scenario: Successfully remove reference data values to a product
     Given I am logged in as "Mary"
@@ -49,7 +55,7 @@ Feature: Edit a product
     And I am on the "high-heels" product page
     And I visit the "Other" group
     And I fill in the following information:
-      | Sole fabric | |
+      | Sole fabric |  |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
     Then the product Sole fabric should be ""

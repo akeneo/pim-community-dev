@@ -919,10 +919,24 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeReferenceData($attribute, $referenceData)
     {
         $attribute = $this->getAttribute(strtolower($attribute));
-        $referenceDataName = $attribute->getReferenceDataName();
+        $referenceDataType = $attribute->getReferenceDataName();
 
         foreach ($this->listToArray($referenceData) as $code) {
-            $this->createReferenceData($referenceDataName, $code);
+            $this->createReferenceData($referenceDataType, $code, $code);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following reference data?:$/
+     */
+    public function theFollowingReferenceData(TableNode $table)
+    {
+        foreach ($table->getHash() as $row) {
+            $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
         }
 
         $this->getEntityManager()->flush();
@@ -1930,16 +1944,16 @@ class FixturesContext extends RawMinkContext
      *
      * @return ReferenceDataInterface
      */
-    protected function createReferenceData($type, $code)
+    protected function createReferenceData($type, $code, $label)
     {
         switch ($type) {
             case 'color':
             case 'colors':
-                $referenceData = $this->createColorReferenceData($code);
+                $referenceData = $this->createColorReferenceData($code, $label);
                 break;
             case 'fabric':
             case 'fabrics':
-                $referenceData = $this->createFabricReferenceData($code);
+                $referenceData = $this->createFabricReferenceData($code, $label);
                 break;
             default:
                 throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
@@ -1955,14 +1969,14 @@ class FixturesContext extends RawMinkContext
      *
      * @return Color
      */
-    protected function createColorReferenceData($code)
+    protected function createColorReferenceData($code, $label)
     {
         $configuration = $this->getReferenceDataRegistry()->get('color');
         $class = $configuration->getClass();
 
         $color = new $class();
         $color->setCode($code);
-        $color->setName($code);
+        $color->setName($label);
         $color->setHex('#' . strtolower($code));
         $color->setRed(rand(0, 100));
         $color->setGreen(rand(0, 100));
@@ -1981,14 +1995,14 @@ class FixturesContext extends RawMinkContext
      *
      * @return Fabric
      */
-    protected function createFabricReferenceData($code)
+    protected function createFabricReferenceData($code, $label)
     {
         $configuration = $this->getReferenceDataRegistry()->get('fabrics');
         $class = $configuration->getClass();
 
         $fabric = new $class();
         $fabric->setCode($code);
-        $fabric->setName($code);
+        $fabric->setName($label);
 
         return $fabric;
     }

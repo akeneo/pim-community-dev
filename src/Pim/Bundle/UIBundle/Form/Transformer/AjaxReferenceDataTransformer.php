@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
+use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -20,15 +21,20 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
     /** @var array */
     protected $options;
 
+    /** @var ReferenceDataRenderer */
+    protected $renderer;
+
     /**
      * Constructor
      *
      * @param ReferenceDataRepositoryInterface $repository
+     * @param ReferenceDataRenderer            $formatter
      * @param array                            $options
      */
-    public function __construct(ReferenceDataRepositoryInterface $repository, array $options)
+    public function __construct(ReferenceDataRepositoryInterface $repository, ReferenceDataRenderer $formatter, array $options)
     {
         $this->repository = $repository;
+        $this->renderer   = $formatter;
         $this->options    = $options;
     }
 
@@ -83,14 +89,14 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
             $options = [];
 
             foreach ($value as $row) {
-                $options[] = ['id' => $row->getId(), 'text' => sprintf('[%s]', $row->getCode())];
+                $options[] = ['id' => $row->getId(), 'text' => $this->renderer->render($row)];
             }
 
             return $options;
         }
 
         return $value
-            ? ['id' => $value->getId(), 'text' => sprintf('[%s]', $value->getCode())]
+            ? ['id' => $value->getId(), 'text' => $this->renderer->render($value)]
             : null;
     }
 }

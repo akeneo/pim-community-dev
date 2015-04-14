@@ -12,17 +12,23 @@ namespace Pim\Component\ReferenceData\Model;
 interface ReferenceDataInterface
 {
     /**
+     * Get the ID of the reference data
+     *
      * @return mixed
      */
     public function getId();
 
     /**
+     * Get the code (unique) of the reference data
+     *
      * @return string
      */
     public function getCode();
 
     /**
-     * @param $code
+     * Set the code (unique) of the reference data
+     *
+     * @param string $code
      *
      * @return ReferenceDataInterface
      */
@@ -34,9 +40,20 @@ interface ReferenceDataInterface
     public function getType();
 
     /**
+     * Get the order in which the reference data will be displayed
+     *
      * @return int
      */
     public function getSortOrder();
+
+    /**
+     * Get the property that will be used as label to be displayed in the PIM.
+     * If no property is returned, the [code] of the reference data will be
+     * diplayed in the PIM.
+     *
+    * @return string|null
+    */
+    public static function getLabelProperty();
 
     /**
      * To string

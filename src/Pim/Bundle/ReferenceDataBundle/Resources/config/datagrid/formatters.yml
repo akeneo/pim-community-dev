@@ -6,5 +6,6 @@ services:
         class: %pim_reference_data.extension.formatter.property.reference_data_property.class%
         arguments:
             - '@translator'
+            - '@pim_reference_data.registry'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_reference_data }

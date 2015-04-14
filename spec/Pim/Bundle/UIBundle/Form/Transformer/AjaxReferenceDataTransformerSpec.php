@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\UIBundle\Form\Transformer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Prophecy\Argument;
@@ -14,9 +15,9 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer');
     }
 
-    function let(ReferenceDataRepositoryInterface $repository)
+    function let(ReferenceDataRepositoryInterface $repository, ReferenceDataRenderer $renderer)
     {
-        $this->beConstructedWith($repository, ['multiple' => false]);
+        $this->beConstructedWith($repository, $renderer, ['multiple' => false]);
     }
 
     function it_reverse_transforms_a_single_value($repository, ReferenceDataInterface $referenceData)
@@ -28,10 +29,11 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
 
     function it_reverse_transforms_multiple_values(
         $repository,
+        $renderer,
         ReferenceDataInterface $referenceData1,
         ReferenceDataInterface $referenceData2
     ) {
-        $this->beConstructedWith($repository, ['multiple' => true]);
+        $this->beConstructedWith($repository, $renderer, ['multiple' => true]);
 
         $repository->find(42)->willReturn($referenceData1);
         $repository->find(69)->willReturn($referenceData2);
@@ -48,10 +50,11 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
 
     function it_transforms_multiple_values(
         $repository,
+        $renderer,
         ReferenceDataInterface $referenceData1,
         ReferenceDataInterface $referenceData2
     ) {
-        $this->beConstructedWith($repository, ['multiple' => true]);
+        $this->beConstructedWith($repository, $renderer, ['multiple' => true]);
 
         $referenceData1->getId()->willReturn(007);
         $referenceData2->getId()->willReturn(41);
@@ -59,32 +62,42 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
         $this->transform([$referenceData1, $referenceData2])->shouldReturn('7,41');
     }
 
-    function it_get_the_label_of_a_single_value(ReferenceDataInterface $referenceData)
+    function it_get_the_label_of_a_single_value($renderer, ReferenceDataInterface $referenceData)
     {
+        $renderer->render(Argument::any())->willReturn('[Good luck]');
         $referenceData->getId()->willReturn(13);
-        $referenceData->getCode()->willReturn('Good luck');
 
         $this->getOptions($referenceData)->shouldReturn(['id' => 13, 'text' => '[Good luck]']);
     }
 
     function it_get_the_labels_of_multiple_values(
         $repository,
+        $renderer,
         ReferenceDataInterface $referenceData1,
         ReferenceDataInterface $referenceData2
     ) {
-        $this->beConstructedWith($repository, ['multiple' => true]);
+        $this->beConstructedWith($repository, $renderer, ['multiple' => true]);
 
         $referenceData1->getId()->willReturn(13);
-        $referenceData1->getCode()->willReturn('Good luck');
+        $renderer->render($referenceData1)->willReturn('[Good luck]');
 
         $referenceData2->getId()->willReturn(456);
-        $referenceData2->getCode()->willReturn('Random label');
+        $renderer->render($referenceData2)->willReturn('[Random label]');
 
         $this->getOptions([$referenceData1, $referenceData2])->shouldReturn([
             ['id' => 13, 'text' => '[Good luck]'],
             ['id' => 456, 'text' => '[Random label]'],
         ]);
     }
+}
 
-
+class ReferenceDataColorWithLabel implements ReferenceDataInterface
+{
+    public function getId() { }
+    public function getCode() { }
+    public function setCode($code) { }
+    public function getSortOrder() { }
+    public function getName() {}
+    public static function getLabelProperty() { return 'name'; }
+    public function __toString() { }
 }
