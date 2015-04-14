@@ -26,9 +26,6 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, FilterableNormalizerInterface
 {
-    /** @var array */
-    protected $supportedFormat = ['internal_api'];
-
     /** @var NormalizerInterface */
     protected $productNormalizer;
 
@@ -83,7 +80,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductInterface && in_array($format, $this->supportedFormat);
+        return $this->productNormalizer->supportsNormalization($data, $format);
     }
 
     /**

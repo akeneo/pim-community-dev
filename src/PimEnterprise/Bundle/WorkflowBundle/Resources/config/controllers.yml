@@ -24,7 +24,6 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.manager.channel'
 
-
     pimee_workflow.controller.published_product_rest:
         class: %pimee_workflow.controller.published_product_rest.class%
         scope: request
