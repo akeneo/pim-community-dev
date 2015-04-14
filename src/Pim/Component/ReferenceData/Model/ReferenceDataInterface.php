@@ -35,11 +35,6 @@ interface ReferenceDataInterface
     public function setCode($code);
 
     /**
-     * @return string
-     */
-    public function getType();
-
-    /**
      * Get the order in which the reference data will be displayed
      *
      * @return int

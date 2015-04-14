@@ -59,14 +59,6 @@ class Fabric extends AbstractReferenceData implements ReferenceDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
-    {
-        return 'fabric';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public static function getLabelProperty()
     {
         return 'name';
