@@ -52,7 +52,7 @@ define(
 
                     this.setData(data);
                     mediator.trigger('product:action:post_update', data);
-                }, this)).fail(function(response) {
+                }, this)).fail(function (response) {
                     switch (response.status) {
                         case 400:
                             mediator.trigger('validation_error', response.responseJSON);

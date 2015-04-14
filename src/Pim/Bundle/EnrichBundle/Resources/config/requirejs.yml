@@ -27,7 +27,7 @@ config:
         pim/item/tableview:                 pimenrich/js/pim-item-tableview
         pim/item/view:                      pimenrich/js/pim-item-view
         pim/i18n:                           pimenrich/js/i18n
-        pim/user-context:                    pimenrich/js/usercontext
+        pim/user-context:                    pimenrich/js/user-context
 
         # Form
         pim/form-builder:                                          pimenrich/js/form/builder
