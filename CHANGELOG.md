@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.8 (2015-04-14)
 
 ## Bug fixes
 - PIM-4045: Fix completeness computation with behat
