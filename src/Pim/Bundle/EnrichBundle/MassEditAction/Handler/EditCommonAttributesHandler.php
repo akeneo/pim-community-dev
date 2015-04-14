@@ -86,6 +86,9 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
         $this->massActionRepository = $massActionRepository;
     }
 
+    /**
+     * @param array $configuration
+     */
     public function execute(array $configuration)
     {
         $cursor = $this->getProductsCursor($configuration['filters']);
@@ -95,45 +98,19 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
         $commonActions = $this->findCommonActions($configuration['actions'], $commonAttributeCodes);
 
         if (empty($commonAttributeCodes) || empty($commonActions)) {
-            $this->stepExecution->incrementSummaryInfo('skipped_products', $paginator->count());
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
-                [],
-                []
-            );
+            $this->skipAllProducts($paginator->count());
         } else {
             $actions = $configuration['actions'];
+
             foreach ($paginator as $productsPage) {
-                $invalidProducts = [];
-                foreach ($productsPage as $index => $product) {
-                    $this->setData($product, $actions, $commonAttributeCodes);
-                    $violations = $this->validator->validate($product);
+                $updatedProducts = $this->setData($productsPage, $actions, $commonAttributeCodes);
+                $validProducts = $this->getValidProducts($updatedProducts);
 
-                    if (0 < $violations->count()) {
-                        $this->addWarningMessage($violations, $product);
-                        $this->stepExecution->incrementSummaryInfo('skipped_products');
-                        $invalidProducts[$index] = $product;
-                    } else {
-                        $this->stepExecution->incrementSummaryInfo('mass_edited');
-                    }
-                }
-
-                $productsPage = array_diff_key($productsPage, $invalidProducts);
-                $this->detachProducts($invalidProducts);
-                $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
-                $this->detachProducts($productsPage);
+                $this->saveProducts($validProducts, $this->getSavingOptions());
+                $this->detachProducts($updatedProducts);
             }
 
-            foreach ($this->skippedAttributes as $skippedAttributeCode) {
-                $this->stepExecution->incrementSummaryInfo('skipped_attributes');
-                $this->stepExecution->addWarning(
-                    $this->getName(),
-                    'pim_enrich.mass_edit_action.edit-common-attributes.message.invalid_attribute',
-                    ['attribute_code' => $skippedAttributeCode],
-                    []
-                );
-            }
+            $this->addSkippedAttributesWarning($this->skippedAttributes);
         }
 
         $values = array_column($configuration['actions'], 'value');
@@ -156,16 +133,6 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
         $this->stepExecution = $stepExecution;
 
         return $this;
-    }
-
-    /**
-     * @param string $code
-     */
-    protected function addSkippedAttribute($code)
-    {
-        if (!in_array($code, $this->skippedAttributes)) {
-            $this->skippedAttributes[] = $code;
-        }
     }
 
     /**
@@ -225,25 +192,27 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Set data from $actions to the given $product
+     * Set data from $actions to the given $products
      *
-     * @param ProductInterface $product
-     * @param array            $actions
-     * @param array            $commonAttributeCodes
+     * @param array $products
+     * @param array $actions
+     * @param array $commonAttributeCodes
      *
-     * @return UpdateProductHandler
+     * @return array $products
      */
-    protected function setData(ProductInterface $product, array $actions, array $commonAttributeCodes)
+    protected function setData(array $products, array $actions, array $commonAttributeCodes)
     {
-        foreach ($actions as $action) {
-            if (in_array($action['field'], $commonAttributeCodes)) {
-                $this->productUpdater->setData($product, $action['field'], $action['value'], $action['options']);
-            } else {
-                $this->addSkippedAttribute($action['field']);
+        foreach ($products as $product) {
+            foreach ($actions as $action) {
+                if (in_array($action['field'], $commonAttributeCodes)) {
+                    $this->productUpdater->setData($product, $action['field'], $action['value'], $action['options']);
+                } else {
+                    $this->skippedAttributes[] = $action['field'];
+                }
             }
         }
 
-        return $this;
+        return $products;
     }
 
     /**
@@ -339,6 +308,81 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
 
         foreach ($filePaths as $filePath) {
             unlink($filePath);
+        }
+    }
+
+    /**
+     * Mark all products as skipped and add a proper warning to notify user on reporting screen
+     *
+     * @param $productCount
+     */
+    protected function skipAllProducts($productCount)
+    {
+        $this->stepExecution->incrementSummaryInfo('skipped_products', $productCount);
+
+        $this->stepExecution->addWarning(
+            $this->getName(),
+            'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
+            [],
+            []
+        );
+    }
+
+    /**
+     * Return valid products that should be saved and mark others as skipped
+     *
+     * @param $updatedProducts
+     *
+     * @return array
+     */
+    protected function getValidProducts($updatedProducts)
+    {
+        $validProducts = [];
+
+        foreach ($updatedProducts as $product) {
+            $violations = $this->validator->validate($product);
+
+            if (0 === $violations->count()) {
+                $validProducts[] = $product;
+            } else {
+                $this->addWarningMessage($violations, $product);
+                $this->stepExecution->incrementSummaryInfo('skipped_products');
+            }
+        }
+
+        return $validProducts;
+    }
+
+    /**
+     * Save products and mark them as edited
+     *
+     * @param array $validProducts
+     * @param array $getSavingOptions
+     */
+    protected function saveProducts(array $validProducts, array $getSavingOptions)
+    {
+        $this->productSaver->saveAll($validProducts, $getSavingOptions);
+        $this->stepExecution->incrementSummaryInfo('mass_edited', count($validProducts));
+    }
+
+    /**
+     * Add a warning to the StepExecution for each $skippedAttributes
+     *
+     * @param $skippedAttributes
+     */
+    protected function addSkippedAttributesWarning($skippedAttributes)
+    {
+        $skippedAttributes = array_unique($skippedAttributes);
+
+        foreach ($skippedAttributes as $skippedAttributeCode) {
+            $this->stepExecution->incrementSummaryInfo('skipped_attributes');
+
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                'pim_enrich.mass_edit_action.edit-common-attributes.message.invalid_attribute',
+                ['attribute_code' => $skippedAttributeCode],
+                []
+            );
         }
     }
 }
