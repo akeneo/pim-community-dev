@@ -65,7 +65,7 @@ class MassEditJobManager
      */
     public function launchJob(JobInstance $jobInstance, UserInterface $user, $rawConfiguration)
     {
-        $jobExecution = $this->create($jobInstance, $user);
+        $jobExecution = $this->create($jobInstance, $user, $rawConfiguration);
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
@@ -96,15 +96,16 @@ class MassEditJobManager
      *
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
+     * @param               $rawConfiguration
      *
      * @return JobExecution
-     * @throws \Exception
      */
-    protected function create(JobInstance $jobInstance, UserInterface $user)
+    protected function create(JobInstance $jobInstance, UserInterface $user, $rawConfiguration)
     {
         $jobExecution = new $this->jobExecutionClass();
 
         $jobExecution->setJobInstance($jobInstance)->setUser($user->getUsername());
+        $jobExecution->setConfiguration($rawConfiguration);
         $this->objectManager->persist($jobExecution);
         $this->objectManager->flush($jobExecution);
 

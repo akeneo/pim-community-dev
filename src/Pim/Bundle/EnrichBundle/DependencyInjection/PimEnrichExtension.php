@@ -58,6 +58,8 @@ class PimEnrichExtension extends Extension
         $loader->load('view_elements/product.yml');
         $loader->load('view_updaters.yml');
         $loader->load('command.yml');
+        $loader->load('readers.yml');
+        $loader->load('processors.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');

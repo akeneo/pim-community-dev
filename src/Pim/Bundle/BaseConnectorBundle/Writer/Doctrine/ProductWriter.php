@@ -6,7 +6,8 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\CacheClearer;
@@ -38,27 +39,33 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var boolean */
     protected $realTimeVersioning = true;
 
-    /** @var SaverInterface */
+    /** @var BulkSaverInterface */
     protected $productSaver;
+
+    /** @var ObjectDetacherInterface */
+    protected $objectDetacher;
 
     /**
      * Constructor
      *
-     * @param MediaManager   $mediaManager
-     * @param CacheClearer   $cacheClearer
-     * @param VersionManager $versionManager
-     * @param SaverInterface $productSaver
+     * @param MediaManager            $mediaManager
+     * @param CacheClearer            $cacheClearer
+     * @param VersionManager          $versionManager
+     * @param BulkSaverInterface          $productSaver
+     * @param ObjectDetacherInterface $objectDetacher
      */
     public function __construct(
         MediaManager $mediaManager,
         CacheClearer $cacheClearer,
         VersionManager $versionManager,
-        SaverInterface $productSaver
+        BulkSaverInterface $productSaver,
+        ObjectDetacherInterface $objectDetacher
     ) {
         $this->mediaManager   = $mediaManager;
         $this->cacheClearer   = $cacheClearer;
         $this->versionManager = $versionManager;
         $this->productSaver   = $productSaver;
+        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -110,6 +117,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->productSaver->saveAll($items, ['recalculate' => false]);
 
         $this->cacheClearer->clear();
+        foreach ($items as $item) {
+            $this->objectDetacher->detach($item);
+        }
     }
 
     /**

@@ -1,0 +1,16 @@
+parameters:
+    pim_enrich.mass_edit.update_product_value.processor.class: Pim\Bundle\EnrichBundle\Processor\MassEdit\UpdateProductValueProcessor
+    pim_enrich.mass_edit.add_product_value.processor.class:    Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor
+
+services:
+    pim_enrich.mass_edit.update_product_value.processor:
+        class: %pim_enrich.mass_edit.update_product_value.processor.class%
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@pim_validator'
+
+    pim_enrich.mass_edit.add_product_value.processor:
+        class: %pim_enrich.mass_edit.add_product_value.processor.class%
+        arguments:
+            - '@pim_catalog.updater.product'
+            - '@pim_validator'

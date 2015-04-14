@@ -14,6 +14,7 @@ parameters:
     pim_enrich.mass_edit_handler.add_product_value.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\AddProductValueHandler
     pim_enrich.mass_edit_handler.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\EditCommonAttributesHandler
     pim_enrich.mass_edit_action.form_resolver.class: Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver
+    pim_enrich.mass_edit.configuration.class: Pim\Bundle\EnrichBundle\MassEditAction\ConfigurationRegistry
 
 services:
     # Mass edit action operator registry

@@ -10,6 +10,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\MassEditAction\ConfigurationRegistry;
 use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
@@ -105,13 +106,13 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->parametersParser     = $parametersParser;
-        $this->gridFilterAdapter    = $gridFilterAdapter;
-        $this->massEditJobManager   = $massEditJobManager;
-        $this->jobRepository        = $jobRepository;
-        $this->connectorRegistry    = $connectorRegistry;
-        $this->operationRegistry    = $operationRegistry;
-        $this->massEditFormResolver = $massEditFormResolver;
+        $this->parametersParser      = $parametersParser;
+        $this->gridFilterAdapter     = $gridFilterAdapter;
+        $this->massEditJobManager    = $massEditJobManager;
+        $this->jobRepository         = $jobRepository;
+        $this->connectorRegistry     = $connectorRegistry;
+        $this->operationRegistry     = $operationRegistry;
+        $this->massEditFormResolver  = $massEditFormResolver;
     }
 
     /**

@@ -1,0 +1,19 @@
+parameters:
+    pim_enrich.mass_edit.reader.class: Pim\Bundle\EnrichBundle\Reader\MassEdit\FilterProductReader
+
+services:
+    pim_enrich.mass_edit.update_product_value.reader:
+        class: %pim_enrich.mass_edit.reader.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_batch.job_repository'
+            - 'update_product_value'
+
+    pim_enrich.mass_edit.add_product_value.reader:
+        class: %pim_enrich.mass_edit.reader.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@doctrine.orm.default_entity_manager'
+            - '@akeneo_batch.job_repository'
+            - 'add_product_value'
