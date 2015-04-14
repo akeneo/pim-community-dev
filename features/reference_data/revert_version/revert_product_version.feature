@@ -40,7 +40,7 @@ Feature: Revert a product to a previous version
       | 3       | main_color | Cyan  |
     When I click on the "Revert to this version" action of the row which contains "sku: red-heels"
     Then the product "red-heels" should have the following values:
-      | main_color | Red |
+      | main_color | [Red] |
 
   Scenario: Revert a product with multiple reference data
     Given I am on the "red-heels" product page
@@ -55,4 +55,4 @@ Feature: Revert a product to a previous version
       | 2       | main_fabric | Neoprene,Wool |
     When I click on the "Revert to this version" action of the row which contains "sku: red-heels"
     Then the product "red-heels" should have the following values:
-      | main_fabric | Neoprene, Spandex, Wool |
+      | main_fabric | [Neoprene], [Spandex], [Wool] |

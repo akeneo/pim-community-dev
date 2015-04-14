@@ -24,7 +24,7 @@ Feature: Review a product draft with reference data
     And I click on the "approve" action of the row which contains "Sole color"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    But the field Sole color should contain "Black"
+    But the field Sole color should contain "[Black]"
 
   Scenario: Successfully refuse a waiting for approval product draft with a simple select reference data
     Given Mary proposed the following change to "my-vans":
@@ -39,7 +39,7 @@ Feature: Review a product draft with reference data
       | column | value       |
       | Status | In progress |
     When I visit the "Attributes" tab
-    Then the product Sole color should be "Cyan"
+    Then the product Sole color should be "[Cyan]"
 
   Scenario: Successfully remove an in progress product draft with a simple select reference data
     Given Mary started to propose the following change to "my-vans":
@@ -51,7 +51,7 @@ Feature: Review a product draft with reference data
     And I click on the "remove" action of the row which contains "Sole color"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Sole color should be "Cyan"
+    Then the product Sole color should be "[Cyan]"
 
   Scenario: Successfully accept from a product draft with a multi select reference data
     Given Mary proposed the following change to "my-vans":
@@ -63,7 +63,7 @@ Feature: Review a product draft with reference data
     And I click on the "approve" action of the row which contains "Sole fabric"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    But the field Sole fabric should contain "Wool, Jute"
+    But the field Sole fabric should contain "[Wool], [Jute]"
 
   Scenario: Successfully refuse a waiting for approval product draft with a multi select reference data
     Given Mary proposed the following change to "my-vans":
@@ -78,7 +78,7 @@ Feature: Review a product draft with reference data
       | column | value       |
       | Status | In progress |
     When I visit the "Attributes" tab
-    Then the product Sole fabric should be "Kevlar, Neoprene"
+    Then the product Sole fabric should be "[Kevlar], [Neoprene]"
 
   Scenario: Successfully remove an in progress product draft with a multi select reference data
     Given Mary started to propose the following change to "my-vans":
@@ -90,4 +90,4 @@ Feature: Review a product draft with reference data
     And I click on the "remove" action of the row which contains "Sole fabric"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Sole fabric should be "Kevlar, Neoprene"
+    Then the product Sole fabric should be "[Kevlar], [Neoprene]"

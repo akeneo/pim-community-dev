@@ -58,7 +58,7 @@ class ReferenceDataPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return (string) $data;
+        return sprintf('[%s]', (string) $data);
     }
 
     /**

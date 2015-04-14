@@ -39,7 +39,7 @@ Feature: Publish a product
     Then the grid should contain 1 elements
     And I should see product red-heels
     Then I am on the "red-heels" published show page
-    And I should see "Red"
-    And I should see "Spandex"
-    And I should see "Neoprene"
-    And I should see "Wool"
+    And I should see "[Red]"
+    And I should see "[Spandex]"
+    And I should see "[Neoprene]"
+    And I should see "[Wool]"
