@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Version normalizer
@@ -14,8 +16,27 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersionNormalizer implements NormalizerInterface
 {
+    /** @var UserManager */
+    protected $userManager;
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var array */
-    protected $supportedFormat = ['array', 'json'];
+    protected $supportedFormats = ['array', 'json', 'internal_api'];
+
+    /** @var array */
+    protected $authorCache = [];
+
+    /**
+     * @param UserManager         $userManager
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(UserManager $userManager, TranslatorInterface $translator)
+    {
+        $this->userManager = $userManager;
+        $this->translator  = $translator;
+    }
 
     /**
      * {@inheritdoc}
@@ -24,7 +45,7 @@ class VersionNormalizer implements NormalizerInterface
     {
         return [
             'id'           => $version->getId(),
-            'author'       => $version->getAuthor(),
+            'author'       => $this->normalizeAuthor($version->getAuthor()),
             'resource_id'  => (string) $version->getResourceId(),
             'snapshot'     => $version->getSnapshot(),
             'changeset'    => $version->getChangeset(),
@@ -40,6 +61,28 @@ class VersionNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Version && in_array($format, $this->supportedFormat);
+        return $data instanceof Version && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * @param string $author
+     *
+     * @return string
+     */
+    protected function normalizeAuthor($author)
+    {
+        if (!isset($this->authorCache[$author])) {
+            $user = $this->userManager->findUserByUsername($author);
+
+            if (null === $user) {
+                $userName = sprintf('%s - %s', $author, $this->translator->trans('Removed user'));
+            } else {
+                $userName = sprintf('%s %s - %s', $user->getFirstName(), $user->getLastName(), $user->getEmail());
+            }
+
+            $this->authorCache[$author] = $userName;
+        }
+
+        return $this->authorCache[$author];
     }
 }

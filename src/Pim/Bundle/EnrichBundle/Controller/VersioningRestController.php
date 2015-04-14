@@ -42,7 +42,7 @@ class VersioningRestController
         return new JsonResponse(
             $this->normalizer->normalize(
                 $this->versionRepository->getLogEntries($this->FQCNResolver->getFQCN($entityType), $entityId),
-                'array'
+                'internal_api'
             )
         );
     }
