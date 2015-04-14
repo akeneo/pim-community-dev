@@ -14,8 +14,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**

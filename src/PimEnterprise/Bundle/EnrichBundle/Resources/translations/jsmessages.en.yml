@@ -29,10 +29,10 @@ pimee_enrich:
                 publish_this_version: Publish this version
                 unpublish: Unpublish
             flash:
-                product_well_unpublished: Product well unpublished
-                product_well_published: Product well published
-                product_not_well_published: Product not well published
-                product_not_well_unpublished: Product not well unpublished
+                product_unpublished: Product successfully unpublished
+                product_published: Product successfully published
+                product_not_published: Product not successfully published
+                product_not_unpublished: Product not successfully unpublished
             meta:
                 published: Published version
     confirmation:

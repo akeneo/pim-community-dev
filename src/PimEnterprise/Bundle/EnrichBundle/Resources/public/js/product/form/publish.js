@@ -60,12 +60,12 @@ define(
                 );
             },
             doPublish: function() {
-                this.togglePublish(true);
+                this.togglePublished(true);
             },
             doUnpublish: function() {
-                this.togglePublish(false);
+                this.togglePublished(false);
             },
-            togglePublish: function (publish) {
+            togglePublished: function (publish) {
                 var productId   = this.getData().meta.id;
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
@@ -79,7 +79,7 @@ define(
                             navigation.addFlashMessage(
                                 'success',
                                 _.__(
-                                    'pimee_enrich.entity.product.flash.product_well_' +
+                                    'pimee_enrich.entity.product.flash.product_' +
                                     (publish ? 'published' : 'unpublished')
                                 )
                             );
@@ -95,7 +95,7 @@ define(
                         navigation.addFlashMessage(
                             'error',
                             _.__(
-                                'pimee_enrich.entity.product.flash.product_not_well_' +
+                                'pimee_enrich.entity.product.flash.product_not_' +
                                 (publish ? 'published' : 'unpublished')
                             )
                         );

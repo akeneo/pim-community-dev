@@ -120,7 +120,7 @@ class PublishedProductRestController
     }
 
     /**
-     * Find a published product by its original product id or return a 404 response
+     * Find a product by its id or return a 404 response
      *
      * @param integer|string $id
      *

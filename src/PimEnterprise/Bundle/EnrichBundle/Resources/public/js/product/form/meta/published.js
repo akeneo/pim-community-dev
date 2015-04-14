@@ -2,12 +2,11 @@
 
 define(
     [
-        'jquery',
         'underscore',
         'pim/form',
         'text!pimee/template/product/meta/published'
     ],
-    function ($, _, BaseForm, formTemplate) {
+    function (_, BaseForm, formTemplate) {
         var FormView = BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
