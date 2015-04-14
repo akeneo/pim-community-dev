@@ -18,17 +18,17 @@ Feature: Submit a modification on reference data for a product draft
     And I visit the "Other" group
 
   Scenario: Successfully propose an simple select reference data change
-    Given I change the "Sole color" to "Green"
+    Given I change the "Sole color" to "[Green]"
     And I save the product
     Then the product "my-vans" should have the following values:
-      | sole_color | Red |
-    But the field Sole color should contain "Green"
+      | sole_color | [Red] |
+    But the field Sole color should contain "[Green]"
     And I should see that Sole color is a modified value
 
   Scenario: Successfully propose a multi reference data change
-    Given I change the "Sole fabric" to "Kevlar,Wool"
+    Given I change the "Sole fabric" to "[Kevlar],[Wool]"
     And I save the product
     Then the product "my-vans" should have the following values:
-      | sole_fabric | Neoprene, Kevlar |
-    But the field Sole fabric should contain "Kevlar, Wool"
+      | sole_fabric | [Neoprene], [Kevlar] |
+    But the field Sole fabric should contain "[Kevlar], [Wool]"
     And I should see that Sole fabric is a modified value

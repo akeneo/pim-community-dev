@@ -74,7 +74,7 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $repository->find(1)->willReturn($blue);
         $attributeRepository->findOneBy(['code' => 'red'])->willReturn($red);
 
-        $renderer->renderDiff('Red', 'Blue')->willReturn('diff between two reference data');
+        $renderer->renderDiff('[Red]', 'Blue')->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn($red);

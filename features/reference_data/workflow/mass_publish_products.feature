@@ -20,7 +20,6 @@ Feature: Publish many products at once
       | yellow-sneakers | Yellow     | Nylon                   |
     And I am logged in as "Julia"
 
-
   Scenario: Successfully publish several products with reference data
     Given I am on the published index page
     Then the grid should contain 0 elements

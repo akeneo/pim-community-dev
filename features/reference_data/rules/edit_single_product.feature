@@ -37,12 +37,12 @@ Feature: Update a single product by applying rules
       | rule_set_heels | lace_fabric | en_US  | mobile | gore-tex, toile, cashmere |
     Given the product rule "rule_set_heels " is executed
     Then the product "red-heels" should have the following values:
-      | sole_color               | orange                    |
-      | sole_fabric              | chiffon, satin, leather   |
-      | cap_color-en_US-mobile   | red                       |
-      | lace_fabric-fr_FR-tablet | cashmere                  |
-      | lace_fabric-en_US-tablet | toile, cashmere           |
-      | lace_fabric-en_US-mobile | gore-tex, toile, cashmere |
+      | sole_color               | [orange]                        |
+      | sole_fabric              | [chiffon], [satin], [leather]   |
+      | cap_color-en_US-mobile   | [red]                           |
+      | lace_fabric-fr_FR-tablet | [cashmere]                      |
+      | lace_fabric-en_US-tablet | [toile], [cashmere]             |
+      | lace_fabric-en_US-mobile | [gore-tex], [toile], [cashmere] |
 
   Scenario: Successfully execute a rule with copier actions to update non empty values on reference data attributes
     Given the following products:
@@ -67,8 +67,8 @@ Feature: Update a single product by applying rules
       | rule_copy_heels | lace_fabric | sole_fabric | fr_FR       |           | tablet     |          |
     Given the product rule "rule_copy_heels " is executed
     Then the product "red-heels" should have the following values:
-      | sole_color               | yellow       |
-      | sole_fabric              | wool, kevlar |
-      | cap_color-en_US-mobile   | yellow       |
-      | cap_color-fr_FR-tablet   | yellow       |
-      | lace_fabric-fr_FR-tablet | wool, kevlar |
+      | sole_color               | [yellow]         |
+      | sole_fabric              | [wool], [kevlar] |
+      | cap_color-en_US-mobile   | [yellow]         |
+      | cap_color-fr_FR-tablet   | [yellow]         |
+      | lace_fabric-fr_FR-tablet | [wool], [kevlar] |
