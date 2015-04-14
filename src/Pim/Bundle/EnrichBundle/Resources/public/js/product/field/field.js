@@ -15,6 +15,12 @@ define([
     return Backbone.View.extend({
         tagName: 'div',
         className: 'field-container',
+        options: {},
+        attributes: function () {
+            return {
+                'data-attribute': this.options ? this.options.code : null
+            };
+        },
         attribute: null,
         fieldType: 'text',
         context: {},
