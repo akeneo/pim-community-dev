@@ -49,7 +49,7 @@ class Fabric extends AbstractReferenceData implements ReferenceDataInterface
     /**
      * Get year
      *
-     * @return int 
+     * @return int
      */
     public function getAlternativeName()
     {

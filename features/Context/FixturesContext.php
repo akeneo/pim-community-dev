@@ -1941,6 +1941,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $type
      * @param string $code
+     * @param string $label
      *
      * @return ReferenceDataInterface
      */
@@ -1966,6 +1967,7 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $code
+     * @param string $label
      *
      * @return Color
      */
@@ -1992,6 +1994,7 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $code
+     * @param string $label
      *
      * @return Fabric
      */

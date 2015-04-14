@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker;
 
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\AbstractReferenceDataUniqueCodeChecker;
