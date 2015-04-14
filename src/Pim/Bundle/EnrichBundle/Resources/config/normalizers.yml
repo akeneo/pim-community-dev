@@ -48,6 +48,9 @@ services:
 
     pim_enrich.normalizer.version:
         class: %pim_enrich.normalizer.version.class%
+        arguments:
+            - '@oro_user.manager'
+            - '@translator'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 
