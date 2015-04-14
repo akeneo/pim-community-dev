@@ -282,9 +282,9 @@ class FamilyController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
-
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->getAttribute() === $attribute) {
+                    $family->removeAttributeRequirement($requirement);
                     $this->getManagerForClass(ClassUtils::getClass($requirement))->remove($requirement);
                 }
             }
