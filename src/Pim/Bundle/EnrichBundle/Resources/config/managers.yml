@@ -1,6 +1,7 @@
 parameters:
-    pim_enrich.manager.sequential_edit.class: Pim\Bundle\EnrichBundle\Manager\SequentialEditManager
-    pim_enrich.manager.mass_edit_job_manager.class: Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager
+    pim_enrich.manager.sequential_edit.class:                     Pim\Bundle\EnrichBundle\Manager\SequentialEditManager
+    pim_enrich.manager.mass_edit_job_manager.class:               Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager
+    pim_enrich.manager.mass_edit_job_configuration_manager.class: Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditConfigurationManager
 
 services:
     pim_enrich.manager.sequential_edit:
@@ -16,6 +17,14 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
+            - '@pim_enrich.manager.mass_edit_job_configuration_manager'
             - '%akeneo_batch.entity.job_execution.class%'
             - %kernel.root_dir%
             - %kernel.environment%
+
+    pim_enrich.manager.mass_edit_job_configuration_manager:
+        class: %pim_enrich.manager.mass_edit_job_configuration_manager.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.completeness_options_resolver'
+            - %pim_enrich.entity.mass_edit.job_configuration.class%

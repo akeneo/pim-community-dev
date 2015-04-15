@@ -8,6 +8,7 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_batch.job_repository'
+            - '@pim_enrich.repository.mass_edit'
             - 'update_product_value'
 
     pim_enrich.mass_edit.add_product_value.reader:
@@ -16,4 +17,5 @@ services:
             - '@pim_catalog.query.product_query_builder_factory'
             - '@doctrine.orm.default_entity_manager'
             - '@akeneo_batch.job_repository'
+            - '@pim_enrich.repository.mass_edit'
             - 'add_product_value'

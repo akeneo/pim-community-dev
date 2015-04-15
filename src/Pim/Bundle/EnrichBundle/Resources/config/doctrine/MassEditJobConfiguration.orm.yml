@@ -1,0 +1,17 @@
+Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration:
+    type: entity
+    table: pim_mass_edit_job_configuration
+    repositoryClass: Pim\Bundle\EnrichBundle\Entity\Repository\MassEdit\MassEditRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        configuration:
+            type: text
+            column: configuration
+    manyToOne:
+        jobExecution:
+            targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobExecution
+            inversedBy: JobExecution

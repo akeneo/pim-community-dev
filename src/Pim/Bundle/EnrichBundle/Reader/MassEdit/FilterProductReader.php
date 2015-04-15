@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -48,24 +49,30 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
     /** @var string */
     protected $massEditType;
 
+    /** @var MassEditRepository */
+    protected $massEditRepository;
+
     /**
      * Constructor
      *
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param EntityManager                       $entityManager
      * @param DoctrineJobRepository               $jobRepository
+     * @param MassEditRepository                  $massEditRepository
      * @param string                              $massEditType
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         EntityManager $entityManager,
         DoctrineJobRepository $jobRepository,
+        MassEditRepository $massEditRepository,
         $massEditType
     ) {
-        $this->pqbFactory    = $pqbFactory;
-        $this->entityManager = $entityManager;
-        $this->jobRepository = $jobRepository;
-        $this->massEditType  = $massEditType;
+        $this->pqbFactory         = $pqbFactory;
+        $this->entityManager      = $entityManager;
+        $this->jobRepository      = $jobRepository;
+        $this->massEditType       = $massEditType;
+        $this->massEditRepository = $massEditRepository;
     }
 
     /**
@@ -185,8 +192,9 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
             ->getRepository('AkeneoBatchBundle:JobInstance')
             ->findOneByCode($this->massEditType);
 
-        $configuration = $jobInstance->getJobExecutions()->last()->getConfiguration();
-        $configuration = json_decode(stripcslashes($configuration), true);
+        $jobExecution = $jobInstance->getJobExecutions()->last();
+        $configuration = $this->massEditRepository->findOneByJobExecution($jobExecution);
+        $configuration = json_decode(stripcslashes($configuration->getConfiguration()), true);
 
         return $configuration;
     }

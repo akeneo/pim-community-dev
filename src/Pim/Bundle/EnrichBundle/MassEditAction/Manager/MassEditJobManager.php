@@ -33,27 +33,33 @@ class MassEditJobManager
     /**  @var ObjectManager */
     protected $objectManager;
 
+    /** @var MassEditConfigurationManager */
+    protected $massEditConfManager;
+
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $jobExecutionClass
-     * @param string                   $rootDir
-     * @param string                   $environment
+     * @param ObjectManager                $objectManager
+     * @param EventDispatcherInterface     $eventDispatcher
+     * @param MassEditConfigurationManager $massEditConfManager
+     * @param string                       $jobExecutionClass
+     * @param string                       $rootDir
+     * @param string                       $environment
      */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
+        MassEditConfigurationManager $massEditConfManager,
         $jobExecutionClass,
         $rootDir,
         $environment
     ) {
-        $this->rootDir           = $rootDir;
-        $this->environment       = $environment;
-        $this->eventDispatcher   = $eventDispatcher;
-        $this->jobExecutionClass = $jobExecutionClass;
-        $this->objectManager     = $objectManager;
+        $this->rootDir             = $rootDir;
+        $this->environment         = $environment;
+        $this->eventDispatcher     = $eventDispatcher;
+        $this->jobExecutionClass   = $jobExecutionClass;
+        $this->objectManager       = $objectManager;
+        $this->massEditConfManager = $massEditConfManager;
     }
 
     /**
@@ -66,6 +72,8 @@ class MassEditJobManager
     public function launchJob(JobInstance $jobInstance, UserInterface $user, $rawConfiguration)
     {
         $jobExecution = $this->create($jobInstance, $user, $rawConfiguration);
+        $this->massEditConfManager->create($jobExecution, $rawConfiguration);
+
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
@@ -94,18 +102,15 @@ class MassEditJobManager
     /**
      * Instantiate a new job execution
      *
-     * @param JobInstance   $jobInstance
-     * @param UserInterface $user
-     * @param               $rawConfiguration
+     * @param JobInstance $jobInstance
      *
      * @return JobExecution
      */
-    protected function create(JobInstance $jobInstance, UserInterface $user, $rawConfiguration)
+    protected function create(JobInstance $jobInstance, UserInterface $user)
     {
         $jobExecution = new $this->jobExecutionClass();
 
         $jobExecution->setJobInstance($jobInstance)->setUser($user->getUsername());
-        $jobExecution->setConfiguration($rawConfiguration);
         $this->objectManager->persist($jobExecution);
         $this->objectManager->flush($jobExecution);
 

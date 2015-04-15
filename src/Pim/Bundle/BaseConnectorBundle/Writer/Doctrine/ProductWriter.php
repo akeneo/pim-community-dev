@@ -42,9 +42,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var BulkSaverInterface */
     protected $productSaver;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
     /**
      * Constructor
      *
@@ -52,20 +49,17 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param CacheClearer            $cacheClearer
      * @param VersionManager          $versionManager
      * @param BulkSaverInterface          $productSaver
-     * @param ObjectDetacherInterface $objectDetacher
      */
     public function __construct(
         MediaManager $mediaManager,
         CacheClearer $cacheClearer,
         VersionManager $versionManager,
-        BulkSaverInterface $productSaver,
-        ObjectDetacherInterface $objectDetacher
+        BulkSaverInterface $productSaver
     ) {
         $this->mediaManager   = $mediaManager;
         $this->cacheClearer   = $cacheClearer;
         $this->versionManager = $versionManager;
         $this->productSaver   = $productSaver;
-        $this->objectDetacher = $objectDetacher;
     }
 
     /**
@@ -117,9 +111,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->productSaver->saveAll($items, ['recalculate' => false]);
 
         $this->cacheClearer->clear();
-        foreach ($items as $item) {
-            $this->objectDetacher->detach($item);
-        }
     }
 
     /**
