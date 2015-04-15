@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Factory;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use PhpSpec\ObjectBehavior;
 
-class MassEditConfigurationFactorySpec extends ObjectBehavior
+class MassEditJobConfigurationFactorySpec extends ObjectBehavior
 {
     const MASS_EDIT_JOB_CONFIGURATION_CLASS = 'Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration';
 

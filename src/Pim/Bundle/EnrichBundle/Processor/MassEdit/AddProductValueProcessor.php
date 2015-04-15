@@ -43,12 +43,12 @@ class AddProductValueProcessor extends AbstractMassEditProcessor implements Item
         $this->addData($product, $actions);
         $violations = $this->validator->validate($product);
 
-        if (0 < $violations->count()) {
+        if (0 === $violations->count()) {
+            $this->stepExecution->incrementSummaryInfo('mass_edited');
+        } else {
             $this->addWarningMessage($violations, $product);
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             return null;
-        } else {
-            $this->stepExecution->incrementSummaryInfo('mass_edited');
         }
 
         return $product;

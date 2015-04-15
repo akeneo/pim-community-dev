@@ -16,7 +16,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
-            - '@pim_enrich.factory.mass_edit.configuration'
+            - '@pim_enrich.factory.mass_edit.job_configuration'
             - '@pim_enrich.saver.mass_edit.configuration'
             - '%akeneo_batch.entity.job_execution.class%'
             - %kernel.root_dir%

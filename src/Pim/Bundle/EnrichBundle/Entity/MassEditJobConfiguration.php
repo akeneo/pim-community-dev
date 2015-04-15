@@ -26,7 +26,7 @@ class MassEditJobConfiguration
      * @param JobExecution $jobExecution
      * @param string       $configuration
      */
-    function __construct($jobExecution, $configuration)
+    public function __construct($jobExecution, $configuration)
     {
         $this->jobExecution  = $jobExecution;
         $this->configuration = $configuration;

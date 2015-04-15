@@ -188,11 +188,7 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
      */
     protected function getJobConfiguration()
     {
-        $jobInstance = $this->jobRepository->getJobManager()
-            ->getRepository('AkeneoBatchBundle:JobInstance')
-            ->findOneByCode($this->massEditType);
-
-        $jobExecution    = $jobInstance->getJobExecutions()->last();
+        $jobExecution    = $this->stepExecution->getJobExecution();
         $massEditJobConf = $this->massEditRepository->findOneByJobExecution($jobExecution);
         $configuration   = json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
 

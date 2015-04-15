@@ -42,17 +42,19 @@ class FilterProductReaderSpec extends ObjectBehavior
         MyCustomMassEditRepository $massEditRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
+        StepExecution $stepExecution,
         MassEditJobConfiguration $massEditJobConf,
         ProductQueryBuilderFactory $pqbFactory,
         ProductQueryBuilder $pqb,
         StepExecution $stepExecution,
         Cursor $cursor,
         ProductInterface $product,
-        MyCustomEntityRepository $test
+        MyCustomEntityRepository $customEntityRepository
     ) {
         $jobRepository->getJobManager()->willReturn($entityManager);
-        $entityManager->getRepository('AkeneoBatchBundle:JobInstance')->willReturn($test);
-        $test->findOneByCode('update_product_value')->willReturn($jobInstance);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+
+        $customEntityRepository->findOneByCode('update_product_value')->willReturn($jobInstance);
 
         $jobInstance->getJobExecutions()->willReturn(new ArrayCollection([$jobExecution]));
         $massEditRepository->findOneByJobExecution($jobExecution)->willReturn($massEditJobConf);

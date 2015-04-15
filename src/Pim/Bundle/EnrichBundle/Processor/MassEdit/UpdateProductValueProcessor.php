@@ -2,14 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductHandler;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -47,12 +42,12 @@ class UpdateProductValueProcessor extends AbstractMassEditProcessor implements I
         $this->setData($product, $actions);
         $violations = $this->validator->validate($product);
 
-        if (0 < $violations->count()) {
+        if (0 === $violations->count()) {
+            $this->stepExecution->incrementSummaryInfo('mass_edited');
+        } else {
             $this->addWarningMessage($violations, $product);
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             return null;
-        } else {
-            $this->stepExecution->incrementSummaryInfo('mass_edited');
         }
 
         return $product;

@@ -12,7 +12,7 @@ use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditConfigurationFactory
+class MassEditJobConfigurationFactory
 {
     /** @var string */
     protected $massEditJobConfClass;
@@ -20,7 +20,7 @@ class MassEditConfigurationFactory
     /**
      * @param string $massEditJobConfClass
      */
-    function __construct($massEditJobConfClass)
+    public function __construct($massEditJobConfClass)
     {
         $this->massEditJobConfClass = $massEditJobConfClass;
     }

@@ -106,13 +106,13 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->parametersParser      = $parametersParser;
-        $this->gridFilterAdapter     = $gridFilterAdapter;
-        $this->massEditJobManager    = $massEditJobManager;
-        $this->jobRepository         = $jobRepository;
-        $this->connectorRegistry     = $connectorRegistry;
-        $this->operationRegistry     = $operationRegistry;
-        $this->massEditFormResolver  = $massEditFormResolver;
+        $this->parametersParser     = $parametersParser;
+        $this->gridFilterAdapter    = $gridFilterAdapter;
+        $this->massEditJobManager   = $massEditJobManager;
+        $this->jobRepository        = $jobRepository;
+        $this->connectorRegistry    = $connectorRegistry;
+        $this->operationRegistry    = $operationRegistry;
+        $this->massEditFormResolver = $massEditFormResolver;
     }
 
     /**

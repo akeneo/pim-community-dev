@@ -26,7 +26,7 @@ class MassEditConfigurationSaver implements SaverInterface
      * @param ObjectManager                  $objectManager
      * @param SavingOptionsResolverInterface $optionsResolver
      */
-    function __construct(ObjectManager $objectManager, SavingOptionsResolverInterface $optionsResolver)
+    public function __construct(ObjectManager $objectManager, SavingOptionsResolverInterface $optionsResolver)
     {
         $this->objectManager   = $objectManager;
         $this->optionsResolver = $optionsResolver;
