@@ -33,9 +33,9 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      */
     public function normalize($completenesses, $format = null, array $context = array())
     {
-        foreach ($completenesses as $channel => $locales) {
-            foreach ($locales as $locale => $completeness) {
-                $completenesses[$channel][$locale] = $this->normalizeCompleteness($completeness);
+        foreach ($completenesses as $locale => $channels) {
+            foreach ($channels['channels'] as $channel => $completeness) {
+                $completenesses[$locale]['channels'][$channel] = $this->normalizeCompleteness($completeness);
             }
         }
 

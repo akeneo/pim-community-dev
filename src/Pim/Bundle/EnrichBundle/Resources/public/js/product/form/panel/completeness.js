@@ -7,10 +7,11 @@ define(
         'pim/form',
         'pim/completeness-manager',
         'text!pim/template/product/panel/completeness',
+        'pim/config-manager',
         'pim/i18n',
         'oro/mediator'
     ],
-    function ($, _, BaseForm, CompletenessManager, template, i18n, mediator) {
+    function ($, _, BaseForm, CompletenessManager, template, ConfigManager, i18n, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -28,16 +29,19 @@ define(
             },
             render: function () {
                 if (this.getRoot().model.get('meta')) {
-                    CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id)
-                        .done(_.bind(function (completenesses) {
-                            this.$el.html(
-                                this.template({
-                                    completenesses: completenesses,
-                                    i18n: i18n
-                                })
-                            );
-                            this.delegateEvents();
-                        }, this));
+                    $.when(
+                        CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id),
+                        ConfigManager.getEntityList('locales')
+                    ).done(_.bind(function (completenesses, locales) {
+                        this.$el.html(
+                            this.template({
+                                completenesses: completenesses,
+                                i18n: i18n,
+                                locales: locales
+                            })
+                        );
+                        this.delegateEvents();
+                    }, this));
                 }
 
                 return this;

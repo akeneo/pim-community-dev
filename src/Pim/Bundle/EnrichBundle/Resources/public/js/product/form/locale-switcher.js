@@ -6,9 +6,10 @@ define(
         'pim/form',
         'text!pim/template/product/locale-switcher',
         'pim/config-manager',
+        'pim/user-context',
         'pim/i18n'
     ],
-    function (_, BaseForm, template, ConfigManager, i18n) {
+    function (_, BaseForm, template, ConfigManager, usercontext, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group locale-switcher',
@@ -18,12 +19,12 @@ define(
             render: function () {
                 ConfigManager.getEntityList('locales').done(_.bind(function (locales) {
                     if (!this.getParent().getLocale()) {
-                        this.getParent().setLocale('en_US', {silent: true});
+                        this.getParent().setLocale(usercontext.getUserContext().get('catalogLocale'), {silent: true});
                     }
                     this.$el.html(
                         this.template({
                             locales: locales,
-                            currentLocale: this.getParent().getLocale(),
+                            currentLocale: _.findWhere(locales, {code: this.getParent().getLocale()}),
                             i18n: i18n
                         })
                     );
