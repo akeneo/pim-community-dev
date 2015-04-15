@@ -171,10 +171,17 @@ class CompletenessManager
                 $entities
             );
         };
-        $localeTemplate = array_fill_keys($getCodes($locales), array('completeness' => null, 'missing' => array()));
         $channelCodes = $getCodes($channels) ;
         $localeCodes = $getCodes($locales) ;
-        $completenesses = array_fill_keys($channelCodes, $localeTemplate);
+        $channelTemplate = [
+            'channels'     => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
+            'stats' => [
+                'ratio'    => 0,
+                'total'    => 0,
+                'complete' => 0
+            ]
+        ];
+        $completenesses = array_fill_keys($localeCodes, $channelTemplate);
 
         if (!$family) {
             return $completenesses;
@@ -184,8 +191,13 @@ class CompletenessManager
         foreach ($allCompletenesses as $completeness) {
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
-            $completenesses[$channel->getCode()][$locale->getCode()]['completeness'] = $completeness;
+            $completenesses[$locale->getCode()]['channels'][$channel->getCode()]['completeness'] = $completeness;
+            $completenesses[$locale->getCode()]['stats']['total']++;
+            $completenesses[$locale->getCode()]['stats']['complete'] = (0 === $completeness->getMissingCount()) ?
+                $completenesses[$locale->getCode()]['stats']['complete'] + 1 :
+                $completenesses[$locale->getCode()]['stats']['complete'];
         }
+
         $requirements = $this->familyRepository
             ->getFullRequirementsQB($family, $localeCode)
             ->getQuery()
@@ -227,7 +239,7 @@ class CompletenessManager
                 $missing = true;
             }
             if ($missing) {
-                $completenesses[$channel->getCode()][$localeCode]['missing'][] = $attribute;
+                $completenesses[$localeCode]['channels'][$channel->getCode()]['missing'][] = $attribute;
             }
         }
     }
