@@ -103,10 +103,11 @@ class EditCommonAttributesHandler extends BaseHandler
             } else {
                 $this->stepExecution->addWarning(
                     $this->getName(),
-                    'pim_enrich.mass_edit_action.publish.message.error',
+                    'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
                     [],
                     $product
                 );
+                $this->stepExecution->incrementSummaryInfo('skipped_products');
             }
         }
 
