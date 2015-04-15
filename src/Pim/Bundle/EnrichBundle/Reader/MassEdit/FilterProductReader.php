@@ -71,8 +71,8 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
         $this->pqbFactory         = $pqbFactory;
         $this->entityManager      = $entityManager;
         $this->jobRepository      = $jobRepository;
-        $this->massEditType       = $massEditType;
         $this->massEditRepository = $massEditRepository;
+        $this->massEditType       = $massEditType;
     }
 
     /**
@@ -192,9 +192,9 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
             ->getRepository('AkeneoBatchBundle:JobInstance')
             ->findOneByCode($this->massEditType);
 
-        $jobExecution = $jobInstance->getJobExecutions()->last();
-        $configuration = $this->massEditRepository->findOneByJobExecution($jobExecution);
-        $configuration = json_decode(stripcslashes($configuration->getConfiguration()), true);
+        $jobExecution    = $jobInstance->getJobExecutions()->last();
+        $massEditJobConf = $this->massEditRepository->findOneByJobExecution($jobExecution);
+        $configuration   = json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
 
         return $configuration;
     }

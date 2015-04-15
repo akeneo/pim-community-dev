@@ -12,11 +12,6 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
-/**
- * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
 class AddProductValueProcessorSpec extends ObjectBehavior
 {
     function let(ProductUpdaterInterface $productUpdater, ValidatorInterface $validator)
