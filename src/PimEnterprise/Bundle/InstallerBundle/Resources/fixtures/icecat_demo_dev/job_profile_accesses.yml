@@ -58,3 +58,5 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     unpublish_product:
         executeJobProfile: [IT support, Manager, Redactor]
+    edit_common_attributes:
+        executeJobProfile: [IT support, Manager, Redactor]

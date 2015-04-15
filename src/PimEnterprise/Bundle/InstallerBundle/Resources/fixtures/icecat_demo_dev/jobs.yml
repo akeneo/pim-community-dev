@@ -200,3 +200,8 @@ jobs:
         alias:     unpublish_product
         label:     Mass unpublish products
         type:      mass_edit
+    edit_common_attributes:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes
+        label:     Mass edit common product attributes
+        type:      mass_edit
