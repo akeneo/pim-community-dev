@@ -71,7 +71,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param NormalizerInterface          $normalizer
      * @param MediaManager                 $mediaManager
      * @param ProductMassActionManager     $massActionManager
-     * @param                              $uploadDir
+     * @param string                       $uploadDir
      */
     public function __construct(
         ProductBuilder $productBuilder,

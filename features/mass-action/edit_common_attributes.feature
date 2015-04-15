@@ -23,7 +23,7 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Allow editing all attributes on configure screen
+  Scenario: Allow editing all attributes on configuration screen
     Given I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
