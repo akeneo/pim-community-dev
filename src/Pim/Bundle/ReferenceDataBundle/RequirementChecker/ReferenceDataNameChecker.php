@@ -25,7 +25,7 @@ class ReferenceDataNameChecker implements CheckerInterface
 
         if (1 === preg_match("/[^A-Za-z]/", $name)) {
             $this->failure = sprintf('Please use a proper name instead of "%s" for your Reference Data.', $name);
-            
+
             return false;
         }
 

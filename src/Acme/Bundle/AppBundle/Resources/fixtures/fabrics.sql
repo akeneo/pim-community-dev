@@ -1,4 +1,4 @@
-INSERT INTO Fabric(code,name,alternativeName,sortOrder) VALUES
+INSERT INTO acme_reference_data_fabric(code,name,alternativeName,sortOrder) VALUES
 ('aertex','Aertex',null,'18034'),
 ('airdura','Airdura',null,'657'),
 ('airguard','Airguard',null,'31570'),

@@ -207,8 +207,8 @@ class Color extends AbstractReferenceData implements ReferenceDataInterface
     /**
      * {@inheritdoc}
      */
-    public function getType()
+    public static function getLabelProperty()
     {
-        return 'color';
+        return 'name';
     }
 }

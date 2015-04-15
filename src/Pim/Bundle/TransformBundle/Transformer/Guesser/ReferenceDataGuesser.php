@@ -34,7 +34,7 @@ class ReferenceDataGuesser implements GuesserInterface
     public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
     {
         if ('referenceDataName' !== $columnInfo->getPropertyPath()) {
-            return;
+            return null;
         }
 
         return [$this->transformer, []];

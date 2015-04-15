@@ -31,6 +31,7 @@ class ProductValue extends PimProductValue
     public function __construct()
     {
         parent::__construct();
+
         $this->fabrics = new ArrayCollection();
     }
 

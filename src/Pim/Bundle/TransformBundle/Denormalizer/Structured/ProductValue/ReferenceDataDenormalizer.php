@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
@@ -13,18 +13,19 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
  */
 class ReferenceDataDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var ReferenceDataRepositoryResolver */
+    /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
     /**
-     * @param array                           $supportedTypes
-     * @param ReferenceDataRepositoryResolver $repositoryResolver
+     * @param array                                    $supportedTypes
+     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
      */
     public function __construct(
         array $supportedTypes,
-        ReferenceDataRepositoryResolver $repositoryResolver = null
+        ReferenceDataRepositoryResolverInterface $repositoryResolver = null
     ) {
         parent::__construct($supportedTypes);
+
         $this->repositoryResolver = $repositoryResolver;
     }
 

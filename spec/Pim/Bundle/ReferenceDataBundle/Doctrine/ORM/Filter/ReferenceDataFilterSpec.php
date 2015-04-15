@@ -56,7 +56,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->getCode()->willReturn('color');
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $qb->expr()->willReturn(new Expr());
 
         $qb->innerJoin('r.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -90,7 +90,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
 
         $idResolver->resolve('color', ['red', 'blue'])->willReturn([1, 2]);
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $qb->expr()->willReturn(new Expr());
 
         $qb->innerJoin('r.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();
@@ -118,7 +118,7 @@ class ReferenceDataFilterSpec extends ObjectBehavior
         $attribute->getReferenceDataName()->willReturn('color');
         $attribute->getCode()->willReturn('color');
 
-        $qb->getRootAlias()->willReturn('r');
+        $qb->getRootAliases()->willReturn(['r']);
         $qb->expr()->willReturn(new Expr());
 
         $qb->leftJoin('r.values', Argument::any(), 'WITH', Argument::any())->shouldBeCalled();

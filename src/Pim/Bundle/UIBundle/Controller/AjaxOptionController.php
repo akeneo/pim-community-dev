@@ -53,6 +53,13 @@ class AjaxOptionController
                 $query->get('search'),
                 $query->get('options', [])
             );
+        } elseif (method_exists($repository, 'getOptions')) {
+            $choices = $repository->getOptions(
+                $query->get('dataLocale'),
+                $query->get('collectionId'),
+                $query->get('search'),
+                $query->get('options', [])
+            );
         } else {
             throw new \LogicException(
                 sprintf(

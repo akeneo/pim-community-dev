@@ -5,12 +5,12 @@ namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Structured\ProductValue;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 class ReferenceDataDenormalizerSpec extends ObjectBehavior
 {
-    function let(ReferenceDataRepositoryResolver $resolver)
+    function let(ReferenceDataRepositoryResolverInterface $resolver)
     {
         $this->beConstructedWith(['pim_reference_data_simpleselect'], $resolver);
     }

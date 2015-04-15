@@ -11,8 +11,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Prophecy\Argument;
 
 class ReferenceDataCollectionSetterSpec extends ObjectBehavior
@@ -20,7 +20,7 @@ class ReferenceDataCollectionSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         AttributeValidatorHelper $attrValidatorHelper,
-        ReferenceDataRepositoryResolver $repositoryResolver
+        ReferenceDataRepositoryResolverInterface $repositoryResolver
     ) {
         $this->beConstructedWith(
             $builder,

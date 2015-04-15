@@ -53,10 +53,10 @@ class ReferenceDataSorter implements AttributeSorterInterface
         $aliasPrefix = 'sorter';
 
         // join to values
-        $joinAlias   = $aliasPrefix.'V'.$attribute->getCode();
+        $joinAlias = $aliasPrefix . 'V' . $attribute->getCode();
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias, $locale, $scope);
         $this->qb->leftJoin(
-            $this->qb->getRootAlias().'.values',
+            current($this->qb->getRootAliases()) . '.values',
             $joinAlias,
             'WITH',
             $condition
@@ -64,10 +64,10 @@ class ReferenceDataSorter implements AttributeSorterInterface
 
         // join to reference data
         $joinAliasOpt = $attribute->getCode();
-        $this->qb->leftJoin($joinAlias.'.'.$attribute->getReferenceDataName(), $joinAliasOpt);
+        $this->qb->leftJoin($joinAlias . '.' . $attribute->getReferenceDataName(), $joinAliasOpt);
 
         $this->qb->addOrderBy($joinAliasOpt . '.code', $direction);
-        $idField = $this->qb->getRootAlias().'.id';
+        $idField = current($this->qb->getRootAliases()) . '.id';
         $this->qb->addOrderBy($idField);
 
         return $this;
@@ -80,7 +80,7 @@ class ReferenceDataSorter implements AttributeSorterInterface
     {
         $referenceDataName = $attribute->getReferenceDataName();
 
-        return null !== $referenceDataName && null !== $this->registry->get($referenceDataName) ? true : false;
+        return null !== $referenceDataName && null !== $this->registry->get($referenceDataName);
     }
 
     /**

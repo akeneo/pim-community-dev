@@ -266,6 +266,11 @@ pim_enrich:
                 title: Updated by a variant group
                 content: This field is updated by the following variant group
 
+    reference_data:
+        empty_value:
+            reference_data_type:
+                label: Choose the reference data type
+
 # Entity and page header titles
 attribute:
     title:    attribute
@@ -583,7 +588,6 @@ Choose a color:                      Choose a color
 Search:                              Search
 Choose the attribute type:           Choose the attribute type
 Choose the attribute group:          Choose the attribute group
-Choose the reference data type:      Choose the reference data type
 Drop a file or click here:           Drop a file or click here
 Drop an image or click here:         Drop an image or click here
 Automatic option sorting:            Automatic option sorting

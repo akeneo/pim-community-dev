@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use Doctrine\Common\Persistence\ObjectManager;

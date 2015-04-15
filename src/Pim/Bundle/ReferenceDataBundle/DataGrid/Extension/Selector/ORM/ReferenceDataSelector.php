@@ -92,8 +92,9 @@ class ReferenceDataSelector implements SelectorInterface
     {
         $qbJoin = [];
         $joins = $qb->getDQLPart('join');
-        if (isset($joins[$qb->getRootAlias()])) {
-            foreach ($joins[$qb->getRootAlias()] as $join) {
+        $rootAlias = current($qb->getRootAliases());
+        if (isset($joins[$rootAlias])) {
+            foreach ($joins[$rootAlias] as $join) {
                 $qbJoin[] = $join->getAlias();
             }
         }

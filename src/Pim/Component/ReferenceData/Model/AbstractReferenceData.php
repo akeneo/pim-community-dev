@@ -67,8 +67,25 @@ abstract class AbstractReferenceData implements ReferenceDataInterface
     /**
      * {@inheritdoc}
      */
+    public static function getLabelProperty()
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __toString()
     {
-        return '[' . $this->code . ']';
+        if (null !== $labelProperty = $this->getLabelProperty()) {
+            $getter = 'get' . ucfirst($labelProperty);
+            $label = $this->$getter();
+
+            if (!empty($label)) {
+                return $label;
+            }
+        }
+
+        return sprintf('[%s]', $this->code);
     }
 }

@@ -124,7 +124,7 @@ class ReferenceDataAttributeCopier extends AbstractAttributeCopier
     {
         $method = MethodNameGuesser::guess($type, $attribute->getReferenceDataName(), true);
 
-        if (false === method_exists($value, $method)) {
+        if (!method_exists($value, $method)) {
             throw new \LogicException(
                 sprintf('ProductValue method "%s" is not implemented', $method)
             );

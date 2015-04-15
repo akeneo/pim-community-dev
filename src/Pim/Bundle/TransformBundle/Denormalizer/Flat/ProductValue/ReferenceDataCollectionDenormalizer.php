@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 /**
@@ -15,14 +15,15 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 class ReferenceDataCollectionDenormalizer extends AbstractValueDenormalizer
 {
     /**
-     * @param array                           $supportedTypes
-     * @param ReferenceDataRepositoryResolver $repositoryResolver
+     * @param array                                    $supportedTypes
+     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
      */
     public function __construct(
         array $supportedTypes,
-        ReferenceDataRepositoryResolver $repositoryResolver = null
+        ReferenceDataRepositoryResolverInterface $repositoryResolver = null
     ) {
         parent::__construct($supportedTypes);
+
         $this->repositoryResolver = $repositoryResolver;
     }
 

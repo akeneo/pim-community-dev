@@ -35,6 +35,7 @@ class ReferenceDataMultiSelectType extends AbstractAttributeType
         ConfigurationRegistryInterface $registry
     ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
+
         $this->referenceDataRegistry = $registry;
     }
 
@@ -75,10 +76,10 @@ class ReferenceDataMultiSelectType extends AbstractAttributeType
                 'name'      => 'reference_data_name',
                 'fieldType' => 'choice',
                 'options'   => [
-                    'choices'     => $this->getReferenceDataChoices(),
+                    'choices'     => $this->getReferenceDataTypeChoices(),
                     'required'    => true,
                     'multiple'    => false,
-                    'empty_value' => 'Choose the reference data type',
+                    'empty_value' => 'pim_enrich.reference_data.empty_value.reference_data_type.label',
                     'select2'     => true
                 ],
             ]
@@ -96,7 +97,7 @@ class ReferenceDataMultiSelectType extends AbstractAttributeType
     /**
      * @return array
      */
-    protected function getReferenceDataChoices()
+    protected function getReferenceDataTypeChoices()
     {
         $choices = [];
 

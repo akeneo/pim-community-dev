@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
  * Transforms reference data codes to IDs.
@@ -13,13 +14,13 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 class ReferenceDataIdResolver
 {
-    /** @var ReferenceDataRepositoryResolver */
+    /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
     /**
-     * @param ReferenceDataRepositoryResolver $repositoryResolver
+     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
      */
-    public function __construct(ReferenceDataRepositoryResolver $repositoryResolver)
+    public function __construct(ReferenceDataRepositoryResolverInterface $repositoryResolver)
     {
         $this->repositoryResolver = $repositoryResolver;
     }

@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\MethodNameGuesser;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -18,19 +18,19 @@ use Pim\Component\ReferenceData\MethodNameGuesser;
  */
 class ReferenceDataCollectionSetter extends AbstractAttributeSetter
 {
-    /** @var ReferenceDataRepositoryResolver */
+    /** @var ReferenceDataRepositoryResolverInterface */
     protected $repositoryResolver;
 
     /**
-     * @param ProductBuilderInterface         $productBuilder
-     * @param AttributeValidatorHelper        $attrValidatorHelper
-     * @param ReferenceDataRepositoryResolver $repositoryResolver
-     * @param array                           $supportedTypes
+     * @param ProductBuilderInterface                   $productBuilder
+     * @param AttributeValidatorHelper                  $attrValidatorHelper
+     * @param ReferenceDataRepositoryResolverInterface  $repositoryResolver
+     * @param array                                     $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        ReferenceDataRepositoryResolver $repositoryResolver,
+        ReferenceDataRepositoryResolverInterface $repositoryResolver,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
@@ -143,9 +143,9 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         $removeMethod = MethodNameGuesser::guess('remove', $referenceDataName, true);
         $getMethod = MethodNameGuesser::guess('get', $referenceDataName);
 
-        if (false === method_exists($value, $addMethod) ||
-            false === method_exists($value, $removeMethod) ||
-            false === method_exists($value, $getMethod)
+        if (!method_exists($value, $addMethod) ||
+            !method_exists($value, $removeMethod) ||
+            !method_exists($value, $getMethod)
         ) {
             throw new \LogicException(
                 sprintf(

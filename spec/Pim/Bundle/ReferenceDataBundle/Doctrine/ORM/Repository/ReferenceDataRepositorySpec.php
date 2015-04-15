@@ -20,18 +20,21 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
 
     function let(
         EntityManager $em,
-        Connection $connection,
-        ClassMetadata $classMetadata
+        Connection $connection
     ) {
+        $classMetadata = new ClassMetadata('Acme\Bundle\AppBundle\Entity\Color');
         $em->getConnection()->willReturn($connection);
         $this->beConstructedWith($em, $classMetadata);
     }
 
     function it_finds_the_reference_data_for_an_empty_search($em, QueryBuilder $qb, AbstractQuery $query)
     {
+        $select = 'rd.id as id, ' .
+            'CASE WHEN rd.name IS NULL OR rd.name = \'\' THEN CONCAT(\'[\', rd.code, \']\') ELSE rd.name END AS text';
+
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
-        $qb->select('rd.id as id, CONCAT(\'[\', rd.code, \']\') as text')->willReturn($qb);
+        $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('rd.code')->willReturn($qb);
@@ -45,14 +48,17 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
 
     function it_finds_the_reference_data_for_a_search($em, QueryBuilder $qb, AbstractQuery $query)
     {
+        $select = 'rd.id as id, ' .
+            'CASE WHEN rd.name IS NULL OR rd.name = \'\' THEN CONCAT(\'[\', rd.code, \']\') ELSE rd.name END AS text';
+
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
-        $qb->select('rd.id as id, CONCAT(\'[\', rd.code, \']\') as text')->willReturn($qb);
+        $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('rd.code')->willReturn($qb);
-        $qb->andWhere('rd.code LIKE :search')->willReturn($qb);
-        $qb->setParameter('search', 'my-search%')->willReturn($qb);
+        $qb->andWhere('rd.code LIKE :search OR rd.name LIKE :search')->willReturn($qb);
+        $qb->setParameter('search', '%my-search%')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 
@@ -63,14 +69,17 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
 
     function it_finds_the_reference_data_third_page_of_a_search($em, QueryBuilder $qb, AbstractQuery $query)
     {
+        $select = 'rd.id as id, ' .
+            'CASE WHEN rd.name IS NULL OR rd.name = \'\' THEN CONCAT(\'[\', rd.code, \']\') ELSE rd.name END AS text';
+
         $em->createQueryBuilder()->willReturn($qb);
         $qb->select('rd')->willReturn($qb);
-        $qb->select('rd.id as id, CONCAT(\'[\', rd.code, \']\') as text')->willReturn($qb);
+        $qb->select($select)->willReturn($qb);
         $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
         $qb->orderBy('rd.sortOrder', 'DESC')->willReturn($qb);
         $qb->addOrderBy('rd.code')->willReturn($qb);
-        $qb->andWhere('rd.code LIKE :search')->willReturn($qb);
-        $qb->setParameter('search', 'my-search%')->willReturn($qb);
+        $qb->andWhere('rd.code LIKE :search OR rd.name LIKE :search')->willReturn($qb);
+        $qb->setParameter('search', '%my-search%')->willReturn($qb);
 
         $qb->getQuery()->willReturn($query);
 

@@ -244,8 +244,8 @@ class Color implements ReferenceDataInterface
     public function getId() { }
     public function getCode() { }
     public function setCode($code) { }
-    public function getType() { }
     public function getSortOrder() { }
+    public static function getLabelProperty() { }
     public function __toString() { }
 }
 

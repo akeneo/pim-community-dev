@@ -1,4 +1,4 @@
-INSERT INTO Color(code,name,hex,red,green,blue,hue,hslSaturation,light,hsvSaturation,value,sortOrder) VALUES
+INSERT INTO acme_reference_data_color(code,name,hex,red,green,blue,hue,hslSaturation,light,hsvSaturation,value,sortOrder) VALUES
 ('bright-lilac', 'Bright Lilac', '#D891EF', '85', '57', '94', '285', '75', '75', '39', '94', '18034'),
 ('bright-maroon', 'Bright Maroon', '#C32148', '76', '13', '28', '346', '71', '45', '83', '76', '657'),
 ('bright-navy-blue', 'Bright Navy Blue', '#1974D2', '10', '45', '82', '210', '79', '46', '88', '82', '31570'),

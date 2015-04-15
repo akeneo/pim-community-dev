@@ -34,21 +34,28 @@ Feature: Editing attribute values of a variant group also updates products with 
     And I visit the "Attributes" tab
 
   Scenario: Change a pim_reference_data_simpleselect attribute of a variant group
-    Given the following "heel_color" attribute reference data: ABJP44823, APC40
+    Given the following reference data:
+      | type  | code      | label |
+      | color | ABJP44823 | Red   |
+      | color | APC40     |       |
     When I add available attributes Heel color
     And I visit the "Other" group
-    And I change the "Heel color" to "ABJP44823"
+    And I change the "Heel color" to "Red"
     And I save the variant group
     And I am on the "boot" product page
     And I visit the "Other" group
-    Then the product Heel color should be "[ABJP44823]"
+    Then the product Heel color should be "Red"
 
   Scenario: Change a pim_reference_data_multiselect attribute of a variant group
-    Given the following "sole_fabric" attribute reference data: Gold, Smooth and Crispy
+    Given the following reference data:
+      | type   | code   | label  |
+      | fabric | gold   | Gold   |
+      | fabric | smooth |        |
+      | fabric | crispy | Crispy |
     When I add available attributes Sole fabric
     And I visit the "Other" group
-    And I change the "Sole fabric" to "Gold, Smooth"
+    And I change the "Sole fabric" to "Gold, [smooth]"
     And I save the variant group
     And I am on the "boot" product page
     And I visit the "Other" group
-    Then the product Sole fabric should be "[Gold], [Smooth]"
+    Then the product Sole fabric should be "Gold, [smooth]"
