@@ -12,13 +12,11 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 
 /**
  * Batch operation to unpublish products
  *
- * @author Julien Janvier <nicolas@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class Unpublish extends AbstractMassEditOperation
 {

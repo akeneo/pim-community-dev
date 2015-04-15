@@ -30,7 +30,21 @@ class EditCommonAttributesHandler extends BaseHandler
     /** @var UserManager */
     protected $userManager;
 
-    function __construct(
+    /**
+     * Constructor
+     *
+     * @param ProductQueryBuilderFactoryInterface  $pqbFactory
+     * @param ProductUpdaterInterface              $productUpdater
+     * @param BulkSaverInterface                   $productSaver
+     * @param ObjectDetacherInterface              $objectDetacher
+     * @param PaginatorFactoryInterface            $paginatorFactory
+     * @param ValidatorInterface                   $validator
+     * @param ProductMassActionRepositoryInterface $massActionRepository
+     * @param AttributeRepositoryInterface         $attributeRepository
+     * @param UserManager                          $userManager
+     * @param SecurityContextInterface             $securityContext
+     */
+    public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ProductUpdaterInterface $productUpdater,
         BulkSaverInterface $productSaver,
@@ -90,8 +104,10 @@ class EditCommonAttributesHandler extends BaseHandler
      * Check if user have own right on updated products, mark them valid and
      * create a warning for other products
      *
+     * @param array $updatedProducts
+     *
      */
-    protected function getValidProducts($updatedProducts)
+    protected function getValidProducts(array $updatedProducts)
     {
         $ownedProducts = [];
 
