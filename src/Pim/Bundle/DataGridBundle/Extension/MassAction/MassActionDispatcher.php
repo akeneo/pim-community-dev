@@ -78,7 +78,9 @@ class MassActionDispatcher
     /**
      * Extract applied filters from the datasource, only implemented for ProductDatasource
      *
-     * If Inset is defined, it returns filter on entity ids, else it return all applied filters on the grid
+     * If Inset is defined, it returns filter on entity ids, else it returns all applied filters on the grid
+     *
+     * @param Request $request
      *
      * @throws \LogicException
      *
@@ -97,7 +99,6 @@ class MassActionDispatcher
         if (true === $parameters['inset']) {
             $productIds = $parameters['values'];
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $productIds]];
-
         } else {
             $filters = $datasource->getProductQueryBuilder()->getAppliedFilters();
         }
