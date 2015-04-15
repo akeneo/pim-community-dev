@@ -211,6 +211,18 @@ class ProductManager
     }
 
     /**
+     * Create a product value
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     *
+     * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProductValue();
+     */
+    public function createProductValue(AttributeInterface $attribute)
+    {
+        return $this->builder->createProductValue($attribute);
+    }
+
+    /**
      * Get product FQCN
      *
      * @return string
