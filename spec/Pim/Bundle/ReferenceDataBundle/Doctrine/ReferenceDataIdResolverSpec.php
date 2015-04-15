@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
 use Prophecy\Argument;
 
 class ReferenceDataIdResolverSpec extends ObjectBehavior
 {
-    public function let(ReferenceDataRepositoryResolver $resolver)
+    public function let(ReferenceDataRepositoryResolverInterface $resolver)
     {
         $this->beConstructedWith($resolver);
     }
