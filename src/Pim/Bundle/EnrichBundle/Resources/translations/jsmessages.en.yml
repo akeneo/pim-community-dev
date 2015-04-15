@@ -133,6 +133,13 @@ pim_enrich:
                     message:          Are you sure you want to change the family of this product?
                     merge_attributes: Current attributes will be merged with the ones in the new family.
                     keep_attributes:  No attributes will be removed.
+            meta:
+                created: Created
+                updated: Last update
+                family:
+                    change: Family
+                    none: None
+
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.

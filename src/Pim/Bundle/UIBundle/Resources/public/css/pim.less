@@ -769,7 +769,7 @@ h3.tab-header {
       font-size: 11px;
       color: @color-form-info;
 
-      &:not(:last-child):after {
+      &:not(:last-child) > *:after {
         margin: 0 10px;
         content: "|";
       }
@@ -1407,7 +1407,10 @@ h3.tab-header {
   }
 
   .dropdown-toggle, .btn, .dropdown-menu {
-    text-transform: capitalize;
+    &:first-letter {
+      text-transform: capitalize;
+    }
+
     background-image: none;
 
     .caret {
@@ -1422,48 +1425,56 @@ h3.tab-header {
   }
 }
 
-.status-switcher {
+.product-edit-form > header .actions .btn-group {
+  font-weight: 200;
+}
+
+.product-edit-form > header .btn-dropdown {
   .btn.dropdown-toggle {
     padding: 0;
 
-    .display-flex();
+    &:first-child {
+      .display-flex();
+    }
 
-    .product-status {
-      padding: 4px 15px;
+    &:not(:first-child) {
+      margin-left: 0px;
+      border-left: none;
     }
 
     .caret {
       margin: 15px 12px;
     }
   }
+}
 
-  &.enabled .dropdown-toggle {
+
+.btn-dropdown {
+  &.enabled > a, & > .enabled {
+    opacity: 1;
     background-color: #dae9de;
     color: #67b373;
     border: 1px solid #67b373;
-
-    .product-status {
-      border-right: 1px solid #67b373;
-    }
 
     .caret {
       border-top-color: #67b373;
     }
   }
 
-  &.disabled .dropdown-toggle {
+  &.disabled > a, & > .disabled {
+    opacity: 1;
     background-color: #ededed;
     color: #ccc;
     border: 1px solid #ccc;
-
-    .product-status {
-      border-right: 1px solid #ccc;
-    }
 
     .caret {
       border-top-color: #ccc;
     }
   }
+}
+
+.product-status {
+  padding: 4px 0 4px 15px;
 }
 
 .updated-status {

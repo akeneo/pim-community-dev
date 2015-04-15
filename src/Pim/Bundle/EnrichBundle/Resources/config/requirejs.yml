@@ -27,7 +27,7 @@ config:
         pim/item/tableview:                 pimenrich/js/pim-item-tableview
         pim/item/view:                      pimenrich/js/pim-item-view
         pim/i18n:                           pimenrich/js/i18n
-        pim/user-context:                    pimenrich/js/usercontext
+        pim/user-context:                    pimenrich/js/user-context
 
         # Form
         pim/form-builder:                                          pimenrich/js/form/builder
@@ -55,7 +55,9 @@ config:
         pim/product-edit-form/panel/comments:                      pimenrich/js/product/form/panel/comments
         pim/product-edit-form/save:                                pimenrich/js/product/form/save
         pim/product-edit-form/delete:                              pimenrich/js/product/form/delete
-        pim/product-edit-form/change-family:                       pimenrich/js/product/form/change-family
+        pim/product-edit-form/meta/change-family:                  pimenrich/js/product/form/meta/change-family
+        pim/product-edit-form/meta/created:                        pimenrich/js/product/form/meta/created
+        pim/product-edit-form/meta/updated:                        pimenrich/js/product/form/meta/updated
         pim/product-edit-form/state:                               pimenrich/js/product/form/state
         pim/product-edit-form/status-switcher:                     pimenrich/js/product/form/status-switcher
 
@@ -104,8 +106,10 @@ config:
         pim/template/product/save:                                   pimenrich/templates/product/save.html
         pim/template/product/delete:                                 pimenrich/templates/product/delete.html
         pim/template/product/status-switcher:                        pimenrich/templates/product/status-switcher.html
-        pim/template/product/change-family:                          pimenrich/templates/product/change-family.html
+        pim/template/product/meta/change-family:                     pimenrich/templates/product/meta/change-family.html
         pim/template/product/state:                                  pimenrich/templates/product/state.html
+        pim/template/product/meta/created:                           pimenrich/templates/product/meta/created.html
+        pim/template/product/meta/updated:                           pimenrich/templates/product/meta/updated.html
         pim/template/product/scope-switcher:                         pimenrich/templates/product/scope-switcher.html
         pim/template/product/field/field:                            pimenrich/templates/product/field/field.html
         pim/template/product/field/boolean:                          pimenrich/templates/product/field/boolean.html

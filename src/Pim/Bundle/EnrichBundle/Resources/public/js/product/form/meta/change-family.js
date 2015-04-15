@@ -6,7 +6,7 @@ define(
         'underscore',
         'pim/form',
         'pim/config-manager',
-        'text!pim/template/product/change-family',
+        'text!pim/template/product/meta/change-family',
         'pim/dialog'
     ],
     function ($, _, BaseForm, ConfigManager, formTemplate, Dialog) {

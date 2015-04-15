@@ -95,7 +95,7 @@ define(
                     }, this));
                 }, this));
 
-                mediator.on('post_save', _.bind(function () {
+                mediator.on('product:action:post_update', _.bind(function () {
                     this.$('.selection-inputs input').val('');
                     var associationType =  this.state.get('currentAssociationType');
                     _.each(this.datagrids, function (datagrid) {

@@ -20,7 +20,7 @@ define(
                 this.removeValidationErrors();
                 this.addValidationErrors(data);
 
-                mediator.trigger('post_validation_error', _.bind(this.addValidationErrors, this));
+                mediator.trigger('product:action:post_validation_error', _.bind(this.addValidationErrors, this));
             },
             removeValidationErrors: function () {
                 var fields = FieldManager.getFields();

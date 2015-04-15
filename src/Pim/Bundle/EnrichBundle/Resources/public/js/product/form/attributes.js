@@ -13,6 +13,7 @@ define(
         'pim/product-manager',
         'pim/attribute-group-manager',
         'pim/variant-group-manager',
+        'pim/user-context',
         'text!pim/template/product/tab/attributes'
     ],
     function (
@@ -27,6 +28,7 @@ define(
         ProductManager,
         AttributeGroupManager,
         VariantGroupManager,
+        usercontext,
         formTemplate
     ) {
         var FormView = BaseForm.extend({
@@ -45,14 +47,14 @@ define(
             configure: function () {
                 this.getRoot().addTab('attributes', 'Attributes');
                 this.state = new Backbone.Model({
-                    'locale': 'en_US',
-                    'scope':  'ecommerce'
+                    'locale': usercontext.getUserContext().get('catalogLocale'),
+                    'scope':  usercontext.getUserContext().get('catalogChannel')
                 });
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(this.state, 'change', this.render);
-                mediator.on('post_save', _.bind(this.postSave, this));
-                mediator.on('post_validation_error', _.bind(this.postValidationError, this));
+                mediator.on('product:action:post_update', _.bind(this.postSave, this));
+                mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
                 mediator.on('show_attribute', _.bind(this.showAttribute, this));
                 window.addEventListener('resize', _.bind(this.resize, this));
 

@@ -37,9 +37,21 @@ extensions:
         targetZone: meta
 
     change-family:
-        module: pim/product-edit-form/change-family
+        module: pim/product-edit-form/meta/change-family
         parent: product-edit-form
         insertAction: prepend
+        targetZone: meta
+
+    created:
+        module: pim/product-edit-form/meta/created
+        parent: product-edit-form
+        insertAction: append
+        targetZone: meta
+
+    updated:
+        module: pim/product-edit-form/meta/updated
+        parent: product-edit-form
+        insertAction: append
         targetZone: meta
 
     attributes:
