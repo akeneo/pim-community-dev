@@ -1,8 +1,14 @@
 parameters:
-    pim_enrich.factory.sequential_edit.class: Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
+    pim_enrich.factory.sequential_edit.class:         Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
+    pim_enrich.factory.mass_edit.configuration.class: Pim\Bundle\EnrichBundle\Factory\MassEditConfigurationFactory
 
 services:
     pim_enrich.factory.sequential_edit:
         class: %pim_enrich.factory.sequential_edit.class%
         arguments:
             - %pim_enrich.entity.sequential_edit.class%
+
+    pim_enrich.factory.mass_edit.configuration:
+        class: %pim_enrich.factory.mass_edit.configuration.class%
+        arguments:
+            - %pim_enrich.entity.mass_edit.job_configuration.class%
