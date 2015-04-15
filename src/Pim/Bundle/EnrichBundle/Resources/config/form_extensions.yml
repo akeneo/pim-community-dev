@@ -15,6 +15,11 @@ extensions:
         zones:
             container: .tab-container
 
+    download-pdf:
+        module: pim/product-edit-form/download-pdf
+        parent: product-edit-form
+        targetZone: buttons
+
     status-switcher:
         module: pim/product-edit-form/status-switcher
         parent: product-edit-form

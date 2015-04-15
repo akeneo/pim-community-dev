@@ -112,6 +112,7 @@ pim_enrich:
                 enabled: Enabled
                 disable: Disable
                 disabled: Disabled
+                download_pdf: PDF
             history:
                 version: Version
                 author: Author
