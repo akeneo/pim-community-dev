@@ -17,6 +17,8 @@ interface GridFilterAdapterInterface
      * @param Request $request
      *
      * @return array
+     *
+     * Converter is also eligible
      */
     public function adapt(Request $request);
 }
