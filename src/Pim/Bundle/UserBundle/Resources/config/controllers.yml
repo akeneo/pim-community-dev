@@ -1,0 +1,9 @@
+parameters:
+    pim_user.controller.user_rest.class: Pim\Bundle\UserBundle\Controller\UserRestController
+
+services:
+    pim_user.controller.user_rest:
+        class: %pim_user.controller.user_rest.class%
+        arguments:
+            - '@security.context'
+            - '@pim_internal_api_serializer'
