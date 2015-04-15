@@ -2,11 +2,7 @@
 namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
@@ -15,8 +11,6 @@ class ResetController extends Controller
     const SESSION_EMAIL = 'oro_user_reset_email';
 
     /**
-     * @Route("/reset-request", name="oro_user_reset_request")
-     * @Method({"GET"})
      * @Template
      */
     public function requestAction()
@@ -26,9 +20,6 @@ class ResetController extends Controller
 
     /**
      * Request reset user password
-     *
-     * @Route("/send-email", name="oro_user_reset_send_email")
-     * @Method({"POST"})
      */
     public function sendEmailAction()
     {
@@ -77,8 +68,6 @@ class ResetController extends Controller
     /**
      * Tell the user to check his email provider
      *
-     * @Route("/check-email", name="oro_user_reset_check_email")
-     * @Method({"GET"})
      * @Template
      */
     public function checkEmailAction()
@@ -101,8 +90,6 @@ class ResetController extends Controller
     /**
      * Reset user password
      *
-     * @Route("/reset/{token}", name="oro_user_reset_reset", requirements={"token"="\w+"})
-     * @Method({"GET", "POST"})
      * @Template
      */
     public function resetAction($token)

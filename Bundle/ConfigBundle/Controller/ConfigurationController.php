@@ -2,22 +2,14 @@
 
 namespace Oro\Bundle\ConfigBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 class ConfigurationController extends Controller
 {
     /**
-     * @Route(
-     *      "/system/{activeGroup}/{activeSubGroup}",
-     *      name="oro_config_configuration_system",
-     *      defaults={"activeGroup" = null, "activeSubGroup" = null}
-     * )
      * @Template()
      * @AclAncestor("oro_config_system")
      */

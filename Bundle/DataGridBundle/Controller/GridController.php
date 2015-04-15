@@ -5,17 +5,12 @@ namespace Oro\Bundle\DataGridBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 class GridController extends Controller
 {
     /**
-     * @Route("/{gridName}", name="oro_datagrid_index")
-     *
      * @param string $gridName
      *
      * @return Response
@@ -29,7 +24,6 @@ class GridController extends Controller
     }
 
     /**
-     * @Route("/{gridName}/massAction/{actionName}", name="oro_datagrid_mass_action")
      * @param string $gridName
      * @param string $actionName
      *

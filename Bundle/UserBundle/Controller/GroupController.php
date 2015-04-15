@@ -7,20 +7,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-/**
- * @Route("/group")
- */
 class GroupController extends Controller
 {
     /**
      * Create group form
      *
-     * @Route("/create", name="oro_user_group_create")
      * @Template("OroUserBundle:Group:update.html.twig")
      * @AclAncestor("pim_user_group_create")
      */
@@ -33,7 +28,6 @@ class GroupController extends Controller
     /**
      * Edit group form
      *
-     * @Route("/update/{id}", name="oro_user_group_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      * @AclAncestor("pim_user_group_edit")
      */
@@ -44,12 +38,6 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route(
-     *      "/{_format}",
-     *      name="oro_user_group_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
      * @AclAncestor("pim_user_group_index")
      * @Template
      */
@@ -61,12 +49,6 @@ class GroupController extends Controller
     /**
      * Delete group
      *
-     * @Route(
-     *      "/delete/{id}",
-     *      name="oro_user_group_delete",
-     *      requirements={"id"="\d+"},
-     *      methods="DELETE"
-     * )
      * @AclAncestor("pim_user_group_remove")
      */
     public function deleteAction($id)

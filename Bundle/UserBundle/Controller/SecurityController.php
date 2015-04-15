@@ -4,16 +4,12 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 
 class SecurityController extends Controller
 {
     /**
-     * @Route("/login", name="oro_user_security_login")
      * @Template("OroUserBundle:Security:login.html.twig")
      */
     public function loginAction()
@@ -48,9 +44,6 @@ class SecurityController extends Controller
         );
     }
 
-    /**
-     * @Route("/login-check", name="oro_user_security_check")
-     */
     public function checkAction()
     {
         throw new \RuntimeException(
@@ -59,9 +52,6 @@ class SecurityController extends Controller
         );
     }
 
-    /**
-     * @Route("/logout", name="oro_user_security_logout")
-     */
     public function logoutAction()
     {
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');

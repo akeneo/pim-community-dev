@@ -5,19 +5,14 @@ namespace Oro\Bundle\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-/**
- * @Route("/role")
- */
 class RoleController extends Controller
 {
     /**
      * @AclAncestor("pim_user_role_create")
-     * @Route("/create", name="oro_user_role_create")
      * @Template("OroUserBundle:Role:update.html.twig")
      */
     public function createAction()
@@ -27,7 +22,6 @@ class RoleController extends Controller
 
     /**
      * @AclAncestor("pim_user_role_edit")
-     * @Route("/update/{id}", name="oro_user_role_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      */
     public function updateAction(Role $entity)
@@ -36,12 +30,6 @@ class RoleController extends Controller
     }
 
     /**
-     * @Route(
-     *      "/{_format}",
-     *      name="oro_user_role_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
      * @AclAncestor("pim_user_role_index")
      * @Template
      */
@@ -53,12 +41,6 @@ class RoleController extends Controller
     /**
      * Delete role
      *
-     * @Route(
-     *      "/delete/{id}",
-     *      name="oro_user_role_delete",
-     *      requirements={"id"="\d+"},
-     *      methods="DELETE"
-     * )
      * @AclAncestor("pim_user_role_remove")
      */
     public function deleteAction($id)

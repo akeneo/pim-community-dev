@@ -4,28 +4,20 @@ namespace Oro\Bundle\UserBundle\Controller;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\PersistentCollection;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
-
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 
 class UserController extends Controller
 {
     /**
-     * @Route("/view/{id}", name="oro_user_view", requirements={"id"="\d+"})
      * @Template
      * @AclAncestor("pim_user_user_index")
      */
@@ -35,7 +27,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/profile/view", name="oro_user_profile_view")
      * @Template("OroUserBundle:User:view.html.twig")
      */
     public function viewProfileAction()
@@ -44,7 +35,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/profile/edit", name="oro_user_profile_update")
      * @Template("OroUserBundle:User:update.html.twig")
      */
     public function updateProfileAction()
@@ -57,7 +47,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/apigen/{id}", name="oro_user_apigen", requirements={"id"="\d+"})
      * @AclAncestor("pim_user_user_edit")
      */
     public function apigenAction(User $user)
@@ -82,7 +71,6 @@ class UserController extends Controller
     /**
      * Create user form
      *
-     * @Route("/create", name="oro_user_create")
      * @Template("OroUserBundle:User:update.html.twig")
      * @AclAncestor("pim_user_user_create")
      */
@@ -96,7 +84,6 @@ class UserController extends Controller
     /**
      * Edit user form
      *
-     * @Route("/update/{id}", name="oro_user_update", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template
      * @AclAncestor("pim_user_user_edit")
      */
@@ -106,12 +93,6 @@ class UserController extends Controller
     }
 
     /**
-     * @Route(
-     *      "/{_format}",
-     *      name="oro_user_index",
-     *      requirements={"_format"="html|json"},
-     *      defaults={"_format" = "html"}
-     * )
      * @Template
      * @AclAncestor("pim_user_user_index")
      */
@@ -123,12 +104,6 @@ class UserController extends Controller
     /**
      * Delete user
      *
-     * @Route(
-     *      "/delete/{id}",
-     *      name="oro_user_user_delete",
-     *      requirements={"id"="\d+"},
-     *      methods="DELETE"
-     * )
      * @AclAncestor("pim_user_user_remove")
      */
     public function deleteAction($id)
