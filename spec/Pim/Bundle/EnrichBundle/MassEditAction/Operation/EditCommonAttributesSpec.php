@@ -155,7 +155,6 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getValues()->shouldHaveCount(2);
     }
 
-
     function it_gets_all_product_attributes_and_sets_correct_locale(
         $attributeRepository,
         $massActionManager,

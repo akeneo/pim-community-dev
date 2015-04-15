@@ -84,7 +84,6 @@ abstract class AbstractMassEditOperation implements
      */
     public function initialize()
     {
-
     }
 
     /**
@@ -92,6 +91,5 @@ abstract class AbstractMassEditOperation implements
      */
     public function finalize()
     {
-
     }
 }

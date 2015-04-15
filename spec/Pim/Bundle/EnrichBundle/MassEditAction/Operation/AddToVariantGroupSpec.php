@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Prophecy\Argument;
 
 class AddToVariantGroupSpec extends ObjectBehavior
 {

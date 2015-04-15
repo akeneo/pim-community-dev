@@ -6,7 +6,6 @@ use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * Retrieve the appropriate form corresponding to the operation

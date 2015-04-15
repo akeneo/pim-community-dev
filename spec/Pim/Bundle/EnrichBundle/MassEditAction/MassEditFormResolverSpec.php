@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Oro\Bundle\RequireJSBundle\Provider\Config;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
