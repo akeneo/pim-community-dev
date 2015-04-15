@@ -75,7 +75,7 @@ class MassEditJobConfiguration
     /**
      * @return JobExecution
      */
-    public function getJobInstance()
+    public function getJobExecution()
     {
         return $this->jobExecution;
     }
@@ -85,7 +85,7 @@ class MassEditJobConfiguration
      *
      * @return MassEditJobConfiguration
      */
-    public function setJobInstance(JobExecution $jobExecution)
+    public function setJobExecution(JobExecution $jobExecution)
     {
         $this->jobExecution = $jobExecution;
 

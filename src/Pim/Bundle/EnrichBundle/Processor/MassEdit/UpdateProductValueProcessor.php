@@ -19,13 +19,10 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateProductValueProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface, StepExecutionAwareInterface
+class UpdateProductValueProcessor extends AbstractMassEditProcessor implements ItemProcessorInterface
 {
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
-
-    /** @var StepExecution */
-    protected $stepExecution;
 
     /** @var ValidatorInterface */
     protected $validator;
@@ -62,30 +59,12 @@ class UpdateProductValueProcessor extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
      * Set data from $actions to the given $product
      *
      * @param ProductInterface $product
      * @param array            $actions
      *
-     * @return UpdateProductHandler
+     * @return UpdateProductValueProcessor
      */
     protected function setData(ProductInterface $product, array $actions)
     {
@@ -94,32 +73,5 @@ class UpdateProductValueProcessor extends AbstractConfigurableStepElement implem
         }
 
         return $this;
-    }
-
-    /**
-     * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
-     */
-    protected function addWarningMessage(
-        ConstraintViolationListInterface $violations,
-        ProductInterface $product
-    ) {
-        foreach ($violations as $violation) {
-            // TODO re-format the message, property path doesn't exist for class constraint
-            // for instance cf VariantGroupAxis
-            $invalidValue = $violation->getInvalidValue();
-            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string) $invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
-            }
-            $errors = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
-        }
     }
 }

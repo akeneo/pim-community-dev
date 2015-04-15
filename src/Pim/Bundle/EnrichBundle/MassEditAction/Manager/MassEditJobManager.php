@@ -44,11 +44,11 @@ class MassEditJobManager
     /**
      * Constructor
      *
-     * @param ObjectManager                $objectManager
-     * @param EventDispatcherInterface     $eventDispatcher
-     * @param string                       $jobExecutionClass
-     * @param string                       $rootDir
-     * @param string                       $environment
+     * @param ObjectManager            $objectManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $jobExecutionClass
+     * @param string                   $rootDir
+     * @param string                   $environment
      */
     public function __construct(
         ObjectManager $objectManager,
