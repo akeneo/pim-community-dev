@@ -31,20 +31,17 @@ pimee_enrich:
             flash:
                 product_unpublished: Product successfully unpublished
                 product_published: Product successfully published
-                product_not_published: Product not successfully published
-                product_not_unpublished: Product not successfully unpublished
+                product_not_published: Failed to publish this product
+                product_not_unpublished: Failed to unpublish this product
             meta:
                 published: Published version
-    confirmation:
-        revert:
-            product:
-                title: Revert confirmation
-                content: Are you sure you want to revert the product to this version ?
-        publish:
-            product:
-                title: Publish this product
-                content: Are you sure you want to publish this product ?
-        unpublish:
-            product:
-                title: Unpublish this product
-                content: Are you sure you want to unpublish this product ?
+            confirmation:
+                revert:
+                    title: Revert confirmation
+                    content: Are you sure you want to revert the product to this version?
+                publish:
+                    title: Publish this product
+                    content: Are you sure you want to publish this product?
+                unpublish:
+                    title: Unpublish this product
+                    content: Are you sure you want to unpublish this product?
