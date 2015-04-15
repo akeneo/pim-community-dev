@@ -83,6 +83,7 @@ Feature: Publish a product
       | product   | attribute  | value         | scope     |
       | my-jacket | release    | 2014-03-25    |           |
     And I edit the "my-jacket" product
+    And I save the product
     When I press the "Publish" button
     And I confirm the publishing
     And I am on the published index page

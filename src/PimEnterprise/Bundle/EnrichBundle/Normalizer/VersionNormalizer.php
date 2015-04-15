@@ -29,9 +29,9 @@ class VersionNormalizer implements NormalizerInterface
 
     public function __construct(NormalizerInterface $versionNormalizer, ManagerRegistry $doctrine, $publProductClass)
     {
-        $this->versionNormalizer     = $versionNormalizer;
-        $this->doctrine              = $doctrine;
-        $this->publProductClass = $publProductClass;
+        $this->versionNormalizer = $versionNormalizer;
+        $this->doctrine          = $doctrine;
+        $this->publProductClass  = $publProductClass;
     }
 
     /**
