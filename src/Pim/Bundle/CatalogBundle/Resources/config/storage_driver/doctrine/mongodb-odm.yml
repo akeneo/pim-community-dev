@@ -393,4 +393,3 @@ services:
         class: %pim_catalog.doctrine.query.sorter.is_associated.class%
         tags:
             - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
-

@@ -44,7 +44,7 @@ class GroupFieldAdderSpec extends ObjectBehavior
         )->during('addFieldData', [$product, 'groups', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'groups',
                 0,
                 'adder',

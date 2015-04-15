@@ -150,7 +150,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $data = ['data' => 42, 'unit' => 123];
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'attributeCode',
                 'unit',
                 'setter',

@@ -29,7 +29,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $group->getType()->willReturn($type);
         $type->isVariant()->willReturn(false);
         $group->getAxisAttributes()->willReturn([]);
-        $context->addViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($group, $constraint);
     }
@@ -44,7 +44,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([]);
-        $context->addViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
     }
@@ -60,7 +60,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([$axisAttribute]);
-        $context->addViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
     }

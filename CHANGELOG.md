@@ -1,11 +1,19 @@
 # 1.4.x
 
+## Features
+
+## Technical improvements
+- In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Attribute, Attribute Option)
+- Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack 
+
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
 - PIM-3771: Create version when modifying variant group attribute
 - PIM-2743: keep page per view on datagrids
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
 - PIM-3929: Categories with circular references are skipped in processor during import
+- PIM-4024: Fix for metric and price denormalizer
 
 ## BC breaks
 - Change the constructor of `Pim/Bundle/TransformBundle/Denormalizer/Structured/ProductValuesDenormalizer`, removed `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, added `Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry` as the second argument and `pim_catalog.entity.attribute.class` as the last argument
@@ -69,8 +77,18 @@
 - Remove deprecated remove() from Pim/Bundle/CatalogBundle/Manager/GroupManager
 - Change arguments of Pim/Bundle/EnrichBundle/Controller/AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
 - Remove arguments ChannelRepositoryInterface, LocaleRepositoryInterface, add argument AttributeValuesResolver in Pim/Bundle/CatalogBundle/Builder/ProductBuilder constructor
+- Remove arguments DenormalizerInterface, ValidatorInterface, ObjectDetacherInterface, $class from the constructor of Pim/Bundle/BaseConnectorBundle/Processor/Denormalization/AbstractProcessor
 
 # 1.3.x
+
+# 1.3.7 (2015-04-03)
+
+## Bug fixes
+- PIM-3961: Fix inconsistencies in unique value constraint validator
+- PIM-3416: Fix less / more than date filter
+- PIM-4019: option code is properly displayed during option deletion in attribute edit form
+
+# 1.3.6 (2015-04-01)
 
 ## Bug fixes
 - PIM-2401: Association grid, add the Is associated sorter (MongoDB impl)
@@ -78,6 +96,9 @@
 - PIM-3938: Querying products with PQB and using Sorters will not return an ordered Cursor
 - PIM-3956: Fix user can add an attribute in a group even if he does not have the permission
 - PIM-3965: Fix groups without labels are not displayed in the product grid cell
+- PIM-3971: Cache results for Select2 on product edit form
+- PIM-4017: Fix save an empty media attribute with variant group
+- PIM-3931: Remove db query from CsvReader constructor
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber` to include `Oro\Bundle\SecurityBundle\SecurityFacade`and `Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface`

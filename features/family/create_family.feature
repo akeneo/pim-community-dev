@@ -15,6 +15,7 @@ Feature: Family creation
     When I fill in the following information in the popin:
       | Code | CAR |
     And I press the "Save" button
+    And I wait 5 seconds
     Then I should be on the "CAR" family page
     And I should see "Edit family - [CAR]"
 

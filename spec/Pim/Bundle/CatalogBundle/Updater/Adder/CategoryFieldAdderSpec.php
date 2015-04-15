@@ -43,7 +43,7 @@ class CategoryFieldAdderSpec extends ObjectBehavior
         )->during('addFieldData', [$product, 'categories', 'not an array']);
 
         $this->shouldThrow(
-            InvalidArgumentException::arrayStringKeyExpected(
+            InvalidArgumentException::arrayStringValueExpected(
                 'categories',
                 0,
                 'adder',
