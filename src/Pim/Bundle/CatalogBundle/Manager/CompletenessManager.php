@@ -176,7 +176,6 @@ class CompletenessManager
         $channelTemplate = [
             'channels'     => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
             'stats' => [
-                'ratio'    => 0,
                 'total'    => 0,
                 'complete' => 0
             ]

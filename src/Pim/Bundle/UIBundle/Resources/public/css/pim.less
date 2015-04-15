@@ -912,8 +912,9 @@ h3.tab-header {
   header {
     border-bottom: 1px solid #e5e5e5;
     .display-flex();
+    .align-items(center);
 
-    .channel {
+    .locale {
       .flex(1);
       margin: 0;
       margin-left: 10px;
@@ -922,6 +923,24 @@ h3.tab-header {
       font-weight: 200;
       line-height: 35px;
       text-transform: capitalize;
+    }
+
+    .stats {
+      .flex(1);
+      .display-flex();
+      .align-items(center);
+
+      .progress {
+        .flex(1);
+        border-radius: 10px;
+        height: 15px;
+        margin: 0 10px;
+
+        .bar {
+          background-image: none;
+          box-shadow: none;
+        }
+      }
     }
 
     .btn {
@@ -945,10 +964,11 @@ h3.tab-header {
       margin-bottom: 20px;
     }
 
-    .locale {
+    .channel {
       display: block;
       font-size: 13px;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
+      text-transform: capitalize;
     }
 
     .progress {

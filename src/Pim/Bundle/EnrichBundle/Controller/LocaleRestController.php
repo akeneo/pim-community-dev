@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Locale rest controller
@@ -14,17 +15,36 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class LocaleRestController
 {
+    /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    public function __construct(LocaleRepositoryInterface $localeRepository)
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
+    /**
+     * @param LocaleRepositoryInterface $localeRepository
+     * @param NormalizerInterface       $normalizer
+     */
+    public function __construct(LocaleRepositoryInterface $localeRepository, NormalizerInterface $normalizer)
     {
         $this->localeRepository = $localeRepository;
+        $this->normalizer       = $normalizer;
     }
 
+    /**
+     * Get the list of all locales
+     *
+     * @return JsonResponse all activated locales
+     */
     public function indexAction()
     {
-        $locales = $this->localeRepository->getActivatedLocaleCodes();
+        $locales = $this->localeRepository->getActivatedLocales();
 
-        return new JsonResponse($locales);
+        $normalizedLocales = [];
+        foreach ($locales as $locale) {
+            $normalizedLocales[] = $this->normalizer->normalize($locale, 'internal_api');
+        }
+
+        return new JsonResponse($normalizedLocales);
     }
 }

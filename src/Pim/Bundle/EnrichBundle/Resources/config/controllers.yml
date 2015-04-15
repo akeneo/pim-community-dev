@@ -340,6 +340,7 @@ services:
         class: %pim_enrich.controller.locale_rest.class%
         arguments:
             - '@pim_catalog.repository.locale'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.currency_rest:
         class: %pim_enrich.controller.currency_rest.class%

@@ -8,6 +8,7 @@ parameters:
     pim_enrich.normalizer.version.class:                           Pim\Bundle\EnrichBundle\Normalizer\VersionNormalizer
     pim_enrich.normalizer.collection.class:                        Pim\Bundle\EnrichBundle\Normalizer\CollectionNormalizer
     pim_enrich.normalizer.association_type.class:                  Pim\Bundle\EnrichBundle\Normalizer\AssociationTypeNormalizer
+    pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -68,5 +69,12 @@ services:
         class: %pim_enrich.normalizer.association_type.class%
         arguments:
             - '@pim_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.locale:
+        class: %pim_enrich.normalizer.locale.class%
+        arguments:
+            - '@pim_catalog.helper.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
