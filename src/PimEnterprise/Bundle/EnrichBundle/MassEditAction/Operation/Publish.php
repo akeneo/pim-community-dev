@@ -20,9 +20,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterf
  *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
-class Publish extends AbstractMassEditOperation implements
-    ConfigurableOperationInterface,
-    BatchableOperationInterface
+class Publish extends AbstractMassEditOperation
 {
     /**
      * Constructor.
@@ -43,32 +41,13 @@ class Publish extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'publish';
     }
 
     /**
-     * Get configuration to send to the BatchBundle command
-     *
-     * @return string
-     */
-    public function getBatchConfig()
-    {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions(),
-                ]
-            )
-        );
-    }
-
-    /**
-     * Get the code of the JobInstance
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBatchJobCode()
     {
@@ -76,9 +55,7 @@ class Publish extends AbstractMassEditOperation implements
     }
 
     /**
-     * Get the form options to configure the operation
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFormOptions()
     {
@@ -86,9 +63,7 @@ class Publish extends AbstractMassEditOperation implements
     }
 
     /**
-     * Get the name of items this operation applies to
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getItemsName()
     {

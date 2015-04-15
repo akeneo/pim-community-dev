@@ -30,7 +30,7 @@ class PublishSpec extends ObjectBehavior
 
     function it_provides_an_alias()
     {
-        $this->getAlias()->shouldReturn('publish');
+        $this->getOperationAlias()->shouldReturn('publish');
     }
 
     function it_provides_correct_actions_to_apply_on_products()
