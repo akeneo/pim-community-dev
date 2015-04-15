@@ -15,7 +15,7 @@ class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 
     function it_returns_applied_filters(Request $request, $massActionDispatcher)
     {
-        $massActionDispatcher->getAppliedFilters($request)->willReturn([[
+        $massActionDispatcher->getRawFilters($request)->willReturn([[
             'field'    => 'id',
             'operator' => 'IN',
             'value'    => 1,

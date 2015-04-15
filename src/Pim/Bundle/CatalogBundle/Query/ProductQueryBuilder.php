@@ -43,7 +43,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $cursorFactory;
 
     /** @var array */
-    protected $appliedFilters;
+    protected $rawFilters;
 
     /**
      * Constructor
@@ -135,7 +135,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $this->addFieldFilter($filter, $field, $operator, $value, $context);
         }
 
-        $this->appliedFilters[] = [
+        $this->rawFilters[] = [
             'field'    => $field,
             'operator' => $operator,
             'value'    => $value,
@@ -175,13 +175,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * Returns applied filters
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getAppliedFilters()
+    public function getRawFilters()
     {
-        return $this->appliedFilters;
+        return $this->rawFilters;
     }
 
     /**

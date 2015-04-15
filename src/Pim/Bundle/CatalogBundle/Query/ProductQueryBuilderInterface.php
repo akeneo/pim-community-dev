@@ -46,7 +46,7 @@ interface ProductQueryBuilderInterface
      *
      * @return array
      */
-    public function getAppliedFilters();
+    public function getRawFilters();
 
     /**
      * Get query builder

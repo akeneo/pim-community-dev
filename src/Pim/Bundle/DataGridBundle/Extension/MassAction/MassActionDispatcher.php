@@ -86,21 +86,21 @@ class MassActionDispatcher
      *
      * @return array
      */
-    public function getAppliedFilters(Request $request)
+    public function getRawFilters(Request $request)
     {
         $parameters = $this->prepareMassActionParameters($request);
         $datagrid   = $parameters['datagrid'];
         $datasource = $datagrid->getDatasource();
 
         if (!$datasource instanceof ProductDatasource) {
-            throw new \LogicException('getAppliedFilters is only implemented for ProductDatasource');
+            throw new \LogicException('getRawFilters is only implemented for ProductDatasource');
         }
 
         if (true === $parameters['inset']) {
             $productIds = $parameters['values'];
             $filters = [['field' => 'id', 'operator' => 'IN', 'value' => $productIds]];
         } else {
-            $filters = $datasource->getProductQueryBuilder()->getAppliedFilters();
+            $filters = $datasource->getProductQueryBuilder()->getRawFilters();
         }
 
         return $filters;

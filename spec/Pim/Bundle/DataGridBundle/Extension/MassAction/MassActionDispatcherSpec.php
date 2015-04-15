@@ -151,7 +151,7 @@ class MassActionDispatcherSpec extends ObjectBehavior
         $massActionExtension->getMassAction($massActionName, $grid)->willReturn($massActionInterface);
         $acceptor->getExtensions()->willReturn([$massActionExtension]);
 
-        $this->shouldThrow(new \LogicException('getAppliedFilters is only implemented for ProductDatasource'))
-            ->during('getAppliedFilters', [$request]);
+        $this->shouldThrow(new \LogicException('getRawFilters is only implemented for ProductDatasource'))
+            ->during('getRawFilters', [$request]);
     }
 }
