@@ -42,7 +42,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor->getValue($attribute, 'defaultMetricUnit')
             ->shouldBeCalled()
             ->willReturn('kg');
-        $context->addViolationAt(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($attribute, $constraint)->shouldReturn(null);
     }
@@ -60,7 +60,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor->getValue($metric, 'unit')
             ->shouldBeCalled()
             ->willReturn('kg');
-        $context->addViolationAt(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($metric, $constraint)->shouldReturn(null);
     }
@@ -81,7 +81,7 @@ class ValidMetricValidatorSpec extends ObjectBehavior
         $accessor->getValue($metric, 'unit')
             ->shouldBeCalled()
             ->willReturn('kg');
-        $context->addViolationAt(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolationAt(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($value, $constraint)->shouldReturn(null);
     }

@@ -81,6 +81,14 @@
 
 # 1.3.x
 
+# 1.3.8 (2015-04-14)
+
+## Bug fixes
+- PIM-4045: Fix completeness computation with behat
+- PIM-4047: Missing translation key for a number value which should not be decimal in edit form
+- PIM-3848: fix completeness not well calculated after attribute requirements deletion
+- PIM-4050: Fix float val in range number error message
+
 # 1.3.7 (2015-04-03)
 
 ## Bug fixes

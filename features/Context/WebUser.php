@@ -681,6 +681,20 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     *
+     * @Then /^I should not see the "([^"]*)" attribute$/
+     */
+    public function iShouldNotSeeTheAttribute($attribute)
+    {
+        $element = $this->getCurrentPage()->getAttribute($attribute);
+
+        if (null !== $element) {
+            throw new \RuntimeException(sprintf('Attribute "%s" found and should not be.', $attribute));
+        }
+    }
+
+    /**
      * @param string $field
      *
      * @When /^I add a new option to the "([^"]*)" attribute$/
