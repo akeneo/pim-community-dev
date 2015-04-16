@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -97,24 +96,15 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
         $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
-        $commonAttributeCodes = $this->findCommonAttributeCodes($paginator);
-        $commonActions = $this->filterActions($configuration['actions'], $commonAttributeCodes);
+        $actions = $configuration['actions'];
 
-        if (!empty($commonAttributeCodes) && !empty($commonActions)) {
-            $actions = $configuration['actions'];
+        foreach ($paginator as $productsPage) {
+            $updatedProducts = $this->updateProducts($productsPage, $actions);
+            $validProducts = $this->getValidProducts($updatedProducts);
 
-            foreach ($paginator as $productsPage) {
-                $updatedProducts = $this->updateProducts($productsPage, $actions, $commonAttributeCodes);
-                $validProducts = $this->getValidProducts($updatedProducts);
-
-                $this->saveProducts($validProducts, $this->getSavingOptions());
-                $this->detachProducts($updatedProducts);
-            }
-        } else {
-            $this->skipAllProducts($cursor->count());
+            $this->saveProducts($validProducts, $this->getSavingOptions());
+            $this->detachProducts($productsPage);
         }
-
-        $this->generateAttributesWarning();
 
         $values = array_column($configuration['actions'], 'value');
         $this->removeTemporaryFiles($values);
@@ -195,37 +185,45 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Add a skipped attribute to the list
-     *
-     * @param $attributeCode
-     */
-    protected function addSkippedAttribute($attributeCode)
-    {
-        $this->skippedAttributes[] = $attributeCode;
-    }
-
-    /**
      * Set data from $actions to the given $products
      *
      * @param array $products
      * @param array $actions
-     * @param array $commonAttributeCodes
      *
      * @return array $products
      */
-    protected function updateProducts(array $products, array $actions, array $commonAttributeCodes)
+    protected function updateProducts(array $products, array $actions)
     {
+        $updatedProducts = [];
         foreach ($products as $product) {
+            $nbModifiedAttributes = 0;
             foreach ($actions as $action) {
-                if (in_array($action['field'], $commonAttributeCodes)) {
-                    $this->productUpdater->setData($product, $action['field'], $action['value'], $action['options']);
-                } else {
-                    $this->addSkippedAttribute($action['field']);
+                $attribute = $this->attributeRepository->findOneByCode($action['field']);
+
+                if (null === $attribute) {
+                    throw new \LogicException(sprintf('Attribute with code %s does not exist'), $action['field']);
                 }
+                $family = $product->getFamily();
+
+                if (null !== $family && $family->hasAttribute($attribute)) {
+                    $this->productUpdater->setData($product, $action['field'], $action['value'], $action['options']);
+                    $nbModifiedAttributes++;
+                }
+            }
+            if (0 < $nbModifiedAttributes) {
+                $updatedProducts[] = $product;
+            } else {
+                $this->stepExecution->incrementSummaryInfo('skipped_products');
+                $this->stepExecution->addWarning(
+                    $this->getName(),
+                    'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
+                    [],
+                    $product
+                );
             }
         }
 
-        return $products;
+        return $updatedProducts;
     }
 
     /**
@@ -253,67 +251,6 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Find common attributes for the product retrieved with the given $paginator.
-     *
-     * @param PaginatorInterface $paginator
-     *
-     * @return array
-     *
-     */
-    protected function findCommonAttributeCodes(PaginatorInterface $paginator)
-    {
-        $commonAttributeIds = [];
-        $commonAttributeCodes = [];
-
-        foreach ($paginator as $productsPage) {
-            $productIds = [];
-            foreach ($productsPage as $product) {
-                $productIds[] = $product->getId();
-            }
-
-            $commonAttributeIds = array_merge(
-                $this->massActionRepository->findCommonAttributeIds($productIds),
-                $commonAttributeIds
-            );
-        }
-
-        $commonAttributeIds = array_unique($commonAttributeIds);
-        $commonAttributes = $this->attributeRepository->findWithGroups($commonAttributeIds);
-
-        foreach ($commonAttributes as $attribute) {
-            $commonAttributeCodes[] = $attribute->getCode();
-        }
-
-        return $commonAttributeCodes;
-    }
-
-    /**
-     * Filter the given $actions, return only $actions on attributes
-     * present in $commonAttributeCodes.
-     *
-     * @param array $actions
-     * @param array $commonAttributeCodes
-     *
-     * @return array
-     */
-    protected function filterActions(array $actions, array $commonAttributeCodes)
-    {
-        if (empty($commonAttributeCodes)) {
-            return [];
-        }
-
-        $commonActions = [];
-
-        foreach ($actions as $action) {
-            if (in_array($action['field'], $commonAttributeCodes)) {
-                $commonActions[] = $action;
-            }
-        }
-
-        return $commonActions;
-    }
-
-    /**
      * Remove temporary files used to set product media
      *
      * @param array $values
@@ -325,23 +262,6 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
         foreach ($filePaths as $filePath) {
             unlink($filePath);
         }
-    }
-
-    /**
-     * Mark all products as skipped and add a proper warning to notify user on reporting screen
-     *
-     * @param $productCount
-     */
-    protected function skipAllProducts($productCount)
-    {
-        $this->stepExecution->incrementSummaryInfo('skipped_products', $productCount);
-
-        $this->stepExecution->addWarning(
-            $this->getName(),
-            'pim_enrich.mass_edit_action.edit-common-attributes.message.no_valid_attribute',
-            [],
-            []
-        );
     }
 
     /**
@@ -379,24 +299,5 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
     {
         $this->productSaver->saveAll($validProducts, $getSavingOptions);
         $this->stepExecution->incrementSummaryInfo('mass_edited', count($validProducts));
-    }
-
-    /**
-     * Generate warnings for the StepExecution for each skipped attribute
-     */
-    protected function generateAttributesWarning()
-    {
-        $skippedAttribute = array_unique($this->skippedAttributes);
-
-        foreach ($skippedAttribute as $skippedAttributeCode) {
-            $this->stepExecution->incrementSummaryInfo('skipped_attributes');
-
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'pim_enrich.mass_edit_action.edit-common-attributes.message.invalid_attribute',
-                ['attribute_code' => $skippedAttributeCode],
-                []
-            );
-        }
     }
 }
