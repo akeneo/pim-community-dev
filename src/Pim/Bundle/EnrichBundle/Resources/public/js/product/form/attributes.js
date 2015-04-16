@@ -38,6 +38,7 @@ define(
                 'click .remove-attribute': 'removeAttribute'
             },
             visibleFields: {},
+            rendering: false,
             initialize: function () {
                 FieldManager.fields = {};
 
@@ -58,9 +59,11 @@ define(
                 );
             },
             render: function () {
-                if (!this.configured) {
+                if (!this.configured || this.rendering) {
                     return this;
                 }
+
+                this.rendering = true;
 
                 this.getConfig().done(_.bind(function () {
                     this.$el.html(this.template({}));
@@ -89,6 +92,7 @@ define(
                                 this.visibleFields[field.attribute.code] = field;
                                 $productValuesPanel.append(field.$el);
                             }, this));
+                            this.rendering = false;
                         }, this));
                     }, this));
                     this.delegateEvents();
