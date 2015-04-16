@@ -7,10 +7,11 @@ define(
         'backbone',
         'pim/form',
         'text!pim/template/product/tab/categories',
+        'pim/user-context',
         'routing',
         'pim/tree/associate'
     ],
-    function ($, _, Backbone, BaseForm, formTemplate, Routing, TreeAssociate) {
+    function ($, _, Backbone, BaseForm, formTemplate, UserContext, Routing, TreeAssociate) {
         return BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tab-pane active',
@@ -38,7 +39,7 @@ define(
                     this.$el.html(
                         this.template({
                             product: this.getData(),
-                            locale: 'en_US',
+                            locale: UserContext.get('catalogLocale'),
                             state: this.state.toJSON(),
                             trees: trees
                         })

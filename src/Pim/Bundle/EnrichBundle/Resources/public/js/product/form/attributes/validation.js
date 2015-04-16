@@ -7,9 +7,10 @@ define(
         'pim/form',
         'oro/mediator',
         'pim/field-manager',
-        'pim/product-edit-form/attributes/validation-error'
+        'pim/product-edit-form/attributes/validation-error',
+        'pim/user-context'
     ],
-    function (_, Backbone, BaseForm, mediator, FieldManager, ValidationError) {
+    function (_, Backbone, BaseForm, mediator, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
             initialize: function () {
                 mediator.on('validation_error', _.bind(this.validationError, this));
@@ -48,11 +49,11 @@ define(
             },
             changeContext: function (locale, scope) {
                 if (locale) {
-                    this.getParent().setLocale(locale);
+                    UserContext.set('catalogLocale', locale);
                 }
 
                 if (scope) {
-                    this.getParent().setScope(scope);
+                    UserContext.set('catalogScope', scope);
                 }
             }
         });

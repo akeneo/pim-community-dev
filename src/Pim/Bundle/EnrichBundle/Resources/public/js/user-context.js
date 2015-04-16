@@ -1,40 +1,16 @@
 'use strict';
 
 define(
-    ['underscore', 'backbone', 'oro/mediator'],
-    function (_, Backbone, mediator) {
-        return {
-            userContext: null,
-            model: null,
-            setUserContext: function (userContext) {
-                if (null === this.model) {
-                    this.model = new Backbone.Model({});
-                }
+    ['backbone', 'routing'],
+    function (Backbone, Routing) {
+        var UserContext = Backbone.Model.extend({
+            url: Routing.generate('pim_user_user_rest_get')
+        });
 
-                this.model.set(userContext);
-            },
-            getUserContext: function () {
-                if (!this.model) {
-                    throw new Error('User context has to be set');
-                }
+        var instance = new UserContext();
 
-                return this.model;
-            },
-            setCatalogLocale: function (catalogLocale) {
-                this.model.set('catalogLocale', catalogLocale);
+        instance.fetch();
 
-                mediator.trigger('user_context:catalog_locale:changed');
-            },
-            setCatalogChannel: function (catalogChannel) {
-                this.model.set('catalogChannel', catalogChannel);
-
-                mediator.trigger('user_context:catalog_channel:changed');
-            },
-            setUserLocale: function (userLocale) {
-                this.model.set('userLocale', userLocale);
-
-                mediator.trigger('user_context:user_locale:changed');
-            }
-        };
+        return instance;
     }
 );

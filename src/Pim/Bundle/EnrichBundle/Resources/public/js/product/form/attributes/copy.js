@@ -9,9 +9,10 @@ define(
         'pim/product-edit-form/attributes/copyfield',
         'pim/config-manager',
         'pim/attribute-manager',
-        'pim/product-manager'
+        'pim/product-manager',
+        'pim/user-context'
     ],
-    function ($, _, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager) {
+    function ($, _, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',
@@ -32,8 +33,8 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.locale = 'de_DE';
-                this.scope  = 'mobile';
+                this.locale = UserContext.get('catalogLocale');
+                this.scope  = UserContext.get('catalogScope');
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -46,7 +47,6 @@ define(
 
                 this.$el.html(
                     this.template({
-                        state: this.getParent().state.toJSON(),
                         'copying': this.copying
                     })
                 );

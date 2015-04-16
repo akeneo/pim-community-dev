@@ -49,7 +49,7 @@ define(
                             };
                             var paramValue = this.datagrids.products.getParamValue(associationType);
                             params[this.datagrids.products.paramName] = paramValue;
-                            params.dataLocale = UserContext.getUserContext().get('catalogLocale');
+                            params.dataLocale = UserContext.get('catalogLocale');
 
                             return params;
                         }, this),
@@ -132,7 +132,7 @@ define(
                     this.$el.html(
                         this.template({
                             product:          this.getData(),
-                            locale:           UserContext.getUserContext().get('catalogLocale'),
+                            locale:           UserContext.get('catalogLocale'),
                             state:            this.state.toJSON(),
                             associationTypes: associationTypes
                         })
