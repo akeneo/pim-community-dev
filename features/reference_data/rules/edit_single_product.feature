@@ -7,8 +7,20 @@ Feature: Update a single product by applying rules
     Given a "footwear" catalog configuration
     And I add the "french" locale to the "mobile" channel
     And I add the "french" locale to the "tablet" channel
-    And the following "sole_color" attribute reference data: yellow, blue, red, orange
-    And the following "sole_fabric" attribute reference data: chiffon, satin, wool, kevlar, leather, gore-tex, toile, cashmere
+    And the following reference data:
+      | type   | code     |
+      | color  | yellow   |
+      | color  | blue     |
+      | color  | red      |
+      | color  | orange   |
+      | fabric | chiffon  |
+      | fabric | satin    |
+      | fabric | wool     |
+      | fabric | kevlar   |
+      | fabric | leather  |
+      | fabric | gore-tex |
+      | fabric | toile    |
+      | fabric | cashmere |
     And I am logged in as "Julia"
 
   Scenario: Successfully execute a rule with setter actions to update non empty values on reference data attributes

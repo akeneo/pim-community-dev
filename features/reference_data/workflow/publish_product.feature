@@ -8,14 +8,19 @@ Feature: Publish a product
     Given a "footwear" catalog configuration
     And the following attributes:
       | code        | label       | type                        | property-reference_data_name |
-      | main_fabric | Main fabric | reference_data_multiselect  | fabrics                        |
-      | main_color  | Main color  | reference_data_simpleselect | color                          |
+      | main_fabric | Main fabric | reference_data_multiselect  | fabrics                      |
+      | main_color  | Main color  | reference_data_simpleselect | color                        |
     And I am logged in as "Julia"
-    And the following "main_fabric" attribute reference data: PVC, Nylon, Neoprene, Spandex, Wool, Kevlar, Jute
-    And the following "main_color" attribute reference data: Red, Green, Light green, Blue, Yellow, Cyan, Magenta, Black, White
+    And the following reference data:
+      | type   | code     |
+      | color  | red      |
+      | color  | blue     |
+      | fabric | spandex  |
+      | fabric | neoprene |
+      | fabric | wool     |
     And the following products:
-      | sku         | main_color | main_fabric             |
-      | red-heels   | Red        | Spandex, Neoprene, Wool |
+      | sku       | main_color | main_fabric             |
+      | red-heels | red        | spandex, neoprene, wool |
     And I am logged in as "Julia"
 
   Scenario: Successfully publish a product with reference data
@@ -32,14 +37,14 @@ Feature: Publish a product
     And I confirm the publishing
     Then I visit the "Other" group
     And I fill in the following information:
-      | Main color  | Blue              |
-      | Main fabric | Spandex, Neoprene |
+      | Main color  | blue              |
+      | Main fabric | spandex, neoprene |
     And I press the "Save working copy" button
     And I am on the published index page
     Then the grid should contain 1 elements
     And I should see product red-heels
     Then I am on the "red-heels" published show page
-    And I should see "[Red]"
-    And I should see "[Spandex]"
-    And I should see "[Neoprene]"
-    And I should see "[Wool]"
+    And I should see "[red]"
+    And I should see "[spandex]"
+    And I should see "[neoprene]"
+    And I should see "[wool]"
