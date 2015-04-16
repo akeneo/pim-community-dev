@@ -144,31 +144,40 @@ define(
                 return configurationPromise.promise();
             },
             addAttributes: function (attributeCodes) {
-                var product = this.getData();
+                ConfigManager.getEntityList('attributes').done(_.bind(function (attributes) {
+                    var product = this.getData();
 
-                var hasRequiredValues = true;
-                _.each(attributeCodes, function (attributeCode) {
-                    if (!product.values[attributeCode]) {
-                        product.values[attributeCode] = [];
-                        hasRequiredValues = false;
+                    var hasRequiredValues = true;
+                    _.each(attributeCodes, function (attributeCode) {
+                        var attribute = _.findWhere(attributes, {code: attributeCode});
+                        if (!product.values[attribute.code]) {
+                            product.values[attribute.code] = [AttributeManager.getValue(
+                                [],
+                                attribute,
+                                UserContext.get('catalogLocale'),
+                                UserContext.get('catalogScope')
+                            )];
+                            hasRequiredValues = false;
+                        }
+                    });
+
+                    this.extensions['attribute-group-selector'].setCurrent(
+                        _.findWhere(attributes, {code: _.first(attributeCodes)}).group
+                    );
+
+                    if (hasRequiredValues) {
+                        this.getRoot().model.trigger('change');
+                        return;
                     }
-                });
 
-                ConfigManager.getEntity('attributes', _.first(attributeCodes)).done(_.bind(function (attribute) {
-                    this.extensions['attribute-group-selector'].setCurrent(attribute.group);
+                    /* jshint sub:true */
+                    /* jscs:disable requireDotNotation */
+                    this.extensions['copy'].generateCopyFields();
+
+                    this.setData(product);
+                    this.getRoot().model.trigger('change');
                 }, this));
 
-                if (hasRequiredValues) {
-                    this.getRoot().model.trigger('change');
-                    return;
-                }
-
-                /* jshint sub:true */
-                /* jscs:disable requireDotNotation */
-                this.extensions['copy'].generateCopyFields();
-
-                this.setData(product);
-                this.getRoot().model.trigger('change');
             },
             removeAttribute: function (event) {
                 var attributeCode = event.currentTarget.dataset.attribute;

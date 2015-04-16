@@ -45,7 +45,7 @@ define(
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
-                mediator.trigger('pre_save');
+                mediator.trigger('product:action:pre_save');
                 ProductManager.save(productId, product).done(_.bind(function (data) {
                     navigation.addFlashMessage('success', _.__('pim_enrich.entity.product.info.update_successful'));
                     navigation.afterRequest();
