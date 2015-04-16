@@ -10,3 +10,4 @@ This value should be Yes or No: Cette valeur doit être oui ou non
 This value should not be blank: Cette valeur ne doit pas être vide
 Option code may contain only letters, numbers and underscores: "Le code de l'option peut contenir uniquement des lettres, des chiffres et des traits de soulignement"
 This color is already used by another channel: Cette couleur est déjà utilisée par un autre canal
+This value should not be a decimal.: Cette valeur ne doit pas être un nombre décimal.
