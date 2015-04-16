@@ -24,6 +24,10 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
+                if (!this.getRoot().model.get('meta')) {
+                    return;
+                }
+
                 this.$el.html(
                     this.template({
                         path: Routing.generate(
