@@ -47,38 +47,11 @@ Feature: Edit common attributes of many products at once
     And I change the "Name" to "Product"
     And I move on to the next step
     And I wait for the "edit_common_attributes" mass-edit job to finish
-    Then I should see "Attribute with code \"weather_conditions\" is not common to selected products, attribute skipped"
-    And I should see "Skipped attributes 1"
-
-  # TODO: Re enable this test
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-2182
-  Scenario: Allow edition only common attribute to product values
-    Given the following attributes:
-      | code          | label         | unique |
-      | sole_color    | Sole          | no     |
-      | fur           | Fur           | no     |
-      | serial_number | Serial number | yes    |
-    And the following product values:
-      | product   | attribute     | value                 |
-      | boots     | comment       | Comment on boots      |
-      | boots     | fur           | rabbit                |
-      | boots     | serial_number | 123456789             |
-      | highheels | comment       | Comment on high heels |
-      | highheels | sole_color    | Red                   |
-      | highheels | serial_number | 987654321             |
-    When I mass-edit products boots and highheels
-    And I choose the "Edit common attributes" operation
-    Then I should see available attribute Comment in group "Other"
-    And I display the Name, Fur and Sole attribute
-    And I change the "Name" to "Common name"
-    And I change the "Fur" to "fox"
-    And I change the "Sole" to "Blue"
-    And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
-    Then I should see "Attribute with code \"fur\" is not common to selected products, attribute skipped"
-    And I should see "Attribute with code \"sole_color\" is not common to selected products, attribute skipped"
-    And I should see "Skipped attributes 2"
-    But the english name of "boots" should be "Common name"
+    Then the product "boots" should have the following values:
+      | name-en_US         | Product      |
+      | weather_conditions | [wet], [cold] |
+    And the product "highheels" should have the following values:
+      | name-en_US | Product  |
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family

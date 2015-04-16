@@ -126,7 +126,7 @@ pim_enrich:
             message:
                 warning: There is no attribute in common for the selected products. Please change your selection.
                 invalid_attribute: Attribute with code "attribute_code" is not common to selected products, attribute skipped.
-                no_valid_attribute: None of selected attribute is common with selected product.
+                no_valid_attribute: None of selected attribute can be applied on this product.
 
         classify:
             label:          Classify products in categories
