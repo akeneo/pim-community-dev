@@ -25,12 +25,19 @@ class DoctrineJobRepository implements JobRepositoryInterface
     /* @var EntityManager */
     protected $jobManager = null;
 
+    /* @var string */
+    protected $jobExecutionClass;
+
     /**
      * Provides the doctrine entity manager
+     *
      * @param EntityManager $entityManager
+     * @param string        $jobExecutionClass
      */
-    public function __construct(EntityManager $entityManager)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        $jobExecutionClass = 'Akeneo\\Bundle\\BatchBundle\\EntityJobExecution'
+    ) {
         $currentConn = $entityManager->getConnection();
 
         $currentConnParams = $currentConn->getParams();
@@ -49,7 +56,8 @@ class DoctrineJobRepository implements JobRepositoryInterface
             $entityManager->getConfiguration()
         );
 
-        $this->jobManager = $jobManager;
+        $this->jobManager        = $jobManager;
+        $this->jobExecutionClass = $jobExecutionClass;
     }
 
     /**
@@ -67,7 +75,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function createJobExecution(JobInstance $jobInstance)
     {
-        $jobExecution = new JobExecution();
+        $jobExecution = new $this->jobExecutionClass();
         $jobExecution->setJobInstance($jobInstance);
 
         $this->updateJobExecution($jobExecution);
