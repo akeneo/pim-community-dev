@@ -1,0 +1,41 @@
+<div class="clearfix">
+    <div class="container-fluid">
+        <div class="grid-container">
+            <% if (products.length) { %>
+                <table class="grid table table-hover table-bordered table-condensed groups">
+                    <thead>
+                        <tr>
+                            <th>
+                                <%= identifier.label[locale] || identifier.code %>
+                            </th>
+                            <th>
+                                <%= _.__('pim_enrich.entity.product.meta.groups.modal.group_label') %>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% _.each(products, function (product) {  %>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0);" data-product-id="<%= product.meta.id %>">
+                                        <%= product.values[identifier.code][0].value %>
+                                    </a>
+                                </td>
+                                <td>
+                                    <%= product.meta.label %>
+                                </td>
+                            </tr>
+                        <% }); %>
+                        <% if (products.length < productCount) { %>
+                            <tr>
+                                <td colspan="2">
+                                    <%= _.__('pim_enrich.entity.product.meta.groups.modal.more_products', { 'count': productCount - products.length }) %>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            <% } %>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,7 @@ parameters:
     pim_enrich.normalizer.attribute.class:                         Pim\Bundle\EnrichBundle\Normalizer\AttributeNormalizer
     pim_enrich.normalizer.locale.class:                            Pim\Bundle\EnrichBundle\Normalizer\LocaleNormalizer
     pim_enrich.normalizer.sequential_edit.class:                   Pim\Bundle\EnrichBundle\Normalizer\SequentialEditNormalizer
+    pim_enrich.normalizer.group.class:                             Pim\Bundle\EnrichBundle\Normalizer\GroupNormalizer
 
 services:
     pim_enrich.normalizer.attribute_option_value_collection:
@@ -92,5 +93,12 @@ services:
         class: %pim_enrich.normalizer.sequential_edit.class%
         arguments:
             - '@pim_serializer'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer }
+
+    pim_enrich.normalizer.group:
+        class: %pim_enrich.normalizer.group.class%
+        arguments:
+            - '@pim_serializer.normalizer.group'
         tags:
             - { name: pim_internal_api_serializer.normalizer }

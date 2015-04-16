@@ -56,7 +56,13 @@ extensions:
     change-family:
         module: pim/product-edit-form/meta/change-family
         parent: product-edit-form
-        insertAction: prepend
+        insertAction: append
+        targetZone: meta
+
+    groups:
+        module: pim/product-edit-form/meta/groups
+        parent: product-edit-form
+        insertAction: append
         targetZone: meta
 
     created:
