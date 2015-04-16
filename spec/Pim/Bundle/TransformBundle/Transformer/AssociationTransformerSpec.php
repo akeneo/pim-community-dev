@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Prophecy\Argument;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
@@ -33,7 +34,8 @@ class AssociationTransformerSpec extends ObjectBehavior
         ColumnInfo $columnInfo,
         $guesser,
         DefaultTransformer $defaultTransformer,
-        ClassMetadata $metadata
+        ClassMetadata $metadata,
+        AssociationInterface $association
     ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
         $data  = ['owner' => 'mug-001', 'association_type' => 'PACK'];
@@ -52,7 +54,9 @@ class AssociationTransformerSpec extends ObjectBehavior
         $em->getRepository('productClass')->willReturn($repository);
         $repository->findOneByIdentifier('mug-001')->willReturn($mug);
 
-        $mug->getAssociationForTypeCode('PACK')->shouldBeCalled();
+        $mug->getAssociationForTypeCode('PACK')->shouldBeCalled()->willReturn($association);
+        $association->getOwner()->willReturn($mug);
+        $em->persist($mug)->shouldBeCalled();
 
         $this->transform($class, $data, []);
     }

@@ -4,7 +4,7 @@
 
 ## Technical improvements
 - In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
-- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Attribute, Attribute Option)
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack 
 
 ## Bug fixes
