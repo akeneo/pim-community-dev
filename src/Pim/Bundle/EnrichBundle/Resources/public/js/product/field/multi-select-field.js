@@ -23,7 +23,7 @@ define(
                         'pim_ui_ajaxentity_list',
                         {
                             'class': 'PimCatalogBundle:AttributeOption',
-                            'dataLocale': 'en_US',
+                            'dataLocale': this.context.locale,
                             'collectionCode': this.attribute.code,
                             'options': {'type': 'code'}
                         }

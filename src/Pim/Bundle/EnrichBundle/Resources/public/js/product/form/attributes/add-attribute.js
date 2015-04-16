@@ -7,9 +7,10 @@ define(
         'underscore',
         'pim/form',
         'pim/attribute-manager',
-        'text!pim/template/product/tab/attribute/add-attribute'
+        'text!pim/template/product/tab/attribute/add-attribute',
+        'pim/user-context'
     ],
-    function ($, Backbone, _, BaseForm, AttributeManager, template) {
+    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext) {
         return BaseForm.extend({
             tagName: 'div',
             className: 'btn-group add-attribute',
@@ -30,7 +31,7 @@ define(
                 this.$el.empty();
                 this.$el.html(this.template({
                     attributes: this.state.get('attributes'),
-                    locale: this.getParent().state.get('locale')
+                    locale: UserContext.get('catalogLocale')
                 }));
 
                 this.delegateEvents();

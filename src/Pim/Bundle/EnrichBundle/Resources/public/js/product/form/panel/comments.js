@@ -11,7 +11,7 @@ define(
         'routing',
         'oro/messenger'
     ],
-    function ($, _, Backbone, BaseForm, usercontext, template, Routing, messenger) {
+    function ($, _, Backbone, BaseForm, UserContext, template, Routing, messenger) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -45,7 +45,7 @@ define(
                     this.$el.html(
                         this.template({
                             comments: this.comments,
-                            currentUser: usercontext.getUserContext().get('user')
+                            currentUser: UserContext.toJSON()
                         })
                     );
                     this.delegateEvents();

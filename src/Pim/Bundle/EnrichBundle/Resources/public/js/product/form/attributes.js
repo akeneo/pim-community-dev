@@ -28,13 +28,12 @@ define(
         ProductManager,
         AttributeGroupManager,
         VariantGroupManager,
-        usercontext,
+        UserContext,
         formTemplate
     ) {
         var FormView = BaseForm.extend({
             template: _.template(formTemplate),
             className: 'tabbable tabs-left product-attributes',
-            state: null,
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },
@@ -46,13 +45,9 @@ define(
             },
             configure: function () {
                 this.getRoot().addTab('attributes', 'Attributes');
-                this.state = new Backbone.Model({
-                    'locale': usercontext.getUserContext().get('catalogLocale'),
-                    'scope':  usercontext.getUserContext().get('catalogChannel')
-                });
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
-                this.listenTo(this.state, 'change', this.render);
+                this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
                 mediator.on('product:action:post_update', _.bind(this.postSave, this));
                 mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
                 mediator.on('show_attribute', _.bind(this.showAttribute, this));
@@ -116,8 +111,8 @@ define(
 
                 FieldManager.getField(attributeCode).done(_.bind(function (field) {
                     field.setContext({
-                        'locale': this.state.get('locale'),
-                        'scope': this.state.get('scope'),
+                        'locale': UserContext.get('catalogLocale'),
+                        'scope': UserContext.get('catalogScope'),
                         'optional': AttributeManager.isOptional(attributeCode, product, families)
                     });
                     field.setValues(values);
@@ -188,20 +183,16 @@ define(
                 return this.getData().values;
             },
             setScope: function (scope, options) {
-                options = options || {};
-
-                this.state.set('scope', scope, options);
+                UserContext.set('catalogScope', scope, options);
             },
             getScope: function () {
-                return this.state.get('scope');
+                return UserContext.get('catalogScope');
             },
             setLocale: function (locale, options) {
-                options = options || {};
-
-                this.state.set('locale', locale, options);
+                UserContext.set('catalogLocale', locale, options);
             },
             getLocale: function () {
-                return this.state.get('locale');
+                return UserContext.get('catalogLocale');
             },
             postValidationError: function () {
                 this.extensions['attribute-group-selector'].removeBadges();

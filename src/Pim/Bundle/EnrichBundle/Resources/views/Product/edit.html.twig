@@ -59,10 +59,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/form-builder', 'pim/product-manager', 'pim/user-context'],
-                            function($, FormBuilder, ProductManager, usercontext) {
-                                usercontext.setUserContext({{ usercontext()|json_encode()|raw }});
-
+                            ['jquery', 'pim/form-builder', 'pim/product-manager'],
+                            function($, FormBuilder, ProductManager) {
                                 $(function() {
                                     $.when(
                                         FormBuilder.build('pim/product-edit-form'),
