@@ -10,7 +10,7 @@
             </thead>
             <tbody>
                 <% _.each(versions.slice(0, 10), function(version) { %>
-                    <tr data-version-id="<%= version.id %>" class="product-version">
+                    <tr data-version="<%= version.version %>" class="product-version">
                         <td class="version"><%= version.version %></td>
                         <td class="author"><%= version.author %><%= version.context ? ' (' + version.context + ')' : '' %></td>
                         <td class="logged_at"><%= version.logged_at %></td>
@@ -35,7 +35,7 @@
             </thead>
             <tbody>
                 <% _.each(versions, function(version) { %>
-                    <tr data-version-id="<%= version.id %>" class="product-version">
+                    <tr data-version="<%= version.version %>" class="product-version">
                         <td class="version">
                             <span>
                                 <i class="icon-chevron-right"></i>
