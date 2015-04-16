@@ -23,7 +23,7 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Allow editing only common attributes
+  Scenario: Allow editing all attributes on configuration screen
     Given I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"
@@ -33,7 +33,8 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Color in group "Colors"
     And I should see available attribute Weight in group "Other"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2163
+  # TODO: Re enable this test
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Allow editing only common attributes define from families
     Given I mass-edit products boots and highheels
     And I choose the "Edit common attributes" operation
@@ -41,12 +42,16 @@ Feature: Edit common attributes of many products at once
     And I should see available attributes Price and Rating in group "Marketing"
     And I should see available attribute Size in group "Sizes"
     And I should see available attribute Color in group "Colors"
-    And I should not see available attribute SKU and Weather condition in group "Product information"
-    And I should not see available attributes Side view and Top view in group "Media"
-    And I should not see available attribute Lace color in group "Colors"
-    And I should not see available attributes Heel height and Weight in group "Other"
+    And I display the Name and Weather condition attribute
+    And I change the "Weather condition" to "Cold, Wet"
+    And I change the "Name" to "Product"
+    And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
+    Then I should see "Attribute with code \"weather_conditions\" is not common to selected products, attribute skipped"
+    And I should see "Skipped attributes 1"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2182
+  # TODO: Re enable this test
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-2182
   Scenario: Allow edition only common attribute to product values
     Given the following attributes:
       | code          | label         | unique |
@@ -64,7 +69,16 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products boots and highheels
     And I choose the "Edit common attributes" operation
     Then I should see available attribute Comment in group "Other"
-    And I should not see available attributes Sole color, Fur and Serial number in group "Other"
+    And I display the Name, Fur and Sole attribute
+    And I change the "Name" to "Common name"
+    And I change the "Fur" to "fox"
+    And I change the "Sole" to "Blue"
+    And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
+    Then I should see "Attribute with code \"fur\" is not common to selected products, attribute skipped"
+    And I should see "Attribute with code \"sole_color\" is not common to selected products, attribute skipped"
+    And I should see "Skipped attributes 2"
+    But the english name of "boots" should be "Common name"
 
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
@@ -77,6 +91,12 @@ Feature: Edit common attributes of many products at once
     When I mass-edit products boots and high_heels
     And I choose the "Edit common attributes" operation
     Then I should see available attribute Sole in group "Other"
+    And I display the Sole attribute
+    And I change the "Sole" to "Red"
+    And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
+    Then the product "boots" should have the following values:
+      | sole_color | Red   |
 
   Scenario: Successfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
@@ -84,6 +104,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the english name of "boots" should be "boots"
     And the english name of "sandals" should be "boots"
     And the english name of "sneakers" should be "boots"
@@ -97,6 +118,7 @@ Feature: Edit common attributes of many products at once
     And I display the [name] attribute
     And I change the "[name]" to "chaussure"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the french name of "boots" should be "chaussure"
     And the french name of "sandals" should be "chaussure"
     And the french name of "sneakers" should be "chaussure"
@@ -111,9 +133,10 @@ Feature: Edit common attributes of many products at once
     And I switch the locale to "French (France)"
     And I display the [description] attribute
     And I expand the "[description]" attribute
-    And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo Fr"
-    And fill in "pim_enrich_mass_edit_action_operation_values_description_tablet_text" with "Bar Fr"
+    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_mobile_text" with "Foo Fr"
+    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_tablet_text" with "Bar Fr"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the french mobile description of "boots" should be "Foo Fr"
     And the french tablet description of "boots" should be "Bar Fr"
     And the french mobile description of "pump" should be "Foo Fr"
@@ -126,6 +149,7 @@ Feature: Edit common attributes of many products at once
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the prices "Price" of products boots and sandals should be:
       | amount | currency |
       | 100    | USD      |
@@ -137,6 +161,7 @@ Feature: Edit common attributes of many products at once
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the file "side_view" of products sandals and sneakers should be "SNKRS-1R.png"
 
   Scenario: Successfully update many multi-valued values at once
@@ -145,6 +170,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
@@ -156,6 +182,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the metric "Weight" of products boots and sandals should be "600"
 
   Scenario: Successfully translate groups and labels
@@ -185,6 +212,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the english name of "pump" should be "boots"
     And the english name of "sneakers" should be "boots"
 
@@ -195,9 +223,10 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit common attributes" operation
     And I display the Description attribute
     And I expand the "Description" attribute
-    And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo"
-    And fill in "pim_enrich_mass_edit_action_operation_values_description_tablet_text" with "Bar"
+    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_mobile_text" with "Foo"
+    And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_tablet_text" with "Bar"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the english mobile Description of "boots" should be "Foo"
     And the english tablet Description of "boots" should be "Bar"
     And the english mobile Description of "pump" should be "Foo"
@@ -217,6 +246,7 @@ Feature: Edit common attributes of many products at once
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the prices "Price" of products Shoes should be:
       | amount | currency |
       | 100    | USD      |
@@ -242,6 +272,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the metric "Weight" of products boots and sneakers should be "600"
     And the metric "Weight" of products sandals, pump and highheels should be "500"
 
@@ -255,6 +286,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
+    And I wait for the "edit_common_attributes" mass-edit job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |

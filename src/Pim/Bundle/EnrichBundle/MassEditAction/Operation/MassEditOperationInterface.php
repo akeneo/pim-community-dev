@@ -16,7 +16,7 @@ interface MassEditOperationInterface
      *
      * @return string
      */
-    public function getAlias();
+    public function getOperationAlias();
 
     /**
      * Get filters to retrieve items for this operation
@@ -50,4 +50,11 @@ interface MassEditOperationInterface
      * @return string
      */
     public function getItemsName();
+
+    /**
+     * Return this operation instance
+     *
+     * @return mixed
+     */
+    public function getOperation();
 }

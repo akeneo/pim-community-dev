@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Oro\Bundle\RequireJSBundle\Provider\Config;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
@@ -50,7 +49,7 @@ class MassEditFormResolverSpec extends ObjectBehavior
         $this->getAvailableOperationsForm($gridName);
     }
 
-    function it_returns_the_operation_configuration_form(
+    function it_returns_the_operation_configuration_form_and_initialize_operation(
         $operationRegistry,
         $formFactory,
         $chooseActionFormType,
@@ -61,13 +60,35 @@ class MassEditFormResolverSpec extends ObjectBehavior
 
         $operation->getFormOptions()->willReturn([]);
         $operation->getFormType()->willReturn('add_to_group_type');
+        $operation->initialize()->shouldBeCalled();
 
         $operationRegistry->get($operationAlias)->willReturn($operation);
 
-        $formFactory->create($chooseActionFormType)->willReturn($form);
+        $formFactory->create($chooseActionFormType, $operation)->willReturn($form);
         $form->add('operation', 'add_to_group_type', [])->shouldBeCalled();
 
         $this->getConfigurationForm($operationAlias)->shouldReturn($form);
+    }
+
+    function it_returns_the_operation_configuration_form_with_the_given_operation(
+        $operationRegistry,
+        $formFactory,
+        $chooseActionFormType,
+        ConfigurableOperationInterface $operation,
+        FormInterface $form
+    ) {
+        $operationAlias = 'add-to-group';
+
+        $operation->getFormOptions()->willReturn([]);
+        $operation->getFormType()->willReturn('add_to_group_type');
+        $operation->initialize()->shouldBeCalled();
+
+        $operationRegistry->get($operationAlias)->shouldNotBeCalled();
+
+        $formFactory->create($chooseActionFormType, $operation)->willReturn($form);
+        $form->add('operation', 'add_to_group_type', [])->shouldBeCalled();
+
+        $this->getConfigurationForm($operationAlias, $operation)->shouldReturn($form);
     }
 
     function it_throws_an_exception_the_operation_is_not_configurable(

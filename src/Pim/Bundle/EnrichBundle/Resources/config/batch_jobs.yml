@@ -19,3 +19,12 @@ connector:
                     class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
                         handler: pim_enrich.mass_edit_handler.add_product_value
+        edit_common_attributes:
+            title: edit_common_attributes
+            type:  mass_edit
+            steps:
+                perform:
+                    title: edit_common_attributes
+                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
+                    services:
+                        handler: pim_enrich.mass_edit_handler.edit_common_attributes

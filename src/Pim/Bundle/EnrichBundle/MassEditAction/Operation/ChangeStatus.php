@@ -9,9 +9,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeStatus extends AbstractMassEditOperation implements
-    ConfigurableOperationInterface,
-    BatchableOperationInterface
+class ChangeStatus extends AbstractMassEditOperation
 {
     /** @var boolean Whether or not to enable products */
     protected $toEnable = false;
@@ -39,7 +37,7 @@ class ChangeStatus extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'change-status';
     }
@@ -79,21 +77,6 @@ class ChangeStatus extends AbstractMassEditOperation implements
                 'value' => $this->isToEnable()
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchConfig()
-    {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions()
-                ]
-            )
-        );
     }
 
     /**

@@ -165,7 +165,10 @@ class MassEditActionController extends AbstractDoctrineController
         $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
 
         if ($this->request->isMethod('POST')) {
+            $form->remove('operationAlias');
             $form->submit($this->request);
+            $form = $this->massEditFormResolver->getConfigurationForm($operationAlias, $form->getNormData());
+            $operation = $form->getNormData();
         }
 
         return $this->render(
@@ -195,10 +198,11 @@ class MassEditActionController extends AbstractDoctrineController
         $productCount = $this->request->get('objectsCount');
 
         $form = $this->massEditFormResolver->getConfigurationForm($operationAlias);
+        $form->remove('operationAlias');
         $form->submit($this->request);
 
         if ($form->isValid()) {
-            $operation = $form->getData()['operation'];
+            $operation = $form->getData();
             $pimFilters = $this->gridFilterAdapter->adapt($this->request);
             $operation->setFilters($pimFilters);
 
@@ -212,6 +216,7 @@ class MassEditActionController extends AbstractDoctrineController
                 throw new NotFoundResourceException(sprintf('No job found with job code "%s"', $jobCode));
             }
 
+            $operation->finalize();
             $rawConfiguration = $operation->getBatchConfig();
 
             // TODO: Fixme, we should be able to remove this line without having an error

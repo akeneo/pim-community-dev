@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Prophecy\Argument;
 
 class AddToVariantGroupSpec extends ObjectBehavior
 {
@@ -22,7 +21,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
     function it_provides_an_alias()
     {
-        $this->getAlias()->shouldReturn('add-to-variant-group');
+        $this->getOperationAlias()->shouldReturn('add-to-variant-group');
     }
 
     function it_provides_form_options()

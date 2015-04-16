@@ -11,9 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Classify extends AbstractMassEditOperation implements
-    ConfigurableOperationInterface,
-    BatchableOperationInterface
+class Classify extends AbstractMassEditOperation
 {
     /** @var CategoryInterface[] */
     protected $categories;
@@ -49,7 +47,7 @@ class Classify extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'classify';
     }
@@ -91,21 +89,6 @@ class Classify extends AbstractMassEditOperation implements
                 'value' => $this->getCategoriesCode($categories)
             ]
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getBatchConfig()
-    {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions(),
-                ]
-            )
-        );
     }
 
     /**

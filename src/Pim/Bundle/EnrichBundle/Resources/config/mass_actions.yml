@@ -12,6 +12,7 @@ parameters:
     pim_enrich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
     pim_enrich.mass_edit_handler.update_product_value.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductHandler
     pim_enrich.mass_edit_handler.add_product_value.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\AddProductValueHandler
+    pim_enrich.mass_edit_handler.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Handler\EditCommonAttributesHandler
     pim_enrich.mass_edit_action.form_resolver.class: Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver
 
 services:
@@ -64,11 +65,13 @@ services:
         class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
         arguments:
             - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
             - '@pim_user.context.user'
             - '@pim_catalog.context.catalog'
-            - '@pim_catalog.manager.product_mass_action'
+            - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
+            - '@pim_catalog.manager.media'
+            - '@pim_catalog.manager.product_mass_action'
+            - %upload_dir%
         tags:
             -
                 name: pim_enrich.mass_edit_action
@@ -148,3 +151,15 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_enrich.product.paginator'
             - '@pim_validator'
+
+    pim_enrich.mass_edit_handler.edit_common_attributes:
+        class: %pim_enrich.mass_edit_handler.edit_common_attributes.class%
+        arguments:
+            - '@pim_catalog.query.product_query_builder_factory'
+            - '@pim_catalog.updater.product'
+            - '@pim_catalog.saver.product'
+            - '@akeneo_storage_utils.doctrine.object_detacher'
+            - '@pim_enrich.product.paginator'
+            - '@pim_validator'
+            - '@pim_catalog.repository.product_mass_action'
+            - '@pim_catalog.repository.attribute'
