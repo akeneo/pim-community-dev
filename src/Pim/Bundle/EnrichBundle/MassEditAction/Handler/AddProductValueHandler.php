@@ -78,23 +78,10 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
         $actions = $configuration['actions'];
 
         foreach ($paginator as $productsPage) {
-            $invalidProducts = [];
-            foreach ($productsPage as $index => $product) {
-                $this->addData($product, $actions);
-                $violations = $this->validator->validate($product);
+            $updatedProducts = $this->updateProducts($productsPage, $actions);
+            $validProducts = $this->getValidProducts($updatedProducts);
 
-                if (0 < $violations->count()) {
-                    $this->addWarningMessage($violations, $product);
-                    $this->stepExecution->incrementSummaryInfo('skipped_products');
-                    $invalidProducts[$index] = $product;
-                } else {
-                    $this->stepExecution->incrementSummaryInfo('mass_edited');
-                }
-            }
-
-            $productsPage = array_diff_key($productsPage, $invalidProducts);
-            $this->detachProducts($invalidProducts);
-            $this->productSaver->saveAll($productsPage, $this->getSavingOptions());
+            $this->saveProducts($validProducts, $this->getSavingOptions());
             $this->detachProducts($productsPage);
         }
     }
@@ -173,23 +160,6 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
     }
 
     /**
-     * Add data from $actions to the given $product
-     *
-     * @param ProductInterface $product
-     * @param array            $actions
-     *
-     * @return AddProductValueHandler
-     */
-    protected function addData(ProductInterface $product, array $actions)
-    {
-        foreach ($actions as $action) {
-            $this->productUpdater->addData($product, $action['field'], $action['value']);
-        }
-
-        return $this;
-    }
-
-    /**
      * @param ConstraintViolationListInterface $violations
      * @param ProductInterface                 $product
      */
@@ -214,5 +184,61 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
             );
             $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
         }
+    }
+
+    /**
+     * Save products and mark them as edited
+     *
+     * @param array $validProducts
+     * @param array $getSavingOptions
+     */
+    protected function saveProducts(array $validProducts, array $getSavingOptions)
+    {
+        $this->productSaver->saveAll($validProducts, $getSavingOptions);
+        $this->stepExecution->incrementSummaryInfo('mass_edited', count($validProducts));
+    }
+
+    /**
+     * Return valid products that should be saved and mark others as skipped
+     *
+     * @param array $updatedProducts
+     *
+     * @return array
+     */
+    protected function getValidProducts(array $updatedProducts)
+    {
+        $validProducts = [];
+
+        foreach ($updatedProducts as $product) {
+            $violations = $this->validator->validate($product);
+
+            if (0 === $violations->count()) {
+                $validProducts[] = $product;
+            } else {
+                $this->addWarningMessage($violations, $product);
+                $this->stepExecution->incrementSummaryInfo('skipped_products');
+            }
+        }
+
+        return $validProducts;
+    }
+
+    /**
+     * Set data from $actions to the given $products
+     *
+     * @param array $products
+     * @param array $actions
+     *
+     * @return array $products
+     */
+    protected function updateProducts(array $products, array $actions)
+    {
+        foreach ($products as $product) {
+            foreach ($actions as $action) {
+                $this->productUpdater->addData($product, $action['field'], $action['value']);
+            }
+        }
+
+        return $products;
     }
 }

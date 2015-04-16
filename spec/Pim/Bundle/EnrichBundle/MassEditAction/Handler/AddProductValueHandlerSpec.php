@@ -148,7 +148,7 @@ class AddProductValueHandlerSpec extends ObjectBehavior
 
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
-        $stepExecution->incrementSummaryInfo('mass_edited')->shouldNotBeCalled(2);
+        $stepExecution->incrementSummaryInfo('mass_edited', 0)->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
 
         $productUpdater->addData($product1, 'categories', ['office', 'bedroom'])->shouldBeCalled();
