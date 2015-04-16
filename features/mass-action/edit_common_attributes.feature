@@ -33,7 +33,8 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Color in group "Colors"
     And I should see available attribute Weight in group "Other"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2163
+  # TODO: Re enable this test
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Allow editing only common attributes define from families
     Given I mass-edit products boots and highheels
     And I choose the "Edit common attributes" operation
@@ -49,7 +50,8 @@ Feature: Edit common attributes of many products at once
     Then I should see "Attribute with code \"weather_conditions\" is not common to selected products, attribute skipped"
     And I should see "Skipped attributes 1"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2182
+  # TODO: Re enable this test
+  @skip @jira https://akeneo.atlassian.net/browse/PIM-2182
   Scenario: Allow edition only common attribute to product values
     Given the following attributes:
       | code          | label         | unique |
