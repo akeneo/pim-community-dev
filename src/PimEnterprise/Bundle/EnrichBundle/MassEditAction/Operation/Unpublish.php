@@ -12,17 +12,13 @@
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ConfigurableOperationInterface;
 
 /**
  * Batch operation to unpublish products
  *
- * @author Julien Janvier <nicolas@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class Unpublish extends AbstractMassEditOperation implements
-    ConfigurableOperationInterface,
-    BatchableOperationInterface
+class Unpublish extends AbstractMassEditOperation
 {
     /**
      * Constructor.
@@ -43,32 +39,13 @@ class Unpublish extends AbstractMassEditOperation implements
     /**
      * {@inheritdoc}
      */
-    public function getAlias()
+    public function getOperationAlias()
     {
         return 'unpublish';
     }
 
     /**
-     * Get configuration to send to the BatchBundle command
-     *
-     * @return string
-     */
-    public function getBatchConfig()
-    {
-        return addslashes(
-            json_encode(
-                [
-                    'filters' => $this->getFilters(),
-                    'actions' => $this->getActions(),
-                ]
-            )
-        );
-    }
-
-    /**
-     * Get the code of the JobInstance
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getBatchJobCode()
     {
@@ -76,9 +53,7 @@ class Unpublish extends AbstractMassEditOperation implements
     }
 
     /**
-     * Get the form options to configure the operation
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getFormOptions()
     {
@@ -86,9 +61,7 @@ class Unpublish extends AbstractMassEditOperation implements
     }
 
     /**
-     * Get the name of items this operation applies to
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getItemsName()
     {

@@ -79,6 +79,9 @@ pim_enrich:
             message:
                 error: You're not the owner of the product, you can't classify it.
                 warning: You're not the owner of all the selected products. You can't classify the products "%notGranted%".
+        edit_common_attributes:
+            message:
+                error: You're not the owner of the product, you can't edit it.
 
 # Mass edit operations
 pim_enrich.mass_edit_action:

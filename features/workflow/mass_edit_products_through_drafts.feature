@@ -41,6 +41,8 @@ Feature: Mass edit products through product draft
     And I am logged in as "Mary"
     And I am on the products page
 
+  # TODO: Re enable this test once drafts will be operational on mass edit
+  @skip
   Scenario: Succesfully create simple text attribute product draft of many products
     Given I mass-edit products my-first-jacket and my-second-jacket
     And I choose the "Edit common attributes" operation
