@@ -47,15 +47,15 @@ define(
             },
             publish: function () {
                 Dialog.confirm(
-                    _.__('pimee_enrich.product.confirmation.publish.content'),
-                    _.__('pimee_enrich.product.confirmation.publish.title'),
+                    _.__('pimee_enrich.entity.product.confirmation.publish.content'),
+                    _.__('pimee_enrich.entity.product.confirmation.publish.title'),
                     _.bind(this.doPublish, this)
                 );
             },
             unpublish: function () {
                 Dialog.confirm(
-                    _.__('pimee_enrich.product.confirmation.unpublish.content'),
-                    _.__('pimee_enrich.product.confirmation.unpublish.title'),
+                    _.__('pimee_enrich.entity.product.confirmation.unpublish.content'),
+                    _.__('pimee_enrich.entity.product.confirmation.unpublish.title'),
                     _.bind(this.doUnpublish, this)
                 );
             },

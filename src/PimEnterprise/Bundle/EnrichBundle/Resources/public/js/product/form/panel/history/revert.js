@@ -41,8 +41,8 @@ define(
                 event.stopPropagation();
 
                 Dialog.confirm(
-                    _.__('pimee_enrich.product.confirmation.revert.content'),
-                    _.__('pimee_enrich.product.confirmation.revert.title'),
+                    _.__('pimee_enrich.entity.product.confirmation.revert.content'),
+                    _.__('pimee_enrich.entity.product.confirmation.revert.title'),
                     _.bind(function () {
                         var navigation = Navigation.getInstance();
                         var loadingMask = new LoadingMask();

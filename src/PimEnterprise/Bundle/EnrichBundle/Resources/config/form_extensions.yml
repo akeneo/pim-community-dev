@@ -4,7 +4,7 @@ extensions:
         parent: attributes
         targetZone: attributes
 
-    published:
+    history-published:
         module: pimee/product-edit-form/panel/history/published
         parent: history
         targetZone: history
@@ -20,7 +20,7 @@ extensions:
         targetZone: buttons
         insertAction: prepend
 
-    published:
+    meta-published:
         module: pimee/product-edit-form/meta/published
         parent: product-edit-form
         insertAction: append
