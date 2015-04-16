@@ -3,9 +3,10 @@
 define(
     [
         'jquery',
-        'routing',
+        'underscore',
+        'routing'
     ],
-    function ($, Routing) {
+    function ($, _, Routing) {
         return {
             ruleRelationsPromise: null,
             getRuleRelations: function (relationType) {

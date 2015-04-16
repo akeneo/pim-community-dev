@@ -117,10 +117,12 @@ define(
                     '<%= actions %>' +
                 '</td>' +
                 '<td class="rule-cell">' +
-                    '<button class="btn delete-row" alt="Delete rule" type="button"><i class="icon-trash"></i> <%= delete_label %></button>' +
+                    '<button class="btn delete-row" alt="Delete rule" type="button">' +
+                        '<i class="icon-trash"></i> <%= delete_label %>' +
+                    '</button>' +
                 '</td>'
             ),
-            renderRuleContentParts: function(type) {
+            renderRuleContentParts: function (type) {
                 var renderedRuleContentParts = '';
                 var ruleContentPart = this.model.attributes.content[type.toString()];
 
@@ -130,16 +132,20 @@ define(
 
                 return renderedRuleContentParts;
             },
-            renderRulePart: function(rulePart, type) {
+            renderRulePart: function (rulePart, type) {
                 var rulePartType = rulePart.type ? rulePart.type : 'field';
 
                 return ruleItemTemplates[type][rulePartType]({
                     'rulePart': rulePart,
-                    'renderItemContext': function(locale, scope) {
+                    'renderItemContext': function (locale, scope) {
                         var localeCountry  = locale ? locale.split('_')[1].toLowerCase() : locale;
                         var localeLanguage = locale ? locale.split('_')[0].toLowerCase() : locale;
 
-                        return itemContextTemplate({'localeCountry': localeCountry, 'localeLanguage': localeLanguage, 'scope': scope});
+                        return itemContextTemplate({
+                            'localeCountry': localeCountry,
+                            'localeLanguage': localeLanguage,
+                            'scope': scope
+                        });
                     },
                     'renderValue': renderValue,
                     'if_label': __('pimee_catalog_rule.rule.condition.if.label'),
@@ -148,7 +154,7 @@ define(
                     'copy_value_label': __('pimee_catalog_rule.rule.action.copy_value.label')
                 });
             },
-            renderTemplate: function() {
+            renderTemplate: function () {
                 var renderedConditions = this.renderRuleContentParts('conditions');
                 var renderedActions    = this.renderRuleContentParts('actions');
 
@@ -158,7 +164,7 @@ define(
                     'actions':    renderedActions,
                     'delete_label': __('pim_enrich.item.list.delete.label')
                 });
-            },
+            }
         });
     }
 );

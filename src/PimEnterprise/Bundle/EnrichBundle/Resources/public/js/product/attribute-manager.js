@@ -1,16 +1,17 @@
-"use strict";
+'use strict';
 
 define(
     [
+        'jquery',
         'underscore',
         'pimenrich/js/product/attribute-manager',
         'pimenrich/js/product/attribute-group-manager',
         'pim/config-manager',
         'pim/permission-manager'
     ],
-    function (_, AttributeManager, AttributeGroupManager, ConfigManager, PermissionManager) {
+    function ($, _, AttributeManager, AttributeGroupManager, ConfigManager, PermissionManager) {
         return _.extend({}, AttributeManager, {
-            getAttributesForProduct: function(product) {
+            getAttributesForProduct: function (product) {
                 var promise = $.Deferred();
 
                 $.when(
@@ -25,7 +26,9 @@ define(
                             function (attributeCode) {
                                 var group = AttributeGroupManager.getAttributeGroupForAttribute(groups, attributeCode);
 
+                                /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
                                 return _.findWhere(permissions.attribute_groups, {code: group}).view;
+                                /* jscs:enable requireCamelCaseOrUpperCaseIdentifiers */
                             }
                         );
                     }
@@ -35,16 +38,18 @@ define(
 
                 return promise.promise();
             },
-            getOptionalAttributes: function(product) {
+            getOptionalAttributes: function (product) {
                 var promise = $.Deferred();
 
                 $.when(
                     ConfigManager.getEntityList('attributes'),
                     this.getAttributesForProduct(product),
                     PermissionManager.getPermissions()
-                ).done(function(attributes, productAttributes, permissions) {
+                ).done(function (attributes, productAttributes, permissions) {
                     attributes = _.filter(attributes, function (attribute) {
+                        /* jscs:disable requireCamelCaseOrUpperCaseIdentifiers */
                         return _.findWhere(permissions.attribute_groups, {code: attribute.group}).edit;
+                        /* jscs:enable requireCamelCaseOrUpperCaseIdentifiers */
                     });
 
                     var optionalAttributes = _.map(

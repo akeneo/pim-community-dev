@@ -30,7 +30,7 @@ define(
             template: _.template(template),
             events: {
                 'click .publish-product:not(.disabled)': 'publish',
-                'click .unpublish-product': 'unpublish',
+                'click .unpublish-product': 'unpublish'
             },
             configure: function () {
                 mediator.on('product:action:post_update', _.bind(this.render, this));
@@ -59,10 +59,10 @@ define(
                     _.bind(this.doUnpublish, this)
                 );
             },
-            doPublish: function() {
+            doPublish: function () {
                 this.togglePublished(true);
             },
-            doUnpublish: function() {
+            doUnpublish: function () {
                 this.togglePublished(false);
             },
             togglePublished: function (publish) {
@@ -73,8 +73,8 @@ define(
 
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
                 method(productId)
-                    .done(_.bind(function() {
-                        ProductManager.get(this.getData().meta.id).done(_.bind(function(product) {
+                    .done(_.bind(function () {
+                        ProductManager.get(this.getData().meta.id).done(_.bind(function (product) {
                             this.getRoot().setData(product);
                             navigation.addFlashMessage(
                                 'success',

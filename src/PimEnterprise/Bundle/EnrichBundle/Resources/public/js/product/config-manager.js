@@ -2,15 +2,15 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'pimenrich/js/product/config-manager',
         'pim/permission-manager'
     ],
-    function (_, ConfigManager, PermissionManager) {
+    function ($, _, ConfigManager, PermissionManager) {
         return _.extend({}, ConfigManager,
             {
-                getEntityList: function (entityType)
-                {
+                getEntityList: function (entityType) {
                     var promise = $.Deferred();
 
                     ConfigManager.getEntityList(entityType).done(function (entities) {
