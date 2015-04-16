@@ -162,7 +162,7 @@ services:
         arguments:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
-            - '@pim_enrich.manager.mass_edit_job_manager'
+            - '@akeneo_batch.manager.job_launcher'
             - '@akeneo_batch.job_repository'
             - '@akeneo_batch.connectors'
             - '@pim_enrich.mass_edit_action.operation.registry'

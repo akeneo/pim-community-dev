@@ -5,12 +5,12 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Bundle\BatchBundle\Manager\JobLauncher;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\MassEditAction\Manager\MassEditJobManager;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -43,8 +43,8 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var GridFilterAdapterInterface */
     protected $gridFilterAdapter;
 
-    /** @var MassEditJobManager */
-    protected $massEditJobManager;
+    /** @var JobLauncher */
+    protected $jobLauncher;
 
     /** @var DoctrineJobRepository */
     protected $jobRepository;
@@ -69,7 +69,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ManagerRegistry            $doctrine
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
-     * @param MassEditJobManager         $massEditJobManager
+     * @param JobLauncher                $jobLauncher
      * @param DoctrineJobRepository      $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
@@ -87,7 +87,7 @@ class MassEditActionController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
-        MassEditJobManager $massEditJobManager,
+        JobLauncher $jobLauncher,
         DoctrineJobRepository $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
@@ -107,7 +107,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $this->parametersParser     = $parametersParser;
         $this->gridFilterAdapter    = $gridFilterAdapter;
-        $this->massEditJobManager   = $massEditJobManager;
+        $this->jobLauncher          = $jobLauncher;
         $this->jobRepository        = $jobRepository;
         $this->connectorRegistry    = $connectorRegistry;
         $this->operationRegistry    = $operationRegistry;
@@ -222,7 +222,7 @@ class MassEditActionController extends AbstractDoctrineController
             // TODO: Fixme, we should be able to remove this line without having an error
             $jobInstance = $this->getJobInstance($jobInstance->getId());
 
-            $this->massEditJobManager->launchJob($jobInstance, $this->getUser(), $rawConfiguration);
+            $this->jobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
         }
 
         if ($form->isValid()) {

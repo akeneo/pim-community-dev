@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Manager\JobLauncher;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
@@ -41,12 +42,6 @@ class JobProfileController extends AbstractDoctrineController
     /** @var string */
     protected $jobType;
 
-    /** @var string */
-    protected $rootDir;
-
-    /** @var string */
-    protected $environment;
-
     /** @var JobInstanceType */
     protected $jobInstanceType;
 
@@ -58,6 +53,9 @@ class JobProfileController extends AbstractDoctrineController
 
     /** @var JobManager */
     protected $jobManager;
+
+    /** @var JobLauncher */
+    protected $jobLauncher;
 
     /** @var File */
     protected $file;
@@ -76,11 +74,10 @@ class JobProfileController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
-     * @param string                   $rootDir
-     * @param string                   $environment
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
      * @param JobManager               $jobManager
+     * @param JobLauncher              $jobLauncher
      */
     public function __construct(
         Request $request,
@@ -94,11 +91,10 @@ class JobProfileController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
         $jobType,
-        $rootDir,
-        $environment,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
-        JobManager $jobManager
+        JobManager $jobManager,
+        JobLauncher $jobLauncher
     ) {
         parent::__construct(
             $request,
@@ -114,14 +110,13 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->connectorRegistry  = $connectorRegistry;
         $this->jobType            = $jobType;
-        $this->rootDir            = $rootDir;
-        $this->environment        = $environment;
 
         $this->jobInstanceType    = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
 
         $this->jobInstanceFactory = $jobInstanceFactory;
         $this->jobManager         = $jobManager;
+        $this->jobLauncher        = $jobLauncher;
     }
 
     /**
@@ -418,13 +413,8 @@ class JobProfileController extends AbstractDoctrineController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $jobExecution = $this->jobManager->launch(
-            $jobInstance,
-            $this->getUser(),
-            $this->rootDir,
-            $this->environment,
-            $isUpload
-        );
+        $jobExecution = $this->jobLauncher->setConfig(['email' => true, 'upload' => $isUpload])
+            ->launch($jobInstance, $this->getUser());
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
