@@ -9,7 +9,7 @@ define(
 
         var instance = new UserContext();
 
-        instance.fetch();
+        instance.fetch({async: false});
 
         return instance;
     }
