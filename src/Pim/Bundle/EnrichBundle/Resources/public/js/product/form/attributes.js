@@ -38,6 +38,7 @@ define(
                 'click .remove-attribute': 'removeAttribute'
             },
             visibleFields: {},
+            rendering: false,
             initialize: function () {
                 FieldManager.fields = {};
 
@@ -58,9 +59,11 @@ define(
                 );
             },
             render: function () {
-                if (!this.configured) {
+                if (!this.configured || this.rendering) {
                     return this;
                 }
+
+                this.rendering = true;
 
                 this.getConfig().done(_.bind(function () {
                     this.$el.html(this.template({}));
@@ -90,6 +93,7 @@ define(
                                 this.visibleFields[field.attribute.code] = field;
                                 $productValuesPanel.append(field.$el);
                             }, this));
+                            this.rendering = false;
                         }, this));
                     }, this));
                     this.delegateEvents();
@@ -139,19 +143,25 @@ define(
 
                 return configurationPromise.promise();
             },
-            addAttribute: function (attributeCode) {
+            addAttributes: function (attributeCodes) {
                 var product = this.getData();
 
-                ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function (attribute) {
+                var hasRequiredValues = true;
+                _.each(attributeCodes, function (attributeCode) {
+                    if (!product.values[attributeCode]) {
+                        product.values[attributeCode] = [];
+                        hasRequiredValues = false;
+                    }
+                });
+
+                ConfigManager.getEntity('attributes', _.first(attributeCodes)).done(_.bind(function (attribute) {
                     this.extensions['attribute-group-selector'].setCurrent(attribute.group);
                 }, this));
 
-                if (product.values[attributeCode]) {
+                if (hasRequiredValues) {
                     this.getRoot().model.trigger('change');
                     return;
                 }
-
-                product.values[attributeCode] = [];
 
                 /* jshint sub:true */
                 /* jscs:disable requireDotNotation */

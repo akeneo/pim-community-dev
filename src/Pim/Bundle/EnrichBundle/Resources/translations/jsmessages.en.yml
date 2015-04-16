@@ -112,6 +112,7 @@ pim_enrich:
                 enabled: Enabled
                 disable: Disable
                 disabled: Disabled
+                download_pdf: PDF
             history:
                 version: Version
                 author: Author
@@ -127,6 +128,8 @@ pim_enrich:
             info:
                 deletion_successful: Product successfully deleted.
                 deletion_failed: The product could not be deleted.
+                update_successful: Product successfully updated.
+                update_failed: The product could not be updated.
             confirmation:
                 change_family:
                     title:            Change family
@@ -160,3 +163,15 @@ pim_enrich:
                         show_products: Show products
                         show_groups: Show groups
                         number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
+                attributes:
+                    btn:
+                        add: Add
+                        add_attributes: Add attributes
+                    info:
+                        search_attributes: Search
+                        no_available_attributes: There are no more attributes to add
+            panel:
+                completeness:
+                    info:
+                        no_family:      No family defined
+                        not_calculated: Not yet calculated
