@@ -734,6 +734,7 @@ pane.accordion:
   locale_values: Valeurs de locale
   backend_parameters: Paramètres de stockage
   general_parameters: Paramètres généraux
+  validation_parameters: Paramètres de validation
   label_translations: Traduction des libellés
   options: Options
   group_values: Valeurs du groupe
