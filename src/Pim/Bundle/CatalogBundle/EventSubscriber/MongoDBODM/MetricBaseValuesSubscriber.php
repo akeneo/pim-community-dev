@@ -6,6 +6,7 @@ use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
@@ -97,8 +98,8 @@ class MetricBaseValuesSubscriber implements EventSubscriber
             $metric = $value->getData();
             if ($metric instanceof MetricInterface && $metric->getUnit()) {
                 $this->createMetricBaseValues($metric);
-                if ($metric->getId() !== null) {
-                    $metadata = $dm->getClassMetadata(get_class($metric));
+                if (null !== $metric->getId()) {
+                    $metadata = $dm->getClassMetadata(ClassUtils::getClass($metric));
                     $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($metadata, $metric);
                 }
             }
