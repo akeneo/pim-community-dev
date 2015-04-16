@@ -936,6 +936,10 @@ class FixturesContext extends RawMinkContext
     public function theFollowingReferenceData(TableNode $table)
     {
         foreach ($table->getHash() as $row) {
+            if (!array_key_exists('label', $row)) {
+                $row['label'] = null;
+            }
+
             $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
         }
 
