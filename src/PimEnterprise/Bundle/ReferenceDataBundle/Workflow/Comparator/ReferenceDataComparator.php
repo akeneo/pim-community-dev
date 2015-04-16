@@ -51,11 +51,7 @@ class ReferenceDataComparator implements ComparatorInterface
         $getter = MethodNameGuesser::guess('get', $referenceDataName);
         $referenceData = $value->$getter();
 
-        if (null === $referenceData) {
-            return;
-        }
-
-        if ($referenceData->getId() != $submittedData[$referenceDataName]) {
+        if (!$referenceData || $referenceData->getId() != $submittedData[$referenceDataName]) {
             return [
                 $referenceDataName => $submittedData[$referenceDataName],
             ];
