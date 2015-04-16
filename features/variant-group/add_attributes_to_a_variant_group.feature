@@ -71,7 +71,8 @@ Feature: Add attributes to a variant group
     And I add available attribute Name
     And I add available attribute Description
     Then I am on the attributes page
-    When I click on the "Delete" action of the row which contains "Name"
+    When I filter by "Label" with value "Name"
+    And I click on the "Delete" action of the row which contains "Name"
     And I confirm the deletion
     Then I am on the "caterpillar_boots" variant group page
     And I should not see available attribute Name in group "Product information"

@@ -483,8 +483,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId)
     {
-        $sql = 'SELECT ga.attribute_id '.
+        $sql = 'SELECT ga.attribute_id, a.code '.
             'FROM pim_catalog_group_attribute ga '.
+            'INNER JOIN pim_catalog_attribute a ON a.id = ga.attribute_id '.
             'WHERE ga.group_id = :groupId;';
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $stmt->bindValue('groupId', $variantGroupId);
@@ -513,8 +514,8 @@ class ProductRepository extends DocumentRepository implements
         foreach ($attributes as $attribute) {
             $andExpr = $qb
                 ->expr()
-                ->field('values')
-                ->elemMatch(['attribute' => (int) $attribute['attribute_id'], 'option' => ['$exists' => true]]);
+                ->field(sprintf('normalizedData.%s', $attribute['code']))
+                ->exists(true);
 
             $qb->addAnd($andExpr);
         }

@@ -266,6 +266,11 @@ pim_enrich:
                 title: Updated by a variant group
                 content: This field is updated by the following variant group
 
+    reference_data:
+        empty_value:
+            reference_data_type:
+                label: Choose the reference data type
+
 # Entity and page header titles
 attribute:
     title:    attribute
@@ -714,6 +719,9 @@ pim_catalog_image:            Image
 pim_catalog_boolean:          "Yes/No"
 pim_catalog_date:             Date
 pim_catalog_metric:           Metric
+
+pim_reference_data_simpleselect: Reference data simple select
+pim_reference_data_multiselect:  Reference data multi select
 
 # Locales
 Activated: Activated

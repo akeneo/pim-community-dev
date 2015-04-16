@@ -66,6 +66,7 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'scope'                  => 'Global',
                     'options'                => 'Code:green,en:Green,fr:Vert|Code:red,en:Red,fr:Rouge',
                     'useable_as_grid_filter' => 0,
+                    'reference_data_name'    => null,
                 )
             ),
             array(
@@ -89,6 +90,7 @@ class AttributeNormalizerTest extends Structured\AttributeNormalizerTest
                     'validation_rule'        => 'regexp',
                     'validation_regexp'      => '^[a-zA-Z0-9 ]*$',
                     'wysiwyg_enabled'        => '1',
+                    'reference_data_name'    => null,
                 )
             )
         );

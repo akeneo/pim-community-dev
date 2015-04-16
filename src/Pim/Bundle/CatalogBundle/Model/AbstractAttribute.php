@@ -1012,4 +1012,22 @@ abstract class AbstractAttribute implements AttributeInterface
 
         return !empty($availableLocale);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReferenceDataName()
+    {
+        return $this->getProperty('reference_data_name');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReferenceDataName($name)
+    {
+        $this->setProperty('reference_data_name', $name);
+
+        return $this;
+    }
 }

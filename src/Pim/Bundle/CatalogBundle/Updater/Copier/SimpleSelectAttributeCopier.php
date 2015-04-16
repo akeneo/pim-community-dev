@@ -49,8 +49,8 @@ class SimpleSelectAttributeCopier extends AbstractAttributeCopier
         $fromScope = $options['from_scope'];
         $toScope = $options['to_scope'];
 
-        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'base');
-        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'base');
+        $this->checkLocaleAndScope($fromAttribute, $fromLocale, $fromScope, 'simple select');
+        $this->checkLocaleAndScope($toAttribute, $toLocale, $toScope, 'simple select');
 
         $this->copySingleValue(
             $fromProduct,

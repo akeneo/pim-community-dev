@@ -69,8 +69,6 @@ class AttributeType extends AbstractType
 
         $this->addFieldRequired($builder);
 
-        $this->addFieldUnique($builder);
-
         $this->addFieldLabel($builder);
 
         $this->addFieldUseableAsGridFilter($builder);
@@ -107,15 +105,6 @@ class AttributeType extends AbstractType
     protected function addFieldCode(FormBuilderInterface $builder)
     {
         $builder->add('code', 'text', ['required' => true]);
-    }
-
-    /**
-     * Add field unique to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldUnique(FormBuilderInterface $builder)
-    {
-        $builder->add('unique', 'choice', ['choices' => ['No', 'Yes']]);
     }
 
     /**

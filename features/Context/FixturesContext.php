@@ -2,26 +2,27 @@
 
 namespace Context;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Util\Inflector;
+use Acme\Bundle\AppBundle\Entity\Color;
+use Acme\Bundle\AppBundle\Entity\Fabric;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Gherkin\Node\PyStringNode;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Doctrine\Common\Util\ClassUtils;
+use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CommentBundle\Entity\Comment;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CommentBundle\Entity\Comment;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
  * A context for creating entities
@@ -39,18 +40,20 @@ class FixturesContext extends RawMinkContext
     ];
 
     protected $attributeTypes = [
-        'text'         => 'pim_catalog_text',
-        'number'       => 'pim_catalog_number',
-        'textarea'     => 'pim_catalog_textarea',
-        'identifier'   => 'pim_catalog_identifier',
-        'metric'       => 'pim_catalog_metric',
-        'prices'       => 'pim_catalog_price_collection',
-        'image'        => 'pim_catalog_image',
-        'file'         => 'pim_catalog_file',
-        'multiselect'  => 'pim_catalog_multiselect',
-        'simpleselect' => 'pim_catalog_simpleselect',
-        'date'         => 'pim_catalog_date',
-        'boolean'      => 'pim_catalog_boolean',
+        'text'                        => 'pim_catalog_text',
+        'number'                      => 'pim_catalog_number',
+        'textarea'                    => 'pim_catalog_textarea',
+        'identifier'                  => 'pim_catalog_identifier',
+        'metric'                      => 'pim_catalog_metric',
+        'prices'                      => 'pim_catalog_price_collection',
+        'image'                       => 'pim_catalog_image',
+        'file'                        => 'pim_catalog_file',
+        'multiselect'                 => 'pim_catalog_multiselect',
+        'simpleselect'                => 'pim_catalog_simpleselect',
+        'date'                        => 'pim_catalog_date',
+        'boolean'                     => 'pim_catalog_boolean',
+        'reference_data_simpleselect' => 'pim_reference_data_simpleselect',
+        'reference_data_multiselect'  => 'pim_reference_data_multiselect',
     ];
 
     protected $entities = [
@@ -672,6 +675,10 @@ class FixturesContext extends RawMinkContext
             }
             assertEquals($data['metric_family'], $attribute->getMetricFamily());
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
+
+            if(isset($data['reference_data_name'])) {
+                assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
+            }
         }
     }
 
@@ -901,6 +908,42 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->flush();
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $referenceData
+     *
+     * @Given /^the following "([^"]*)" attribute reference data: (.*)$/
+     */
+    public function theFollowingAttributeReferenceData($attribute, $referenceData)
+    {
+        $attribute = $this->getAttribute(strtolower($attribute));
+        $referenceDataType = $attribute->getReferenceDataName();
+
+        foreach ($this->listToArray($referenceData) as $code) {
+            $this->createReferenceData($referenceDataType, $code, $code);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following reference data?:$/
+     */
+    public function theFollowingReferenceData(TableNode $table)
+    {
+        foreach ($table->getHash() as $row) {
+            if (!array_key_exists('label', $row)) {
+                $row['label'] = null;
+            }
+
+            $this->createReferenceData(trim($row['type']), trim($row['code']), trim($row['label']));
+        }
+
+        $this->getEntityManager()->flush();
     }
 
     /**
@@ -1692,11 +1735,20 @@ class FixturesContext extends RawMinkContext
 
         $data['type'] = $this->getAttributeType($data['type']);
 
+        $properties = [];
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
-                $data[$key] = $element === 'yes';
+                $element = $element === 'yes';
+                $data[$key] = $element;
+            }
+            if (false !== strpos($key, 'property-')) {
+                $property = str_replace('property-', '', $key);
+                $properties[$property] = $element;
+                unset($data[$key]);
             }
         }
+
+        $data['properties'] = $properties;
 
         $attribute = $this->loadFixture('attributes', $data);
 
@@ -1891,6 +1943,78 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $type
+     * @param string $code
+     * @param string $label
+     *
+     * @return ReferenceDataInterface
+     */
+    protected function createReferenceData($type, $code, $label)
+    {
+        switch ($type) {
+            case 'color':
+            case 'colors':
+                $referenceData = $this->createColorReferenceData($code, $label);
+                break;
+            case 'fabric':
+            case 'fabrics':
+                $referenceData = $this->createFabricReferenceData($code, $label);
+                break;
+            default:
+                throw new \InvalidArgumentException(sprintf('Unknown reference data type "%s".', $type));
+        }
+
+        $this->getEntityManager()->persist($referenceData);
+
+        return $referenceData;
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     *
+     * @return Color
+     */
+    protected function createColorReferenceData($code, $label)
+    {
+        $configuration = $this->getReferenceDataRegistry()->get('color');
+        $class = $configuration->getClass();
+
+        $color = new $class();
+        $color->setCode($code);
+        $color->setName($label);
+        $color->setHex('#' . strtolower($code));
+        $color->setRed(rand(0, 100));
+        $color->setGreen(rand(0, 100));
+        $color->setBlue(rand(0, 100));
+        $color->setHue(rand(0, 100));
+        $color->setHslSaturation(rand(0, 100));
+        $color->setLight(rand(0, 100));
+        $color->setHsvSaturation(rand(0, 100));
+        $color->setValue(rand(0, 100));
+
+        return $color;
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     *
+     * @return Fabric
+     */
+    protected function createFabricReferenceData($code, $label)
+    {
+        $configuration = $this->getReferenceDataRegistry()->get('fabrics');
+        $class = $configuration->getClass();
+
+        $fabric = new $class();
+        $fabric->setCode($code);
+        $fabric->setName($label);
+
+        return $fabric;
+    }
+
+    /**
      * Create a family
      *
      * @param array|string $data
@@ -1902,6 +2026,18 @@ class FixturesContext extends RawMinkContext
         if (is_string($data)) {
             $data = ['code' => $data];
         }
+
+        $requirements = [];
+        foreach ($data as $key => $value) {
+            if (false !== strpos($key, 'requirements-')) {
+                $channel = str_replace('requirements-', '', $key);
+                $attributes = explode(',', $value);
+                $requirements[$channel] = $attributes;
+                unset($data[$key]);
+            }
+        }
+
+        $data['requirements'] = $requirements;
 
         $family = $this->loadFixture('families', $data);
 
@@ -2116,6 +2252,14 @@ class FixturesContext extends RawMinkContext
     protected function getFieldNameBuilder()
     {
         return $this->getContainer()->get('pim_transform.builder.field_name');
+    }
+
+    /**
+     * @return \Pim\Component\ReferenceData\ConfigurationRegistryInterface
+     */
+    protected function getReferenceDataRegistry()
+    {
+        return $this->getContainer()->get('pim_reference_data.registry');
     }
 
     /**
