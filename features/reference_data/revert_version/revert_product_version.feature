@@ -56,8 +56,8 @@ Feature: Revert a product to a previous version
     Then I save the product
     And I visit the "History" tab
     And I should see history:
-      | version | property    | value                   |
-      | 2       | main_fabric | [neoprene],cashmerewool |
+      | version | property    | value                 |
+      | 2       | main_fabric | cashmerewool,neoprene |
     When I click on the "Revert to this version" action of the row which contains "sku: red-heels"
     Then the product "red-heels" should have the following values:
-      | main_fabric | [neoprene],silk,cashmerewool |
+      | main_fabric | Cashmerewool, [neoprene], Silk |
