@@ -25,6 +25,8 @@ define(
 
                 mediator.on('product:action:post_update', _.bind(this.update, this));
 
+                this.listenTo(this.getRoot().model, 'change:family', this.render);
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
@@ -35,6 +37,7 @@ define(
                     ).done(_.bind(function (completenesses, locales) {
                         this.$el.html(
                             this.template({
+                                hasFamily: this.getRoot().model.get('family') !== null,
                                 completenesses: completenesses,
                                 i18n: i18n,
                                 locales: locales
