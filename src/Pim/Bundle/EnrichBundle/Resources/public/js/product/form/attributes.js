@@ -82,6 +82,7 @@ define(
 
                         $.when.apply($, fieldPromisses).done(_.bind(function () {
                             var $productValuesPanel = this.$('.product-values');
+                            $productValuesPanel.empty();
 
                             this.visibleFields = {};
                             _.each(arguments, _.bind(function (field) {
