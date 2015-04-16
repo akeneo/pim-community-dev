@@ -1,5 +1,5 @@
 <div class="media-uploader <%= value.value && value.value.filePath ? 'has-file' : '' %>" >
-    <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" />
+    <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>/>
     <div class="file">
     <% if (value.value) { %>
         <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
