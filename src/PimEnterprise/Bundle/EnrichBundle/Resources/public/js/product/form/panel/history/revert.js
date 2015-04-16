@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -13,7 +14,8 @@ define(
         'routing',
         'pim/dialog'
     ],
-    function(
+    function (
+        $,
         _,
         Backbone,
         BaseForm,
@@ -27,7 +29,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(revertTemplate),
-            render: function() {
+            render: function () {
                 var $revertAction = $(this.template());
                 $revertAction.on('click', _.bind(this.revert, this));
 
@@ -35,13 +37,13 @@ define(
 
                 return this;
             },
-            revert: function(event) {
+            revert: function (event) {
                 event.stopPropagation();
 
                 Dialog.confirm(
                     _.__('pimee_enrich.product.confirmation.revert.content'),
                     _.__('pimee_enrich.product.confirmation.revert.title'),
-                    _.bind(function() {
+                    _.bind(function () {
                         var navigation = Navigation.getInstance();
                         var loadingMask = new LoadingMask();
                         loadingMask.render().$el.appendTo(this.getRoot().$el).show();
@@ -54,8 +56,8 @@ define(
                                 method: 'GET'
                             }
                         ).done(
-                            _.bind(function() {
-                                ProductManager.get(this.getData().meta.id).done(_.bind(function(product) {
+                            _.bind(function () {
+                                ProductManager.get(this.getData().meta.id).done(_.bind(function (product) {
                                     this.getRoot().setData(product);
 
                                     navigation.addFlashMessage(
@@ -70,7 +72,7 @@ define(
                                 }, this));
                             }, this)
                         ).fail(
-                            function(response) {
+                            function (response) {
                                 loadingMask.hide().$el.remove();
                                 navigation.addFlashMessage('error', response.responseJSON.error);
                                 navigation.afterRequest();

@@ -6,7 +6,7 @@ define(['jquery', 'routing'], function ($, Routing) {
             return $.ajax({
                 type: 'PUT',
                 url: Routing.generate('pimee_workflow_published_product_rest_publish', {originalId: id}),
-                headers: { accept: 'application/json' },
+                headers: { accept: 'application/json' }
             }).promise();
         },
         unpublish: function (id) {

@@ -3,7 +3,7 @@
 define(
     [
         'jquery',
-        'routing',
+        'routing'
     ],
     function ($, Routing) {
         var permissions = {};
