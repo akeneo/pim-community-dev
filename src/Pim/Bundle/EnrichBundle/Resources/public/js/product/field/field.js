@@ -69,8 +69,8 @@ define([
 
             promise.resolve({
                 type: this.fieldType,
-                label: this.attribute.label[this.context.locale] ?
-                    this.attribute.label[this.context.locale] :
+                label: this.attribute.label[this.context.uiLocale] ?
+                    this.attribute.label[this.context.uiLocale] :
                     this.attribute.code,
                 value: this.getCurrentValue(),
                 context: this.context,

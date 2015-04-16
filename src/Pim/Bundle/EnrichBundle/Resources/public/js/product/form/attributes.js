@@ -118,6 +118,7 @@ define(
                     field.setContext({
                         'locale': UserContext.get('catalogLocale'),
                         'scope': UserContext.get('catalogScope'),
+                        'uiLocale': UserContext.get('catalogLocale'),
                         'optional': AttributeManager.isOptional(attributeCode, product, families)
                     });
                     field.setValues(values);
