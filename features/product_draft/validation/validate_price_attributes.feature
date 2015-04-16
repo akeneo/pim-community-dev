@@ -52,28 +52,28 @@ Feature: Validate price attributes of a product
   Scenario: Validate the number min constraint of price attribute
     Given I change the "$ Tax" to "5.5"
     And I save the product
-    Then I should see validation tooltip "This value should be 10.0000 or more."
+    Then I should see validation tooltip "This value should be 10 or more."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
   Scenario: Validate the number min constraint of scopable price attribute
     Given I change the "$ Customs" to "9.9"
     And I save the product
-    Then I should see validation tooltip "This value should be 10.0000 or more."
+    Then I should see validation tooltip "This value should be 10 or more."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
   Scenario: Validate the number max constraint of price attribute
     Given I change the "$ Tax" to "110"
     And I save the product
-    Then I should see validation tooltip "This value should be 100.0000 or less."
+    Then I should see validation tooltip "This value should be 100 or less."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
   Scenario: Validate the number max constraint of scopable price attribute
     Given I change the "$ Customs" to "222.2"
     And I save the product
-    Then I should see validation tooltip "This value should be 100.0000 or less."
+    Then I should see validation tooltip "This value should be 100 or less."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
