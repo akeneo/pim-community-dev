@@ -363,6 +363,16 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
+    public function removeAttributeRequirement(AttributeRequirementInterface $requirement)
+    {
+        $this->requirements->removeElement($requirement);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setAttributeRequirements(array $requirements)
     {
         foreach ($requirements as $requirement) {
