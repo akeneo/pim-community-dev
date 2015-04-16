@@ -27,6 +27,8 @@ class AppKernel extends Kernel
     {
         $bundles = [
             // your app bundles should be registered here
+            new Acme\Bundle\AppBundle\AcmeAppBundle(),
+            new AcmeEnterprise\Bundle\AppBundle\AcmeEnterpriseAppBundle()
         ];
 
         if (in_array($this->getEnvironment(), array('dev', 'test', 'behat'))) {
@@ -124,6 +126,8 @@ class AppKernel extends Kernel
             new Pim\Bundle\PdfGeneratorBundle\PimPdfGeneratorBundle(),
             new Akeneo\Bundle\RuleEngineBundle\AkeneoRuleEngineBundle(),
             new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
+            new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
+            new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
         ];
     }
 

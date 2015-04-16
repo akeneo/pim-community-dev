@@ -40,7 +40,7 @@ Feature: Show all rules related to an attribute
     Then I should see the following rule conditions:
       | rule                   | field                   | operator    | value          | locale | scope |
       | copy_description       | name                    | =           | My nice tshirt | en     |       |
-      | copy_description       | weather_conditions.code | IN          | dry wet        |        |       |
+      | copy_description       | weather_conditions.code | IN          | dry, wet       |        |       |
       | copy_description       | comment                 | STARTS WITH | promo          |        |       |
       | update_tees_collection | categories.code         | IN          | tees           |        |       |
     Then I should see the following rule setter actions:

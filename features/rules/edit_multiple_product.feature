@@ -1,4 +1,4 @@
-Feature: Read multiple products with applied rules
+Feature: Update multiple product by applying rules
   In order ease the enrichment of the catalog
   As a regular user
   I need that the relevant rules are executed and correctly applied to products
