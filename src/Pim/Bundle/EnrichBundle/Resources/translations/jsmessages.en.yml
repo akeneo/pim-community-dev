@@ -128,6 +128,8 @@ pim_enrich:
             info:
                 deletion_successful: Product successfully deleted.
                 deletion_failed: The product could not be deleted.
+                update_successful: Product successfully updated.
+                update_failed: The product could not be updated.
             confirmation:
                 change_family:
                     title:            Change family

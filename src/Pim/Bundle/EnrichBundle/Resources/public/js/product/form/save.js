@@ -47,7 +47,7 @@ define(
                 var navigation = Navigation.getInstance();
                 mediator.trigger('pre_save');
                 ProductManager.save(productId, product).done(_.bind(function (data) {
-                    navigation.addFlashMessage('success', 'Product saved');
+                    navigation.addFlashMessage('success', _.__('pim_enrich.entity.product.info.update_successful'));
                     navigation.afterRequest();
 
                     this.setData(data);
@@ -64,7 +64,7 @@ define(
                         default:
                     }
 
-                    navigation.addFlashMessage('error', 'Error saving product');
+                    navigation.addFlashMessage('error', _.__('pim_enrich.entity.product.info.update_failed'));
                     navigation.afterRequest();
                 }).always(function () {
                     loadingMask.hide().$el.remove();
