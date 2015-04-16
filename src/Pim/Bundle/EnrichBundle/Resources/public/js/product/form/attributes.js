@@ -138,19 +138,25 @@ define(
 
                 return configurationPromise.promise();
             },
-            addAttribute: function (attributeCode) {
+            addAttributes: function (attributeCodes) {
                 var product = this.getData();
 
-                ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function (attribute) {
+                var hasRequiredValues = true;
+                _.each(attributeCodes, function (attributeCode) {
+                    if (!product.values[attributeCode]) {
+                        product.values[attributeCode] = [];
+                        hasRequiredValues = false;
+                    }
+                });
+
+                ConfigManager.getEntity('attributes', _.first(attributeCodes)).done(_.bind(function (attribute) {
                     this.extensions['attribute-group-selector'].setCurrent(attribute.group);
                 }, this));
 
-                if (product.values[attributeCode]) {
+                if (hasRequiredValues) {
                     this.getRoot().model.trigger('change');
                     return;
                 }
-
-                product.values[attributeCode] = [];
 
                 /* jshint sub:true */
                 /* jscs:disable requireDotNotation */

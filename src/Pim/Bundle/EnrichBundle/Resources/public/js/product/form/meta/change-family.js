@@ -64,6 +64,7 @@ define(
                     _.__('pim_enrich.entity.product.confirmation.change_family.title')
                 ).done(_.bind(function () {
                     var selectedFamily = this.$('select').select2('val') || null;
+                    this.showFamilyList = false;
                     this.getRoot().model.set('family', selectedFamily);
                 }, this)).always(_.bind(function () {
                     this.showFamilyList = false;
