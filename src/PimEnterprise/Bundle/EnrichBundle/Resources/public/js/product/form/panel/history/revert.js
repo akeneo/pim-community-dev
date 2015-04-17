@@ -62,7 +62,7 @@ define(
 
                                     navigation.addFlashMessage(
                                         'success',
-                                        _.__('pimee_enrich.entity.product.history.product_well_reverted')
+                                        _.__('pimee_enrich.entity.product.flash.product_reverted')
                                     );
                                     navigation.afterRequest();
 
