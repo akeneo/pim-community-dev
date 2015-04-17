@@ -61,9 +61,12 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @deprecated since 1.3, we keep this public method for connector compatibility, this visibility may change
+     *
+     * @return QueryBuilder
      */
-    protected function buildByScope($scope)
+    public function buildByScope($scope)
     {
         $productQb = $this->queryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();

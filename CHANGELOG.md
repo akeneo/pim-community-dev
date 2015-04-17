@@ -6,6 +6,9 @@
 - PIM-3848: fix completeness not well calculated after attribute requirements deletion
 - PIM-4050: Fix float val in range number error message
 
+## Technical improvements
+- rollback the visibility of the ProductRepository::buildByScope from protected to public (as in 1.2) to ensure connectors compatibility
+
 # 1.3.7 (2015-04-03)
 
 ## Bug fixes
