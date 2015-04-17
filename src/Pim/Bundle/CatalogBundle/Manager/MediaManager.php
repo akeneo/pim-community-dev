@@ -352,23 +352,24 @@ class MediaManager
      * Get the file path of a media
      *
      * @param ProductMediaInterface $media
+     * @param boolean               $checkFile
      *
      * @return string|null the path of the media or null if the media has no file attached
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      */
-    public function getFilePath(ProductMediaInterface $media)
+    public function getFilePath(ProductMediaInterface $media, $checkFile = true)
     {
         if (null === $media->getFilename()) {
             return null;
         }
 
-        if (!$this->fileExists($media)) {
+        if ($checkFile && !$this->fileExists($media)) {
             throw new FileNotFoundException($media->getFilename());
         }
 
         $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
-        if (!is_readable($path)) {
+        if ($checkFile && !is_readable($path)) {
             throw new FileNotFoundException($path);
         }
 
