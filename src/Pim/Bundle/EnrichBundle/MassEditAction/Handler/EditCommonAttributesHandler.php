@@ -106,7 +106,13 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
             $this->detachProducts($productsPage);
         }
 
-        $values = array_column($configuration['actions'], 'value');
+        $values = [];
+        foreach ($configuration['actions'] as $action) {
+            if (isset($action['value'])) {
+                $values[] = $action['value'];
+            }
+        }
+
         $this->removeTemporaryFiles($values);
     }
 
@@ -257,10 +263,10 @@ class EditCommonAttributesHandler extends AbstractConfigurableStepElement implem
      */
     protected function removeTemporaryFiles(array $values)
     {
-        $filePaths = array_column($values, 'filePath');
-
-        foreach ($filePaths as $filePath) {
-            unlink($filePath);
+        foreach ($values as $value) {
+            if (isset($value['filePath'])) {
+                unlink($value['filePath']);
+            }
         }
     }
 
