@@ -60,7 +60,7 @@ class ReferenceDataCollectionPresenter extends AbstractProductValuePresenter
     {
         $result = [];
         foreach ($data as $reference) {
-            $result[] = sprintf('[%s]', (string) $reference);
+            $result[] = (string) $reference;
         }
 
         return $result;
