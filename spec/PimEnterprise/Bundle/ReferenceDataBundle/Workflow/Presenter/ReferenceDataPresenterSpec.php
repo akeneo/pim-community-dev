@@ -65,7 +65,7 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         CustomProductValuePresenter $red,
         CustomProductValuePresenter $blue
     ) {
-        $red->__toString()->willReturn('Red');
+        $red->__toString()->willReturn('[Red]');
         $red->getReferenceDataName()->willReturn('color');
         $blue->__toString()->willReturn('Blue');
 

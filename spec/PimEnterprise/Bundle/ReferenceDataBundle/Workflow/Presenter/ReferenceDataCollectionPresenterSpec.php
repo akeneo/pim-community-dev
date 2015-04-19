@@ -67,7 +67,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
     ) {
         $leather->__toString()->willReturn('Leather');
         $leather->getReferenceDataName()->willReturn('fabrics');
-        $neoprene->__toString()->willReturn('Neoprene');
+        $neoprene->__toString()->willReturn('[Neoprene]');
         $neoprene->getReferenceDataName()->willReturn('fabrics');
         $kevlar->__toString()->willReturn('Kevlar');
         $kevlar->getReferenceDataName()->willReturn('fabrics');
@@ -77,7 +77,7 @@ class ReferenceDataCollectionPresenterSpec extends ObjectBehavior
         $repositoryResolver->resolve('fabrics')->willReturn($repository);
         $attributeRepository->findOneBy(['code' => 'myfabric'])->willReturn($leather);
 
-        $renderer->renderDiff(['[Leather]', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two reference data');
+        $renderer->renderDiff(['Leather', '[Neoprene]'], ['Leather', 'Kevlar'])->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn([$leather, $neoprene]);
