@@ -1,4 +1,4 @@
-oro_datagrid.no_data_hint %entityHint%: 'Nessun %entityHint% esistente.'
+"oro_datagrid.no_data_hint %entityHint%": 'Nessun %entityHint% esistente.'
 oro_datagrid.label_add_filter: Gestione filtri
 oro_datagrid.label_loading_mask: Caricamento in corso . . .
 oro.grid.mass_action.selected_rows: Righe selezionate
