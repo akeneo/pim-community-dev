@@ -153,7 +153,7 @@ class VersionManager
     /**
      * Get object manager for Version
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getObjectManager()
     {
