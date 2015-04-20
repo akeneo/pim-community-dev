@@ -129,20 +129,13 @@ define(
                 return promise.promise();
             },
             getConfig: function () {
-                var configurationPromise = $.Deferred();
                 var promises = [];
-
                 var product = this.getData();
 
-                ConfigManager.getConfig();
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
                 promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
 
-                $.when.apply($, promises).done(_.bind(function () {
-                    configurationPromise.resolve();
-                }, this));
-
-                return configurationPromise.promise();
+                return $.when.apply($, promises).promise();
             },
             addAttributes: function (attributeCodes) {
                 ConfigManager.getEntityList('attributes').done(_.bind(function (attributes) {
