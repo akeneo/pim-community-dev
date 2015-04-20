@@ -238,8 +238,8 @@ class ProductDraftChangesExtension extends \Twig_Extension
      */
     protected function createFakeValue()
     {
-        $value = $this->productManager->createProductValue();
         $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
+        $value = $this->productManager->createProductValue($attribute);
         $value->setAttribute($attribute);
 
         return $value;

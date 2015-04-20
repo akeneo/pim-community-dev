@@ -6,10 +6,6 @@ Feature: Classify many products at once for the tree I have access
 
   Background:
     Given the "clothing" catalog configuration
-    And the following products:
-      | sku     |
-      | rangers |
-      | loafer  |
     And the following categories:
       | code    | label-en_US | parent |
       | shoes   | Shoes       |        |
@@ -23,6 +19,10 @@ Feature: Classify many products at once for the tree I have access
       | vintage  | Manager    | view   |
       | trendy   | Manager    | view   |
       | classy   | Manager    | view   |
+    And the following products:
+      | sku     | categories      |
+      | rangers | 2014_collection |
+      | loafer  | 2014_collection |
     And I am logged in as "Julia"
     And I am on the products page
 

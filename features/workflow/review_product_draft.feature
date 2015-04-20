@@ -23,6 +23,8 @@ Feature: Review a product draft
       | release_date-ecommerce    | 2014-05-14        |
       | length                    | 60 CENTIMETER     |
       | legacy_attribute          | legacy            |
+      | datasheet                 |                   |
+      | side_view                 |                   |
 
   Scenario: Successfully accept an identifier attribute from a product draft
     Given Mary proposed the following change to "my-jacket":

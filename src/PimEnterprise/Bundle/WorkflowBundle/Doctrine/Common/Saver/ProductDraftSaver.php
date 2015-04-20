@@ -273,6 +273,10 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
                 $value->setPrices(new ArrayCollection());
                 break;
 
+            case 'pim_reference_data_multiselect':
+                $value->setData(new ArrayCollection());
+                break;
+
             case 'pim_catalog_metric':
                 $value->setMetric($this->metricFactory->createMetric(''));
                 break;

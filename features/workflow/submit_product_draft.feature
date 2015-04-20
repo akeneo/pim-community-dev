@@ -24,6 +24,8 @@ Feature: Submit a modification on a product draft
       | handmade                  | no                |
       | release_date-ecommerce    | 2014-05-14        |
       | length                    | 60 CENTIMETER     |
+      | datasheet                 |                   |
+      | side_view                 |                   |
     And I am logged in as "Mary"
     And I edit the "my-jacket" product
 
