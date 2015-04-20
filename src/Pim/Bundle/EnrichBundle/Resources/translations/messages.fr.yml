@@ -240,6 +240,10 @@ pim_enrich:
       from_variant:
         title: Mis à jour par un groupe de variantes
         content: Ce champ est mis à jour par le groupe de variantes suivant
+  reference_data:
+    empty_value:
+      reference_data_type:
+        label: Choisir un type de données référentielles
 attribute:
   title: attribut
   overview: Liste des attributs
@@ -640,6 +644,8 @@ pim_catalog_image: Image
 pim_catalog_boolean: Oui/Non
 pim_catalog_date: Date
 pim_catalog_metric: Unité de mesure
+pim_reference_data_simpleselect: Liste à choix unique de données référentielles
+pim_reference_data_multiselect: Liste à choix multiple de données référentielles
 Activated: Activé
 Disable: Désactivé
 pim_enrich.sequential_edit_action:
