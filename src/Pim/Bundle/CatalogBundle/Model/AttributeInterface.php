@@ -591,4 +591,14 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
      * @return bool
      */
     public function isLocaleSpecific();
+
+    /**
+     * @return string
+     */
+    public function getReferenceDataName();
+
+    /**
+     * @param string $name
+     */
+    public function setReferenceDataName($name);
 }

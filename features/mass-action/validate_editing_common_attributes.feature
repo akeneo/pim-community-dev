@@ -260,7 +260,7 @@ Feature: Validate editing common attributes of multiple products
     And I move on to the next step
     # @TODO: fix this
     And I display the Price attribute
-    Then I should see validation error "This value should be 200.0000 or less."
+    Then I should see validation error "This value should be 200 or less."
     Then the prices "Price" of products boots, sandals and sneakers should be:
       | amount | currency |
       |        | USD      |

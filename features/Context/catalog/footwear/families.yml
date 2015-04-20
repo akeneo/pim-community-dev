@@ -33,6 +33,42 @@ families:
                 - price
                 - size
                 - color
+    heels:
+        labels:
+            en_US: Heels
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - price
+            - side_view
+            - top_view
+            - size
+            - color
+            - heel_color
+            - sole_color
+            - sole_fabric
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - sku
+                - name
+                - description
+                - price
+                - side_view
+                - size
+                - color
+                - heel_color
+                - sole_color
+            mobile:
+                - sku
+                - name
+                - price
+                - size
+                - color
+                - heel_color
+                - sole_color
     sneakers:
         labels:
             en_US: Sneakers

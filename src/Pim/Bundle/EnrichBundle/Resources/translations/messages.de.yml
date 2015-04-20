@@ -734,6 +734,7 @@ pane.accordion:
   locale_values: Gebietsschemawerte
   backend_parameters: Backend Parameter
   general_parameters: Allgemeine Parameter
+  validation_parameters: Validierungsparameter
   label_translations: Feldbezeichner-Übersetzungen
   options: Optionen
   group_values: Werte der Gruppe

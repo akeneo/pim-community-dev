@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
@@ -109,6 +110,12 @@ class CatalogConfigurationContext extends RawMinkContext
                 $treatedFiles[] = $file;
             }
             $this->runLoader($loader, $file);
+        }
+
+        $bundles = $this->getContainer()->getParameter('kernel.bundles');
+        if (isset($bundles['AcmeAppBundle'])) {
+            $referenceDataLoader = new ReferenceDataLoader();
+            $referenceDataLoader->load($this->getEntityManager());
         }
     }
 

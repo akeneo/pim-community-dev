@@ -27,6 +27,7 @@ class CommandContext extends RawMinkContext
      */
     public function iLaunchedTheCompletenessCalculator()
     {
+        $this->getFixturesContext()->clearUOW();
         $this
             ->getContainer()
             ->get('pim_catalog.manager.completeness')
@@ -300,5 +301,13 @@ class CommandContext extends RawMinkContext
     protected function getContainer()
     {
         return $this->getMainContext()->getContainer();
+    }
+
+    /**
+     * @return FixturesContext
+     */
+    private function getFixturesContext()
+    {
+        return $this->getMainContext()->getSubcontext('fixtures');
     }
 }

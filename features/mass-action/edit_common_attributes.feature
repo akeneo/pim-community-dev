@@ -56,11 +56,11 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
     Given the following attribute:
-      | code       | label | families   |
-      | sole_color | Sole  | high_heels |
+      | code         | label | families   |
+      | buckle_color | Buckle  | high_heels |
     And the following product values:
-      | product | attribute  | value |
-      | boots   | sole_color | Blue  |
+      | product | attribute    | value |
+      | boots   | buckle_color | Blue  |
     When I mass-edit products boots and high_heels
     And I choose the "Edit common attributes" operation
     Then I should see available attribute Sole in group "Other"
