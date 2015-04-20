@@ -67,7 +67,7 @@ config:
         pim/field-manager:                  pimenrich/js/product/field-manager
         pim/attribute-manager:              pimenrich/js/product/attribute-manager
         pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
-        pim/config-manager:                 pimenrich/js/product/config-manager
+        pim/entity-manager:                 pimenrich/js/product/entity-manager
         pim/variant-group-manager:          pimenrich/js/product/variant-group-manager
         pim/completeness-manager:           pimenrich/js/product/completeness-manager
         pim/channel-manager:                pimenrich/js/product/channel-manager

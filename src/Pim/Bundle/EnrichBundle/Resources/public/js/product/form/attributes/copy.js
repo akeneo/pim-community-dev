@@ -7,12 +7,12 @@ define(
         'pim/form',
         'text!pim/template/product/tab/attribute/copy',
         'pim/product-edit-form/attributes/copyfield',
-        'pim/config-manager',
+        'pim/entity-manager',
         'pim/attribute-manager',
         'pim/product-manager',
         'pim/user-context'
     ],
-    function ($, _, BaseForm, template, CopyField, ConfigManager, AttributeManager, ProductManager, UserContext) {
+    function ($, _, BaseForm, template, CopyField, EntityManager, AttributeManager, ProductManager, UserContext) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',
@@ -72,7 +72,7 @@ define(
                 this.copyFields = {};
 
                 $.when(
-                    ConfigManager.getEntityList('attributes'),
+                    EntityManager.getEntityList('attributes'),
                     ProductManager.getValues(this.getData())
                 ).done(_.bind(function (attributes, productValues) {
                     _.each(productValues, _.bind(function (values, code) {

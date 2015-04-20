@@ -1,14 +1,14 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/config-manager'],
-    function ($, _, ConfigManager) {
+    ['jquery', 'underscore', 'pim/entity-manager'],
+    function ($, _, EntityManager) {
         return {
             locales: null,
             getChannels: function () {
                 var promise = $.Deferred();
 
-                ConfigManager.getEntityList('channels').done(function (channels) {
+                EntityManager.getEntityList('channels').done(function (channels) {
                     promise.resolve(channels);
                 });
 
@@ -17,7 +17,7 @@ define(
             getLocales: function () {
                 var promise = $.Deferred();
 
-                ConfigManager.getEntityList('channels').done(function (channels) {
+                EntityManager.getEntityList('channels').done(function (channels) {
                     var locales = _.unique(_.flatten(_.pluck(channels, 'locales')));
                     promise.resolve(locales);
                 });

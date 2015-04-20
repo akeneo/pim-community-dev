@@ -4,10 +4,10 @@ define([
         'jquery',
         'pim/field',
         'underscore',
-        'pim/config-manager',
+        'pim/entity-manager',
         'text!pim/template/product/field/price-collection'
     ],
-    function ($, Field, _, ConfigManager, fieldTemplate) {
+    function ($, Field, _, EntityManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
@@ -37,7 +37,7 @@ define([
         getTemplateContext: function () {
             var promise = $.Deferred();
 
-            $.when(Field.prototype.getTemplateContext.apply(this, arguments), ConfigManager.getEntityList('currencies'))
+            $.when(Field.prototype.getTemplateContext.apply(this, arguments), EntityManager.getEntityList('currencies'))
                 .done(function (templateContext, currencies) {
                     templateContext.currencies = currencies;
 

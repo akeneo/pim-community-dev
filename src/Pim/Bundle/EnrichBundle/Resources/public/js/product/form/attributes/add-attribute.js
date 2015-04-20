@@ -9,11 +9,11 @@ define(
         'pim/attribute-manager',
         'text!pim/template/product/tab/attribute/add-attribute',
         'pim/user-context',
-         'pim/config-manager',
+         'pim/entity-manager',
         'jquery.multiselect',
         'jquery.multiselect.filter'
     ],
-    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, ConfigManager) {
+    function ($, Backbone, _, BaseForm, AttributeManager, template, UserContext, EntityManager) {
         return BaseForm.extend({
             tagName: 'div',
             className: 'add-attribute',
@@ -118,7 +118,7 @@ define(
                 return promise.promise();
             },
             loadAttributeGroups: function () {
-                return ConfigManager.getEntityList('attributegroups').then(_.bind(function (attributeGroups) {
+                return EntityManager.getEntityList('attributegroups').then(_.bind(function (attributeGroups) {
                     this.attributeGroups = attributeGroups;
                 }, this));
             },

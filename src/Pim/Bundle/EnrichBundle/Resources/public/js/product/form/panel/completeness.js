@@ -7,11 +7,11 @@ define(
         'pim/form',
         'pim/completeness-manager',
         'text!pim/template/product/panel/completeness',
-        'pim/config-manager',
+        'pim/entity-manager',
         'pim/i18n',
         'oro/mediator'
     ],
-    function ($, _, BaseForm, CompletenessManager, template, ConfigManager, i18n, mediator) {
+    function ($, _, BaseForm, CompletenessManager, template, EntityManager, i18n, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -33,7 +33,7 @@ define(
                 if (this.getRoot().model.get('meta')) {
                     $.when(
                         CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id),
-                        ConfigManager.getEntityList('locales')
+                        EntityManager.getEntityList('locales')
                     ).done(_.bind(function (completenesses, locales) {
                         this.$el.html(
                             this.template({

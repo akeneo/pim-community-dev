@@ -1,11 +1,11 @@
 'use strict';
 
-define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], function ($, _, ConfigManager) {
+define(['jquery', 'underscore', 'pim/entity-manager', 'pim/channel-manager'], function ($, _, EntityManager) {
     return {
         getAttributesForProduct: function (product) {
             var promise = $.Deferred();
 
-            ConfigManager.getEntityList('families').done(function (families) {
+            EntityManager.getEntityList('families').done(function (families) {
                 promise.resolve(
                     !product.family ?
                     _.keys(product.values) :
@@ -18,7 +18,7 @@ define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], fu
         getOptionalAttributes: function (product) {
             var promise = $.Deferred();
 
-            $.when(ConfigManager.getEntityList('attributes'), this.getAttributesForProduct(product))
+            $.when(EntityManager.getEntityList('attributes'), this.getAttributesForProduct(product))
                 .done(function (attributes, productAttributes) {
                     var optionalAttributes = _.map(
                         _.difference(_.pluck(attributes, 'code'), productAttributes),
@@ -34,7 +34,7 @@ define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], fu
         getIdentifierAttribute: function () {
             var promise = $.Deferred();
 
-            ConfigManager.getEntityList('attributes').done(function (attributes) {
+            EntityManager.getEntityList('attributes').done(function (attributes) {
                 var identifier = _.findWhere(attributes, { type: 'pim_catalog_identifier' });
 
                 promise.resolve(identifier);
@@ -48,7 +48,7 @@ define(['jquery', 'underscore', 'pim/config-manager', 'pim/channel-manager'], fu
         getAttribute: function (attributeCode) {
             var promise = $.Deferred();
 
-            ConfigManager.getEntity('attributes', attributeCode).done(_.bind(function (attribute) {
+            EntityManager.getEntity('attributes', attributeCode).done(_.bind(function (attribute) {
                 promise.resolve(attribute);
             }, this));
 

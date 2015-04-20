@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'pim/config-manager', 'pim/form-config-provider'],
-    function ($, ConfigManager, ConfigProvider) {
+    ['jquery', 'pim/entity-manager', 'pim/form-config-provider'],
+    function ($, EntityManager, ConfigProvider) {
         var fields = {};
         var loadedModules = {};
         var getFieldForAttribute = function (attribute) {
@@ -40,7 +40,7 @@ define(
                     return promise.promise();
                 }
 
-                ConfigManager.getEntity('attributes', attributeCode).done(function (attribute) {
+                EntityManager.getEntity('attributes', attributeCode).done(function (attribute) {
                     getFieldForAttribute(attribute).done(function (Field) {
                         fields[attributeCode] = new Field(attribute);
                         promise.resolve(fields[attributeCode]);

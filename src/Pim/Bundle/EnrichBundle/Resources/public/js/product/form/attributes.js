@@ -8,7 +8,7 @@ define(
         'oro/mediator',
         'pim/form',
         'pim/field-manager',
-        'pim/config-manager',
+        'pim/entity-manager',
         'pim/attribute-manager',
         'pim/product-manager',
         'pim/attribute-group-manager',
@@ -23,7 +23,7 @@ define(
         mediator,
         BaseForm,
         FieldManager,
-        ConfigManager,
+        EntityManager,
         AttributeManager,
         ProductManager,
         AttributeGroupManager,
@@ -70,7 +70,7 @@ define(
                     this.resize();
                     var product = this.getData();
                     $.when(
-                        ConfigManager.getEntityList('families'),
+                        EntityManager.getEntityList('families'),
                         ProductManager.getValues(product)
                     ).done(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
@@ -138,7 +138,7 @@ define(
                 return $.when.apply($, promises).promise();
             },
             addAttributes: function (attributeCodes) {
-                ConfigManager.getEntityList('attributes').done(_.bind(function (attributes) {
+                EntityManager.getEntityList('attributes').done(_.bind(function (attributes) {
                     var product = this.getData();
 
                     var hasRequiredValues = true;

@@ -1,14 +1,14 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'routing', 'pim/config-manager', 'pim/attribute-manager'],
-    function ($, _, Routing, ConfigManager, AttributeManager) {
+    ['jquery', 'underscore', 'routing', 'pim/entity-manager', 'pim/attribute-manager'],
+    function ($, _, Routing, EntityManager, AttributeManager) {
     return {
         getAttributeGroupsForProduct: function (product) {
             var promise = $.Deferred();
 
             $.when(
-                ConfigManager.getEntityList('attributegroups'),
+                EntityManager.getEntityList('attributegroups'),
                 AttributeManager.getAttributesForProduct(product)
             ).done(_.bind(function (attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};

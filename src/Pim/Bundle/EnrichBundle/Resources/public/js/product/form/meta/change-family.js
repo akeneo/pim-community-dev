@@ -5,12 +5,12 @@ define(
         'jquery',
         'underscore',
         'pim/form',
-        'pim/config-manager',
+        'pim/entity-manager',
         'text!pim/template/product/meta/change-family',
         'pim/dialog',
         'pim/user-context'
     ],
-    function ($, _, BaseForm, ConfigManager, formTemplate, Dialog, UserContext) {
+    function ($, _, BaseForm, EntityManager, formTemplate, Dialog, UserContext) {
         var FormView = BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
@@ -50,7 +50,7 @@ define(
                 return this;
             },
             enterEditMode: function () {
-                ConfigManager.getEntityList('families').done(_.bind(function (families) {
+                EntityManager.getEntityList('families').done(_.bind(function (families) {
                     this.families = families;
                     this.showFamilyList = true;
                     this.render();
