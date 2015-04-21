@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.9 (2015-04-21)
 
 ## Bug fixes
 - PIM-4082: Fix error translation keys when creating a job
