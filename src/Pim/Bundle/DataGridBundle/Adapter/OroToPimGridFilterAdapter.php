@@ -8,14 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Transform Oro filters into Akeneo PIM filters
  *
- * todo: make this class cleaner and faster by transforming for real the oro filters to pim filters
- *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
 {
+    /** @staticvar string */
+    const FAMILY_GRID_NAME = 'family-grid';
+
     /** @var MassActionDispatcher */
     protected $massActionDispatcher;
 
@@ -32,18 +33,21 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
      */
     public function adapt(Request $request)
     {
-        $filters = $this->massActionDispatcher->getRawFilters($request);
+        if (self::FAMILY_GRID_NAME !== $request->get('gridName')) {
+            $filters = $this->massActionDispatcher->getRawFilters($request);
+        } else {
+            $items =  $this->massActionDispatcher->dispatch($request);
+            $itemIds = [];
+
+            foreach ($items as $item) {
+                $itemIds[] = $item->getId();
+            }
+
+            $filters = [
+                ['field' => 'id', 'operator' => 'IN', 'value' => $itemIds]
+            ];
+        }
 
         return $filters;
-//        $products =  $this->massActionDispatcher->dispatch($request);
-//
-//        $productIds = [];
-//        foreach ($products as $product) {
-//            $productIds[] = $product->getId();
-//        }
-//
-//        $filter = ['field' => 'id', 'operator' => 'IN', 'value' => $productIds];
-//
-//        return [$filter];
     }
 }
