@@ -27,6 +27,7 @@ connector:
             steps:
                 perform:
                     title: edit_common_attributes
-                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.edit_common_attributes
+                        reader:    pim_enrich.mass_edit.add_product_value.reader
+                        processor: pim_enrich.mass_edit.edit_common_attributes.processor
+                        writer:    pim_base_connector.writer.doctrine.product
