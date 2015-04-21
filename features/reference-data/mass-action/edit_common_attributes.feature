@@ -21,18 +21,6 @@ Feature: Edit common attributes of many products at once
     And I am logged in as "Julia"
     And I am on the products page
 
-  Scenario: Allow editing only common attributes (with reference data)
-    Given I mass-edit products heels and platform_shoes
-    And I choose the "Edit common attributes" operation
-    Then I should see available attributes Name and Description in group "Product information"
-    And I should see available attribute Color in group "Colors"
-    And I should see available attribute Heel color and Sole fabric in group "Other"
-    And I should not see available attribute Sole color and Heel height in group "Other"
-    And I should not see available attributes Manufacturer in group "Product information"
-    And I should not see available attributes Price in group "Marketing"
-    And I should not see available attribute Size in group "Sizes"
-    And I should not see available attribute Side view and Top view in group "Media"
-
   Scenario: Successfully update single-valued reference data at once
     Given I mass-edit products heels and platform_shoes
     And I choose the "Edit common attributes" operation
