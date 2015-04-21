@@ -47,8 +47,8 @@ class ProductValueAccessorsCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please implement the accessors "getColor, setColor" for your Product Value ' .
-            'model "spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomInvalidProductValue".'
+            'Please implement the accessors "getColor, setColor" for ' .
+            '"spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomInvalidProductValue".'
         );
     }
 
@@ -61,8 +61,8 @@ class ProductValueAccessorsCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please implement the accessors "getFabrics, setFabrics, addFabric, removeFabric" for your Product Value ' .
-            'model "spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomInvalidProductValue".'
+            'Please implement the accessors "getFabrics, setFabrics, addFabric, removeFabric" for ' .
+            '"spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomInvalidProductValue".'
         );
     }
 }

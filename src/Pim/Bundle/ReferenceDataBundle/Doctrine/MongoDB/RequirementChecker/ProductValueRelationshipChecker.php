@@ -67,7 +67,8 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
 
         if (!isset($fieldMapping['idsField'])) {
             $this->failure = sprintf(
-                'Please configure the "idsField" in your Product Value "%s" relation.',
+                'Please configure the "idsField" in your "%s" "%s" relation.',
+                $this->productValueClass,
                 $field
             );
 
@@ -79,7 +80,8 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
 
         if (!isset($collectionFieldMapping['type']) || 'collection' !== $collectionFieldMapping['type']) {
             $this->failure = sprintf(
-                'Please configure the type correctly in your Product Value "%s" relation.',
+                'Please configure the type correctly in your "%s" "%s" relation.',
+                $this->productValueClass,
                 $collectionField
             );
 
@@ -103,7 +105,8 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
 
         if (!isset($fieldMapping['type']) || $fieldMapping['type'] !== $expectedType || true !== $fieldMapping['isOwningSide']) {
             $this->failure = sprintf(
-                'Please configure the type and the owning side correctly in your Product Value "%s" relation.',
+                'Please configure the type and the owning side correctly in your "%s" "%s" relation.',
+                $this->productValueClass,
                 $field
             );
 

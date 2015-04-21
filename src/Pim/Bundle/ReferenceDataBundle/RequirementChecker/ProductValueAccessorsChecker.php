@@ -55,7 +55,7 @@ class ProductValueAccessorsChecker implements CheckerInterface
 
         if (0 !== count($this->missingAccessors)) {
             $this->failure = sprintf(
-                'Please implement the accessors "%s" for your Product Value model "%s".',
+                'Please implement the accessors "%s" for "%s".',
                 implode(', ', $this->missingAccessors),
                 $this->productValueClass
             );
