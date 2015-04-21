@@ -63,13 +63,7 @@ Feature: Edit common attributes of many products at once
       | boots   | buckle_color | Blue  |
     When I mass-edit products boots and high_heels
     And I choose the "Edit common attributes" operation
-    Then I should see available attribute Sole in group "Other"
-    And I display the Sole attribute
-    And I change the "Sole" to "Red"
-    And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
-    Then the product "boots" should have the following values:
-      | sole_color | Red   |
+    Then I should see available attribute Buckle in group "Other"
 
   Scenario: Successfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
