@@ -243,48 +243,6 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * Get a job instance
-     *
-     * @param integer $id
-     * @param boolean $checkStatus
-     *
-     * @return JobInstance
-     *
-     * @throws NotFoundHttpException
-     */
-    protected function getJobInstance($id, $checkStatus = true)
-    {
-        $jobInstance = $this->findOr404('AkeneoBatchBundle:JobInstance', $id);
-
-        // Fixme: should look at the job execution to see the status of a job instance execution
-        if ($checkStatus && JobInstance::STATUS_IN_PROGRESS === $jobInstance->getStatus()) {
-            throw $this->createNotFoundException(
-                sprintf('The %s "%s" is currently in progress', $jobInstance->getType(), $jobInstance->getLabel())
-            );
-        }
-
-        $job = $this->connectorRegistry->getJob($jobInstance);
-
-        if (null === $job) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'The following %s does not exist anymore. Please check configuration:<br />' .
-                    'Connector: %s<br />' .
-                    'Type: %s<br />' .
-                    'Alias: %s',
-                    $this->getJobType(),
-                    $jobInstance->getConnector(),
-                    $jobInstance->getType(),
-                    $jobInstance->getAlias()
-                )
-            );
-        }
-        $jobInstance->setJob($job);
-
-        return $jobInstance;
-    }
-
-    /**
      * @param string $gridName
      *
      * @return string
