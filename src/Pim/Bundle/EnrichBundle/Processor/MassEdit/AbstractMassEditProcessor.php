@@ -4,22 +4,37 @@ namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
- * AbstractMassEditProcessor
+ * Basic implementation of a Mass Edit Operation Processor. It handles the modification to apply on items.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AbstractMassEditProcessor extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
+abstract class AbstractMassEditProcessor extends AbstractConfigurableStepElement implements
+    StepExecutionAwareInterface,
+    ItemProcessorInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
+
+    /** @var MassEditRepositoryInterface */
+    protected $massEditRepository;
+
+    /**
+     * @param MassEditRepositoryInterface $massEditRepository
+     */
+    public function __construct(MassEditRepositoryInterface $massEditRepository)
+    {
+        $this->massEditRepository = $massEditRepository;
+    }
 
     /**
      * {@inheritdoc}
@@ -40,19 +55,22 @@ class AbstractMassEditProcessor extends AbstractConfigurableStepElement implemen
     }
 
     /**
+     * {@inheritdoc}
+     */
+    abstract public function process($item);
+
+    /**
      * @param ConstraintViolationListInterface $violations
      * @param ProductInterface                 $product
      */
-    protected function addWarningMessage(
-        ConstraintViolationListInterface $violations,
-        ProductInterface $product
-    ) {
+    protected function addWarningMessage(ConstraintViolationListInterface $violations, ProductInterface $product)
+    {
         foreach ($violations as $violation) {
             // TODO re-format the message, property path doesn't exist for class constraint
             // for instance cf VariantGroupAxis
             $invalidValue = $violation->getInvalidValue();
             if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string) $invalidValue;
+                $invalidValue = (string)$invalidValue;
             } elseif (is_object($invalidValue)) {
                 $invalidValue = get_class($invalidValue);
             }
@@ -64,5 +82,18 @@ class AbstractMassEditProcessor extends AbstractConfigurableStepElement implemen
             );
             $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
         }
+    }
+
+    /**
+     * Return the job configuration
+     *
+     * @return array
+     */
+    protected function getJobConfiguration()
+    {
+        $jobExecution    = $this->stepExecution->getJobExecution();
+        $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
+
+        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
     }
 }

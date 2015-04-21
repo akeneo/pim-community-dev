@@ -2,10 +2,13 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -14,11 +17,15 @@ use Symfony\Component\Validator\ValidatorInterface;
 
 class UpdateProductValueProcessorSpec extends ObjectBehavior
 {
-    function let(ProductUpdaterInterface $productUpdater, ValidatorInterface $validator)
-    {
+    function let(
+        ProductUpdaterInterface $productUpdater,
+        ValidatorInterface $validator,
+        MassEditRepository $massEditRepository
+    ) {
         $this->beConstructedWith(
             $productUpdater,
-            $validator
+            $validator,
+            $massEditRepository
         );
     }
 
@@ -27,25 +34,31 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        ConstraintViolationListInterface $violations
+        MassEditRepository $massEditRepository,
+        JobExecution $jobExecution,
+        MassEditJobConfiguration $massEditJobConf
     ) {
-        $actions = [
-                        [
-                            'field' => 'categories',
-                            'value' => ['office', 'bedroom'],
-                        ]
-                  ];
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $item = ['product' => $product, 'actions' => $actions];
-
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditJobConf->getConfiguration()->willReturn(
+            json_encode(
+                [
+                    'filters' => [],
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                ]
+            )
+        );
+        $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $violations->count()->willReturn(0);
+        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
 
         $productUpdater->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
-        $this->process($item);
+        $this->process($product);
     }
 
     function it_sets_invalid_values_to_product(
@@ -53,30 +66,34 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        ConstraintViolationListInterface $violations
+        ConstraintViolationListInterface $violations,
+        StepExecution $stepExecution,
+        MassEditRepository $massEditRepository,
+        JobExecution $jobExecution,
+        MassEditJobConfiguration $massEditJobConf
     ) {
-        $actions = [
-                        [
-                            'field' => 'categories',
-                            'value' => ['office', 'bedroom'],
-                        ]
-                  ];
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $item = ['product' => $product, 'actions' => $actions];
-
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditJobConf->getConfiguration()->willReturn(
+            json_encode(
+                [
+                    'filters' => [],
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                ]
+            )
+        );
         $validator->validate($product)->willReturn($violations);
-        
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
-
         $violations = new ConstraintViolationList([$violation, $violation]);
-
         $validator->validate($product)->willReturn($violations);
 
         $productUpdater->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
-
         $this->setStepExecution($stepExecution);
+        $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
 
-        $this->process($item);
+        $this->process($product);
     }
 
     function it_returns_the_configuration_fields()

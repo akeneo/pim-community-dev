@@ -5,16 +5,18 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Cleaner;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
- * BatchBundle step element, it applies the mass edit common attributes
- * to products given in configuration.
+ * Temporary file cleaner. It cleans file after the mass edit is done because
+ * we have 2 PHP process, and once the first process is finished, temporary files
+ * are deleted and we cannot retrieve uploaded files so we moved temporary files to the upload directory
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributesTemporaryFileCleaner extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
+class MassEditTemporaryFileCleaner extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
 {
     /** @var StepExecution */
     protected $stepExecution;
@@ -24,16 +26,17 @@ class EditCommonAttributesTemporaryFileCleaner extends AbstractConfigurableStepE
      */
     public function execute(array $configuration)
     {
-        $actions = $configuration['actions'];
-
-        $values = [];
-        foreach ($actions as $action) {
-            if (isset($action['value'])) {
-                $values[] = $action['value'];
-            }
+        if (!array_key_exists('actions', $configuration)) {
+            throw new InvalidArgumentException('Missing configuration \'actions\'.');
         }
 
-        $this->removeTemporaryFiles($values);
+        $actions = $configuration['actions'];
+
+        foreach ($actions as $action) {
+            if (isset($action['value']['filePath']) && is_file($action['value']['filePath'])) {
+                unlink($action['value']['filePath']);
+            }
+        }
     }
 
     /**
@@ -52,19 +55,5 @@ class EditCommonAttributesTemporaryFileCleaner extends AbstractConfigurableStepE
         $this->stepExecution = $stepExecution;
 
         return $this;
-    }
-
-    /**
-     * Remove temporary files used to set product media
-     *
-     * @param array $values
-     */
-    protected function removeTemporaryFiles(array $values)
-    {
-        foreach ($values as $value) {
-            if (isset($value['filePath'])) {
-                unlink($value['filePath']);
-            }
-        }
     }
 }

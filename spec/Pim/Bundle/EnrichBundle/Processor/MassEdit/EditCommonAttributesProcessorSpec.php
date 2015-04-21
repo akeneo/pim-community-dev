@@ -2,14 +2,18 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -22,13 +26,15 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        MassEditRepository $massEditRepository
     ) {
         $this->beConstructedWith(
             $productUpdater,
             $validator,
             $massActionRepository,
-            $attributeRepository
+            $attributeRepository,
+            $massEditRepository
         );
     }
 
@@ -47,30 +53,37 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         FamilyInterface $family,
         AttributeInterface $attribute,
-        MyCustomAttributeRepository $attributeRepository,
+        AttributeRepository $attributeRepository,
         ProductInterface $product,
-        ConstraintViolationListInterface $violations
+        StepExecution $stepExecution,
+        MassEditRepository $massEditRepository,
+        JobExecution $jobExecution,
+        MassEditJobConfiguration $massEditJobConf
     ) {
-        $actions = [
-            [
-                'field'   => 'categories',
-                'value'   => ['office', 'bedroom'],
-                'options' => [],
-            ]
-        ];
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $item = ['product' => $product, 'actions' => $actions];
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditJobConf->getConfiguration()->willReturn(
+            json_encode(
+                [
+                    'filters' => [],
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                ]
+            )
+        );
 
+        $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
-        $violations->count()->willReturn(0);
 
-        $attributeRepository->findOneByCode('categories')->willReturn($attribute);
+        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
+        $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
 
         $productUpdater->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
 
-        $this->process($item);
+        $this->process($product);
     }
 
     function it_sets_invalid_values_to_attributes(
@@ -78,44 +91,40 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $productUpdater,
         FamilyInterface $family,
         AttributeInterface $attribute,
-        MyCustomAttributeRepository $attributeRepository,
+        AttributeRepository $attributeRepository,
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        MassEditRepository $massEditRepository,
+        JobExecution $jobExecution,
+        MassEditJobConfiguration $massEditJobConf
     ) {
-        $actions = [
-            [
-                'field'   => 'categories',
-                'value'   => ['office', 'bedroom'],
-                'options' => [],
-            ]
-        ];
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $item = ['product' => $product, 'actions' => $actions];
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditJobConf->getConfiguration()->willReturn(
+            json_encode(
+                [
+                    'filters' => [],
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                ]
+            )
+        );
 
         $validator->validate($product)->willReturn($violations);
-
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
-
         $violations = new ConstraintViolationList([$violation, $violation]);
-
         $validator->validate($product)->willReturn($violations);
 
-        $attributeRepository->findOneByCode('categories')->willReturn($attribute);
+        $attributeRepository->findOneBy(['code' => 'categories'])->willReturn($attribute);
         $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
-
 
         $productUpdater->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
         $this->setStepExecution($stepExecution);
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
 
-        $this->process($item);
+        $this->process($product);
     }
-}
-
-class MyCustomAttributeRepository
-{
-    public function findOneByCode() {}
 }

@@ -45,10 +45,10 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Constructor
      *
-     * @param MediaManager            $mediaManager
-     * @param CacheClearer            $cacheClearer
-     * @param VersionManager          $versionManager
-     * @param BulkSaverInterface          $productSaver
+     * @param MediaManager       $mediaManager
+     * @param CacheClearer       $cacheClearer
+     * @param VersionManager     $versionManager
+     * @param BulkSaverInterface $productSaver
      */
     public function __construct(
         MediaManager $mediaManager,

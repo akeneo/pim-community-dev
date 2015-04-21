@@ -1,9 +1,9 @@
 parameters:
-    pim_enrich.mass_edit.remove_temporary_media.cleaner.class: Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\EditCommonAttributesTemporaryFileCleaner
+    pim_enrich.mass_edit.temporary_file.cleaner.class: Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\MassEditTemporaryFileCleaner
 
 services:
-    pim_enrich.mass_edit.remove_temporary_media.cleaner:
-        class: %pim_enrich.mass_edit.remove_temporary_media.cleaner.class%
+    pim_enrich.mass_edit.temporary_file.cleaner:
+        class: %pim_enrich.mass_edit.temporary_file.cleaner.class%
         arguments:
             - '@pim_catalog.updater.product'
             - '@pim_validator'

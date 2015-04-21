@@ -33,6 +33,6 @@ connector:
                         writer:    pim_base_connector.writer.doctrine.product
                 clean:
                     title: edit_common_attributes_clean
-                    class: "%pim_base_connector.step.mass_edit.remove_temporary_media.class%"
+                    class: "%pim_enrich.step.mass_edit.remove_temporary_media.class%"
                     services:
-                        cleaner: pim_enrich.mass_edit.remove_temporary_media.cleaner
+                        cleaner: pim_enrich.mass_edit.temporary_file.cleaner

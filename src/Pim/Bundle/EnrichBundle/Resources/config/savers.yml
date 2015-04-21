@@ -1,9 +1,7 @@
-parameters:
-    pim_enrich.saver.mass_edit.configuration.class: Pim\Bundle\EnrichBundle\Saver\MassEditConfigurationSaver
-
 services:
     pim_enrich.saver.mass_edit.configuration:
-        class: %pim_enrich.saver.mass_edit.configuration.class%
+        class:  %pim_catalog.saver.base.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
+            - %pim_enrich.entity.mass_edit.job_configuration.class%

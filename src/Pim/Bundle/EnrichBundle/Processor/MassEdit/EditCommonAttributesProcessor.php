@@ -2,22 +2,22 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Processor to add product value in a mass edit
  *
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributesProcessor extends AbstractMassEditProcessor implements ItemProcessorInterface
+class EditCommonAttributesProcessor extends AbstractMassEditProcessor
 {
     /** @var ValidatorInterface */
     protected $validator;
@@ -39,32 +39,78 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor implements
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
+     * @param MassEditRepositoryInterface          $massEditRepository
      */
     public function __construct(
         ProductUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        MassEditRepositoryInterface $massEditRepository
     ) {
+        parent::__construct($massEditRepository);
         $this->productUpdater       = $productUpdater;
         $this->validator            = $validator;
         $this->attributeRepository  = $attributeRepository;
-        $this->massActionRepository = $massActionRepository;
     }
 
     /**
-     * Set data from $actions to the given $products
+     * {@inheritdoc}
+     */
+    public function process($product)
+    {
+        $configuration = $this->getJobConfiguration();
+
+        if (!array_key_exists('actions', $configuration)) {
+            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
+        }
+
+        $actions = $configuration['actions'];
+
+        $product = $this->updateProduct($product, $actions);
+        if (null !== $product && !$this->isProductValid($product)) {
+            $this->stepExecution->incrementSummaryInfo('skipped_products');
+
+            return null;
+        }
+
+        if (null !== $product) {
+            $this->stepExecution->incrementSummaryInfo('mass_edited');
+        }
+
+        return $product;
+    }
+
+    /**
+     * Set data from $actions to the given $product
+     *
+     * Actions should looks like that
+     *
+     * $actions =
+     * [
+     *     [
+     *          'field'   => 'group',
+     *          'value'   => 'summer_clothes',
+     *          'options' => null
+     *      ],
+     *      [
+     *          'field'   => 'category',
+     *          'value'   => 'catalog_2013,catalog_2014',
+     *          'options' => null
+     *      ],
+     * ]
      *
      * @param ProductInterface $product
      * @param array            $actions
      *
-     * @return array $products
+     * @return ProductInterface $product
+     * @throws \LogicException
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {
         $nbModifiedAttributes = 0;
         foreach ($actions as $action) {
-            $attribute = $this->attributeRepository->findOneByCode($action['field']);
+            $attribute = $this->attributeRepository->findOneBy(['code' => $action['field']]);
 
             if (null === $attribute) {
                 throw new \LogicException(sprintf('Attribute with code %s does not exist'), $action['field']);
@@ -76,7 +122,8 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor implements
                 $nbModifiedAttributes++;
             }
         }
-        if (0 > $nbModifiedAttributes) {
+
+        if (0 === $nbModifiedAttributes) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 $this->getName(),
@@ -84,6 +131,8 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor implements
                 [],
                 $product
             );
+
+            return null;
         }
 
         return $product;
@@ -98,32 +147,9 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor implements
      */
     protected function isProductValid(ProductInterface $product)
     {
-        $isValid = false;
         $violations = $this->validator->validate($product);
+        $this->addWarningMessage($violations, $product);
 
-        if (0 === $violations->count()) {
-            $isValid = true;
-        } else {
-            $this->addWarningMessage($violations, $product);
-            $this->stepExecution->incrementSummaryInfo('skipped_products');
-        }
-
-        return $isValid;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process($item)
-    {
-        $actions = $item['actions'];
-        $product = $item['product'];
-
-        $product = $this->updateProduct($product, $actions);
-        if (null !== $product && !$this->isProductValid($product)) {
-            return null;
-        }
-
-        return $product;
+        return 0 === $violations->count();
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Step;
+namespace Pim\Bundle\EnrichBundle\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\EditCommonAttributesTemporaryFileCleaner;
+use Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\MassEditTemporaryFileCleaner;
 
 /**
  * BatchBundle Step for standard mass edit products
@@ -18,7 +18,7 @@ class MassEditRemoveTemporaryMediaStep extends AbstractStep
     /** @var array */
     protected $configuration;
 
-    /** @var EditCommonAttributesTemporaryFileCleaner */
+    /** @var MassEditTemporaryFileCleaner */
     protected $cleaner;
 
     /**
@@ -57,7 +57,7 @@ class MassEditRemoveTemporaryMediaStep extends AbstractStep
     }
 
     /**
-     * @return EditCommonAttributesTemporaryFileCleaner
+     * @return MassEditTemporaryFileCleaner
      */
     public function getCleaner()
     {
@@ -65,11 +65,11 @@ class MassEditRemoveTemporaryMediaStep extends AbstractStep
     }
 
     /**
-     * @param EditCommonAttributesTemporaryFileCleaner $cleaner
+     * @param MassEditTemporaryFileCleaner $cleaner
      *
-     * @return MassEditRemoveTemporaryMedia
+     * @return MassEditRemoveTemporaryMediaStep
      */
-    public function setCleaner(EditCommonAttributesTemporaryFileCleaner $cleaner)
+    public function setCleaner(MassEditTemporaryFileCleaner $cleaner)
     {
         $this->cleaner = $cleaner;
 

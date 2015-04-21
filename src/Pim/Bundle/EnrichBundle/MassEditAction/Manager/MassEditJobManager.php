@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Manager;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\EnrichBundle\Factory\MassEditJobConfigurationFactory;
-use Pim\Bundle\EnrichBundle\Saver\MassEditConfigurationSaver;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -38,7 +38,7 @@ class MassEditJobManager
     /**  @var MassEditJobConfigurationFactory */
     protected $jobConfigFactory;
 
-    /** @var MassEditConfigurationSaver */
+    /** @var SaverInterface */
     protected $jobConfigSaver;
 
     /**
@@ -47,7 +47,7 @@ class MassEditJobManager
      * @param ObjectManager                   $objectManager
      * @param EventDispatcherInterface        $eventDispatcher
      * @param MassEditJobConfigurationFactory $jobConfigFactory
-     * @param MassEditConfigurationSaver      $jobConfigSaver
+     * @param SaverInterface                  $jobConfigSaver
      * @param string                          $jobExecutionClass
      * @param string                          $rootDir
      * @param string                          $environment
@@ -56,7 +56,7 @@ class MassEditJobManager
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
         MassEditJobConfigurationFactory $jobConfigFactory,
-        MassEditConfigurationSaver $jobConfigSaver,
+        SaverInterface $jobConfigSaver,
         $jobExecutionClass,
         $rootDir,
         $environment
@@ -112,7 +112,8 @@ class MassEditJobManager
     /**
      * Instantiate a new job execution
      *
-     * @param JobInstance $jobInstance
+     * @param JobInstance   $jobInstance
+     * @param UserInterface $user
      *
      * @return JobExecution
      */

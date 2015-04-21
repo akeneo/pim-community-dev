@@ -2,20 +2,20 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
-use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Processor to update product value in a mass edit
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UpdateProductValueProcessor extends AbstractMassEditProcessor implements ItemProcessorInterface
+class UpdateProductValueProcessor extends AbstractMassEditProcessor
 {
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
@@ -24,11 +24,16 @@ class UpdateProductValueProcessor extends AbstractMassEditProcessor implements I
     protected $validator;
 
     /**
-     * @param ProductUpdaterInterface $productUpdater
-     * @param ValidatorInterface      $validator
+     * @param ProductUpdaterInterface     $productUpdater
+     * @param ValidatorInterface          $validator
+     * @param MassEditRepositoryInterface $massEditRepository
      */
-    public function __construct(ProductUpdaterInterface $productUpdater, ValidatorInterface $validator)
-    {
+    public function __construct(
+        ProductUpdaterInterface $productUpdater,
+        ValidatorInterface $validator,
+        MassEditRepositoryInterface $massEditRepository
+    ) {
+        parent::__construct($massEditRepository);
         $this->productUpdater = $productUpdater;
         $this->validator      = $validator;
     }
@@ -36,22 +41,42 @@ class UpdateProductValueProcessor extends AbstractMassEditProcessor implements I
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    public function process($product)
     {
-        $actions = $item['actions'];
-        $product = $item['product'];
-        $this->setData($product, $actions);
-        $violations = $this->validator->validate($product);
+        $configuration = $this->getJobConfiguration();
 
-        if (0 === $violations->count()) {
-            $this->stepExecution->incrementSummaryInfo('mass_edited');
-        } else {
-            $this->addWarningMessage($violations, $product);
+        if (!array_key_exists('actions', $configuration)) {
+            throw new InvalidArgumentException('Missing configuration for \'actions\'.');
+        }
+
+        $actions = $configuration['actions'];
+
+        $this->setData($product, $actions);
+
+        if (null === $product || (null !== $product && !$this->isProductValid($product))) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
+
             return null;
         }
 
+        $this->stepExecution->incrementSummaryInfo('mass_edited');
+
         return $product;
+    }
+
+    /**
+     * Validate the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return bool
+     */
+    protected function isProductValid(ProductInterface $product)
+    {
+        $violations = $this->validator->validate($product);
+        $this->addWarningMessage($violations, $product);
+
+        return 0 === $violations->count();
     }
 
     /**

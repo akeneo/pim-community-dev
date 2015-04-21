@@ -19,7 +19,7 @@ use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 
-class FilterProductReaderSpec extends ObjectBehavior
+class FilteredProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
@@ -39,7 +39,7 @@ class FilterProductReaderSpec extends ObjectBehavior
     function it_reads_products(
         $entityManager,
         $jobRepository,
-        MyCustomMassEditRepository $massEditRepository,
+        MassEditRepository $massEditRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         StepExecution $stepExecution,
@@ -49,15 +49,15 @@ class FilterProductReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         Cursor $cursor,
         ProductInterface $product,
-        MyCustomEntityRepository $customEntityRepository
+        EntityRepository $customEntityRepository
     ) {
         $jobRepository->getJobManager()->willReturn($entityManager);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $customEntityRepository->findOneByCode('update_product_value')->willReturn($jobInstance);
+        $customEntityRepository->findOneBy(['code' => 'update_product_value'])->willReturn($jobInstance);
 
         $jobInstance->getJobExecutions()->willReturn(new ArrayCollection([$jobExecution]));
-        $massEditRepository->findOneByJobExecution($jobExecution)->willReturn($massEditJobConf);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
 
         $pqbFactory->create()->willReturn($pqb);
         $massEditJobConf->getConfiguration()->willReturn(json_encode(['filters' => [], 'actions' => []]));
@@ -67,20 +67,6 @@ class FilterProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
         $cursor->current()->willReturn($product);
 
-        $this->read()->shouldReturn(['product' => $product, 'actions' => []]);
-    }
-}
-
-class MyCustomEntityRepository extends EntityRepository
-{
-    public function findOneByCode($code)
-    {
-    }
-}
-
-class MyCustomMassEditRepository extends MassEditRepository
-{
-    public function findOneByJobExecution($jobExecution)
-    {
+        $this->read()->shouldReturn($product);
     }
 }

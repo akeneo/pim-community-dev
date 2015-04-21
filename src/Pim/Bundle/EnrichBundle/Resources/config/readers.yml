@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.mass_edit.reader.class: Pim\Bundle\EnrichBundle\Reader\MassEdit\FilterProductReader
+    pim_enrich.mass_edit.reader.class: Pim\Bundle\EnrichBundle\Reader\MassEdit\FilteredProductReader
 
 services:
     pim_enrich.mass_edit.update_product_value.reader:

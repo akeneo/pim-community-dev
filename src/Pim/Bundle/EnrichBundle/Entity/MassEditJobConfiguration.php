@@ -13,7 +13,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
  */
 class MassEditJobConfiguration
 {
-    /** @var integer $id */
+    /** @var integer */
     protected $id;
 
     /** @var string */
@@ -66,10 +66,14 @@ class MassEditJobConfiguration
      * Set the job configuration
      *
      * @param string $configuration
+     *
+     * @return MassEditJobConfiguration
      */
     public function setConfiguration($configuration)
     {
         $this->configuration = $configuration;
+
+        return $this;
     }
 
     /**

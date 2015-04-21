@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\EnrichBundle\Reader\MassEdit;
 
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Doctrine\ORM\EntityManager;
+use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
+use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -20,56 +20,51 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilterProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
+class FilteredProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
-    /** @var array */
-    protected $configuration = [];
-
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var EntityManager */
-    protected $entityManager;
+    /** @var ObjectManager */
+    protected $objectManager;
 
-    /** @var \ArrayIterator */
+    /** @var CursorInterface */
     protected $products;
 
-    /** @var Boolean */
-    protected $executed = false;
+    /** @var bool */
+    protected $isExecuted = false;
 
     /** @var string */
     protected $channel;
 
-    /** @var DoctrineJobRepository */
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /** @var string */
     protected $massEditType;
 
-    /** @var MassEditRepository */
+    /** @var MassEditRepositoryInterface */
     protected $massEditRepository;
 
     /**
-     * Constructor
-     *
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param EntityManager                       $entityManager
-     * @param DoctrineJobRepository               $jobRepository
-     * @param MassEditRepository                  $massEditRepository
+     * @param ObjectManager                       $objectManager
+     * @param JobRepositoryInterface              $jobRepository
+     * @param MassEditRepositoryInterface         $massEditRepository
      * @param string                              $massEditType
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        EntityManager $entityManager,
-        DoctrineJobRepository $jobRepository,
-        MassEditRepository $massEditRepository,
+        ObjectManager $objectManager,
+        JobRepositoryInterface $jobRepository,
+        MassEditRepositoryInterface $massEditRepository,
         $massEditType
     ) {
         $this->pqbFactory         = $pqbFactory;
-        $this->entityManager      = $entityManager;
+        $this->objectManager      = $objectManager;
         $this->jobRepository      = $jobRepository;
         $this->massEditRepository = $massEditRepository;
         $this->massEditType       = $massEditType;
@@ -82,16 +77,15 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
     {
         $configuration = $this->getJobConfiguration();
 
-        if (!$this->executed) {
-            $this->executed = true;
+        if (!$this->isExecuted) {
+            $this->isExecuted = true;
             $this->products = $this->getProductsCursor($configuration['filters']);
             $this->products->next();
         }
 
         $result = $this->products->current();
 
-        if ($result) {
-            $result = ['product' => $result, 'actions' => $configuration['actions']];
+        if (!empty($result)) {
             $this->stepExecution->incrementSummaryInfo('read');
             $this->products->next();
         } else {
@@ -114,8 +108,8 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
      */
     public function initialize()
     {
-        $this->entityManager->clear();
-        $this->executed = false;
+        $this->objectManager->clear();
+        $this->isExecuted = false;
     }
 
     /**
@@ -129,13 +123,19 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
 
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['locale', 'scope']);
-        $resolver->setDefaults(['locale' => null, 'scope' => null]);
+        $resolver->setOptional(['context']);
+        $resolver->setDefaults([
+            'context' => ['locale' => null, 'scope' => null]
+        ]);
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);
-            $context = ['locale' => $filter['locale'], 'scope' => $filter['scope']];
-            $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value'], $context);
+            $productQueryBuilder->addFilter(
+                $filter['field'],
+                $filter['operator'],
+                $filter['value'],
+                $filter['context']
+            );
         }
 
         return $productQueryBuilder->execute();
@@ -158,11 +158,7 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
     }
 
     /**
-     * Set channel
-     *
-     * @param string $channel
-     *
-     * @return FilterProductReader
+     * {@inheritdoc}
      */
     public function setChannel($channel)
     {
@@ -172,9 +168,7 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
     }
 
     /**
-     * Get channel
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getChannel()
     {
@@ -184,14 +178,13 @@ class FilterProductReader extends AbstractConfigurableStepElement implements Pro
     /**
      * Return the job configuration
      *
-     * @return JobInstance
+     * @return array
      */
     protected function getJobConfiguration()
     {
         $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->massEditRepository->findOneByJobExecution($jobExecution);
-        $configuration   = json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
+        $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
 
-        return $configuration;
+        return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
     }
 }

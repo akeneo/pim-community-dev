@@ -1,3 +1,2 @@
 parameters:
-    pim_base_connector.step.validator.class:                        Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep
-    pim_base_connector.step.mass_edit.remove_temporary_media.class: Pim\Bundle\BaseConnectorBundle\Step\MassEditRemoveTemporaryMediaStep
+    pim_base_connector.step.validator.class: Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep
