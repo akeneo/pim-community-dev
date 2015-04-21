@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
-use Pim\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductHandler;
+use Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\EditCommonAttributesTemporaryFileCleaner;
 
 /**
  * BatchBundle Step for standard mass edit products
@@ -13,21 +13,21 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Handler\UpdateProductHandler;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditProductStep extends AbstractStep
+class MassEditRemoveTemporaryMediaStep extends AbstractStep
 {
     /** @var array */
     protected $configuration;
 
-    /** @var UpdateProductHandler */
-    protected $handler;
+    /** @var EditCommonAttributesTemporaryFileCleaner */
+    protected $cleaner;
 
     /**
      * {@inheritdoc}
      */
     protected function doExecute(StepExecution $stepExecution)
     {
-        $this->handler->setStepExecution($stepExecution);
-        $this->handler->execute($this->configuration);
+        $this->cleaner->setStepExecution($stepExecution);
+        $this->cleaner->execute($this->configuration);
     }
 
     /**
@@ -57,21 +57,21 @@ class MassEditProductStep extends AbstractStep
     }
 
     /**
-     * @return UpdateProductHandler
+     * @return EditCommonAttributesTemporaryFileCleaner
      */
-    public function getHandler()
+    public function getCleaner()
     {
-        return $this->handler;
+        return $this->cleaner;
     }
 
     /**
-     * @param UpdateProductHandler $handler
+     * @param EditCommonAttributesTemporaryFileCleaner $cleaner
      *
-     * @return $this
+     * @return MassEditRemoveTemporaryMedia
      */
-    public function setHandler($handler)
+    public function setCleaner(EditCommonAttributesTemporaryFileCleaner $cleaner)
     {
-        $this->handler = $handler;
+        $this->cleaner = $cleaner;
 
         return $this;
     }

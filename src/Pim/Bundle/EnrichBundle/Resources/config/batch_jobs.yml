@@ -31,3 +31,8 @@ connector:
                         reader:    pim_enrich.mass_edit.add_product_value.reader
                         processor: pim_enrich.mass_edit.edit_common_attributes.processor
                         writer:    pim_base_connector.writer.doctrine.product
+                clean:
+                    title: edit_common_attributes_clean
+                    class: "%pim_base_connector.step.mass_edit.remove_temporary_media.class%"
+                    services:
+                        cleaner: pim_enrich.mass_edit.remove_temporary_media.cleaner
