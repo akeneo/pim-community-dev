@@ -7,9 +7,10 @@ define(
         'pim/form',
         'pim/config-manager',
         'text!pim/template/product/meta/change-family',
-        'pim/dialog'
+        'pim/dialog',
+        'pim/user-context'
     ],
-    function ($, _, BaseForm, ConfigManager, formTemplate, Dialog) {
+    function ($, _, BaseForm, ConfigManager, formTemplate, Dialog, UserContext) {
         var FormView = BaseForm.extend({
             tagName: 'span',
             template: _.template(formTemplate),
@@ -37,7 +38,8 @@ define(
                     this.template({
                         product: this.getData(),
                         families: this.families,
-                        showFamilyList: this.showFamilyList
+                        showFamilyList: this.showFamilyList,
+                        locale: UserContext.get('catalogLocale')
                     })
                 );
                 if (this.showFamilyList) {

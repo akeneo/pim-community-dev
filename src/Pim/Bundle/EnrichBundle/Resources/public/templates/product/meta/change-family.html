@@ -2,7 +2,7 @@
 <% if (showFamilyList) { %>
     <select>
         <% _.each(families, function (family) {  %>
-            <option value="<%= family.code %>"<%= family.code === product.family ? ' selected' : '' %>><%= family.label.en_US || '[' + family.code + ']' %></option>
+            <option value="<%= family.code %>"<%= family.code === product.family ? ' selected' : '' %>><%= family.label[locale] || '[' + family.code + ']' %></option>
         <% }); %>
         <option value=""<%= product.family === '' ? ' selected' : '' %>><%= _.__('pim_enrich.entity.product.meta.family.none')%></option>
     </select>
