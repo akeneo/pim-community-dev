@@ -15,7 +15,7 @@ services:
             - '@pim_import_export.form.type.job_instance'
             - '@pim_import_export.factory.job_instance'
             - '@pim_import_export.manager.job'
-            - '@akeneo_batch.manager.job_launcher'
+            - '@akeneo_batch.launcher.simple_job_launcher'
 
     pim_import_export.controller.import_profile:
         parent: pim_enrich.controller.abstract_doctrine
@@ -27,7 +27,7 @@ services:
             - '@pim_import_export.form.type.job_instance'
             - '@pim_import_export.factory.job_instance'
             - '@pim_import_export.manager.job'
-            - '@akeneo_batch.manager.job_launcher'
+            - '@akeneo_batch.launcher.simple_job_launcher'
 
     pim_import_export.controller.export_execution:
         parent: pim_enrich.controller.abstract_doctrine

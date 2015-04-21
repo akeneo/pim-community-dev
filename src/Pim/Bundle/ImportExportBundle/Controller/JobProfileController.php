@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
-use Akeneo\Bundle\BatchBundle\Manager\JobLauncher;
+use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
@@ -54,8 +54,8 @@ class JobProfileController extends AbstractDoctrineController
     /** @var JobManager */
     protected $jobManager;
 
-    /** @var JobLauncher */
-    protected $jobLauncher;
+    /** @var SimpleJobLauncher */
+    protected $simpleJobLauncher;
 
     /** @var File */
     protected $file;
@@ -77,7 +77,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
      * @param JobManager               $jobManager
-     * @param JobLauncher              $jobLauncher
+     * @param SimpleJobLauncher        $simpleJobLauncher
      */
     public function __construct(
         Request $request,
@@ -94,7 +94,7 @@ class JobProfileController extends AbstractDoctrineController
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
         JobManager $jobManager,
-        JobLauncher $jobLauncher
+        SimpleJobLauncher $simpleJobLauncher
     ) {
         parent::__construct(
             $request,
@@ -116,7 +116,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->jobInstanceFactory = $jobInstanceFactory;
         $this->jobManager         = $jobManager;
-        $this->jobLauncher        = $jobLauncher;
+        $this->simpleJobLauncher  = $simpleJobLauncher;
     }
 
     /**
@@ -413,7 +413,7 @@ class JobProfileController extends AbstractDoctrineController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $jobExecution = $this->jobLauncher->setConfig(['email' => true, 'upload' => $isUpload])
+        $jobExecution = $this->simpleJobLauncher->setConfig(['email' => true, 'upload' => $isUpload])
             ->launch($jobInstance, $this->getUser());
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
