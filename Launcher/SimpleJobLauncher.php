@@ -82,7 +82,7 @@ class SimpleJobLauncher implements JobLauncherInterface
     }
 
     /**
-     * Is key is true in configuration
+     * Is key true in configuration
      *
      * @param string $key
      *
