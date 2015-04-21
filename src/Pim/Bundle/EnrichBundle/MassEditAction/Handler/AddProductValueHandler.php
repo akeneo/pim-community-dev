@@ -133,13 +133,19 @@ class AddProductValueHandler extends AbstractConfigurableStepElement implements 
 
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['locale', 'scope']);
-        $resolver->setDefaults(['locale' => null, 'scope' => null]);
+        $resolver->setOptional(['context']);
+        $resolver->setDefaults([
+            'context' => ['locale' => null, 'scope' => null]
+        ]);
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);
-            $context = ['locale' => $filter['locale'], 'scope' => $filter['scope']];
-            $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value'], $context);
+            $productQueryBuilder->addFilter(
+                $filter['field'],
+                $filter['operator'],
+                $filter['value'],
+                $filter['context']
+            );
         }
 
         return $productQueryBuilder->execute();
