@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateIdentifierException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
@@ -9,7 +10,6 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use PhpSpec\ObjectBehavior;
 
 class ImportValidatorSpec extends ObjectBehavior
 {
@@ -91,7 +91,7 @@ class ImportValidatorSpec extends ObjectBehavior
         $iterator->rewind()->willReturn(null);
         $iterator->append($violation);
         $validReturns = [true, false];
-        $iterator->valid()->will(function() use (&$validReturns) {
+        $iterator->valid()->will(function () use (&$validReturns) {
             $isValid = current($validReturns);
             next($validReturns);
 
@@ -134,7 +134,7 @@ class ImportValidatorSpec extends ObjectBehavior
         $iterator->rewind()->willReturn(null);
         $iterator->append($violation1, $violation2);
         $validReturns = [true, true, false];
-        $iterator->valid()->will(function() use (&$validReturns) {
+        $iterator->valid()->will(function () use (&$validReturns) {
             $isValid = current($validReturns);
             next($validReturns);
 
@@ -142,7 +142,7 @@ class ImportValidatorSpec extends ObjectBehavior
         });
         $iterator->next()->willReturn(null);
         $currentReturns = [$violation1, $violation2];
-        $iterator->current()->will(function() use (&$currentReturns) {
+        $iterator->current()->will(function () use (&$currentReturns) {
             $current = current($currentReturns);
             next($currentReturns);
 

@@ -24,7 +24,7 @@ class InstallCommand extends ContainerAwareCommand
     const APP_NAME = 'Akeneo PIM';
 
     /**
-     * @var CommandExecutor $commandExecutor
+     * @var CommandExecutor
      */
     protected $commandExecutor;
 
@@ -142,7 +142,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param boolean         $installed
+     * @param bool            $installed
      *
      * @return InstallCommand
      */

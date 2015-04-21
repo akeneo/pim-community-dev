@@ -17,12 +17,12 @@ class AttributeOptionReaderSpec extends ObjectBehavior
         $this->beConstructedWith($entityManager, 'Pim\Bundle\CatalogBundle\Entity\AttributeOption');
     }
 
-    function it_should_be_a_reader()
+    function it_is_a_reader()
     {
         $this->shouldImplement('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader');
     }
 
-    function it_should_create_a_sorted_query(
+    function it_creates_a_sorted_query(
         EntityManager $entityManager,
         EntityRepository $entityRepository,
         QueryBuilder $qb,

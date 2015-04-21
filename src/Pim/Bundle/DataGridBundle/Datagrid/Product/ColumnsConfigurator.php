@@ -83,8 +83,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
     /**
      * Prepare properties columns, ie, the static columns defined in datagrid.yml
-     *
-     * @return null
      */
     protected function preparePropertiesColumns()
     {
@@ -107,8 +105,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
     /**
      * Prepare dynamic columns, ie columns for attributes
-     *
-     * @return null
      */
     protected function prepareAttributesColumns()
     {
@@ -159,8 +155,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
     /**
      * Sort the columns
-     *
-     * @return null
      */
     protected function sortColumns()
     {
@@ -187,8 +181,6 @@ class ColumnsConfigurator implements ConfiguratorInterface
 
     /**
      * Add columns to datagrid configuration
-     *
-     * @return null
      */
     protected function addColumns()
     {

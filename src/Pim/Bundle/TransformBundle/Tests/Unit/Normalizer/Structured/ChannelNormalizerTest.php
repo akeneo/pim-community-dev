@@ -95,6 +95,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a currency
+     *
      * @param string $currencyCode
      *
      * @return Currency
@@ -109,6 +110,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a locale
+     *
      * @param string $localeCode
      *
      * @return Locale
@@ -123,6 +125,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a category
+     *
      * @param string $categoryCode
      *
      * @return Category

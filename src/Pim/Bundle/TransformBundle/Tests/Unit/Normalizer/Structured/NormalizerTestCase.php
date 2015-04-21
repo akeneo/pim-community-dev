@@ -18,12 +18,14 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Format for normalization
+     *
      * @var string
      */
     protected $format;
 
     /**
      * Data provider for testing supportsNormalization method
+     *
      * @return array
      */
     public static function getSupportNormalizationData()
@@ -33,9 +35,10 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
-     * @param string  $class
-     * @param string  $format
-     * @param boolean $isSupported
+     *
+     * @param string $class
+     * @param string $format
+     * @param bool   $isSupported
      *
      * @dataProvider getSupportNormalizationData
      */
@@ -48,6 +51,7 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Data provider for testing normalize method
+     *
      * @return array
      */
     public static function getNormalizeData()
@@ -57,6 +61,7 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Test normalize method
+     *
      * @param array $data
      *
      * @dataProvider getNormalizeData
@@ -73,6 +78,7 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Create entity to normalize
+     *
      * @param array $data
      *
      * @return object

@@ -44,6 +44,7 @@ class AddLocaleListener implements EventSubscriber
 
     /**
      * Post load
+     *
      * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)

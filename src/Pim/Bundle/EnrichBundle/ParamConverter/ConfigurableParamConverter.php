@@ -65,6 +65,7 @@ class ConfigurableParamConverter implements ParamConverterInterface
 
     /**
      * Get a proper class name for the encapsulated paramConverter
+     *
      * @param ConfigurationInterface $configuration
      *
      * @return ConfigurationInterface

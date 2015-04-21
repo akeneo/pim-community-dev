@@ -87,6 +87,7 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)

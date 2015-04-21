@@ -33,7 +33,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
     /** @var string */
     protected $cacheDir;
 
-    /** @var boolean */
+    /** @var bool */
     protected $debug;
 
     /**
@@ -43,7 +43,7 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
      * @param PropertyAccessorInterface $propertyAccessor
      * @param array                     $bundles
      * @param string                    $cacheDir
-     * @param boolean                   $debug
+     * @param bool                      $debug
      */
     public function __construct(
         ContainerInterface $container,

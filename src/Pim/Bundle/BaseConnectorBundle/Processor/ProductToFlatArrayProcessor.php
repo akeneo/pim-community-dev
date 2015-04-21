@@ -28,7 +28,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      * @Assert\NotBlank(groups={"Execution"})
      * @Channel
      *
-     * @var string $channel Channel code
+     * @var string Channel code
      */
     protected $channel;
 

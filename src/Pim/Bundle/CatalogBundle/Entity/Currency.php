@@ -20,17 +20,17 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Currency implements CurrencyInterface
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      */
     protected $code;
 
     /**
-     * @var boolean $activated
+     * @var bool
      */
     protected $activated;
 
@@ -63,7 +63,7 @@ class Currency implements CurrencyInterface
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return Currency
      */

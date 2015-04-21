@@ -20,6 +20,7 @@ class AddParametersToGridListener
     /**
      * Included/excluded param names
      * populated by oro/datagrid/column-form-listener on frontend
+     *
      * @staticvar string
      */
     const GRID_PARAM_DATA_IN     = 'data_in';
@@ -31,13 +32,13 @@ class AddParametersToGridListener
     /** @var RequestParameters */
     protected $requestParams;
 
-    /** @var boolean */
+    /** @var bool */
     protected $isEditMode;
 
     /**
      * @param array             $paramNames    Parameter name that should be binded to query
      * @param RequestParameters $requestParams Request params
-     * @param boolean           $isEditMode    Whether or not to add data_in, data_not_in params to query
+     * @param bool              $isEditMode    Whether or not to add data_in, data_not_in params to query
      */
     public function __construct($paramNames, RequestParameters $requestParams, $isEditMode = false)
     {

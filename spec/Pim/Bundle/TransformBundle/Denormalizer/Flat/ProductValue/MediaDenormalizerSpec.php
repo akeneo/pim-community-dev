@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 class MediaDenormalizerSpec extends ObjectBehavior
 {

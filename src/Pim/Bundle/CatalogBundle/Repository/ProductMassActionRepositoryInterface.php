@@ -15,9 +15,9 @@ interface ProductMassActionRepositoryInterface extends MassActionRepositoryInter
     /**
      * Apply mass action parameters on query builder
      *
-     * @param mixed   $qb
-     * @param boolean $inset
-     * @param array   $values
+     * @param mixed $qb
+     * @param bool  $inset
+     * @param array $values
      */
     public function applyMassActionParameters($qb, $inset, $values);
 

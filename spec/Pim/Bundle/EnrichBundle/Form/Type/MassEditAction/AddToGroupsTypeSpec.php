@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class AddToGroupsTypeSpec extends ObjectBehavior

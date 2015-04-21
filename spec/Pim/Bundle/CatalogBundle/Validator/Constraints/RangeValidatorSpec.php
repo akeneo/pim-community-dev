@@ -3,12 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Range;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\RangeValidator;
-use Pim\Bundle\CatalogBundle\Model\MetricInterface;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class RangeValidatorSpec extends ObjectBehavior
 {

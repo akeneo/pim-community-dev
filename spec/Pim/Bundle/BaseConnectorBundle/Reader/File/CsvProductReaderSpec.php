@@ -72,10 +72,8 @@ class CsvProductReaderSpec extends ObjectBehavior
             ->shouldReturn([
                 'sku'          => 'SKU-001',
                 'name'         => 'door',
-                'view'         =>
-                    __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.jpg',
-                'manual-fr_FR' =>
-                    __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.txt',
+                'view'         => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.jpg',
+                'manual-fr_FR' => __DIR__ . '/../../../../../../features/Context/fixtures/sku-001.txt',
             ])
         ;
     }
@@ -151,5 +149,4 @@ class CsvProductReaderSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException("Currency wrongcurrency does not exist."))->during('read');
     }
-
 }

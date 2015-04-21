@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Mapping;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Validator\Mapping\ClassMetadataFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
 use Symfony\Component\Validator\Mapping\ClassMetadata;

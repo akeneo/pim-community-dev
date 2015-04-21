@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
@@ -20,11 +21,9 @@ interface FamilyRepositoryInterface extends
     ObjectRepository
 {
     /**
-     * @param object  $qb
-     * @param boolean $inset
-     * @param mixed   $values
-     *
-     * @return null
+     * @param object $qb
+     * @param bool   $inset
+     * @param mixed  $values
      *
      * @deprecated will be removed in 1.4
      */

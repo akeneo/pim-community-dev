@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Component\ReferenceData\Repository;
 
 /**

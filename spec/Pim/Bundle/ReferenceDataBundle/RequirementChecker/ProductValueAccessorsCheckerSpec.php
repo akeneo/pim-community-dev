@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Prophecy\Argument;
 
 class ProductValueAccessorsCheckerSpec extends ObjectBehavior
 {
@@ -69,16 +68,26 @@ class ProductValueAccessorsCheckerSpec extends ObjectBehavior
 
 class CustomValidProductValue extends AbstractProductValue
 {
-    public function setColor(ReferenceDataInterface $referenceData) { }
-    public function getColor() { }
-
-    public function setFabrics(Collection $fabrics) { }
-    public function getFabrics() { }
-    public function addFabric(ReferenceDataInterface $referenceData) { }
-    public function removeFabric(ReferenceDataInterface $referenceData) { }
+    public function setColor(ReferenceDataInterface $referenceData)
+    {
+    }
+    public function getColor()
+    {
+    }
+    public function setFabrics(Collection $fabrics)
+    {
+    }
+    public function getFabrics()
+    {
+    }
+    public function addFabric(ReferenceDataInterface $referenceData)
+    {
+    }
+    public function removeFabric(ReferenceDataInterface $referenceData)
+    {
+    }
 }
 
 class CustomInvalidProductValue extends AbstractProductValue
 {
-
 }

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Mapping;
 
-use Symfony\Component\Validator\MetadataFactoryInterface;
 use Symfony\Component\Validator\Exception\NoSuchMetadataException;
+use Symfony\Component\Validator\MetadataFactoryInterface;
 
 /**
  * Pim\Bundle\CatalogBundle\Validator\Mapping

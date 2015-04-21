@@ -9,9 +9,9 @@ use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 
@@ -107,7 +107,6 @@ class ORMProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read()->shouldReturn($sku1);
-
     }
 
     function it_converts_metric_values(

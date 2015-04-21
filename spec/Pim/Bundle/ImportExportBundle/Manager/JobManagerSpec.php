@@ -3,8 +3,8 @@
 namespace spec\Pim\Bundle\ImportExportBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class JobManagerSpec extends ObjectBehavior
 {

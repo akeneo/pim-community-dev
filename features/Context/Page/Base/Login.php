@@ -21,6 +21,7 @@ class Login extends Page
 
     /**
      * Log in the user
+     *
      * @param string $username
      * @param string $password
      */

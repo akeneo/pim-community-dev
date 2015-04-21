@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

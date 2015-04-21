@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class CompletenessSavingOptionsResolverSpec extends ObjectBehavior

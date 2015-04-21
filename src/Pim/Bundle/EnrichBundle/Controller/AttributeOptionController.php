@@ -219,9 +219,10 @@ class AttributeOptionController
     /**
      * Find an attribute or throw a 404
      *
-     * @param integer $id The id of the attribute
+     * @param int $id The id of the attribute
      *
      * @throws NotFoundHttpException
+     *
      * @return AttributeInterface
      */
     protected function findAttributeOr404($id)
@@ -238,9 +239,10 @@ class AttributeOptionController
     /**
      * Find an attribute option or throw a 404
      *
-     * @param integer $id The id of the attribute option
+     * @param int $id The id of the attribute option
      *
      * @throws NotFoundHttpException
+     *
      * @return AttributeOptionInterface
      */
     protected function findAttributeOptionOr404($id)

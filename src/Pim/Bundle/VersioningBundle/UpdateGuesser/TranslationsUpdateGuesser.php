@@ -19,7 +19,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
     /**
      * Entities configured as versionable
      *
-     * @var array $versionableEntities
+     * @var array
      */
     protected $versionableEntities;
 

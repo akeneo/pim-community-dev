@@ -27,7 +27,7 @@ class CategoryProcessor extends TransformerProcessor
     /**
      * If true, category data will be checked to make sure that there are no circular references between the categories
      *
-     * @var boolean
+     * @var bool
      */
     protected $circularRefsChecked = true;
 
@@ -56,7 +56,7 @@ class CategoryProcessor extends TransformerProcessor
     /**
      * Set circularRefsChecked
      *
-     * @param boolean $circularRefsChecked
+     * @param bool $circularRefsChecked
      */
     public function setCircularRefsChecked($circularRefsChecked)
     {
@@ -66,7 +66,7 @@ class CategoryProcessor extends TransformerProcessor
     /**
      * Is circularRefsChecked
      *
-     * @return boolean
+     * @return bool
      */
     public function isCircularRefsChecked()
     {
@@ -186,8 +186,6 @@ class CategoryProcessor extends TransformerProcessor
      *
      * @param array $categories
      * @param array $items
-     *
-     * @return null
      */
     private function checkCircularReferences(array &$categories, array $items)
     {

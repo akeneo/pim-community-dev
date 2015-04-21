@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Prophecy\Argument;
 
 class ProductSaverSpec extends ObjectBehavior

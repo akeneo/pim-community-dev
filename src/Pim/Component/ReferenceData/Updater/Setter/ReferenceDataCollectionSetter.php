@@ -23,10 +23,10 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
     protected $repositoryResolver;
 
     /**
-     * @param ProductBuilderInterface                   $productBuilder
-     * @param AttributeValidatorHelper                  $attrValidatorHelper
-     * @param ReferenceDataRepositoryResolverInterface  $repositoryResolver
-     * @param array                                     $supportedTypes
+     * @param ProductBuilderInterface                  $productBuilder
+     * @param AttributeValidatorHelper                 $attrValidatorHelper
+     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
+     * @param array                                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,

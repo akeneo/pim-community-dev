@@ -3,13 +3,12 @@
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-use Prophecy\Argument;
 use Doctrine\ORM\Query\Expr\From;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class CursorSpec extends ObjectBehavior
 {

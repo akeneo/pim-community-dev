@@ -149,6 +149,5 @@ class ArchivableFileWriterArchiverSpec extends ObjectBehavior
         $filesystem->write('tmp2', '', true)->shouldBeCalled();
 
         $this->archive($jobExecution);
-
     }
 }

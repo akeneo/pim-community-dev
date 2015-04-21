@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Copier;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\AttributeCopierInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\FieldCopierInterface;
 
 class CopierRegistrySpec extends ObjectBehavior

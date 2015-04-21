@@ -2,14 +2,13 @@
 
 namespace Context;
 
-use Behat\Mink\Element\NodeElement;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
-use Pim\Bundle\CatalogBundle\Model\Product;
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Context of the website
@@ -27,8 +26,8 @@ class WebUser extends RawMinkContext
     /**
      * Constructor
      *
-     * @param integer $windowWidth
-     * @param integer $windowHeight
+     * @param int $windowWidth
+     * @param int $windowHeight
      */
     public function __construct($windowWidth, $windowHeight)
     {
@@ -321,8 +320,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string  $attribute
-     * @param integer $position
+     * @param string $attribute
+     * @param int    $position
      *
      * @Given /^I change the attribute "([^"]*)" position to (\d+)$/
      */
@@ -333,8 +332,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string  $attribute
-     * @param integer $position
+     * @param string $attribute
+     * @param int    $position
      *
      * @Then /^the attribute "([^"]*)" should be in position (\d+)$/
      */
@@ -357,7 +356,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $expectedCount
+     * @param int $expectedCount
      *
      * @Given /^the Options section should contain ([^"]*) options?$/
      */
@@ -384,7 +383,6 @@ class WebUser extends RawMinkContext
      * @param string $group
      * @param string $attributes
      *
-     * @return void
      * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
@@ -417,9 +415,9 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see attributes "%s" in group "%s", but saw "%s".',
-                    join('", "', $attributes),
+                    implode('", "', $attributes),
                     $group,
-                    join('", "', $labels)
+                    implode('", "', $labels)
                 )
             );
         }
@@ -516,7 +514,6 @@ class WebUser extends RawMinkContext
      * @param string $value
      * @param string $language
      *
-     * @return void
      *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
@@ -1207,7 +1204,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $count
+     * @param int $count
      *
      * @Then /^there should be (\d+) updates?$/
      */
@@ -1599,7 +1596,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $seconds
+     * @param int $seconds
      *
      * @Then /^I wait (\d+) seconds$/
      */
@@ -1658,7 +1655,6 @@ class WebUser extends RawMinkContext
      * @param string       $code
      * @param PyStringNode $csv
      *
-     * @return null
      * @Then /^exported file of "([^"]*)" should contain:$/
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
@@ -1893,7 +1889,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $y
+     * @param int $y
      *
      * @Given /^I scroll down$/
      */
@@ -1905,8 +1901,10 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @return array
      * @throws ExpectationException
+     *
+     * @return array
+     *
      *
      * @Given /^I should see the following product comments:$/
      */
@@ -1929,7 +1927,6 @@ class WebUser extends RawMinkContext
                         );
                     }
                 }
-
             } catch (\LogicException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
@@ -1959,8 +1956,10 @@ class WebUser extends RawMinkContext
      * @param string $message
      * @param string $author
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      *
      * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
      */
@@ -2079,7 +2078,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $length
+     * @param int $length
      *
      * @return string
      */
@@ -2099,10 +2098,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $time
-     * @param string  $condition
-     *
-     * @return void
+     * @param int    $time
+     * @param string $condition
      */
     protected function wait($time = 10000, $condition = null)
     {

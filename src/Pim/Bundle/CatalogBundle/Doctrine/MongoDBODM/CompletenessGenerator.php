@@ -6,10 +6,10 @@ use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
@@ -157,7 +157,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             foreach ($pricesReqs as $priceField => $currencies) {
                 if (isset($normalizedData[$priceField]) &&
                     count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
-                    $missingPricesCount --;
+                    $missingPricesCount--;
                 }
             }
 

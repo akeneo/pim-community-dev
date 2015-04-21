@@ -24,7 +24,7 @@ class VersionManager
     const DEFAULT_SYSTEM_USER = 'admin';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $realTimeVersioning = true;
 
@@ -85,7 +85,7 @@ class VersionManager
     }
 
     /**
-     * @param boolean $mode
+     * @param bool $mode
      */
     public function setRealTimeVersioning($mode)
     {
@@ -93,7 +93,7 @@ class VersionManager
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRealTimeVersioning()
     {

@@ -82,24 +82,28 @@ class ProductController extends AbstractDoctrineController
 
     /**
      * Constant used to redirect to the datagrid when save edit form
+     *
      * @staticvar string
      */
     const BACK_TO_GRID = 'BackGrid';
 
     /**
      * Constant used to redirect to create popin when save edit form
+     *
      * @staticvar string
      */
     const CREATE = 'Create';
 
     /**
      * Constant used to redirect to next product in a sequential edition
+     *
      * @staticvar string
      */
     const SAVE_AND_NEXT = 'SaveAndNext';
 
     /**
      * Constant used to redirect to the grid once all products are edited in a sequential edition
+     *
      * @staticvar string
      */
     const SAVE_AND_FINISH = 'SaveAndFinish';
@@ -182,6 +186,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_product_index")
      * @Template
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -202,6 +207,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_product_create")
+     *
      * @return array
      */
     public function createAction(Request $request, $dataLocale)
@@ -241,10 +247,11 @@ class ProductController extends AbstractDoctrineController
      * Edit product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -271,7 +278,7 @@ class ProductController extends AbstractDoctrineController
      * Toggle product status (enabled/disabled)
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return Response|RedirectResponse
      *
@@ -300,10 +307,11 @@ class ProductController extends AbstractDoctrineController
      * Update product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template("PimEnrichBundle:Product:edit.html.twig")
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return RedirectResponse
      */
     public function updateAction(Request $request, $id)
@@ -389,9 +397,10 @@ class ProductController extends AbstractDoctrineController
      * History of a product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_product_history")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
@@ -408,9 +417,10 @@ class ProductController extends AbstractDoctrineController
      * Remove product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_product_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
@@ -428,14 +438,15 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request        $request    The request object
-     * @param integer|string $id         Product id
-     * @param integer        $categoryId The parent category id
+     * @param Request    $request    The request object
+     * @param int|string $id         Product id
+     * @param int        $categoryId The parent category id
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
      * @Template
      * @AclAncestor("pim_enrich_product_categories_view")
+     *
      * @return array
      */
     public function listCategoriesAction(Request $request, $id, $categoryId)
@@ -539,11 +550,11 @@ class ProductController extends AbstractDoctrineController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @param int $id the product id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

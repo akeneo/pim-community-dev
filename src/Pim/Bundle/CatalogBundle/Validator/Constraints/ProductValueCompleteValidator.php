@@ -63,8 +63,6 @@ class ProductValueCompleteValidator extends ConstraintValidator
      *
      * @param ProductValueInterface $value
      * @param Constraint            $constraint
-     *
-     * @return null
      */
     protected function validateComplexValue(ProductValueInterface $value, Constraint $constraint)
     {
@@ -86,8 +84,6 @@ class ProductValueCompleteValidator extends ConstraintValidator
      *
      * @param ProductValueInterface $value
      * @param Constraint            $constraint
-     *
-     * @return null
      */
     protected function validatePrices(ProductValueInterface $value, Constraint $constraint)
     {

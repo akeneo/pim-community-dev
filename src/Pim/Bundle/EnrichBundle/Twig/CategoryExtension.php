@@ -46,11 +46,11 @@ class CategoryExtension extends \Twig_Extension
     /**
      * List root categories (trees) for jstree
      *
-     * @param array   $trees
-     * @param integer $selectedTreeId
-     * @param boolean $withProductCount
-     * @param boolean $includeSub
-     * @param string  $relatedEntity
+     * @param array  $trees
+     * @param int    $selectedTreeId
+     * @param bool   $withProductCount
+     * @param bool   $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -75,8 +75,8 @@ class CategoryExtension extends \Twig_Extension
      * @param array             $categories
      * @param CategoryInterface $selectedCategory
      * @param CategoryInterface $parent
-     * @param boolean           $withProductCount
-     * @param boolean           $includeSub
+     * @param bool              $withProductCount
+     * @param bool              $includeSub
      * @param string            $relatedEntity
      *
      * @return array
@@ -117,8 +117,8 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param array             $categories
      * @param CategoryInterface $parent
-     * @param boolean           $withProductCount
-     * @param boolean           $includeSub
+     * @param bool              $withProductCount
+     * @param bool              $includeSub
      * @param string            $relatedEntity
      *
      * @return array
@@ -172,11 +172,11 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format categories from an array
      *
-     * @param array   $categories
-     * @param array   $selectedIds
-     * @param boolean $withProductCount
-     * @param boolean $includeSub
-     * @param string  $relatedEntity
+     * @param array  $categories
+     * @param array  $selectedIds
+     * @param bool   $withProductCount
+     * @param bool   $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -213,11 +213,11 @@ class CategoryExtension extends \Twig_Extension
      *     'children' => array() // the same array for children
      * )
      *
-     * @param array   $category
-     * @param array   $selectedIds
-     * @param boolean $withProductCount
-     * @param boolean $includeSub
-     * @param string  $relatedEntity
+     * @param array  $category
+     * @param array  $selectedIds
+     * @param bool   $withProductCount
+     * @param bool   $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -260,8 +260,8 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $category
      * @param array             $selectedIds
-     * @param boolean           $withProductCount
-     * @param boolean           $includeSub
+     * @param bool              $withProductCount
+     * @param bool              $includeSub
      * @param array             $children
      * @param string            $relatedEntity
      *
@@ -303,9 +303,9 @@ class CategoryExtension extends \Twig_Extension
      * )
      *
      * @param CategoryInterface $tree
-     * @param integer           $selectedTreeId
-     * @param boolean           $withProductCount
-     * @param boolean           $includeSub
+     * @param int               $selectedTreeId
+     * @param bool              $withProductCount
+     * @param bool              $includeSub
      * @param string            $relatedEntity
      *
      * @return array
@@ -329,11 +329,11 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format categories
      *
-     * @param array   $categories
-     * @param array   $selectedIds
-     * @param boolean $withProductCount
-     * @param boolean $includeSub
-     * @param string  $relatedEntity
+     * @param array  $categories
+     * @param array  $selectedIds
+     * @param bool   $withProductCount
+     * @param bool   $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -410,8 +410,8 @@ class CategoryExtension extends \Twig_Extension
      * including|excluding sub-categories
      *
      * @param CategoryInterface $category
-     * @param boolean           $withCount
-     * @param boolean           $includeSub
+     * @param bool              $withCount
+     * @param bool              $includeSub
      * @param string            $relatedEntity
      *
      * @return string
@@ -434,10 +434,10 @@ class CategoryExtension extends \Twig_Extension
      * Count products for a category
      *
      * @param CategoryInterface $category
-     * @param boolean           $includeSub
+     * @param bool              $includeSub
      * @param string            $relatedEntity
      *
-     * @return integer
+     * @return int
      */
     protected function countProducts(CategoryInterface $category, $includeSub, $relatedEntity)
     {
@@ -448,7 +448,7 @@ class CategoryExtension extends \Twig_Extension
      * Define the state of a category
      *
      * @param CategoryInterface $category
-     * @param boolean           $hasChild
+     * @param bool              $hasChild
      * @param array             $selectedIds
      *
      * @return string

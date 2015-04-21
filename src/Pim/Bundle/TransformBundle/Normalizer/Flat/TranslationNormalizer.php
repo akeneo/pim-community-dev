@@ -14,7 +14,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class TranslationNormalizer extends Structured\TranslationNormalizer
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 

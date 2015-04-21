@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Metric flat denormalizer used for attribute types:
@@ -96,6 +96,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
 
     /**
      * Define context requirements
+     *
      * @param OptionsResolverInterface $resolver
      */
     protected function configContext(OptionsResolverInterface $resolver)

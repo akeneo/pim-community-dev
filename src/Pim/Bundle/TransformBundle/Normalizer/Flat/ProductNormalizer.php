@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -105,8 +105,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * @param ProductInterface $product
      * @param string|null      $format
      * @param array            $context
-     *
-     * @return null
      */
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {

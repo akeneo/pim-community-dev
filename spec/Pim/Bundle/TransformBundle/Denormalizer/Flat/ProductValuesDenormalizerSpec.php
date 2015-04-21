@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;

@@ -5,12 +5,8 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 class BaseWriterSpec extends ObjectBehavior
 {

@@ -127,6 +127,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
+     *
      * @return Response
      */
     public function indexAction()
@@ -139,6 +140,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_family_create")
+     *
      * @return array
      */
     public function createAction()
@@ -174,6 +176,7 @@ class FamilyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_family_index")
+     *
      * @return array
      */
     public function editAction(Family $family)
@@ -199,6 +202,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @AclAncestor("pim_enrich_family_history")
+     *
      * @return Response
      */
     public function historyAction(Family $family)
@@ -217,6 +221,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @AclAncestor("pim_enrich_family_remove")
+     *
      * @return \Symfony\Component\HttpFoundation\Response|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Family $family)
@@ -236,6 +241,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Family $family
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Family $family)
@@ -261,13 +267,14 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Remove an attribute
      *
-     * @param integer $familyId
-     * @param integer $attributeId
+     * @param int $familyId
+     * @param int $attributeId
      *
      * @AclAncestor("pim_enrich_family_edit_attributes")
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      *
      * @throws DeleteException
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAttributeAction($familyId, $attributeId)
     {

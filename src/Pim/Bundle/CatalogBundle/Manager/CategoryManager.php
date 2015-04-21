@@ -101,8 +101,8 @@ class CategoryManager
      * If the $selectNodeId is provided, all the children
      * level needed to provides the selectNode are returned
      *
-     * @param integer $parentId
-     * @param integer $selectNodeId
+     * @param int $parentId
+     * @param int $selectNodeId
      *
      * @return ArrayCollection
      */
@@ -210,9 +210,9 @@ class CategoryManager
      * If $prevSiblingId is provided, the category will be positioned after this
      * category, otherwise if will be the first child of the parent categpry
      *
-     * @param integer $categoryId
-     * @param integer $parentId
-     * @param integer $prevSiblingId
+     * @param int $categoryId
+     * @param int $parentId
+     * @param int $prevSiblingId
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
@@ -242,7 +242,7 @@ class CategoryManager
      * @param CategoryInterface $parentNode
      * @param CategoryInterface $childNode
      *
-     * @return boolean
+     * @return bool
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {

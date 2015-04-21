@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryResolverInterface;
-use Prophecy\Argument;
 
 class ReferenceDataIdResolverSpec extends ObjectBehavior
 {

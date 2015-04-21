@@ -37,6 +37,7 @@ class SetAttributeRequirements extends Wizard
      * @param string $channel
      *
      * @throws \Exception
+     *
      * @return NodeElement
      */
     protected function getAttributeRequirementCell($attribute, $channel)

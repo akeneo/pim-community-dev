@@ -250,9 +250,9 @@ class AddTranslatableFieldSubscriber implements EventSubscriberInterface
      *
      * @param string $name
      *
-     * @return mixed
-     *
      * @throws MissingOptionException
+     *
+     * @return mixed
      */
     protected function getOption($name)
     {

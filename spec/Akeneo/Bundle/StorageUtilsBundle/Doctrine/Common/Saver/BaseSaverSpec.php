@@ -4,8 +4,8 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 
 class BaseSaverSpec extends ObjectBehavior
 {

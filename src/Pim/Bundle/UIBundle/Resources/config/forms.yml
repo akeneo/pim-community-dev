@@ -59,4 +59,3 @@ services:
             - '@doctrine'
             - '@pim_reference_data.datagrid_renderer'
             - %pim_ui.form.transformer.ajax_reference_data.class%
-

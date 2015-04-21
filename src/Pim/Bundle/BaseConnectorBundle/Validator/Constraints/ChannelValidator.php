@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
 class ChannelValidator extends ChoiceValidator
 {
     /**
-     * @var ChannelManager $manager
+     * @var ChannelManager
      */
     protected $manager;
 

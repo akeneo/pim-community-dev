@@ -2,16 +2,8 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 class AttributeOptionToStandardConverterSpec extends ObjectBehavior
 {
@@ -26,11 +18,11 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
             'Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface'
         );
     }
-    
+
     function it_converts_an_item_to_standard_format($localeRepository)
     {
         $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
-        
+
         $this->convert(
             [
                 'attribute'   => 'maximum_print_size',
@@ -93,5 +85,4 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
                 ]
             );
     }
-
 }

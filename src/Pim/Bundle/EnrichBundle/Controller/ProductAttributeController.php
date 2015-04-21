@@ -62,9 +62,10 @@ class ProductAttributeController
      * Add attributes to product
      *
      * @param Request $request The request object
-     * @param integer $id      The product id to which add attributes
+     * @param int     $id      The product id to which add attributes
      *
      * @AclAncestor("pim_enrich_product_add_attribute")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
@@ -87,13 +88,14 @@ class ProductAttributeController
      * Remove an attribute form a product
      *
      * @param Request $request     The request object
-     * @param integer $productId   The product id
-     * @param integer $attributeId The attribute id
+     * @param int     $productId   The product id
+     * @param int     $attributeId The attribute id
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
-     * @return RedirectResponse
      *
      * @throws NotFoundHttpException
+     *
+     * @return RedirectResponse
      */
     public function removeAttributeAction(Request $request, $productId, $attributeId)
     {
@@ -115,11 +117,11 @@ class ProductAttributeController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @param int $id the product id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {
@@ -137,11 +139,11 @@ class ProductAttributeController
     /**
      * Find an attribute by its id or return a 404 response
      *
-     * @param integer $id the attribute id
-     *
-     * @return AttributeInterface
+     * @param int $id the attribute id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return AttributeInterface
      */
     protected function findAttributeOr404($id)
     {
@@ -178,9 +180,9 @@ class ProductAttributeController
     /**
      * Create a redirection to a given route
      *
-     * @param string  $route
-     * @param mixed   $parameters
-     * @param integer $status
+     * @param string $route
+     * @param mixed  $parameters
+     * @param int    $status
      *
      * @return RedirectResponse
      */
@@ -192,8 +194,8 @@ class ProductAttributeController
     /**
      * Returns a RedirectResponse to the given URL.
      *
-     * @param string  $url    The URL to redirect to
-     * @param integer $status The status code to use for the Response
+     * @param string $url    The URL to redirect to
+     * @param int    $status The status code to use for the Response
      *
      * @return RedirectResponse
      */
@@ -205,9 +207,9 @@ class ProductAttributeController
     /**
      * Generates a URL from the given parameters.
      *
-     * @param string         $route         The name of the route
-     * @param mixed          $parameters    An array of parameters
-     * @param boolean|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     * @param string      $route         The name of the route
+     * @param mixed       $parameters    An array of parameters
+     * @param bool|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
      *
      * @return string The generated URL
      *
@@ -225,8 +227,6 @@ class ProductAttributeController
      * @param string  $type       the flash type
      * @param string  $message    the flash message
      * @param array   $parameters the flash message parameters
-     *
-     * @return null
      */
     protected function addFlash(Request $request, $type, $message, array $parameters = array())
     {

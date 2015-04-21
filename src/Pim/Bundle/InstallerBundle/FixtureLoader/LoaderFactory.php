@@ -74,7 +74,7 @@ class LoaderFactory
      * @param ItemReaderInterface    $reader
      * @param ItemProcessorInterface $processor
      * @param string                 $class
-     * @param boolean                $multiple
+     * @param bool                   $multiple
      * @param MediaManager           $mediaManager
      *
      * @return LoaderInterface

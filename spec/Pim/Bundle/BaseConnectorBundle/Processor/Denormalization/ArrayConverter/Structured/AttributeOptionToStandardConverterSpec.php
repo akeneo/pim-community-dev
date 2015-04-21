@@ -2,15 +2,7 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Structured;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 class AttributeOptionToStandardConverterSpec extends ObjectBehavior
 {
@@ -20,7 +12,7 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
             'Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface'
         );
     }
-    
+
     function it_converts_an_item_to_standard_format()
     {
         $this->convert(
@@ -85,5 +77,4 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
                 ]
             );
     }
-
 }

@@ -39,7 +39,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param integer $count
+     * @param int $count
      *
      * @Given /^the grid should contain (\d+) elements?$/
      */
@@ -161,9 +161,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         // do not consider the elements' order of "actual" and "expectation"
         $expectation = explode(',', $expectation);
-        $expectation = array_map(function($row) { return trim($row); }, $expectation);
+        $expectation = array_map(function ($row) { return trim($row); }, $expectation);
         $actual = explode(',', $actual);
-        $actual = array_map(function($row) { return trim($row); }, $actual);
+        $actual = array_map(function ($row) { return trim($row); }, $actual);
 
         $diff = array_diff($actual, $expectation);
 
@@ -249,7 +249,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $columns
      *
      * @Given /^I display the columns (.*)$/
-    */
+     */
     public function iDisplayTheColumns($columns)
     {
         $columns = $this->getMainContext()->listToArray($columns);
@@ -861,8 +861,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * Wait
      *
-     * @param integer $time
-     * @param string  $condition
+     * @param int    $time
+     * @param string $condition
      */
     protected function wait($time = 10000, $condition = null)
     {

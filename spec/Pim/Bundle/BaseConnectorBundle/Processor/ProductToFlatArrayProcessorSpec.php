@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;

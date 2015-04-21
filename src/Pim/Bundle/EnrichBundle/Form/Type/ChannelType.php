@@ -81,6 +81,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create code field
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType
@@ -94,6 +95,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create label field
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType
@@ -107,6 +109,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create color field
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType
@@ -130,6 +133,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create currencies field
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType
@@ -169,6 +173,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create locales field
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType
@@ -196,6 +201,7 @@ class ChannelType extends AbstractType
 
     /**
      * Create category field
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType
@@ -221,6 +227,7 @@ class ChannelType extends AbstractType
 
     /**
      * Add event subscriber to channel form type
+     *
      * @param FormBuilderInterface $builder
      *
      * @return ChannelType

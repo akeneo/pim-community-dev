@@ -2,8 +2,8 @@
 
 namespace Context;
 
-use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +30,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     protected $excludedTables;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $purgeMode = self::PURGE_MODE_DELETE;
 

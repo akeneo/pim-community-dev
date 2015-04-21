@@ -2,12 +2,12 @@
 
 namespace Context\Loader;
 
-use Oro\Bundle\UserBundle\Entity\Group;
-use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Loader for users

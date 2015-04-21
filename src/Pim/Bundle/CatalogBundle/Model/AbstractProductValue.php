@@ -32,55 +32,64 @@ abstract class AbstractProductValue implements ProductValueInterface
 
     /**
      * LocaleInterface code
-     * @var string $locale
+     *
+     * @var string
      */
     protected $locale;
 
     /**
      * Scope code
-     * @var string $scope
+     *
+     * @var string
      */
     protected $scope;
 
     /**
      * Store varchar value
-     * @var string $varchar
+     *
+     * @var string
      */
     protected $varchar;
 
     /**
      * Store int value
-     * @var int $integer
+     *
+     * @var int
      */
     protected $integer;
 
     /**
      * Store decimal value
-     * @var double $decimal
+     *
+     * @var float
      */
     protected $decimal;
 
     /**
      * Store boolean value
-     * @var bool $boolean
+     *
+     * @var bool
      */
     protected $boolean;
 
     /**
      * Store text value
-     * @var string $text
+     *
+     * @var string
      */
     protected $text;
 
     /**
      * Store date value
-     * @var date $date
+     *
+     * @var date
      */
     protected $date;
 
     /**
      * Store datetime value
-     * @var \Datetime $datetime
+     *
+     * @var \Datetime
      */
     protected $datetime;
 
@@ -89,7 +98,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * This field must by overrided in concret value class
      *
-     * @var ArrayCollection $options
+     * @var ArrayCollection
      */
     protected $options;
 
@@ -99,28 +108,28 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store simple option value
      *
-     * @var AttributeOptionInterface $option
+     * @var AttributeOptionInterface
      */
     protected $option;
 
     /**
      * Store upload values
      *
-     * @var ProductMediaInterface $media
+     * @var ProductMediaInterface
      */
     protected $media;
 
     /**
      * Store metric value
      *
-     * @var MetricInterface $metric
+     * @var MetricInterface
      */
     protected $metric;
 
     /**
      * Store prices value
      *
-     * @var ArrayCollection $prices
+     * @var ArrayCollection
      */
     protected $prices;
 
