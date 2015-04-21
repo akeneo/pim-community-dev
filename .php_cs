@@ -1,9 +1,23 @@
 <?php
 
-$finder = Symfony\CS\Finder\DefaultFinder::create()
-    ->files()
-    ->name('*.php')
-    ->in(__DIR__ . '/src');
+$branch = exec('git rev-parse --abbrev-ref HEAD');
+
+$finder = Symfony\CS\Finder\DefaultFinder::create()->files();
+
+if ('master' === $branch) {
+    $finder
+        ->name('*.php')
+        ->in(__DIR__ . '/src')
+        ->in(__DIR__ . '/features');
+} else {
+    if (is_int(getenv('TRAVIS_PULL_REQUEST'))) {
+        exec('git diff ' . getenv('TRAVIS_COMMIT_RANGE') . ' --name-only | grep -v ^spec/', $diff);
+    } else {
+        exec('git show --name-only --oneline --pretty="format:" | grep -v ^spec/', $diff);
+        $diff = array_filter($diff);
+    }
+    $finder->append($diff);
+}
 
 return Symfony\CS\Config\Config::create()
     ->fixers([
