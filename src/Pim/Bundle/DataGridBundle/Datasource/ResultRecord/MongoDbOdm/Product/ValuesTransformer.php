@@ -24,7 +24,7 @@ class ValuesTransformer
     public function transform(array $result, array $attributes, $locale, $scope)
     {
         $optionsTransformer = new OptionsTransformer();
-        $referenceDataTransformer = new ReferenceDataTransformer();
+        $refDataTransformer = new ReferenceDataTransformer();
 
         if (isset($result['values'])) {
             foreach ($result['values'] as $value) {
@@ -38,7 +38,7 @@ class ValuesTransformer
                     $value['attribute'] = $attribute;
                     $result[$attributeCode] = $value;
                     $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
-                    $result[$attributeCode] = $referenceDataTransformer->transform($result, $attribute, $locale, $scope);
+                    $result[$attributeCode] = $refDataTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $this->prepareDateData($result, $attribute);
                     $result[$attributeCode] = $this->prepareMediaData($result, $attribute);
                 }

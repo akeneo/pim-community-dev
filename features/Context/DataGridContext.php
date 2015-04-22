@@ -161,9 +161,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         // do not consider the elements' order of "actual" and "expectation"
         $expectation = explode(',', $expectation);
-        $expectation = array_map(function ($row) { return trim($row); }, $expectation);
+        $expectation = array_map(
+            function ($row) {
+                return trim($row);
+            },
+            $expectation
+        );
         $actual = explode(',', $actual);
-        $actual = array_map(function ($row) { return trim($row); }, $actual);
+        $actual = array_map(
+            function ($row) {
+                return trim($row);
+            },
+            $actual
+        );
 
         $diff = array_diff($actual, $expectation);
 

@@ -42,7 +42,8 @@ abstract class AbstractReferenceDataUniqueCodeChecker implements CheckerInterfac
         }
 
         if (!isset($mapping['unique']) || true !== $mapping['unique']) {
-            $this->failure = 'Please configure a "code" column with a unique constraint in your Reference Data mapping.';
+            $this->failure = 'Please configure a "code" column with a unique constraint ' .
+                             'in your Reference Data mapping.';
 
             return false;
         }
