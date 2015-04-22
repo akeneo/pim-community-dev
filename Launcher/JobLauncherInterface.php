@@ -33,4 +33,11 @@ interface JobLauncherInterface
      * @return JobLauncherInterface
      */
     public function setConfig(array $config);
+
+    /**
+     * Get config
+     *
+     * @return array
+     */
+    public function getConfig();
 }

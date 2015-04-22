@@ -82,6 +82,14 @@ class SimpleJobLauncher implements JobLauncherInterface
     }
 
     /**
+     * {@inheridoc}
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
      * Is key true in configuration
      *
      * @param string $key
