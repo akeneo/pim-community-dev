@@ -33,6 +33,7 @@ class ProductController extends FOSRestController
      *      description="Get a single product",
      *      resource=true
      * )
+     *
      * @return Response
      */
     public function getAction(Request $request, $identifier)

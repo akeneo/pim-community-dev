@@ -54,8 +54,6 @@ interface ProductBuilderInterface
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     *
-     * @return null
      */
     public function addAttributeToProduct(ProductInterface $product, AttributeInterface $attribute);
 
@@ -65,7 +63,7 @@ interface ProductBuilderInterface
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function removeAttributeFromProduct(ProductInterface $product, AttributeInterface $attribute);
 

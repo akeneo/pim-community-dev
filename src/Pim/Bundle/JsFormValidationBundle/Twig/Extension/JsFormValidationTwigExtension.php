@@ -22,6 +22,7 @@ class JsFormValidationTwigExtension extends APYJsFormValidationTwigExtension
 
     /**
      * Constructor
+     *
      * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
@@ -49,7 +50,7 @@ class JsFormValidationTwigExtension extends APYJsFormValidationTwigExtension
      * Retrieves validation javascript as an inline script
      *
      * @param FormView $formView
-     * @param boolean  $getPlainScript
+     * @param bool     $getPlainScript
      *
      * @return string
      */

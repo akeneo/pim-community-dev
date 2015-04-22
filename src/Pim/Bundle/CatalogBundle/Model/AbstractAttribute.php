@@ -19,31 +19,36 @@ abstract class AbstractAttribute implements AttributeInterface
 
     /**
      * Attribute code
-     * @var string $code
+     *
+     * @var string
      */
     protected $code;
 
     /**
      * Attribute label
-     * @var string $label
+     *
+     * @var string
      */
     protected $label;
 
     /**
      * Entity type (FQCN)
-     * @var string $entityType
+     *
+     * @var string
      */
     protected $entityType;
 
     /**
      * Attribute type (service alias))
-     * @var string $attributeType
+     *
+     * @var string
      */
     protected $attributeType;
 
     /**
      * Kind of field to store values
-     * @var string $backendType
+     *
+     * @var string
      */
     protected $backendType;
 
@@ -55,13 +60,15 @@ abstract class AbstractAttribute implements AttributeInterface
 
     /**
      * Is attribute is required
-     * @var bool $required
+     *
+     * @var bool
      */
     protected $required;
 
     /**
      * Is attribute value is required
-     * @var bool $unique
+     *
+     * @var bool
      */
     protected $unique;
 
@@ -104,10 +111,10 @@ abstract class AbstractAttribute implements AttributeInterface
     /** @var bool */
     protected $wysiwygEnabled;
 
-    /** @var double */
+    /** @var float */
     protected $numberMin;
 
-    /** @var double */
+    /** @var float */
     protected $numberMax;
 
     /** @var bool */
@@ -129,8 +136,7 @@ abstract class AbstractAttribute implements AttributeInterface
     protected $defaultMetricUnit;
 
     /**
-     * @var double $maxFileSize
-     * expressed in MB so decimal is needed for values < 1 MB
+     * @var float expressed in MB so decimal is needed for values < 1 MB
      */
     protected $maxFileSize;
 
@@ -144,7 +150,7 @@ abstract class AbstractAttribute implements AttributeInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 

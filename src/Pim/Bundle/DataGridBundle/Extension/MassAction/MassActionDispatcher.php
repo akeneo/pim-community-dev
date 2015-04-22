@@ -86,7 +86,7 @@ class MassActionDispatcher
     /**
      * @param array $parameters
      *
-     * @return boolean
+     * @return bool
      */
     protected function prepareInsetParameter(array $parameters)
     {
@@ -118,7 +118,7 @@ class MassActionDispatcher
      *
      * @param DatagridInterface   $datagrid
      * @param MassActionInterface $massAction
-     * @param boolean             $inset
+     * @param bool                $inset
      * @param string              $values
      *
      * @return MassActionResponseInterface
@@ -143,8 +143,9 @@ class MassActionDispatcher
      * @param string            $massActionName
      * @param DatagridInterface $datagrid
      *
-     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      * @throws \LogicException
+     *
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      */
     protected function getMassActionByName($massActionName, DatagridInterface $datagrid)
     {
@@ -156,7 +157,7 @@ class MassActionDispatcher
             }
         );
 
-        /** @var MassActionExtension|boolean $extension */
+        /** @var MassActionExtension|bool $extension */
         $extension = reset($extensions);
         if ($extension === false) {
             throw new \LogicException("MassAction extension is not applied to datagrid.");

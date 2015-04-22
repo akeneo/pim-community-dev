@@ -71,8 +71,8 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure your Product Value relation "color" correctly. ' .
-            'You can take the relation "option" as example.'
+            'Please configure your "spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue" ' .
+            'relation "color" correctly. You can take the relation "option" as example.'
         );
     }
 
@@ -88,8 +88,8 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure your Product Value relation "fabrics" correctly. ' .
-            'You can take the relation "options" as example.'
+            'Please configure your "spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue" ' .
+            'relation "fabrics" correctly. You can take the relation "options" as example.'
         );
     }
 }

@@ -18,7 +18,7 @@ interface ConfigurationRegistryInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function contains($name);
 
@@ -52,7 +52,7 @@ interface ConfigurationRegistryInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function isMultiple($name);
 

@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Prophecy\Argument;
 
 class GroupFieldAdderSpec extends ObjectBehavior
 {
@@ -27,7 +26,8 @@ class GroupFieldAdderSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface');
     }
 
-    function it_supports_categories_field() {
+    function it_supports_categories_field()
+    {
         $this->supportsField('groups')->shouldReturn(true);
         $this->supportsField('categories')->shouldReturn(false);
     }

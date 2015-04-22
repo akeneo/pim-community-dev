@@ -10,7 +10,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -23,7 +22,6 @@ use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInter
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer;
 use Pim\Bundle\TransformBundle\Transformer\Property\RelationTransformer;
-use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ProductTransformerSpec extends ObjectBehavior

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
@@ -29,7 +30,7 @@ interface MetricInterface
     /**
      * Get base data
      *
-     * @return double
+     * @return float
      */
     public function getBaseData();
 
@@ -54,7 +55,7 @@ interface MetricInterface
     /**
      * Set data
      *
-     * @param double $data
+     * @param float $data
      *
      * @return MetricInterface
      */
@@ -86,14 +87,14 @@ interface MetricInterface
     /**
      * Get data
      *
-     * @return double
+     * @return float
      */
     public function getData();
 
     /**
      * Set base data
      *
-     * @param double $baseData
+     * @param float $baseData
      *
      * @return MetricInterface
      */

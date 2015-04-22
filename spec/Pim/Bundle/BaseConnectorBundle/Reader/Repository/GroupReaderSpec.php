@@ -3,9 +3,6 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Repository;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Doctrine\MongoDB\Cursor;
-use Doctrine\MongoDB\Query\Query;
-use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 
@@ -28,7 +25,7 @@ class GroupReaderSpec extends ObjectBehavior
     {
         $repository->getAllGroupsExceptVariant()
             ->shouldBeCalled()
-            ->willReturn(array('foo','bar'));
+            ->willReturn(array('foo', 'bar'));
 
         $this->read()->shouldReturn('foo');
         $this->read()->shouldReturn('bar');
@@ -39,7 +36,7 @@ class GroupReaderSpec extends ObjectBehavior
     {
         $repository->getAllGroupsExceptVariant()
             ->shouldBeCalled()
-            ->willReturn(array('foo','bar'));
+            ->willReturn(array('foo', 'bar'));
 
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 

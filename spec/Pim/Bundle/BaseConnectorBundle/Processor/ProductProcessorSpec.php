@@ -179,8 +179,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $validator
             ->validate($product, [$columnInfo], $item, [])
             ->willReturn([
-                'AKNTS' =>
-                    [["The value \"\" for not empty attribute \"not_empty_attribute\" is empty"]]
+                'AKNTS' => [["The value \"\" for not empty attribute \"not_empty_attribute\" is empty"]]
             ]);
 
         $managerRegistry->getManagerForClass(Argument::type('string'))->willReturn($objectManager);

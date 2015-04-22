@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
-use Prophecy\Argument;
 
 class ReferenceDataNameCheckerSpec extends ObjectBehavior
 {

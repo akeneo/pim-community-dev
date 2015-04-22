@@ -2,11 +2,11 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\StorageUtilsBundle\MongoDB\MongoObjectsFactory;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -16,7 +16,7 @@ class AssociationNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory)
     {
-         $this->beConstructedWith($mongoFactory);
+        $this->beConstructedWith($mongoFactory);
     }
 
     function it_is_a_normalizer()

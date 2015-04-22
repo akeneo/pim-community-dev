@@ -20,7 +20,7 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
     /**
      * Get the id
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
@@ -51,6 +51,7 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
 
     /**
      * Get group type
+     *
      * @return GroupTypeInterface
      */
     public function getType();
@@ -123,9 +124,9 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
      *
      * @param AttributeInterface $attribute
      *
-     * @return GroupInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return GroupInterface
      */
     public function removeAttribute(AttributeInterface $attribute);
 
@@ -172,9 +173,9 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
      *
      * @param AttributeInterface $attribute
      *
-     * @return GroupInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return GroupInterface
      */
     public function removeAxisAttribute(AttributeInterface $attribute);
 

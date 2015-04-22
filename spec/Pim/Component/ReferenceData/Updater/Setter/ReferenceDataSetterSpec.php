@@ -234,6 +234,5 @@ class CustomProductValue extends AbstractProductValue
 {
     public function setCustomMaterial(ReferenceDataInterface $refData = null)
     {
-
     }
 }

@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Command;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -108,7 +108,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param ProductInterface $product
      * @param array            $updates
      *
-     * @return boolean
+     * @return bool
      */
     protected function update(ProductInterface $product, array $updates)
     {

@@ -3,10 +3,9 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AddToGroupsTypeSpec extends ObjectBehavior
+class AddToVariantGroupTypeSpec extends ObjectBehavior
 {
     function let()
     {

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Sets a value in a product
@@ -34,7 +34,7 @@ interface AttributeSetterInterface extends SetterInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsAttribute(AttributeInterface $attribute);
 }

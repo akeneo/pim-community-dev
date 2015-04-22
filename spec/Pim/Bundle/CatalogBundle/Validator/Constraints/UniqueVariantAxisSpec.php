@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class UniqueVariantAxisSpec extends ObjectBehavior
 {
@@ -29,6 +28,6 @@ class UniqueVariantAxisSpec extends ObjectBehavior
 
     function it_is_a_class_constraint()
     {
-        $this-> getTargets()->shouldReturn('class');
+        $this->getTargets()->shouldReturn('class');
     }
 }

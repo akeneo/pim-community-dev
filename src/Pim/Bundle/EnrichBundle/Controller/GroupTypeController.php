@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -93,6 +93,7 @@ class GroupTypeController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_group_type_index")
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -102,10 +103,12 @@ class GroupTypeController extends AbstractDoctrineController
 
     /**
      * Create a group type
+     *
      * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_group_type_create")
+     *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
@@ -140,6 +143,7 @@ class GroupTypeController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_group_type_edit")
+     *
      * @return array
      */
     public function editAction(GroupType $groupType)
@@ -155,9 +159,11 @@ class GroupTypeController extends AbstractDoctrineController
 
     /**
      * Remove a group type
+     *
      * @param GroupType $groupType
      *
      * @AclAncestor("pim_enrich_group_type_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction(GroupType $groupType)

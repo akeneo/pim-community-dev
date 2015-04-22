@@ -419,14 +419,14 @@ class ProductRepository extends EntityRepository implements
                 foreach ($references as $code => $referenceData) {
                     if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
                         if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
-                            $sql.= ' OR v.' . $valueMetadata->getSingleAssociationJoinColumnName($code) . ' IS NOT NULL';
+                            $sql .= ' OR v.' . $valueMetadata->getSingleAssociationJoinColumnName($code) . ' IS NOT NULL';
                         }
                     }
                 }
             }
         }
 
-        $sql.= ') ' .
+        $sql .= ') ' .
             'GROUP BY v.entity_id ' .
             'HAVING (gp.group_id IS NULL OR gp.group_id = ga.group_id) ' .
             'AND COUNT(ga.attribute_id) = (SELECT COUNT(*) FROM pim_catalog_group_attribute WHERE group_id = :groupId)';

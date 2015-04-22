@@ -153,6 +153,7 @@ class ExportController
 
     /**
      * TODO: Get from datagrid builder ?
+     *
      * @return \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
      */
     protected function getExportMassAction()

@@ -85,6 +85,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * Get labels
+     *
      * @param array $data
      *
      * @return array
@@ -96,6 +97,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * Get attributes
+     *
      * @param array $data
      *
      * @return Attribute[]

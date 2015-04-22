@@ -16,9 +16,9 @@ interface StandardArrayConverterInterface
     /**
      * @param array $item data to convert
      *
-     * @return array
-     *
      * @throws ArrayConversionException
+     *
+     * @return array
      */
     public function convert(array $item);
 }

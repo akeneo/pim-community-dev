@@ -86,6 +86,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)

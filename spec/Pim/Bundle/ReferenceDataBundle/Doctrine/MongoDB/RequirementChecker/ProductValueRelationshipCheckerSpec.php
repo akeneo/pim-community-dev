@@ -80,7 +80,8 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure the type and the owning side correctly in your Product Value "color" relation. ' .
+            'Please configure the type and the owning side correctly in your '.
+            '"spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue" "color" relation. ' .
             'You can take the relation "option" as example.'
         );
     }
@@ -101,7 +102,8 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure the "idsField" in your Product Value "fabrics" relation. ' .
+            'Please configure the "idsField" in your ' .
+            '"spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue" "fabrics" relation. ' .
             'You can take the relation "options" as example.'
         );
     }
@@ -123,7 +125,8 @@ class ProductValueRelationshipCheckerSpec extends ObjectBehavior
 
         $this->check($configuration)->shouldReturn(false);
         $this->getFailure()->shouldReturn(
-            'Please configure the type and the owning side correctly in your Product Value "fabrics" relation. ' .
+            'Please configure the type and the owning side correctly in your ' .
+            '"spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker\CustomValidProductValue" "fabrics" relation. ' .
             'You can take the relation "options" as example.'
         );
     }

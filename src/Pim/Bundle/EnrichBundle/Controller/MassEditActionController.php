@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
@@ -42,7 +42,7 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var integer */
+    /** @var int */
     protected $massEditLimit;
 
     /** @var array */
@@ -63,7 +63,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
-     * @param integer                    $massEditLimit
+     * @param int                        $massEditLimit
      */
     public function __construct(
         Request $request,
@@ -138,7 +138,9 @@ class MassEditActionController extends AbstractDoctrineController
      * @param string $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
+     *
      * @throws NotFoundHttpException
+     *
      * @return Response|RedirectResponse
      */
     public function configureAction($operationAlias)
@@ -183,7 +185,9 @@ class MassEditActionController extends AbstractDoctrineController
      * @param string $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
+     *
      * @throws NotFoundHttpException
+     *
      * @return Response|RedirectResponse
      */
     public function performAction($operationAlias)
@@ -247,7 +251,7 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Check if the mass action is executable
      *
-     * @return boolean
+     * @return bool
      */
     protected function isExecutable()
     {
@@ -257,7 +261,7 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Temporary method to avoid editing too many objects
      *
-     * @return boolean
+     * @return bool
      */
     protected function exceedsMassEditLimit()
     {
@@ -291,7 +295,7 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Get the count of objects to perform the mass action on
      *
-     * @return integer
+     * @return int
      */
     protected function getObjectCount()
     {

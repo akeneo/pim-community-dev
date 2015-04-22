@@ -18,13 +18,13 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 abstract class AbstractMassEditOperator
 {
     /**
-     * @var MassEditOperationInterface $operation
+     * @var MassEditOperationInterface
      * @Exclude
      */
     protected $operation;
 
     /**
-     * @var string $operationAlias
+     * @var string
      */
     protected $operationAlias;
 
@@ -36,7 +36,7 @@ abstract class AbstractMassEditOperator
     /**
      * The defined operations, indexed by code
      *
-     * @var MassEditOperationInterface[] $operations
+     * @var MassEditOperationInterface[]
      * @Exclude
      */
     protected $operations = array();
@@ -44,7 +44,7 @@ abstract class AbstractMassEditOperator
     /**
      * The default acls for each configured operation, indexed by code
      *
-     * @var string[] $acls
+     * @var string[]
      */
     protected $acls = array();
 
@@ -200,7 +200,7 @@ abstract class AbstractMassEditOperator
      *
      * @param string $operationAlias
      *
-     * @return boolean
+     * @return bool
      */
     protected function isGranted($operationAlias)
     {

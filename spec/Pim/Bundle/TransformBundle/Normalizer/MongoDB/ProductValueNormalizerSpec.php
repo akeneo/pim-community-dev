@@ -15,9 +15,9 @@ class ProductValueNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory, SerializerInterface $serializer)
     {
-         $this->beConstructedWith($mongoFactory);
-         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
-         $this->setSerializer($serializer);
+        $this->beConstructedWith($mongoFactory);
+        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->setSerializer($serializer);
     }
 
     function it_is_a_normalizer()

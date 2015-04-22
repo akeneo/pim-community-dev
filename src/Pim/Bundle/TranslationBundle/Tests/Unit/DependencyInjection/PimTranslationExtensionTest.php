@@ -32,6 +32,7 @@ class PimTranslationExtensionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Form type translation service id
+     *
      * @staticvar string
      */
     const PIM_TRANSLATION_FORM_TYPE = 'pim_translation.form.type.translatable_field';

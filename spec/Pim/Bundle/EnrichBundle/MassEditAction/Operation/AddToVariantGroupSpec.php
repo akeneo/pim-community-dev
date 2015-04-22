@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Doctrine\ORM\AbstractQuery;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -91,7 +90,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
 
-        $productMassActionRepo->findCommonAttributeIds([1,2])->willReturn([]);
+        $productMassActionRepo->findCommonAttributeIds([1, 2])->willReturn([]);
         $groupRepository->getVariantGroupsByAttributeIds([])->willReturn([]);
 
         $groupRepository->countVariantGroups()->willReturn(0);
@@ -110,7 +109,6 @@ class AddToVariantGroupSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
-
         $product1->getVariantGroup()->willReturn(null);
         $product1->getIdentifier()->shouldNotBeCalled();
         $product2->getVariantGroup()->willReturn($shoes);
@@ -154,7 +152,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
-        $productMassActionRepo->findCommonAttributeIds([1,2])->willReturn([]);
+        $productMassActionRepo->findCommonAttributeIds([1, 2])->willReturn([]);
         $groupRepository->getVariantGroupsByAttributeIds([])->willReturn([]);
 
         $groupRepository->countVariantGroups()->willReturn(1);
@@ -190,7 +188,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
 
-        $productMassActionRepo->findCommonAttributeIds([1,2])->willReturn([42]);
+        $productMassActionRepo->findCommonAttributeIds([1, 2])->willReturn([42]);
         $groupRepository->getVariantGroupsByAttributeIds([42])->willReturn([$glasses]);
 
         $glasses->getId()->willReturn(100);

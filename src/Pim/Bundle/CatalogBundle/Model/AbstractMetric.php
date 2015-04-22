@@ -17,35 +17,35 @@ abstract class AbstractMetric implements MetricInterface
     /**
      * Store decimal value
      *
-     * @var double $data
+     * @var float
      */
     protected $data;
 
     /**
      * Unit code
      *
-     * @var string $unit
+     * @var string
      */
     protected $unit;
 
     /**
      * Base data value
      *
-     * @var double $baseData
+     * @var float
      */
     protected $baseData;
 
     /**
      * Base unit value
      *
-     * @var string $baseUnit
+     * @var string
      */
     protected $baseUnit;
 
     /**
      * Measure family
      *
-     * @var string $family
+     * @var string
      */
     protected $family;
 

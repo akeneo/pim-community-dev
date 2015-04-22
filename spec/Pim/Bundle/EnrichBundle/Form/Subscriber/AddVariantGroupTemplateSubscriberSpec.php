@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 

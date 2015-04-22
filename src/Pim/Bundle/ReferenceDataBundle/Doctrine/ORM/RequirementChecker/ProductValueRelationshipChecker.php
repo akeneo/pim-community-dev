@@ -38,8 +38,9 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
 
         if ($mapping['type'] !== $expectedType || true !== $mapping['isOwningSide']) {
             $this->failure = sprintf(
-                'Please configure your Product Value relation "%s" correctly. ' .
+                'Please configure your "%s" relation "%s" correctly. ' .
                 'You can take the relation "%s" as example.',
+                $this->productValueClass,
                 $configuration->getName(),
                 $relationExample
             );

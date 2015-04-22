@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
@@ -93,6 +93,7 @@ class ChannelController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_channel_index")
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -105,6 +106,7 @@ class ChannelController extends AbstractDoctrineController
      *
      * @Template("PimEnrichBundle:Channel:edit.html.twig")
      * @AclAncestor("pim_enrich_channel_create")
+     *
      * @return array
      */
     public function createAction()
@@ -121,6 +123,7 @@ class ChannelController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_channel_edit")
+     *
      * @return array
      */
     public function editAction(Channel $channel)
@@ -145,6 +148,7 @@ class ChannelController extends AbstractDoctrineController
      * @param Channel $channel
      *
      * @AclAncestor("pim_enrich_channel_remove")
+     *
      * @return Response
      */
     public function removeAction(Request $request, Channel $channel)

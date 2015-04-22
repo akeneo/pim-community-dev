@@ -11,7 +11,7 @@ namespace Pim\Bundle\NotificationBundle\Entity;
  */
 class Notification
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var string */
@@ -46,7 +46,7 @@ class Notification
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {

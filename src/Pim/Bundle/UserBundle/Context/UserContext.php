@@ -3,10 +3,10 @@
 namespace Pim\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -78,9 +78,9 @@ class UserContext
      * Returns the current locale from the request or the user's catalog locale
      * or the first activated locale
      *
-     * @return Locale
-     *
      * @throws \LogicException When there are no activated locales
+     *
+     * @return Locale
      */
     public function getCurrentLocale()
     {
@@ -240,7 +240,7 @@ class UserContext
      *
      * @param LocaleInterface $locale
      *
-     * @return boolean
+     * @return bool
      */
     protected function isLocaleAvailable(LocaleInterface $locale)
     {

@@ -96,8 +96,10 @@ class VariantGroupController extends GroupController
 
     /**
      * {@inheritdoc}
+     *
      * @Template
      * @AclAncestor("pim_enrich_variant_group_index")
+     *
      * @return Response
      */
     public function indexAction(Request $request)

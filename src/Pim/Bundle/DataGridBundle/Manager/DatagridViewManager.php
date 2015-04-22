@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Util\ClassUtils;
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
@@ -109,8 +109,8 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
     /**
      * Get datagrid column choices for the provided datagrid alias
      *
-     * @param string  $alias
-     * @param boolean $displayedColumns
+     * @param string $alias
+     * @param bool   $displayedColumns
      *
      * @return array
      */

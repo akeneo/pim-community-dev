@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
@@ -65,6 +66,7 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Find all axis
+     *
      * @see findAllAxisQB
      *
      * @return array
@@ -81,9 +83,9 @@ interface AttributeRepositoryInterface extends
     /**
      * Get attribute as array indexed by code
      *
-     * @param boolean $withLabel translated label should be joined
-     * @param string  $locale    the locale code of the label
-     * @param array   $ids       the attribute ids
+     * @param bool   $withLabel translated label should be joined
+     * @param string $locale    the locale code of the label
+     * @param array  $ids       the attribute ids
      *
      * @return array
      */

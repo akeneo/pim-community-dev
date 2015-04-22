@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Prophecy\Argument;
 
 class AssociationFieldSetterSpec extends ObjectBehavior
 {
@@ -27,7 +26,8 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface');
     }
 
-    function it_supports_associations_field() {
+    function it_supports_associations_field()
+    {
         $this->supportsField('associations')->shouldReturn(true);
         $this->supportsField('groups')->shouldReturn(false);
     }
@@ -134,7 +134,7 @@ class AssociationFieldSetterSpec extends ObjectBehavior
             'associations',
             [
                 'xsell' => [
-                    'products' => ['assocProductOne','assocProductTwo'],
+                    'products' => ['assocProductOne', 'assocProductTwo'],
                     'groups' => ['assocGroupOne']
                 ],
                 'upsell' => [

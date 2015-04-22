@@ -51,7 +51,7 @@ class CsvReader extends FileReader implements
     protected $escape = '\\';
 
     /**
-     * @var boolean
+     * @var bool
      *
      * @Assert\Type(type="bool")
      * @Assert\True(groups={"UploadExecution"})
@@ -115,6 +115,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Set file path
+     *
      * @param string $filePath
      *
      * @return CsvReader
@@ -129,6 +130,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Get file path
+     *
      * @return string $filePath
      */
     public function getFilePath()
@@ -138,6 +140,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Set delimiter
+     *
      * @param string $delimiter
      *
      * @return CsvReader
@@ -151,6 +154,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Get delimiter
+     *
      * @return string $delimiter
      */
     public function getDelimiter()
@@ -160,6 +164,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Set enclosure
+     *
      * @param string $enclosure
      *
      * @return CsvReader
@@ -173,6 +178,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Get enclosure
+     *
      * @return string $enclosure
      */
     public function getEnclosure()
@@ -182,6 +188,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Set escape
+     *
      * @param string $escape
      *
      * @return CsvReader
@@ -195,6 +202,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Get escape
+     *
      * @return string $escape
      */
     public function getEscape()
@@ -204,7 +212,8 @@ class CsvReader extends FileReader implements
 
     /**
      * Set the uploadAllowed property
-     * @param boolean $uploadAllowed
+     *
+     * @param bool $uploadAllowed
      *
      * @return CsvReader
      */
@@ -217,7 +226,8 @@ class CsvReader extends FileReader implements
 
     /**
      * Get the uploadAllowed property
-     * @return boolean $uploadAllowed
+     *
+     * @return bool $uploadAllowed
      */
     public function isUploadAllowed()
     {
@@ -314,6 +324,7 @@ class CsvReader extends FileReader implements
 
     /**
      * Extract the zip archive to be imported
+     *
      * @throws \RuntimeException When archive cannot be opened or extracted
      *                           or does not contain exactly one csv file
      */

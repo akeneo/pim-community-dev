@@ -3,8 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * Filter locale specific value subscriber to remove value available in only a set of locales
@@ -38,8 +38,6 @@ class FilterLocaleSpecificValueSubscriber implements EventSubscriberInterface
 
     /**
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function preSetData(FormEvent $event)
     {

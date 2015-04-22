@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 
 /**
  * Product template Repository

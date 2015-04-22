@@ -22,17 +22,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 class MetricFilter extends OroNumberFilter
 {
     /**
-     * @var TranslatorInterface $translator
+     * @var TranslatorInterface
      */
     protected $translator;
 
     /**
-     * @var MeasureManager $measureManager
+     * @var MeasureManager
      */
     protected $measureManager;
 
     /**
-     * @var string $family
+     * @var string
      */
     protected $family;
 

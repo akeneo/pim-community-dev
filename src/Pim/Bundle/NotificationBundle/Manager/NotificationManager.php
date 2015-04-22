@@ -98,8 +98,8 @@ class NotificationManager
      * Returns user notifications for the given user
      *
      * @param UserInterface $user
-     * @param integer       $offset
-     * @param integer       $limit
+     * @param int           $offset
+     * @param int           $limit
      *
      * @return UserNotification[]
      */
@@ -112,7 +112,7 @@ class NotificationManager
      * Marks given user notifications as viewed
      *
      * @param UserInterface $user The user
-     * @param integer|null  $id   If null, all notifications will be marked as viewed
+     * @param int|null      $id   If null, all notifications will be marked as viewed
      */
     public function markAsViewed(UserInterface $user, $id)
     {
@@ -124,7 +124,7 @@ class NotificationManager
      *
      * @param UserInterface $user
      *
-     * @return integer
+     * @return int
      */
     public function countUnreadForUser(UserInterface $user)
     {
@@ -135,7 +135,7 @@ class NotificationManager
      * Remove a notification
      *
      * @param UserInterface $user
-     * @param integer       $id
+     * @param int           $id
      */
     public function remove(UserInterface $user, $id)
     {

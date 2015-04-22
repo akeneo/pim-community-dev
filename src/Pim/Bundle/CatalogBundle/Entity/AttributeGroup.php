@@ -23,32 +23,32 @@ class AttributeGroup implements AttributeGroupInterface
     const DEFAULT_GROUP_CODE = 'other';
 
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      */
     protected $code;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $sortOrder;
 
     /**
-     * @var \DateTime $created
+     * @var \DateTime
      */
     protected $created;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime
      */
     protected $updated;
 
     /**
-     * @var ArrayCollection $attributes
+     * @var ArrayCollection
      */
     protected $attributes;
 
@@ -56,12 +56,12 @@ class AttributeGroup implements AttributeGroupInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
+     * @var ArrayCollection
      */
     protected $translations;
 

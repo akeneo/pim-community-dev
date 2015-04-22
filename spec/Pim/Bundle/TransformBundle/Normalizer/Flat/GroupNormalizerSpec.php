@@ -202,7 +202,6 @@ class GroupNormalizerSpec extends ObjectBehavior
 
         $group->getAxisAttributes()->willReturn([$attr]);
 
-
         $transNormalizer->normalize($group, $format, $context)->willReturn([]);
 
         $this->setSerializer($serializer);

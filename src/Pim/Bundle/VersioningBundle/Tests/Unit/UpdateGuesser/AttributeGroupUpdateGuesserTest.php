@@ -40,9 +40,8 @@ class AttributeGroupUpdateGuesserTest extends AbstractUpdateGuesserTest
 
     /**
      * @param AttributeGroupInterface $group
-
      *
-*@return Doctrine\ORM\UnitOfWork
+     * @return Doctrine\ORM\UnitOfWork
      */
     protected function getUnitOfWorkMock($group)
     {

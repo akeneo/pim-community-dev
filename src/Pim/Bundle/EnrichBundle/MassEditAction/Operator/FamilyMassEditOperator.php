@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
-use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\EntityManager;
+use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**

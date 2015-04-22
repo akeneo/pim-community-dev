@@ -94,7 +94,6 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->getChannel()->shouldReturn('mobile');
     }
 
-
     function it_increments_summary_info_including_header(
         $stepExecution,
         $serializer,
@@ -154,7 +153,6 @@ class ProductProcessorSpec extends ObjectBehavior
         ProductMediaInterface $media2,
         ChannelInterface $channel
     ) {
-
         $products = [$product1, $product2];
 
         $product1->getMedia()->willReturn([$media1]);
@@ -179,7 +177,6 @@ class ProductProcessorSpec extends ObjectBehavior
         ProductInterface $product2,
         ChannelInterface $channel
     ) {
-
         $products = [$product1, $product2];
 
         $product1->getMedia()->willReturn([]);

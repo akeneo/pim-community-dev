@@ -37,7 +37,10 @@ abstract class AbstractProductValueRelationshipChecker implements CheckerInterfa
      */
     public function getDescription()
     {
-        return 'Relation between the Product Value and the Reference Data must be configured.';
+        return sprintf(
+            'Relation between the "%s" and the Reference Data must be configured.',
+            $this->productValueClass
+        );
     }
 
     /**

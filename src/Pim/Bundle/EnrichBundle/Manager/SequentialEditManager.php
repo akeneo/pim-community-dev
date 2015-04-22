@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
@@ -151,7 +151,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * Find next sequential edit entity
      *
      * @param SequentialEdit $sequentialEdit
-     * @param integer        $currentKey
+     * @param int            $currentKey
      *
      * @return null|ProductInterface
      */
@@ -171,7 +171,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
      * Find previous sequential edit entity
      *
      * @param SequentialEdit $sequentialEdit
-     * @param integer        $currentKey
+     * @param int            $currentKey
      *
      * @return null|ProductInterface
      */
