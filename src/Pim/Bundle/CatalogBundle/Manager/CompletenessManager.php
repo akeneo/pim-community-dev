@@ -172,8 +172,8 @@ class CompletenessManager
                 $entities
             );
         };
-        $channelCodes = $getCodes($channels) ;
-        $localeCodes = $getCodes($locales) ;
+        $channelCodes = $getCodes($channels);
+        $localeCodes = $getCodes($locales);
         $channelTemplate = [
             'channels'     => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
             'stats' => [

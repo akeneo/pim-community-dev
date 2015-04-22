@@ -27,7 +27,7 @@ class FamilyNormalizer implements NormalizerInterface, FilterableNormalizerInter
     protected $transNormalizer;
 
     /**
-     * @var array $attributeFilters
+     * @var array
      */
     protected $attributeFilters = [];
 

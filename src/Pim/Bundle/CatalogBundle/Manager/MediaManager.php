@@ -352,7 +352,7 @@ class MediaManager
      * Get the file path of a media
      *
      * @param ProductMediaInterface $media
-     * @param boolean               $checkFile
+     * @param bool                  $checkFile
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      *

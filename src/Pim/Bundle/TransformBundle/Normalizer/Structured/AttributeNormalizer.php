@@ -46,7 +46,6 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-
         $results = array(
             'type' => $object->getAttributeType(),
             'code' => $object->getCode()
