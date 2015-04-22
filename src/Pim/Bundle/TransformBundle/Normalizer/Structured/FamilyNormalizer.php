@@ -17,12 +17,12 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class FamilyNormalizer implements NormalizerInterface, FilterableNormalizerInterface
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer $transNormalizer
+     * @var TranslationNormalizer
      */
     protected $transNormalizer;
 

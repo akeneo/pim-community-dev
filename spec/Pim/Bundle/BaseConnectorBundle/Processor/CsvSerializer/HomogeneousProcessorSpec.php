@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
-
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;

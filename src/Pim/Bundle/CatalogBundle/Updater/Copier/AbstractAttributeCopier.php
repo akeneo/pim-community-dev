@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Copier;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -30,7 +30,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
     /** @var AttributeValidatorHelper */
     protected $attrValidatorHelper;
 
-    /** @var OptionResolver */
+    /** @var OptionsResolver */
     protected $resolver;
 
     /**
@@ -86,6 +86,7 @@ abstract class AbstractAttributeCopier implements AttributeCopierInterface
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)

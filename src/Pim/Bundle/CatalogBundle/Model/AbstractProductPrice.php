@@ -23,19 +23,22 @@ abstract class AbstractProductPrice implements ProductPriceInterface
 
     /**
      * Store decimal value
-     * @var double $decimal
+     *
+     * @var float
      */
     protected $data;
 
     /**
      * CurrencyInterface code
-     * @var string $currency
+     *
+     * @var string
      */
     protected $currency;
 
     /**
      * Constructor
-     * @param double $data
+     *
+     * @param float  $data
      * @param string $currency
      */
     public function __construct($data = null, $currency = null)

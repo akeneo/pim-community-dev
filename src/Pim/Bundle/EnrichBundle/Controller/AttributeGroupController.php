@@ -178,6 +178,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_attribute_group_edit")
+     *
      * @return array
      */
     public function editAction(AttributeGroup $group)
@@ -204,6 +205,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request $request
      *
      * @AclAncestor("pim_enrich_attribute_group_sort")
+     *
      * @return Response
      */
     public function sortAction(Request $request)
@@ -240,6 +242,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @throws DeleteException
      *
      * @AclAncestor("pim_enrich_attribute_group_remove")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Request $request, AttributeGroup $group)
@@ -292,9 +295,10 @@ class AttributeGroupController extends AbstractDoctrineController
      * Add attributes to a group
      *
      * @param Request $request The request object
-     * @param integer $id      The group id to add attributes to
+     * @param int     $id      The group id to add attributes to
      *
      * @AclAncestor("pim_enrich_attribute_group_add_attribute")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
@@ -317,10 +321,11 @@ class AttributeGroupController extends AbstractDoctrineController
     /**
      * Remove an attribute
      *
-     * @param integer $groupId
-     * @param integer $attributeId
+     * @param int $groupId
+     * @param int $attributeId
      *
      * @AclAncestor("pim_enrich_attribute_group_remove_attribute")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAttributeAction($groupId, $attributeId)

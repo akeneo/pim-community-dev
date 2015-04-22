@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\UIBundle\Controller;
 
+use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AjaxOptionController
 {
-    /**
-     * @var RegistryInterface
-     */
+    /** @var RegistryInterface */
     protected $doctrine;
 
     /**
@@ -40,24 +40,35 @@ class AjaxOptionController
     public function listAction(Request $request)
     {
         $query = $request->query;
+        $repository = $this->doctrine->getRepository($query->get('class'));
 
-        if (null === $query->get('collectionId') && $query->get('class') === 'PimCatalogBundle:AttributeOption') {
-            $code = $query->get('collectionCode');
-
-            $attribute = $this->doctrine->getRepository('PimCatalogBundle:Attribute')->findOneByIdentifier($code);
-
-            $collectionId = $attribute->getId();
-        } else {
-            $collectionId = $query->get('collectionId');
-        }
-
-        $choices = $this->doctrine->getRepository($query->get('class'))
-            ->getOptions(
+        if ($repository instanceof OptionRepositoryInterface) {
+            $choices = $repository->getOptions(
                 $query->get('dataLocale'),
-                $collectionId,
+                $query->get('collectionId'),
                 $query->get('search'),
-                $query->get('options', array())
+                $query->get('options', [])
             );
+        } elseif ($repository instanceof ReferenceDataRepositoryInterface) {
+            $choices['results'] = $repository->findBySearch(
+                $query->get('search'),
+                $query->get('options', [])
+            );
+        } elseif (method_exists($repository, 'getOptions')) {
+            $choices = $repository->getOptions(
+                $query->get('dataLocale'),
+                $query->get('collectionId'),
+                $query->get('search'),
+                $query->get('options', [])
+            );
+        } else {
+            throw new \LogicException(
+                sprintf(
+                    'The repository of the class "%s" can not retrieve options via Ajax.',
+                    $query->get('class')
+                )
+            );
+        }
 
         return new JsonResponse($choices);
     }

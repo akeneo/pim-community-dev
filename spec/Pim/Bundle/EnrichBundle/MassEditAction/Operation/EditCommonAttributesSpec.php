@@ -8,13 +8,10 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -173,7 +170,6 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productBuilder->addMissingPrices($descriptionProductValue)->shouldBeCalled();
         $productBuilder->createProductValue($price, 'en_US')->willReturn($priceProductValue);
         $productBuilder->addMissingPrices($priceProductValue)->shouldBeCalled();
-
 
         $this->initialize();
 

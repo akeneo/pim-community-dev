@@ -30,6 +30,7 @@ class OutdateIndexedValuesSubscriber implements EventSubscriber
 
     /**
      * After load
+     *
      * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)

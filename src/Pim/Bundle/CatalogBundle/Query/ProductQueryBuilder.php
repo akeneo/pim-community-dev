@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Query;
 
+use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
@@ -11,9 +12,8 @@ use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Query\Sorter\SorterRegistryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Product query builder provides shortcuts to ease the appliance of filters and sorters on fields or attributes
@@ -264,8 +264,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
     /**
      * @param OptionsResolverInterface $resolver
-     *
-     * @return null
      */
     protected function configureOptions(OptionsResolverInterface $resolver)
     {

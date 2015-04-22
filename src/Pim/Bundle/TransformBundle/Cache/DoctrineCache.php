@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Caches doctrine persisted objects
@@ -99,9 +99,9 @@ class DoctrineCache
      * @param string $class
      * @param string $code
      *
-     * @return object
-     *
      * @throws \Exception
+     *
+     * @return object
      */
     protected function findObject($class, $code)
     {

@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class UniqueValueSpec extends ObjectBehavior
 {

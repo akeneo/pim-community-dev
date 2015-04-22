@@ -12,6 +12,10 @@ matrix:
     allow_failures:
         - php: "hhvm"
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
@@ -19,6 +23,7 @@ before_script:
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm v1.0.0-beta12@dev; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev; fi;'
     - composer update --prefer-dist --no-interaction
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer; fi;'
     - ./app/console oro:requirejs:generate-config
     - npm install -g grunt-cli
     - npm install
@@ -26,6 +31,10 @@ before_script:
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs_spec; fi;'
+    - ./app/Resources/jenkins/interface_check.sh src/
     - grunt travis
+
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo

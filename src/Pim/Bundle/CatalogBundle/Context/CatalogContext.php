@@ -52,7 +52,7 @@ class CatalogContext
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasLocaleCode()
     {
@@ -60,7 +60,7 @@ class CatalogContext
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function hasScopeCode()
     {
@@ -85,9 +85,9 @@ class CatalogContext
      *
      * @param string $key
      *
-     * @return mixed
-     *
      * @throws \LogicException
+     *
+     * @return mixed
      */
     public function getConfiguration($key)
     {

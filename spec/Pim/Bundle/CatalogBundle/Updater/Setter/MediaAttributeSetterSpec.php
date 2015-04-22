@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 

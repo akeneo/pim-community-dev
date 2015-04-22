@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Builder;
 
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;

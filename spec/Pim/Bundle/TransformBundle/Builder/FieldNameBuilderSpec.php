@@ -5,10 +5,10 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 

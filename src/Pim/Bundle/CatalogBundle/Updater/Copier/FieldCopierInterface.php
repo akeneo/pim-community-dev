@@ -23,7 +23,6 @@ interface FieldCopierInterface extends CopierInterface
      * @param array            $options
      *
      * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException
-     *
      * @throws \RuntimeException
      */
     public function copyFieldData(
@@ -40,7 +39,7 @@ interface FieldCopierInterface extends CopierInterface
      * @param string $fromField
      * @param string $toField
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsFields($fromField, $toField);
 }

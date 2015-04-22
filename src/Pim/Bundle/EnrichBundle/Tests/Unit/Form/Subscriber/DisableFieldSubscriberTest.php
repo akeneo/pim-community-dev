@@ -26,7 +26,7 @@ class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      *
      * @dataProvider getTestAddCodeFieldData
      */

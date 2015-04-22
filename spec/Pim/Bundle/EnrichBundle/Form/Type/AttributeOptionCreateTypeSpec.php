@@ -3,8 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -40,7 +38,6 @@ class AttributeOptionCreateTypeSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->buildForm($builder, []);
-
     }
 
     function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)

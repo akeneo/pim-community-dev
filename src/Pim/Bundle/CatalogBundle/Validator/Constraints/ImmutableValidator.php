@@ -18,7 +18,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 class ImmutableValidator extends ConstraintValidator
 {
     /**
-     * @var EntityManager $em
+     * @var EntityManager
      */
     protected $em;
 

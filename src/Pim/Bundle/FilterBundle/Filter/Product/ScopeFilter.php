@@ -20,12 +20,12 @@ use Symfony\Component\Form\FormFactoryInterface;
 class ScopeFilter extends ChoiceFilter
 {
     /**
-     * @var CatalogContext $catalogContext
+     * @var CatalogContext
      */
     protected $catalogContext;
 
     /**
-     * @var UserContext $userContext
+     * @var UserContext
      */
     protected $userContext;
 

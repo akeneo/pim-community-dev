@@ -15,7 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class AttributeGroupNormalizer extends Structured\AttributeGroupNormalizer
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 

@@ -89,8 +89,6 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
      *
      * @param ProductInterface $product
      *
-     * @return null
-     *
      * @throw \RuntimeException if operation cannot be performed on the given product
      */
     abstract protected function doPerform(ProductInterface $product);

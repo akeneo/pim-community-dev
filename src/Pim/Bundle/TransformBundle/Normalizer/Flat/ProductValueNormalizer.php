@@ -4,8 +4,8 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -23,15 +23,15 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected $serializer;
 
     /**
-     * @var string[] $supportedFormats
+     * @var string[]
      */
     protected $supportedFormats = ['csv', 'flat'];
 
-    /** @var integer */
+    /** @var int */
     protected $precision;
 
     /**
-     * @param integer $precision
+     * @param int $precision
      */
     public function __construct($precision = 4)
     {

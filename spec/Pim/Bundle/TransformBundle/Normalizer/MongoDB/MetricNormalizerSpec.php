@@ -15,7 +15,7 @@ class MetricNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory, MeasureConverter $converter, MeasureManager $manager)
     {
-         $this->beConstructedWith($mongoFactory, $converter, $manager);
+        $this->beConstructedWith($mongoFactory, $converter, $manager);
     }
 
     function it_is_a_normalizer()

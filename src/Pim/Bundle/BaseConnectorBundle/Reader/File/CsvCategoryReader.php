@@ -15,7 +15,7 @@ class CsvCategoryReader extends CsvReader
      * Since this reader reads the whole file at once, store the executed state
      * and return null when read is called the second time to indicate completion
      *
-     * @var boolean
+     * @var bool
      */
     private $executed = false;
 

@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -69,7 +69,7 @@ class GroupProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        /** @var GroupInterface $group */
+        /* @var GroupInterface $group */
         $this->checkItemData($item);
         $group = $this->findOrCreateGroup($item);
         $this->updateGroup($group, $item);

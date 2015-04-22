@@ -79,6 +79,7 @@ abstract class AbstractAttributeSetter implements AttributeSetterInterface
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)

@@ -10,8 +10,8 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 
 /**
  * Group saver, contains custom logic for variant group products saving
@@ -75,7 +75,7 @@ class GroupSaver implements SaverInterface
      */
     public function save($group, array $options = [])
     {
-        /** @var GroupInterface */
+        /* @var GroupInterface */
         if (!$group instanceof GroupInterface) {
             throw new \InvalidArgumentException(
                 sprintf(

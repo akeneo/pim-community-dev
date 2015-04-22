@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
@@ -36,7 +37,7 @@ interface CompletenessInterface
     /**
      * Setter missing count
      *
-     * @param integer $missingCount
+     * @param int $missingCount
      *
      * @return CompletenessInterface
      */

@@ -2,14 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Prophecy\Argument;
 
 class AttributeValuesResolverSpec extends ObjectBehavior
 {

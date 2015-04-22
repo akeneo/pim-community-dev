@@ -20,6 +20,7 @@ class RendererRegistry
 
     /**
      * Add a renderer to the registry
+     *
      * @param RendererInterface $renderer
      */
     public function addRenderer(RendererInterface $renderer)
@@ -29,13 +30,14 @@ class RendererRegistry
 
     /**
      * Render an item with the right renderer
+     *
      * @param mixed  $object
      * @param string $format
      * @param array  $context
      *
-     * @return string
-     *
      * @throws RendererRequiredException
+     *
+     * @return string
      */
     public function render($object, $format, $context)
     {

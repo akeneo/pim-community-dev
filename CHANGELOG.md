@@ -4,7 +4,7 @@
 
 ## Technical improvements
 - In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
-- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Attribute, Attribute Option)
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack 
 
 ## Bug fixes
@@ -78,8 +78,12 @@
 - Change arguments of Pim/Bundle/EnrichBundle/Controller/AssociationController to use AssociationTypeRepositoryInterface, ProductRepositoryInterface, ProductBuilderInterface, EngineInterface
 - Remove arguments ChannelRepositoryInterface, LocaleRepositoryInterface, add argument AttributeValuesResolver in Pim/Bundle/CatalogBundle/Builder/ProductBuilder constructor
 - Remove arguments DenormalizerInterface, ValidatorInterface, ObjectDetacherInterface, $class from the constructor of Pim/Bundle/BaseConnectorBundle/Processor/Denormalization/AbstractProcessor
+- Add methods `getReferenceDataName` and `setReferenceDataName` to Pim\Bundle\CatalogBundle\Model\AttributeInterface.
 
 # 1.3.x
+
+## Bug fixes
+- PIM-4082: Fix error translation keys when creating a job
 
 # 1.3.8 (2015-04-14)
 
@@ -88,6 +92,9 @@
 - PIM-4047: Missing translation key for a number value which should not be decimal in edit form
 - PIM-3848: fix completeness not well calculated after attribute requirements deletion
 - PIM-4050: Fix float val in range number error message
+
+## Technical improvements
+- rollback the visibility of the ProductRepository::buildByScope from protected to public (as in 1.2) to ensure connectors compatibility
 
 # 1.3.7 (2015-04-03)
 
@@ -178,6 +185,7 @@
 - PIM-3753: Fix completeness filter
 
 ## BC breaks
+- Change the constructor of `Pim/Bundle/CatalogBundle/Doctrine/Common/Remover/AttributeRemover` to accept `Pim/Bundle/CatalogBundle/Builder/ProductTemplateBuilder` as the fourth argument and accept `Pim/Bundle/CatalogBundle/Entity/Repository/ProductTemplateRepository` as the fifth argument
 - Add a TranslatorInterface argument in MetricType::__construct
 - Change of constructor of `Pim/Bundle/CommentBundle/Form/Type/CommentType` to accept `Pim\Bundle\CommentBundle\Entity` as a string for the third argument
 - Added new constructor to `Pim/Bundle/DataGridBundle/Form/Type/DatagridViewType` to accept `Pim\Bundle\DataGridBundle\Entity\DataGridView` as a string for the first argument

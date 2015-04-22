@@ -91,6 +91,7 @@ class AddToGroups extends ProductMassEditOperation
 
     /**
      * Get warning messages to display during the mass edit action
+     *
      * @param ProductInterface[] $products
      *
      * @return string[]

@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Prophecy\Argument;

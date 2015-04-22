@@ -5,21 +5,21 @@ Feature: Editing attribute values of a variant group also updates products
   I need to be able to change attribute values of a variant group
 
   # what's tested here?
-  # -----------------------------|-------------|
-  # TYPE                         | VALID VALUE |
-  # -----------------------------|-------------|
-  # pim_catalog_boolean          | done        |
-  # pim_catalog_date             | done        |
-  # pim_catalog_file             | done        |
-  # pim_catalog_identifier       | N/A         |
-  # pim_catalog_image            | done        |
-  # pim_catalog_metric           | done        |
-  # pim_catalog_multiselect      | done        |
-  # pim_catalog_number           | done        |
-  # pim_catalog_price_collection | done        |
-  # pim_catalog_simpleselect     | done        |
-  # pim_catalog_text             | done        |
-  # pim_catalog_textarea         | done        |
+  # --------------------------------|-------------|
+  # TYPE                            | VALID VALUE |
+  # --------------------------------|-------------|
+  # pim_catalog_boolean             | done        |
+  # pim_catalog_date                | done        |
+  # pim_catalog_file                | done        |
+  # pim_catalog_identifier          | N/A         |
+  # pim_catalog_image               | done        |
+  # pim_catalog_metric              | done        |
+  # pim_catalog_multiselect         | done        |
+  # pim_catalog_number              | done        |
+  # pim_catalog_price_collection    | done        |
+  # pim_catalog_simpleselect        | done        |
+  # pim_catalog_text                | done        |
+  # pim_catalog_textarea            | done        |
 
   Background:
     Given a "footwear" catalog configuration

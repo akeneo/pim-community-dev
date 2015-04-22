@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
@@ -117,7 +117,7 @@ class ProductManager
      * Find a product by id
      * Also ensure that it contains all required values
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return ProductInterface|null
      */
@@ -211,6 +211,18 @@ class ProductManager
     }
 
     /**
+     * Create a product value
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     *
+     * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProductValue();
+     */
+    public function createProductValue(AttributeInterface $attribute)
+    {
+        return $this->builder->createProductValue($attribute);
+    }
+
+    /**
      * Get product FQCN
      *
      * @return string
@@ -293,7 +305,7 @@ class ProductManager
      *
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     public function valueExists(ProductValueInterface $value)
     {

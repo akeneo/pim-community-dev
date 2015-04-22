@@ -16,7 +16,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class CategoryNormalizer extends Structured\CategoryNormalizer
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 }

@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  */
 class ProductTemplate implements ProductTemplateInterface
 {
-    /** @var integer $id */
+    /** @var int $id */
     protected $id;
 
     /** @var array */

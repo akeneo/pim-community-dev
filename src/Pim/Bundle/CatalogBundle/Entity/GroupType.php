@@ -34,7 +34,7 @@ class GroupType implements GroupTypeInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 

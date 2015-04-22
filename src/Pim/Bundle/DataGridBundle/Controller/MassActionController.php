@@ -19,7 +19,7 @@ class MassActionController
     protected $request;
 
     /**
-     * @var MassActionDispatcher $massActionDispatcher
+     * @var MassActionDispatcher
      */
     protected $massActionDispatcher;
 

@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

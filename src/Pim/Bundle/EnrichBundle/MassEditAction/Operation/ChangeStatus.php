@@ -15,12 +15,13 @@ class ChangeStatus extends ProductMassEditOperation
 {
     /**
      * Whether or not to enable products
-     * @var boolean
+     *
+     * @var bool
      */
     protected $toEnable = true;
 
     /**
-     * @param boolean $toEnable
+     * @param bool $toEnable
      *
      * @return ChangeStatus
      */
@@ -32,7 +33,7 @@ class ChangeStatus extends ProductMassEditOperation
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isToEnable()
     {

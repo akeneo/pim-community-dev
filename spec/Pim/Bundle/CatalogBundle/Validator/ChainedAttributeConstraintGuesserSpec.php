@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Prophecy\Argument;
 
 class ChainedAttributeConstraintGuesserSpec extends ObjectBehavior
 {
@@ -35,8 +34,7 @@ class ChainedAttributeConstraintGuesserSpec extends ObjectBehavior
         ConstraintGuesserInterface $guesserFoo,
         ConstraintGuesserInterface $guesserBar,
         ConstraintGuesserInterface $guesserBaz
-    )
-    {
+    ) {
         $guesserFoo->guessConstraints($attribute)
             ->willReturn(['foo']);
         $guesserBar->guessConstraints($attribute)

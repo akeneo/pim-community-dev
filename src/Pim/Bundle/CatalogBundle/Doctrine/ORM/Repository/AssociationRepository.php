@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Doctrine\ORM\Query\Expr\Join;
+use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 
 /**
  * Association repository

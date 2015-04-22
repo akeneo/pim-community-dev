@@ -22,17 +22,17 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class Locale implements LocaleInterface
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      */
     protected $code;
 
     /**
-     * @var boolean $activated
+     * @var bool
      */
     protected $activated = false;
 

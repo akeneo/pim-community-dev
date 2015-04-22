@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
@@ -11,11 +10,7 @@ use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
 use Prophecy\Argument;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 class AttributeOptionProcessorSpec extends ObjectBehavior
 {

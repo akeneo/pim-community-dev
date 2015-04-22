@@ -2,15 +2,7 @@
 
 namespace spec\Pim\Bundle\VersioningBundle\Manager;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Manager\VersionContext;
-use Pim\Bundle\VersioningBundle\Model\Version;
-use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
-use Prophecy\Argument;
 
 class VersionContextSpec extends ObjectBehavior
 {

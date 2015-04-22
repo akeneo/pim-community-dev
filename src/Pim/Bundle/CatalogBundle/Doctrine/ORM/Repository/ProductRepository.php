@@ -16,6 +16,8 @@ use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 
 /**
  * Product repository
@@ -34,6 +36,9 @@ class ProductRepository extends EntityRepository implements
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
+
+    /** @var ConfigurationRegistryInterface */
+    protected $referenceDataRegistry;
 
     /**
      * {@inheritdoc}
@@ -58,9 +63,27 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * Set reference data registry
+     *
+     * @param ConfigurationRegistryInterface $registry
+     *
+     * @return ProductRepositoryInterface
      */
-    protected function buildByScope($scope)
+    public function setReferenceDataRegistry(ConfigurationRegistryInterface $registry = null)
+    {
+        $this->referenceDataRegistry = $registry;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated since 1.3, we keep this public method for connector compatibility, this visibility may change
+     *
+     * @return QueryBuilder
+     */
+    public function buildByScope($scope)
     {
         $productQb = $this->queryBuilderFactory->create();
         $qb = $productQb->getQueryBuilder();
@@ -379,39 +402,38 @@ class ProductRepository extends EntityRepository implements
      */
     public function getEligibleProductIdsForVariantGroup($variantGroupId)
     {
-        $sql = 'SELECT count(ga.attribute_id) as nb '.
-            'FROM pim_catalog_group_attribute as ga '.
-            'WHERE ga.group_id = :groupId;';
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->bindValue('groupId', $variantGroupId);
-        $stmt->execute();
-        $nbAxes = $stmt->fetch()['nb'];
+        $sql = 'SELECT v.entity_id AS product_id, gp.group_id, ga.group_id ' .
+            'FROM pim_catalog_group g ' .
+            'INNER JOIN pim_catalog_group_attribute ga ON ga.group_id = g.id ' .
+            'INNER JOIN %product_value_table% v ON v.attribute_id = ga.attribute_id ' .
+            'LEFT JOIN pim_catalog_group_product gp ON (v.entity_id = gp.product_id) ' .
+            'INNER JOIN pim_catalog_group_type gt on gt.id = g.type_id ' .
+            'WHERE ga.group_id = :groupId AND gt.code = "VARIANT" ' .
+            'AND (v.option_id IS NOT NULL';
 
-        $elligibleProductsSQL = 'SELECT v.entity_id as product_id '.
-            'FROM pim_catalog_group_attribute as ga '.
-            'LEFT JOIN %product_value_table% as v ON v.attribute_id = ga.attribute_id '.
-            'WHERE ga.group_id = :groupId '.
-            'GROUP BY v.entity_id '.
-            'having count(v.option_id) = :nbAxes';
+        if (null !== $this->referenceDataRegistry) {
+            $references = $this->referenceDataRegistry->all();
+            if (!empty($references)) {
+                $valueMetadata = QueryBuilderUtility::getProductValueMetadata($this->_em, $this->_entityName);
 
-        $alreadyInGroupSQL = 'SELECT p.id as product_id ' .
-            'FROM pim_catalog_product as p ' .
-            'JOIN pim_catalog_group_product as gp on p.id = gp.product_id ' .
-            'JOIN pim_catalog_group as g on g.id = gp.group_id ' .
-            'JOIN pim_catalog_group_type as gt on gt.id = g.type_id ' .
-            'WHERE gt.code = "VARIANT" ' .
-            'AND g.id != :groupId';
+                foreach ($references as $code => $referenceData) {
+                    if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
+                        if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
+                            $sql .= ' OR v.' . $valueMetadata->getSingleAssociationJoinColumnName($code) . ' IS NOT NULL';
+                        }
+                    }
+                }
+            }
+        }
 
-        $sql = sprintf(
-            'SELECT * FROM (%s) as p WHERE p.product_id NOT IN (%s);',
-            $elligibleProductsSQL,
-            $alreadyInGroupSQL
-        );
+        $sql .= ') ' .
+            'GROUP BY v.entity_id ' .
+            'HAVING (gp.group_id IS NULL OR gp.group_id = ga.group_id) ' .
+            'AND COUNT(ga.attribute_id) = (SELECT COUNT(*) FROM pim_catalog_group_attribute WHERE group_id = :groupId)';
+
         $sql = QueryBuilderUtility::prepareDBALQuery($this->_em, $this->_entityName, $sql);
-
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->bindValue('groupId', $variantGroupId);
-        $stmt->bindValue('nbAxes', $nbAxes);
         $stmt->execute();
         $results = $stmt->fetchAll();
         $productIds = array_map(

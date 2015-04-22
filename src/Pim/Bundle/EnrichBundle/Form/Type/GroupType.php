@@ -103,8 +103,6 @@ class GroupType extends AbstractType
      * Add type field
      *
      * @param FormBuilderInterface $builder
-     *
-     * @return null
      */
     protected function addTypeField(FormBuilderInterface $builder)
     {
@@ -148,8 +146,6 @@ class GroupType extends AbstractType
      * Add attributes field
      *
      * @param FormBuilderInterface $builder
-     *
-     * @return null
      */
     protected function addAttributesField(FormBuilderInterface $builder)
     {

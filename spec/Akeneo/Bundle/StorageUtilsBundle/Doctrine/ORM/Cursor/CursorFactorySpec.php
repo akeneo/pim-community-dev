@@ -2,9 +2,9 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 
 class CursorFactorySpec extends ObjectBehavior
 {

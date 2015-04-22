@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
@@ -17,6 +17,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)

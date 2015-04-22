@@ -86,7 +86,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     }
 
     /**
-     * @param integer $id
+     * @param int $id
      *
      * @return \Doctrine\ORM\QueryBuilder
      */

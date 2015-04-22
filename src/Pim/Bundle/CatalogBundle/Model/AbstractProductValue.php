@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Abstract product value
@@ -31,55 +32,64 @@ abstract class AbstractProductValue implements ProductValueInterface
 
     /**
      * LocaleInterface code
-     * @var string $locale
+     *
+     * @var string
      */
     protected $locale;
 
     /**
      * Scope code
-     * @var string $scope
+     *
+     * @var string
      */
     protected $scope;
 
     /**
      * Store varchar value
-     * @var string $varchar
+     *
+     * @var string
      */
     protected $varchar;
 
     /**
      * Store int value
-     * @var int $integer
+     *
+     * @var int
      */
     protected $integer;
 
     /**
      * Store decimal value
-     * @var double $decimal
+     *
+     * @var float
      */
     protected $decimal;
 
     /**
      * Store boolean value
-     * @var bool $boolean
+     *
+     * @var bool
      */
     protected $boolean;
 
     /**
      * Store text value
-     * @var string $text
+     *
+     * @var string
      */
     protected $text;
 
     /**
      * Store date value
-     * @var date $date
+     *
+     * @var date
      */
     protected $date;
 
     /**
      * Store datetime value
-     * @var \Datetime $datetime
+     *
+     * @var \Datetime
      */
     protected $datetime;
 
@@ -88,7 +98,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * This field must by overrided in concret value class
      *
-     * @var ArrayCollection $options
+     * @var ArrayCollection
      */
     protected $options;
 
@@ -98,28 +108,28 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store simple option value
      *
-     * @var AttributeOptionInterface $option
+     * @var AttributeOptionInterface
      */
     protected $option;
 
     /**
      * Store upload values
      *
-     * @var ProductMediaInterface $media
+     * @var ProductMediaInterface
      */
     protected $media;
 
     /**
      * Store metric value
      *
-     * @var MetricInterface $metric
+     * @var MetricInterface
      */
     protected $metric;
 
     /**
      * Store prices value
      *
-     * @var ArrayCollection $prices
+     * @var ArrayCollection
      */
     protected $prices;
 
@@ -250,9 +260,14 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function setData($data)
     {
-        $name = 'set'.ucfirst($this->attribute->getBackendType());
+        $setter = $this->attribute->getBackendType();
+        if ($this->isBackendTypeReferenceData()) {
+            $setter = $this->attribute->getReferenceDataName();
+        }
 
-        return $this->$name($data);
+        $setter = 'set'.ucfirst($setter);
+
+        return $this->$setter($data);
     }
 
     /**
@@ -260,9 +275,14 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function getData()
     {
-        $name = 'get'.ucfirst($this->attribute->getBackendType());
+        $getter = $this->attribute->getBackendType();
+        if ($this->isBackendTypeReferenceData()) {
+            $getter = $this->attribute->getReferenceDataName();
+        }
 
-        return $this->$name();
+        $getter = 'get'.ucfirst($getter);
+
+        return $this->$getter();
     }
 
     /**
@@ -271,6 +291,10 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function addData($data)
     {
         $backendType = $this->attribute->getBackendType();
+        if ($this->isBackendTypeReferenceData()) {
+            $backendType = $this->attribute->getReferenceDataName();
+        }
+
         if (substr($backendType, -1, 1) === 's') {
             $backendType = substr($backendType, 0, strlen($backendType) - 1);
         }
@@ -617,5 +641,19 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         return $this->entity->isAttributeRemovable($this->attribute);
+    }
+
+    /**
+     * return bool
+     */
+    protected function isBackendTypeReferenceData()
+    {
+        return in_array(
+            $this->attribute->getBackendType(),
+            [
+                AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
+                AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
+            ]
+        );
     }
 }

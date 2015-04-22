@@ -57,8 +57,6 @@ class FixtureJobLoader
 
     /**
      * Load the fixture jobs in database
-     *
-     * @return null
      */
     public function load()
     {
@@ -107,7 +105,7 @@ class FixtureJobLoader
     public function deleteJobs()
     {
         $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
-                ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
+                ->findBy(array('type' => static::JOB_TYPE));
 
         foreach ($jobs as $job) {
             $this->em->remove($job);

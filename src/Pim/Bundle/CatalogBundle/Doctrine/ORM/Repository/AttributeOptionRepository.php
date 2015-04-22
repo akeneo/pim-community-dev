@@ -63,7 +63,7 @@ class AttributeOptionRepository extends EntityRepository implements
         if (isset($options['limit'])) {
             $qb->setMaxResults((int) $options['limit']);
             if (isset($options['page'])) {
-                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] -1));
+                $qb->setFirstResult((int) $options['limit'] * ((int) $options['page'] - 1));
             }
         }
 

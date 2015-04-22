@@ -53,6 +53,18 @@ class AssociationTransformer extends EntityTransformer
     /**
      * {@inheritdoc}
      */
+    public function transform($class, array $data, array $defaults = array())
+    {
+        $entity = parent::transform($class, $data, $defaults);
+        $objectManager = $this->doctrine->getManagerForClass($this->productClass);
+        $objectManager->persist($entity->getOwner());
+
+        return $entity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function findEntity($class, array $data)
     {
         if (!isset($data['owner'])) {
@@ -91,6 +103,8 @@ class AssociationTransformer extends EntityTransformer
             );
         }
 
-        return $product->getAssociationForTypeCode($data['association_type']);
+        $association = $product->getAssociationForTypeCode($data['association_type']);
+
+        return $association;
     }
 }

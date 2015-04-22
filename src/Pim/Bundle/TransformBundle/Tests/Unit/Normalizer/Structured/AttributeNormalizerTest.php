@@ -46,6 +46,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
      * @dataProvider getNormalizeData
      */
     public function testNormalize(array $data)
@@ -94,6 +95,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
                         'red'   => array('en' => 'Red', 'fr' => 'Rouge')
                     ),
                     'useable_as_grid_filter' => '0',
+                    'reference_data_name'    => null,
                 )
             ),
             array(
@@ -116,6 +118,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'validation_rule'        => 'regexp',
                     'validation_regexp'      => '^[a-zA-Z0-9 ]*$',
                     'wysiwyg_enabled'        => '1',
+                    'reference_data_name'    => null,
                 )
             )
         );

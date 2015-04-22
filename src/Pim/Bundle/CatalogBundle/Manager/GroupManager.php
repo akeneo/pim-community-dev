@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -104,7 +104,7 @@ class GroupManager
     /**
      * Get axis as choice list
      *
-     * @param boolean $isVariant
+     * @param bool $isVariant
      *
      * @return array
      */
@@ -145,7 +145,7 @@ class GroupManager
      * Returns an array containing a limited number of product groups, and the total number of products
      *
      * @param GroupInterface $group
-     * @param integer        $maxResults
+     * @param int            $maxResults
      *
      * @return array
      */

@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use PhpSpec\ObjectBehavior;
-use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;
+use Gaufrette\Filesystem;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\File;
 

@@ -18,8 +18,7 @@ class RegisterAttributeConstraintGuessersPassSpec extends ObjectBehavior
     function it_does_not_process_attribute_constraint_guesser_when_chained_service_is_not_defined(
         ContainerBuilder $container,
         Definition $service
-    )
-    {
+    ) {
         $container->hasDefinition(RegisterAttributeConstraintGuessersPass::SERVICE_CHAINED)
             ->willReturn(false)
             ->shouldBeCalled();
@@ -40,8 +39,7 @@ class RegisterAttributeConstraintGuessersPassSpec extends ObjectBehavior
     function it_adds_constraint_guessers_in_the_chained_guesser_service(
         ContainerBuilder $container,
         Definition $service
-    )
-    {
+    ) {
         $service->addMethodCall('addConstraintGuesser', Argument::type('array'))
             ->shouldBeCalledTimes(3);
 

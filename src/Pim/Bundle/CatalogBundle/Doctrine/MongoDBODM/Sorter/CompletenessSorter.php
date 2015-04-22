@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 
 /**
  * Completeness sorter

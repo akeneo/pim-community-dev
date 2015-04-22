@@ -119,8 +119,6 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
 
     /**
      * Sort the columns
-     *
-     * @return null
      */
     protected function sortColumns()
     {

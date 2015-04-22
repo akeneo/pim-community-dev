@@ -73,12 +73,6 @@ class AttributeTypeSpec extends ObjectBehavior
         $manager->getAttributeTypes()->shouldHaveBeenCalled();
     }
 
-    function it_adds_unique_field_to_the_form($builder)
-    {
-        $this->buildForm($builder, []);
-        $builder->add('unique', 'choice', ['choices' => ['No', 'Yes']])->shouldHaveBeenCalled();
-    }
-
     function it_adds_required_field_to_the_form($builder)
     {
         $this->buildForm($builder, []);

@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
