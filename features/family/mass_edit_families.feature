@@ -4,6 +4,8 @@ Feature: Mass Edit Families
   As an administrator
   I need to be able to mass edit attributes and requirements of families
 
+  # TODO: Re enable this scenario once PIM-4007 is done
+  @skip
   Scenario: Successfully add many attributes with their requirements to many families
     Given the "footwear" catalog configuration
     And I am logged in as "Peter"
@@ -21,6 +23,8 @@ Feature: Mass Edit Families
     And attribute "Length" should be optional in family "sneakers" for channel "Tablet"
     And attribute "Length" should be optional in family "sandals" for channel "Tablet"
 
+  # TODO: Re enable this scenario once PIM-4007 is done
+  @skip
   Scenario: Successfully set existing attribute requirements of many families
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
