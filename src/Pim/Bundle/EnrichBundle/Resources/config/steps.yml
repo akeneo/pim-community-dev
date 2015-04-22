@@ -1,0 +1,2 @@
+parameters:
+    pim_enrich.step.mass_edit.remove_temporary_media.class: Pim\Bundle\EnrichBundle\Step\MassEditRemoveTemporaryMediaStep

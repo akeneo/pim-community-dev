@@ -940,7 +940,8 @@ job_execution.summary:
 
 pim_mass_edit_execution_show:  Mass edit executions | Details
 
-edit_common_attributes.steps.edit_common_attributes_handler.title: Edit common attributes
+edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
+update_product_value.steps.update_product_value_processor.title: Update product value
 
 mass_edit report:
     overview: Mass edit reports

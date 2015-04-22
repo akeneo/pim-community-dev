@@ -3,6 +3,8 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Manager;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Pim\Bundle\EnrichBundle\Factory\MassEditJobConfigurationFactory;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -33,24 +35,36 @@ class MassEditJobManager
     /**  @var ObjectManager */
     protected $objectManager;
 
+    /**  @var MassEditJobConfigurationFactory */
+    protected $jobConfigFactory;
+
+    /** @var SaverInterface */
+    protected $jobConfigSaver;
+
     /**
      * Constructor
      *
-     * @param ObjectManager            $objectManager
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param string                   $jobExecutionClass
-     * @param string                   $rootDir
-     * @param string                   $environment
+     * @param ObjectManager                   $objectManager
+     * @param EventDispatcherInterface        $eventDispatcher
+     * @param MassEditJobConfigurationFactory $jobConfigFactory
+     * @param SaverInterface                  $jobConfigSaver
+     * @param string                          $jobExecutionClass
+     * @param string                          $rootDir
+     * @param string                          $environment
      */
     public function __construct(
         ObjectManager $objectManager,
         EventDispatcherInterface $eventDispatcher,
+        MassEditJobConfigurationFactory $jobConfigFactory,
+        SaverInterface $jobConfigSaver,
         $jobExecutionClass,
         $rootDir,
         $environment
     ) {
         $this->rootDir           = $rootDir;
         $this->environment       = $environment;
+        $this->jobConfigFactory  = $jobConfigFactory;
+        $this->jobConfigSaver    = $jobConfigSaver;
         $this->eventDispatcher   = $eventDispatcher;
         $this->jobExecutionClass = $jobExecutionClass;
         $this->objectManager     = $objectManager;
@@ -65,7 +79,11 @@ class MassEditJobManager
      */
     public function launchJob(JobInstance $jobInstance, UserInterface $user, $rawConfiguration)
     {
-        $jobExecution = $this->create($jobInstance, $user);
+        $jobExecution = $this->create($jobInstance, $user, $rawConfiguration);
+
+        $massEditConf = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
+        $this->jobConfigSaver->save($massEditConf);
+
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
@@ -98,7 +116,6 @@ class MassEditJobManager
      * @param UserInterface $user
      *
      * @return JobExecution
-     * @throws \Exception
      */
     protected function create(JobInstance $jobInstance, UserInterface $user)
     {

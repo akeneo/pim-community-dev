@@ -7,24 +7,32 @@ connector:
             steps:
                 perform:
                     title: update_product_value
-                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.update_product_value
+                        reader:    pim_enrich.mass_edit.update_product_value.reader
+                        processor: pim_enrich.mass_edit.update_product_value.processor
+                        writer:    pim_base_connector.writer.doctrine.product
         add_product_value:
             title: add_product_value
             type:  mass_edit
             steps:
                 perform:
                     title: add_product_value
-                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.add_product_value
+                        reader:    pim_enrich.mass_edit.add_product_value.reader
+                        processor: pim_enrich.mass_edit.add_product_value.processor
+                        writer:    pim_base_connector.writer.doctrine.product
         edit_common_attributes:
             title: edit_common_attributes
             type:  mass_edit
             steps:
                 perform:
                     title: edit_common_attributes
-                    class: "%pim_base_connector.step.mass_edit_update_product_value.class%"
                     services:
-                        handler: pim_enrich.mass_edit_handler.edit_common_attributes
+                        reader:    pim_enrich.mass_edit.add_product_value.reader
+                        processor: pim_enrich.mass_edit.edit_common_attributes.processor
+                        writer:    pim_base_connector.writer.doctrine.product
+                clean:
+                    title: edit_common_attributes_clean
+                    class: "%pim_enrich.step.mass_edit.remove_temporary_media.class%"
+                    services:
+                        cleaner: pim_enrich.mass_edit.temporary_file.cleaner
