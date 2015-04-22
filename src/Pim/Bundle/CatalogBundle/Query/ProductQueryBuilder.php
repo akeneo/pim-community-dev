@@ -43,7 +43,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $cursorFactory;
 
     /** @var array */
-    protected $rawFilters;
+    protected $rawFilters = [];
 
     /**
      * Constructor
