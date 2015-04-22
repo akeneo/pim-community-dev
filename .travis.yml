@@ -30,6 +30,7 @@ script:
     - ./phpspec-fix
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs_spec; fi;'
+    - ./app/Resources/jenkins/interface_check.sh src/
 
 notifications:
   slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
