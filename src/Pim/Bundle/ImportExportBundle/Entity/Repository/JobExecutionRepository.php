@@ -78,4 +78,28 @@ class JobExecutionRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * Create job tracker datagrid query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createJobTrackerDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb
+            ->addSelect('e.id')
+            ->addSelect('j.type AS type')
+            ->addSelect(
+                "CONCAT('pim_import_export.batch_status.', e.status) as statusLabel"
+            )
+            ->addSelect('e.startTime as startTime')
+            ->addSelect('j.label AS jobLabel')
+            ->addSelect('e.user AS user')
+        ;
+
+        $qb->innerJoin('e.jobInstance', 'j');
+
+        return $qb;
+    }
 }

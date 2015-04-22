@@ -1,24 +1,24 @@
 pim_importexport_export_execution_index:
-    path: spread/export_execution/.{_format}
+    path: /.{_format}
     defaults: { _controller: pim_import_export.controller.export_execution:indexAction, _format: html }
     requirements:
         _format: html|json
 
 pim_importexport_export_execution_download_log:
-    path: spread/export_execution/{id}/download
+    path: /{id}/download
     defaults: { _controller: pim_import_export.controller.export_execution:downloadLogFileAction }
     requirements:
         id: \d+
 
 pim_importexport_export_execution_show:
-    path: spread/export_execution/{id}.{_format}
+    path: /{id}.{_format}
     defaults: { _controller: pim_import_export.controller.export_execution:showAction, _format: html }
     requirements:
         id: \d+
         _format: html|json
 
 pim_importexport_export_execution_download_file:
-    path: spread/export_execution/{id}/download/{archiver}/{key}
+    path: /{id}/download/{archiver}/{key}
     defaults: { _controller: pim_import_export.controller.export_execution:downloadFilesAction }
     requirements:
         id: \d+

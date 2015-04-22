@@ -73,13 +73,22 @@ define(
 
             followLink: function(e) {
                 e.preventDefault();
+                var routing;
+                var operationType = $(e.currentTarget).data('operation-type');
 
-                Navigation.getInstance().setLocation(
-                    Routing.generate(
-                        'pim_importexport_' + $(e.currentTarget).data('operation-type') + '_execution_show',
+                if ('mass_edit' === operationType) {
+                    routing = Routing.generate(
+                        'pim_enrich_job_tracker_show',
                         { id: $(e.currentTarget).data('id') }
-                    )
-                );
+                    );
+                } else {
+                    routing = Routing.generate(
+                        'pim_importexport_' + operationType + '_execution_show',
+                        { id: $(e.currentTarget).data('id') }
+                    );
+                }
+
+                Navigation.getInstance().setLocation(routing);
             },
 
             _processResponse: function(data) {
