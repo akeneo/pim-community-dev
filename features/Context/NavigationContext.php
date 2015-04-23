@@ -77,6 +77,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'attribute group creation' => 'AttributeGroup creation',
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
+        'job tracker'              => 'JobTracker index',
     ];
 
     /**
@@ -134,7 +135,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
         $jobExecutions = $jobInstance->getJobExecutions();
 
-        $url = '/spread/mass_edit_execution/'.$jobExecutions->last()->getId();
+        $url = '/job/show/' . $jobExecutions->last()->getId();
         $this->getSession()->visit($this->locatePath($url));
         $this->wait();
     }
