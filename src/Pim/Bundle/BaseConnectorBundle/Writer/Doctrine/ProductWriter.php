@@ -30,9 +30,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var VersionManager */
     protected $versionManager;
 
-    /** @var CacheClearer */
-    protected $cacheClearer;
-
     /** @var StepExecution */
     protected $stepExecution;
 
@@ -46,18 +43,15 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * Constructor
      *
      * @param MediaManager       $mediaManager
-     * @param CacheClearer       $cacheClearer
      * @param VersionManager     $versionManager
      * @param BulkSaverInterface $productSaver
      */
     public function __construct(
         MediaManager $mediaManager,
-        CacheClearer $cacheClearer,
         VersionManager $versionManager,
         BulkSaverInterface $productSaver
     ) {
         $this->mediaManager   = $mediaManager;
-        $this->cacheClearer   = $cacheClearer;
         $this->versionManager = $versionManager;
         $this->productSaver   = $productSaver;
     }
@@ -110,7 +104,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->mediaManager->handleAllProductsMedias($items);
         $this->productSaver->saveAll($items, ['recalculate' => false]);
 
-        $this->cacheClearer->clear();
+        //TODO: see with @nidup if we can remove this!
+        //$this->cacheClearer->clear();
     }
 
     /**
