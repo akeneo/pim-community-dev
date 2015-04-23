@@ -55,12 +55,4 @@ class AttributeRightFilter extends AbstractFilter implements CollectionFilterInt
     {
         return $object instanceof AttributeInterface;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsCollection($collection, $type, array $options = [])
-    {
-        return 'pim:attribute:view' === $type && parent::supportsCollection($collection, $type, $options);
-    }
 }
