@@ -167,6 +167,8 @@ services:
             - '@akeneo_batch.connectors'
             - '@pim_enrich.mass_edit_action.operation.registry'
             - '@pim_enrich.mass_edit_action.form_resolver'
+            - '@pim_enrich.factory.mass_edit.job_configuration'
+            - '@pim_enrich.saver.mass_edit.configuration'
 
     pim_enrich.controller.group:
         scope: request
