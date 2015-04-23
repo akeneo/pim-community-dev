@@ -3,9 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 
@@ -16,9 +15,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer extends SerializerAwareNormalizer implements
-    NormalizerInterface,
-    FilterableNormalizerInterface
+class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
     /** @staticvar string */
     const FIELD_FAMILY = 'family';
@@ -41,20 +38,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
     /** @staticvar string */
     const FIELD_VALUES = 'values';
 
-    /** @var  NormalizerFilterInterface[] */
-    protected $valuesFilters;
+    /** @var CollectionFilterInterface */
+    protected $filter;
 
     /** @var string[] $supportedFormats */
     protected $supportedFormats = ['json', 'xml'];
 
     /**
-     * {@inheritdoc}
+     * @param CollectionFilterInterface $filter The collection filter
      */
-    public function setFilters(array $filters)
+    public function __construct(CollectionFilterInterface $filter)
     {
-        $this->valuesFilters = $filters;
-
-        return $this;
+        $this->filter = $filter;
     }
 
     /**
@@ -117,9 +112,11 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
      */
     protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        foreach ($this->valuesFilters as $filter) {
-            $values = $filter->filter($values, $context);
-        }
+        $values = $this->filter->filterCollection(
+            $values,
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim:transform:product_value:structured',
+            $context
+        );
 
         $data = [];
         foreach ($values as $value) {
