@@ -4,6 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -13,17 +14,17 @@ use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
+    function let(SerializerInterface $serializer, CollectionFilterInterface $filter)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+
+        $this->beConstructedWith($filter);
         $this->setSerializer($serializer);
-        $this->setFilters([$filter]);
     }
 
     function it_is_a_serializer_aware_normalizer()
@@ -71,7 +72,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn('nice shoes, converse');
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
-        $filter->filter(Argument::cetera())->willReturn([$sku]);
+        $filter->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
@@ -137,7 +138,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn('nice shoes, converse');
         $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
         $product->getValues()->willReturn($values);
-        $filter->filter(Argument::cetera())->willReturn([$sku]);
+        $filter->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
@@ -191,7 +192,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
         $filter
-            ->filter($values, ['identifier' => $sku, 'scopeCode' => null, 'localeCodes' => []])
+            ->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())
             ->willReturn([$sku, $colors]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
@@ -246,7 +247,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $values->add($price);
 
         $product->getValues()->willReturn($values);
-        $filter->filter(Argument::cetera())->willReturn([$price]);
+        $filter->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())->willReturn([$price]);
 
         $serializer->normalize($price, 'flat', Argument::any())->willReturn(['price-EUR' => '356.00']);
 

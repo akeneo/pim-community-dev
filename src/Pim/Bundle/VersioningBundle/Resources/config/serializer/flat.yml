@@ -2,8 +2,6 @@ services:
     pim_versioning.serializer.normalizer.flat.product:
         public: false
         class: %pim_serializer.normalizer.flat.product.class%
-        calls:
-            - [setFilters, [['@pim_serializer.filter.flat_product_value']]]
         tags:
             - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
