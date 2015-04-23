@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -24,22 +23,17 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueLocaleRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class ProductValueAttributeGroupRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var LocaleManager */
-    protected $localeManager;
-
     /**
      * @param SecurityContextInterface $securityContext
-     * @param LocaleManager            $localeManager
      */
-    public function __construct(SecurityContextInterface $securityContext, LocaleManager $localeManager)
+    public function __construct(SecurityContextInterface $securityContext)
     {
         $this->securityContext = $securityContext;
-        $this->localeManager   = $localeManager;
     }
 
     /**
@@ -48,14 +42,10 @@ class ProductValueLocaleRightFilter extends AbstractFilter implements Collection
     public function filterObject($productValue, $type, array $options = [])
     {
         if (!$productValue instanceof ProductValueInterface) {
-            throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
+            throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
         }
 
-        return !$productValue->getAttribute()->isLocalizable() ||
-            $this->securityContext->isGranted(
-                Attributes::VIEW_PRODUCTS,
-                $this->localeManager->getLocaleByCode($productValue->getLocale())
-            );
+        return !$this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $productValue->getAttribute()->getGroup());
     }
 
     /**

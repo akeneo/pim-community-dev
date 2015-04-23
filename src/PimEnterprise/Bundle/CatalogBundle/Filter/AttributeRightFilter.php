@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\EnrichBundle\Filter;
+namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Product Value filter
+ * Attribute filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductValueAttributeGroupFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class AttributeRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -39,14 +39,13 @@ class ProductValueAttributeGroupFilter extends AbstractFilter implements Collect
     /**
      * {@inheritdoc}
      */
-    public function filterObject($productValue, $type, array $options = [])
+    public function filterObject($attribute, $type, array $options = [])
     {
-        if (!$productValue instanceof ProductValueInterface) {
-            throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
+        if (!$attribute instanceof AttributeInterface) {
+            throw new \LogicException('This filter only handles objects of type "AttributeInterface"');
         }
 
-        return 'pim_catalog_identifier' === $productValue->getAttribute()->getAttributeType() ||
-            $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $productValue->getAttribute()->getGroup());
+        return !$this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute->getGroup());
     }
 
     /**
@@ -54,6 +53,14 @@ class ProductValueAttributeGroupFilter extends AbstractFilter implements Collect
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof ProductValueInterface;
+        return $object instanceof AttributeInterface;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return 'pim:attribute:view' === $type && parent::supportsCollection($collection, $type, $options);
     }
 }
