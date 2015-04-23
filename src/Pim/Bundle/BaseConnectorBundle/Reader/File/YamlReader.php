@@ -186,7 +186,7 @@ class YamlReader extends FileReader implements
     public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
-        $this->csv = null;
+        $this->yaml = null;
 
         return $this;
     }
