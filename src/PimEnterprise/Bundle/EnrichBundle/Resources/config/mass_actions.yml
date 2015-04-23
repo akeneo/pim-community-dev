@@ -1,5 +1,4 @@
 parameters:
-    pimee_enrich.mass_edit_action.operator.published_product.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operator\PublishedProductMassEditOperator
     pimee_enrich.mass_edit_action.publish.class:                    PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
     pimee_enrich.mass_edit_action.unpublish.class:                  PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish
     pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
@@ -7,8 +6,6 @@ parameters:
 
     pimee_enrich.mass_edit_handler.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\PublishProductHandler
     pimee_enrich.mass_edit_handler.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UnpublishProductHandler
-    pimee_enrich.mass_edit_handler.edit_common_attributes.class:    PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\EditCommonAttributesHandler
-    pimee_enrich.mass_edit_handler.add_product_value_with_permission.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\AddProductValueWithPermissionHandler
 
 services:
     # Published products operation
@@ -83,32 +80,5 @@ services:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@oro_user.manager'
-            - '@security.context'
-
-    # Overriden mass edit handler to add permission checks
-    pim_enrich.mass_edit_handler.edit_common_attributes:
-        class: %pimee_enrich.mass_edit_handler.edit_common_attributes.class%
-        arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_enrich.product.paginator'
-            - '@pim_validator'
-            - '@pim_catalog.repository.product_mass_action'
-            - '@pim_catalog.repository.attribute'
-            - '@oro_user.manager'
-            - '@security.context'
-
-    pimee_enrich.mass_edit_handler.add_product_value_with_permission:
-        class: %pimee_enrich.mass_edit_handler.add_product_value_with_permission.class%
-        arguments:
-            - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.saver.product'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_enrich.product.paginator'
-            - '@pim_validator'
             - '@oro_user.manager'
             - '@security.context'
