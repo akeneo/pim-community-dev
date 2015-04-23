@@ -11,9 +11,9 @@ if ('master' === $branch) {
         ->in(__DIR__ . '/features');
 } else {
     if (is_int(getenv('TRAVIS_PULL_REQUEST'))) {
-        exec('git diff ' . getenv('TRAVIS_COMMIT_RANGE') . ' --name-only | grep -v ^spec/', $diff);
+        exec('git diff ' . getenv('TRAVIS_COMMIT_RANGE') . ' --name-only --diff-filter=AMR | grep -v ^spec/', $diff);
     } else {
-        exec('git show --name-only --oneline --pretty="format:" | grep -v ^spec/', $diff);
+        exec('git show --name-only --oneline --pretty="format:" --diff-filter=AMR | grep -v ^spec/', $diff);
         $diff = array_filter($diff);
     }
     $finder->append($diff);
