@@ -52,7 +52,8 @@ define(
             'metric': _.template('<%= value.data %> <%= value.unit %>'),
             'collection': _.template(
                 '<% for (var i in value) { %>' +
-                    '<%= renderValue(value[i]) %> ' +
+                    '<%= renderValue(value[i]) %>' +
+                    '<% if (i < value.length - 1) { %>, ' + '<% } %>' +
                 '<% } %>'
             ),
             'price': _.template('<%= value.data %> <%= value.currency %> '),

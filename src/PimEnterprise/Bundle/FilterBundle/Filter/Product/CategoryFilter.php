@@ -63,7 +63,6 @@ class CategoryFilter extends BaseCategoryFilter
      */
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $qb = $ds->getQueryBuilder();
         $user = $this->securityContext->getToken()->getUser();
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         if (count($grantedCategoryIds) > 0) {
@@ -83,7 +82,6 @@ class CategoryFilter extends BaseCategoryFilter
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
-        $qb                 = $ds->getQueryBuilder();
 
         $tree = $categoryRepository->find($data['treeId']);
         if ($tree) {

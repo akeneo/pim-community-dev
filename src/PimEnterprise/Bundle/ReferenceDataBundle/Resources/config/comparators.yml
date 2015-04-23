@@ -1,0 +1,14 @@
+parameters:
+    pimee_reference_data.workflow.comparator.reference_data.class:            PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Comparator\ReferenceDataComparator
+    pimee_reference_data.workflow.comparator.reference_data_collection.class: PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Comparator\ReferenceDataCollectionComparator
+
+services:
+    pimee_reference_data.workflow.comparator.reference_data:
+        class: %pimee_reference_data.workflow.comparator.reference_data.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_reference_data.workflow.comparator.reference_data_collection:
+        class: %pimee_reference_data.workflow.comparator.reference_data_collection.class%
+        tags:
+            - { name: pimee_workflow.comparator }
