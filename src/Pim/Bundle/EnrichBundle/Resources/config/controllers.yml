@@ -309,7 +309,8 @@ services:
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_serializer'
-            - '@security.context'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.attribute_group_rest:
         class: %pim_enrich.controller.attribute_group_rest.class%
