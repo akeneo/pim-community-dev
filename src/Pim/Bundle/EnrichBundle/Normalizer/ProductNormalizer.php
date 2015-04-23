@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, FilterableNormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var array */
     protected $supportedFormat = ['internal_api'];
@@ -61,14 +61,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         ] + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilters(array $filters)
-    {
-        $this->productNormalizer->setFilters($filters);
     }
 
     /**

@@ -191,11 +191,14 @@ class CompletenessManager
         foreach ($allCompletenesses as $completeness) {
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
-            $completenesses[$locale->getCode()]['channels'][$channel->getCode()]['completeness'] = $completeness;
-            $completenesses[$locale->getCode()]['stats']['total']++;
-            $completenesses[$locale->getCode()]['stats']['complete'] = (0 === $completeness->getMissingCount()) ?
-                $completenesses[$locale->getCode()]['stats']['complete'] + 1 :
-                $completenesses[$locale->getCode()]['stats']['complete'];
+
+            if (isset($completenesses[$locale->getCode()])) {
+                $completenesses[$locale->getCode()]['channels'][$channel->getCode()]['completeness'] = $completeness;
+                $completenesses[$locale->getCode()]['stats']['total']++;
+                $completenesses[$locale->getCode()]['stats']['complete'] = (0 === $completeness->getMissingCount()) ?
+                    $completenesses[$locale->getCode()]['stats']['complete'] + 1 :
+                    $completenesses[$locale->getCode()]['stats']['complete'];
+            }
         }
 
         $requirements = $this->familyRepository

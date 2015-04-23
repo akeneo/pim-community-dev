@@ -362,6 +362,7 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_user.context.user'
             - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.versioning_rest:
         class: %pim_enrich.controller.versioning_rest.class%
