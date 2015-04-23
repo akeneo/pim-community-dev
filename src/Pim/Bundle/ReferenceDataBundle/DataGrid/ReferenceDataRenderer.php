@@ -16,10 +16,11 @@ class ReferenceDataRenderer
 {
     /**
      * @param ReferenceDataInterface $referenceData
+     * @param bool                   $fallbackOnCode
      *
-     * @return string
+     * @return string|null
      */
-    public function render(ReferenceDataInterface $referenceData)
+    public function render(ReferenceDataInterface $referenceData, $fallbackOnCode = true)
     {
         if (null !== $labelProperty = $referenceData::getLabelProperty()) {
             $getter = MethodNameGuesser::guess('get', $labelProperty);
@@ -30,6 +31,20 @@ class ReferenceDataRenderer
             }
         }
 
-        return sprintf('[%s]', $referenceData->getCode());
+        if ($fallbackOnCode) {
+            return sprintf('[%s]', $referenceData->getCode());
+        }
+
+        return null;
+    }
+
+    /**
+     * @param ReferenceDataInterface $referenceData
+     *
+     * @return string
+     */
+    public function getLabelProperty(ReferenceDataInterface $referenceData)
+    {
+        return $labelProperty = $referenceData::getLabelProperty();
     }
 }

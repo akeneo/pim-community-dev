@@ -28,16 +28,16 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
      * Constructor
      *
      * @param ReferenceDataRepositoryInterface $repository
-     * @param ReferenceDataRenderer            $formatter
+     * @param ReferenceDataRenderer            $renderer
      * @param array                            $options
      */
     public function __construct(
         ReferenceDataRepositoryInterface $repository,
-        ReferenceDataRenderer $formatter,
+        ReferenceDataRenderer $renderer,
         array $options
     ) {
         $this->repository = $repository;
-        $this->renderer   = $formatter;
+        $this->renderer   = $renderer;
         $this->options    = $options;
     }
 

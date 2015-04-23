@@ -2,18 +2,31 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer;
 
+use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Normalize a reference data very simply to store it as mongodb_json
- *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ReferenceDataNormalizer implements NormalizerInterface
 {
+    /** @var ReferenceDataRenderer */
+    protected $renderer;
+
+    /**
+     * Constructor
+     *
+    *@param ReferenceDataRenderer $renderer
+     */
+    public function __construct(ReferenceDataRenderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,6 +36,10 @@ class ReferenceDataNormalizer implements NormalizerInterface
             'id'   => $object->getId(),
             'code' => $object->getCode()
         ];
+
+        if (null !== $label = $this->renderer->render($object, false)) {
+            $data[$this->renderer->getLabelProperty($object)] = $label;
+        }
 
         return $data;
     }
