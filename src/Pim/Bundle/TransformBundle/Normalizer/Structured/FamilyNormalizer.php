@@ -33,10 +33,13 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $transNormalizer
+     * @param TranslationNormalizer     $transNormalizer
+     * @param CollectionFilterInterface $collectionFilter
      */
-    public function __construct(TranslationNormalizer $transNormalizer, CollectionFilterInterface $collectionFilter)
-    {
+    public function __construct(
+        TranslationNormalizer $transNormalizer,
+        CollectionFilterInterface $collectionFilter = null
+    ) {
         $this->transNormalizer  = $transNormalizer;
         $this->collectionFilter = $collectionFilter;
     }
@@ -71,10 +74,12 @@ class FamilyNormalizer implements NormalizerInterface
      */
     protected function normalizeAttributes(FamilyInterface $family)
     {
-        $filteredAttributes = $this->collectionFilter->filterCollection(
-            $family->getAttributes(),
-            'pim:internal_api:attribute:view'
-        );
+        $filteredAttributes = $this->collectionFilter ?
+            $this->collectionFilter->filterCollection(
+                $family->getAttributes(),
+                'pim:internal_api:attribute:view'
+            ) :
+            $family->getAttributes();
 
         $normalizedAttributes = array();
         foreach ($filteredAttributes as $attribute) {
