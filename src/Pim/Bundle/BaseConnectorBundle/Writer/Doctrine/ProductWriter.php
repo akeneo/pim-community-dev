@@ -133,6 +133,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function flush()
     {
-        $this->cacheClearer->clear(true);
+//        TODO: see with @nidup if we can remove this!
+//        $this->cacheClearer->clear(true);
     }
 }
