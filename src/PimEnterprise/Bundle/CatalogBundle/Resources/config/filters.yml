@@ -1,8 +1,9 @@
 parameters:
     pim_catalog.filter.attribute_right.class:                     PimEnterprise\Bundle\CatalogBundle\Filter\AttributeRightFilter
     pim_catalog.filter.attribute_group_right.class:               PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupRightFilter
-    pim_catalog.filter.product_value.attribute_group_right.class: PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter
-    pim_catalog.filter.product_value.locale_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter
+    pim_catalog.filter.product_value_attribute_group_right.class: PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter
+    pim_catalog.filter.product_value_locale_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter
+    pim_catalog.filter.locale_right.class:                        PimEnterprise\Bundle\CatalogBundle\Filter\LocaleRightFilter
 
 services:
     pim_catalog.filter.attribute_right:
@@ -21,16 +22,16 @@ services:
             - { name: pim_catalog.filter.collection, type: pim:internal_api:attribute_group:view }
             - { name: pim_catalog.filter.object, type: pim:internal_api:attribute_group:view }
 
-    pim_catalog.filter.product_value.attribute_group_right:
-        class: %pim_catalog.filter.product_value.attribute_group_right.class%
+    pim_catalog.filter.product_value_attribute_group_right:
+        class: %pim_catalog.filter.product_value_attribute_group_right.class%
         arguments:
             - '@security.context'
         tags:
             - { name: pim_catalog.filter.collection, type: pim:internal_api:product_value:view }
             - { name: pim_catalog.filter.collection, type: pim:external_api:product:view }
 
-    pim_catalog.filter.product_value.locale_right:
-        class: %pim_catalog.filter.product_value.locale_right.class%
+    pim_catalog.filter.product_value_locale_right:
+        class: %pim_catalog.filter.product_value_locale_right.class%
         arguments:
             - '@security.context'
             - '@pim_catalog.manager.locale'
@@ -38,3 +39,10 @@ services:
             - { name: pim_catalog.filter.collection, type: pim:internal_api:product_value:view }
             - { name: pim_catalog.filter.collection, type: pim:external_api:product:view }
             - { name: pim_catalog.filter.collection, type: pim:transform:product_value:structured }
+
+    pim_catalog.filter.locale_right:
+        class: %pim_catalog.filter.locale_right.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim:internal_api:locale:view }
