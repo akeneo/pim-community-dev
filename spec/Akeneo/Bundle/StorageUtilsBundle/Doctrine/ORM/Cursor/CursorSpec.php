@@ -3,13 +3,13 @@
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\Query;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
-use Prophecy\Argument;
 use Doctrine\ORM\Query\Expr\From;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 
 class CursorSpec extends ObjectBehavior
 {
@@ -17,23 +17,11 @@ class CursorSpec extends ObjectBehavior
 
     function let(
         QueryBuilder $queryBuilder,
-        EntityManager $entityManager
+        EntityManager $entityManager,
+        AbstractQuery $query,
+        From $from
     ) {
-        $this->beConstructedWith($queryBuilder, $entityManager, self::PAGE_SIZE);
-    }
-
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor');
-        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
-    }
-
-    function it_is_countable($queryBuilder, AbstractQuery $query, From $from)
-    {
-        $this->shouldImplement('\Countable');
-
         $rootIdExpr = 'o.id';
-
         $from->getFrom()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
         $from->getAlias()->willReturn('o');
 
@@ -47,6 +35,21 @@ class CursorSpec extends ObjectBehavior
 
         $query->getArrayResult()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
 
+        $this->beConstructedWith($queryBuilder, $entityManager, self::PAGE_SIZE);
+    }
+
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
+    }
+
+    function it_is_countable($entityManager, CursorableRepositoryInterface $repository)
+    {
+        $entityManager->getRepository(Argument::any())->willReturn($repository);
+        $repository->findByIds(Argument::any())->willReturn(Argument::any());
+
+        $this->shouldImplement('\Countable');
         $this->shouldHaveCount(13);
     }
 
@@ -136,46 +139,19 @@ class CursorSpec extends ObjectBehavior
         $this->key()->shouldReturn(null);
     }
 
-    function it_check_entity_repository($queryBuilder, AbstractQuery $query, From $from)
+    function it_check_entity_repository($entityManager, ObjectRepository $repository)
     {
-        $rootIdExpr = 'o.id';
+        $entityManager->getRepository(Argument::any())->willReturn($repository);
 
-        $from->getFrom()->willReturn('Pim\Bundle\CatalogBundle\Model\Product');
-        $from->getAlias()->willReturn('o');
-
-        $queryBuilder->getRootAliases()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
-
-        $query->getArrayResult()->willReturn([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
-
-        $this->shouldThrow('\Exception')->duringRewind();
+        $this->shouldThrow('\LogicException');
     }
 
     function it_keeps_order_with_object_hydration(
-        $queryBuilder,
-        AbstractQuery $query,
-        From $from,
-        EntityManager $entityManager,
+        $query,
+        $entityManager,
         CursorableRepositoryInterface $repository
     ) {
-        $rootIdExpr = 'o.id';
         $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
-
-        $from->getFrom()->willReturn($entityClass);
-        $from->getAlias()->willReturn('o');
-
-        $queryBuilder->getRootAliases()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
 
         $ids = [
             5 => 15,
@@ -202,7 +178,6 @@ class CursorSpec extends ObjectBehavior
             5 => $entity5,
         ]);
 
-        $this->next();
         $this->current()->shouldNotReturn($entity1);
         $this->current()->shouldReturn($entity5);
         $this->next();
@@ -216,25 +191,11 @@ class CursorSpec extends ObjectBehavior
     }
 
     function it_keeps_order_with_array_hydration(
-        $queryBuilder,
-        AbstractQuery $query,
-        From $from,
-        EntityManager $entityManager,
+        $query,
+        $entityManager,
         CursorableRepositoryInterface $repository
     ) {
-        $rootIdExpr = 'o.id';
         $entityClass = 'Pim\Bundle\CatalogBundle\Model\Product';
-
-        $from->getFrom()->willReturn($entityClass);
-        $from->getAlias()->willReturn('o');
-
-        $queryBuilder->getRootAliases()->willReturn(['o']);
-        $queryBuilder->getDQLPart('from')->willReturn([$from]);
-        $queryBuilder->select($rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->resetDQLPart('from')->willReturn($queryBuilder);
-        $queryBuilder->from(Argument::any(), Argument::any(), $rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->groupBy($rootIdExpr)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
 
         $ids = [
             5 => 15,
@@ -255,7 +216,6 @@ class CursorSpec extends ObjectBehavior
             5 => ['id'=> 5],
         ]);
 
-        $this->next();
         $this->current()->shouldNotReturn(['id'=> 1]);
         $this->current()->shouldReturn(['id'=> 5]);
         $this->next();

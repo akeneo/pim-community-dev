@@ -4,6 +4,8 @@ namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ODM\MongoDB\Query\Builder;
+use Doctrine\MongoDB\Query\Query;
+use Doctrine\ODM\MongoDB\Cursor;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -26,8 +28,11 @@ class CursorFactorySpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorFactoryInterface');
     }
 
-    function it_create_a_cursor(Builder $queryBuilder)
+    function it_creates_a_cursor(Builder $queryBuilder, Query $query, Cursor $cursor)
     {
+        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
+        $query->execute()->shouldBeCalled()->willReturn($cursor);
+
         $cursor = $this->createCursor($queryBuilder);
         $cursor->shouldBeAnInstanceOf('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
