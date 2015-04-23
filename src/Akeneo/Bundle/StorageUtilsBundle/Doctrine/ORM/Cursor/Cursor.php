@@ -2,11 +2,11 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\AbstractCursor;
 use ArrayIterator;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
 use LogicException;
 
 /**
@@ -61,6 +61,7 @@ class Cursor extends AbstractCursor
         $this->queryBuilder = clone $queryBuilder;
         $this->entityManager = $entityManager;
         $this->pageSize = $pageSize;
+        $this->rewind();
     }
 
     /**
