@@ -14,11 +14,10 @@ class ProductWriterSpec extends ObjectBehavior
 {
     function let(
         MediaManager $mediaManager,
-        CacheClearer $cacheClearer,
         VersionManager $versionManager,
         ProductSaver $productSaver
     ) {
-        $this->beConstructedWith($mediaManager, $cacheClearer, $versionManager, $productSaver);
+        $this->beConstructedWith($mediaManager, $versionManager, $productSaver);
     }
 
     function it_is_initializable()
@@ -112,7 +111,6 @@ class ProductWriterSpec extends ObjectBehavior
     }
 
     function it_clears_cache(
-        $cacheClearer,
         StepExecution $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2
@@ -122,16 +120,8 @@ class ProductWriterSpec extends ObjectBehavior
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $cacheClearer->clear()->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->write($items);
-    }
-
-    function it_flushes($cacheClearer)
-    {
-        $cacheClearer->clear(true)->shouldBeCalled();
-
-        $this->flush();
     }
 }
