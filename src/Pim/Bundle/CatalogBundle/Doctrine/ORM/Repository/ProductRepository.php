@@ -419,7 +419,10 @@ class ProductRepository extends EntityRepository implements
                 foreach ($references as $code => $referenceData) {
                     if (ConfigurationInterface::TYPE_SIMPLE === $referenceData->getType()) {
                         if ($valueMetadata->isAssociationWithSingleJoinColumn($code)) {
-                            $sql .= ' OR v.' . $valueMetadata->getSingleAssociationJoinColumnName($code) . ' IS NOT NULL';
+                            $sql .= sprintf(
+                                ' OR v.%s IS NOT NULL',
+                                $valueMetadata->getSingleAssociationJoinColumnName($code)
+                            );
                         }
                     }
                 }

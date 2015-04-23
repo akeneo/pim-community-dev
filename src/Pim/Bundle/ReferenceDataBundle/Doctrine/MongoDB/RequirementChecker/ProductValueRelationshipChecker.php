@@ -103,7 +103,10 @@ class ProductValueRelationshipChecker extends AbstractProductValueRelationshipCh
         $metadata     = $this->om->getClassMetadata($this->productValueClass);
         $fieldMapping = $metadata->getFieldMapping($field);
 
-        if (!isset($fieldMapping['type']) || $fieldMapping['type'] !== $expectedType || true !== $fieldMapping['isOwningSide']) {
+        if (!isset($fieldMapping['type']) ||
+            $fieldMapping['type'] !== $expectedType
+            || true !== $fieldMapping['isOwningSide']
+        ) {
             $this->failure = sprintf(
                 'Please configure the type and the owning side correctly in your "%s" "%s" relation.',
                 $this->productValueClass,

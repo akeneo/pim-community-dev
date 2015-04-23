@@ -87,7 +87,8 @@ class ColumnInfo implements ColumnInfoInterface
             $this->suffixes = $this->rawSuffixes;
             $this->propertyPath = lcfirst(Inflector::classify($this->name));
         } else {
-            if (!in_array($attribute->getBackendType(),
+            if (!in_array(
+                $attribute->getBackendType(),
                 [
                     AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTION,
                     AbstractAttributeType::BACKEND_TYPE_REF_DATA_OPTIONS
