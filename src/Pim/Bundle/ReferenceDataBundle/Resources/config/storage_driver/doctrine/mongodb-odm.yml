@@ -8,6 +8,6 @@ services:
         class: %pim_reference_data.mongodb.normalizer.reference_data.class%
         public: false
         arguments:
-            - '@pim_reference_data.datagrid_renderer'
+            - '@pim_reference_data.label_renderer'
         tags:
             - { name: pim_serializer.normalizer }

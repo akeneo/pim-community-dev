@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
-use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
+use Pim\Component\ReferenceData\LabelRenderer;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -21,19 +21,19 @@ class AjaxReferenceDataTransformer implements DataTransformerInterface
     /** @var array */
     protected $options;
 
-    /** @var ReferenceDataRenderer */
+    /** @var LabelRenderer */
     protected $renderer;
 
     /**
      * Constructor
      *
      * @param ReferenceDataRepositoryInterface $repository
-     * @param ReferenceDataRenderer            $renderer
+     * @param LabelRenderer                    $renderer
      * @param array                            $options
      */
     public function __construct(
         ReferenceDataRepositoryInterface $repository,
-        ReferenceDataRenderer $renderer,
+        LabelRenderer $renderer,
         array $options
     ) {
         $this->repository = $repository;

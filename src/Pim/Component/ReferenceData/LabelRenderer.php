@@ -1,18 +1,17 @@
 <?php
 
-namespace Pim\Bundle\ReferenceDataBundle\DataGrid;
+namespace Pim\Component\ReferenceData;
 
-use Pim\Component\ReferenceData\MethodNameGuesser;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
- * Renders a reference data: displays either the label or the [code] of the reference data.
+ * Renders a reference data label: displays either the label or the [code] of the reference data.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReferenceDataRenderer
+class LabelRenderer
 {
     /**
      * @param ReferenceDataInterface $referenceData
@@ -45,6 +44,6 @@ class ReferenceDataRenderer
      */
     public function getLabelProperty(ReferenceDataInterface $referenceData)
     {
-        return $labelProperty = $referenceData::getLabelProperty();
+        return $referenceData::getLabelProperty();
     }
 }

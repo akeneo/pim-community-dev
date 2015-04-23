@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UIBundle\Form\Transformer;
 
-use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
+use Pim\Component\ReferenceData\LabelRenderer;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,7 +17,7 @@ class AjaxReferenceDataTransformerFactory
     /** @var RegistryInterface */
     protected $doctrine;
 
-    /** @var ReferenceDataRenderer */
+    /** @var LabelRenderer */
     protected $renderer;
 
     /** @var string */
@@ -26,11 +26,11 @@ class AjaxReferenceDataTransformerFactory
     /**
      * Constructor
      *
-     * @param RegistryInterface     $doctrine
-     * @param ReferenceDataRenderer $renderer
-     * @param string                $class
+     * @param RegistryInterface $doctrine
+     * @param LabelRenderer     $renderer
+     * @param string            $class
      */
-    public function __construct(RegistryInterface $doctrine, ReferenceDataRenderer $renderer, $class)
+    public function __construct(RegistryInterface $doctrine, LabelRenderer $renderer, $class)
     {
         $this->doctrine = $doctrine;
         $this->renderer = $renderer;

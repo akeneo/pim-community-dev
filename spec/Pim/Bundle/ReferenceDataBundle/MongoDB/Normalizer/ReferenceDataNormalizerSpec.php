@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
+use Pim\Component\ReferenceData\LabelRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Prophecy\Argument;
 
 class ReferenceDataNormalizerSpec extends ObjectBehavior
 {
-    function let(ReferenceDataRenderer $renderer)
+    function let(LabelRenderer $renderer)
     {
         $this->beConstructedWith($renderer);
     }
