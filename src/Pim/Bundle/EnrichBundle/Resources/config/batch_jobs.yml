@@ -8,7 +8,7 @@ connector:
                 perform:
                     title: update_product_value
                     services:
-                        reader:    pim_enrich.mass_edit.update_product_value.reader
+                        reader:    pim_enrich.mass_edit.filtered.reader
                         processor: pim_enrich.mass_edit.update_product_value.processor
                         writer:    pim_base_connector.writer.doctrine.product
         add_product_value:
@@ -18,7 +18,7 @@ connector:
                 perform:
                     title: add_product_value
                     services:
-                        reader:    pim_enrich.mass_edit.add_product_value.reader
+                        reader:    pim_enrich.mass_edit.filtered.reader
                         processor: pim_enrich.mass_edit.add_product_value.processor
                         writer:    pim_base_connector.writer.doctrine.product
         edit_common_attributes:
@@ -28,7 +28,7 @@ connector:
                 perform:
                     title: edit_common_attributes
                     services:
-                        reader:    pim_enrich.mass_edit.add_product_value.reader
+                        reader:    pim_enrich.mass_edit.filtered.reader
                         processor: pim_enrich.mass_edit.edit_common_attributes.processor
                         writer:    pim_base_connector.writer.doctrine.product
                 clean:
