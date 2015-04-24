@@ -60,6 +60,7 @@ class Cursor extends AbstractCursor
         $this->queryBuilder = $queryBuilder;
         $this->entityManager = $entityManager;
         $this->pageSize = $pageSize;
+        $this->rewind();
     }
 
     /**

@@ -83,6 +83,11 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-4113: Initialize cursors on first item during creation
+
+# 1.3.9 (2015-04-21)
+
+## Bug fixes
 - PIM-4082: Fix error translation keys when creating a job
 
 # 1.3.8 (2015-04-14)
