@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -16,7 +15,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, FilterableNormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var array */
     protected $supportedFormat = ['internal_api'];

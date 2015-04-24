@@ -3,7 +3,6 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,7 +13,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizer implements NormalizerInterface, FilterableNormalizerInterface
+class FamilyNormalizer implements NormalizerInterface
 {
     /**
      * @var array
