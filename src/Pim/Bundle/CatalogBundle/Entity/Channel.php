@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  */
 class Channel implements ChannelInterface
 {
-    /** @var integer $id */
+    /** @var int $id */
     protected $id;
 
     /** @var string $code */
@@ -64,7 +64,7 @@ class Channel implements ChannelInterface
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return Channel
      */

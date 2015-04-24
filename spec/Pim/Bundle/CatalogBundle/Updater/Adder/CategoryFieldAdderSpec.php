@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
-use Prophecy\Argument;
 
 class CategoryFieldAdderSpec extends ObjectBehavior
 {
@@ -26,7 +25,8 @@ class CategoryFieldAdderSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface');
     }
 
-    function it_supports_categories_field() {
+    function it_supports_categories_field()
+    {
         $this->supportsField('categories')->shouldReturn(true);
         $this->supportsField('groups')->shouldReturn(false);
     }

@@ -241,20 +241,40 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
 
 class Color implements ReferenceDataInterface
 {
-    public function getId() { }
-    public function getCode() { }
-    public function setCode($code) { }
-    public function getSortOrder() { }
-    public static function getLabelProperty() { }
-    public function __toString() { }
+    public function getId()
+    {
+    }
+    public function getCode()
+    {
+    }
+    public function setCode($code)
+    {
+    }
+    public function getSortOrder()
+    {
+    }
+    public static function getLabelProperty()
+    {
+    }
+    public function __toString()
+    {
+    }
 }
 
 class CustomProductValueBis extends AbstractProductValue
 {
-    public function setColors(Collection $referenceData = null) { }
-    public function getColors() { }
-    public function removeColor(ReferenceDataInterface $referenceData) { }
-    public function addColor(ReferenceDataInterface $referenceData) { }
+    public function setColors(Collection $referenceData = null)
+    {
+    }
+    public function getColors()
+    {
+    }
+    public function removeColor(ReferenceDataInterface $referenceData)
+    {
+    }
+    public function addColor(ReferenceDataInterface $referenceData)
+    {
+    }
 }
 
 class InvalidGetterCustomProductValueBis extends AbstractProductValue
@@ -266,7 +286,9 @@ class InvalidRemoverCustomProductValue extends AbstractProductValue
 {
     protected $colors;
 
-    public function getColors() { }
+    public function getColors()
+    {
+    }
 }
 
 class InvalidAdderCustomProductValue extends AbstractProductValue
@@ -283,5 +305,7 @@ class InvalidAdderCustomProductValue extends AbstractProductValue
         return $this->colors;
     }
 
-    public function removeColor(ReferenceDataInterface $referenceData) {}
+    public function removeColor(ReferenceDataInterface $referenceData)
+    {
+    }
 }

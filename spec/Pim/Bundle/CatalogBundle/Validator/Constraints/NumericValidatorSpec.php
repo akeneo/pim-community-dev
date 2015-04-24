@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric;
+use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class NumericValidatorSpec extends ObjectBehavior
 {
@@ -38,7 +38,7 @@ class NumericValidatorSpec extends ObjectBehavior
         $this->validate(null, $numericConstraint);
     }
 
-        function it_does_not_add_violation_metric_with_no_data($context, MetricInterface $metric, Numeric $numericConstraint)
+    function it_does_not_add_violation_metric_with_no_data($context, MetricInterface $metric, Numeric $numericConstraint)
     {
         $metric->getData()->willReturn(null);
         $context

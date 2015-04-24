@@ -54,9 +54,9 @@ class ReferenceDataIdResolver
      * @param string           $referenceDataName
      * @param string           $code
      *
-     * @return int
-     *
      * @throws \LogicException
+     *
+     * @return int
      */
     protected function resolveOne(ObjectRepository $repository, $referenceDataName, $code)
     {

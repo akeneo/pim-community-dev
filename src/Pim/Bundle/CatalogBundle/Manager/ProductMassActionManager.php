@@ -66,6 +66,7 @@ class ProductMassActionManager
 
     /**
      * Filter attribute by removing attributes coming from variants
+     *
      * @param AttributeInterface[] $attributes
      * @param ProductInterface[]   $products
      *
@@ -109,6 +110,7 @@ class ProductMassActionManager
 
     /**
      * Get common attributes coming also from variant groups
+     *
      * @param ProductInterface[] $products
      *
      * @return array
@@ -128,6 +130,7 @@ class ProductMassActionManager
 
     /**
      * Get attributes coming from variant groups
+     *
      * @param ProductInterface[] $products
      *
      * @return array

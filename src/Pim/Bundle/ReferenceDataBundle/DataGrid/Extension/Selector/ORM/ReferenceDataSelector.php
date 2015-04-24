@@ -59,7 +59,7 @@ class ReferenceDataSelector implements SelectorInterface
      * @param array        $source
      * @param string       $column
      */
-    protected function buildQueryBuilder(QueryBuilder $qb, array $source = [], $column)
+    protected function buildQueryBuilder(QueryBuilder $qb, array $source, $column)
     {
         if (!isset($source['attributes_configuration'][$column])) {
             return;

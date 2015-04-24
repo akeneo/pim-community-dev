@@ -295,7 +295,7 @@ class ProductBuilder implements ProductBuilderInterface
      * @param ProductValueInterface $value
      * @param string                $currency
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasPriceForCurrency(ProductValueInterface $value, $currency)
     {
@@ -385,8 +385,6 @@ class ProductBuilder implements ProductBuilderInterface
      * Add missing prices (a price per currency)
      *
      * @param ProductInterface $product the product
-     *
-     * @return null
      */
     protected function addMissingPricesToProduct(ProductInterface $product)
     {

@@ -42,8 +42,9 @@ class LoadCurrencyData extends AbstractInstallerFixture
 
     /**
      * Create currency entity and persist it
-     * @param string  $code      Currency code
-     * @param boolean $activated Define if currency is activated or not
+     *
+     * @param string $code      Currency code
+     * @param bool   $activated Define if currency is activated or not
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Currency
      */

@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\UIBundle\Form\Transformer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ReferenceDataBundle\DataGrid\ReferenceDataRenderer;
+use Pim\Component\ReferenceData\LabelRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Prophecy\Argument;
@@ -15,7 +15,7 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\UIBundle\Form\Transformer\AjaxReferenceDataTransformer');
     }
 
-    function let(ReferenceDataRepositoryInterface $repository, ReferenceDataRenderer $renderer)
+    function let(ReferenceDataRepositoryInterface $repository, LabelRenderer $renderer)
     {
         $this->beConstructedWith($repository, $renderer, ['multiple' => false]);
     }
@@ -93,11 +93,26 @@ class AjaxReferenceDataTransformerSpec extends ObjectBehavior
 
 class ReferenceDataColorWithLabel implements ReferenceDataInterface
 {
-    public function getId() { }
-    public function getCode() { }
-    public function setCode($code) { }
-    public function getSortOrder() { }
-    public function getName() {}
-    public static function getLabelProperty() { return 'name'; }
-    public function __toString() { }
+    public function getId()
+    {
+    }
+    public function getCode()
+    {
+    }
+    public function setCode($code)
+    {
+    }
+    public function getSortOrder()
+    {
+    }
+    public function getName()
+    {
+    }
+    public static function getLabelProperty()
+    {
+        return 'name';
+    }
+    public function __toString()
+    {
+    }
 }

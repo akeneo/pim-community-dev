@@ -13,7 +13,7 @@ class ProductPriceNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory)
     {
-         $this->beConstructedWith($mongoFactory);
+        $this->beConstructedWith($mongoFactory);
     }
 
     function it_is_a_normalizer()

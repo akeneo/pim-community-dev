@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\TransformBundle\Transformer\Property;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 
 class ReferenceDataTransformerSpec extends ObjectBehavior

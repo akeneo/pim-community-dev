@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
@@ -175,5 +174,4 @@ class AttributeOptionUpdaterSpec extends ObjectBehavior
             ]
         );
     }
-
 }

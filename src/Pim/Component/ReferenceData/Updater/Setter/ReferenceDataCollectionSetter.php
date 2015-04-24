@@ -2,6 +2,7 @@
 
 namespace Pim\Component\ReferenceData\Updater\Setter;
 
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -22,10 +23,10 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
     protected $repositoryResolver;
 
     /**
-     * @param ProductBuilderInterface                   $productBuilder
-     * @param AttributeValidatorHelper                  $attrValidatorHelper
-     * @param ReferenceDataRepositoryResolverInterface  $repositoryResolver
-     * @param array                                     $supportedTypes
+     * @param ProductBuilderInterface                  $productBuilder
+     * @param AttributeValidatorHelper                 $attrValidatorHelper
+     * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
+     * @param array                                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
@@ -149,7 +150,8 @@ class ReferenceDataCollectionSetter extends AbstractAttributeSetter
         ) {
             throw new \LogicException(
                 sprintf(
-                    'One of these ProductValue methods is not implemented: "%s", "%s", "%s"',
+                    'One of these methods is not implemented in %s: "%s", "%s", "%s"',
+                    ClassUtils::getClass($value),
                     $addMethod,
                     $removeMethod,
                     $getMethod

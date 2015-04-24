@@ -45,7 +45,7 @@ class NotificationExtension extends \Twig_Extension
     /**
      * Return the number of unread notifications for the currently logged in user
      *
-     * @return integer
+     * @return int
      */
     public function countNotifications()
     {

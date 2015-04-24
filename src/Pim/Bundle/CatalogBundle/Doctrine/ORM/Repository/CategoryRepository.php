@@ -38,9 +38,9 @@ class CategoryRepository extends NestedTreeRepository implements
      * Count children for a given category.
      *
      * @param CategoryInterface $category   the requested node
-     * @param boolean           $onlyDirect true to count only direct children
+     * @param bool              $onlyDirect true to count only direct children
      *
-     * @return integer
+     * @return int
      */
     public function countChildren(CategoryInterface $category, $onlyDirect = false)
     {
@@ -134,7 +134,7 @@ class CategoryRepository extends NestedTreeRepository implements
      * Shortcut to get all children query builder
      *
      * @param CategoryInterface $category    the requested node
-     * @param boolean           $includeNode true to include actual node in query result
+     * @param bool              $includeNode true to include actual node in query result
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -205,7 +205,7 @@ class CategoryRepository extends NestedTreeRepository implements
     /**
      * Get children from a parent id
      *
-     * @param integer $parentId
+     * @param int $parentId
      *
      * @return ArrayCollection
      */
@@ -222,8 +222,8 @@ class CategoryRepository extends NestedTreeRepository implements
      * down to the node specified by select node id. Otherwise, the
      * whole tree will be returned
      *
-     * @param integer $parentId
-     * @param integer $selectNodeId
+     * @param int $parentId
+     * @param int $selectNodeId
      *
      * @return ArrayCollection
      */
@@ -348,8 +348,8 @@ class CategoryRepository extends NestedTreeRepository implements
      * Search is done on a "%value%" LIKE expression.
      * Criterias are joined with a AND operator
      *
-     * @param integer $treeRootId Tree segment root id
-     * @param array   $criterias  Criterias to apply
+     * @param int   $treeRootId Tree segment root id
+     * @param array $criterias  Criterias to apply
      *
      * @return ArrayCollection
      */

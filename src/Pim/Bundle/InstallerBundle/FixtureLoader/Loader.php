@@ -40,7 +40,7 @@ class Loader implements LoaderInterface
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /** @var boolean */
+    /** @var bool */
     protected $multiple;
 
     /** @var MediaManager */
@@ -54,7 +54,7 @@ class Loader implements LoaderInterface
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher
-     * @param boolean                  $multiple
+     * @param bool                     $multiple
      * @param ProductManager           $productManager
      */
     public function __construct(

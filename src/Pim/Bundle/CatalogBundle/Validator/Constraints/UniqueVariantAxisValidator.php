@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,6 +24,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
 
     /**
      * Constructor
+     *
      * @param ProductManager $manager
      */
     public function __construct(ProductManager $manager)
@@ -82,8 +83,6 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @param ProductInterface $product
      * @param Constraint       $constraint
-     *
-     * @return null
      */
     protected function validateProduct(ProductInterface $product, Constraint $constraint)
     {

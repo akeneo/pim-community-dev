@@ -115,7 +115,8 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * @param  AttributeInterface $attribute
+     * @param AttributeInterface $attribute
+     *
      * @return array
      */
     protected function getChoiceUrlParams(AttributeInterface $attribute)

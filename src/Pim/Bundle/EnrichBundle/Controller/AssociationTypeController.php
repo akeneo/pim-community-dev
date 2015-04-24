@@ -106,6 +106,7 @@ class AssociationTypeController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_association_type_index")
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -120,6 +121,7 @@ class AssociationTypeController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_association_type_create")
+     *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
@@ -150,10 +152,11 @@ class AssociationTypeController extends AbstractDoctrineController
      * Edit an association type
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template
      * @AclAncestor("pim_enrich_association_type_edit")
+     *
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -179,6 +182,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param AssociationType $associationType
      *
      * @AclAncestor("pim_enrich_association_type_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction(AssociationType $associationType)

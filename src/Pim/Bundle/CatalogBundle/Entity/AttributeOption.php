@@ -28,7 +28,7 @@ class AttributeOption implements AttributeOptionInterface
     /**
      * Overrided to change target entity name
      *
-     * @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface $attribute
+     * @var \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      */
     protected $attribute;
 
@@ -37,7 +37,8 @@ class AttributeOption implements AttributeOptionInterface
 
     /**
      * Not persisted, allows to define the value locale
-     * @var string $locale
+     *
+     * @var string
      */
     protected $locale;
 

@@ -24,7 +24,8 @@ class GroupFieldRemoverSpec extends ObjectBehavior
         $this->shouldImplement('\Pim\Bundle\CatalogBundle\Updater\Remover\FieldRemoverInterface');
     }
 
-    function it_supports_groups_field() {
+    function it_supports_groups_field()
+    {
         $this->supportsField('groups')->shouldReturn(true);
         $this->supportsField('categories')->shouldReturn(false);
     }

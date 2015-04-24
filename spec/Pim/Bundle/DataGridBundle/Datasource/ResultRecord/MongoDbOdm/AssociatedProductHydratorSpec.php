@@ -148,13 +148,13 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
                                     [
                                         '$eq' => [
                                             '$_id',
-                                            \MongoId::__set_state(['$id' => '550ae6b98ead0ed7778b46bb',]),
+                                            \MongoId::__set_state(['$id' => '550ae6b98ead0ed7778b46bb']),
                                         ],
                                     ],
                                     [
                                         '$eq' => [
                                             '$_id',
-                                            \MongoId::__set_state(['$id' => '550ae6b98abd0ec8778b46bb',]),
+                                            \MongoId::__set_state(['$id' => '550ae6b98abd0ec8778b46bb']),
                                         ],
                                     ],
                                 ],
@@ -170,15 +170,15 @@ class AssociatedProductHydratorSpec extends ObjectBehavior
                     'is_associated' => -1,
                 ]
             ],
-            ['$skip' => 0,],
-            ['$limit' => 10,],
+            ['$skip' => 0],
+            ['$limit' => 10],
         ];
 
         $collection->aggregate($pipeline)
             ->willReturn($arrayIterator);
 
         $fixture = [
-            '_id'            => \MongoId::__set_state(['$id' => '550ae6b98ead0ee8778b46bb',]),
+            '_id'            => \MongoId::__set_state(['$id' => '550ae6b98ead0ee8778b46bb']),
             'normalizedData' => [],
             'sku'            => [
                 'attribute' => ['code' => 'sku', 'attributeType' => 'text', 'backendType' => 'text'],

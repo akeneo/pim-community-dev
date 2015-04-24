@@ -129,9 +129,9 @@ class FixturesContext extends RawMinkContext
      * @param string $method
      * @param array  $args
      *
-     * @return mixed
-     *
      * @throws \BadMethodCallException
+     *
+     * @return mixed
      */
     public function __call($method, $args)
     {
@@ -598,10 +598,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param integer $attributeCount
-     * @param string  $filterable
-     * @param string  $type
-     * @param integer $optionCount
+     * @param int    $attributeCount
+     * @param string $filterable
+     * @param string $type
+     * @param int    $optionCount
      *
      * @Given /^(\d+) (filterable )?(simple|multi) select attributes with (\d+) options per attribute$/
      */
@@ -676,7 +676,7 @@ class FixturesContext extends RawMinkContext
             assertEquals($data['metric_family'], $attribute->getMetricFamily());
             assertEquals($data['default_metric_unit'], $attribute->getDefaultMetricUnit());
 
-            if(isset($data['reference_data_name'])) {
+            if (isset($data['reference_data_name'])) {
                 assertEquals($data['reference_data_name'], $attribute->getReferenceDataName());
             }
         }
@@ -1062,7 +1062,6 @@ class FixturesContext extends RawMinkContext
      * @param string    $products
      * @param TableNode $table
      *
-     * @return null
      *
      * @Given /^the options "([^"]*)" of products? (.*) should be:$/
      */
@@ -1091,7 +1090,7 @@ class FixturesContext extends RawMinkContext
                 assertContains(
                     $value,
                     $optionCodes,
-                    sprintf('"%s" does not contain "%s"', join(', ', $optionCodes->toArray()), $value)
+                    sprintf('"%s" does not contain "%s"', implode(', ', $optionCodes->toArray()), $value)
                 );
             }
         }
@@ -1162,7 +1161,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @return null
      *
      * @Given /^the following CSV configuration to import:$/
      */
@@ -1171,7 +1169,7 @@ class FixturesContext extends RawMinkContext
         $delimiter = ';';
 
         $data = $table->getRowsHash();
-        $columns = join($delimiter, array_keys($data));
+        $columns = implode($delimiter, array_keys($data));
 
         $rows = [];
         foreach ($data as $values) {
@@ -1182,14 +1180,14 @@ class FixturesContext extends RawMinkContext
         }
         $rows = array_map(
             function ($row) use ($delimiter) {
-                return join($delimiter, $row);
+                return implode($delimiter, $row);
             },
             $rows
         );
 
         array_unshift($rows, $columns);
 
-        return $this->theFollowingFileToImport('csv', new PyStringNode(join("\n", $rows)));
+        return $this->theFollowingFileToImport('csv', new PyStringNode(implode("\n", $rows)));
     }
 
     /**
@@ -1316,7 +1314,6 @@ class FixturesContext extends RawMinkContext
      * @param string $productCode
      * @param string $categoryCodes
      *
-     * @return null
      *
      * @Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
      */
@@ -1349,6 +1346,7 @@ class FixturesContext extends RawMinkContext
      * @param array  $products
      *
      * @Then /^"([^"]*)" group should contain "([^"]*)"$/
+     *
      * @throws \Exception
      */
     public function groupShouldContain($group, $products)
@@ -1403,9 +1401,9 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $sku
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     public function getProduct($sku)
     {
@@ -1679,9 +1677,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string  $code
-     * @param string  $label
-     * @param boolean $isVariant
+     * @param string $code
+     * @param string $label
+     * @param bool   $isVariant
      *
      * @return \Pim\Bundle\CatalogBundle\Model\GroupTypeInterface
      */
@@ -1805,7 +1803,7 @@ class FixturesContext extends RawMinkContext
 
         $categories = $this->loadFixture('categories', $data);
 
-        /**
+        /*
          * When using ODM, one must persist and flush category without product
          * before adding and persisting products inside it
          */
@@ -2290,8 +2288,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param object  $object
-     * @param boolean $flush
+     * @param object $object
+     * @param bool   $flush
      */
     protected function persist($object, $flush = true)
     {
@@ -2304,8 +2302,8 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param object  $object
-     * @param boolean $flush
+     * @param object $object
+     * @param bool   $flush
      */
     protected function remove($object, $flush = true)
     {
@@ -2319,8 +2317,6 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param object $object
-     *
-     * @return null
      */
     protected function flush($object = null)
     {

@@ -13,7 +13,7 @@ class ObjectNotFoundException extends \Exception
 {
     /**
      * @param string    $message
-     * @param integer   $code
+     * @param int       $code
      * @param Exception $previous
      */
     public function __construct($message = 'Object was not found.', $code = 0, $previous = null)

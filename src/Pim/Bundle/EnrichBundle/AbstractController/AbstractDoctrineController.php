@@ -113,8 +113,8 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Persist an object
      *
-     * @param object  $object
-     * @param boolean $flush
+     * @param object $object
+     * @param bool   $flush
      */
     protected function persist($object, $flush = true)
     {
@@ -129,8 +129,8 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Remove an object
      *
-     * @param object  $object
-     * @param boolean $flush
+     * @param object $object
+     * @param bool   $flush
      */
     protected function remove($object, $flush = true)
     {
@@ -145,10 +145,11 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Find an entity or throw a 404
      *
-     * @param string  $className Example: 'PimCatalogBundle:Category'
-     * @param integer $id        The id of the entity
+     * @param string $className Example: 'PimCatalogBundle:Category'
+     * @param int    $id        The id of the entity
      *
      * @throws NotFoundHttpException
+     *
      * @return object
      */
     protected function findOr404($className, $id)

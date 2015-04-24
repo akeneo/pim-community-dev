@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Saver;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class GroupSavingOptionsResolverSpec extends ObjectBehavior

@@ -57,7 +57,7 @@ class AssociationController
      * Display association grids
      *
      * @param Request $request the request
-     * @param integer $id      the product id (owner)
+     * @param int     $id      the product id (owner)
      *
      * @AclAncestor("pim_enrich_associations_view")
      *
@@ -81,11 +81,11 @@ class AssociationController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
-     *
-     * @return ProductInterface
+     * @param int $id the product id
      *
      * @throws NotFoundHttpException
+     *
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {

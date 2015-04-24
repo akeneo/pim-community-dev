@@ -193,18 +193,24 @@ class ReferenceDataAttributeCopierSpec extends ObjectBehavior
 
 class CustomProductValue extends AbstractProductValue
 {
-    public function setColor(ReferenceDataInterface $referenceData = null) { }
-    public function getColor() { }
+    public function setColor(ReferenceDataInterface $referenceData = null)
+    {
+    }
+    public function getColor()
+    {
+    }
 }
 
 class InvalidGetterCustomProductValue extends AbstractProductValue
 {
-    public function setColor(ReferenceDataInterface $referenceData = null) { }
+    public function setColor(ReferenceDataInterface $referenceData = null)
+    {
+    }
 }
 
 class InvalidSetterCustomProductValue extends AbstractProductValue
 {
-    public function getColor() { }
+    public function getColor()
+    {
+    }
 }
-
-

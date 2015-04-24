@@ -35,7 +35,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /** @var ProductTemplateApplierInterface */
     protected $productTplApplier;
 
-    /** @var boolean */
+    /** @var bool */
     protected $copyValues = true;
 
     /**
@@ -87,7 +87,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * Set copy values on products behavior
      *
-     * @param boolean $apply
+     * @param bool $apply
      */
     public function setCopyValues($apply)
     {
@@ -97,7 +97,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     /**
      * Is copy values on products
      *
-     * @return boolean
+     * @return bool
      */
     public function isCopyValues()
     {
@@ -156,7 +156,7 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @param integer $nbProducts
+     * @param int $nbProducts
      */
     protected function incrementUpdatedProductsCount($nbProducts)
     {
@@ -164,8 +164,8 @@ class VariantGroupWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @param integer $nbSkippedProducts
-     * @param array   $skippedMessages
+     * @param int   $nbSkippedProducts
+     * @param array $skippedMessages
      */
     protected function incrementSkippedProductsCount($nbSkippedProducts, $skippedMessages)
     {

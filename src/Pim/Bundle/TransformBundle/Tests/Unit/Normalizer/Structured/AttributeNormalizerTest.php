@@ -46,6 +46,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
      * @dataProvider getNormalizeData
      */
     public function testNormalize(array $data)

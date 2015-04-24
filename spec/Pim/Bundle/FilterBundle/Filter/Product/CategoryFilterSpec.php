@@ -3,12 +3,12 @@
 namespace spec\Pim\Bundle\FilterBundle\Filter\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Symfony\Component\Form\FormFactoryInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
 {
@@ -77,5 +77,4 @@ class CategoryFilterSpec extends ObjectBehavior
 
         $this->apply($datasource, ['value' => ['categoryId' => 42], 'type' => true]);
     }
-
 }

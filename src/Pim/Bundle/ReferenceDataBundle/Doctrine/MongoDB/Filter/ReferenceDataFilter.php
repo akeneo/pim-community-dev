@@ -90,9 +90,9 @@ class ReferenceDataFilter extends AbstractAttributeFilter implements AttributeFi
     /**
      * Apply the filter to the query with the given operator
      *
-     * @param string       $operator
-     * @param null|integer $value
-     * @param string       $field
+     * @param string   $operator
+     * @param null|int $value
+     * @param string   $field
      */
     protected function applyFilter($operator, $value, $field)
     {

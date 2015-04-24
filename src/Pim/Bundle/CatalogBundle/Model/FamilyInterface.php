@@ -17,7 +17,7 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 

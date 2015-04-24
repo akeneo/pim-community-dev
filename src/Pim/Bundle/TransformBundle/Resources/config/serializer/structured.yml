@@ -36,8 +36,8 @@ services:
     # Normalizers
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
-        calls:
-            - [setFilters, [['@pim_serializer.filter.product_value']]]
+        arguments:
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

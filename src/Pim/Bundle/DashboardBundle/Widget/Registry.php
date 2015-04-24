@@ -18,7 +18,7 @@ class Registry
      * Add a widget to the register
      *
      * @param WidgetInterface $widget
-     * @param integer         $position
+     * @param int             $position
      */
     public function add(WidgetInterface $widget, $position)
     {

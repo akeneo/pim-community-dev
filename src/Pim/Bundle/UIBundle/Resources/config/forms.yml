@@ -57,6 +57,5 @@ services:
         class: %pim_ui.form.transformer.ajax_reference_data.factory.class%
         arguments:
             - '@doctrine'
-            - '@pim_reference_data.datagrid_renderer'
+            - '@pim_reference_data.label_renderer'
             - %pim_ui.form.transformer.ajax_reference_data.class%
-

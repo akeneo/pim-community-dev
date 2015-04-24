@@ -19,12 +19,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class SequentialEditActionHandler implements MassActionHandlerInterface
 {
     /**
-     * @var HydratorInterface $hydrator
+     * @var HydratorInterface
      */
     protected $hydrator;
 
     /**
-     * @var EventDispatcherInterface $eventDispatcher
+     * @var EventDispatcherInterface
      */
     protected $eventDispatcher;
 

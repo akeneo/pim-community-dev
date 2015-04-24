@@ -21,7 +21,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     protected $serializer;
 
     /**
-     * @var string[] $supportedFormats
+     * @var string[]
      */
     protected $supportedFormats = ['json', 'xml'];
 

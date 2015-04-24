@@ -129,10 +129,10 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      *
-     * @param array   $trees
-     * @param integer $selectedTreeId
-     * @param boolean $resultCount
-     * @param array   $expectedResult
+     * @param array $trees
+     * @param int   $selectedTreeId
+     * @param bool  $resultCount
+     * @param array $expectedResult
      *
      * @dataProvider dataProviderListTrees
      */
@@ -155,7 +155,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * Define result returned when count products in a category
      *
-     * @param integer $resultCount
+     * @param int $resultCount
      */
     protected function defineCategoryCountResult($resultCount)
     {

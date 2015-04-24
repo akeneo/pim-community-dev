@@ -9,7 +9,8 @@ use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface
 
 class ReferenceDataGuesserSpec extends ObjectBehavior
 {
-    function let(PropertyTransformerInterface $transformer) {
+    function let(PropertyTransformerInterface $transformer)
+    {
         $this->beConstructedWith($transformer);
     }
 

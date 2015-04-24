@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

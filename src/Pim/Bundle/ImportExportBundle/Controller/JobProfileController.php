@@ -165,7 +165,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Show a job instance
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -218,7 +218,7 @@ class JobProfileController extends AbstractDoctrineController
      * Edit a job instance
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -269,7 +269,7 @@ class JobProfileController extends AbstractDoctrineController
      * Remove a job
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -301,7 +301,7 @@ class JobProfileController extends AbstractDoctrineController
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function validate(JobInstance $jobInstance)
     {
@@ -315,7 +315,7 @@ class JobProfileController extends AbstractDoctrineController
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function validateUpload(JobInstance $jobInstance)
     {
@@ -329,7 +329,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Launch a job from uploaded file
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -355,7 +355,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Launch a job
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -383,7 +383,7 @@ class JobProfileController extends AbstractDoctrineController
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function processUploadForm(JobInstance $jobInstance)
     {
@@ -409,7 +409,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Allow to validate and run the job
      *
-     * @param boolean     $isUpload
+     * @param bool        $isUpload
      * @param JobInstance $jobInstance
      *
      * @return JobInstance
@@ -439,7 +439,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param JobInstance $jobInstance
      * @param File        $file
      *
-     * @return boolean
+     * @return bool
      */
     protected function configureUploadJob(JobInstance $jobInstance, File $file)
     {
@@ -474,12 +474,12 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Get a job instance
      *
-     * @param integer $id
-     * @param boolean $checkStatus
-     *
-     * @return Job|RedirectResponse
+     * @param int  $id
+     * @param bool $checkStatus
      *
      * @throws NotFoundHttpException
+     *
+     * @return Job|RedirectResponse
      */
     protected function getJobInstance($id, $checkStatus = true)
     {
@@ -536,7 +536,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Redirect to the show view
      *
-     * @param integer $jobId
+     * @param int $jobId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -551,7 +551,7 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Redirect to the report view
      *
-     * @param integer $jobId
+     * @param int $jobId
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */

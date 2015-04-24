@@ -4,10 +4,10 @@ namespace Pim\Bundle\ImportExportBundle\Manager;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -56,7 +56,7 @@ class JobManager implements SaverInterface, RemoverInterface
      * @param UserInterface $user
      * @param string        $rootDir
      * @param string        $environment
-     * @param boolean       $uploadMode
+     * @param bool          $uploadMode
      *
      * @return JobExecution
      */
@@ -137,8 +137,9 @@ class JobManager implements SaverInterface, RemoverInterface
      * @param JobInstance   $jobInstance
      * @param UserInterface $user
      *
-     * @return JobExecution
      * @throws \Exception
+     *
+     * @return JobExecution
      */
     protected function create(JobInstance $jobInstance, UserInterface $user)
     {

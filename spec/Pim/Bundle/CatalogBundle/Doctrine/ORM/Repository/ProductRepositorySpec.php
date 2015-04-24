@@ -7,8 +7,8 @@ use Doctrine\DBAL\Driver\Statement;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
+use Prophecy\Argument;
 
 class ProductRepositorySpec extends ObjectBehavior
 {

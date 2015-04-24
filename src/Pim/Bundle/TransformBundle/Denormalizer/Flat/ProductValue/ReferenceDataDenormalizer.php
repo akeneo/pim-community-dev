@@ -17,7 +17,7 @@ class ReferenceDataDenormalizer extends AbstractValueDenormalizer
     protected $repositoryResolver;
 
     /**
-     * @param array                                   $supportedTypes
+     * @param array                                    $supportedTypes
      * @param ReferenceDataRepositoryResolverInterface $repositoryResolver
      */
     public function __construct(

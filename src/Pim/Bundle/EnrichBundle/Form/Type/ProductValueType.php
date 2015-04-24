@@ -31,7 +31,7 @@ class ProductValueType extends AbstractType
     protected $valueClass;
 
     /**
-     * @var ProductFormViewInterface $productFormView
+     * @var ProductFormViewInterface
      */
     protected $productFormView;
 

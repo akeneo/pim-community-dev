@@ -20,10 +20,10 @@ interface UpdaterInterface
      * @param array  $data    The data to update
      * @param array  $options The options to use
      *
-     * @return object
-     *
      * @throws BusinessValidationException
      * @throws \InvalidArgumentException
+     *
+     * @return object
      */
     public function update($object, array $data, array $options = []);
 }

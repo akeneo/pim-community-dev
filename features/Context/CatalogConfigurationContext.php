@@ -2,10 +2,10 @@
 
 namespace Context;
 
-use Context\Loader\ReferenceDataLoader;
-use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Loader\ReferenceDataLoader;
 use Doctrine\Common\DataFixtures\Event\Listener\ORMReferenceListener;
+use Doctrine\Common\DataFixtures\ReferenceRepository;
 
 /**
  * A context for initializing catalog configuration
@@ -124,9 +124,9 @@ class CatalogConfigurationContext extends RawMinkContext
      *
      * @param string $catalog
      *
-     * @return string[]
-     *
      * @throws ExpectationException If configuration is not found
+     *
+     * @return string[]
      */
     protected function getConfigurationFiles($catalog)
     {
@@ -157,9 +157,9 @@ class CatalogConfigurationContext extends RawMinkContext
      * @param string[]    $files
      * @param string|null $fileName
      *
-     * @return string|null
-     *
      * @throws ExpectationException If the requested file is not found
+     *
+     * @return string|null
      */
     protected function getLoaderFile($files, $fileName)
     {
@@ -193,6 +193,7 @@ class CatalogConfigurationContext extends RawMinkContext
 
     /**
      * Run an entity loader
+     *
      * @param string $loaderClass
      * @param string $filePath
      */

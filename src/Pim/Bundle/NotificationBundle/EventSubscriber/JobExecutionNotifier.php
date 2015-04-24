@@ -48,8 +48,6 @@ class JobExecutionNotifier implements EventSubscriberInterface
      * Notify a user of the end of the job
      *
      * @param JobExecutionEvent $event
-     *
-     * @return null
      */
     public function afterJobExecution(JobExecutionEvent $event)
     {

@@ -18,7 +18,7 @@ class ReferenceDataLoader
      *
      * @param \Doctrine\Common\Persistence\ObjectManager $manager
      */
-    function load(ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         $query = $manager->createQuery('SELECT COUNT(f) FROM \Acme\Bundle\AppBundle\Entity\Fabric f');
         if (0 === $query->getSingleScalarResult()) {

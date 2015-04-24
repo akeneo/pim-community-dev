@@ -21,7 +21,8 @@ class ReferenceDataTransformer implements PropertyTransformerInterface
      *
      * @param ConfigurationRegistryInterface $registry
      */
-    public function __construct(ConfigurationRegistryInterface $registry = null) {
+    public function __construct(ConfigurationRegistryInterface $registry = null)
+    {
         $this->registry = $registry;
     }
 

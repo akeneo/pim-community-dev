@@ -2,16 +2,16 @@
 
 namespace Context;
 
+use Behat\Behat\Event\StepEvent;
+use Behat\Behat\Exception\BehaviorException;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Exception\BehaviorException;
-use Behat\Behat\Event\StepEvent;
-use Behat\Mink\Exception\ExpectationException;
-use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Gherkin\Node\PyStringNode;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 
 /**
  * Main feature context
@@ -28,12 +28,14 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
+     *
      * @var string
      */
     protected $excludedTablesFile = 'excluded_tables.yml';
 
     /**
      * Register contexts
+     *
      * @param array $parameters
      */
     public function __construct(array $parameters)
@@ -270,8 +272,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Wait
      *
-     * @param integer $time
-     * @param string  $condition
+     * @param int    $time
+     * @param string $condition
      *
      * @throws BehaviorException If timeout is reached
      */
@@ -351,7 +353,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @param string $script
      *
-     * @return boolean Success or failure
+     * @return bool Success or failure
      */
     public function executeScript($script)
     {

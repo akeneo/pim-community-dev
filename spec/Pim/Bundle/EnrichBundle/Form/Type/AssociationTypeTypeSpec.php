@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -42,7 +41,6 @@ class AssociationTypeTypeSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->buildForm($builder, []);
-
     }
 
     function it_sets_default_options(OptionsResolverInterface $resolver)

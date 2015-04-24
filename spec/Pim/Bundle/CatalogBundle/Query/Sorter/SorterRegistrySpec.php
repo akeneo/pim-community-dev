@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\CatalogBundle\Query\Sorter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Query\Sorter\FieldSorterInterface;
 
 class SorterRegistrySpec extends ObjectBehavior
 {

@@ -28,27 +28,27 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 class NavigationContext extends RawMinkContext implements PageObjectAwareInterface
 {
     /**
-     * @var string|null $currentPage
+     * @var string|null
      */
     public $currentPage = null;
 
     /**
-     * @var string $username
+     * @var string
      */
     protected $username = null;
 
     /**
-     * @var string $password
+     * @var string
      */
     protected $password = null;
 
     /**
-     * @var PageFactory $pageFactory
+     * @var PageFactory
      */
     protected $pageFactory = null;
 
     /**
-     * @var array $pageMapping
+     * @var array
      */
     protected $pageMapping = [
         'association types'        => 'AssociationType index',
@@ -701,10 +701,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param integer $time
-     * @param string  $condition
-     *
-     * @return void
+     * @param int    $time
+     * @param string $condition
      */
     protected function wait($time = 10000, $condition = null)
     {

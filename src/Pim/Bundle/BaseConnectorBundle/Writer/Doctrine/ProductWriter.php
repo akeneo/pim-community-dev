@@ -33,7 +33,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var boolean */
+    /** @var bool */
     protected $realTimeVersioning = true;
 
     /** @var BulkSaverInterface */
@@ -75,7 +75,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Set real time versioning
      *
-     * @param boolean $realTime
+     * @param bool $realTime
      */
     public function setRealTimeVersioning($realTime)
     {
@@ -85,7 +85,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Is real time versioning
      *
-     * @return boolean
+     * @return bool
      */
     public function isRealTimeVersioning()
     {

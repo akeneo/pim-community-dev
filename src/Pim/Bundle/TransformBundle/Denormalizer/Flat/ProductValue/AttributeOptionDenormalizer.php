@@ -5,8 +5,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Attribute option flat denormalizer used for following attribute types:
@@ -83,6 +83,7 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 
     /**
      * Define context requirements
+     *
      * @param OptionsResolverInterface $resolver
      */
     protected function configContext(OptionsResolverInterface $resolver)

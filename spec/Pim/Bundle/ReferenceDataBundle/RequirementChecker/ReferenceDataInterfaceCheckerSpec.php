@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\ReferenceDataBundle\RequirementChecker;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use Prophecy\Argument;
 
 class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
 {
@@ -35,10 +34,22 @@ class ReferenceDataInterfaceCheckerSpec extends ObjectBehavior
 
 class ReferenceDataColor implements ReferenceDataInterface
 {
-    public function getId() { }
-    public function getCode() { }
-    public function setCode($code) { }
-    public function getSortOrder() { }
-    public static function getLabelProperty() {}
-    public function __toString() { }
+    public function getId()
+    {
+    }
+    public function getCode()
+    {
+    }
+    public function setCode($code)
+    {
+    }
+    public function getSortOrder()
+    {
+    }
+    public static function getLabelProperty()
+    {
+    }
+    public function __toString()
+    {
+    }
 }

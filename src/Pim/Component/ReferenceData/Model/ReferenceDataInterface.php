@@ -46,8 +46,8 @@ interface ReferenceDataInterface
      * If no property is returned, the [code] of the reference data will be
      * diplayed in the PIM.
      *
-    * @return string|null
-    */
+     * @return string|null
+     */
     public static function getLabelProperty();
 
     /**

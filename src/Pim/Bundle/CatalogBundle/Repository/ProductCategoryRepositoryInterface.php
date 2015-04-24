@@ -45,16 +45,16 @@ interface ProductCategoryRepositoryInterface
      * @param CategoryInterface $category   the requested category node
      * @param QueryBuilder      $categoryQb category query buider
      *
-     * @return integer
+     * @return int
      */
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
     /**
      * Apply a filter by product ids
      *
-     * @param mixed   $qb         query builder to update
-     * @param array   $productIds product ids
-     * @param boolean $include    true for in, false for not in
+     * @param mixed $qb         query builder to update
+     * @param array $productIds product ids
+     * @param bool  $include    true for in, false for not in
      */
     public function applyFilterByIds($qb, array $productIds, $include);
 
@@ -68,10 +68,10 @@ interface ProductCategoryRepositoryInterface
     /**
      * Apply a filter by category ids
      *
-     * @param mixed   $qb          query builder to update
-     * @param array   $categoryIds category ids
-     * @param boolean $include     if yes, get product in those categories, if false
-     *                             products NOT in those categories
+     * @param mixed $qb          query builder to update
+     * @param array $categoryIds category ids
+     * @param bool  $include     if yes, get product in those categories, if false
+     *                           products NOT in those categories
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include = true);
 
