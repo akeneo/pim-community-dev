@@ -216,6 +216,7 @@ define(
                 return UserContext.get('catalogLocale');
             },
             postValidationError: function () {
+                this.render();
                 this.extensions['attribute-group-selector'].removeBadges();
                 _.each(FieldManager.getFields(), function (field) {
                     if (!field.getValid()) {

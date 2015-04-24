@@ -34,7 +34,7 @@ define(
                 return this;
             },
             save: function () {
-                var product   = this.getData();
+                var product = $.extend(true, {}, this.getData());
                 var productId = product.meta.id;
 
                 delete product.variant_group;
