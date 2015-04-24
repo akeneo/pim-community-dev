@@ -22,4 +22,14 @@ interface UploaderInterface
      * @param string $type
      */
     public function massUpload($directory, $type);
+
+    /**
+     * Upload one file that already exists on the file system to see if an exception is thrown
+     */
+    public function uploadAlreadyExistent();
+
+    /**
+     * Download one file that does not exist on the file system to see if an exception is thrown
+     */
+    public function downloadNonExistent();
 }

@@ -36,6 +36,22 @@ class FlySystemUploader implements UploaderInterface
         }
     }
 
+    public function uploadAlreadyExistent()
+    {
+        @touch(UploaderInterface::LOCAL_DESTINATION . 'already.there');
+
+        $fs = $this->createDestinationFileSystem('local');
+
+        return $fs->write('already.there', 'It is a test!');
+    }
+
+    public function downloadNonExistent()
+    {
+        $fs = $this->createDestinationFileSystem('local');
+
+        return $fs->readStream('not.there');
+    }
+
     /**
      * @param string $type
      *
