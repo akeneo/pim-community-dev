@@ -8,11 +8,9 @@ define(
         'pim/field-manager',
         'pimee/permission-manager',
         'oro/mediator',
-        'text!pimee/template/product/tab/attribute/read-only-attribute-group'
     ],
-    function (_, Backbone, BaseForm, FieldManager, PermissionManager, mediator, readOnlyTemplate) {
+    function (_, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
-            template: _.template(readOnlyTemplate),
             configure: function() {
                 mediator.on('field:extension:add', _.bind(this.addExtension, this));
 

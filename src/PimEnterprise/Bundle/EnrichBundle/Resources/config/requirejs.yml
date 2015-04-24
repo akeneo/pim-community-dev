@@ -16,8 +16,6 @@ config:
 
         # Templates
         pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
-        pimee/template/product/tab/attribute/read-only-locale:          pimenterpriseenrich/templates/product/tab/attributes/read-only-locale.html
-        pimee/template/product/tab/attribute/read-only-attribute-group: pimenterpriseenrich/templates/product/tab/attributes/read-only-attribute-group.html
         pimee/template/product/panel/history/published:                 pimenterpriseenrich/templates/product/panel/history/published.html
         pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
         pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html
