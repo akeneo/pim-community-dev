@@ -43,9 +43,6 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var string */
-    protected $massEditType;
-
     /** @var MassEditRepositoryInterface */
     protected $massEditRepository;
 
@@ -54,20 +51,17 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      * @param ObjectManager                       $objectManager
      * @param JobRepositoryInterface              $jobRepository
      * @param MassEditRepositoryInterface         $massEditRepository
-     * @param string                              $massEditType
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         ObjectManager $objectManager,
         JobRepositoryInterface $jobRepository,
-        MassEditRepositoryInterface $massEditRepository,
-        $massEditType
+        MassEditRepositoryInterface $massEditRepository
     ) {
         $this->pqbFactory         = $pqbFactory;
         $this->objectManager      = $objectManager;
         $this->jobRepository      = $jobRepository;
         $this->massEditRepository = $massEditRepository;
-        $this->massEditType       = $massEditType;
     }
 
     /**
