@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,14 +22,22 @@ class LocaleRestController
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var CollectionFilterInterface */
+    protected $collectionFilter;
+
     /**
      * @param LocaleRepositoryInterface $localeRepository
      * @param NormalizerInterface       $normalizer
+     * @param CollectionFilterInterface $collectionFilter
      */
-    public function __construct(LocaleRepositoryInterface $localeRepository, NormalizerInterface $normalizer)
-    {
+    public function __construct(
+        LocaleRepositoryInterface $localeRepository,
+        NormalizerInterface $normalizer,
+        CollectionFilterInterface $collectionFilter
+    ) {
         $this->localeRepository = $localeRepository;
         $this->normalizer       = $normalizer;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -38,12 +47,9 @@ class LocaleRestController
      */
     public function indexAction()
     {
-        $locales = $this->localeRepository->getActivatedLocales();
-
-        $normalizedLocales = [];
-        foreach ($locales as $locale) {
-            $normalizedLocales[] = $this->normalizer->normalize($locale, 'internal_api');
-        }
+        $locales           = $this->localeRepository->getActivatedLocales();
+        $fitleredLocales   = $this->collectionFilter->filterCollection($locales, 'pim:internal_api:locale:view');
+        $normalizedLocales = $this->normalizer->normalize($fitleredLocales, 'internal_api');
 
         return new JsonResponse($normalizedLocales);
     }

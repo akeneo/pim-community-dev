@@ -24,7 +24,7 @@ define(
                         {
                             'class': 'PimCatalogBundle:AttributeOption',
                             'dataLocale': this.context.locale,
-                            'collectionCode': this.attribute.code,
+                            'collectionId': this.attribute.id,
                             'options': {'type': 'code'}
                         }
                     ),

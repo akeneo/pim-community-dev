@@ -58,7 +58,7 @@ class AttributeRestController
     {
         $attributes = $this->attributeRepository->findAll();
         $filteredAttributes = $this->collectionFilter->filterCollection($attributes, 'pim:internal_api:attribute:view');
-        $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'json');
+        $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
 
         return new JsonResponse($normalizedAttributes);
     }
@@ -79,6 +79,6 @@ class AttributeRestController
             throw new NotFoundHttpException(sprintf('Attribute with id "%s", does not exists', $id));
         }
 
-        return new JsonResponse($this->normalizer->normalize($attribute, 'json'));
+        return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));
     }
 }

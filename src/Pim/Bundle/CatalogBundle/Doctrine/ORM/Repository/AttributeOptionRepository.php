@@ -69,6 +69,7 @@ class AttributeOptionRepository extends EntityRepository implements
 
         $results = array();
         $autoSorting = null;
+
         foreach ($qb->getQuery()->getArrayResult() as $row) {
             if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
                 $autoSorting = $row['properties']['autoOptionSorting'];

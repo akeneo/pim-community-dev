@@ -308,7 +308,7 @@ services:
         class: %pim_enrich.controller.attribute_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.filter.chained'
 
@@ -343,6 +343,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.currency_rest:
         class: %pim_enrich.controller.currency_rest.class%

@@ -82,7 +82,7 @@ class AttributeGroupRestController
         if (null === $attributeGroup ||
             $this->objectFilter->filterObject($attributeGroup, 'pim:internal_api:attribute_group:view')
         ) {
-            throw new NotFoundHttpException('You are not authorized to see this attribute group');
+            throw new NotFoundHttpException(sprintf('No attribute group found for id "%s"', $id));
         }
 
         return new JsonResponse($this->normalizer->normalize($attributeGroup, 'json'));
