@@ -7,5 +7,7 @@ services:
     pim_reference_data.mongodb.normalizer.reference_data:
         class: %pim_reference_data.mongodb.normalizer.reference_data.class%
         public: false
+        arguments:
+            - '@pim_reference_data.label_renderer'
         tags:
             - { name: pim_serializer.normalizer }

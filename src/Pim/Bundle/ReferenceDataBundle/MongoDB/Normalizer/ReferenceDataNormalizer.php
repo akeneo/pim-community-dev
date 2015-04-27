@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer;
 
+use Pim\Component\ReferenceData\LabelRenderer;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,6 +15,19 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ReferenceDataNormalizer implements NormalizerInterface
 {
+    /** @var LabelRenderer */
+    protected $renderer;
+
+    /**
+     * Constructor
+     *
+     * @param LabelRenderer $renderer
+     */
+    public function __construct(LabelRenderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -23,6 +37,10 @@ class ReferenceDataNormalizer implements NormalizerInterface
             'id'   => $object->getId(),
             'code' => $object->getCode()
         ];
+
+        if (null !== $label = $this->renderer->render($object, false)) {
+            $data[$this->renderer->getLabelProperty($object)] = $label;
+        }
 
         return $data;
     }

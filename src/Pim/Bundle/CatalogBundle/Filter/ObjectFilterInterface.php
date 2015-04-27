@@ -20,7 +20,7 @@ interface ObjectFilterInterface
      *
      * @throws LogicException If the object is not supported
      *
-     * @return boolean Does the object should be filtered
+     * @return bool Does the object should be filtered
      */
     public function filterObject($object, $type, array $options = []);
 
@@ -31,7 +31,7 @@ interface ObjectFilterInterface
      * @param string $type    The type of objects in the collection
      * @param array  $options The filter options
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsObject($object, $type, array $options = []);
 }

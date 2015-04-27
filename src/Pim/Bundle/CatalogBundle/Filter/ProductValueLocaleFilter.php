@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Filter;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
