@@ -12,7 +12,7 @@ define(
     function (_, BaseForm, FieldManager, EntityManager, mediator, variantGroupTemplate) {
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
-            configure: function() {
+            configure: function () {
                 mediator.on('field:extension:add', _.bind(this.addExtension, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);

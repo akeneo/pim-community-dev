@@ -47,7 +47,6 @@ define([
                     this.$el.html(this.template(templateContext));
                     this.$('.form-field:not(".view") .field-input').append(this.renderInput(templateContext));
 
-
                     mediator.trigger('field:extension:add', {'field': this});
                     _.each(this.elements, _.bind(function (elements, position) {
                         var $container = this.$('.' + position + '-elements-container');
