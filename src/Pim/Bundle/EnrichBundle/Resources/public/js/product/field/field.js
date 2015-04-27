@@ -112,13 +112,13 @@ define([
 
                 this.render();
             },
-            addElement: function (position, code, element, render) {
+            addElement: function (position, code, element) {
                 if (!this.elements[position]) {
                     this.elements[position] = {};
                 }
                 this.elements[position][code] = element;
             },
-            removeElement: function (position, code, render) {
+            removeElement: function (position, code) {
                 if (this.elements[position] && this.elements[position][code]) {
                     delete this.elements[position][code];
                 }

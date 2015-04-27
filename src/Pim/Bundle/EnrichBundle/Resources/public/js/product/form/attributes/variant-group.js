@@ -5,8 +5,8 @@ define(
         'underscore',
         'pim/form',
         'pim/field-manager',
-        'oro/mediator',
         'pim/entity-manager',
+        'oro/mediator',
         'text!pim/template/product/tab/attribute/variant-group'
     ],
     function (_, BaseForm, FieldManager, EntityManager, mediator, variantGroupTemplate) {

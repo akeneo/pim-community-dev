@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'oro/mediator',
         'pim/form',
@@ -12,6 +13,7 @@ define(
         'pim/field-manager'
     ],
     function (
+        $,
         _,
         mediator,
         BaseForm,
