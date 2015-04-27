@@ -1,7 +1,0 @@
-parameters:
-#    pam_enterprise_asset_management.example.class: PamEnterprise\Bundle\AssetManagementBundle\Example
-
-services:
-#    pam_enterprise_asset_management.example:
-#        class: %pam_enterprise_asset_management.example.class%
-#        arguments: [@service_id, "plain_value", %parameter%]

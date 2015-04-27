@@ -1,6 +1,6 @@
 <?php
 
-namespace PamEnterprise\Bundle\AssetManagementBundle\DependencyInjection;
+namespace PamEnterprise\Bundle\ProductAssetBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class PamEnterpriseAssetManagementExtension extends Extension
+class PamEnterpriseProductAssetExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -24,6 +24,5 @@ class PamEnterpriseAssetManagementExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('models.yml');
-        $loader->load('services.yml');
     }
 }

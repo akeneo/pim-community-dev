@@ -1,13 +1,13 @@
 <?php
 
-namespace PamEnterprise\Bundle\AssetManagementBundle;
+namespace PamEnterprise\Bundle\ProductAssetBundle;
 
-use PamEnterprise\Bundle\AssetManagementBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use PamEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class PamEnterpriseAssetManagementBundle extends Bundle
+class PamEnterpriseProductAssetBundle extends Bundle
 {
     /**
      * {@inheritdoc}

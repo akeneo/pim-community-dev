@@ -1,6 +1,6 @@
 <?php
 
-namespace PamEnterprise\Bundle\AssetManagementBundle\DependencyInjection\Compiler;
+namespace PamEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
@@ -18,8 +18,8 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface' => 'pam_asset_management.model.asset.class',
-            'PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface' => 'pam_asset_management.model.asset_variation.class',
+            'PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface' => 'pamee_product_asset.model.asset.class',
+            'PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface' => 'pamee_product_asset.model.asset_variation.class',
         ];
     }
 }

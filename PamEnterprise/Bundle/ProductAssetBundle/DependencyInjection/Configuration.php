@@ -1,6 +1,6 @@
 <?php
 
-namespace PamEnterprise\Bundle\AssetManagementBundle\DependencyInjection;
+namespace PamEnterprise\Bundle\ProductAssetBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
