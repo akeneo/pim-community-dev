@@ -12,17 +12,14 @@ define(
     ],
     function (_, Backbone, BaseForm, mediator, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
-            validationErrors: null,
             initialize: function () {
                 mediator.on('validation_error', _.bind(this.validationError, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            validationError: function (data) {
-                this.validationErrors = data;
-
+            validationError: function (validationErrors) {
                 this.removeValidationErrors();
-                this.addValidationErrors(data);
+                this.addValidationErrors(validationErrors);
 
                 mediator.trigger('product:action:post_validation_error');
             },

@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Association type normalizer
+ * Attribute normalizer
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -14,9 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array $supportedFormats
-     */
+    /** @var array $supportedFormats */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */

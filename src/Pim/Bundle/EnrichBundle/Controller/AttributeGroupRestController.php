@@ -61,12 +61,12 @@ class AttributeGroupRestController
             'pim:internal_api:attribute_group:view'
         );
 
-        $normalizedAttributes = [];
+        $normalizedAttrGroups = [];
         foreach ($filteredAttrGroups as $attributeGroup) {
-            $normalizedAttributes[$attributeGroup->getCode()] = $this->normalizer->normalize($attributeGroup, 'json');
+            $normalizedAttrGroups[$attributeGroup->getCode()] = $this->normalizer->normalize($attributeGroup, 'json');
         }
 
-        return new JsonResponse($normalizedAttributes);
+        return new JsonResponse($normalizedAttrGroups);
     }
 
     /**
