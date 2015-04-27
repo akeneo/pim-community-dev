@@ -32,10 +32,12 @@ class AttributeOptionEventListener
 
     /**
      * On attribute deletion event
+     *
      * @param GenericEvent $event
      *
-     * @return GenericEvent
      * @throws PublishedProductConsistencyException
+     *
+     * @return GenericEvent
      */
     public function onAttributeOptionDelete(GenericEvent $event)
     {

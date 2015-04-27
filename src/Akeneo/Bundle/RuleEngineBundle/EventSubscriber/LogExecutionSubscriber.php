@@ -11,8 +11,8 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle\EventSubscriber;
 
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvent;
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Event\SkippedSubjectRuleEvent;
 use Psr\Log\LoggerInterface;

@@ -2,8 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Comparator;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Collections\ArrayCollection;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;

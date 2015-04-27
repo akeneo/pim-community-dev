@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -10,12 +11,7 @@ use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 class ProductsUpdaterSpec extends ObjectBehavior
 {

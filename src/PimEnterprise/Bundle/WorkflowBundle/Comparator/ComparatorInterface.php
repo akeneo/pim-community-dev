@@ -25,7 +25,7 @@ interface ComparatorInterface
      *
      * @param ProductValueInterface $value
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsComparison(ProductValueInterface $value);
 

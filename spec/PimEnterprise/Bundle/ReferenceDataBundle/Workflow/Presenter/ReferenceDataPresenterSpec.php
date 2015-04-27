@@ -2,25 +2,21 @@
 
 namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
-use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use Pim\Component\ReferenceData\Model\ConfigurationInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
+use Pim\Component\ReferenceData\Model\ConfigurationInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class ReferenceDataPresenterSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
         ReferenceDataRepositoryResolver $repositoryResolver
-    )
-    {
+    ) {
         $this->beConstructedWith($attributeRepository, $repositoryResolver);
     }
 

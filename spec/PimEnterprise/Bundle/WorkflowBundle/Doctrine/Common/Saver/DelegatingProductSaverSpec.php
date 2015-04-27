@@ -3,15 +3,13 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver;
 use Prophecy\Argument;
-use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class DelegatingProductSaverSpec extends ObjectBehavior

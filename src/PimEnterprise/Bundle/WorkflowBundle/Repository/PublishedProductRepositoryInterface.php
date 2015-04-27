@@ -12,10 +12,10 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -58,7 +58,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * Get the version that has been published for a given original product ID.
      * If none version has been published, null is returned.
      *
-     * @param integer|string $originalId
+     * @param int|string $originalId
      *
      * @return int|null
      */
@@ -79,7 +79,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @param FamilyInterface $family
      *
-     * @return integer
+     * @return int
      */
     public function countPublishedProductsForFamily(FamilyInterface $family);
 
@@ -88,7 +88,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @param integer[] $categoryIds
      *
-     * @return integer
+     * @return int
      */
     public function countPublishedProductsForCategoryAndChildren($categoryIds);
 
@@ -97,7 +97,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return integer
+     * @return int
      */
     public function countPublishedProductsForAttribute(AttributeInterface $attribute);
 
@@ -106,7 +106,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @param GroupInterface $group
      *
-     * @return integer
+     * @return int
      */
     public function countPublishedProductsForGroup(GroupInterface $group);
 
@@ -115,7 +115,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @param AssociationTypeInterface $associationType
      *
-     * @return integer
+     * @return int
      */
     public function countPublishedProductsForAssociationType(AssociationTypeInterface $associationType);
 
@@ -124,7 +124,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @param AttributeOptionInterface $option
      *
-     * @return integer
+     * @return int
      */
     public function countPublishedProductsForAttributeOption(AttributeOptionInterface $option);
 }

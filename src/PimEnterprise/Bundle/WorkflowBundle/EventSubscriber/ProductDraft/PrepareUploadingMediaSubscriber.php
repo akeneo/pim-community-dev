@@ -81,7 +81,7 @@ class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
      *
      * @param array $media
      *
-     * @return boolean
+     * @return bool
      */
     protected function isUploadingMedia(array $media)
     {

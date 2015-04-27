@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMedia;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -99,7 +99,7 @@ class ImagePresenter implements PresenterInterface
      *
      * @param array|ProductMedia $data
      *
-     * @return boolean
+     * @return bool
      */
     protected function isImageMimeType($data)
     {

@@ -2,10 +2,10 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Exception\BuilderException;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

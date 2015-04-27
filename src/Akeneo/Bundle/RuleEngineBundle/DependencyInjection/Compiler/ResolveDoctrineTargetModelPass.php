@@ -16,8 +16,7 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolv
 /**
  * Resolves doctrine ORM Target entities
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelPass
 {

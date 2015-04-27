@@ -4,16 +4,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Publishes a product
  *
- * @author    Nina Sarradin
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Nina Sarradin
  */
 class PublishProductCommand extends ContainerAwareCommand
 {
