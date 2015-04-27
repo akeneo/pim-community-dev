@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
@@ -172,11 +173,19 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      * Return the job configuration
      *
      * @return array
+     * @throws EntityNotFoundException
      */
     protected function getJobConfiguration()
     {
         $jobExecution    = $this->stepExecution->getJobExecution();
         $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
+
+        if (null === $massEditJobConf) {
+            throw new EntityNotFoundException(sprintf(
+                'No JobConfiguration found for jobExecution with id %s',
+                $jobExecution->getId()
+            ));
+        }
 
         return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
     }

@@ -42,7 +42,6 @@ class FilteredProductReaderSpec extends ObjectBehavior
         MassEditRepository $massEditRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
-        StepExecution $stepExecution,
         MassEditJobConfiguration $massEditJobConf,
         ProductQueryBuilderFactory $pqbFactory,
         ProductQueryBuilder $pqb,
@@ -68,5 +67,17 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $cursor->current()->willReturn($product);
 
         $this->read()->shouldReturn($product);
+    }
+
+    function it_throws_an_exception_if_no_config_is_found(
+        MassEditRepository $massEditRepository,
+        JobExecution $jobExecution,
+        StepExecution $stepExecution
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn(null);
+
+        $this->shouldThrow('\Doctrine\ORM\EntityNotFoundException')->during('read');
     }
 }
