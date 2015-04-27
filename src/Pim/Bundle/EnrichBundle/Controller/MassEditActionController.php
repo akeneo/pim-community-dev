@@ -5,14 +5,12 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\Factory\MassEditJobConfigurationFactory;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -58,24 +56,22 @@ class MassEditActionController extends AbstractDoctrineController
     protected $massEditFormResolver;
 
     /**
-     * Constructor
-     *
-     * @param Request                         $request
-     * @param EngineInterface                 $templating
-     * @param RouterInterface                 $router
-     * @param SecurityContextInterface        $securityContext
-     * @param FormFactoryInterface            $formFactory
-     * @param ValidatorInterface              $validator
-     * @param TranslatorInterface             $translator
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param ManagerRegistry                 $doctrine
-     * @param MassActionParametersParser      $parametersParser
-     * @param GridFilterAdapterInterface      $gridFilterAdapter
-     * @param SimpleJobLauncher               $simpleJobLauncher
-     * @param DoctrineJobRepository           $jobRepository
-     * @param ConnectorRegistry               $connectorRegistry
-     * @param OperationRegistryInterface      $operationRegistry
-     * @param MassEditFormResolver            $massEditFormResolver
+     * @param Request                    $request
+     * @param EngineInterface            $templating
+     * @param RouterInterface            $router
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param ManagerRegistry            $doctrine
+     * @param MassActionParametersParser $parametersParser
+     * @param GridFilterAdapterInterface $gridFilterAdapter
+     * @param SimpleJobLauncher          $simpleJobLauncher
+     * @param DoctrineJobRepository      $jobRepository
+     * @param ConnectorRegistry          $connectorRegistry
+     * @param OperationRegistryInterface $operationRegistry
+     * @param MassEditFormResolver       $massEditFormResolver
      */
     public function __construct(
         Request $request,

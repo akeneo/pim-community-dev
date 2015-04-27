@@ -59,20 +59,20 @@ class JobProfileController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                         $request
-     * @param EngineInterface                 $templating
-     * @param RouterInterface                 $router
-     * @param SecurityContextInterface        $securityContext
-     * @param FormFactoryInterface            $formFactory
-     * @param ValidatorInterface              $validator
-     * @param TranslatorInterface             $translator
-     * @param EventDispatcherInterface        $eventDispatcher
-     * @param ManagerRegistry                 $doctrine
-     * @param ConnectorRegistry               $connectorRegistry
-     * @param string                          $jobType
-     * @param JobInstanceType                 $jobInstanceType
-     * @param JobInstanceFactory              $jobInstanceFactory
-     * @param SimpleJobLauncher               $simpleJobLauncher
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerRegistry          $doctrine
+     * @param ConnectorRegistry        $connectorRegistry
+     * @param string                   $jobType
+     * @param JobInstanceType          $jobInstanceType
+     * @param JobInstanceFactory       $jobInstanceFactory
+     * @param SimpleJobLauncher        $simpleJobLauncher
      */
     public function __construct(
         Request $request,

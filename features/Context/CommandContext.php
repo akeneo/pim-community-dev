@@ -2,14 +2,11 @@
 
 namespace Context;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 

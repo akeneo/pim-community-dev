@@ -32,15 +32,15 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
 
     public function __construct(
         JobRepositoryInterface $jobRepository,
-        $rootDir,
-        $environment,
         MassEditJobConfigurationFactory $jobConfigFactory,
-        ObjectManager $objectManager
+        ObjectManager $objectManager,
+        $rootDir,
+        $environment
     ) {
         parent::__construct($jobRepository, $rootDir, $environment);
 
         $this->jobConfigFactory = $jobConfigFactory;
-        $this->objectManager = $objectManager;
+        $this->objectManager    = $objectManager;
     }
 
     /**
@@ -62,7 +62,7 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
         $massEditConf = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
 
         $this->objectManager->persist($massEditConf);
-        $this->objectManager->flush();
+        $this->objectManager->flush($massEditConf);
 
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',

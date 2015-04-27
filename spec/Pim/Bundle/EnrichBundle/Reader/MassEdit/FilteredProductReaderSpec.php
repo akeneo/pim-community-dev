@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
-use Prophecy\Argument;
 
 class FilteredProductReaderSpec extends ObjectBehavior
 {
