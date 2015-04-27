@@ -52,7 +52,7 @@ class OptionsComparator implements ComparatorInterface
 
         if ($options != $submittedOptions) {
             return [
-                'options' => join(',', $submittedOptions),
+                'options' => implode(',', $submittedOptions),
             ];
         }
     }

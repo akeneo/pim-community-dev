@@ -54,6 +54,6 @@ class AttributePresenter implements PresenterInterface, TwigAwareInterface
 
         $parts[] = $data->getLabel();
 
-        return join(' - ', $parts);
+        return implode(' - ', $parts);
     }
 }

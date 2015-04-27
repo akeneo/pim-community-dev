@@ -147,7 +147,7 @@ class JobProfileAccessManager
      * @param JobInstance $jobProfile
      * @param Group[]     $excludedGroups
      *
-     * @return integer
+     * @return int
      */
     protected function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
     {

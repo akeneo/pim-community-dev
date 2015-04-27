@@ -88,8 +88,6 @@ class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
      * Unset removed changes
      *
      * @param ProductDraftEvent $event
-     *
-     * @return null
      */
     public function removeNullValues(ProductDraftEvent $event)
     {

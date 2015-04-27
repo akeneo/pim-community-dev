@@ -33,26 +33,26 @@ interface LocaleAccessInterface extends AccessInterface
     public function getLocale();
 
     /**
-     * @param boolean $editProducts
+     * @param bool $editProducts
      *
      * @return LocaleAccessInterface
      */
     public function setEditProducts($editProducts);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isEditProducts();
 
     /**
-     * @param boolean $viewProducts
+     * @param bool $viewProducts
      *
      * @return LocaleAccessInterface
      */
     public function setViewProducts($viewProducts);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isViewProducts();
 }

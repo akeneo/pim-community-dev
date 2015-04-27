@@ -139,9 +139,10 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * @param array        $change
      * @param ProductDraft $productDraft
      *
-     * @return string
      * @throws \InvalidArgumentException
      * @throws \LogicException
+     *
+     * @return string
      */
     public function presentChange(array $change, ProductDraft $productDraft)
     {

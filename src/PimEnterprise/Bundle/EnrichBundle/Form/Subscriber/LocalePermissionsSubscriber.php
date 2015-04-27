@@ -71,8 +71,6 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
      * Inject existing permissions into the form
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function postSetData(FormEvent $event)
     {
@@ -109,7 +107,7 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
      *
      * @param FormEvent $event
      *
-     * @return boolean
+     * @return bool
      */
     protected function isApplicable(FormEvent $event)
     {

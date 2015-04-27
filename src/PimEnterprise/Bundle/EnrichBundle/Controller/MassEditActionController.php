@@ -41,7 +41,7 @@ class MassEditActionController extends BaseMassEditActionController
     /**
      * Check if the products are editable, add a flash message with 10 first non-editable products
      *
-     * @return boolean
+     * @return bool
      */
     protected function editableProducts()
     {

@@ -13,7 +13,7 @@ use Context\Page\Product\Index as BaseIndex;
 class Index extends BaseIndex
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/workflow/published-product/';
 }
