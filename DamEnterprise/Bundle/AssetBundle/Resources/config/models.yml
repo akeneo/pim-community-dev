@@ -1,0 +1,3 @@
+parameters:
+    damee_asset.model.file.class: DamEnterprise\Component\Asset\Model\File
+    damee_asset.model.file.interface: DamEnterprise\Component\Asset\ModelFileInterface

@@ -1,0 +1,24 @@
+PamEnterprise\Component\ProductAsset\Model\ProductAsset:
+    type: entity
+    table: pam_product_asset_asset
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 255
+        description:
+            type: text
+    oneToOne:
+        reference:
+            targetEntity: DamEnterprise\Component\Asset\Model\FileInterface
+            joinColumn:
+                name: reference_id
+                referencedColumnName: id
+    oneToMany:
+        variations:
+            targetEntity: PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
+            mappedBy: asset

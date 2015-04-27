@@ -1,0 +1,27 @@
+DamEnterprise\Component\Asset\Model\File:
+    type: entity
+    table: dam_asset_file
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        path:
+            type: string
+            length: 255
+        guid:
+            type: guid
+        filename:
+            type: string
+            length: 255
+        originalFilename:
+            type: string
+            column: original_filename
+        mimeType:
+            type: string
+            length: 255
+            column: mime_type
+        storage:
+            type: string
+            length: 255

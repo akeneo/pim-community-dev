@@ -1,0 +1,32 @@
+PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
+    type: entity
+    table: pam_product_asset_asset_variation
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    oneToOne:
+        file:
+            targetEntity: DamEnterprise\Component\Asset\Model\FileInterface
+            joinColumn:
+                name: file_id
+                referencedColumnName: id
+    manyToOne:
+        locale:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\LocaleInterface
+            joinColumn:
+                name: locale_id
+                referencedColumnName: id
+        channel:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
+            joinColumn:
+                name: channel_id
+                referencedColumnName: id
+        asset:
+            targetEntity: PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+            inversedBy: variations
+            join_column:
+                name: asset_id
+                referencedColumnName: id

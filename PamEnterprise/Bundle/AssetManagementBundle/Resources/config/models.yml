@@ -1,0 +1,5 @@
+parameters:
+    pam_asset_management.model.asset.class: PamEnterprise\Component\ProductAsset\Model\ProductAsset
+    pam_asset_management.model.asset.interface: PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+    pam_asset_management.model.asset_variation.class: PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation
+    pam_asset_management.model.asset_variation.interface: PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
