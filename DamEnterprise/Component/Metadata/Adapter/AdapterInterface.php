@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DAM\Component\Metadata\Adapter;
+namespace DamEnterprise\Component\Metadata\Adapter;
 
 interface AdapterInterface
 {

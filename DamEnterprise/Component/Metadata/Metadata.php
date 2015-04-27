@@ -1,10 +1,10 @@
 <?php
 
-namespace Akeneo\DAM\Component\Metadata;
+namespace DamEnterprise\Component\Metadata;
 
-use Akeneo\DAM\Component\Metadata\Adapter\AdapterInterface;
-use Akeneo\DAM\Component\Metadata\Exception\MetadataNotFoundException;
-use Akeneo\DAM\Component\Metadata\Exception\MetadataNotSupportedException;
+use DamEnterprise\Component\Metadata\Adapter\AdapterInterface;
+use DamEnterprise\Component\Metadata\Exception\MetadataNotFoundException;
+use DamEnterprise\Component\Metadata\Exception\MetadataNotSupportedException;
 
 class Metadata implements MetadataInterface
 {

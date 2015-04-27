@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DAM\Component\Metadata;
+namespace DamEnterprise\Component\Metadata;
 
 interface MetadataInterface
 {

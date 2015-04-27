@@ -1,8 +1,8 @@
 <?php
 
-namespace Akeneo\DAM\Component\Metadata;
+namespace DamEnterprise\Component\Metadata;
 
-use Akeneo\DAM\Component\Metadata\Adapter\AdapterRegistry;
+use DamEnterprise\Component\Metadata\Adapter\AdapterRegistry;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 class MetadataFactory

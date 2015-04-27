@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DAM\Component\Metadata\Exception;
+namespace DamEnterprise\Component\Metadata\Exception;
 
 class MetadataNotSupportedException extends \Exception
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\DAM\Component\Metadata;
+namespace DamEnterprise\Component\Metadata;
 
 //TODO: delete it, we use the symfony's one
 //TODO: the list of mimetypes is defined here
