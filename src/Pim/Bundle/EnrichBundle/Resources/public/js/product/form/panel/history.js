@@ -16,6 +16,7 @@ define(
             template: _.template(template),
             className: 'panel-pane history-panel',
             code: 'history',
+            loading: false,
             versions: [],
             actions: {},
             events: {
@@ -64,8 +65,12 @@ define(
                 return this;
             },
             refreshHistory: function () {
+                if (this.loading) {
+                    return;
+                }
+                this.loading = true;
                 if (this.getRoot().model.get('meta')) {
-                    $.get(
+                    $.getJSON(
                         Routing.generate(
                             'pim_enrich_product_history_rest_get',
                             {
@@ -75,6 +80,7 @@ define(
                     ).done(_.bind(function (versions) {
                         this.versions = versions;
                         this.render();
+                        this.loading = false;
                     }, this));
                 }
             },
