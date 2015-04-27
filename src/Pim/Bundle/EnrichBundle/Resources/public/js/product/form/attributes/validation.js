@@ -14,6 +14,7 @@ define(
         return BaseForm.extend({
             initialize: function () {
                 mediator.on('validation_error', _.bind(this.validationError, this));
+                mediator.on('product:action:post_update', _.bind(this.removeValidationErrors, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },

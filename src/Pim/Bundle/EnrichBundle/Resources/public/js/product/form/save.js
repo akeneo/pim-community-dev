@@ -76,7 +76,7 @@ define(
                 var fields = FieldManager.getFields();
                 _.each(product.values, function (value, code) {
                     if (fields[code]) {
-                        if (0 === fields[code].getData().length) {
+                        if (0 === fields[code].getData().length || 'edit' !== fields[code].getEditMode()) {
                             delete product.values[code];
                         } else {
                             value = fields[code].getData();
