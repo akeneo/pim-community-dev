@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -44,26 +45,34 @@ class CompletenessRestController
     protected $compNormalizer;
 
     /**
+     * @var CollectionFilterInterface
+     */
+    protected $collectionFilter;
+
+    /**
      * Constructor
      *
-     * @param CompletenessManager $completenessManager
-     * @param ProductManager      $productManager
-     * @param ChannelManager      $channelManager
-     * @param UserContext         $userContext
-     * @param NormalizerInterface $compNormalizer
+     * @param CompletenessManager       $completenessManager
+     * @param ProductManager            $productManager
+     * @param ChannelManager            $channelManager
+     * @param UserContext               $userContext
+     * @param NormalizerInterface       $compNormalizer
+     * @param CollectionFilterInterface $collectionFilter
      */
     public function __construct(
         CompletenessManager $completenessManager,
         ProductManager $productManager,
         ChannelManager $channelManager,
         UserContext $userContext,
-        NormalizerInterface $compNormalizer
+        NormalizerInterface $compNormalizer,
+        CollectionFilterInterface $collectionFilter
     ) {
         $this->completenessManager = $completenessManager;
         $this->productManager      = $productManager;
         $this->channelManager      = $channelManager;
         $this->userContext         = $userContext;
         $this->compNormalizer      = $compNormalizer;
+        $this->collectionFilter    = $collectionFilter;
     }
 
     /**
@@ -78,14 +87,15 @@ class CompletenessRestController
         $product = $this->productManager->getProductRepository()->getFullProduct($id);
         $this->completenessManager->generateMissingForProduct($product);
 
-
         $channels = $this->channelManager->getFullChannels();
         $locales = $this->userContext->getUserLocales();
+
+        $fitleredLocales = $this->collectionFilter->filterCollection($locales, 'pim:internal_api:locale:view');
 
         $completenesses = $this->completenessManager->getProductCompleteness(
             $product,
             $channels,
-            $locales,
+            $fitleredLocales,
             $this->userContext->getCurrentLocale()->getCode()
         );
 

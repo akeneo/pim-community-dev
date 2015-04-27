@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'oro/mediator',
         'pim/form',
@@ -12,6 +13,7 @@ define(
         'pim/field-manager'
     ],
     function (
+        $,
         _,
         mediator,
         BaseForm,
@@ -34,7 +36,7 @@ define(
                 return this;
             },
             save: function () {
-                var product   = this.getData();
+                var product = $.extend(true, {}, this.getData());
                 var productId = product.meta.id;
 
                 delete product.variant_group;
@@ -74,7 +76,7 @@ define(
                 var fields = FieldManager.getFields();
                 _.each(product.values, function (value, code) {
                     if (fields[code]) {
-                        if (0 === fields[code].getData().length) {
+                        if (0 === fields[code].getData().length || 'edit' !== fields[code].getEditMode()) {
                             delete product.values[code];
                         } else {
                             value = fields[code].getData();

@@ -45,7 +45,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function normalize($product, $format = null, array $context = array())
     {
         $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
-
         $normalizedProduct['meta'] = [
             'id'      => $product->getId(),
             'label'   => $product->getLabel(),
@@ -60,14 +59,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         ] + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilters(array $filters)
-    {
-        $this->productNormalizer->setFilters($filters);
     }
 
     /**

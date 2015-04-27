@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,30 +16,52 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class FamilyRestController
 {
+    /** @var EntityRepository */
     protected $familyRepository;
+
+    /** @var NormalizerInterface */
     protected $normalizer;
 
+    /**
+     * @param EntityRepository    $familyRepository
+     * @param NormalizerInterface $normalizer
+     */
     public function __construct(EntityRepository $familyRepository, NormalizerInterface $normalizer)
     {
         $this->familyRepository = $familyRepository;
         $this->normalizer       = $normalizer;
     }
 
+    /**
+     * Get the family collection
+     *
+     * @return JsonResponse
+     */
     public function indexAction()
     {
-        $familys = $this->familyRepository->findAll();
+        $families = $this->familyRepository->findAll();
 
-        $normalizedAttributes = [];
-        foreach ($familys as $family) {
-            $normalizedAttributes[$family->getCode()] = $this->normalizer->normalize($family, 'json');
+        $normalizedFamilies = [];
+        foreach ($families as $family) {
+            $normalizedFamilies[$family->getCode()] = $this->normalizer->normalize($family, 'json');
         }
 
-        return new JsonResponse($normalizedAttributes);
+        return new JsonResponse($normalizedFamilies);
     }
 
+    /**
+     * Get a single family
+     * @param integer $id
+     *
+     * @return JsonResponse
+     */
     public function getAction($id)
     {
         $family = $this->familyRepository->findOneById($id);
+
+        if (null === $family) {
+            throw new NotFoundHttpException(sprintf('No family found for id "%s"', $id));
+        }
 
         return new JsonResponse($this->normalizer->normalize($family, 'json'));
     }

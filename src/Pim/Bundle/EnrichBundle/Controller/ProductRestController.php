@@ -88,8 +88,7 @@ class ProductRestController
      */
     public function getAction($id)
     {
-        $product = $this->findProductOr404($id);
-
+        $product  = $this->findProductOr404($id);
         $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
         $locales  = $this->userContext->getUserLocaleCodes();
 
@@ -97,7 +96,11 @@ class ProductRestController
             $this->normalizer->normalize(
                 $product,
                 'internal_api',
-                ['locales'  => $locales, 'channels' => $channels]
+                [
+                    'locales'     => $locales,
+                    'channels'    => $channels,
+                    'filter_type' => 'pim:internal_api:product_value:view'
+                ]
             )
         );
     }

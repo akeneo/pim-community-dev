@@ -19,7 +19,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
     protected $serializer;
 
     /** @var array */
-    protected $supportedFormat = ['array', 'json'];
+    protected $supportedFormat = ['internal_api'];
 
     /**
      * {@inheritdoc}

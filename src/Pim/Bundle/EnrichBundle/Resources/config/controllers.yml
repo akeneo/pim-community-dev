@@ -308,15 +308,17 @@ services:
         class: %pim_enrich.controller.attribute_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_serializer'
-            - '@security.context'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.attribute_group_rest:
         class: %pim_enrich.controller.attribute_group_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'
-            - '@security.context'
+            - '@pim_catalog.filter.chained'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.family_rest:
         class: %pim_enrich.controller.family_rest.class%
@@ -341,6 +343,7 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_internal_api_serializer'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.currency_rest:
         class: %pim_enrich.controller.currency_rest.class%
@@ -360,6 +363,7 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_user.context.user'
             - '@pim_enrich.normalizer.completeness_collection'
+            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.versioning_rest:
         class: %pim_enrich.controller.versioning_rest.class%

@@ -14,14 +14,15 @@ define(
         return BaseForm.extend({
             initialize: function () {
                 mediator.on('validation_error', _.bind(this.validationError, this));
+                mediator.on('product:action:post_update', _.bind(this.removeValidationErrors, this));
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
-            validationError: function (data) {
+            validationError: function (validationErrors) {
                 this.removeValidationErrors();
-                this.addValidationErrors(data);
+                this.addValidationErrors(validationErrors);
 
-                mediator.trigger('product:action:post_validation_error', _.bind(this.addValidationErrors, this));
+                mediator.trigger('product:action:post_validation_error');
             },
             removeValidationErrors: function () {
                 var fields = FieldManager.getFields();

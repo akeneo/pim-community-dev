@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -18,7 +18,7 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * @var array
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * @var TranslationNormalizer
@@ -26,28 +26,22 @@ class FamilyNormalizer implements NormalizerInterface
     protected $transNormalizer;
 
     /**
-     * @var array
+     * @var CollectionFilterInterface
      */
-    protected $attributeFilters = [];
+    protected $collectionFilter;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $transNormalizer
+     * @param TranslationNormalizer          $transNormalizer
+     * @param CollectionFilterInterface|null $collectionFilter
      */
-    public function __construct(TranslationNormalizer $transNormalizer)
-    {
-        $this->transNormalizer = $transNormalizer;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilters(array $filters)
-    {
-        $this->attributeFilters = $filters;
-
-        return $this;
+    public function __construct(
+        TranslationNormalizer $transNormalizer,
+        CollectionFilterInterface $collectionFilter = null
+    ) {
+        $this->transNormalizer  = $transNormalizer;
+        $this->collectionFilter = $collectionFilter;
     }
 
     /**
@@ -57,7 +51,7 @@ class FamilyNormalizer implements NormalizerInterface
     {
         return array(
             'code'             => $object->getCode(),
-            'attributes'       => $this->normalizeAttributes($object, $context),
+            'attributes'       => $this->normalizeAttributes($object),
             'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($object),
         ) + $this->transNormalizer->normalize($object, $format, $context);
@@ -78,16 +72,17 @@ class FamilyNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeAttributes(FamilyInterface $family, array $context = [])
+    protected function normalizeAttributes(FamilyInterface $family)
     {
-        $attributes = $family->getAttributes();
-
-        foreach ($this->attributeFilters as $filter) {
-            $attributes = $filter->filter($attributes, $context);
-        }
+        $filteredAttributes = $this->collectionFilter ?
+            $this->collectionFilter->filterCollection(
+                $family->getAttributes(),
+                'pim:internal_api:attribute:view'
+            ) :
+            $family->getAttributes();
 
         $normalizedAttributes = array();
-        foreach ($attributes as $attribute) {
+        foreach ($filteredAttributes as $attribute) {
             $normalizedAttributes[] = $attribute->getCode();
         }
 
