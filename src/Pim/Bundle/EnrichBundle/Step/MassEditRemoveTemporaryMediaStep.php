@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Step;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\AbstractStep;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Cleaner\MassEditTemporaryFileCleaner;
 
 /**
@@ -18,7 +19,7 @@ class MassEditRemoveTemporaryMediaStep extends AbstractStep
     /** @var array */
     protected $configuration;
 
-    /** @var MassEditTemporaryFileCleaner */
+    /** @var StepExecutionAwareInterface */
     protected $cleaner;
 
     /**
@@ -69,7 +70,7 @@ class MassEditRemoveTemporaryMediaStep extends AbstractStep
      *
      * @return MassEditRemoveTemporaryMediaStep
      */
-    public function setCleaner(MassEditTemporaryFileCleaner $cleaner)
+    public function setCleaner(StepExecutionAwareInterface $cleaner)
     {
         $this->cleaner = $cleaner;
 

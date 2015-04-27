@@ -951,6 +951,8 @@ pim_mass_edit_execution_show:  Mass edit executions | Details
 
 edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
 update_product_value.steps.update_product_value_processor.title: Update product value
+add_to_variant_group_clean.steps.add_to_variant_group.steps.cleaner.warning.title.title : Duplicated variant Axis
+add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
 
 mass_edit report:
     overview: Mass edit reports

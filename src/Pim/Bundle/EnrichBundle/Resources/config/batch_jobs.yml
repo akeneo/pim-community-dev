@@ -56,3 +56,19 @@ connector:
                         reader:    pim_enrich.mass_edit.filtered.reader
                         processor: pim_enrich.mass_edit.product_to_flat_array.processor
                         writer:    pim_base_connector.writer.file.csv_product
+        add_to_variant_group:
+            title: add_to_variant_group
+            type:  mass_edit
+            steps:
+                clean:
+                    title: add_to_variant_group_clean
+                    class: "%pim_enrich.step.mass_edit.remove_temporary_media.class%"
+                    services:
+                        cleaner: pim_enrich.mass_edit.add_to_variant.cleaner
+                perform:
+                    title: add_to_variant_group
+                    services:
+                        reader:    pim_enrich.mass_edit.filtered.reader
+                        processor: pim_enrich.mass_edit.update_product_value.processor
+                        writer:    pim_base_connector.writer.doctrine.product
+

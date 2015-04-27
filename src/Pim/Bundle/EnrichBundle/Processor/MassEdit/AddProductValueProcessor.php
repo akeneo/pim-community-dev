@@ -34,8 +34,8 @@ class AddProductValueProcessor extends AbstractMassEditProcessor
         MassEditRepositoryInterface $massEditRepository
     ) {
         parent::__construct($massEditRepository);
-        $this->productUpdater     = $productUpdater;
-        $this->validator          = $validator;
+        $this->productUpdater = $productUpdater;
+        $this->validator      = $validator;
     }
 
     /**
