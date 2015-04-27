@@ -18,7 +18,7 @@ define([
                 return this.fieldTemplate(context);
             },
             getTemplateContext: function () {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 Field.prototype.getTemplateContext.apply(this, arguments)
                     .done(_.bind(function (templateContext) {
@@ -32,10 +32,10 @@ define([
                             templateContext.mediaUrl = null;
                         }
 
-                        promise.resolve(templateContext);
+                        deferred.resolve(templateContext);
                     }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             updateModel: function (event) {
                 var input = event.currentTarget;

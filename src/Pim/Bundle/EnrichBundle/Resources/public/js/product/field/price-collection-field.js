@@ -35,7 +35,7 @@ define([
             this.setCurrentValue(data);
         },
         getTemplateContext: function () {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
             $.when(
                 Field.prototype.getTemplateContext.apply(this, arguments),
@@ -43,10 +43,10 @@ define([
             ).done(function (templateContext, currencies) {
                 templateContext.currencies = currencies;
 
-                promise.resolve(templateContext);
+                deferred.resolve(templateContext);
             });
 
-            return promise.promise();
+            return deferred.promise();
         }
     });
 });

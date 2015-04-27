@@ -5,7 +5,7 @@ define(
     function ($, _, Routing, EntityManager, AttributeManager) {
     return {
         getAttributeGroupsForProduct: function (product) {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
             $.when(
                 EntityManager.getRepository('attributeGroup').findAll(),
@@ -18,10 +18,10 @@ define(
                     }
                 });
 
-                promise.resolve(activeAttributeGroups);
+                deferred.resolve(activeAttributeGroups);
             }, this));
 
-            return promise.promise();
+            return deferred.promise();
         },
         getAttributeGroupValues: function (values, attributeGroup) {
             var filteredValues = {};

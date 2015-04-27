@@ -110,7 +110,7 @@ define(
                 }
             },
             renderField: function (product, attributeCode, values, families) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 FieldManager.getField(attributeCode).done(_.bind(function (field) {
                     field.setContext({
@@ -121,10 +121,10 @@ define(
                     });
                     field.setValues(values);
 
-                    promise.resolve(field);
+                    deferred.resolve(field);
                 }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             getConfig: function () {
                 var promises = [];

@@ -4,7 +4,7 @@ define(
     ['jquery', 'underscore', 'pim/form-registry'],
     function ($, _, FormRegistry) {
         var buildForm = function (formName) {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
             $.when(
                 FormRegistry.getForm(formName),
@@ -34,24 +34,24 @@ define(
                         );
                     });
 
-                    promise.resolve(form);
+                    deferred.resolve(form);
                 });
             });
 
-            return promise.promise();
+            return deferred.promise();
         };
 
         return {
             build: function buildRootForm(formName) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 buildForm(formName).done(function (form) {
                     form.configure().done(function () {
-                        promise.resolve(form);
+                        deferred.resolve(form);
                     });
                 });
 
-                return promise.promise();
+                return deferred.promise();
             }
         };
     }

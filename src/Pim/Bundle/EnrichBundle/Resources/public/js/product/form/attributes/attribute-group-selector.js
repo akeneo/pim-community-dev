@@ -41,7 +41,7 @@ define(
                 return this;
             },
             updateAttributeGroups: function (product) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 AttributeGroupManager.getAttributeGroupsForProduct(product)
                     .done(_.bind(function (attributeGroups) {
@@ -51,10 +51,10 @@ define(
                             this.state.set('current', _.keys(attributeGroups)[0]);
                         }
 
-                        promise.resolve(this.state.get('attributeGroups'));
+                        deferred.resolve(this.state.get('attributeGroups'));
                     }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             change: function (event) {
                 if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {

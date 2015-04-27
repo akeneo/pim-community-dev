@@ -105,17 +105,17 @@ define(
                 this.getParent().addAttributes(attributeCodes);
             },
             updateOptionalAttributes: function (product) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 this.product = product;
                 AttributeManager.getOptionalAttributes(product)
                     .done(_.bind(function (attributes) {
                         this.state.set('attributes', attributes);
 
-                        promise.resolve(this.state.get('attributes'));
+                        deferred.resolve(this.state.get('attributes'));
                     }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             loadAttributeGroups: function () {
                 return EntityManager.getRepository('attributeGroup').findAll().done(_.bind(function (attributeGroups) {

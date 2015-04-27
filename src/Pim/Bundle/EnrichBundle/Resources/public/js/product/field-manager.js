@@ -6,12 +6,12 @@ define(
         var fields = {};
         var loadedModules = {};
         var getFieldForAttribute = function (attribute) {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
             if (loadedModules[attribute.type]) {
-                promise.resolve(loadedModules[attribute.type]);
+                deferred.resolve(loadedModules[attribute.type]);
 
-                return promise.promise();
+                return deferred.promise();
             }
 
             ConfigProvider.getAttributeFields().done(function (attributeFields) {
@@ -23,31 +23,31 @@ define(
 
                 require([fieldModule], function (Field) {
                     loadedModules[attribute.type] = Field;
-                    promise.resolve(Field);
+                    deferred.resolve(Field);
                 });
             });
 
-            return promise.promise();
+            return deferred.promise();
         };
 
         return {
             getField: function (attributeCode) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 if (fields[attributeCode]) {
-                    promise.resolve(fields[attributeCode]);
+                    deferred.resolve(fields[attributeCode]);
 
-                    return promise.promise();
+                    return deferred.promise();
                 }
 
                 EntityManager.getRepository('attribute').find(attributeCode).done(function (attribute) {
                     getFieldForAttribute(attribute).done(function (Field) {
                         fields[attributeCode] = new Field(attribute);
-                        promise.resolve(fields[attributeCode]);
+                        deferred.resolve(fields[attributeCode]);
                     });
                 });
 
-                return promise.promise();
+                return deferred.promise();
             },
             getFields: function () {
                 return fields;
