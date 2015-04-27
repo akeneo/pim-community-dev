@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Manager;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -10,7 +11,6 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelation;
 use PimEnterprise\Bundle\CatalogRuleBundle\Repository\RuleRelationRepositoryInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinition;
 use Prophecy\Argument;
 
 class RuleRelationManagerSpec extends ObjectBehavior

@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Event;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -135,7 +135,6 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
         CategoryInterface $category,
         GenericEvent $event
     ) {
-
         $category->getId()->willReturn(1);
         $event->getSubject()->willReturn($category);
         $categoryRepository->getAllChildrenIds($category)->willReturn([2, 3]);

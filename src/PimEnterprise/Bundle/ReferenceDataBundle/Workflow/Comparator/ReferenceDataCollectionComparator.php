@@ -65,7 +65,7 @@ class ReferenceDataCollectionComparator implements ComparatorInterface
             count(array_diff($submittedReferenceDataIds, $referenceDataIds)) > 0
         ) {
             return [
-                $referenceDataName => join(',', $submittedReferenceDataIds),
+                $referenceDataName => implode(',', $submittedReferenceDataIds),
             ];
         }
     }

@@ -315,7 +315,7 @@ class CategoryAccessRepository extends EntityRepository
      *
      * @param User $user
      *
-     * @return boolean
+     * @return bool
      */
     public function isOwner(User $user)
     {
@@ -368,9 +368,9 @@ class CategoryAccessRepository extends EntityRepository
      *
      * @param string $accessLevel
      *
-     * @return string
-     *
      * @throws \LogicException
+     *
+     * @return string
      */
     protected function getAccessField($accessLevel)
     {

@@ -3,9 +3,6 @@
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Denormalizer;
 
 use PhpSpec\ObjectBehavior;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
-use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Denormalizer\ProductRule\ContentDenormalizer;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

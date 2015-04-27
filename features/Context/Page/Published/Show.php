@@ -13,7 +13,7 @@ use Context\Page\Product\Show as BaseShow;
 class Show extends BaseShow
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/workflow/published-product/{id}/view';
 }

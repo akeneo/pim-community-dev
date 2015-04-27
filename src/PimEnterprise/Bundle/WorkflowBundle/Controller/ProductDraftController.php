@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -93,8 +93,10 @@ class ProductDraftController extends AbstractController
      * List proposals
      *
      * @Template
-     * @return Response
+     *
      * @throws AccessDeniedException if the current user is not the owner of any categories
+     *
+     * @return Response
      */
     public function indexAction()
     {
@@ -106,13 +108,14 @@ class ProductDraftController extends AbstractController
     }
 
     /**
-     * @param Request        $request
-     * @param integer|string $id
+     * @param Request    $request
+     * @param int|string $id
      *
-     * @return JsonResponse|RedirectResponse
      * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return JsonResponse|RedirectResponse
      */
     public function approveAction(Request $request, $id)
     {
@@ -167,12 +170,13 @@ class ProductDraftController extends AbstractController
     }
 
     /**
-     * @param Request        $request
-     * @param integer|string $id
+     * @param Request    $request
+     * @param int|string $id
      *
-     * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function refuseAction(Request $request, $id)
     {
@@ -213,11 +217,12 @@ class ProductDraftController extends AbstractController
     /**
      * Mark a product draft as ready
      *
-     * @param integer|string $id
+     * @param int|string $id
      *
-     * @return RedirectResponse
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
+     *
+     * @return RedirectResponse
      */
     public function readyAction($id)
     {

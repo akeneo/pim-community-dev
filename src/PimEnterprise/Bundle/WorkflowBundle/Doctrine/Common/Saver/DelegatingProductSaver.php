@@ -11,16 +11,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -122,7 +121,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
      *
      * @param ProductInterface $product
      *
-     * @return boolean
+     * @return bool
      */
     protected function isOwner(ProductInterface $product)
     {
