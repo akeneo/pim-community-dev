@@ -34,6 +34,7 @@ class RuleEvent extends Event
 
     /**
      * Get rule
+     *
      * @return RuleDefinitionInterface
      */
     public function getDefinition()

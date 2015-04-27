@@ -11,11 +11,11 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\View;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as BaseProductFormView;
 use Pim\Bundle\EnrichBundle\Form\View\ViewUpdater\ViewUpdaterRegistry;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 

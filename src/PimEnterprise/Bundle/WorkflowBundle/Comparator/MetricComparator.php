@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Comparator which calculate change set for metrics
@@ -59,7 +59,7 @@ class MetricComparator implements ComparatorInterface
      * @param mixed $metric
      * @param array $submittedMetric
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasNotChanged($metric, $submittedMetric)
     {

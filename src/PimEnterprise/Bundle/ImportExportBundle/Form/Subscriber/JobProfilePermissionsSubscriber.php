@@ -78,8 +78,6 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
      * Inject existing permissions into the form
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function postSetData(FormEvent $event)
     {
@@ -132,7 +130,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
      *
      * @param JobInstance $jobInstance
      *
-     * @return boolean
+     * @return bool
      */
     protected function isGranted(JobInstance $jobInstance)
     {

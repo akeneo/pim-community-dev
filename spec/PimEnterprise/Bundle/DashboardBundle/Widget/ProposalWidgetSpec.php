@@ -5,10 +5,10 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 

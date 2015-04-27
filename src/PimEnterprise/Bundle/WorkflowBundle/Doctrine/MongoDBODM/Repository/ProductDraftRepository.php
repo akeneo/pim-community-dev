@@ -14,11 +14,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\ORM\AbstractQuery;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -287,7 +287,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
      * Get the date formatted from data
      *
      * @param \DateTime|string $data
-     * @param boolean          $endOfDay
+     * @param bool             $endOfDay
      *
      * @return \DateTime
      */

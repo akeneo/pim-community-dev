@@ -133,9 +133,9 @@ class ProductDraftManager
      *
      * @param ProductInterface $product
      *
-     * @return ProductDraft
-     *
      * @throws \LogicException
+     *
+     * @return ProductDraft
      */
     public function findOrCreate(ProductInterface $product)
     {

@@ -3,12 +3,11 @@
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Filter;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 class ProductValueLocaleRightFilterSpec extends ObjectBehavior
