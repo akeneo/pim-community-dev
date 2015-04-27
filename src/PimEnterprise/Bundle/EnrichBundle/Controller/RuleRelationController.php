@@ -54,7 +54,9 @@ class RuleRelationController
      */
     public function indexAction($relationType)
     {
-        $ruleRelations = $this->ruleRelationRepo->findBy(['resourceName' => $this->FQCNResolver->getFQCN($relationType)]);
+        $ruleRelations = $this->ruleRelationRepo->findBy([
+            'resourceName' => $this->FQCNResolver->getFQCN($relationType)
+        ]);
 
         $normalizedRelations = [];
         foreach ($ruleRelations as $ruleRelation) {

@@ -19,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Product Value filter
+ * Locale filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
