@@ -2,9 +2,9 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Connector\Reader\Doctrine;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
+use PhpSpec\ObjectBehavior;
 
 class RuleDefinitionReaderSpec extends ObjectBehavior
 {

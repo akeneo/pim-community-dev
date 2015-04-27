@@ -5,7 +5,6 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class GridHelperSpec extends ObjectBehavior

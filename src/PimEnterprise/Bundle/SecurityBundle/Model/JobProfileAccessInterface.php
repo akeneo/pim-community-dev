@@ -39,7 +39,7 @@ interface JobProfileAccessInterface extends AccessInterface
     /**
      * Predicate to define if the job profile is executable
      *
-     * @param boolean $executeJobProfile
+     * @param bool $executeJobProfile
      *
      * @return JobProfileAccessInterface
      */
@@ -48,14 +48,14 @@ interface JobProfileAccessInterface extends AccessInterface
     /**
      * Predicate to know if job profile is executable
      *
-     * @return boolean
+     * @return bool
      */
     public function isExecuteJobProfile();
 
     /**
      * Predicate to define if the job profile is ediable
      *
-     * @param boolean $editJobProfile
+     * @param bool $editJobProfile
      *
      * @return JobProfileAccessInterface
      */
@@ -64,7 +64,7 @@ interface JobProfileAccessInterface extends AccessInterface
     /**
      * Predicate to know if job profile is editable
      *
-     * @return boolean
+     * @return bool
      */
     public function isEditJobProfile();
 }

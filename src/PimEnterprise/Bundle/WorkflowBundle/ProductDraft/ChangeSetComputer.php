@@ -12,8 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\ProductDraft;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;

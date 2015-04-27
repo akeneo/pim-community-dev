@@ -48,7 +48,7 @@ class ProductVersionController
     /**
      * Revert the entity to the current version
      *
-     * @param string|integer $id
+     * @param string|int $id
      *
      * @return RedirectResponse
      *

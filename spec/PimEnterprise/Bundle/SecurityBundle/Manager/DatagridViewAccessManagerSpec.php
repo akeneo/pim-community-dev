@@ -100,7 +100,6 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         AttributeGroupInterface $group,
         CategoryInterface $category
     ) {
-
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
         $attributeRepository->findOneBy(['code' => 'filter1'])->willReturn($attribute);

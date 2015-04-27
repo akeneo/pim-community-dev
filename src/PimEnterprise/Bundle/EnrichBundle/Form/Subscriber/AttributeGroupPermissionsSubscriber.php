@@ -73,8 +73,6 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      * Inject existing permissions into the form
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function postSetData(FormEvent $event)
     {

@@ -38,6 +38,7 @@ class ProductController extends BaseProductController
      *
      * @AclAncestor("pim_enrich_product_index")
      * @Template
+     *
      * @return Response|RedirectResponse
      */
     public function indexAction(Request $request)
@@ -68,11 +69,11 @@ class ProductController extends BaseProductController
      * Dispatch to product view or product edit when a user click on a product grid row
      *
      * @param Request $request
-     * @param integer $id
-     *
-     * @return RedirectResponse
+     * @param int     $id
      *
      * @throws AccessDeniedException
+     *
+     * @return RedirectResponse
      *
      * @AclAncestor("pim_enrich_product_index")
      */
@@ -98,10 +99,11 @@ class ProductController extends BaseProductController
      * Show product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return array
      */
     public function showAction(Request $request, $id)
@@ -158,7 +160,7 @@ class ProductController extends BaseProductController
      * Drafts of a product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

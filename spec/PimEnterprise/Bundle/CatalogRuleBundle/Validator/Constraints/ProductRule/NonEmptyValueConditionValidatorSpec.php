@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule ;
+namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Query\Filter\Operators;

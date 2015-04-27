@@ -18,9 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 /**
  * Comparator which calculate change set for multi select reference data
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  *
  * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
@@ -65,7 +63,7 @@ class ReferenceDataCollectionComparator implements ComparatorInterface
             count(array_diff($submittedReferenceDataIds, $referenceDataIds)) > 0
         ) {
             return [
-                $referenceDataName => join(',', $submittedReferenceDataIds),
+                $referenceDataName => implode(',', $submittedReferenceDataIds),
             ];
         }
     }

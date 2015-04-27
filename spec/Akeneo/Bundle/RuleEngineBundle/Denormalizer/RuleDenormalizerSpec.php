@@ -2,11 +2,11 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Denormalizer;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\ConditionInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 

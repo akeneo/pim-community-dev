@@ -42,8 +42,10 @@ class EnterpriseFeatureContext extends FeatureContext
     /**
      * @param string $field
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      * @Then /^I should see that (.*) is a modified value$/
      */
     public function iShouldSeeThatFieldIsAModifiedValue($field)
@@ -61,8 +63,10 @@ class EnterpriseFeatureContext extends FeatureContext
     /**
      * @param string $attribute
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      * @Then /^I should see that (.*) is a smart$/
      */
     public function iShouldSeeThatAttributeIsASmart($attribute)
@@ -296,7 +300,6 @@ class EnterpriseFeatureContext extends FeatureContext
         }
 
         throw new \Exception(sprintf('No rule found with code %s', $code));
-
     }
 
     protected function checkRuleElementValue($element, $expectedValue, $mandatory = true, $firstElement = false)

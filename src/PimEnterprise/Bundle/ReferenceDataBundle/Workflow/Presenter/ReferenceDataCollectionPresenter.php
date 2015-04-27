@@ -11,17 +11,14 @@
 
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Present changes on a collection of reference data
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 class ReferenceDataCollectionPresenter extends AbstractProductValuePresenter
 {

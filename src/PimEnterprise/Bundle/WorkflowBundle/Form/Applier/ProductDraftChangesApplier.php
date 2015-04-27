@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -114,7 +114,7 @@ class ProductDraftChangesApplier
      * @param array  $attribute The attribute as stored in the product form view
      * @param string $scope     The scope to check
      *
-     * @return boolean
+     * @return bool
      */
     public function isMarkedAsModified($attribute, $scope = null)
     {

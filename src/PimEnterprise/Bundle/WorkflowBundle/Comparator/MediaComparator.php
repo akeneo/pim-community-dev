@@ -45,7 +45,7 @@ class MediaComparator implements ComparatorInterface
      *
      * @param array $data
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasNewMedia(array $data)
     {

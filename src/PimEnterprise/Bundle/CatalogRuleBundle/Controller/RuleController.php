@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Controller;
 
+use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\CatalogRuleBundle\Manager\RuleRelationManager;
-use Akeneo\Bundle\RuleEngineBundle\Repository\RuleDefinitionRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -60,6 +60,7 @@ class RuleController
 
     /**
      * List all rules for the given resource
+     *
      * @param string $resourceName
      * @param int    $resourceId
      *
@@ -84,10 +85,10 @@ class RuleController
      *
      * @AclAncestor("pimee_catalog_rule_rule_view_permissions")
      *
-     * @return JsonResponse
-     *
      * @throws NotFoundHttpException
      * @throws \Exception
+     *
+     * @return JsonResponse
      */
     public function deleteAction($resourceName, $resourceId, $ruleId)
     {
