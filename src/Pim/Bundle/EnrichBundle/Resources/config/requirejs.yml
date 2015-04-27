@@ -10,6 +10,62 @@ config:
             deps:
                 - jquery.jstree
 
+    config:
+        pim/entity-manager:
+            repositories:
+                default: pim/entity-repository
+                attributeGroup:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_attributegroup_rest_index
+                attribute:
+                    module: pim/attribute-repository
+                    options:
+                        urls:
+                            list: pim_enrich_attribute_rest_index
+                family:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_family_rest_index
+                channel:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_channel_rest_index
+                locale:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_locale_rest_index
+                measure:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_measures_rest_index
+                currency:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_currency_rest_index
+                associationType:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_association_type_rest_index
+                completeness:
+                    module: pim/completeness-repository
+                    options:
+                        urls:
+                            get: pim_enrich_product_completeness_rest_get
+                variantGroup:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_variant_group_rest_index
+                            get: pim_enrich_variant_group_rest_get
+
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
@@ -29,6 +85,17 @@ config:
         pim/i18n:                           pimenrich/js/i18n
         pim/user-context:                    pimenrich/js/user-context
 
+        # Managers
+        pim/product-manager:                pimenrich/js/manager/product-manager
+        pim/attribute-manager:              pimenrich/js/manager/attribute-manager
+        pim/attribute-group-manager:        pimenrich/js/manager/attribute-group-manager
+        pim/entity-manager:                 pimenrich/js/manager/entity-manager
+
+        # Repositories
+        pim/entity-repository:              pimenrich/js/repository/entity-repository
+        pim/attribute-repository:           pimenrich/js/repository/attribute-repository
+        pim/completeness-repository:        pimenrich/js/repository/completeness-repository
+
         # Form
         pim/form-builder:                                          pimenrich/js/form/builder
         pim/form-registry:                                         pimenrich/js/form/registry
@@ -45,7 +112,6 @@ config:
         pim/product-edit-form/associations:                        pimenrich/js/product/form/associations
         pim/product-edit-form/panel/panels:                        pimenrich/js/product/form/panel/panels
         pim/product-edit-form/panel/selector:                      pimenrich/js/product/form/panel/selector
-        pim/product-manager:                                       pimenrich/js/product/product-manager
         pim/form:                                                  pimenrich/js/product/form
         pim/product-edit-form/locale-switcher:                     pimenrich/js/product/form/locale-switcher
         pim/product-edit-form/scope-switcher:                      pimenrich/js/product/form/scope-switcher
@@ -65,13 +131,6 @@ config:
         # Product edit form
         pim/product-edit-form:              pimenrich/js/product/edit-form
         pim/field-manager:                  pimenrich/js/product/field-manager
-        pim/attribute-manager:              pimenrich/js/product/attribute-manager
-        pim/attribute-group-manager:        pimenrich/js/product/attribute-group-manager
-        pim/config-manager:                 pimenrich/js/product/config-manager
-        pim/variant-group-manager:          pimenrich/js/product/variant-group-manager
-        pim/completeness-manager:           pimenrich/js/product/completeness-manager
-        pim/channel-manager:                pimenrich/js/product/channel-manager
-        pim/association-manager:            pimenrich/js/product/association-manager
 
         # Fields
         pim/field:                          pimenrich/js/product/field/field

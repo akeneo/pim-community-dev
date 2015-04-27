@@ -8,11 +8,10 @@ define(
         'oro/mediator',
         'pim/form',
         'pim/field-manager',
-        'pim/config-manager',
+        'pim/entity-manager',
         'pim/attribute-manager',
         'pim/product-manager',
         'pim/attribute-group-manager',
-        'pim/variant-group-manager',
         'pim/user-context',
         'text!pim/template/product/tab/attributes'
     ],
@@ -23,11 +22,10 @@ define(
         mediator,
         BaseForm,
         FieldManager,
-        ConfigManager,
+        EntityManager,
         AttributeManager,
         ProductManager,
         AttributeGroupManager,
-        VariantGroupManager,
         UserContext,
         formTemplate
     ) {
@@ -70,7 +68,7 @@ define(
                     this.resize();
                     var product = this.getData();
                     $.when(
-                        ConfigManager.getEntityList('families'),
+                        EntityManager.getRepository('family').findAll(),
                         ProductManager.getValues(product)
                     ).done(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
@@ -112,7 +110,7 @@ define(
                 }
             },
             renderField: function (product, attributeCode, values, families) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 FieldManager.getField(attributeCode).done(_.bind(function (field) {
                     field.setContext({
@@ -123,29 +121,22 @@ define(
                     });
                     field.setValues(values);
 
-                    promise.resolve(field);
+                    deferred.resolve(field);
                 }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             getConfig: function () {
-                var configurationPromise = $.Deferred();
                 var promises = [];
-
                 var product = this.getData();
 
-                ConfigManager.getConfig();
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
                 promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
 
-                $.when.apply($, promises).done(_.bind(function () {
-                    configurationPromise.resolve();
-                }, this));
-
-                return configurationPromise.promise();
+                return $.when.apply($, promises).promise();
             },
             addAttributes: function (attributeCodes) {
-                ConfigManager.getEntityList('attributes').done(_.bind(function (attributes) {
+                EntityManager.getRepository('attribute').findAll().done(_.bind(function (attributes) {
                     var product = this.getData();
 
                     var hasRequiredValues = true;

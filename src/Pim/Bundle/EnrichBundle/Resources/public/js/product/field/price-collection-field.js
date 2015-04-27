@@ -4,10 +4,10 @@ define([
         'jquery',
         'pim/field',
         'underscore',
-        'pim/config-manager',
+        'pim/entity-manager',
         'text!pim/template/product/field/price-collection'
     ],
-    function ($, Field, _, ConfigManager, fieldTemplate) {
+    function ($, Field, _, EntityManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
@@ -35,16 +35,18 @@ define([
             this.setCurrentValue(data);
         },
         getTemplateContext: function () {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
-            $.when(Field.prototype.getTemplateContext.apply(this, arguments), ConfigManager.getEntityList('currencies'))
-                .done(function (templateContext, currencies) {
-                    templateContext.currencies = currencies;
+            $.when(
+                Field.prototype.getTemplateContext.apply(this, arguments),
+                EntityManager.getRepository('currency').findAll()
+            ).done(function (templateContext, currencies) {
+                templateContext.currencies = currencies;
 
-                    promise.resolve(templateContext);
-                });
+                deferred.resolve(templateContext);
+            });
 
-            return promise.promise();
+            return deferred.promise();
         }
     });
 });

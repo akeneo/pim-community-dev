@@ -65,9 +65,9 @@ define([
             throw new Error('You should implement your field template');
         },
         getTemplateContext: function () {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
-            promise.resolve({
+            deferred.resolve({
                 type: this.fieldType,
                 label: this.attribute.label[this.context.uiLocale] ?
                     this.attribute.label[this.context.uiLocale] :
@@ -80,7 +80,7 @@ define([
                 i18n: i18n
             });
 
-            return promise.promise();
+            return deferred.promise();
         },
         updateModel: function () {
             this.valid = true;

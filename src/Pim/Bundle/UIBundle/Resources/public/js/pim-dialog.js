@@ -72,14 +72,14 @@ define(
              * @param function callback
              */
             confirm: function (content, title, callback) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 var success = function () {
-                    promise.resolve();
+                    deferred.resolve();
                     (callback || $.noop)();
                 };
                 var cancel = function () {
-                    promise.reject();
+                    deferred.reject();
                 };
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
@@ -93,7 +93,7 @@ define(
                     (window.confirm(content) ? success : cancel)();
                 }
 
-                return promise.promise();
+                return deferred.promise();
             }
         };
     }

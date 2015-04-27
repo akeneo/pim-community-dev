@@ -23,7 +23,7 @@ define(
                 }
             },
             configure: function () {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 var extensionPromises = [];
                 _.each(this.extensions, function (extension) {
@@ -32,10 +32,10 @@ define(
 
                 $.when.apply($, extensionPromises).done(_.bind(function () {
                     this.configured = true;
-                    promise.resolve();
+                    deferred.resolve();
                 }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             addExtension: function (code, extension, zone, insertAction) {
                 extension.setParent(this);

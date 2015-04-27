@@ -52,7 +52,7 @@ define(
                 return this;
             },
             loadTrees: function () {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 $.getJSON(
                     Routing.generate('pim_enrich_product_category_rest_list', {id: this.getData().meta.id })
@@ -63,10 +63,10 @@ define(
                     if (_.isEmpty(this.state.get('selectedCategories'))) {
                         this.state.set('selectedCategories', _.pluck(data.categories, 'id'));
                     }
-                    promise.resolve(data.trees);
+                    deferred.resolve(data.trees);
                 }, this));
 
-                return promise.promise();
+                return deferred.promise();
             },
             changeTree: function (event) {
                 this.state.set('currentTree', event.currentTarget.dataset.tree);
