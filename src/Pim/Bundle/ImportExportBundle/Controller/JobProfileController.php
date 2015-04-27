@@ -15,7 +15,6 @@ use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\ImportExportBundle\Manager\JobManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -54,9 +53,6 @@ class JobProfileController extends AbstractDoctrineController
     /** @var ConstraintViolationListInterface  */
     protected $fileError;
 
-    /** @var JobManager */
-    protected $jobManager;
-
     /** @var SimpleJobLauncher */
     protected $simpleJobLauncher;
 
@@ -85,7 +81,6 @@ class JobProfileController extends AbstractDoctrineController
      * @param string                          $jobType
      * @param JobInstanceType                 $jobInstanceType
      * @param JobInstanceFactory              $jobInstanceFactory
-     * @param JobManager                      $jobManager
      * @param SimpleJobLauncher               $simpleJobLauncher
      * @param MassEditJobConfigurationFactory $jobConfigFactory
      * @param SaverInterface                  $jobConfigSaver
@@ -104,7 +99,6 @@ class JobProfileController extends AbstractDoctrineController
         $jobType,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
-        JobManager $jobManager,
         SimpleJobLauncher $simpleJobLauncher,
         MassEditJobConfigurationFactory $jobConfigFactory,
         SaverInterface $jobConfigSaver
@@ -128,7 +122,6 @@ class JobProfileController extends AbstractDoctrineController
         $this->jobInstanceType->setJobType($this->jobType);
 
         $this->jobInstanceFactory = $jobInstanceFactory;
-        $this->jobManager         = $jobManager;
         $this->simpleJobLauncher  = $simpleJobLauncher;
         $this->jobConfigSaver     = $jobConfigSaver;
         $this->jobConfigFactory   = $jobConfigFactory;
@@ -150,7 +143,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->jobManager->save($jobInstance);
+                $this->persist($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
@@ -249,7 +242,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->jobManager->save($jobInstance);
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -297,7 +290,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
-        $this->jobManager->remove($jobInstance);
+        $this->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

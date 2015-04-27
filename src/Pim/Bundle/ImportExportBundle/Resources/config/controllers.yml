@@ -14,7 +14,6 @@ services:
             - export
             - '@pim_import_export.form.type.job_instance'
             - '@pim_import_export.factory.job_instance'
-            - '@pim_import_export.manager.job'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@pim_enrich.factory.mass_edit.job_configuration'
             - '@pim_enrich.saver.mass_edit.configuration'
@@ -28,7 +27,6 @@ services:
             - import
             - '@pim_import_export.form.type.job_instance'
             - '@pim_import_export.factory.job_instance'
-            - '@pim_import_export.manager.job'
             - '@akeneo_batch.launcher.simple_job_launcher'
             - '@pim_enrich.factory.mass_edit.job_configuration'
             - '@pim_enrich.saver.mass_edit.configuration'
