@@ -88,7 +88,6 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
-<<<<<<< HEAD
 pim_reference_data:
     fabrics:
         class: Acme\Bundle\AppBundle\Entity\Fabric
@@ -96,10 +95,10 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
-=======
+
 doctrine_cache:
     providers:
         pim_apc_metadata_cache:
             type: apc
             namespace: metadata_cache
->>>>>>> PIM-4013 : doctrine cache
+
