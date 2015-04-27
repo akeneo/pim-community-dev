@@ -83,8 +83,8 @@ class ProductRuleApplier implements ApplierInterface
 
         foreach ($paginator as $productsPage) {
             $this->productsUpdater->update($rule, $productsPage);
-            $this->productsValidator->validate($rule, $productsPage);
-            $this->productsSaver->save($rule, $productsPage);
+            $validProducts = $this->productsValidator->validate($rule, $productsPage);
+            $this->productsSaver->save($rule, $validProducts);
             $this->detachProducts($productsPage);
         }
 

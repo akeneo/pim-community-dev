@@ -17,6 +17,15 @@
 
 # 1.3.x
 
+# 1.3.9 (2015-04-21)
+
+# 1.3.7 (2015-04-03)
+
+## Bug fixes
+- PIM-3961: Fix issue with validation of products when apply a rule
+
+# 1.3.6 (2015-04-01)
+
 ## Bug fixes
 - PIM-3935: Fix "working copy value" tooltip is always empty
 - PIM-3957: Unable to publish a product already published
