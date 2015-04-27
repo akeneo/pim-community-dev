@@ -75,6 +75,12 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function createJobExecution(JobInstance $jobInstance)
     {
+        if (null !== $jobInstance->getId()) {
+            $jobInstance = $this->jobManager->merge($jobInstance);
+        } else {
+            $this->jobManager->persist($jobInstance);
+        }
+
         $jobExecution = new $this->jobExecutionClass();
         $jobExecution->setJobInstance($jobInstance);
 
