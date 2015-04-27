@@ -50,10 +50,6 @@ class SimpleJobLauncher implements JobLauncherInterface
         $executionId  = $jobExecution->getId();
         $pathFinder   = new PhpExecutableFinder();
 
-        if ($this->isConfigTrue('upload')) {
-            $rawConfiguration .= ' ' . addslashes(json_encode($jobInstance->getJob()->getConfiguration()));
-        }
-
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',
             $pathFinder->find(),
