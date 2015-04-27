@@ -13,7 +13,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer);
     }
 
-    public function it_adds_the_attribute_id_to_the_noramlized_attribute($normalizer, AssociationTypeInterface $variant)
+    public function it_adds_the_attribute_id_to_the_normalized_association_type($normalizer, AssociationTypeInterface $variant)
     {
         $normalizer->normalize($variant, 'json', [])->willReturn(['code' => 'variant']);
         $variant->getId()->willReturn(12);
@@ -21,7 +21,7 @@ class AssociationTypeNormalizerSpec extends ObjectBehavior
         $this->normalize($variant, 'internal_api', [])->shouldReturn(['code' => 'variant', 'id' => 12]);
     }
 
-    public function it_supports_attributes_and_internal_api(AssociationTypeInterface $variant)
+    public function it_supports_association_types_and_internal_api(AssociationTypeInterface $variant)
     {
         $this->supportsNormalization($variant, 'internal_api')->shouldReturn(true);
         $this->supportsNormalization($variant, 'json')->shouldReturn(false);

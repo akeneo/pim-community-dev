@@ -71,7 +71,7 @@ class AttributeGroupRestController
 
     /**
      * get a single attribute group
-     * @param integer $id
+     * @param int $id
      *
      * @return JsonResponse
      */
@@ -80,9 +80,12 @@ class AttributeGroupRestController
         $attributeGroup = $this->attributeGroupGroupRepo->findOneById($id);
 
         if (null === $attributeGroup ||
-            $this->objectFilter->filterObject($attributeGroup, 'pim:internal_api:attribute_group:view')
+            (
+                null !== $attributeGroup &&
+                $this->objectFilter->filterObject($attributeGroup, 'pim:internal_api:attribute_group:view')
+            )
         ) {
-            throw new NotFoundHttpException(sprintf('No attribute group found for id "%s"', $id));
+            throw new NotFoundHttpException(sprintf('No attribute group found for id "%d"', $id));
         }
 
         return new JsonResponse($this->normalizer->normalize($attributeGroup, 'json'));

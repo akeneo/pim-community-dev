@@ -16,9 +16,7 @@ define(
             configure: function() {
                 mediator.on('field:extension:add', _.bind(this.addExtension, this));
 
-                return $.when(
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             addExtension: function (event) {
                 var product = this.getData();

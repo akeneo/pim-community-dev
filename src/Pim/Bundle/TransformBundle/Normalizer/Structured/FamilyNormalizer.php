@@ -33,8 +33,8 @@ class FamilyNormalizer implements NormalizerInterface
     /**
      * Constructor
      *
-     * @param TranslationNormalizer     $transNormalizer
-     * @param CollectionFilterInterface $collectionFilter
+     * @param TranslationNormalizer          $transNormalizer
+     * @param CollectionFilterInterface|null $collectionFilter
      */
     public function __construct(
         TranslationNormalizer $transNormalizer,

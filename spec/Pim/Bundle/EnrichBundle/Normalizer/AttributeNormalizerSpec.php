@@ -13,7 +13,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer);
     }
 
-    public function it_adds_the_attribute_id_to_the_noramlized_attribute($normalizer, AttributeInterface $price)
+    public function it_adds_the_attribute_id_to_the_normalized_attribute($normalizer, AttributeInterface $price)
     {
         $normalizer->normalize($price, 'json', [])->willReturn(['code' => 'price']);
         $price->getId()->willReturn(12);
