@@ -118,7 +118,7 @@ define(
                 return promise.promise();
             },
             loadAttributeGroups: function () {
-                return EntityManager.getEntityList('attributegroups').then(_.bind(function (attributeGroups) {
+                return EntityManager.getRepository('attributeGroup').findAll().done(_.bind(function (attributeGroups) {
                     this.attributeGroups = attributeGroups;
                 }, this));
             },

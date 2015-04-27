@@ -72,7 +72,7 @@ define(
                 this.copyFields = {};
 
                 $.when(
-                    EntityManager.getEntityList('attributes'),
+                    EntityManager.getRepository('attribute').findAll(),
                     ProductManager.getValues(this.getData())
                 ).done(_.bind(function (attributes, productValues) {
                     _.each(productValues, _.bind(function (values, code) {

@@ -7,7 +7,7 @@ define(
         'backbone',
         'pim/form',
         'text!pim/template/product/tab/associations',
-        'pim/association-manager',
+        'pim/entity-manager',
         'pim/attribute-manager',
         'pim/user-context',
         'routing',
@@ -20,7 +20,7 @@ define(
         Backbone,
         BaseForm,
         formTemplate,
-        AssociationManager,
+        EntityManager,
         AttributeManager,
         UserContext,
         Routing,
@@ -120,7 +120,7 @@ define(
 
                 $.when(
                     this.loadAssociationTypes(),
-                    AttributeManager.getIdentifierAttribute()
+                    EntityManager.getRepository('attribute').getIdentifier()
                 ).done(_.bind(function (associationTypes, identifierAttribute) {
                     this.setAssociationCount(associationTypes);
                     this.state.set(
@@ -154,7 +154,7 @@ define(
                 return this;
             },
             loadAssociationTypes: function () {
-                return AssociationManager.getAssociationTypes();
+                return EntityManager.getRepository('associationType').findAll();
             },
             setAssociationCount: function (associationTypes) {
                 var associations = this.getData().associations;

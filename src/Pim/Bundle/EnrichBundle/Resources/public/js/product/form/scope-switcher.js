@@ -5,9 +5,9 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/scope-switcher',
-        'pim/channel-manager'
+        'pim/entity-manager'
     ],
-    function (_, BaseForm, template, ChannelManager) {
+    function (_, BaseForm, template, EntityManager) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group scope-switcher',
@@ -15,7 +15,7 @@ define(
                 'click li a': 'changeScope'
             },
             render: function () {
-                ChannelManager.getChannels().done(_.bind(function (channels) {
+                EntityManager.getRepository('channel').findAll().done(_.bind(function (channels) {
                     if (!this.getParent().getScope()) {
                         this.getParent().setScope(channels[0].code, {silent: true});
                     }

@@ -50,7 +50,7 @@ define(
                 return this;
             },
             enterEditMode: function () {
-                EntityManager.getEntityList('families').done(_.bind(function (families) {
+                EntityManager.getRepository('family').findAll().done(_.bind(function (families) {
                     this.families = families;
                     this.showFamilyList = true;
                     this.render();

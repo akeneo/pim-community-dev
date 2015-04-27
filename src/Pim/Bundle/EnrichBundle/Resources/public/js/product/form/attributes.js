@@ -12,7 +12,6 @@ define(
         'pim/attribute-manager',
         'pim/product-manager',
         'pim/attribute-group-manager',
-        'pim/variant-group-manager',
         'pim/user-context',
         'text!pim/template/product/tab/attributes'
     ],
@@ -27,7 +26,6 @@ define(
         AttributeManager,
         ProductManager,
         AttributeGroupManager,
-        VariantGroupManager,
         UserContext,
         formTemplate
     ) {
@@ -70,7 +68,7 @@ define(
                     this.resize();
                     var product = this.getData();
                     $.when(
-                        EntityManager.getEntityList('families'),
+                        EntityManager.getRepository('family').findAll(),
                         ProductManager.getValues(product)
                     ).done(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
@@ -138,7 +136,7 @@ define(
                 return $.when.apply($, promises).promise();
             },
             addAttributes: function (attributeCodes) {
-                EntityManager.getEntityList('attributes').done(_.bind(function (attributes) {
+                EntityManager.getRepository('attribute').findAll().done(_.bind(function (attributes) {
                     var product = this.getData();
 
                     var hasRequiredValues = true;

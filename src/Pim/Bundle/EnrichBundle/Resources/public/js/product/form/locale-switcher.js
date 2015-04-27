@@ -16,7 +16,7 @@ define(
                 'click li a': 'changeLocale'
             },
             render: function () {
-                EntityManager.getEntityList('locales').done(_.bind(function (locales) {
+                EntityManager.getRepository('locale').findAll().done(_.bind(function (locales) {
                     this.$el.html(
                         this.template({
                             locales: locales,

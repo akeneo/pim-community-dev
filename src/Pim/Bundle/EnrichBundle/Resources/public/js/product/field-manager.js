@@ -40,7 +40,7 @@ define(
                     return promise.promise();
                 }
 
-                EntityManager.getEntity('attributes', attributeCode).done(function (attribute) {
+                EntityManager.getRepository('attribute').find(attributeCode).done(function (attribute) {
                     getFieldForAttribute(attribute).done(function (Field) {
                         fields[attributeCode] = new Field(attribute);
                         promise.resolve(fields[attributeCode]);

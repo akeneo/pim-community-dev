@@ -37,12 +37,14 @@ define([
         getTemplateContext: function () {
             var promise = $.Deferred();
 
-            $.when(Field.prototype.getTemplateContext.apply(this, arguments), EntityManager.getEntityList('currencies'))
-                .done(function (templateContext, currencies) {
-                    templateContext.currencies = currencies;
+            $.when(
+                Field.prototype.getTemplateContext.apply(this, arguments),
+                EntityManager.getRepository('currency').findAll()
+            ).done(function (templateContext, currencies) {
+                templateContext.currencies = currencies;
 
-                    promise.resolve(templateContext);
-                });
+                promise.resolve(templateContext);
+            });
 
             return promise.promise();
         }

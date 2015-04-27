@@ -1,35 +1,34 @@
 'use strict';
 
-define(['jquery', 'underscore', 'routing'], function ($, _, Routing) {
+define(['module', 'jquery', 'underscore'], function (module, $, _) {
     return {
-        promises: {},
-        urls: {
-            'attributegroups': 'pim_enrich_attributegroup_rest_index',
-            'attributes':      'pim_enrich_attribute_rest_index',
-            'families':        'pim_enrich_family_rest_index',
-            'channels':        'pim_enrich_channel_rest_index',
-            'locales':         'pim_enrich_locale_rest_index',
-            'measures':        'pim_enrich_measures_rest_index',
-            'currencies':      'pim_enrich_currency_rest_index'
-        },
-        getEntityList: function (entityType) {
-            // If we never called the backend we call it and store the promise
-            if (!(entityType in this.promises)) {
-                this.promises[entityType] = $.getJSON(
-                    Routing.generate(this.urls[entityType])
-                ).then(_.identity).promise();
-            }
+        repositories: {},
+        initialize: function () {
+            var deferred = $.Deferred();
+            var repositories = {};
 
-            return this.promises[entityType];
-        },
-        getEntity: function (entityType, entityIdentifier) {
-            var promise = $.Deferred();
-
-            this.getEntityList(entityType).done(function (entities) {
-                promise.resolve(_.findWhere(entities, {code: entityIdentifier}));
+            _.each(module.config().repositories, function (config, name) {
+                config = _.isString(config) ? { module: config } : config;
+                config.options = config.options || {};
+                repositories[name] = config;
             });
 
-            return promise.promise();
+            require(_.pluck(repositories, 'module'), _.bind(function () {
+                _.each(repositories, function (repository) {
+                    repository.loadedModule = new (require(repository.module))(repository.options);
+                });
+
+                this.repositories = repositories;
+                deferred.resolve();
+            }, this));
+
+            return deferred.promise();
+        },
+        getRepository: function (entityType) {
+            return (this.repositories[entityType] || this.repositories['default']).loadedModule;
+        },
+        clear: function (entityType, entity) {
+            return this.getRepository(entityType).clear(entity);
         }
     };
 });

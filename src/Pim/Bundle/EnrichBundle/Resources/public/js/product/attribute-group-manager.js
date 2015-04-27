@@ -8,7 +8,7 @@ define(
             var promise = $.Deferred();
 
             $.when(
-                EntityManager.getEntityList('attributegroups'),
+                EntityManager.getRepository('attributeGroup').findAll(),
                 AttributeManager.getAttributesForProduct(product)
             ).done(_.bind(function (attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};

@@ -1,49 +1,38 @@
-/* global jasmine, describe, it, expect, spyOn */
+/* global describe, it, expect, spyOn, beforeEach */
 'use strict';
 
 define(
-    ['jquery', 'pim/entity-manager', 'routing'],
-    function ($, EntityManager, Routing) {
+    ['pim/entity-manager', 'pim/attribute-repository', 'pim/entity-repository'],
+    function (EntityManager, AttributeRepository, EntityRepository) {
         describe('Entity manager', function () {
 
-            it('has a method to load a list of entities', function () {
-                expect(EntityManager.getEntityList).toBeDefined();
+            beforeEach(function (done) {
+                EntityManager.initialize().done(done);
             });
 
-            it('is aware of entity routes', function () {
-                expect(EntityManager.urls.attributegroups).toEqual('pim_enrich_attributegroup_rest_index');
-                expect(EntityManager.urls.attributes).toEqual('pim_enrich_attribute_rest_index');
-                expect(EntityManager.urls.families).toEqual('pim_enrich_family_rest_index');
-                expect(EntityManager.urls.channels).toEqual('pim_enrich_channel_rest_index');
-                expect(EntityManager.urls.locales).toEqual('pim_enrich_locale_rest_index');
-                expect(EntityManager.urls.measures).toEqual('pim_enrich_measures_rest_index');
-                expect(EntityManager.urls.currencies).toEqual('pim_enrich_currency_rest_index');
+            it('exposes entity repositories', function () {
+                expect(EntityManager.getRepository).toBeDefined();
             });
 
-            it('can load the requested entity list', function () {
-                spyOn(Routing, 'generate').and.callThrough();
-
-                spyOn($, 'getJSON').and.returnValue($.Deferred().resolve('foo').promise());
-
-                var result = null;
-                EntityManager.getEntityList('attributegroups').done(function (data) {
-                    result = data;
-                });
-                expect(Routing.generate).toHaveBeenCalledWith('pim_enrich_attributegroup_rest_index');
-                expect($.getJSON).toHaveBeenCalledWith(jasmine.any(String));
-
-                expect(result).toBe('foo');
+            it('returns the requested repository', function () {
+                var repository = EntityManager.getRepository('attribute');
+                expect(repository instanceof AttributeRepository).toBe(true);
             });
 
-            it('caches loaded entity lists', function () {
-                spyOn($, 'getJSON');
+            it('returns the default entity repository if a custom repository is not defined', function () {
+                var repository = EntityManager.getRepository('foo');
+                expect(repository instanceof EntityRepository).toBe(true);
+            });
 
-                var result = null;
-                EntityManager.getEntityList('attributegroups').done(function (data) {
-                    result = data;
-                });
-                expect($.getJSON).not.toHaveBeenCalled();
-                expect(result).toBe('foo');
+            it('can clear the repository cache', function () {
+                var repository = EntityManager.getRepository('attribute');
+                spyOn(repository, 'clear');
+
+                EntityManager.clear('attribute', 'name');
+                expect(repository.clear).toHaveBeenCalledWith('name');
+
+                EntityManager.clear('attribute');
+                expect(repository.clear).toHaveBeenCalledWith(undefined);
             });
         });
     }

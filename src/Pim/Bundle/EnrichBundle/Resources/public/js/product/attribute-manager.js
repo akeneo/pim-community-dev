@@ -1,58 +1,30 @@
 'use strict';
 
-define(['jquery', 'underscore', 'pim/entity-manager', 'pim/channel-manager'], function ($, _, EntityManager) {
+define(['jquery', 'underscore', 'pim/entity-manager'], function ($, _, EntityManager) {
     return {
         getAttributesForProduct: function (product) {
-            var promise = $.Deferred();
-
-            EntityManager.getEntityList('families').done(function (families) {
-                promise.resolve(
-                    !product.family ?
+            return EntityManager.getRepository('family').findAll().then(function (families) {
+                return !product.family ?
                     _.keys(product.values) :
-                    _.union(_.keys(product.values), families[product.family].attributes)
-                );
+                    _.union(_.keys(product.values), families[product.family].attributes);
             });
-
-            return promise.promise();
         },
         getOptionalAttributes: function (product) {
-            var promise = $.Deferred();
-
-            $.when(EntityManager.getEntityList('attributes'), this.getAttributesForProduct(product))
-                .done(function (attributes, productAttributes) {
-                    var optionalAttributes = _.map(
-                        _.difference(_.pluck(attributes, 'code'), productAttributes),
-                        function (attributeCode) {
-                            return _.findWhere(attributes, {code: attributeCode});
-                        }
-                    );
-                    promise.resolve(optionalAttributes);
-                });
-
-            return promise.promise();
-        },
-        getIdentifierAttribute: function () {
-            var promise = $.Deferred();
-
-            EntityManager.getEntityList('attributes').done(function (attributes) {
-                var identifier = _.findWhere(attributes, { type: 'pim_catalog_identifier' });
-
-                promise.resolve(identifier);
+            return $.when(
+                EntityManager.getRepository('attribute').findAll(),
+                this.getAttributesForProduct(product)
+            ).then(function (attributes, productAttributes) {
+                var optionalAttributes = _.map(
+                    _.difference(_.pluck(attributes, 'code'), productAttributes),
+                    function (attributeCode) {
+                        return _.findWhere(attributes, {code: attributeCode});
+                    }
+                );
+                return optionalAttributes;
             });
-
-            return promise.promise();
         },
         isOptional: function (attribute, product, families) {
             return !product.family ? true : !_.contains(families[product.family].attributes, attribute);
-        },
-        getAttribute: function (attributeCode) {
-            var promise = $.Deferred();
-
-            EntityManager.getEntity('attributes', attributeCode).done(_.bind(function (attribute) {
-                promise.resolve(attribute);
-            }, this));
-
-            return promise.promise();
         },
         getEmptyValue: function (attribute) {
             switch (attribute.type) {
