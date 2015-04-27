@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -9,9 +10,9 @@ define(
         'pimee/permission-manager',
         'oro/mediator'
     ],
-    function (_, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
+    function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
-            configure: function() {
+            configure: function () {
                 mediator.on('field:extension:add', _.bind(this.addExtension, this));
 
                 return $.when(
