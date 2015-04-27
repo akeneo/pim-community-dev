@@ -83,16 +83,20 @@ define(
                 var route;
                 var operationType = $(e.currentTarget).data('operation-type');
 
-                if ('mass_edit' === operationType) {
-                    route = Routing.generate(
-                        'pim_enrich_job_tracker_show',
-                        { id: $(e.currentTarget).data('id') }
-                    );
-                } else {
-                    route = Routing.generate(
-                        'pim_importexport_' + operationType + '_execution_show',
-                        { id: $(e.currentTarget).data('id') }
-                    );
+                switch (operationType) {
+                    case 'mass_edit':
+                    case 'quick_export':
+                        route = Routing.generate(
+                            'pim_enrich_job_tracker_show',
+                            { id: $(e.currentTarget).data('id') }
+                        );
+                        break;
+                    default:
+                        route = Routing.generate(
+                            'pim_importexport_' + operationType + '_execution_show',
+                            { id: $(e.currentTarget).data('id') }
+                        );
+                        break;
                 }
 
                 Navigation.getInstance().setLocation(route);

@@ -26,7 +26,7 @@ class ExportController
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
-    /** @var ExportMassAction $exportMassAction */
+    /** @var \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction $exportMassAction */
     protected $exportMassAction;
 
     /**

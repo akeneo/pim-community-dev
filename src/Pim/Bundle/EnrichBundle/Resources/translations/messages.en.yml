@@ -163,6 +163,10 @@ pim_enrich:
             success_flash: Attribute requirements were applied to the selected families
             launched_flash: The job updating families attribute requirements is currently running
 
+        mass_action:
+            quick_export:
+                launched_flash: The job exporting products is currently running
+
     # Sequential edit operations
     sequential_edit_action:
         product:
@@ -932,6 +936,10 @@ pim_mass_edit:
             success: Mass edit finished
             error:   Mass edit failed
             warning: Mass edit finished with warnings
+        quick_export:
+            success: Quick export finished
+            error:   Quick export failed
+            warning: Quick export finished with warnings
 
 job_execution.summary:
     mass_edited:      Mass edited
