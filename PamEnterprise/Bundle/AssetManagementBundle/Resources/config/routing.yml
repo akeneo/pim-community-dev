@@ -1,0 +1,3 @@
+pam_enterprise_asset_management_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: PamEnterpriseAssetManagementBundle:Default:index }
