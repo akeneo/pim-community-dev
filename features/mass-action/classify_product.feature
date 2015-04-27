@@ -18,10 +18,8 @@ Feature: Classify many products at once
     And I expand the "2014 collection" category
     And I click on the "Winter collection" category
     And I click on the "Summer collection" category
-    And I press the "Next" button
-    And I apply the following mass-edit operation with the given configuration:
-      | operation | filters                                                               | actions                                                                        |
-      | classify  | [{"field":"sku", "operator":"IN", "value": ["bigfoot", "horseshoe"]}] | [{"field": "categories", "value": ["winter_collection", "summer_collection"]}] |
+    And I move on to the next step
+    And I wait for the "add_product_value" mass-edit job to finish
     When I am on the products page
     And I select the "2014 collection" tree
     Then I should see "Summer collection (2)"

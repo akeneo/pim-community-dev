@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
-use Prophecy\Argument;
 
 class FilteredProductReaderSpec extends ObjectBehavior
 {
@@ -42,7 +41,6 @@ class FilteredProductReaderSpec extends ObjectBehavior
         MassEditRepository $massEditRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
-        StepExecution $stepExecution,
         MassEditJobConfiguration $massEditJobConf,
         ProductQueryBuilderFactory $pqbFactory,
         ProductQueryBuilder $pqb,
@@ -68,5 +66,17 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $cursor->current()->willReturn($product);
 
         $this->read()->shouldReturn($product);
+    }
+
+    function it_throws_an_exception_if_no_config_is_found(
+        MassEditRepository $massEditRepository,
+        JobExecution $jobExecution,
+        StepExecution $stepExecution
+    ) {
+        $this->setStepExecution($stepExecution);
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn(null);
+
+        $this->shouldThrow('\Doctrine\ORM\EntityNotFoundException')->during('read');
     }
 }

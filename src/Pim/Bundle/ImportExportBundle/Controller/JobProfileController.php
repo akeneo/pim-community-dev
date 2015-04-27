@@ -6,12 +6,12 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\ImportExportBundle\Manager\JobManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -41,12 +41,6 @@ class JobProfileController extends AbstractDoctrineController
     /** @var string */
     protected $jobType;
 
-    /** @var string */
-    protected $rootDir;
-
-    /** @var string */
-    protected $environment;
-
     /** @var JobInstanceType */
     protected $jobInstanceType;
 
@@ -56,8 +50,8 @@ class JobProfileController extends AbstractDoctrineController
     /** @var ConstraintViolationListInterface  */
     protected $fileError;
 
-    /** @var JobManager */
-    protected $jobManager;
+    /** @var SimpleJobLauncher */
+    protected $simpleJobLauncher;
 
     /** @var File */
     protected $file;
@@ -76,11 +70,9 @@ class JobProfileController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
-     * @param string                   $rootDir
-     * @param string                   $environment
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
-     * @param JobManager               $jobManager
+     * @param SimpleJobLauncher        $simpleJobLauncher
      */
     public function __construct(
         Request $request,
@@ -94,11 +86,9 @@ class JobProfileController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
         $jobType,
-        $rootDir,
-        $environment,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
-        JobManager $jobManager
+        SimpleJobLauncher $simpleJobLauncher
     ) {
         parent::__construct(
             $request,
@@ -114,14 +104,12 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->connectorRegistry  = $connectorRegistry;
         $this->jobType            = $jobType;
-        $this->rootDir            = $rootDir;
-        $this->environment        = $environment;
 
         $this->jobInstanceType    = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
 
         $this->jobInstanceFactory = $jobInstanceFactory;
-        $this->jobManager         = $jobManager;
+        $this->simpleJobLauncher  = $simpleJobLauncher;
     }
 
     /**
@@ -140,7 +128,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->jobManager->save($jobInstance);
+                $this->persist($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
@@ -239,7 +227,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->jobManager->save($jobInstance);
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -287,7 +275,7 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_REMOVE, new GenericEvent($jobInstance));
 
-        $this->jobManager->remove($jobInstance);
+        $this->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -418,13 +406,13 @@ class JobProfileController extends AbstractDoctrineController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $jobExecution = $this->jobManager->launch(
-            $jobInstance,
-            $this->getUser(),
-            $this->rootDir,
-            $this->environment,
-            $isUpload
-        );
+        $rawConfig = $isUpload
+            ? addslashes(json_encode($jobInstance->getJob()->getConfiguration()))
+            : '';
+
+        $jobExecution = $this->simpleJobLauncher
+            ->setConfig(['email' => true])
+            ->launch($jobInstance, $this->getUser(), $rawConfig);
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 

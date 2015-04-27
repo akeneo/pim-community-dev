@@ -2,14 +2,11 @@
 
 namespace Context;
 
-use Akeneo\Bundle\BatchBundle\Command\BatchCommand;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -127,141 +124,6 @@ class CommandContext extends RawMinkContext
                 $expected,
                 $diff
             );
-        }
-    }
-
-    /**
-     * @Given /^I apply the following mass-edit operation with the given configuration:$/
-     * @param TableNode $updates
-     *
-     * @throws \Exception
-     */
-    public function iApplyTheFollowingMassEditOperationWithTheGivenConfiguration(TableNode $updates)
-    {
-        $application = new Application();
-        $application->add(new BatchCommand());
-
-        $batchCommand = $application->find('akeneo:batch:job');
-        $batchCommand->setContainer($this->getMainContext()->getContainer());
-        $batchCommandTester = new CommandTester($batchCommand);
-
-        $operationRegistry = $this->getContainer()->get('pim_enrich.mass_edit_action.operation.registry');
-
-        foreach ($updates->getHash() as $update) {
-            $operation = $operationRegistry->get($update['operation']);
-
-            if (!$operation instanceof BatchableOperationInterface) {
-                throw new \Exception(sprintf(
-                    'Operation with alias %s must implement the BatchableOperationInterface to be tested this way',
-                    $operation->getOperationAlias()
-                ));
-            }
-
-            $filters = json_decode($update['filters'], true);
-            $actions = json_decode($update['actions'], true);
-
-            $jobArguments = [
-                'command'  => $batchCommand->getName(),
-                'code'     => $operation->getBatchJobCode(),
-                '--config' => json_encode([
-                    'filters' => $filters,
-                    'actions' => $actions
-                ]),
-                '--no-log' => true
-            ];
-
-            $batchCommandTester->execute($jobArguments);
-        }
-    }
-
-    /**
-     * @Then /^I should get the following products after apply the following mass-edit operation to it:$/
-     * @param TableNode $updates
-     *
-     * @throws \Exception
-     */
-    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingMassEditOperationToIt(TableNode $updates)
-    {
-        $application = new Application();
-        $application->add(new BatchCommand());
-        $application->add(new GetProductCommand());
-
-        $batchCommand = $application->find('akeneo:batch:job');
-        $batchCommand->setContainer($this->getMainContext()->getContainer());
-        $batchCommandTester = new CommandTester($batchCommand);
-
-        $getCommand = $application->find('pim:product:get');
-        $getCommand->setContainer($this->getMainContext()->getContainer());
-        $getCommandTester = new CommandTester($getCommand);
-
-        $operationRegistry = $this->getContainer()->get('pim_enrich.mass_edit_action.operation.registry');
-        $pqbFactory = $this->getContainer()->get('pim_catalog.query.product_query_builder_factory');
-
-        foreach ($updates->getHash() as $update) {
-            $operation = $operationRegistry->get($update['operation']);
-            $productQueryBuilder = $pqbFactory->create();
-
-            if (!$operation instanceof BatchableOperationInterface) {
-                throw new \Exception(sprintf(
-                    'Operation with alias %s must implement the BatchableOperationInterface to be tested this way',
-                    $operation->getOperationAlias()
-                ));
-            }
-
-            $filters = json_decode($update['filters'], true);
-            $actions = json_decode($update['actions'], true);
-
-            foreach ($filters as $filter) {
-                $productQueryBuilder->addFilter($filter['field'], $filter['operator'], $filter['value']);
-            }
-
-            $cursor = $productQueryBuilder->execute();
-
-            $jobArguments = [
-                'command'  => $batchCommand->getName(),
-                'code'     => $operation->getBatchJobCode(),
-                '--config' => json_encode([
-                    'filters' => $filters,
-                    'actions' => $actions
-                ]),
-                '--no-log' => true
-            ];
-
-            $batchCommandTester->execute($jobArguments);
-
-            foreach ($cursor as $product) {
-                $getCommandTester->execute(
-                    [
-                        'command'    => $getCommand->getName(),
-                        'identifier' => (string) $product->getIdentifier()
-                    ]
-                );
-
-                $actual   = json_decode($getCommandTester->getDisplay(), true);
-
-                if (null === $actual) {
-                    throw new \Exception(sprintf(
-                        'An error occured during the execution of the update command : %s',
-                        $getCommandTester->getDisplay()
-                    ));
-                }
-
-                $expected = json_decode($update['result'], true);
-
-                if (null === $expected) {
-                    throw new \Exception(sprintf(
-                        'Looks like the expected result is not valid json : %s',
-                        $update['result']
-                    ));
-                }
-
-                $diff = $this->arrayIntersect($actual, $expected);
-
-                assertEquals(
-                    $expected,
-                    $diff
-                );
-            }
         }
     }
 

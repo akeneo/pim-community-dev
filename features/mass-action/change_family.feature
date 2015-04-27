@@ -22,10 +22,8 @@ Feature: Change family of many products at once
     Given I mass-edit products coffee and hamburger
     And I choose the "Change the family of products" operation
     And I change the Family to "Food"
-    And I press the "Next" button
-    And I apply the following mass-edit operation with the given configuration:
-      | operation     | filters                                                              | actions                                |
-      | change-family | [{"field":"sku", "operator":"IN", "value": ["coffee", "hamburger"]}] | [{"field": "family", "value": "Food"}] |
+    And I move on to the next step
+    And I wait for the "update_product_value" mass-edit job to finish
     Then the family of product "coffee" should be "Food"
     And the family of product "hamburger" should be "Food"
 
@@ -33,17 +31,8 @@ Feature: Change family of many products at once
     Given I mass-edit products coffee, hamburger and jeans
     And I choose the "Change the family of products" operation
     And I change the Family to "None"
-    And I press the "Next" button
-    And I apply the following mass-edit operation with the given configuration:
-      | operation     | filters                                                                       | actions                              |
-      | change-family | [{"field":"sku", "operator":"IN", "value": ["coffee", "hamburger", "jeans"]}] | [{"field": "family", "value": null}] |
-    And I am on the products page
-    Then the row "coffee" should contain:
-      | column | value |
-      | family |       |
-    Then the row "hamburger" should contain:
-      | column | value |
-      | family |       |
-    Then the row "jeans" should contain:
-      | column | value |
-      | family |       |
+    And I move on to the next step
+    And I wait for the "update_product_value" mass-edit job to finish
+    Then the family of product "coffee" should be ""
+    And the family of product "hamburger" should be ""
+    And the family of product "jeans" should be ""
