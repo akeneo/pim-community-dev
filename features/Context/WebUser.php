@@ -1245,6 +1245,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I click on the job tracker button on the job widget$/
+     */
+    public function iClickOnTheJobTrackerButtonOnTheJobWidget()
+    {
+        $this->getCurrentPage()->find('css', 'a#btn-show-list')->click();
+        $this->wait();
+    }
+
+    /**
      * @Given /^I blur the category node$/
      */
     public function iBlurTheCategoryNode()

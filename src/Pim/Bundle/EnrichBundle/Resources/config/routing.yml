@@ -62,5 +62,6 @@ sequential_edit:
     resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
     prefix: /enrich/sequential_edit
 
-mass_edit_report:
-    resource: '@PimEnrichBundle/Resources/config/routing/mass_edit_execution.yml'
+job_tracker:
+    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
+    prefix: /job

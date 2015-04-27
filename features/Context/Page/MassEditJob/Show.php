@@ -14,5 +14,5 @@ use Context\Page\Job\Show as JobShow;
 class Show extends JobShow
 {
     /** @var string $path */
-    protected $path = '/spread/mass_edit_execution/{id}';
+    protected $path = '/job/show/{id}';
 }

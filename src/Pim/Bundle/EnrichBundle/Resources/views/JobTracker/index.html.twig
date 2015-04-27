@@ -1,0 +1,8 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {{ dataGrid.renderStatefulGrid('job-tracker-grid', { localeCode: locale_code() }) }}
+
+{% endblock %}

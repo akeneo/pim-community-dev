@@ -88,14 +88,21 @@ class JobExecutionNotifier implements EventSubscriberInterface
      */
     protected function generateNotification(JobExecution $jobExecution, $user, $type, $status)
     {
-        if (JobInstance::TYPE_EXPORT === $type || JobInstance::TYPE_IMPORT === $type) {
-            $this->generateExportImportNotify($jobExecution, $user, $type, $status);
-        } elseif (self::TYPE_MASS_EDIT === $type) {
-            $this->generateMassEditNotify($jobExecution, $user, $type, $status);
-        } else {
-            throw new NotImplementedException(
-                sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
-            );
+        switch ($type) {
+            case JobInstance::TYPE_EXPORT:
+            case JobInstance::TYPE_IMPORT:
+                $this->generateExportImportNotify($jobExecution, $user, $type, $status);
+                break;
+
+            case self::TYPE_MASS_EDIT:
+                $this->generateMassEditNotify($jobExecution, $user, $type, $status);
+                break;
+
+            default:
+                throw new NotImplementedException(
+                    sprintf('Impossible to generate a notification for this unknown type : "%s"', $type)
+                );
+                break;
         }
     }
 
@@ -136,8 +143,8 @@ class JobExecutionNotifier implements EventSubscriberInterface
             sprintf('pim_mass_edit.notification.%s.%s', $type, $status),
             $status,
             [
-                'route'         => sprintf('pim_%s_execution_show', $type),
-                'routeParams'   => [
+                'route'       => 'pim_enrich_job_tracker_show',
+                'routeParams' => [
                     'id' => $jobExecution->getId()
                 ],
                 'messageParams' => [

@@ -20,7 +20,7 @@ parameters:
     pim_enrich.controller.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\ProductCommentController
     pim_enrich.controller.product_attribute.class:       Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
-    pim_mass_edit.controller.execution.class:            Pim\Bundle\EnrichBundle\Controller\MassEditExecutionController
+    pim_enrich.controller.job_tracker.class:             Pim\Bundle\EnrichBundle\Controller\JobTrackerController
 
 services:
     pim_enrich.controller.abstract:
@@ -271,13 +271,14 @@ services:
             - '@pim_catalog.builder.product_template'
             - '@pim_catalog.resolver.variant_group_attributes'
 
-    pim_mass_edit.controller.execution:
-        parent: pim_enrich.controller.abstract_doctrine
+    pim_enrich.controller.job_tracker:
         scope: request
-        class: %pim_mass_edit.controller.execution.class%
+        class: %pim_enrich.controller.job_tracker.class%
         arguments:
-            - '@akeneo_batch.logger.batch_log_handler'
+            - '@templating'
+            - '@translator'
+            - '@event_dispatcher'
+            - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_base_connector.event_listener.archivist'
-            - mass_edit
             - '@pim_serializer'
             - '@akeneo_batch.manager.job_execution'

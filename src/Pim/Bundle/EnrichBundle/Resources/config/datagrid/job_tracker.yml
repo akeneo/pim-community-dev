@@ -1,0 +1,60 @@
+datagrid:
+    job-tracker-grid:
+        source:
+            type: pim_datasource_default
+            entity: %akeneo_batch.entity.job_execution.class%
+            repository_method: createJobTrackerDatagridQueryBuilder
+        columns:
+            type:
+                label: Type
+            job:
+                label: Job
+                data_name: jobLabel
+            user:
+                label: User
+            status:
+                label: Status
+            started_at:
+                label: Started at
+                data_name: startTime
+                frontend_type: datetime
+        sorters:
+            columns:
+                type:
+                    data_name: type
+                job:
+                    data_name: jobLabel
+                user:
+                    data_name: user
+                status:
+                    data_name: statusLabel
+                started_at:
+                    data_name: startTime
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                type:
+                    type:      string
+                    label:     Type
+                    data_name: type
+                job:
+                    type: string
+                    label: Job
+                    data_name: jobLabel
+                user:
+                    type:      string
+                    label:     User
+                    data_name: user
+                status:
+                    type:             choice
+                    data_name:        status
+                    filter_by_having: true
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: %akeneo_batch.job.batch_status.class%::getAllLabels()
+                started_at:
+                    type:             datetime
+                    data_name:        startTime
+                    filter_by_having: true

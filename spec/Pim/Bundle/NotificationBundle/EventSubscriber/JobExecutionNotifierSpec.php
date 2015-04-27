@@ -88,7 +88,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 'pim_mass_edit.notification.mass_edit.success',
                 'success',
                 [
-                    'route' => 'pim_mass_edit_execution_show',
+                    'route' => 'pim_enrich_job_tracker_show',
                     'routeParams' => ['id' => 5],
                     'messageParams' => ['%label%' => 'Foo mass edit']
                 ]
