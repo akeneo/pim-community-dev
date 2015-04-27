@@ -24,14 +24,17 @@ define(
             return deferred.promise();
         },
         getAttributeGroupValues: function (values, attributeGroup) {
-            var filteredValues = {};
-            _.each(values, _.bind(function (productValue, attributeCode) {
-                if (attributeGroup && -1 !== attributeGroup.attributes.indexOf(attributeCode)) {
-                    filteredValues[attributeCode] = productValue;
+            var matchingValues = {};
+            if (!attributeGroup) {
+                return matchingValues;
+            }
+            _.each(attributeGroup.attributes, function (attributeCode) {
+                if (values[attributeCode]) {
+                    matchingValues[attributeCode] = values[attributeCode];
                 }
-            }, this));
+            });
 
-            return filteredValues;
+            return matchingValues;
         },
         getAttributeGroupForAttribute: function (attributeGroups, attribute) {
             var result = null;
