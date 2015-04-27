@@ -147,7 +147,11 @@ class ProductCommentRestController
         $data['parent'] = $commentId;
 
         $reply = $this->commentBuilder->buildComment($product, $this->getUser());
-        $form = $this->formFactory->create('pim_comment_comment', $reply, ['is_reply' => true, 'csrf_protection' => false]);
+        $form = $this->formFactory->create(
+            'pim_comment_comment',
+            $reply,
+            ['is_reply' => true, 'csrf_protection' => false]
+        );
         $form->submit($data, false);
 
         if ($form->isValid()) {
