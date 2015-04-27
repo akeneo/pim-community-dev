@@ -25,3 +25,13 @@ extensions:
         parent: product-edit-form
         insertAction: append
         targetZone: meta
+
+    read-only-locale:
+        module: pimee/product-edit-form/attributes/read-only-locale
+        parent: attributes
+        targetZone: attributes
+
+    read-only-attribute-group:
+        module: pimee/product-edit-form/attributes/read-only-attribute-group
+        parent: attributes
+        targetZone: attributes

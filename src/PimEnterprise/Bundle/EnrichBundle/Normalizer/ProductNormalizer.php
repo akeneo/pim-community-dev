@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -24,7 +23,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, FilterableNormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var NormalizerInterface */
     protected $productNormalizer;
@@ -65,14 +64,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         );
 
         return $normalizedProduct;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilters(array $filters)
-    {
-        $this->productNormalizer->setFilters($filters);
     }
 
     /**

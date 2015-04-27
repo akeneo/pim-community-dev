@@ -1,24 +1,22 @@
 config:
     paths:
         pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
-        pim/attribute-manager:            pimenterpriseenrich/js/product/attribute-manager
-        pim/attribute-group-manager:      pimenterpriseenrich/js/product/attribute-group-manager
-        pim/config-manager:               pimenterpriseenrich/js/product/config-manager
-        pim/permission-manager:           pimenterpriseenrich/js/product/permission-manager
-        pim/product-edit-form/attributes: pimenterpriseenrich/js/product/form/attributes
+        pimee/permission-manager:         pimenterpriseenrich/js/product/permission-manager
         pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager
         pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager
 
         # Form extensions
-        pimee/product-edit-form/attributes/smart-attribute: pimenterpriseenrich/js/product/form/attributes/smart-attribute
-        pimee/product-edit-form/panel/history/published:    pimenterpriseenrich/js/product/form/panel/history/published
-        pimee/product-edit-form/panel/history/revert:       pimenterpriseenrich/js/product/form/panel/history/revert
-        pimee/product-edit-form/publish:                    pimenterpriseenrich/js/product/form/publish
-        pimee/product-edit-form/meta/published:             pimenterpriseenrich/js/product/form/meta/published
+        pimee/product-edit-form/attributes/smart-attribute:           pimenterpriseenrich/js/product/form/attributes/smart-attribute
+        pimee/product-edit-form/attributes/read-only-attribute-group: pimenterpriseenrich/js/product/form/attributes/read-only-attribute-group
+        pimee/product-edit-form/attributes/read-only-locale:          pimenterpriseenrich/js/product/form/attributes/read-only-locale
+        pimee/product-edit-form/panel/history/published:              pimenterpriseenrich/js/product/form/panel/history/published
+        pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
+        pimee/product-edit-form/publish:                              pimenterpriseenrich/js/product/form/publish
+        pimee/product-edit-form/meta/published:                       pimenterpriseenrich/js/product/form/meta/published
 
         # Templates
-        pimee/template/product/tab/attribute/smart-attribute: pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
-        pimee/template/product/panel/history/published:       pimenterpriseenrich/templates/product/panel/history/published.html
-        pimee/template/product/panel/history/revert:          pimenterpriseenrich/templates/product/panel/history/revert.html
-        pimee/template/product/publish:                       pimenterpriseenrich/templates/product/publish.html
-        pimee/template/product/meta/published:                pimenterpriseenrich/templates/product/meta/published.html
+        pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
+        pimee/template/product/panel/history/published:                 pimenterpriseenrich/templates/product/panel/history/published.html
+        pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
+        pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html
+        pimee/template/product/meta/published:                          pimenterpriseenrich/templates/product/meta/published.html

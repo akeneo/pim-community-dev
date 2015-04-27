@@ -11,19 +11,19 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Filter;
 
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Filter\AbstractFilter;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Attribute filter
+ * Locale filter
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AttributeRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class LocaleRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -39,13 +39,13 @@ class AttributeRightFilter extends AbstractFilter implements CollectionFilterInt
     /**
      * {@inheritdoc}
      */
-    public function filterObject($attribute, $type, array $options = [])
+    public function filterObject($locale, $type, array $options = [])
     {
-        if (!$attribute instanceof AttributeInterface) {
-            throw new \LogicException('This filter only handles objects of type "AttributeInterface"');
+        if (!$locale instanceof LocaleInterface) {
+            throw new \LogicException('This filter only handles objects of type "LocaleInterface"');
         }
 
-        return !$this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attribute->getGroup());
+        return !$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
     }
 
     /**
@@ -53,6 +53,6 @@ class AttributeRightFilter extends AbstractFilter implements CollectionFilterInt
      */
     public function supportsObject($object, $type, array $options = [])
     {
-        return $object instanceof AttributeInterface;
+        return $object instanceof LocaleInterface;
     }
 }
