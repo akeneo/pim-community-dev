@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
     return {
         productValues: null,
         get: function (id) {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
             $.ajax(
                 Routing.generate('pim_enrich_product_rest_get', {id: id}),
@@ -12,10 +12,10 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                     method: 'GET'
                 }
             ).done(function (product) {
-                promise.resolve(product);
+                deferred.resolve(product);
             });
 
-            return promise.promise();
+            return deferred.promise();
         },
         save: function (id, data) {
             return $.ajax({
@@ -34,7 +34,7 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
             }).promise();
         },
         getValues: function (product) {
-            var promise = $.Deferred();
+            var deferred = $.Deferred();
 
             AttributeManager.getAttributesForProduct(product).done(function (attributes) {
                 _.each(attributes, _.bind(function (attributeCode) {
@@ -43,10 +43,10 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                     }
                 }, this));
 
-                promise.resolve(product.values);
+                deferred.resolve(product.values);
             });
 
-            return promise.promise();
+            return deferred.promise();
         }
     };
 });

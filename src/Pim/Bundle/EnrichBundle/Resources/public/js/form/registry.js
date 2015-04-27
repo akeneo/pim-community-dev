@@ -4,40 +4,28 @@ define(
     ['jquery', 'underscore', 'pim/form-config-provider'],
     function ($, _, ConfigProvider) {
         var getExtensionMeta = function (formName) {
-            var promise = $.Deferred();
-
-            ConfigProvider.getExtensionMap().done(function (extensionMap) {
+            return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form = _.first(_.where(extensionMap, { module: formName }));
                 var meta = {
                     zones: form.zones,
                     extensions: _.where(extensionMap, { parent: form.code })
                 };
 
-                promise.resolve(meta);
+                return meta;
             });
-
-            return promise.promise();
         };
 
         return {
             getForm: function getForm(formName) {
-                var promise = $.Deferred();
+                var deferred = $.Deferred();
 
                 require([formName], function (Form) {
-                    promise.resolve(Form);
+                    deferred.resolve(Form);
                 });
 
-                return promise.promise();
+                return deferred.promise();
             },
-            getFormExtensions: function getFormExtensions(formName) {
-                var promise = $.Deferred();
-
-                getExtensionMeta(formName).done(function (extensionMeta) {
-                    promise.resolve(extensionMeta);
-                });
-
-                return promise.promise();
-            }
+            getFormExtensions: getExtensionMeta
         };
     }
 );

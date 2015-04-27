@@ -5,13 +5,12 @@ define(
         'jquery',
         'underscore',
         'pim/form',
-        'pim/completeness-manager',
         'text!pim/template/product/panel/completeness',
-        'pim/config-manager',
+        'pim/entity-manager',
         'pim/i18n',
         'oro/mediator'
     ],
-    function ($, _, BaseForm, CompletenessManager, template, ConfigManager, i18n, mediator) {
+    function ($, _, BaseForm, template, EntityManager, i18n, mediator) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane',
@@ -32,8 +31,8 @@ define(
             render: function () {
                 if (this.getRoot().model.get('meta')) {
                     $.when(
-                        CompletenessManager.getCompleteness(this.getRoot().model.get('meta').id),
-                        ConfigManager.getEntityList('locales')
+                        EntityManager.getRepository('completeness').findForProduct(this.getRoot().model.get('meta').id),
+                        EntityManager.getRepository('locale').findAll()
                     ).done(_.bind(function (completenesses, locales) {
                         this.$el.html(
                             this.template({
@@ -69,7 +68,7 @@ define(
             },
             update: function () {
                 if (this.getRoot().model.get('meta')) {
-                    CompletenessManager.invalidateCache(this.getRoot().model.get('meta').id);
+                    EntityManager.getRepository('completeness').invalidateCache(this.getRoot().model.get('meta').id);
                 }
 
                 this.render();

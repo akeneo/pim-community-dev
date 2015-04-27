@@ -29,7 +29,7 @@ interface CollectionFilterInterface
      * @param string $type       The type of objects in the collection
      * @param array  $options    The filter options
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsCollection($collection, $type, array $options = []);
 }

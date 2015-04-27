@@ -12,9 +12,11 @@ use PhpSpec\ObjectBehavior;
  */
 class CursorSpec extends ObjectBehavior
 {
-    function let(
-        Builder $queryBuilder
-    ) {
+    function let(Builder $queryBuilder, Query $query, Cursor $cursor)
+    {
+        $queryBuilder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+
         $this->beConstructedWith($queryBuilder);
     }
 
@@ -24,19 +26,19 @@ class CursorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Cursor\CursorInterface');
     }
 
-    function it_is_countable($queryBuilder, Query $query, Cursor $cursor)
+    function it_is_countable($queryBuilder, $query, $cursor)
     {
         $this->shouldImplement('\Countable');
 
-        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
-        $query->execute()->shouldBeCalled()->willReturn($cursor);
-        $cursor->count()->shouldBeCalled()->willReturn(13);
-        $cursor->getNext()->shouldBeCalled()->willReturn(null);
+        $queryBuilder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+        $cursor->count()->willReturn(13);
+        $cursor->getNext()->willReturn(null);
 
         $this->shouldHaveCount(13);
     }
 
-    function it_is_iterable($queryBuilder, Query $query, Cursor $mongodbCursor)
+    function it_is_iterable($cursor)
     {
         $this->shouldImplement('\Iterator');
 
@@ -48,20 +50,17 @@ class CursorSpec extends ObjectBehavior
 
         $data = array_merge([], $initialData);
 
-        $queryBuilder->getQuery()->shouldBeCalled()->willReturn($query);
-        $query->execute()->shouldBeCalled()->willReturn($mongodbCursor);
-
-        $mongodbCursor->getNext()->shouldBeCalled()->will(function () use ($mongodbCursor, &$data) {
+        $cursor->getNext()->will(function () use ($cursor, &$data) {
             $stepData = array_shift($data);
-            $mongodbCursor->current()->willReturn($stepData);
+            $cursor->current()->willReturn($stepData);
 
             return $stepData;
         });
-        $mongodbCursor->reset()->shouldBeCalled()->will(function () use ($mongodbCursor, &$data, $initialData) {
+        $cursor->reset()->will(function () use ($cursor, &$data, $initialData) {
             $data = array_merge([], $initialData);
         });
 
-        $mongodbCursor->count()->shouldBeCalled()->willReturn(3);
+        $cursor->count()->willReturn(3);
 
         // methods that not iterate can be called twice
         $this->rewind()->shouldReturn(null);

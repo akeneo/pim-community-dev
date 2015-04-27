@@ -5,8 +5,6 @@ namespace Pim\Bundle\ReferenceDataBundle\Command;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\RequirementChecker\ProductValueRelationshipChecker as MongoProductValueRelationshipChecker;
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ProductValueRelationshipChecker as OrmProductValueRelationshipChecker;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\RequirementChecker\ReferenceDataUniqueCodeChecker;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\CheckerInterface;
 use Pim\Bundle\ReferenceDataBundle\RequirementChecker\ProductValueAccessorsChecker;
@@ -66,17 +64,15 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         $checkers[] = new ProductValueAccessorsChecker($this->getProductValueClass());
 
         $storageDriver = $this->getContainer()->getParameter('pim_catalog_product_storage_driver');
-        if (AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver) {
-            $checkers[] = new OrmProductValueRelationshipChecker(
-                $this->getDoctrineProductManager(),
-                $this->getProductValueClass()
-            );
-        } else {
-            $checkers[] = new MongoProductValueRelationshipChecker(
-                $this->getDoctrineProductManager(),
-                $this->getProductValueClass()
-            );
-        }
+        $relationCheckerClass = sprintf(
+            '\Pim\Bundle\ReferenceDataBundle\Doctrine\%s\RequirementChecker\ProductValueRelationshipChecker',
+            AkeneoStorageUtilsExtension::DOCTRINE_ORM === $storageDriver ? 'ORM' : 'MongoDB'
+        );
+
+        $checkers[] = new $relationCheckerClass(
+            $this->getDoctrineProductManager(),
+            $this->getProductValueClass()
+        );
 
         return $checkers;
     }

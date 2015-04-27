@@ -59,16 +59,18 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/form-builder', 'pim/product-manager'],
-                            function($, FormBuilder, ProductManager) {
+                            ['jquery', 'pim/entity-manager', 'pim/form-builder', 'pim/product-manager'],
+                            function($, EntityManager, FormBuilder, ProductManager) {
                                 $(function() {
-                                    $.when(
-                                        FormBuilder.build('pim/product-edit-form'),
-                                        ProductManager.get({{ productId }})
-                                    ).done(function(form, product) {
-                                        form.setData(product);
-                                        form.setElement('#product-edit-form').render();
-                                    });
+                                    EntityManager.initialize().done(function () {
+                                        $.when(
+                                            FormBuilder.build('pim/product-edit-form'),
+                                            ProductManager.get({{ productId }})
+                                        ).done(function(form, product) {
+                                            form.setData(product);
+                                            form.setElement('#product-edit-form').render();
+                                        });
+                                    })
                                 });
                             });
                     </script>
