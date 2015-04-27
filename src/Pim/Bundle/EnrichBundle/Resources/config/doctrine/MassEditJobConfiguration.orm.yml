@@ -15,3 +15,5 @@ Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration:
         jobExecution:
             targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobExecution
             inversedBy: JobExecution
+            joinColumn:
+                onDelete: CASCADE
