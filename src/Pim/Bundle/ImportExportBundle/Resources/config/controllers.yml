@@ -16,6 +16,8 @@ services:
             - '@pim_import_export.factory.job_instance'
             - '@pim_import_export.manager.job'
             - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@pim_enrich.factory.mass_edit.job_configuration'
+            - '@pim_enrich.saver.mass_edit.configuration'
 
     pim_import_export.controller.import_profile:
         parent: pim_enrich.controller.abstract_doctrine
@@ -28,6 +30,8 @@ services:
             - '@pim_import_export.factory.job_instance'
             - '@pim_import_export.manager.job'
             - '@akeneo_batch.launcher.simple_job_launcher'
+            - '@pim_enrich.factory.mass_edit.job_configuration'
+            - '@pim_enrich.saver.mass_edit.configuration'
 
     pim_import_export.controller.export_execution:
         parent: pim_enrich.controller.abstract_doctrine

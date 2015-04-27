@@ -3,11 +3,14 @@
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\EnrichBundle\Factory\MassEditJobConfigurationFactory;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
@@ -60,24 +63,32 @@ class JobProfileController extends AbstractDoctrineController
     /** @var File */
     protected $file;
 
+    /** @var SaverInterface */
+    protected $jobConfigSaver;
+
+    /** @var MassEditJobConfigurationFactory */
+    protected $jobConfigFactory;
+
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param ConnectorRegistry        $connectorRegistry
-     * @param string                   $jobType
-     * @param JobInstanceType          $jobInstanceType
-     * @param JobInstanceFactory       $jobInstanceFactory
-     * @param JobManager               $jobManager
-     * @param SimpleJobLauncher        $simpleJobLauncher
+     * @param Request                         $request
+     * @param EngineInterface                 $templating
+     * @param RouterInterface                 $router
+     * @param SecurityContextInterface        $securityContext
+     * @param FormFactoryInterface            $formFactory
+     * @param ValidatorInterface              $validator
+     * @param TranslatorInterface             $translator
+     * @param EventDispatcherInterface        $eventDispatcher
+     * @param ManagerRegistry                 $doctrine
+     * @param ConnectorRegistry               $connectorRegistry
+     * @param string                          $jobType
+     * @param JobInstanceType                 $jobInstanceType
+     * @param JobInstanceFactory              $jobInstanceFactory
+     * @param JobManager                      $jobManager
+     * @param SimpleJobLauncher               $simpleJobLauncher
+     * @param MassEditJobConfigurationFactory $jobConfigFactory
+     * @param SaverInterface                  $jobConfigSaver
      */
     public function __construct(
         Request $request,
@@ -94,7 +105,9 @@ class JobProfileController extends AbstractDoctrineController
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
         JobManager $jobManager,
-        SimpleJobLauncher $simpleJobLauncher
+        SimpleJobLauncher $simpleJobLauncher,
+        MassEditJobConfigurationFactory $jobConfigFactory,
+        SaverInterface $jobConfigSaver
     ) {
         parent::__construct(
             $request,
@@ -117,6 +130,8 @@ class JobProfileController extends AbstractDoctrineController
         $this->jobInstanceFactory = $jobInstanceFactory;
         $this->jobManager         = $jobManager;
         $this->simpleJobLauncher  = $simpleJobLauncher;
+        $this->jobConfigSaver     = $jobConfigSaver;
+        $this->jobConfigFactory   = $jobConfigFactory;
     }
 
     /**
@@ -413,8 +428,20 @@ class JobProfileController extends AbstractDoctrineController
     {
         $this->eventDispatcher->dispatch(JobProfileEvents::PRE_EXECUTE, new GenericEvent($jobInstance));
 
-        $jobExecution = $this->simpleJobLauncher->setConfig(['email' => true, 'upload' => $isUpload])
-            ->launch($jobInstance, $this->getUser());
+        $jobExecution = new JobExecution();
+        $jobExecution->setJobInstance($jobInstance)->setUser($this->getUser());
+        $this->persist($jobExecution, true);
+
+        $rawConfig = $isUpload
+            ? addslashes(json_encode($jobInstance->getJob()->getConfiguration()))
+            : '';
+
+        $massEditConf = $this->jobConfigFactory->create($jobExecution, $rawConfig);
+        $this->jobConfigSaver->save($massEditConf);
+
+        $jobExecution = $this->simpleJobLauncher
+            ->setConfig(['email' => true])
+            ->launch($jobInstance, $this->getUser(), $rawConfig, $jobExecution);
 
         $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 
