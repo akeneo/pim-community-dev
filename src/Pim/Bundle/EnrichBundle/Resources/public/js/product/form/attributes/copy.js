@@ -78,7 +78,7 @@ define(
                     _.each(productValues, _.bind(function (values, code) {
                         var attribute = _.findWhere(attributes, {code: code});
 
-                        if (attribute && (attribute.scopable || attribute.localizable)) {
+                        if (attribute.scopable || attribute.localizable) {
                             var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
 
                             var copyField = new CopyField();

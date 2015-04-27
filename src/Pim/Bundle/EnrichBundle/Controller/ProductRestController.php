@@ -96,7 +96,11 @@ class ProductRestController
             $this->normalizer->normalize(
                 $product,
                 'internal_api',
-                ['locales'  => $locales, 'channels' => $channels]
+                [
+                    'locales'     => $locales,
+                    'channels'    => $channels,
+                    'filter_type' => 'pim:internal_api:product_value:view'
+                ]
             )
         );
     }
