@@ -79,7 +79,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
-    function it_applies_a_rule_on_products(
+    function it_applies_a_rule_on_valid_products(
         $eventDispatcher,
         $productsUpdater,
         $productsValidator,
@@ -90,7 +90,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductInterface $selectedProduct,
         PaginatorFactoryInterface $paginatorFactory,
         PaginatorInterface $paginator,
-        CursorInterface $cursor
+        CursorInterface $cursor,
+        ProductInterface $validProduct1,
+        ProductInterface $validProduct2
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -116,8 +118,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
 
         $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
-        $productsValidator->validate($rule, Argument::any())->shouldBeCalled();
-        $productsSaver->save($rule, Argument::any())->shouldBeCalled();
+        $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
+        $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 
