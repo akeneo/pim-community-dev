@@ -1,0 +1,10 @@
+parameters:
+    pim_base_connector.launcher.simple_job_launcher.class: Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher
+
+services:
+    pim_base_connector.launcher.simple_job_launcher:
+        parent: akeneo_batch.launcher.simple_job_launcher
+        class: %pim_base_connector.launcher.simple_job_launcher.class%
+        arguments:
+            - '@pim_enrich.factory.mass_edit.job_configuration'
+            - '@doctrine.orm.entity_manager'

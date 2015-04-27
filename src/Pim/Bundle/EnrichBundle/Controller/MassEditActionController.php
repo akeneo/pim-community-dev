@@ -3,14 +3,13 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
-use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Factory\MassEditJobConfigurationFactory;
@@ -58,12 +57,6 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var MassEditFormResolver */
     protected $massEditFormResolver;
 
-    /** @var SaverInterface */
-    protected $jobConfigSaver;
-
-    /** @var MassEditJobConfigurationFactory */
-    protected $jobConfigFactory;
-
     /**
      * Constructor
      *
@@ -83,8 +76,6 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ConnectorRegistry               $connectorRegistry
      * @param OperationRegistryInterface      $operationRegistry
      * @param MassEditFormResolver            $massEditFormResolver
-     * @param MassEditJobConfigurationFactory $jobConfigFactory
-     * @param SaverInterface                  $jobConfigSaver
      */
     public function __construct(
         Request $request,
@@ -102,9 +93,7 @@ class MassEditActionController extends AbstractDoctrineController
         DoctrineJobRepository $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
-        MassEditFormResolver $massEditFormResolver,
-        MassEditJobConfigurationFactory $jobConfigFactory,
-        SaverInterface $jobConfigSaver
+        MassEditFormResolver $massEditFormResolver
     ) {
         parent::__construct(
             $request,
@@ -125,8 +114,6 @@ class MassEditActionController extends AbstractDoctrineController
         $this->connectorRegistry    = $connectorRegistry;
         $this->operationRegistry    = $operationRegistry;
         $this->massEditFormResolver = $massEditFormResolver;
-        $this->jobConfigSaver       = $jobConfigSaver;
-        $this->jobConfigFactory     = $jobConfigFactory;
     }
 
     /**
@@ -231,14 +218,7 @@ class MassEditActionController extends AbstractDoctrineController
             $operation->finalize();
 
             $rawConfiguration = $operation->getBatchConfig();
-            $jobExecution = new JobExecution();
-            $jobExecution->setJobInstance($jobInstance)->setUser($this->getUser());
-            $this->persist($jobExecution, true);
-
-            $massEditConf = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
-            $this->jobConfigSaver->save($massEditConf);
-
-            $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration, $jobExecution);
+            $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
         }
 
         if ($form->isValid()) {
