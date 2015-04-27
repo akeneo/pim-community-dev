@@ -57,6 +57,7 @@ define(
                         if (field && 'edit' === field.getEditMode()) {
                             copyField.setField(field);
                             copyField.field.addElement('comparision', 'copy', copyField);
+                            copyField.field.render();
                         }
 
                     }, this));

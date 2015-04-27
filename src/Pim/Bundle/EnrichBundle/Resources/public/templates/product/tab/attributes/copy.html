@@ -1,18 +1,18 @@
 <% if (!copying) { %>
-    <div class="btn start-copying">Copy</div>
+    <div class="btn start-copying"><%= _.__('pim_enrich.entity.product.btn.copy') %></div>
 <% } else { %>
     <div class="context-selectors"></div>
     <div class="other-actions">
         <div class="copy-actions">
             <div class="btn-group selection-dropdown">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    Select
+                    <%= _.__('pim_enrich.entity.product.copy.select') %>
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
-                        <a class="select-all">All</a>
-                        <a class="select-all-visible">All visible</a>
+                        <a class="select-all"><%= _.__('pim_enrich.entity.product.copy.all') %></a>
+                        <a class="select-all-visible"><%= _.__('pim_enrich.entity.product.copy.all_visible') %></a>
                     </li>
                 </ul>
             </div>

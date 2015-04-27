@@ -113,6 +113,9 @@ pim_enrich:
                 disable: Disable
                 disabled: Disabled
                 download_pdf: PDF
+                copy: Copy
+                delete: Delete
+                save: Save
             history:
                 version: Version
                 author: Author
@@ -138,11 +141,23 @@ pim_enrich:
                     keep_attributes:  No attributes will be removed.
             meta:
                 created: Created
+                created_by: By
+                updated_by: By
                 updated: Last update
                 family:
                     change: Family
                     none: None
-
+            copy:
+                select: Select
+                all: All
+                all_visible: All visible
+            variant_group:
+                updated_by: Updated by variant group
+                switch:
+                    yes: Yes
+                    no: No
+            optional_attribute:
+                remove: Remove this attribute
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -152,7 +167,6 @@ pim_enrich:
         not_applicable: N/A
         entity:
             updated: There are unsaved changes.
-
     form:
         product:
             tab:

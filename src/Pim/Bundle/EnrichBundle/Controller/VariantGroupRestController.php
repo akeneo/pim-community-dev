@@ -15,15 +15,27 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VariantGroupRestController
 {
+    /** @var EntityRepository */
     protected $variantGroupRepo;
+
+    /** @var NormalizerInterface */
     protected $normalizer;
 
+    /**
+     * @param EntityRepository    $variantGroupRepo
+     * @param NormalizerInterface $normalizer
+     */
     public function __construct(EntityRepository $variantGroupRepo, NormalizerInterface $normalizer)
     {
         $this->variantGroupRepo = $variantGroupRepo;
         $this->normalizer       = $normalizer;
     }
 
+    /**
+     * Get the variant group collection
+     *
+     * @return JsonResponse
+     */
     public function indexAction()
     {
         $variantGroups = $this->variantGroupRepo->getAllVariantGroups();
@@ -40,6 +52,12 @@ class VariantGroupRestController
         return new JsonResponse($normalizedVariants);
     }
 
+    /**
+     * Get a single variant group
+     * @param int $identifier
+     *
+     * @return JsonResponse
+     */
     public function getAction($identifier)
     {
         $variantGroup = $this->variantGroupRepo->findOneByCode($identifier);
