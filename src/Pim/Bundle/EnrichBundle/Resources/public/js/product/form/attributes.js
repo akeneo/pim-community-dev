@@ -249,6 +249,10 @@ define(
                         );
                         var needRendering = false;
 
+                        if (!attributeGroup) {
+                            return;
+                        }
+
                         if (event.scope) {
                             this.setScope(event.scope, {silent: true});
                             needRendering = true;

@@ -6,6 +6,7 @@ extensions:
             title: header .product-title
             buttons: header .actions
             meta: header .meta
+            state: header .state
 
     form-tabs:
         module: pim/product-edit-form/form-tabs
@@ -38,8 +39,8 @@ extensions:
     state:
         module: pim/product-edit-form/state
         parent: product-edit-form
-        insertAction: before
-        targetZone: meta
+        insertAction: append
+        targetZone: state
 
     change-family:
         module: pim/product-edit-form/meta/change-family
