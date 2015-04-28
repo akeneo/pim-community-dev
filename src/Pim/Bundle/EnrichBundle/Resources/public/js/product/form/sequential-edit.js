@@ -54,6 +54,7 @@ define(
                     this.$el.html(this.template(templateParameters));
                     this.$('[data-toggle="tooltip"]').tooltip();
                     this.delegateEvents();
+                    this.preloadNext();
                 }, this));
 
                 return this;
@@ -105,6 +106,16 @@ define(
                 });
 
                 return deferred.promise();
+            },
+            preloadNext: function () {
+                var objectSet = this.model.get('objectSet');
+                var currentIndex = objectSet.indexOf(this.getData().meta.id);
+                var pending = objectSet[currentIndex + 2];
+                if (pending) {
+                    setTimeout(function () {
+                        ProductManager.get(pending);
+                    }, 2000);
+                }
             },
             followLink: function (event) {
                 Navigation.getInstance().setLocation(
