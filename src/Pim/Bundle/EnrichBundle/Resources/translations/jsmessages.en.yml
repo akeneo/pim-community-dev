@@ -192,3 +192,8 @@ pim_enrich:
                     info:
                         no_family:      No family defined
                         not_calculated: Not yet calculated
+            sequential_edit:
+                info:
+                    products: products
+                    previous: Skip back to {{ product }} without saving.
+                    next: Skip to {{ product }} without saving.
