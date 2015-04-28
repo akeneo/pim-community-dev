@@ -89,6 +89,9 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle(),
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
             new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
+
+            new DamEnterprise\Bundle\AssetBundle\DamEnterpriseAssetBundle(),
+            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle()
         ];
     }
 

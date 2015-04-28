@@ -21,7 +21,9 @@
         "phpspec/php-diff": "1.0.2",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
-        "symfony/console": "~2.5.0"
+        "symfony/console": "~2.5.0",
+        "akeneo/poc-pam": "dev-master",
+        "oneup/flysystem-bundle": "@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
@@ -55,6 +57,11 @@
             "type": "vcs",
             "url": "https://github.com/akeneo/platform.git",
             "branch": "master"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/akeneo/poc-pam.git",
+          "branch": "master"
         }
     ],
     "scripts": {
