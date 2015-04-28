@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * Comparator which calculate change set for options
  *
@@ -25,28 +23,21 @@ class OptionComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function supportsComparison($attributeType)
     {
-        return 'pim_catalog_simpleselect' === $value->getAttribute()->getAttributeType();
+        return in_array($attributeType, ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function getChanges(array $changes, array $originals)
     {
-        if (!isset($submittedData['option'])) {
-            return;
-        }
-
-        $option = $value->getOption();
-        if (null === $option && empty($submittedData['option'])) {
-            return;
-        }
-
-        if (!$option || $option->getId() != $submittedData['option']) {
+        if (!array_key_exists('value', $originals) || $changes['value']['code'] !== $originals['value']['code']) {
             return [
-                'option' => $submittedData['option'],
+                'locale' => $changes['locale'],
+                'scope'  => $changes['scope'],
+                'value'  => $changes['value']['code'],
             ];
         }
     }

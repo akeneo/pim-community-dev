@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * Comparator which calculate change set for collections of options
  *
@@ -25,35 +23,33 @@ class OptionsComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function supportsComparison($attributeType)
     {
-        return 'pim_catalog_multiselect' === $value->getAttribute()->getAttributeType();
+        return in_array($attributeType, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function getChanges(array $changes, array $originals)
     {
-        if (!isset($submittedData['options'])) {
+        $codes = [];
+        foreach ($changes['value'] as $i => $attribute) {
+            if (!array_key_exists('value', $originals)
+                || !isset($originals['value'][$i])
+                || $attribute['code'] !== $originals['value'][$i]['code']) {
+                $codes[] = $attribute['code'];
+            }
+        }
+
+        if (empty($codes)) {
             return;
         }
 
-        $options = $value->getOptions();
-        $getIds = function ($option) {
-            return $option->getId();
-        };
-
-        $options = $options->map($getIds)->toArray();
-        sort($options);
-
-        $submittedOptions = explode(',', $submittedData['options']);
-        sort($submittedOptions);
-
-        if ($options != $submittedOptions) {
-            return [
-                'options' => join(',', $submittedOptions),
-            ];
-        }
+        return [
+            'locale' => $changes['locale'],
+            'scope'  => $changes['scope'],
+            'values' => $codes,
+        ];
     }
 }

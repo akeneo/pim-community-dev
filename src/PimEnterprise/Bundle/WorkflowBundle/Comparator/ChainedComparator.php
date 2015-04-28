@@ -11,8 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * A comparator that delegates comparison to a chain of comparators
  *
@@ -20,27 +18,25 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  *
  * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class ChainedComparator implements ComparatorInterface
+class ChainedComparator
 {
     /** @var ComparatorInterface[] */
     protected $comparators = [];
 
     /**
-     * {@inheritdoc}
+     * @param string $attributeType
+     * @param array  $changes
+     * @param array  $originals
+     *
+     * @return array|null
+     *
+     * @throw \LogicException
      */
-    public function supportsComparison(ProductValueInterface $value)
-    {
-        return true;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function compare($attributeType, $changes, $originals)
     {
         foreach ($this->getComparators() as $comparator) {
-            if ($comparator->supportsComparison($value)) {
-                return $comparator->getChanges($value, $submittedData);
+            if ($comparator->supportsComparison($attributeType)) {
+                return $comparator->getChanges($changes, $originals);
             }
         }
 
@@ -48,7 +44,7 @@ class ChainedComparator implements ComparatorInterface
             sprintf(
                 'Cannot compare value of attribute type "%s". ' .
                 'Please check that a comparator exists for such attribute type.',
-                $value->getAttribute()->getAttributeType()
+                $attributeType
             )
         );
     }

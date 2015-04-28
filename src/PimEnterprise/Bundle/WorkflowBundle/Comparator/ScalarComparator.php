@@ -11,10 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-
 /**
  * Comparator which calculate change set for scalars
  *
@@ -24,43 +20,26 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
  */
 class ScalarComparator implements ComparatorInterface
 {
-    /** @var PropertyAccessor */
-    protected $accessor;
-
     /**
-     * Construct
-     *
-     * @param PropertyAccessor $accessor
+     * {@inheritdoc}
      */
-    public function __construct(PropertyAccessor $accessor = null)
+    public function supportsComparison($attributeType)
     {
-        $this->accessor = $accessor ?: PropertyAccess::createPropertyAccessor();
+        return in_array($attributeType, [
+            'pim_catalog_boolean',
+            'pim_catalog_date',
+            'pim_catalog_identifier',
+            'pim_catalog_number',
+            'pim_catalog_text',
+            'pim_catalog_textarea'
+        ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function getChanges(array $changes, array $originals)
     {
-        $data = $value->getData();
-
-        return is_null($data) || is_scalar($data);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChanges(ProductValueInterface $value, $submittedData)
-    {
-        foreach ($submittedData as $key => $submittedValue) {
-            if ($key === 'id') {
-                continue;
-            }
-            if ($this->accessor->getValue($value, $key) != $submittedValue) {
-                return [
-                    $key => $submittedValue
-                ];
-            }
-        }
+        return !array_key_exists('value', $originals) || $changes['value'] !== $originals['value'] ? $changes : null;
     }
 }
