@@ -1,2 +1,3 @@
 parameters:
+    pim_catalog.entity.product_value.class: AcmeEnterprise\Bundle\AppBundle\Model\ProductValue
     pimee_workflow.entity.published_product_value.class: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue
