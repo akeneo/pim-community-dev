@@ -97,8 +97,6 @@ class ReferenceDataCollectionPresenter extends AbstractProductValuePresenter
      */
     protected function getAttribute(array $change = [])
     {
-        $code = $change['__context__']['attribute'];
-
-        return $this->attributeRepository->findOneBy(['code' => $code]);
+        return $this->attributeRepository->findOneBy(['code' => key($change)]);
     }
 }
