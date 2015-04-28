@@ -11,6 +11,7 @@ define(
         'routing',
         'oro/navigation',
         'pim/product-manager',
+        'pim/entity-manager',
         'bootstrap'
     ],
     function (
@@ -22,12 +23,9 @@ define(
         template,
         Routing,
         Navigation,
-        ProductManager
+        ProductManager,
+        EntityManager
     ) {
-        var SequentialEdit = Backbone.Model.extend({
-            url: Routing.generate('pim_enrich_mass_edit_action_sequential_edit_get')
-        });
-
         return BaseForm.extend({
             id: 'sequentialEdit',
             template: _.template(template),
@@ -35,17 +33,15 @@ define(
                 'click .next, .previous': 'followLink'
             },
             initialize: function () {
-                this.model = new SequentialEdit();
+                this.model = new Backbone.Model();
             },
             configure: function () {
-                var deferred = $.Deferred();
-
-                this.model.fetch({
-                    success: deferred.resolve
-                });
-
                 return $.when(
-                    deferred.promise(),
+                    EntityManager.getRepository('sequentialEdit').findAll().then(
+                        _.bind(function (sequentialEdit) {
+                            this.model.set(sequentialEdit);
+                        }, this)
+                    ),
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
