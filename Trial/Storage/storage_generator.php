@@ -2,7 +2,7 @@
 
 require_once __DIR__ . '/StoragePathGenerator.php';
 
-$generator = new \Akeneo\Trial\Storage\StoragePathGenerator();
+$generator = new \Trial\Storage\StoragePathGenerator();
 $dirty = 'ce"ci   est mon su~per joli fichié De test OY22.txt';
 $clean = 'file.test';
 

@@ -10,8 +10,11 @@ DamEnterprise\Component\Asset\Model\File:
         path:
             type: string
             length: 255
+            unique: true
         guid:
-            type: guid
+            type: string
+            length: 255
+            unique: true
         filename:
             type: string
             length: 255
@@ -25,3 +28,4 @@ DamEnterprise\Component\Asset\Model\File:
         storage:
             type: string
             length: 255
+            nullable: true
