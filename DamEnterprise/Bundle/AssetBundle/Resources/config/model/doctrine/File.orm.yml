@@ -1,6 +1,6 @@
 DamEnterprise\Component\Asset\Model\File:
     type: entity
-    table: dam_asset_file
+    table: damee_asset_file
     fields:
         id:
             type: integer

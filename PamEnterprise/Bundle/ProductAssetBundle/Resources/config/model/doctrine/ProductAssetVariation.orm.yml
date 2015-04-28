@@ -1,6 +1,6 @@
 PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
     type: entity
-    table: pam_product_asset_asset_variation
+    table: pamee_product_asset_asset_variation
     fields:
         id:
             type: integer
