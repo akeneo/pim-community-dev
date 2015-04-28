@@ -10,6 +10,7 @@ define(
     function (_, BaseForm, mediator, formTemplate) {
         var FormView = BaseForm.extend({
             tagName: 'span',
+            className: 'published-version',
             template: _.template(formTemplate),
             configure: function () {
                 mediator.on('product:action:post_update', _.bind(this.render, this));
