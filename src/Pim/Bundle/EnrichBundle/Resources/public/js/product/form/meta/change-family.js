@@ -13,6 +13,7 @@ define(
     function ($, _, BaseForm, EntityManager, formTemplate, Dialog, UserContext) {
         var FormView = BaseForm.extend({
             tagName: 'span',
+            className: 'change-family',
             template: _.template(formTemplate),
             events: {
                 'click .icon-pencil': 'enterEditMode',

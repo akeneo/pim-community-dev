@@ -675,6 +675,7 @@ h3.tab-header {
 
     .other-actions {
       .flex(1);
+      .flex-shrink(0);
       .display-flex();
       .align-items(flex-end);
       .flex-direction(column);
@@ -692,6 +693,10 @@ h3.tab-header {
 
     & > * > .btn, & > * > .btn-group {
       margin-left: 8px;
+    }
+
+    & > div {
+      .flex-shrink(0);
     }
   }
 }
@@ -762,18 +767,30 @@ h3.tab-header {
     }
   }
 
-  .meta {
-    white-space: nowrap;
+  .baseline {
     .display-flex();
+    .align-items(flex-end);
 
-    span {
-      font-size: 11px;
-      color: @color-form-info;
+    .meta {
+      white-space: nowrap;
+      margin-right: 20px;
+      .display-flex();
 
-      &:not(:last-child) > *:after {
-        margin: 0 10px;
-        content: "|";
+      span {
+        font-size: 11px;
+        color: @color-form-info;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        &:not(:first-child) > *:before {
+          margin: 0 10px;
+          content: "|";
+        }
       }
+    }
+
+    .state {
+      .flex-shrink(0);
     }
   }
 
@@ -809,6 +826,10 @@ h3.tab-header {
       .flex();
     }
   }
+}
+
+.meta .change-family{
+  .flex-shrink(0);
 }
 
 .product-attributes >.tab-content {
