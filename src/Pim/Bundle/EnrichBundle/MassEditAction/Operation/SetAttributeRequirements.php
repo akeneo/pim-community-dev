@@ -89,6 +89,7 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function removeAttributeRequirement(AttributeRequirementInterface $attributeRequirement)
     {
+        $attributeRequirement->setRequired(false);
         $this->attRequirements->removeElement($attributeRequirement);
     }
 

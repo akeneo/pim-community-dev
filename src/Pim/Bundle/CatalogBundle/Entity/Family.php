@@ -351,7 +351,7 @@ class Family implements FamilyInterface
             if ($existingRequirement->getAttribute() === $requirement->getAttribute() &&
                 $existingRequirement->getChannel() === $requirement->getChannel()
             ) {
-                $this->requirements->removeElement($existingRequirement);
+                $this->removeAttributeRequirement($existingRequirement);
             }
         }
 
