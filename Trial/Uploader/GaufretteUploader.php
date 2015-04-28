@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Trial\Uploader;
+namespace Trial\Uploader;
 
 use Gaufrette\Filesystem;
 use Gaufrette\Adapter\Local as LocalAdapter;

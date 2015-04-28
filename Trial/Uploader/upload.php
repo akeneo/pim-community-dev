@@ -7,7 +7,7 @@ $type = 'local';
 
 // FlySystem
 //echo "Uploading with FlySystem in $type...\n";
-//$uploader = new \Akeneo\Trial\Uploader\FlySystemUploader();
+//$uploader = new \Trial\Uploader\FlySystemUploader();
 //$uploader->massUpload($directoryToUpload, $type);
 //echo "Done!\n";
 //echo "Downloading non existent file with FlySystem...\n";
@@ -17,7 +17,7 @@ $type = 'local';
 
 // Gaufrette
 //echo "Uploading with Gaufrette in $type...\n";
-//$uploader = new \Akeneo\Trial\Uploader\GaufretteUploader();
+//$uploader = new \Trial\Uploader\GaufretteUploader();
 //$uploader->massUpload($directoryToUpload, $type);
 //echo "Done!\n";
 //echo "Downloading non existent file with Gaufrette...\n";

@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Trial\FileGenerator;
+namespace Trial\FileGenerator;
 
 class FileGenerator
 {

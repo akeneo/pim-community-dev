@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Trial\Uploader;
+namespace Trial\Uploader;
 
 use League\Flysystem\Filesystem;
 use League\Flysystem\Adapter\Local as LocalAdapter;
