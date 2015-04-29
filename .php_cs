@@ -4,7 +4,7 @@ $branch = exec('git rev-parse --abbrev-ref HEAD');
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()->files();
 
-if ('master' === $branch) {
+if (in_array($branch, ['master', 'HEAD'])) {
     $finder
         ->name('*.php')
         ->in(__DIR__ . '/src')
