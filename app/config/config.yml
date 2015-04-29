@@ -95,3 +95,10 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
+
+doctrine_cache:
+    providers:
+        pim_apc_metadata_cache:
+            type: apc
+            namespace: metadata_cache
+

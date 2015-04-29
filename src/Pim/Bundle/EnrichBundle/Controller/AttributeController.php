@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Cache\CacheProvider;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
@@ -20,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -72,6 +74,9 @@ class AttributeController extends AbstractDoctrineController
     /** @var SaverInterface */
     protected $optionSaver;
 
+    /** @var  CacheProvider */
+    protected $cache;
+
     /**
      * Constructor
      *
@@ -94,6 +99,7 @@ class AttributeController extends AbstractDoctrineController
      * @param RemoverInterface         $attributeRemover
      * @param SaverInterface           $optionSaver
      * @param array                    $measuresConfig
+     * @param CacheProvider            $cache
      */
     public function __construct(
         Request $request,
@@ -114,7 +120,8 @@ class AttributeController extends AbstractDoctrineController
         BulkSaverInterface $attributeSaver,
         RemoverInterface $attributeRemover,
         SaverInterface $optionSaver,
-        $measuresConfig
+        $measuresConfig,
+        CacheProvider $cache
     ) {
         parent::__construct(
             $request,
@@ -138,6 +145,7 @@ class AttributeController extends AbstractDoctrineController
         $this->attributeSaver   = $attributeSaver;
         $this->attributeRemover = $attributeRemover;
         $this->optionSaver      = $optionSaver;
+        $this->cache            = $cache;
     }
 
     /**
@@ -202,6 +210,7 @@ class AttributeController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $id)
     {
+        $this->cache->flushAll();
         $attribute = $this->findAttributeOr404($id);
         if ($this->attributeHandler->process($attribute)) {
             $this->addFlash('success', 'flash.attribute.updated');
