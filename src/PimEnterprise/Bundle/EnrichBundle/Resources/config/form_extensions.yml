@@ -26,6 +26,12 @@ extensions:
         insertAction: append
         targetZone: meta
 
+    meta-owner-group:
+        module: pimee/product-edit-form/meta/owner-groups
+        parent: product-edit-form
+        insertAction: append
+        targetZone: meta
+
     read-only-locale:
         module: pimee/product-edit-form/attributes/read-only-locale
         parent: attributes

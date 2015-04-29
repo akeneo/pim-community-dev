@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
@@ -26,7 +28,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
     /** @var NormalizerInterface */
-    protected $productNormalizer;
+    protected $normalizer;
 
     /** @var PublishedProductManager */
     protected $manager;
@@ -34,32 +36,43 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var SerializerInterface */
     protected $serializer;
 
+    /** @var CategoryAccessRepository */
+    protected $categoryAccessRepo;
+
     /**
-     * @param NormalizerInterface     $productNormalizer
-     * @param PublishedProductManager $manager
+     * @param NormalizerInterface      $normalizer
+     * @param PublishedProductManager  $manager
+     * @param CategoryAccessRepository $categoryAccessRepo
      */
     public function __construct(
-        NormalizerInterface $productNormalizer,
-        PublishedProductManager $manager
+        NormalizerInterface $normalizer,
+        PublishedProductManager $manager,
+        CategoryAccessRepository $categoryAccessRepo
     ) {
-        $this->productNormalizer = $productNormalizer;
-        $this->manager           = $manager;
+        $this->normalizer         = $normalizer;
+        $this->manager            = $manager;
+        $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = [])
     {
-        $normalizedProduct = $this->productNormalizer->normalize($product, 'internal_api', $context);
-        $published = $this->manager->findPublishedProductByOriginalId($product->getId());
+        $normalizedProduct = $this->normalizer->normalize($product, 'internal_api', $context);
+        $published         = $this->manager->findPublishedProductByOriginalId($product->getId());
+        $ownerGroups       = $this->categoryAccessRepo->getGrantedUserGroupsForProduct(
+            $product,
+            Attributes::OWN_PRODUCTS
+        );
 
         $normalizedProduct['meta'] = array_merge(
             $normalizedProduct['meta'],
             [
                 'published' => $published ?
                     $this->serializer->normalize($published->getVersion(), 'json', $context) :
-                    null
+                    null,
+                'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context)
             ]
         );
 
@@ -71,7 +84,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $this->productNormalizer->supportsNormalization($data, $format);
+        return $this->normalizer->supportsNormalization($data, $format);
     }
 
     /**
