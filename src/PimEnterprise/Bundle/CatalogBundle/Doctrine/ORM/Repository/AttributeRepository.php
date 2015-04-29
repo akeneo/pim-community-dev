@@ -12,18 +12,19 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository as BaseAttributeRepository;
+use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Override attribute repository
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeRepository extends BaseAttributeRepository
+class AttributeRepository extends BaseAttributeRepository implements AttributeRepositoryInterface
 {
     /**
      * {@inheritdoc}
      */
-    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    protected function findWithGroupsQB(array $attributeIds = [], array $criterias = [])
     {
         $qb = parent::findWithGroupsQB($attributeIds, $criterias);
 
@@ -37,5 +38,29 @@ class AttributeRepository extends BaseAttributeRepository
         }
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeTypeByCodes(array $codes)
+    {
+        $results = $this->createQueryBuilder('a')
+            ->select('a.code, a.attributeType')
+            ->where('a.code IN (:codes)')
+            ->setParameter('codes', $codes)
+            ->getQuery()
+            ->getArrayResult();
+
+        if (empty($results)) {
+            return $results;
+        }
+
+        $attributes = [];
+        foreach ($results as $attribute) {
+            $attributes[$attribute['code']] = $attribute['attributeType'];
+        }
+
+        return $attributes;
     }
 }

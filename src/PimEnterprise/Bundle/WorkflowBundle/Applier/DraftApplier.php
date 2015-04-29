@@ -57,17 +57,17 @@ class DraftApplier implements ApplierInterface
     public function applier(ProductInterface $product)
     {
         $newValues = $this->serializer->normalize($product->getValues(), 'json');
+        $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
         $diff = [];
         foreach ($newValues as $code => $new) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (null === $attribute) {
+            if (!isset($attributeTypes[$code])) {
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s". ', $code));
             }
 
             foreach ($new as $i => $changes) {
                 $diffAttribute = $this->comparator->compare(
-                    $attribute->getAttributeType(),
+                    $attributeTypes[$code],
                     $changes,
                     $this->getOriginalValue($code, $i)
                 );
