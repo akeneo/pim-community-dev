@@ -22,6 +22,10 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
         Connection $connection
     ) {
         $classMetadata = new ClassMetadata('Acme\Bundle\AppBundle\Entity\Color');
+        $classMetadata->mapField([
+            'fieldName' => 'sortOrder',
+            'type' => 'integer',
+        ]);
         $em->getConnection()->willReturn($connection);
         $this->beConstructedWith($em, $classMetadata);
     }
@@ -87,5 +91,26 @@ class ReferenceDataRepositorySpec extends ObjectBehavior
         $qb->setFirstResult(30)->willReturn($qb);
 
         $this->findBySearch('my-search', ['limit' => 15, 'page' => 3]);
+    }
+
+    function it_finds_and_sort_the_reference_data_by_code_only($em, QueryBuilder $qb, AbstractQuery $query)
+    {
+        $classMetadata = new ClassMetadata('Acme\Bundle\AppBundle\Entity\Color');
+        $this->beConstructedWith($em, $classMetadata);
+
+        $select = 'rd.id as id, ' .
+            'CASE WHEN rd.name IS NULL OR rd.name = \'\' THEN CONCAT(\'[\', rd.code, \']\') ELSE rd.name END AS text';
+
+        $em->createQueryBuilder()->willReturn($qb);
+        $qb->select('rd')->willReturn($qb);
+        $qb->select($select)->willReturn($qb);
+        $qb->from(Argument::any(), Argument::any(), Argument::any())->willReturn($qb);
+        $qb->orderBy('rd.code')->willReturn($qb);
+
+        $qb->getQuery()->willReturn($query);
+
+        $query->getArrayResult()->shouldBeCalled();
+
+        $this->findBySearch();
     }
 }

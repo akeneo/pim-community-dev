@@ -46,7 +46,7 @@ interface ChannelRepositoryInterface extends IdentifiableObjectRepositoryInterfa
     /**
      * Get full channels with locales and currencies
      *
-     * @return array
+     * @return ChannelInterface[]
      */
     public function getFullChannels();
 }
