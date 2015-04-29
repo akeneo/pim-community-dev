@@ -13,6 +13,7 @@ config:
         pimee/product-edit-form/panel/history/revert:                 pimenterpriseenrich/js/product/form/panel/history/revert
         pimee/product-edit-form/publish:                              pimenterpriseenrich/js/product/form/publish
         pimee/product-edit-form/meta/published:                       pimenterpriseenrich/js/product/form/meta/published
+        pimee/product-edit-form/meta/owner-groups:                    pimenterpriseenrich/js/product/form/meta/owner-groups
 
         # Templates
         pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
@@ -20,3 +21,4 @@ config:
         pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
         pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html
         pimee/template/product/meta/published:                          pimenterpriseenrich/templates/product/meta/published.html
+        pimee/template/product/meta/owner-groups:                       pimenterpriseenrich/templates/product/meta/owner-groups.html

@@ -30,5 +30,6 @@ services:
         arguments:
             - '@pim_enrich.normalizer.product'
             - '@pimee_workflow.manager.published_product'
+            - '@pimee_security.repository.category_access'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }

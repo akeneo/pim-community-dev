@@ -36,6 +36,7 @@ pimee_enrich:
                 product_reverted: Product successfully reverted
             meta:
                 published: Published version
+                owner_groups: Owner groups
             confirmation:
                 revert:
                     title: Revert confirmation
