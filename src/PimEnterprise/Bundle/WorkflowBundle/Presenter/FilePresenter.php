@@ -37,7 +37,8 @@ class FilePresenter implements PresenterInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof ProductValueInterface && array_key_exists('media', $change);
+        return $data instanceof ProductValueInterface
+            && 'pim_catalog_file' === $data->getAttribute()->getAttributeType();
     }
 
     /**
@@ -56,10 +57,10 @@ class FilePresenter implements PresenterInterface
         }
 
         $after = '';
-        if (isset($change['media']['filename']) && isset($change['media']['originalFilename'])) {
+        if (isset($change['value']['originalFilename']) && isset($change['value']['filename'])) {
             $after = sprintf(
                 '<li class="changed file">%s</li>',
-                $this->createFileElement($change['media']['filename'], $change['media']['originalFilename'])
+                $this->createFileElement($change['value']['filename'], $change['value']['originalFilename'])
             );
         }
 
@@ -77,7 +78,7 @@ class FilePresenter implements PresenterInterface
     protected function createFileElement($filename, $originalFilename)
     {
         return sprintf(
-            '<i class="icon-file"></i><a class="no-hash" href="%s">%s</a>',
+            '<i class="icon-file"></i><a target="_blank" class="no-hash" href="%s">%s</a>',
             $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
             $originalFilename
         );

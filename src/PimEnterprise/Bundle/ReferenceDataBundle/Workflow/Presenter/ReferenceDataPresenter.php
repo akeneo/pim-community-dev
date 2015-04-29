@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,36 +11,26 @@
 
 namespace PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
-use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-
 /**
  * Present changes on reference data
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ReferenceDataPresenter extends AbstractProductValuePresenter
+class ReferenceDataPresenter extends AbstractReferenceDataPresenter
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ReferenceDataRepositoryResolver */
-    protected $repositoryResolver;
-
     /**
-     * @param AttributeRepositoryInterface    $attributeRepository
-     * @param ReferenceDataRepositoryResolver $repositoryResolver
+     * {@inheritdoc}
      */
-    public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
-        ReferenceDataRepositoryResolver $repositoryResolver
-    ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->repositoryResolver  = $repositoryResolver;
+    public function supports($data, array $change)
+    {
+        $supports = parent::supports($data, $change);
+        if (true === $supports) {
+            $this->referenceDataName = $data->getAttribute()->getReferenceDataName();
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -48,9 +38,7 @@ class ReferenceDataPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange(array $change)
     {
-        $attribute = $this->getAttribute($change);
-
-        return (null !== $attribute && 'pim_reference_data_simpleselect' === $attribute->getAttributeType());
+        return 'pim_reference_data_simpleselect' === $this->attributeType;
     }
 
     /**
@@ -66,26 +54,8 @@ class ReferenceDataPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        $attribute = $this->getAttribute($change);
-        if (null === $attribute) {
-            return;
-        }
+        $repository = $this->repositoryResolver->resolve($this->referenceDataName);
 
-        $referenceDataName = $attribute->getReferenceDataName();
-        $repository = $this->repositoryResolver->resolve($referenceDataName);
-
-        return (string) $repository->find($change[$referenceDataName]);
-    }
-
-    /**
-     * Get attribute
-     *
-     * @param array $change
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
-     */
-    protected function getAttribute(array $change = [])
-    {
-        return $this->attributeRepository->findOneBy(['code' => key($change)]);
+        return (string) $repository->findOneBy(['code' => $change['value']]);
     }
 }

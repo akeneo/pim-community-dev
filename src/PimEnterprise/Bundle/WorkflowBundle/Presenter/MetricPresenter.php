@@ -25,7 +25,7 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('metric', $change);
+        return 'pim_catalog_metric' === $this->attributeType;
     }
 
     /**
@@ -45,6 +45,6 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
      */
     protected function normalizeChange(array $change)
     {
-        return sprintf('%s %s', $change['metric']['data'], $this->translator->trans($change['metric']['unit']));
+        return sprintf('%s %s', $change['value']['data'], $this->translator->trans($change['value']['unit']));
     }
 }

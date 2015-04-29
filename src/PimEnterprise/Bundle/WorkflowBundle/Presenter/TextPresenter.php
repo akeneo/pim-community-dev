@@ -23,7 +23,7 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('text', $change);
+        return 'pim_catalog_textarea' === $this->attributeType;
     }
 
     /**
@@ -39,7 +39,7 @@ class TextPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return $this->explodeText($change['text']);
+        return $this->explodeText($change['value']);
     }
 
     /**

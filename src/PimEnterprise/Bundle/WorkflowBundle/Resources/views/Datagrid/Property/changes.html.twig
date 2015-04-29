@@ -1,8 +1,10 @@
 {% if value['values'] is defined %}
     <dl>
-        {% for attribute, change in value['values'] %}
-            <dt>{{ present_product_draft_attribute(change, attribute) }}</dt>
-            <dd>{{ present_product_draft_change(change, record.rootEntity)|nl2br }}</dd>
+        {% for code, changes in value['values'] %}
+            {% for change in changes %}
+                <dt>{{ present_product_draft_attribute(change, code) }}</dt>
+                <dd>{{ present_product_draft_change(change, code, record.rootEntity)|nl2br }}</dd>
+            {% endfor %}
         {% endfor %}
     </dl>
 {% endif %}

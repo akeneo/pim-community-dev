@@ -23,7 +23,7 @@ class PricesPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('prices', $change);
+        return 'pim_catalog_price_collection' === $this->attributeType;
     }
 
     /**
@@ -65,7 +65,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     protected function normalizeChange(array $change)
     {
         $prices = [];
-        foreach ($change['prices'] as $price) {
+        foreach ($change['values'] as $price) {
             $prices[$price['currency']] = sprintf('%s %s', $price['data'], $price['currency']);
         }
 

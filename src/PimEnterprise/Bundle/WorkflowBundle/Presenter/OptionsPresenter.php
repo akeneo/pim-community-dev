@@ -36,7 +36,7 @@ class OptionsPresenter extends AbstractProductValuePresenter
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('options', $change);
+        return 'pim_catalog_multiselect' === $this->attributeType;
     }
 
     /**
@@ -57,9 +57,16 @@ class OptionsPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        $options = $this->repository->findBy(['id' => explode(',', $change['options'])]);
+        if (null === $change['values']) {
+            return;
+        }
 
         $result = [];
+        $options = $this->repository->findBy(['code' => $change['values']]);
+        if (null === $options) {
+            return $result;
+        }
+
         foreach ($options as $option) {
             $result[] = (string) $option;
         }
