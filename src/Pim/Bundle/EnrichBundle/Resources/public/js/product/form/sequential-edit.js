@@ -52,10 +52,28 @@ define(
                     BaseForm.prototype.configure.apply(this, arguments)
                 );
             },
+            addSaveButton: function () {
+                var objectSet = this.model.get('objectSet');
+                var currentIndex = objectSet.indexOf(this.getData().meta.id);
+                var nextObject = objectSet[currentIndex + 1];
+
+                this.parent.extensions['save-buttons'].addButton({
+                    className: 'save-and-continue',
+                    priority: 250,
+                    label: _.__(
+                        'pim_enrich.form.product.sequential_edit.btn.save_and_' + (nextObject ? 'next' : 'finish')
+                    ),
+                    events: {
+                        'click .save-and-continue': _.bind(this.saveAndContinue, this)
+                    }
+                });
+            },
             render: function () {
                 if (!this.configured || !this.model.get('objectSet')) {
                     return this;
                 }
+
+                this.addSaveButton();
 
                 this.getTemplateParameters().done(_.bind(function (templateParameters) {
                     this.$el.html(this.template(templateParameters));
@@ -124,13 +142,31 @@ define(
                     }, 2000);
                 }
             },
+            saveAndContinue: function () {
+                this.parent.extensions.save.save({ silent: true }).done(_.bind(function () {
+                    var objectSet = this.model.get('objectSet');
+                    var currentIndex = objectSet.indexOf(this.getData().meta.id);
+                    var nextObject = objectSet[currentIndex + 1];
+                    if (nextObject) {
+                        this.goToProduct(nextObject);
+                    } else {
+                        this.finish();
+                    }
+                }, this));
+            },
             followLink: function (event) {
+                this.goToProduct(event.currentTarget.dataset.id);
+            },
+            goToProduct: function (id) {
                 Navigation.getInstance().setLocation(
                     Routing.generate(
                         'pim_enrich_product_edit',
-                        { id: event.currentTarget.dataset.id }
+                        { id: id }
                     )
                 );
+            },
+            finish: function () {
+                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_product_index'));
             }
         });
     }

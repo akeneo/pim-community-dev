@@ -37,6 +37,11 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
 
+    save-buttons:
+        module: pim/product-edit-form/save-buttons
+        parent: product-edit-form
+        targetZone: buttons
+
     save:
         module: pim/product-edit-form/save
         parent: product-edit-form
