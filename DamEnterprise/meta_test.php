@@ -16,8 +16,8 @@ $images = [
     'nin.jpg'
 ];
 
-$exifAdapter = new \DamEnterprise\Component\Metadata\Adapter\ExifAdapter();
-$iptcAdapter = new \DamEnterprise\Component\Metadata\Adapter\IptcAdapter();
+$exifAdapter = new \DamEnterprise\Component\Metadata\Adapter\Exif();
+$iptcAdapter = new \DamEnterprise\Component\Metadata\Adapter\Iptc();
 
 $registry = new \DamEnterprise\Component\Metadata\Adapter\AdapterRegistry();
 $registry->add($exifAdapter);
@@ -28,8 +28,13 @@ $factory = new \DamEnterprise\Component\Metadata\MetadataFactory($registry);
 foreach ($images as $image) {
     $file = new SplFileInfo(realpath(__DIR__ . '/../../images/' . $image));
     $md = $factory->create($file);
-    for ($i = 0; $i < 10000; $i++) {
+    for ($i = 0; $i < 1; $i++) {
         $mds = $md->all($file);
-//        var_dump($mds);
+        echo "\n\n$image\n";
+        var_dump($mds);
     }
 }
+
+$dumper = new \DamEnterprise\Component\Metadata\Adapter\AdapterDumper($registry);
+$dumped = $dumper->dump('image/jpeg');
+var_dump($dumped);

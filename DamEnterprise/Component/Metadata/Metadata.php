@@ -3,8 +3,6 @@
 namespace DamEnterprise\Component\Metadata;
 
 use DamEnterprise\Component\Metadata\Adapter\AdapterInterface;
-use DamEnterprise\Component\Metadata\Exception\MetadataNotFoundException;
-use DamEnterprise\Component\Metadata\Exception\MetadataNotSupportedException;
 
 class Metadata implements MetadataInterface
 {
@@ -19,6 +17,48 @@ class Metadata implements MetadataInterface
         $this->adapters = $adapters;
     }
 
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function has(\SplFileInfo $file, $key)
+//    {
+//        foreach ($this->adapters as $adapter) {
+//            if ($adapter->has($file, $key)) {
+//                return true;
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function get(\SplFileInfo $file, $key)
+//    {
+//        foreach ($this->adapters as $adapter) {
+//            if ($adapter->has($file, $key)) {
+//                return $adapter->get($file, $key);
+//            }
+//        }
+//
+//        throw new MetadataNotFoundException();
+//    }
+//
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function set(\SplFileInfo $file, $key, $value)
+//    {
+//        foreach ($this->adapters as $adapter) {
+//            if ($adapter->supports($key)) {
+//                return $adapter->set($file, $key, $value);
+//            }
+//        }
+//
+//        throw new MetadataNotSupportedException();
+//    }
+
     public function all(\SplFileInfo $file)
     {
         $metadata = [];
@@ -27,47 +67,5 @@ class Metadata implements MetadataInterface
         }
 
         return $metadata;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function has(\SplFileInfo $file, $key)
-    {
-        foreach ($this->adapters as $adapter) {
-            if ($adapter->has($file, $key)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function get(\SplFileInfo $file, $key)
-    {
-        foreach ($this->adapters as $adapter) {
-            if ($adapter->has($file, $key)) {
-                return $adapter->get($file, $key);
-            }
-        }
-
-        throw new MetadataNotFoundException();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function set(\SplFileInfo $file, $key, $value)
-    {
-        foreach ($this->adapters as $adapter) {
-            if ($adapter->supports($key)) {
-                return $adapter->set($file, $key, $value);
-            }
-        }
-
-        throw new MetadataNotSupportedException();
     }
 }
