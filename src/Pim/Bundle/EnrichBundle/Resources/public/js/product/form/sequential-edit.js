@@ -12,6 +12,7 @@ define(
         'oro/navigation',
         'pim/product-manager',
         'pim/entity-manager',
+        'oro/mediator',
         'bootstrap'
     ],
     function (
@@ -36,6 +37,12 @@ define(
                 this.model = new Backbone.Model();
             },
             configure: function () {
+                mediator.once('hash_navigation_request:start', function (navigation) {
+                    if (navigation.url === Routing.generate('pim_enrich_product_index')) {
+                        EntityManager.clear('sequentialEdit');
+                    }
+                });
+
                 return $.when(
                     EntityManager.getRepository('sequentialEdit').findAll().then(
                         _.bind(function (sequentialEdit) {
