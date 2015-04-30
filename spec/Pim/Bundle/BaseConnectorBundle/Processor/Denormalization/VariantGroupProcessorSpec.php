@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -31,6 +32,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         NormalizerInterface $valueNormalizer,
         ObjectDetacherInterface $detacher,
         ProductTemplateMediaManager $templateMediaManager,
+        FieldNameBuilder $fieldNameBuilder,
         StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
@@ -42,6 +44,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             $detacher,
             $valueNormalizer,
             $templateMediaManager,
+            $fieldNameBuilder,
             $groupClass,
             $templateClass,
             'csv'
@@ -199,6 +202,15 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             )
             ->shouldBeCalled();
 
+        $template
+            ->getValuesData()->willReturn(
+                [
+                    'name' => [
+                        ['scope'  => null, 'locale' => null, 'value'  => 'Nice product']
+                    ]
+                ]
+            );
+
         $validator
             ->validate($variantGroup)
             ->shouldBeCalled()
@@ -218,7 +230,6 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         $groupRepository,
         $denormalizer,
         $validator,
-        $detacher,
         $stepExecution,
         Group $variantGroup,
         GroupType $type,
@@ -244,6 +255,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             ['entity' => $variantGroup]
         )->shouldBeCalled()->willReturn($variantGroup);
 
+        $template->getValuesData()->willReturn([]);
         $variantGroup->getProductTemplate()->willReturn($template);
 
         $denormalizer

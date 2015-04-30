@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4113: Initialize cursors on first item during creation
+- PIM-4122: Preserve variant structure during an import containing empty values from a template
 
 # 1.3.9 (2015-04-21)
 
