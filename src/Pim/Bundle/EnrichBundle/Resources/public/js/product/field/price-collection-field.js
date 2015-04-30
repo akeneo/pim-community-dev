@@ -15,6 +15,15 @@ define([
             'change input': 'updateModel'
         },
         renderInput: function (context) {
+            if (_.isEmpty(context.value.value)) {
+                _.each(context.currencies, function (currency) {
+                    context.value.value.push({
+                        currency: currency.code,
+                        data: null
+                    });
+                });
+            }
+
             return this.fieldTemplate(context);
         },
         updateModel: function (event) {
