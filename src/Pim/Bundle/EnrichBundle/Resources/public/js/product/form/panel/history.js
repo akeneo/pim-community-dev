@@ -110,13 +110,14 @@ define(
                 var label = attribute.label[uiLocale] ? attribute.label[uiLocale] : '[' + attribute.code + ']';
 
                 key = key.split('-');
+                key.shift();
 
                 var info = '';
-                if (attribute.scopable) {
-                    info += '<span>' + key.pop() + '</span>';
-                }
                 if (attribute.localizable) {
-                    info += i18n.getFlag(key.pop());
+                    info += i18n.getFlag(key.shift());
+                }
+                if (attribute.scopable) {
+                    info = '<span>' + key.shift() + '</span>' + info;
                 }
                 if (info) {
                     info = '<span class="attribute-info">' + info + '</span>';
