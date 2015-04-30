@@ -82,7 +82,7 @@ define(
                         if (attribute.scopable || attribute.localizable) {
                             var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
 
-                            var copyField = new CopyField();
+                            var copyField;
                             if (
                                 this.copyFields[code] &&
                                 this.copyFields[code].locale === valueToCopy.locale &&
@@ -90,6 +90,8 @@ define(
                             ) {
                                 copyField = this.copyFields[code];
                                 copyField.setSelected(this.copyFields[code].selected);
+                            } else {
+                                copyField = new CopyField();
                             }
 
                             copyField.setLocale(valueToCopy.locale);

@@ -5,9 +5,10 @@ define([
         'pim/field',
         'underscore',
         'routing',
+        'pim/attribute-manager',
         'text!pim/template/product/field/media'
     ],
-    function ($, Field, _, Routing, fieldTemplate) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
@@ -22,20 +23,34 @@ define([
 
                 Field.prototype.getTemplateContext.apply(this, arguments)
                     .done(_.bind(function (templateContext) {
-                        if (this.getCurrentValue().value && this.getCurrentValue().value.filePath) {
-                            var filename = this.getCurrentValue().value.filePath;
-                            filename = filename.substring(filename.lastIndexOf('/') + 1);
-                            templateContext.mediaUrl = Routing.generate('pim_enrich_media_show', {
-                                filename: filename
-                            });
-                        } else {
-                            templateContext.mediaUrl = null;
-                        }
-
+                        this.setMediaUrl(templateContext);
                         deferred.resolve(templateContext);
                     }, this));
 
                 return deferred.promise();
+            },
+            setMediaUrl: function (templateContext) {
+                if (templateContext.value.value && templateContext.value.value.filePath) {
+                    var filename = templateContext.value.value.filePath;
+                    filename = filename.substring(filename.lastIndexOf('/') + 1);
+                    templateContext.mediaUrl = Routing.generate('pim_enrich_media_show', {
+                        filename: filename
+                    });
+                } else {
+                    templateContext.mediaUrl = null;
+                }
+            },
+            renderCopyInput: function (context, locale, scope) {
+                context.value = AttributeManager.getValue(
+                    this.model.get('values'),
+                    this.attribute,
+                    locale,
+                    scope
+                );
+
+                this.setMediaUrl(context);
+
+                return Field.prototype.renderCopyInput.apply(this, arguments);
             },
             updateModel: function (event) {
                 var input = event.currentTarget;
