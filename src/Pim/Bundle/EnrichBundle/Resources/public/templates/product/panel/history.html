@@ -58,9 +58,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% _.each(version.changeset, function(value, key) { %>
+                                    <% _.each(version.changeset, function(value) { %>
                                         <tr>
-                                            <td class="property"><%= key %></td>
+                                            <td class="property"><%= value.label %></td>
                                             <td class="old-values"><%= value.old %></td>
                                             <td class="onew-values"><%= value.new %></td>
                                         </tr>
