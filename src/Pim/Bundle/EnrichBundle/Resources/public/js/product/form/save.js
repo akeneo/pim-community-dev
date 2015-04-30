@@ -6,7 +6,6 @@ define(
         'underscore',
         'oro/mediator',
         'pim/form',
-        'text!pim/template/product/save',
         'oro/navigation',
         'oro/loading-mask',
         'pim/product-manager',
@@ -17,7 +16,6 @@ define(
         _,
         mediator,
         BaseForm,
-        template,
         Navigation,
         LoadingMask,
         ProductManager,
@@ -25,17 +23,19 @@ define(
     ) {
         return BaseForm.extend({
             className: 'btn-group',
-            template: _.template(template),
-            events: {
-                'click .save-product': 'save'
-            },
-            render: function () {
-                this.$el.html(this.template());
-                this.delegateEvents();
+            configure: function () {
+                this.parent.extensions['save-buttons'].addButton({
+                    className: 'save-product',
+                    priority: 200,
+                    label: _.__('pim_enrich.entity.product.btn.save'),
+                    events: {
+                        'click .save-product': _.bind(this.save, this)
+                    }
+                });
 
-                return this;
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
-            save: function () {
+            save: function (options) {
                 var product = $.extend(true, {}, this.getData());
                 var productId = product.meta.id;
 
@@ -48,12 +48,15 @@ define(
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
                 var navigation = Navigation.getInstance();
                 mediator.trigger('product:action:pre_save');
-                ProductManager.save(productId, product).done(_.bind(function (data) {
+
+                return ProductManager.save(productId, product).done(_.bind(function (data) {
                     navigation.addFlashMessage('success', _.__('pim_enrich.entity.product.info.update_successful'));
                     navigation.afterRequest();
 
                     this.setData(data);
-                    mediator.trigger('product:action:post_update', data);
+                    if (!options || !options.silent) {
+                        mediator.trigger('product:action:post_update', data);
+                    }
                 }, this)).fail(function (response) {
                     switch (response.status) {
                         case 400:

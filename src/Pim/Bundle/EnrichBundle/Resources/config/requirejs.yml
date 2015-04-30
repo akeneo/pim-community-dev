@@ -65,6 +65,11 @@ config:
                         urls:
                             list: pim_enrich_variant_group_rest_index
                             get: pim_enrich_variant_group_rest_get
+                sequentialEdit:
+                    module: pim/entity-repository
+                    options:
+                        urls:
+                            list: pim_enrich_mass_edit_action_sequential_edit_get
 
     paths:
         jquery.wizard:                      pimenrich/js/jquery.wizard
@@ -119,7 +124,9 @@ config:
         pim/product-edit-form/panel/completeness:                  pimenrich/js/product/form/panel/completeness
         pim/product-edit-form/panel/history:                       pimenrich/js/product/form/panel/history
         pim/product-edit-form/panel/comments:                      pimenrich/js/product/form/panel/comments
+        pim/product-edit-form/save-buttons:                        pimenrich/js/product/form/save-buttons
         pim/product-edit-form/save:                                pimenrich/js/product/form/save
+        pim/product-edit-form/sequential-edit:                     pimenrich/js/product/form/sequential-edit
         pim/product-edit-form/delete:                              pimenrich/js/product/form/delete
         pim/product-edit-form/meta/change-family:                  pimenrich/js/product/form/meta/change-family
         pim/product-edit-form/meta/created:                        pimenrich/js/product/form/meta/created
@@ -163,7 +170,8 @@ config:
         pim/template/product/panel/comments:                         pimenrich/templates/product/panel/comments.html
         pim/template/product/locale-switcher:                        pimenrich/templates/product/locale-switcher.html
         pim/template/product/form-tabs:                              pimenrich/templates/product/form-tabs.html
-        pim/template/product/save:                                   pimenrich/templates/product/save.html
+        pim/template/product/save-buttons:                           pimenrich/templates/product/save-buttons.html
+        pim/template/product/sequential-edit:                        pimenrich/templates/product/sequential-edit.html
         pim/template/product/delete:                                 pimenrich/templates/product/delete.html
         pim/template/product/status-switcher:                        pimenrich/templates/product/status-switcher.html
         pim/template/product/download-pdf:                           pimenrich/templates/product/download-pdf.html

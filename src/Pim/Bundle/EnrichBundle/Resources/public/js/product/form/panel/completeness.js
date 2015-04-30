@@ -24,7 +24,7 @@ define(
 
                 mediator.on('product:action:post_update', _.bind(this.update, this));
 
-                this.listenTo(this.getRoot().model, 'change:family', this.render);
+                this.listenTo(this.getRoot().model, 'change:family', this.onChangeFamily);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
@@ -72,6 +72,11 @@ define(
                 }
 
                 this.render();
+            },
+            onChangeFamily: function (model) {
+                if (!_.isEmpty(model._previousAttributes)) {
+                    this.render();
+                }
             }
         });
     }

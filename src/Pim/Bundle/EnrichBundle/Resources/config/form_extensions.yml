@@ -8,6 +8,12 @@ extensions:
             meta: header .meta
             state: header .state
 
+    sequential-edit:
+        module: pim/product-edit-form/sequential-edit
+        parent: product-edit-form
+        insertAction: before
+        targetZone: header
+
     form-tabs:
         module: pim/product-edit-form/form-tabs
         parent: product-edit-form
@@ -28,6 +34,11 @@ extensions:
 
     delete:
         module: pim/product-edit-form/delete
+        parent: product-edit-form
+        targetZone: buttons
+
+    save-buttons:
+        module: pim/product-edit-form/save-buttons
         parent: product-edit-form
         targetZone: buttons
 

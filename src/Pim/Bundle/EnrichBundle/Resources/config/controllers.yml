@@ -250,6 +250,7 @@ services:
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_user.context.user'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.product_comment:
         scope: request

@@ -17,7 +17,7 @@ class SequentialEdit
     /** @var int $id */
     protected $id;
 
-    /** @var integer[] $objectSet */
+    /** @var int[] $objectSet */
     protected $objectSet = [];
 
     /** @var UserInterface $user */
@@ -83,7 +83,7 @@ class SequentialEdit
     /**
      * Get product set
      *
-     * @return integer[]
+     * @return int[]
      */
     public function getObjectSet()
     {
@@ -93,7 +93,7 @@ class SequentialEdit
     /**
      * Set product set
      *
-     * @param integer[] $objectSet
+     * @param int[] $objectSet
      *
      * @return SequentialEdit
      */
