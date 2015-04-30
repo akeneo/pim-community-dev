@@ -40,7 +40,7 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                 data: { _method: 'DELETE' }
             }).then(_.bind(function () {
                 delete this.productPromises[id];
-            }), this).promise();
+            }, this)).promise();
         },
         getValues: function (product) {
             var deferred = $.Deferred();
