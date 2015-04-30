@@ -9,9 +9,12 @@ define(
         'text!pim/template/product/panel/history',
         'routing',
         'oro/mediator',
+        'pim/entity-manager',
+        'pim/user-context',
+        'pim/i18n',
         'backbone/bootstrap-modal'
     ],
-    function ($, _, Backbone, BaseForm, template, Routing, mediator) {
+    function ($, _, Backbone, BaseForm, template, Routing, mediator, EntityManager, UserContext, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',
@@ -22,7 +25,7 @@ define(
             events: {
                 'click .expand-history':   'expandHistory',
                 'click .collapse-history': 'collapseHistory',
-                'click .expanded tbody tr:not(.changeset)': 'toggleVersion'
+                'click .expanded>tbody>tr:not(.changeset)': 'toggleVersion'
             },
             configure: function () {
                 this.getRoot().addPanel('history', 'History');
@@ -78,11 +81,48 @@ define(
                             }
                         )
                     ).done(_.bind(function (versions) {
-                        this.versions = versions;
-                        this.render();
-                        this.loading = false;
+                        this.prepareVersions(versions).done(_.bind(function (versions) {
+                            this.versions = versions;
+                            this.render();
+                            this.loading = false;
+                        }, this));
                     }, this));
                 }
+            },
+            prepareVersions: function (versions) {
+                var deferred = $.Deferred();
+
+                EntityManager.getRepository('attribute').findAll().done(_.bind(function (attributes) {
+                    _.each(versions, _.bind(function (version) {
+                        _.each(version.changeset, _.bind(function (data, index) {
+                            var code = index.split('-').shift();
+                            var attribute = _.findWhere(attributes, { code: code });
+                            data.label = attribute ? this.getAttributeLabel(attribute, index) : index;
+                        }, this));
+                    }, this));
+                    deferred.resolve(versions);
+                }, this));
+
+                return deferred.promise();
+            },
+            getAttributeLabel: function (attribute, key) {
+                var uiLocale = UserContext.get('catalogLocale');
+                var label = attribute.label[uiLocale] ? attribute.label[uiLocale] : '[' + attribute.code + ']';
+
+                key = key.split('-');
+
+                var info = '';
+                if (attribute.scopable) {
+                    info += '<span>' + key.pop() + '</span>';
+                }
+                if (attribute.localizable) {
+                    info += i18n.getFlag(key.pop());
+                }
+                if (info) {
+                    info = '<span class="attribute-info">' + info + '</span>';
+                }
+
+                return label + info;
             },
             addAction: function (code, element) {
                 this.actions[code] = element;
