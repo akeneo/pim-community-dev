@@ -63,4 +63,11 @@ interface FamilyRepositoryInterface extends
      * @return array '<f_id>' => array(<attribute ids>)
      */
     public function findAttributeIdsFromFamilies(array $familyIds);
+
+    /**
+     * @param array $familyIds
+     *
+     * @return array
+     */
+    public function findByIds(array $familyIds);
 }
