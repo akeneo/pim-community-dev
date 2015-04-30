@@ -411,6 +411,8 @@ Feature: Revert a product to a previous version
     Then I am on the "hh_jackets" variant group page
     And I check the row "helly-hansen"
     And I press the "Save" button
+    # TODO: see with @nidup => temporary fix (broken since the deferred explicit persist of Doctrine)
+    And I press the "Save" button
     Then I am on the "helly-hansen" product page
     And I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: helly-hansen"
