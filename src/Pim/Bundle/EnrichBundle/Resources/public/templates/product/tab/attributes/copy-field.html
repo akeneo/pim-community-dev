@@ -13,21 +13,6 @@
             </span>
         </header>
         <div class="field-input">
-            <% if (data && 'pim_catalog_image' === attribute.type || 'pim_catalog_file' === attribute.type) { %>
-                <% filename = data.filePath.substring(data.filePath.lastIndexOf('/') + 1) %>
-                <div class="media-uploader <%= data && data.filePath ? 'has-file' : '' %>" >
-                    <div class="file">
-                    <% if (data) { %>
-                        <% if ('pim_catalog_image' === attribute.type && null != filename) { %>
-                            <img class="preview" src="/media/<%= filename %>"/>
-                        <% } %>
-                        <span><%= data.originalFilename %></span>
-                    <% } %>
-                    </div>
-                </div>
-            <% } else { %>
-                <%= data %>
-            <% } %>
         </div>
     </div>
 </div>

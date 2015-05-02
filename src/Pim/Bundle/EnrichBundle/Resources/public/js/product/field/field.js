@@ -66,6 +66,17 @@ define([
             renderInput: function () {
                 throw new Error('You should implement your field template');
             },
+            renderCopyInput: function (context, locale, scope) {
+                context.value = AttributeManager.getValue(
+                    this.model.get('values'),
+                    this.attribute,
+                    locale,
+                    scope
+                );
+                context.editMode = 'disabled';
+
+                return this.renderInput(context);
+            },
             getTemplateContext: function () {
                 var deferred = $.Deferred();
 

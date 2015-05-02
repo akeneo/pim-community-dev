@@ -41,6 +41,11 @@ define([
                 };
 
                 this.$el.html(this.template(templateContext));
+
+                this.field.getTemplateContext().done(_.bind(function (templateContext) {
+                    this.$('.field-input').html(this.field.renderCopyInput(templateContext, this.locale, this.scope));
+                }, this));
+
                 this.delegateEvents();
 
                 return this;
