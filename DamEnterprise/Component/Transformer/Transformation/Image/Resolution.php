@@ -8,6 +8,7 @@ use Imagine\Image\ImageInterface;
 use Imagine\Imagick\Imagine;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+//TODO: check this transformation
 class Resolution extends AbstractTransformation
 {
     public function __construct(array $mimeTypes = ['image/jpeg', 'image/tiff'])
@@ -55,9 +56,7 @@ class Resolution extends AbstractTransformation
         try {
             $options = $resolver->resolve($options);
         } catch (\Exception $e) {
-            throw new InvalidOptionsTransformationException(
-                'Your options does not fulfil the requirements of the "resolution" transformation.', 0, $e
-            );
+            throw InvalidOptionsTransformationException::general($e, $this->getName());
         }
 
         return $options;
