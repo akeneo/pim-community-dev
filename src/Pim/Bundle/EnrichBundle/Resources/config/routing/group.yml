@@ -33,3 +33,22 @@ pim_enrich_group_history:
     requirements:
         id: \d+
         _format: html|json
+
+pim_enrich_group_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.group_rest:indexAction }
+    methods: [GET]
+
+pim_enrich_group_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.group_rest:getAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]
+
+pim_enrich_group_rest_list_products:
+    path: /rest/{identifier}/products
+    defaults: { _controller: pim_enrich.controller.group_rest:listProductsAction }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]

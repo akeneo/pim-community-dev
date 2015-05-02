@@ -26,6 +26,7 @@ parameters:
     pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
     pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
     pim_enrich.controller.family_rest.class: Pim\Bundle\EnrichBundle\Controller\FamilyRestController
+    pim_enrich.controller.group_rest.class: Pim\Bundle\EnrichBundle\Controller\GroupRestController
     pim_enrich.controller.variant_group_rest.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupRestController
     pim_enrich.controller.channel_rest.class: Pim\Bundle\EnrichBundle\Controller\ChannelRestController
     pim_enrich.controller.locale_rest.class: Pim\Bundle\EnrichBundle\Controller\LocaleRestController
@@ -327,11 +328,17 @@ services:
             - '@pim_catalog.repository.family'
             - '@pim_internal_api_serializer'
 
+    pim_enrich.controller.group_rest:
+        class: %pim_enrich.controller.group_rest.class%
+        arguments:
+            - '@pim_catalog.manager.group'
+            - '@pim_internal_api_serializer'
+
     pim_enrich.controller.variant_group_rest:
         class: %pim_enrich.controller.variant_group_rest.class%
         arguments:
             - '@pim_catalog.repository.group'
-            - '@pim_serializer'
+            - '@pim_internal_api_serializer'
 
     pim_enrich.controller.channel_rest:
         class: %pim_enrich.controller.channel_rest.class%
