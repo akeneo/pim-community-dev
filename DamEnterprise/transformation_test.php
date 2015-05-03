@@ -16,11 +16,17 @@ $images = [
     'nin.jpg'
 ];
 
-$resizeTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Resize();
-$thumbnailTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Thumbnail();
-$resolutionTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Resolution();
-$colorSpaceTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\ColorSpace();
-$scaleTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Scale();
+$resizeResolver = new \DamEnterprise\Component\Transformer\Options\Image\ResizeOptionsResolver();
+$thumbnailResolver = new \DamEnterprise\Component\Transformer\Options\Image\ThumbnailOptionsResolver();
+$resolutionResolver = new \DamEnterprise\Component\Transformer\Options\Image\ResolutionOptionsResolver();
+$colorSpaceResolver = new \DamEnterprise\Component\Transformer\Options\Image\ColorSpaceOptionsResolver();
+$scaleResolver = new \DamEnterprise\Component\Transformer\Options\Image\ScaleOptionsResolver();
+
+$resizeTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Resize($resizeResolver);
+$thumbnailTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Thumbnail($thumbnailResolver);
+$resolutionTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Resolution($resolutionResolver);
+$colorSpaceTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\ColorSpace($colorSpaceResolver);
+$scaleTransformation = new \DamEnterprise\Component\Transformer\Transformation\Image\Scale($scaleResolver);
 
 $registry = new \DamEnterprise\Component\Transformer\Transformation\TransformationRegistry();
 $registry->add($resizeTransformation);

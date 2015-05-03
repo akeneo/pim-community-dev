@@ -2,6 +2,8 @@
 
 namespace DamEnterprise\Component\Transformer\Transformation;
 
+use DamEnterprise\Component\Transformer\Options\TransformationOptionsResolverInterface;
+
 interface TransformationInterface
 {
     /**
@@ -14,4 +16,16 @@ interface TransformationInterface
     public function getName();
     public function supportsMimeType($mimeType);
     public function getMimeTypes();
+
+    /**
+     * @return TransformationOptionsResolverInterface
+     */
+    public function getOptionsResolver();
+
+    /**
+     * @param TransformationOptionsResolverInterface $optionsResolver
+     *
+     * @return TransformationInterface
+     */
+    public function setOptionsResolver($optionsResolver);
 }

@@ -2,23 +2,24 @@
 
 namespace DamEnterprise\Component\Transformer\Transformation\Image;
 
-use DamEnterprise\Component\Transformer\Exception\InvalidOptionsTransformationException;
 use DamEnterprise\Component\Transformer\Exception\NotApplicableTransformationException;
+use DamEnterprise\Component\Transformer\Options\TransformationOptionsResolverInterface;
 use DamEnterprise\Component\Transformer\Transformation\AbstractTransformation;
-use Imagine\Image\Box;
 use Imagine\Imagick\Imagine;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Scale extends AbstractTransformation
 {
-    public function __construct(array $mimeTypes = ['image/jpeg', 'image/tiff'])
-    {
+    public function __construct(
+        TransformationOptionsResolverInterface $optionsResolver,
+        array $mimeTypes = ['image/jpeg', 'image/tiff']
+    ) {
+        $this->optionsResolver = $optionsResolver;
         $this->mimeTypes = $mimeTypes;
     }
 
     public function transform(\SplFileInfo $file, array $options = [])
     {
-        $options = $this->checkOptions($options);
+        $options = $this->optionsResolver->resolve($options);
 
         $imagine = new Imagine();
         $image   = $imagine->open($file->getPathname());
@@ -48,38 +49,5 @@ class Scale extends AbstractTransformation
     public function getName()
     {
         return 'scale';
-    }
-
-    protected function checkOptions(array $options)
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setOptional(['ratio', 'width', 'height']);
-        $resolver->setAllowedTypes(
-            ['ratio' => ['float', 'null'], 'width' => ['int', 'null'], 'height' => ['int', 'null']]
-        );
-        $resolver->setDefaults(['ratio' => null, 'width' => null, 'height' => null]);
-
-        try {
-            $options = $resolver->resolve($options);
-        } catch (\Exception $e) {
-            throw InvalidOptionsTransformationException::general($e, $this->getName());
-        }
-
-        $ratio  = $options['ratio'];
-        $width  = $options['width'];
-        $height = $options['height'];
-
-        if (null === $ratio && null === $width && null === $height) {
-            throw InvalidOptionsTransformationException::chooseOneOption(
-                ['ratio', 'width', 'height'],
-                $this->getName()
-            );
-        }
-
-        if (null !== $ratio && ($ratio <= 0 || $ratio >= 1)) {
-            throw InvalidOptionsTransformationException::ratio('ratio', $this->getName());
-        }
-
-        return $options;
     }
 }
