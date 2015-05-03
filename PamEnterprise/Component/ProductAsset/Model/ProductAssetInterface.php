@@ -4,6 +4,8 @@ namespace PamEnterprise\Component\ProductAsset\Model;
 
 use DamEnterprise\Component\Asset\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 interface ProductAssetInterface extends ReferenceDataInterface
@@ -74,4 +76,66 @@ interface ProductAssetInterface extends ReferenceDataInterface
      * @return ProductAssetInterface
      */
     public function removeVariation(ProductAssetVariationInterface $variation);
+
+    /**
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     *
+     * @return ProductAssetVariationInterface|null
+     */
+    public function getVariation(ChannelInterface $channel, LocaleInterface $locale);
+
+    /**
+     * @param ChannelInterface $channel
+     * @param LocaleInterface  $locale
+     *
+     * @return bool
+     */
+    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale);
+
+    /**
+     * @return bool
+     */
+    public function isEnabled();
+
+    /**
+     * @param bool $isEnabled
+     */
+    public function setEnabled($isEnabled);
+
+    /**
+     * @return \Datetime
+     */
+    public function getEndOfUseAt();
+
+    /**
+     * @param \Datetime $endOfUseAt
+     *
+     * @return ProductAssetInterface
+     */
+    public function setEndOfUseAt(\Datetime $endOfUseAt);
+
+    /**
+     * @return \Datetime
+     */
+    public function getCreatedAt();
+
+    /**
+     * @param \Datetime $createdAt
+     *
+     * @return ProductAssetInterface
+     */
+    public function setCreatedAt(\Datetime $createdAt);
+
+    /**
+     * @return \Datetime
+     */
+    public function getUpdatedAt();
+
+    /**
+     * @param \Datetime $updatedAt
+     *
+     * @return ProductAssetInterface
+     */
+    public function setUpdatedAt(\Datetime $updatedAt);
 }

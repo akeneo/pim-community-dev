@@ -1,5 +1,6 @@
 PamEnterprise\Component\ProductAsset\Model\ProductAsset:
     type: entity
+    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     table: pamee_product_asset_asset
     fields:
         id:
@@ -10,8 +11,21 @@ PamEnterprise\Component\ProductAsset\Model\ProductAsset:
         code:
             type: string
             length: 255
+            unique: true
         description:
             type: text
+        isEnabled:
+            type: boolean
+            column: is_enabled
+        endOfUseAt:
+            type: datetime
+            column: end_of_use_at
+        createdAt:
+            type: datetime
+            column: created_at
+        updatedAt:
+            type: datetime
+            column: updated_at
     oneToOne:
         reference:
             targetEntity: DamEnterprise\Component\Asset\Model\FileInterface

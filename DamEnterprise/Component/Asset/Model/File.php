@@ -24,6 +24,9 @@ class File implements FileInterface
     /** @var string */
     protected $mimeType;
 
+    /** @var int */
+    protected $size;
+
     /** @var string */
     protected $storage;
 
@@ -121,6 +124,24 @@ class File implements FileInterface
     public function setMimeType($mimeType)
     {
         $this->mimeType = $mimeType;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSize($size)
+    {
+        $this->size = $size;
 
         return $this;
     }

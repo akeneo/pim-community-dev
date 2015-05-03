@@ -4,6 +4,8 @@ namespace PamEnterprise\Component\ProductAsset\Model;
 
 use DamEnterprise\Component\Asset\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 class ProductAsset implements ProductAssetInterface
 {
@@ -21,6 +23,18 @@ class ProductAsset implements ProductAssetInterface
 
     /** @var ArrayCollection of ProductAssetVariationInterface */
     protected $variations;
+
+    /** @var bool */
+    protected $isEnabled;
+
+    /** @var \Datetime */
+    protected $endOfUseAt;
+
+    /** @var \Datetime */
+    protected $createdAt;
+
+    /** @var \Datetime */
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -96,6 +110,67 @@ class ProductAsset implements ProductAssetInterface
         return $this;
     }
 
+    public function getVariation(ChannelInterface $channel, LocaleInterface $locale)
+    {
+        foreach ($this->getVariations() as $variation) {
+            if ($channel === $variation->getChannel() && $locale === $variation->getLocale()) {
+                return $variation;
+            }
+        }
+
+        return null;
+    }
+
+    public function hetVariation(ChannelInterface $channel, LocaleInterface $locale)
+    {
+        return null !== $this->getVariation($channel, $locale);
+    }
+
+    public function isEnabled()
+    {
+        return $this->isEnabled;
+    }
+
+    public function setEnabled($isEnabled)
+    {
+        $this->isEnabled = $isEnabled;
+    }
+
+    public function getEndOfUseAt()
+    {
+        return $this->endOfUseAt;
+    }
+
+    public function setEndOfUseAt(\Datetime $endOfUseAt)
+    {
+        $this->endOfUseAt = $endOfUseAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\Datetime $createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\Datetime $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
 
     public function getSortOrder()
     {

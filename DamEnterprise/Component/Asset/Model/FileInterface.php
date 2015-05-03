@@ -69,6 +69,18 @@ interface FileInterface
     public function setMimeType($mimeType);
 
     /**
+     * @return int
+     */
+    public function getSize();
+
+    /**
+     * @param int $size
+     *
+     * @return FileInterface
+     */
+    public function setSize($size);
+
+    /**
      * @return string
      */
     public function getStorage();

@@ -25,6 +25,9 @@ DamEnterprise\Component\Asset\Model\File:
             type: string
             length: 255
             column: mime_type
+        size:
+            type: integer
+            nullable: true
         storage:
             type: string
             length: 255
