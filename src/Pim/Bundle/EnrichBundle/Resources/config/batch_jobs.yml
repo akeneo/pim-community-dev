@@ -69,6 +69,6 @@ connector:
                     title: add_to_variant_group
                     services:
                         reader:    pim_enrich.mass_edit.filtered.reader
-                        processor: pim_enrich.mass_edit.update_product_value.processor
+                        processor: pim_enrich.mass_edit.add_product_to_variant_group.processor
                         writer:    pim_base_connector.writer.doctrine.product
 

@@ -7,8 +7,10 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
@@ -92,36 +94,25 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     {
         $actions = $configuration['actions'];
 
-        $variantGroup = $actions[0]['value'];
+        $variantGroupCode = $actions[0]['value'];
 
-        $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
+        $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroupCode);
 
+        $axisAttributeCodes = $this->getAxisAttributesCodes($variantGroup);
         $eligibleProductIds = $this->productRepository->getEligibleProductIdsForVariantGroup($variantGroup->getId());
 
         $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
-        $ids = [];
-        foreach ($paginator as $productsPage) {
-            foreach ($productsPage as $product) {
-                if (in_array($product->getId(), $eligibleProductIds)) {
-                    $ids[] = $product->getId();
-                } else {
-                    $this->stepExecution->incrementSummaryInfo('skipped_product');
-                    $this->stepExecution
-                        ->addWarning(
-                            $this->translator->trans('add_to_variant_group_clean.steps.add_to_variant_group.steps.cleaner.warning.title.title'),
-                            $this->translator->trans(
-                                'add_to_variant_group.steps.cleaner.warning.description'
-                            ),
-                            [],
-                            $product
-                        );
-                }
-            }
+        list($productAttributeAxis, $excludedIds, $ids) = $this->process(
+            $paginator,
+            $eligibleProductIds,
+            $axisAttributeCodes
+        );
 
-            $this->detachProducts($productsPage);
-        }
+        $excludedIds = $this->AddSkippedMessage($productAttributeAxis, $excludedIds);
+
+        $ids = array_diff($ids, $excludedIds);
 
         $configuration['filters'] = [['field' => 'id', 'operator' => 'IN', 'value' => $ids]];
 
@@ -235,5 +226,156 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
             );
             $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
         }
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     *
+     * @return array
+     */
+    protected function getAxisAttributesCodes($variantGroup)
+    {
+        $axisAttributes = $variantGroup->getAxisAttributes();
+
+        $axisAttributeCodes = [];
+        foreach ($axisAttributes as $axisAttribute) {
+            $axisAttributeCodes[] = $axisAttribute->getCode();
+        }
+
+        return $axisAttributeCodes;
+    }
+
+    /**
+     * Generate the key value for array
+     *
+     * @param ProductInterface $product
+     * @param array            $axisAttributeCodes
+     *
+     * @return string
+     */
+    protected function generateKey(ProductInterface $product, array $axisAttributeCodes)
+    {
+        $value = '';
+        foreach ($axisAttributeCodes as $attributeCode) {
+            $attributeOption = $product->getValue($attributeCode)->getData();
+            $attributeOptionCode = $attributeOption->getCode();
+
+            $value .= $attributeOptionCode.' ';
+        }
+        $value = rtrim($value, ' ');
+
+        return $value;
+    }
+
+    /**
+     * Fill the array with products id based on their variant axis combination as key
+     *
+     * @param ProductInterface $product
+     * @param array            $productAttributeAxis
+     * @param string           $str
+     *
+     * @return array
+     */
+    protected function fillArray(ProductInterface $product, array $productAttributeAxis, $str)
+    {
+        if (array_key_exists($str, $productAttributeAxis)) {
+            $productAttributeAxis[$str][] = $product->getId();
+        } else {
+            $productAttributeAxis[$str] = [$product->getId()];
+        }
+
+        return $productAttributeAxis;
+    }
+
+    /**
+     * Returns the list of excluded ids by counting if there are more
+     * than one product for the same combination of variant axis value
+     *
+     * @param array $productAttributeAxis
+     * @param array $excludedIds
+     *
+     * @return array
+     */
+    protected function getExcludedIds(array $productAttributeAxis, array $excludedIds)
+    {
+        foreach ($productAttributeAxis as $at) {
+            if (1 < count($at)) {
+                $excludedIds = array_merge($excludedIds, $at);
+            }
+        }
+
+        return $excludedIds;
+    }
+
+    /**
+     * Add a warning message to the skipped products
+     *
+     * @param array $productAttributeAxis
+     * @param array $excludedIds
+     *
+     * @return array
+     */
+    protected function AddSkippedMessage(array $productAttributeAxis, array $excludedIds)
+    {
+        $excludedIds = $this->getExcludedIds($productAttributeAxis, $excludedIds);
+        if (!empty($excludedIds)) {
+            $cursor = $this->getProductsCursor([['field' => 'id', 'operator' => 'IN', 'value' => $excludedIds]]);
+            $paginator = $this->paginatorFactory->createPaginator($cursor);
+
+            foreach ($paginator as $productsPage) {
+                foreach ($productsPage as $product) {
+                    $this->stepExecution->incrementSummaryInfo('skipped_products');
+                    $this->stepExecution
+                        ->addWarning(
+                            'duplicated',
+                            $this->translator->trans('add_to_variant_group.steps.cleaner.warning.description'),
+                            [],
+                            $product
+                        );
+                }
+
+                $this->detachProducts($productsPage);
+            }
+        }
+
+        return $excludedIds;
+    }
+
+    /**
+     * @param PaginatorInterface $paginator
+     * @param array              $eligibleProductIds
+     * @param array              $axisAttributeCodes
+     *
+     * @return array
+     */
+    protected function process(PaginatorInterface $paginator, array $eligibleProductIds, array $axisAttributeCodes)
+    {
+        $productAttributeAxis = [];
+        $excludedIds = [];
+        $ids = [];
+        foreach ($paginator as $productsPage) {
+            foreach ($productsPage as $product) {
+                if (in_array($product->getId(), $eligibleProductIds)) {
+                    $str = $this->generateKey($product, $axisAttributeCodes);
+                    $ids[] = $product->getId();
+                    $productAttributeAxis = $this->fillArray($product, $productAttributeAxis, $str);
+                } else {
+                    $this->stepExecution->incrementSummaryInfo('skipped_products');
+                    $this->stepExecution
+                        ->addWarning(
+                            'excluded',
+                            $this->translator->trans(
+                                'pim_enrich.mass_edit_action.add-to-variant-group.already_in_variant_group_or_not_valid'
+                            ),
+                            [],
+                            $product
+                        );
+                }
+            }
+
+            $this->detachProducts($productsPage);
+        }
+
+        return [$productAttributeAxis, $excludedIds, $ids];
     }
 }
