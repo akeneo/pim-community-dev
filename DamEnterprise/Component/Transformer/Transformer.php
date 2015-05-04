@@ -5,7 +5,7 @@ namespace DamEnterprise\Component\Transformer;
 use DamEnterprise\Component\Transformer\Transformation\TransformationRegistry;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
-class Transformer
+class Transformer implements TransformerInterface
 {
     /** @var TransformationRegistry */
     protected $registry;
@@ -26,5 +26,4 @@ class Transformer
 
         return $this;
     }
-
 }
