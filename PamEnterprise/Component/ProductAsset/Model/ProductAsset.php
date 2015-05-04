@@ -121,7 +121,7 @@ class ProductAsset implements ProductAssetInterface
         return null;
     }
 
-    public function hetVariation(ChannelInterface $channel, LocaleInterface $locale)
+    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale)
     {
         return null !== $this->getVariation($channel, $locale);
     }
