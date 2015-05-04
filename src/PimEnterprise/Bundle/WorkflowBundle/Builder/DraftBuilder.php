@@ -9,23 +9,27 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
+namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\Query;
+use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Draft applier to compare a product with some modifications
+ * Draft builder to have modifications on product values
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class DraftApplier implements ApplierInterface
+class DraftBuilder implements BuilderInterface
 {
-    /** @var array */
-    protected $originalValues;
+    /** @var ObjectManager */
+    protected $objectManager;
 
     /** @var SerializerInterface */
     protected $serializer;
@@ -37,15 +41,18 @@ class DraftApplier implements ApplierInterface
     protected $attributeRepository;
 
     /**
+     * @param ObjectManager                $objectManager
      * @param SerializerInterface          $serializer
      * @param ComparatorInterface          $comparator
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
+        ObjectManager $objectManager,
         SerializerInterface $serializer,
         ChainedComparator $comparator,
         AttributeRepositoryInterface $attributeRepository
     ) {
+        $this->objectManager       = $objectManager;
         $this->serializer          = $serializer;
         $this->comparator          = $comparator;
         $this->attributeRepository = $attributeRepository;
@@ -54,9 +61,10 @@ class DraftApplier implements ApplierInterface
     /**
      * {$inheritdoc}
      */
-    public function applier(ProductInterface $product)
+    public function builder(ProductInterface $product)
     {
         $newValues = $this->serializer->normalize($product->getValues(), 'json');
+        $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
         $diff = [];
@@ -69,7 +77,7 @@ class DraftApplier implements ApplierInterface
                 $diffAttribute = $this->comparator->compare(
                     $attributeTypes[$code],
                     $changes,
-                    $this->getOriginalValue($code, $i)
+                    $this->getOriginalValue($originalValues, $code, $i)
                 );
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
@@ -77,29 +85,39 @@ class DraftApplier implements ApplierInterface
             }
         }
 
+
         return $diff;
     }
 
     /**
-     * {$inheritdoc}
+     * @param ProductInterface $product
+     *
+     * @return array
      */
-    public function saveOriginalValues(ProductInterface $product)
+    public function getOriginalValues(ProductInterface $product)
     {
-        $this->originalValues = $this->serializer->normalize($product->getValues(), 'json');
+        $uow = $this->objectManager->getUnitOfWork();
+        $originalValues = new ArrayCollection();
 
-        return $this;
+        foreach ($product->getValues() as $value) {
+            if ($uow->getEntityState($value) === UnitOfWork::STATE_MANAGED) {
+                $uow->refresh($value);
+                $originalValues->add($value);
+            }
+        }
+
+        return $this->serializer->normalize($originalValues, 'json');
     }
 
     /**
+     * @param array  $originalValues
      * @param string $code
      * @param int    $i
      *
      * @return array
      */
-    protected function getOriginalValue($code, $i)
+    protected function getOriginalValue($originalValues, $code, $i)
     {
-        $originalValues = $this->originalValues;
-
         return !isset($originalValues[$code][$i]) ? [] : $originalValues[$code][$i];
     }
 }

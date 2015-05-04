@@ -9,26 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Applier;
+namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Applier to compare values
+ * Builder to compare values
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface ApplierInterface
+interface BuilderInterface
 {
     /**
      * @param ProductInterface $product
      */
-    public function applier(ProductInterface $product);
-
-    /**
-     * @param ProductInteface $product
-     *
-     * @return ApplierInterface
-     */
-    public function saveOriginalValues(ProductInterface $product);
+    public function builder(ProductInterface $product);
 }

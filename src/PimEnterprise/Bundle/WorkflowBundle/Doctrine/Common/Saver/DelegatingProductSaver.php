@@ -26,9 +26,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Delegating product saver, depending on context it delegates to other savers to deal with drafts or working copies
  *
- * CAUTION, it relies on security context to check permissions and collect data from form, it does not work from CLI,
- * it will be enhanced in a future version
- *
  * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
