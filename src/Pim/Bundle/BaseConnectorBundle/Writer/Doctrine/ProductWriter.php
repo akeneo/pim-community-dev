@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -133,7 +132,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function flush()
     {
-//        TODO: see with @nidup if we can remove this!
-//        $this->cacheClearer->clear(true);
+        //TODO: see with @nidup if we can remove this!
+        //$this->cacheClearer->clear(true);
     }
 }

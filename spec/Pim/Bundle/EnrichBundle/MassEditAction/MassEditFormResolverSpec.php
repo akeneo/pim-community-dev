@@ -39,8 +39,7 @@ class MassEditFormResolverSpec extends ObjectBehavior
         ]);
 
         $formFactory->create($chooseActionFormType, null, [
-            'operations' =>
-            [
+            'operations' => [
                 'duplicate' => 'pim_enrich.mass_edit_action.duplicate.label',
                 'erase'     => 'pim_enrich.mass_edit_action.erase.label'
             ]

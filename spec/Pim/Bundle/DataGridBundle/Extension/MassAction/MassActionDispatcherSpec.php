@@ -2,21 +2,21 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use PhpSpec\ObjectBehavior;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry;
-use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class MassActionDispatcherSpec extends ObjectBehavior
 {
@@ -76,7 +76,8 @@ class MassActionDispatcherSpec extends ObjectBehavior
         $this->dispatch($request)->shouldReturnAnInstanceOf('\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface');
     }
 
-    function it_throws_an_exception_without_extension($parametersParser, Acceptor $acceptor) {
+    function it_throws_an_exception_without_extension($parametersParser, Acceptor $acceptor)
+    {
         $request = new Request([
             'inset'      => 'inset',
             'values'     => 1,

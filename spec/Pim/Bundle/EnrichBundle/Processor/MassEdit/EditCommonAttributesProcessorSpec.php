@@ -68,7 +68,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );
@@ -106,7 +106,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );

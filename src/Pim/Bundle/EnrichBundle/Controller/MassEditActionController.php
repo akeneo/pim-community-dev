@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -150,6 +150,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param string $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
+     *
      * @throws NotFoundHttpException
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -186,7 +187,9 @@ class MassEditActionController extends AbstractDoctrineController
      * @param string $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
+     *
      * @throws NotFoundHttpException
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function performAction($operationAlias)

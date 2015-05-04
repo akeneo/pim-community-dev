@@ -49,12 +49,14 @@ class OperationRegistrySpec extends ObjectBehavior
             ->during('register', [$amazingOperation, 'dummy']);
     }
 
-    function it_throws_an_exception_if_no_operation_is_found_with_alias() {
+    function it_throws_an_exception_if_no_operation_is_found_with_alias()
+    {
         $this->shouldThrow('\InvalidArgumentException')
             ->during('get', ['operation404']);
     }
 
-    function it_throws_an_exception_if_no_operation_is_found_with_gridname() {
+    function it_throws_an_exception_if_no_operation_is_found_with_gridname()
+    {
         $this->shouldThrow('\InvalidArgumentException')
             ->during('getAllByGridName', ['grid404']);
     }

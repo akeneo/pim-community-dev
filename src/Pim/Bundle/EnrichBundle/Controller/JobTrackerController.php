@@ -92,7 +92,7 @@ class JobTrackerController extends Controller
      * Show a report
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
@@ -139,7 +139,7 @@ class JobTrackerController extends Controller
     /**
      * Download the log file of the job execution
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
@@ -158,9 +158,9 @@ class JobTrackerController extends Controller
     /**
      * Download an archived file
      *
-     * @param integer $id
-     * @param string  $archiver
-     * @param string  $key
+     * @param int    $id
+     * @param string $archiver
+     * @param string $key
      *
      * @return StreamedResponse
      */
@@ -202,8 +202,8 @@ class JobTrackerController extends Controller
     /**
      * Find an entity or throw a 404
      *
-     * @param string  $className Example: 'PimCatalogBundle:Category'
-     * @param integer $id        The id of the entity
+     * @param string $className Example: 'PimCatalogBundle:Category'
+     * @param int    $id        The id of the entity
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *

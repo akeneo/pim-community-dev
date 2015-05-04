@@ -172,9 +172,9 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /**
      * Return the job configuration
      *
-     * @return array
-     *
      * @throws EntityNotFoundException
+     *
+     * @return array
      */
     protected function getJobConfiguration()
     {

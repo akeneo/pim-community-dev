@@ -113,7 +113,7 @@ abstract class AbstractMassEditOperator implements MassEditOperatorInterface
      *
      * @param string $operationAlias
      *
-     * @return boolean
+     * @return bool
      */
     protected function isGranted($operationAlias)
     {

@@ -12,7 +12,6 @@ use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class AddProductValueProcessorSpec extends ObjectBehavior
@@ -45,7 +44,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
         $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
         $massEditJobConf->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
+            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
         $productUpdater->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
@@ -73,7 +72,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
         $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
         $massEditJobConf->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
+            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
         $productUpdater->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
