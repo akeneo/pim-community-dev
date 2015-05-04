@@ -147,6 +147,7 @@ services:
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_serializer'
             - '@pim_catalog.manager.product_template_media'
+            - '@pim_transform.builder.field_name'
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_template.class%
             - 'csv'
