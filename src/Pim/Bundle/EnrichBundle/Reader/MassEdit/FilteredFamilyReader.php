@@ -82,6 +82,10 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     }
 
     /**
+     * Get families with given $filters.
+     * In this particular case, we'll only have 1 filter based on ids
+     * (We don't have raw filters yet for family grid)
+     *
      * @param array $filters
      *
      * @return \Doctrine\Common\Collections\ArrayCollection
@@ -91,7 +95,6 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
 
-        // In the case of the Family reader, we only have 1 filter for IDS
         $filter = current($filters);
         $filter = $resolver->resolve($filter);
 
@@ -103,9 +106,9 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     /**
      * Return the job configuration
      *
-     * @return array
-     *
      * @throws EntityNotFoundException
+     *
+     * @return array
      */
     protected function getJobConfiguration()
     {
