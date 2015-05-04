@@ -44,10 +44,14 @@ class ReferenceDataRepository extends EntityRepository implements
         }
 
         $qb = $this->createQueryBuilder($this->getAlias());
-        $qb
-            ->select($selectDql)
-            ->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC')
-            ->addOrderBy(sprintf('%s.code', $this->getAlias()));
+        $qb->select($selectDql);
+
+        if ($this->getClassMetadata()->hasField('sortOrder')) {
+            $qb->orderBy(sprintf('%s.sortOrder', $this->getAlias()), 'DESC');
+            $qb->addOrderBy(sprintf('%s.code', $this->getAlias()));
+        } else {
+            $qb->orderBy(sprintf('%s.code', $this->getAlias()));
+        }
 
         if (null !== $search) {
             $searchDql = sprintf('%s.code LIKE :search', $this->getAlias());
