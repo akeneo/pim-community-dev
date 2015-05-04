@@ -58,6 +58,7 @@ define(
                 $(this.linkSelector).off('click', this.linkClicked);
             },
             render: function () {
+                this.collectState();
                 this.$el.html(
                     this.template({
                         message: this.message
@@ -69,7 +70,7 @@ define(
                 return this;
             },
             collectState: function () {
-                if (null === this.state) {
+                if (null === this.state || undefined === this.state) {
                     this.state = JSON.stringify(this.getRoot().model.toJSON());
                     this.bindEvents();
                     this.stopListening(this.getRoot().model, 'all', this.collectState);
