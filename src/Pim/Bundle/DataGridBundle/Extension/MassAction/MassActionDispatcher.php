@@ -103,6 +103,23 @@ class MassActionDispatcher
             $filters = $datasource->getProductQueryBuilder()->getRawFilters();
         }
 
+        $datasourceParams = $datasource->getParameters();
+        $contextParams = [];
+        if (is_array($datasourceParams)) {
+            $contextParams = [
+                'locale' => $datasourceParams['dataLocale'],
+                'scope'  => $datasourceParams['scopeCode']
+            ];
+        }
+
+        foreach ($filters as &$filter) {
+            if (isset($filter['context'])) {
+                $filter['context'] = array_merge($filter['context'], $contextParams);
+            } else {
+                $filter['context'] = $contextParams;
+            }
+        }
+
         return $filters;
     }
 
