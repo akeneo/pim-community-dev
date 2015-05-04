@@ -119,6 +119,7 @@ config:
         pim/product-edit-form/attributes/attribute-group-selector: pimenrich/js/product/form/attributes/attribute-group-selector
         pim/product-edit-form/attributes/add-attribute:            pimenrich/js/product/form/attributes/add-attribute
         pim/product-edit-form/attributes/variant-group:            pimenrich/js/product/form/attributes/variant-group
+        pim/product-edit-form/attributes/add-option:               pimenrich/js/product/form/attributes/add-option
         pim/product-edit-form/categories:                          pimenrich/js/product/form/categories
         pim/product-edit-form/associations:                        pimenrich/js/product/form/associations
         pim/product-edit-form/panel/panels:                        pimenrich/js/product/form/panel/panels
@@ -169,6 +170,9 @@ config:
         pim/template/product/tab/attribute/attribute-group-selector: pimenrich/templates/product/tab/attributes/attribute-group-selector.html
         pim/template/product/tab/attribute/add-attribute:            pimenrich/templates/product/tab/attributes/add-attribute.html
         pim/template/product/tab/attribute/variant-group:            pimenrich/templates/product/tab/attributes/variant-group.html
+        pim/template/product/tab/attribute/add-option:               pimenrich/templates/product/tab/attributes/add-option.html
+        pim/template/product/tab/attribute/add-option-error:         pimenrich/templates/product/tab/attributes/add-option-error.html
+        pim/template/product/tab/attribute/add-option-modal:         pimenrich/templates/product/tab/attributes/add-option-modal.html
         pim/template/product/tab/associations:                       pimenrich/templates/product/tab/associations.html
         pim/template/product/panel/container:                        pimenrich/templates/product/panel/container.html
         pim/template/product/panel/selector:                         pimenrich/templates/product/panel/selector.html
