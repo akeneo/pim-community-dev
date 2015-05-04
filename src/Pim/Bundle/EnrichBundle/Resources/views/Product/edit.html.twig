@@ -67,6 +67,7 @@
                                             FormBuilder.build('pim/product-edit-form'),
                                             ProductManager.get({{ productId }})
                                         ).done(function(form, product) {
+                                            document.title = document.title.replace('%product.sku%', _.escape(product.meta.label));
                                             form.setData(product);
                                             form.setElement('#product-edit-form').render();
                                         });
