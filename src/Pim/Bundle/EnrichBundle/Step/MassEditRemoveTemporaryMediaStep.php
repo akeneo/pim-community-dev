@@ -66,7 +66,7 @@ class MassEditRemoveTemporaryMediaStep extends AbstractStep
     }
 
     /**
-     * @param MassEditTemporaryFileCleaner $cleaner
+     * @param StepExecutionAwareInterface $cleaner
      *
      * @return MassEditRemoveTemporaryMediaStep
      */

@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -59,7 +58,7 @@ class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
         }
 
         $actions = $configuration['actions'];
-        $variantGroup = $actions[0]['value'];
+        $variantGroup = $actions['value'];
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
 
         if (null === $product->getVariantGroup()) {

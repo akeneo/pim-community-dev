@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * This step checks if there is no duplicate variant axis values between all products
- * in the use selection in the user selection
+ * in the user selection.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -94,7 +94,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     {
         $actions = $configuration['actions'];
 
-        $variantGroupCode = $actions[0]['value'];
+        $variantGroupCode = $actions['value'];
 
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroupCode);
 
@@ -104,19 +104,19 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
         $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
-        list($productAttributeAxis, $excludedIds, $ids) = $this->process(
+        list($productAttributeAxis, $excludedIds, $acceptedIds) = $this->filterDuplicateAxisCombinations(
             $paginator,
             $eligibleProductIds,
             $axisAttributeCodes
         );
 
-        $excludedIds = $this->AddSkippedMessage($productAttributeAxis, $excludedIds);
+        $excludedIds = $this->addSkippedMessage($productAttributeAxis, $excludedIds);
 
-        $ids = array_diff($ids, $excludedIds);
+        $acceptedIds = array_diff($acceptedIds, $excludedIds);
 
-        $configuration['filters'] = [['field' => 'id', 'operator' => 'IN', 'value' => $ids]];
+        $configuration['filters'] = [['field' => 'id', 'operator' => 'IN', 'value' => $acceptedIds]];
 
-        if (0 === count($ids)) {
+        if (0 === count($acceptedIds)) {
             $configuration = null;
         }
 
@@ -233,7 +233,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      *
      * @return array
      */
-    protected function getAxisAttributesCodes($variantGroup)
+    protected function getAxisAttributeCodes($variantGroup)
     {
         $axisAttributes = $variantGroup->getAxisAttributes();
 
@@ -248,23 +248,27 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     /**
      * Generate the key value for array
      *
+     * Generated keys will be in this format:
+     *
+     * [
+     *    'blue_xxl_toyota' => [12, 14 ,18],
+     *    'red_xs_ferrari'  => [13]
+     * ]
+     *
      * @param ProductInterface $product
      * @param array            $axisAttributeCodes
      *
      * @return string
      */
-    protected function generateKey(ProductInterface $product, array $axisAttributeCodes)
+    protected function generateAxisCombinationKey(ProductInterface $product, array $axisAttributeCodes)
     {
-        $value = '';
+        $attributeOptionCodes = [];
         foreach ($axisAttributeCodes as $attributeCode) {
             $attributeOption = $product->getValue($attributeCode)->getData();
-            $attributeOptionCode = $attributeOption->getCode();
-
-            $value .= $attributeOptionCode.' ';
+            $attributeOptionCodes[] = $attributeOption->getCode();
         }
-        $value = rtrim($value, ' ');
 
-        return $value;
+        return implode('_', $attributeOptionCodes);
     }
 
     /**
@@ -272,16 +276,16 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      *
      * @param ProductInterface $product
      * @param array            $productAttributeAxis
-     * @param string           $str
+     * @param string           $keyCombination
      *
      * @return array
      */
-    protected function fillArray(ProductInterface $product, array $productAttributeAxis, $str)
+    protected function fillDuplicateCombinationsArray(ProductInterface $product, array $productAttributeAxis, $keyCombination)
     {
-        if (array_key_exists($str, $productAttributeAxis)) {
-            $productAttributeAxis[$str][] = $product->getId();
+        if (array_key_exists($keyCombination, $productAttributeAxis)) {
+            $productAttributeAxis[$keyCombination][] = $product->getId();
         } else {
-            $productAttributeAxis[$str] = [$product->getId()];
+            $productAttributeAxis[$keyCombination] = [$product->getId()];
         }
 
         return $productAttributeAxis;
@@ -296,11 +300,11 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      *
      * @return array
      */
-    protected function getExcludedIds(array $productAttributeAxis, array $excludedIds)
+    protected function getExcludedProductIds(array $productAttributeAxis, array $excludedIds)
     {
-        foreach ($productAttributeAxis as $at) {
-            if (1 < count($at)) {
-                $excludedIds = array_merge($excludedIds, $at);
+        foreach ($productAttributeAxis as $attribute) {
+            if (1 < count($attribute)) {
+                $excludedIds = array_merge($excludedIds, $attribute);
             }
         }
 
@@ -315,9 +319,9 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      *
      * @return array
      */
-    protected function AddSkippedMessage(array $productAttributeAxis, array $excludedIds)
+    protected function addSkippedMessage(array $productAttributeAxis, array $excludedIds)
     {
-        $excludedIds = $this->getExcludedIds($productAttributeAxis, $excludedIds);
+        $excludedIds = $this->getExcludedProductIds($productAttributeAxis, $excludedIds);
         if (!empty($excludedIds)) {
             $cursor = $this->getProductsCursor([['field' => 'id', 'operator' => 'IN', 'value' => $excludedIds]]);
             $paginator = $this->paginatorFactory->createPaginator($cursor);
@@ -348,17 +352,17 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      *
      * @return array
      */
-    protected function process(PaginatorInterface $paginator, array $eligibleProductIds, array $axisAttributeCodes)
+    protected function filterDuplicateAxisCombinations(PaginatorInterface $paginator, array $eligibleProductIds, array $axisAttributeCodes)
     {
         $productAttributeAxis = [];
         $excludedIds = [];
-        $ids = [];
+        $acceptedIds = [];
         foreach ($paginator as $productsPage) {
             foreach ($productsPage as $product) {
                 if (in_array($product->getId(), $eligibleProductIds)) {
-                    $str = $this->generateKey($product, $axisAttributeCodes);
-                    $ids[] = $product->getId();
-                    $productAttributeAxis = $this->fillArray($product, $productAttributeAxis, $str);
+                    $keyCombination = $this->generateAxisCombinationKey($product, $axisAttributeCodes);
+                    $acceptedIds[] = $product->getId();
+                    $productAttributeAxis = $this->fillDuplicateCombinationsArray($product, $productAttributeAxis, $keyCombination);
                 } else {
                     $this->stepExecution->incrementSummaryInfo('skipped_products');
                     $this->stepExecution
@@ -376,6 +380,6 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
             $this->detachProducts($productsPage);
         }
 
-        return [$productAttributeAxis, $excludedIds, $ids];
+        return [$productAttributeAxis, $excludedIds, $acceptedIds];
     }
 }
