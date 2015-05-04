@@ -78,7 +78,7 @@ class CompletenessRestController
     /**
      * Get completeness for a product
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return JSONResponse
      */

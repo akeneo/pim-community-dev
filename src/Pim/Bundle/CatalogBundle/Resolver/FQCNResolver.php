@@ -16,6 +16,7 @@ class FQCNResolver
 
     /**
      * Get FQCN for the givent entity type
+     *
      * @param string $entityType
      *
      * @throws LogicException
@@ -33,6 +34,7 @@ class FQCNResolver
 
     /**
      * Set the FCQN for the given entity type
+     *
      * @param string $entityType
      * @param string $className
      */

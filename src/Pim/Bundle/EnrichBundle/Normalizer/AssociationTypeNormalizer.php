@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AssociationTypeNormalizer implements NormalizerInterface
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = ['internal_api'];
 

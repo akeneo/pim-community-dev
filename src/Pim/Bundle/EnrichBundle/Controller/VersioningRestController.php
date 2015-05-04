@@ -32,6 +32,7 @@ class VersioningRestController
 
     /**
      * Get the history of the given entity type with the given entityId
+     *
      * @param string $entityType
      * @param string $entityId
      *

@@ -68,10 +68,11 @@ class ProductRestController
     /**
      * Edit product
      *
-     * @param integer $id
+     * @param int $id
      *
      * @Template("PimEnrichBundle:Product:edit.html.twig")
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return array
      */
     public function editAction($id)
@@ -185,9 +186,9 @@ class ProductRestController
      *
      * @param string $id the product id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

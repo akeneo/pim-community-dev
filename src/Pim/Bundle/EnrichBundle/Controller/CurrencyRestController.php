@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,13 +14,20 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class CurrencyRestController
 {
+    /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
 
+    /**
+     * @param CurrencyRepositoryInterface $currencyRepository
+     */
     public function __construct(CurrencyRepositoryInterface $currencyRepository)
     {
         $this->currencyRepository = $currencyRepository;
     }
 
+    /**
+     * @return JsonResponse
+     */
     public function indexAction()
     {
         $currencies = $this->currencyRepository->getActivatedCurrencies();

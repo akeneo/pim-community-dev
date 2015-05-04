@@ -51,7 +51,8 @@ class FamilyRestController
 
     /**
      * Get a single family
-     * @param integer $id
+     *
+     * @param int $id
      *
      * @return JsonResponse
      */

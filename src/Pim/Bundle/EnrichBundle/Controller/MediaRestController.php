@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Gaufrette\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 

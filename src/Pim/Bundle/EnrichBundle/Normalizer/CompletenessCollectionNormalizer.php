@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -52,6 +51,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
 
     /**
      * Normalize a completeness element
+     *
      * @param array $completeness
      *
      * @return array

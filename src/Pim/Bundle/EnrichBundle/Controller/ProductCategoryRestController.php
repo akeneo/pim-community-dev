@@ -41,6 +41,7 @@ class ProductCategoryRestController
      * @param string $id
      *
      * @AclAncestor("pim_enrich_product_categories_view")
+     *
      * @return JsonResponse
      */
     public function listAction($id)
@@ -76,9 +77,9 @@ class ProductCategoryRestController
      *
      * @param string $id the product id
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

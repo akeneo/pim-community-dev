@@ -70,7 +70,8 @@ class AttributeGroupRestController
     }
 
     /**
-     * get a single attribute group
+     * Get a single attribute group
+     *
      * @param int $id
      *
      * @return JsonResponse

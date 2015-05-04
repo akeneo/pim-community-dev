@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -65,7 +64,8 @@ class AttributeRestController
 
     /**
      * Get a single attribute
-     * @param integer $id
+     *
+     * @param int $id
      *
      * @throws NotFoundHttpException If the attribute is not found or the user doesn't have the right to see it
      *
