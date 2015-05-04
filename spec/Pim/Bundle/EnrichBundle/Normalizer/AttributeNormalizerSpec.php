@@ -17,8 +17,9 @@ class AttributeNormalizerSpec extends ObjectBehavior
     {
         $normalizer->normalize($price, 'json', [])->willReturn(['code' => 'price']);
         $price->getId()->willReturn(12);
+        $price->isWysiwygEnabled()->willReturn(false);
 
-        $this->normalize($price, 'internal_api', [])->shouldReturn(['code' => 'price', 'id' => 12]);
+        $this->normalize($price, 'internal_api', [])->shouldReturn(['code' => 'price', 'id' => 12, 'wysiwyg_enabled' => false]);
     }
 
     public function it_supports_attributes_and_internal_api(AttributeInterface $price)

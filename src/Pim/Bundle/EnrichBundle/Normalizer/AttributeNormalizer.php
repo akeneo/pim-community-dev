@@ -33,8 +33,10 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = array())
     {
-        $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context);
-        $normalizedAttribute['id'] = $attribute->getId();
+        $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
+            'id'              => $attribute->getId(),
+            'wysiwyg_enabled' => $attribute->isWysiwygEnabled()
+        ];
 
         return $normalizedAttribute;
     }
