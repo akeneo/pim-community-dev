@@ -3,14 +3,19 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AddToVariantGroupsTypeSpec extends ObjectBehavior
+class AddToVariantGroupTypeSpec extends ObjectBehavior
 {
-    function let()
-    {
+    function let(
+        ProductMassActionRepositoryInterface $prodMassActionRepo,
+        GroupRepositoryInterface $groupRepository
+    ) {
         $this->beConstructedWith(
+            $prodMassActionRepo,
+            $groupRepository,
             'Pim\CatalogBundle\Model\Group',
             'Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroups'
         );

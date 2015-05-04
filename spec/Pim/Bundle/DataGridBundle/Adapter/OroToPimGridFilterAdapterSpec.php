@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\DataGridBundle\Adapter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Symfony\Component\HttpFoundation\Request;
 
 class OroToPimGridFilterAdapterSpec extends ObjectBehavior
 {

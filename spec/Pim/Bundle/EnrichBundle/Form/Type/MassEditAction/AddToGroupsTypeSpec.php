@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 

@@ -103,8 +103,9 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
      * @param ProductInterface $product
      * @param array            $actions
      *
-     * @return ProductInterface $product
      * @throws \LogicException
+     *
+     * @return ProductInterface $product
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {

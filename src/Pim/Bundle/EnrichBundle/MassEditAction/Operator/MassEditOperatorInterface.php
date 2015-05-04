@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
-
 /**
  * A batch operation operator
  * Applies batch operations to products passed in the form of QueryBuilder

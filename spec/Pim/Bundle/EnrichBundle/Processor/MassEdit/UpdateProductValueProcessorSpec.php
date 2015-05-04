@@ -46,7 +46,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );
@@ -79,7 +79,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
             json_encode(
                 [
                     'filters' => [],
-                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => [],]]
+                    'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'], 'options' => []]]
                 ]
             )
         );

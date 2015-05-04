@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 
 /**

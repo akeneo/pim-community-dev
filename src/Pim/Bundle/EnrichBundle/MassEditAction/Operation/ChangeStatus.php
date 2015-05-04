@@ -11,11 +11,11 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  */
 class ChangeStatus extends AbstractMassEditOperation
 {
-    /** @var boolean Whether or not to enable products */
+    /** @var bool Whether or not to enable products */
     protected $toEnable = false;
 
     /**
-     * @param boolean $toEnable
+     * @param bool $toEnable
      *
      * @return ChangeStatus
      */
@@ -27,7 +27,7 @@ class ChangeStatus extends AbstractMassEditOperation
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isToEnable()
     {

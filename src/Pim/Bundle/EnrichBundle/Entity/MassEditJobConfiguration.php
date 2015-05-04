@@ -13,7 +13,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
  */
 class MassEditJobConfiguration
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var string */

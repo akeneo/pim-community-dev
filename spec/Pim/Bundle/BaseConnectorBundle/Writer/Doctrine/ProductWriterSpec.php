@@ -7,7 +7,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 class ProductWriterSpec extends ObjectBehavior
@@ -119,7 +118,6 @@ class ProductWriterSpec extends ObjectBehavior
 
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
-
 
         $this->setStepExecution($stepExecution);
         $this->write($items);
