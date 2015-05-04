@@ -161,6 +161,7 @@ pim_enrich:
             label:         Set attribute requirements
             description:   The following attribute requirements will be applied to the selected families
             success_flash: Attribute requirements were applied to the selected families
+            launched_flash: The job updating families attribute requirements is currently running
 
     # Sequential edit operations
     sequential_edit_action:

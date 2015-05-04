@@ -94,4 +94,62 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
             'description_mobile' => $r4,
         ]);
     }
+
+    function it_returns_well_formatted_actions_for_batch_job(
+        AttributeInterface $attrColor,
+        AttributeInterface $attrSize,
+        ChannelInterface $channelMobile,
+        ChannelInterface $channelEcommerce,
+        AttributeRequirementInterface $attrReqColorMobile,
+        AttributeRequirementInterface $attrReqColorEcommerce,
+        AttributeRequirementInterface $attrReqSizeEcommerce
+    ) {
+        $attrColor->getCode()->willReturn('color');
+        $attrSize->getCode()->willReturn('size');
+
+        $channelMobile->getCode()->willReturn('mobile');
+        $channelEcommerce->getCode()->willReturn('ecommerce');
+
+        $attrReqColorMobile->getAttribute()->willReturn($attrColor);
+        $attrReqColorEcommerce->getAttribute()->willReturn($attrColor);
+        $attrReqSizeEcommerce->getAttribute()->willReturn($attrSize);
+
+        $attrReqColorMobile->getChannel()->willReturn($channelMobile);
+        $attrReqColorEcommerce->getChannel()->willReturn($channelEcommerce);
+        $attrReqSizeEcommerce->getChannel()->willReturn($channelEcommerce);
+
+        $attrReqColorMobile->isRequired()->willReturn(false);
+        $attrReqColorEcommerce->isRequired()->willReturn(true);
+        $attrReqSizeEcommerce->isRequired()->willReturn(true);
+
+        $attrReqColorMobile->getAttributeCode()->willReturn('color');
+        $attrReqColorEcommerce->getAttributeCode()->willReturn('color');
+        $attrReqSizeEcommerce->getAttributeCode()->willReturn('size');
+
+        $attrReqColorMobile->getChannelCode()->willReturn('mobile');
+        $attrReqColorEcommerce->getChannelCode()->willReturn('ecommerce');
+        $attrReqSizeEcommerce->getChannelCode()->willReturn('ecommerce');
+
+        $this->addAttributeRequirement($attrReqColorMobile);
+        $this->addAttributeRequirement($attrReqColorEcommerce);
+        $this->addAttributeRequirement($attrReqSizeEcommerce);
+
+        $this->getActions()->shouldReturn([
+            [
+                'attribute_code' => 'color',
+                'channel_code' => 'mobile',
+                'is_required' => false
+            ],
+            [
+                'attribute_code' => 'color',
+                'channel_code' => 'ecommerce',
+                'is_required' => true
+            ],
+            [
+                'attribute_code' => 'size',
+                'channel_code' => 'ecommerce',
+                'is_required' => true
+            ]
+        ]);
+    }
 }

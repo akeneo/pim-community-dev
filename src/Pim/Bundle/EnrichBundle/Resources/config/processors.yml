@@ -2,6 +2,7 @@ parameters:
     pim_enrich.mass_edit.update_product_value.processor.class:   Pim\Bundle\EnrichBundle\Processor\MassEdit\UpdateProductValueProcessor
     pim_enrich.mass_edit.add_product_value.processor.class:      Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor
     pim_enrich.mass_edit.edit_common_attributes.processor.class: Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor
+    pim_enrich.mass_edit.set_attribute_requirements.processor.class: Pim\Bundle\EnrichBundle\Processor\MassEdit\SetAttributeRequirements
 
 services:
     pim_enrich.mass_edit.update_product_value.processor:
@@ -26,3 +27,11 @@ services:
             - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
             - '@pim_enrich.repository.mass_edit'
+
+    pim_enrich.mass_edit.set_attribute_requirements.processor:
+        class: %pim_enrich.mass_edit.set_attribute_requirements.processor.class%
+        arguments:
+            - '@pim_enrich.repository.mass_edit'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.factory.attribute_requirement'

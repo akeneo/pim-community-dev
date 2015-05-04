@@ -194,6 +194,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
+        $gridName     = $this->request->get('gridName');
         $operation    = $this->operationRegistry->get($operationAlias);
         $itemsName    = $operation->getItemsName();
         $productCount = $this->request->get('objectsCount');
@@ -226,7 +227,13 @@ class MassEditActionController extends AbstractDoctrineController
                 sprintf('pim_enrich.mass_edit_action.%s.launched_flash', $operationAlias)
             );
 
-            return $this->redirectToRoute('pim_enrich_product_index');
+            $route = 'pim_enrich_product_index';
+
+            if ('family-grid' === $gridName) {
+                $route = 'pim_enrich_family_index';
+            }
+
+            return $this->redirectToRoute($route);
         }
 
         return $this->render(

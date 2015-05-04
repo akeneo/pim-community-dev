@@ -5,7 +5,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
@@ -31,6 +30,12 @@ class SetAttributeRequirements extends AbstractMassEditOperation
 
     /** @var ArrayCollection */
     protected $attRequirements;
+
+    /** @var array */
+    protected $channels;
+
+    /** @var array */
+    protected $attributes;
 
     /**
      * @param ChannelRepositoryInterface   $channelRepository
@@ -88,6 +93,22 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     }
 
     /**
+     * @return array
+     */
+    public function getChannels()
+    {
+        return $this->channels;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFormType()
@@ -116,18 +137,19 @@ class SetAttributeRequirements extends AbstractMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(FamilyInterface $family)
+    public function getActions()
     {
+        $attrRequirements = [];
+
         foreach ($this->attRequirements as $attributeRequirement) {
-            $family->addAttribute($attributeRequirement->getAttribute());
-            $family->addAttributeRequirement(
-                $this->factory->createAttributeRequirement(
-                    $attributeRequirement->getAttribute(),
-                    $attributeRequirement->getChannel(),
-                    $attributeRequirement->isRequired()
-                )
-            );
+            $attrRequirements[] = [
+                'attribute_code' => $attributeRequirement->getAttribute()->getCode(),
+                'channel_code' => $attributeRequirement->getChannel()->getCode(),
+                'is_required' => $attributeRequirement->isRequired()
+            ];
         }
+
+        return $attrRequirements;
     }
 
     /**
@@ -145,7 +167,7 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getOperationAlias()
     {
-        return 'set-attribute-requirements';
+        return 'set_attribute_requirements';
     }
 
     /**
@@ -161,6 +183,6 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        // TODO: Implement getBatchJobCode() method.
+        return 'set_attribute_requirements';
     }
 }

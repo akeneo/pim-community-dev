@@ -168,3 +168,8 @@ jobs:
         alias:     edit_common_attributes
         label:     Mass edit common product attributes
         type:      mass_edit
+    set_attribute_requirements:
+        connector: Akeneo Mass Edit Connector
+        alias:     set_attribute_requirements
+        label:     Set family attribute requirements
+        type:      mass_edit
