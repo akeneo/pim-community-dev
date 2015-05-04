@@ -105,17 +105,12 @@ define(
                 this.getParent().addAttributes(attributeCodes);
             },
             updateOptionalAttributes: function (product) {
-                var deferred = $.Deferred();
-
                 this.product = product;
-                AttributeManager.getOptionalAttributes(product)
-                    .done(_.bind(function (attributes) {
-                        this.state.set('attributes', attributes);
+                return AttributeManager.getOptionalAttributes(product).then(_.bind(function (attributes) {
+                    this.state.set('attributes', attributes);
 
-                        deferred.resolve(this.state.get('attributes'));
-                    }, this));
-
-                return deferred.promise();
+                    return this.state.get('attributes');
+                }, this));
             },
             loadAttributeGroups: function () {
                 return EntityManager.getRepository('attributeGroup').findAll().done(_.bind(function (attributeGroups) {

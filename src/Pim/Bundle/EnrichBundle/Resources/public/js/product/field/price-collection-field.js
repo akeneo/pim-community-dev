@@ -44,18 +44,14 @@ define([
             this.setCurrentValue(data);
         },
         getTemplateContext: function () {
-            var deferred = $.Deferred();
-
-            $.when(
+            return $.when(
                 Field.prototype.getTemplateContext.apply(this, arguments),
                 EntityManager.getRepository('currency').findAll()
-            ).done(function (templateContext, currencies) {
+            ).then(function (templateContext, currencies) {
                 templateContext.currencies = currencies;
 
-                deferred.resolve(templateContext);
+                return templateContext;
             });
-
-            return deferred.promise();
         }
     });
 });

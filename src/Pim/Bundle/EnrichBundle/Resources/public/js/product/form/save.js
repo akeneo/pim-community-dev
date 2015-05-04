@@ -6,7 +6,7 @@ define(
         'underscore',
         'oro/mediator',
         'pim/form',
-        'oro/navigation',
+        'oro/messenger',
         'oro/loading-mask',
         'pim/product-manager',
         'pim/field-manager'
@@ -16,7 +16,7 @@ define(
         _,
         mediator,
         BaseForm,
-        Navigation,
+        messenger,
         LoadingMask,
         ProductManager,
         FieldManager
@@ -46,12 +46,13 @@ define(
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
-                var navigation = Navigation.getInstance();
                 mediator.trigger('product:action:pre_save');
 
                 return ProductManager.save(productId, product).done(_.bind(function (data) {
-                    navigation.addFlashMessage('success', _.__('pim_enrich.entity.product.info.update_successful'));
-                    navigation.afterRequest();
+                    messenger.notificationFlashMessage(
+                        'success',
+                        _.__('pim_enrich.entity.product.info.update_successful')
+                    );
 
                     this.setData(data);
                     if (!options || !options.silent) {
@@ -69,8 +70,7 @@ define(
                         default:
                     }
 
-                    navigation.addFlashMessage('error', _.__('pim_enrich.entity.product.info.update_failed'));
-                    navigation.afterRequest();
+                    messenger.notificationFlashMessage('error', _.__('pim_enrich.entity.product.info.update_failed'));
                 }).always(function () {
                     loadingMask.hide().$el.remove();
                 });

@@ -90,9 +90,7 @@ define(
                 }
             },
             prepareVersions: function (versions) {
-                var deferred = $.Deferred();
-
-                EntityManager.getRepository('attribute').findAll().done(_.bind(function (attributes) {
+                return EntityManager.getRepository('attribute').findAll().done(_.bind(function (attributes) {
                     _.each(versions, _.bind(function (version) {
                         _.each(version.changeset, _.bind(function (data, index) {
                             var code = index.split('-').shift();
@@ -100,10 +98,9 @@ define(
                             data.label = attribute ? this.getAttributeLabel(attribute, index) : index;
                         }, this));
                     }, this));
-                    deferred.resolve(versions);
-                }, this));
 
-                return deferred.promise();
+                    return versions;
+                }, this));
             },
             getAttributeLabel: function (attribute, key) {
                 var uiLocale = UserContext.get('catalogLocale');

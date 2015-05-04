@@ -1,16 +1,14 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'routing', 'pim/entity-manager', 'pim/attribute-manager'],
-    function ($, _, Routing, EntityManager, AttributeManager) {
+    ['jquery', 'underscore', 'pim/entity-manager', 'pim/attribute-manager'],
+    function ($, _, EntityManager, AttributeManager) {
     return {
         getAttributeGroupsForProduct: function (product) {
-            var deferred = $.Deferred();
-
-            $.when(
+            return $.when(
                 EntityManager.getRepository('attributeGroup').findAll(),
                 AttributeManager.getAttributesForProduct(product)
-            ).done(_.bind(function (attributeGroups, productAttributes) {
+            ).then(function (attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};
                 _.each(attributeGroups, function (attributeGroup) {
                     if (_.intersection(attributeGroup.attributes, productAttributes).length > 0) {
@@ -18,10 +16,8 @@ define(
                     }
                 });
 
-                deferred.resolve(activeAttributeGroups);
-            }, this));
-
-            return deferred.promise();
+                return activeAttributeGroups;
+            });
         },
         getAttributeGroupValues: function (values, attributeGroup) {
             var matchingValues = {};

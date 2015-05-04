@@ -52,21 +52,19 @@ define(
                 return this;
             },
             loadTrees: function () {
-                var deferred = $.Deferred();
-
-                $.getJSON(
+                return $.getJSON(
                     Routing.generate('pim_enrich_product_category_rest_list', {id: this.getData().meta.id })
-                ).done(_.bind(function (data) {
+                ).then(_.bind(function (data) {
                     _.each(data.categories, _.bind(function (category) {
                         this.cache[category.id] = category.code;
                     }, this));
+
                     if (_.isEmpty(this.state.get('selectedCategories'))) {
                         this.state.set('selectedCategories', _.pluck(data.categories, 'id'));
                     }
-                    deferred.resolve(data.trees);
-                }, this));
 
-                return deferred.promise();
+                    return data.trees;
+                }, this));
             },
             changeTree: function (event) {
                 this.state.set('currentTree', event.currentTarget.dataset.tree);

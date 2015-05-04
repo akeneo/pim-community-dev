@@ -6,18 +6,9 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
         productPromises: {},
         get: function (id) {
             if (!(id in this.productPromises)) {
-                var deferred = $.Deferred();
-
-                $.ajax(
-                    Routing.generate('pim_enrich_product_rest_get', {id: id}),
-                    {
-                        method: 'GET'
-                    }
-                ).done(function (product) {
-                    deferred.resolve(product);
-                });
-
-                this.productPromises[id] = deferred.promise();
+                this.productPromises[id] = $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
+                    .then(_.identity)
+                    .promise();
             }
 
             return this.productPromises[id];
@@ -43,19 +34,15 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
             }, this)).promise();
         },
         getValues: function (product) {
-            var deferred = $.Deferred();
-
-            AttributeManager.getAttributesForProduct(product).done(function (attributes) {
+            return AttributeManager.getAttributesForProduct(product).then(function (attributes) {
                 _.each(attributes, _.bind(function (attributeCode) {
                     if (!product.values[attributeCode]) {
                         product.values[attributeCode] = [];
                     }
                 }, this));
 
-                deferred.resolve(product.values);
+                return product.values;
             });
-
-            return deferred.promise();
         }
     };
 });

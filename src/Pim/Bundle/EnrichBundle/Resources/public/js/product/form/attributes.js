@@ -110,9 +110,7 @@ define(
                 }
             },
             renderField: function (product, attributeCode, values, families) {
-                var deferred = $.Deferred();
-
-                FieldManager.getField(attributeCode).done(_.bind(function (field) {
+                return FieldManager.getField(attributeCode).then(function (field) {
                     field.setContext({
                         'locale': UserContext.get('catalogLocale'),
                         'scope': UserContext.get('catalogScope'),
@@ -121,10 +119,8 @@ define(
                     });
                     field.setValues(values);
 
-                    deferred.resolve(field);
-                }, this));
-
-                return deferred.promise();
+                    return field;
+                });
             },
             getConfig: function () {
                 var promises = [];

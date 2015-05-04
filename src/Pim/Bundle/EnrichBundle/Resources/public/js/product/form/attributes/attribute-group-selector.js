@@ -41,20 +41,16 @@ define(
                 return this;
             },
             updateAttributeGroups: function (product) {
-                var deferred = $.Deferred();
-
-                AttributeGroupManager.getAttributeGroupsForProduct(product)
-                    .done(_.bind(function (attributeGroups) {
+                return AttributeGroupManager.getAttributeGroupsForProduct(product)
+                    .then(_.bind(function (attributeGroups) {
                         this.state.set('attributeGroups', attributeGroups);
 
                         if (undefined === this.state.get('current')) {
-                            this.state.set('current', _.keys(attributeGroups)[0]);
+                            this.state.set('current', _.first(_.keys(attributeGroups)));
                         }
 
-                        deferred.resolve(this.state.get('attributeGroups'));
+                        return this.state.get('attributeGroups');
                     }, this));
-
-                return deferred.promise();
             },
             change: function (event) {
                 if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {

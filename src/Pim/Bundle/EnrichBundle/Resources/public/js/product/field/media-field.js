@@ -19,15 +19,11 @@ define([
                 return this.fieldTemplate(context);
             },
             getTemplateContext: function () {
-                var deferred = $.Deferred();
-
-                Field.prototype.getTemplateContext.apply(this, arguments)
-                    .done(_.bind(function (templateContext) {
+                return Field.prototype.getTemplateContext.apply(this, arguments)
+                    .then(_.bind(function (templateContext) {
                         this.setMediaUrl(templateContext);
-                        deferred.resolve(templateContext);
+                        return templateContext;
                     }, this));
-
-                return deferred.promise();
             },
             setMediaUrl: function (templateContext) {
                 if (templateContext.value.value && templateContext.value.value.filePath) {
