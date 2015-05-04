@@ -79,6 +79,31 @@
 - Remove arguments ChannelRepositoryInterface, LocaleRepositoryInterface, add argument AttributeValuesResolver in Pim/Bundle/CatalogBundle/Builder/ProductBuilder constructor
 - Remove arguments DenormalizerInterface, ValidatorInterface, ObjectDetacherInterface, $class from the constructor of Pim/Bundle/BaseConnectorBundle/Processor/Denormalization/AbstractProcessor
 - Add methods `getReferenceDataName` and `setReferenceDataName` to Pim\Bundle\CatalogBundle\Model\AttributeInterface.
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\MassEditActionController`, removed `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`, `Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher`, `$massEditLimit`, added `Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface`, `Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher`, `Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository`, `Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistryInterface`, `Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver`
+- Remove `Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction\AddSelectedOperationSubscriber`
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType`, added `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface` as first argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToVariantGroupType`, added `Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface` as first argument and `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface` as second argument
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType`, added `Pim\Bundle\CatalogBundle\Manager\CategoryManager` as second argument
+- Rename `Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType\MassEditOperatorType` -> `Pim\Bundle\EnrichBundle\Form\Type\MassEditChooseActionType`
+- Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditAction`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, removed `Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface` and `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface`
+- Change `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups`, updated method `setGroups` to accept `Doctrine\Common\Collections\ArrayCollection`, removed method `getWarningMessages`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
+- Remove constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToVariantGroup`, removed method `setObjectsToMassEdit`, `perform`, `getWarningMessages`, `getValidVariantGroups`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily` now imlements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
+- Change `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily`, removed method `affectsCompleteness`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
+- Remove constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`
+- Change `Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify`, removed method `getTrees`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`  
+- Change constructor of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`, removed `Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface`, `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager`, `Akeneo\Component\StorageUtils\Saver\BulkSaverInterface`, added `Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface`, `Pim\Bundle\CatalogBundle\Manager\MediaManager`, `Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager` and `$uploadDir`
+- Change `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes`, removed method `affectsCompleteness`, `perform`, `getCommonAttributes`, `getWarningMessages` 
+- Change interface `Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface`, removed method `getFormType`, `getFormOptions`, `initialize`, `perform`
+- Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
+- `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\FamilyMassEditOperation`
+- Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator`
 
 # 1.3.x
 
