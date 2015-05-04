@@ -12,6 +12,7 @@ Feature: Apply restrictions when mass editing products with variant groups
       | sneakers     | sneakers |                   | 42   | red   |
       | sandals      | sandals  |                   | 42   | blue  |
       | gold_sandals | sandals  |                   | 42   | white |
+      | gold_boots   | sandals  |                   | 42   | white |
 
   @javascript
   Scenario: Add products to a variant group
@@ -21,7 +22,7 @@ Feature: Apply restrictions when mass editing products with variant groups
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "add_to_variant_group" mass-edit job to finish
     Then "caterpillar_boots" group should contain "boots, moon_boots, sneakers and gold_sandals"
     When I am on the dashboard page
     Then I should have 1 new notification
@@ -30,7 +31,7 @@ Feature: Apply restrictions when mass editing products with variant groups
       | success | Mass edit finished |
 
   @javascript
-  Scenario: Add products to a variant group with invalid values
+  Scenario: Add products to a variant group with invalid axis
     Given the following families:
       | code      |
       | computers |
@@ -46,37 +47,31 @@ Feature: Apply restrictions when mass editing products with variant groups
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
     And I wait for the "add_to_variant_group" mass-edit job to finish
-    When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                          |
       | warning | Mass edit finished with warnings |
     Then I go on the last executed job resume of "add_to_variant_group"
     And I should see "skipped products 2"
-    And I should see "first warnings displayed 4/4"
+    And I should see "first warnings displayed 2/2"
+    And I should see "EXCLUDED PRODUCT"
+    And I should see "You cannot group the following product because it is already in a variant group or doesn't have the group axis."
 
   @javascript
-  Scenario: Add a products to a variant group with duplicated axis
-    Given the following families:
-      | code      |
-      | computers |
-      | watches   |
-    And the following products:
-      | sku        | family    |
-      | gold_watch | watches   |
-      | laptop     | computers |
+  Scenario: Add products to a variant group with duplicated variant axis values in selection (and not yet in variant group)
     And I am logged in as "Julia"
     And I am on the products page
-    When I mass-edit products moon_boots, boots
+    When I mass-edit products gold_sandals, gold_boots
     And I choose the "Add to a variant group" operation
     When I select the "Caterpillar boots" variant group
     And I move on to the next step
     And I wait for the "add_to_variant_group" mass-edit job to finish
-    When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
       | type    | message                          |
       | warning | Mass edit finished with warnings |
     Then I go on the last executed job resume of "add_to_variant_group"
-    And I should see "skipped products 1"
+    And I should see "skipped products 2"
+    And I should see "first warnings displayed 2/2"
+    And I should see "DUPLICATED AXIS"
     And I should see "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
