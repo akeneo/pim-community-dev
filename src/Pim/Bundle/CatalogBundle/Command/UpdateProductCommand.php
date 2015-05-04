@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Updates a product
@@ -58,6 +59,11 @@ class UpdateProductCommand extends ContainerAwareCommand
                 'json_updates',
                 InputArgument::REQUIRED,
                 sprintf("The product updates in json, for instance, '%s'", json_encode($updatesExample))
+            )
+            ->addArgument(
+                'username',
+                InputArgument::OPTIONAL,
+                sprintf('The author of updated product')
             );
     }
 
@@ -74,6 +80,12 @@ class UpdateProductCommand extends ContainerAwareCommand
             return;
         }
 
+        if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
+            if (!$this->createToken($output, $username) || !$this->isGranted($output, $username, $identifier)) {
+                return;
+            }
+        }
+
         $updates = json_decode($input->getArgument('json_updates'), true);
         $this->update($product, $updates);
 
@@ -88,6 +100,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         }
 
         $this->save($product);
+        $this->removeToken();
         $output->writeln(sprintf('<info>product "%s" has been updated<info>', $identifier));
     }
 
@@ -235,6 +248,22 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface;
+     */
+    protected function getSecurityContext()
+    {
+        return $this->getContainer()->get('security.context');
+    }
+
+    /**
+     * @return \Oro\Bundle\SecurityBundle\SecurityFacade
+     */
+    public function getSecurityFacade()
+    {
+        return $this->getContainer()->get('oro_security.security_facade');
+    }
+
+    /**
      * @param ProductInterface $product
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
@@ -254,5 +283,64 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $saver = $this->getContainer()->get('pim_catalog.saver.product');
         $saver->save($product);
+    }
+
+    /**
+     * Create a security token from the given username
+     *
+     * @param OutputInterface  $output
+     * @param string           $username
+     *
+     * @param boolean
+     */
+    protected function createToken(OutputInterface $output, $username)
+    {
+        $userManager = $this->getContainer()->get('oro_user.manager');
+        $user = $userManager->findUserByUsername($username);
+
+        if (null === $user) {
+            $output->writeln(sprintf('<error>Username "%s" is unknown<error>', $username));
+
+            return false;
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->getSecurityContext()->setToken($token);
+
+        return true;
+    }
+
+    /**
+     * Returns true if user is allowed to edit product
+     *
+     * @param OutputInterface  $output
+     * @param string           $username
+     * @param string           $identifier
+     *
+     * @return boolean
+     */
+    protected function isGranted(OutputInterface $output, $username, $identifier)
+    {
+        $isGranted = $this->getSecurityFacade()->isGranted('pim_enrich_product_edit_attributes');
+
+        if (!$isGranted) {
+            $this->removeToken();
+
+            $output->writeln(sprintf(
+                '<error>User "%s" is not allowed to edit product "%s"<error>',
+                $username,
+                $identifier
+            ));
+        }
+
+        return $isGranted;
+    }
+
+    /**
+     * Remove user token
+     */
+    protected function removeToken()
+    {
+        $this->getSecurityContext()->setToken(null);
     }
 }
