@@ -104,6 +104,7 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation`
 - `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\FamilyMassEditOperation`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator`
+- Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\FamilyMassEditOperation`
 
 # 1.3.x
 
