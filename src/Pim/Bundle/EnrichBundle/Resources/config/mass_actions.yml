@@ -1,8 +1,5 @@
 parameters:
-    pim_enrich.mass_edit_action.operator.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry
     pim_enrich.mass_edit_action.operation.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\OperationRegistry
-    pim_enrich.mass_edit_action.operator.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator
-    pim_enrich.mass_edit_action.operator.family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator
     pim_enrich.mass_edit_action.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
     pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
     pim_enrich.mass_edit_action.classify.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
@@ -13,10 +10,6 @@ parameters:
     pim_enrich.mass_edit_action.form_resolver.class: Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver
 
 services:
-    # Mass edit action operator registry
-    pim_enrich.mass_edit_action.operator.registry:
-        class: %pim_enrich.mass_edit_action.operator.registry.class%
-
     # Mass edit action operation registry
     pim_enrich.mass_edit_action.operation.registry:
         class: %pim_enrich.mass_edit_action.operation.registry.class%
@@ -27,23 +20,6 @@ services:
             - '@pim_enrich.mass_edit_action.operation.registry'
             - '@form.factory'
             - '@pim_enrich.form.type.choose_action'
-
-    # Mass edit action operators
-    pim_enrich.mass_edit_action.operator:
-        public: false
-        abstract: true
-        class: %pim_enrich.mass_edit_action.operator.class%
-        arguments:
-            - '@oro_security.security_facade'
-
-    pim_enrich.mass_edit_action.operator.family:
-        public: false
-        parent: pim_enrich.mass_edit_action.operator
-        class: %pim_enrich.mass_edit_action.operator.family.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-        tags:
-            - { name: pim_enrich.mass_edit_action_operator, datagrid: family-grid }
 
     # Product Grid Mass edit actions
     pim_enrich.mass_edit_action.change_status:
