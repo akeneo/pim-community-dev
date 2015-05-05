@@ -105,6 +105,7 @@
 - `Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements` now implements `Pim\Bundle\EnrichBundle\MassEditAction\Operation\AbstractMassEditOperation` instead of `Pim\Bundle\EnrichBundle\MassEditAction\Operation\FamilyMassEditOperation`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operation\FamilyMassEditOperation`
+- Completely refactor the `\Pim\Bundle\DataGridBundle\Controller\ProductExportController`. It implement nothing instead of `\Pim\Bundle\DataGridBundle\Controller\ExportController`. Now it launched job in backend end.
 
 # 1.3.x
 

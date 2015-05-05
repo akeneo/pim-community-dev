@@ -23,6 +23,9 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @staticvar string */
     const TYPE_MASS_EDIT = 'mass_edit';
 
+    /** @staticvar string */
+    const QUICK_EXPORT = 'quick_export';
+
     /** @var NotificationManager */
     protected $manager;
 
@@ -95,6 +98,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
                 break;
 
             case self::TYPE_MASS_EDIT:
+            case self::QUICK_EXPORT:
                 $this->generateMassEditNotify($jobExecution, $user, $type, $status);
                 break;
 

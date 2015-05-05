@@ -160,3 +160,13 @@ jobs:
         alias:     set_attribute_requirements
         label:     Set family attribute requirements
         type:      mass_edit
+    csv_product_quick_export:
+        connector: Akeneo Mass Edit Connector
+        alias: csv_product_quick_export
+        label: CSV product quick export
+        type: quick_export
+        configuration:
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/products-quick-export.csv

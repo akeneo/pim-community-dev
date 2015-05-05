@@ -2,102 +2,139 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
+use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Override ExportController for product exports
+ * Products quick export
  *
- * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Willy Mesnage <willy.mesnage@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductExportController extends ExportController
+class ProductExportController
 {
-    /** @var ProductRepositoryInterface */
-    protected $productRepository;
+    /** @var Request */
+    protected $request;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var MassActionDispatcher */
+    protected $massActionDispatcher;
 
-    /** @var CatalogContext */
-    protected $catalogContext;
+    /** @var GridFilterAdapterInterface */
+    protected $gridFilterAdapter;
 
-    /** @var ProductFieldsBuilder */
-    protected $fieldsBuilder;
+    /** @var JobInstanceRepository */
+    protected $jobInstanceRepository;
+
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
+    /** @var SimpleJobLauncher */
+    protected $jobLauncher;
+
+    /** @var Manager */
+    protected $datagridManager;
 
     /**
-     * Constructor
-     *
      * @param Request                    $request
      * @param MassActionDispatcher       $massActionDispatcher
-     * @param SerializerInterface        $serializer
-     * @param ProductRepositoryInterface $productRepository
-     * @param LocaleManager              $localeManager
-     * @param CatalogContext             $catalogContext
-     * @param ProductFieldsBuilder       $fieldsBuilder
+     * @param GridFilterAdapterInterface $gridFilterAdapter
+     * @param JobInstanceRepository      $jobInstanceRepository
+     * @param SecurityContextInterface   $securityContext
+     * @param SimpleJobLauncher          $jobLauncher
+     * @param Manager                    $datagridManager
      */
     public function __construct(
         Request $request,
         MassActionDispatcher $massActionDispatcher,
-        SerializerInterface $serializer,
-        ProductRepositoryInterface $productRepository,
-        LocaleManager $localeManager,
-        CatalogContext $catalogContext,
-        ProductFieldsBuilder $fieldsBuilder
+        GridFilterAdapterInterface $gridFilterAdapter,
+        JobInstanceRepository $jobInstanceRepository,
+        SecurityContextInterface $securityContext,
+        SimpleJobLauncher $jobLauncher,
+        Manager $datagridManager
     ) {
-        parent::__construct(
-            $request,
-            $massActionDispatcher,
-            $serializer
-        );
-
-        $this->productRepository = $productRepository;
-        $this->localeManager     = $localeManager;
-        $this->catalogContext    = $catalogContext;
-        $this->fieldsBuilder     = $fieldsBuilder;
+        $this->request               = $request;
+        $this->massActionDispatcher  = $massActionDispatcher;
+        $this->gridFilterAdapter     = $gridFilterAdapter;
+        $this->jobInstanceRepository = $jobInstanceRepository;
+        $this->securityContext       = $securityContext;
+        $this->jobLauncher           = $jobLauncher;
+        $this->datagridManager       = $datagridManager;
     }
 
     /**
-     * {@inheritdoc}
+     * Launch the quick export
+     *
+     * @return Response
      */
-    protected function createFilename()
+    public function indexAction()
     {
-        $dateTime = new \DateTime();
-
-        return sprintf(
-            'products_export_%s_%s_%s.%s',
-            $this->catalogContext->getLocaleCode(),
-            $this->catalogContext->getScopeCode(),
-            $dateTime->format('Y-m-d_H-i-s'),
-            $this->getFormat()
+        $jobInstance      = $this->jobInstanceRepository->findOneBy(['code' => 'csv_product_quick_export']);
+        $filters          = $this->gridFilterAdapter->adapt($this->request);
+        $rawConfiguration = addslashes(
+            json_encode(
+                [
+                    'filters'     => $filters,
+                    'mainContext' => $this->getContextParameters()
+                ]
+            )
         );
+
+        $this->jobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+
+        return new Response();
     }
 
     /**
-     * {@inheritdoc}
+     * Get a user from the Security Context
+     *
+     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     *
+     * @see Symfony\Component\Security\Core\Authentication\Token\TokenInterface::getUser()
      */
-    protected function quickExport()
+    protected function getUser()
     {
-        $productIds   = $this->massActionDispatcher->dispatch($this->request);
-        $fieldsList   = $this->fieldsBuilder->getFieldsList($productIds);
-        $attributeIds = $this->fieldsBuilder->getAttributeIds();
-        $context      = $this->getContext() + ['fields' => $fieldsList];
-
-        // batch output to avoid memory leak
-        $offset = 0;
-        $batchSize = 100;
-        while ($productsList = array_slice($productIds, $offset, $batchSize)) {
-            $results = $this->productRepository->getFullProducts($productsList, $attributeIds);
-            echo $this->serializer->serialize($results, $this->getFormat(), $context);
-            $offset += $batchSize;
-            flush();
-            $this->productRepository->getObjectManager()->clear();
+        $token = $this->securityContext->getToken();
+        if (null === $token || !is_object($user = $token->getUser())) {
+            return null;
         }
+
+        return $user;
+    }
+
+    /**
+     * Get the context (locale and scope) from the datagrid
+     *
+     * @return string[] Returns [] || ['locale' => 'en_US', 'scope' => 'mobile']
+     *
+     * @throws \LogicException
+     */
+    protected function getContextParameters()
+    {
+        $datagridName = $this->request->get('gridName');
+        $datagrid     = $this->datagridManager->getDatagrid($datagridName);
+        $dataSource   = $datagrid->getDatasource();
+
+        if (!$dataSource instanceof ProductDatasource) {
+            throw new \LogicException('getContextParameters is only implemented for ProductDatasource');
+        }
+
+        $dataSourceParams = $dataSource->getParameters();
+        $contextParams = [];
+        if (is_array($dataSourceParams)) {
+            $contextParams = [
+                'locale' => $dataSourceParams['dataLocale'],
+                'scope'  => $dataSourceParams['scopeCode']
+            ];
+        }
+
+        return $contextParams;
     }
 }

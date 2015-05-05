@@ -14,10 +14,15 @@ Feature: Quick export many products from datagrid
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  |
     And I am logged in as "Julia"
 
-  # No way to retrieve the downloaded file from Firefox. So we just check here that we can press the
-  # "Quick Export" button
   Scenario: Successfully quick export products
     Given I am on the products page
     And I select rows boots, sneakers
     Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
-
+    And I wait for the "csv_product_quick_export" mass-edit job to finish
+    When I am on the dashboard page
+    Then I should have 1 new notification
+    And I should see notification:
+      | type    | message               |
+      | success | Quick export finished |
+    Then I go on the last executed job resume of "csv_product_quick_export"
+    And I should see "COMPLETED"

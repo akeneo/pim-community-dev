@@ -28,3 +28,4 @@ pim_dashboard:
                 import: Import
                 export: Export
                 mass_edit: Mass edit
+                quick_export: Quick export

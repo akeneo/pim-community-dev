@@ -46,3 +46,13 @@ connector:
                         reader:    pim_enrich.mass_edit.family.reader
                         processor: pim_enrich.mass_edit.set_attribute_requirements.processor
                         writer:    pim_base_connector.writer.doctrine
+        csv_product_quick_export:
+            title: csv_product_quick_export
+            type: quick_export
+            steps:
+                perform:
+                    title: csv_product_quick_export
+                    services:
+                        reader:    pim_enrich.mass_edit.filtered.reader
+                        processor: pim_enrich.mass_edit.product_to_flat_array.processor
+                        writer:    pim_base_connector.writer.file.csv_product
