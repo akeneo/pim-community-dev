@@ -21,14 +21,14 @@ use Symfony\Component\Validator\ValidatorInterface;
 class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        ValidatorInterface $validator,
         MassEditRepositoryInterface $massEditRepository,
+        ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
         $this->beConstructedWith(
-            $validator,
             $massEditRepository,
+            $validator,
             $groupRepository,
             $templateUpdater
         );

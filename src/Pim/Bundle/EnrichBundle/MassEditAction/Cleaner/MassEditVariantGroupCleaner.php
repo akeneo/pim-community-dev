@@ -347,6 +347,9 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     }
 
     /**
+     * It checks it products is in eligible products for the variant group and
+     * build the array based on variant axis and product ids.
+     *
      * @param PaginatorInterface $paginator
      * @param array              $eligibleProductIds
      * @param array              $axisAttributeCodes

@@ -19,23 +19,3 @@ Feature: Add products to many groups at once via a form
     When I move on to the next step
     And I wait for the "add_product_value" mass-edit job to finish
     Then "similar_boots" group should contain "kickers, hiking_shoes and moon_boots"
-
-  # TODO: This scenario should work with the related JIRA ticket
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-4110
-  Scenario: Fail to add similar products to a variant group
-    Given the "footwear" catalog configuration
-    And the following products:
-      | sku          | color | size |
-      | kickers      | red   | 42   |
-      | hiking_shoes | red   | 42   |
-    And I am logged in as "Julia"
-    And I am on the products page
-    Given I mass-edit products kickers, hiking_shoes
-    And I choose the "Add to a variant group" operation
-    And I select the "Caterpillar boots" variant group
-    When I move on to the next step
-    And I wait for the "update_product_value" mass-edit job to finish
-    Then I should see:
-    """
-    Group "Caterpillar boots" already contains another product with values "size: 42, color: Red"
-    """

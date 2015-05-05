@@ -41,8 +41,8 @@ services:
     pim_enrich.mass_edit.add_product_to_variant_group.processor:
         class: %pim_enrich.mass_edit.add_product_to_variant_group.processor.class%
         arguments:
-            - '@pim_validator'
             - '@pim_enrich.repository.mass_edit'
+            - '@pim_validator'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.updater.product_template'
 

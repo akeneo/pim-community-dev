@@ -34,8 +34,8 @@ class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
      * @param ProductTemplateUpdaterInterface $templateUpdater
      */
     public function __construct(
-        ValidatorInterface $validator,
         MassEditRepositoryInterface $massEditRepository,
+        ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
@@ -61,9 +61,7 @@ class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
         $variantGroup = $actions['value'];
         $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
 
-        if (null === $product->getVariantGroup()) {
-            $variantGroup->addProduct($product);
-        }
+        $variantGroup->addProduct($product);
 
         if (null !== $variantGroup->getProductTemplate()) {
             $this->templateUpdater->update($variantGroup->getProductTemplate(), [$product]);
