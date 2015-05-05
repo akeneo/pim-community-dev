@@ -28,7 +28,7 @@ class MassEditActionController extends BaseMassEditActionController
     {
         $itemsName = parent::getItemsName($gridName);
 
-        if('published-product-grid' === $gridName) {
+        if ('published-product-grid' === $gridName) {
             $itemsName = 'published_product';
         }
 
