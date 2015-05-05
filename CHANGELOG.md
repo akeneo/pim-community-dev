@@ -1,7 +1,15 @@
 CHANGELOG
 =========
 
-0.4.x
+0.4.2
+-----
+
+### Bug fixes
+
+ - Fix missing akeneo_batch.entity.job_execution.class parameter
+ - Fix erroneous class name in DoctrineJobRepository
+
+0.4.1
 -----
 
 ### Features
