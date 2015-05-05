@@ -1,6 +1,17 @@
 CHANGELOG
 =========
 
+0.4.x
+-----
+
+### Features
+
+ - Added the `SimpleJobLauncher` to ease job launches
+
+### Improvements
+
+ - Introduced PHPspec as a dev dependency
+
 0.4.0
 -----
 
