@@ -122,9 +122,11 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
         $resolver->setOptional(['context']);
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'context' => ['locale' => null, 'scope' => null]
-        ]);
+            ]
+        );
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);

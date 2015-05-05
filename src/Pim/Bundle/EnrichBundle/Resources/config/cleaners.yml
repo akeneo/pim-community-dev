@@ -18,7 +18,7 @@ services:
             - '@pim_enrich.product.paginator'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_enrich.repository.mass_edit'
-            - '@pim_catalog.object_manager.product'
+            - '@doctrine.orm.default_entity_manager'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.repository.product'
             - '@translator'
