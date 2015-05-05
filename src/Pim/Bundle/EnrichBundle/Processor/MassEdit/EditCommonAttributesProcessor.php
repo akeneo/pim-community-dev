@@ -49,6 +49,7 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
         MassEditRepositoryInterface $massEditRepository
     ) {
         parent::__construct($massEditRepository);
+
         $this->productUpdater       = $productUpdater;
         $this->validator            = $validator;
         $this->attributeRepository  = $attributeRepository;
@@ -109,7 +110,7 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
      */
     protected function updateProduct(ProductInterface $product, array $actions)
     {
-        $nbModifiedAttributes = 0;
+        $modifiedAttributesNb = 0;
         foreach ($actions as $action) {
             $attribute = $this->attributeRepository->findOneBy(['code' => $action['field']]);
 
@@ -120,11 +121,11 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
 
             if (null !== $family && $family->hasAttribute($attribute)) {
                 $this->productUpdater->setData($product, $action['field'], $action['value'], $action['options']);
-                $nbModifiedAttributes++;
+                $modifiedAttributesNb++;
             }
         }
 
-        if (0 === $nbModifiedAttributes) {
+        if (0 === $modifiedAttributesNb) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
             $this->stepExecution->addWarning(
                 $this->getName(),

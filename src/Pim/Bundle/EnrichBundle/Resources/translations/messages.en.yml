@@ -942,9 +942,9 @@ pim_mass_edit:
             warning: Quick export finished with warnings
 
 job_execution.summary:
-    mass_edited:      Mass edited
-    skip:             skipped
-    skipped_products: skipped products
+    mass_edited:        Mass edited
+    skip:               Skipped
+    skipped_products:   Skipped products
     skipped_attributes: Skipped attributes
 
 pim_mass_edit_execution_show:  Mass edit executions | Details

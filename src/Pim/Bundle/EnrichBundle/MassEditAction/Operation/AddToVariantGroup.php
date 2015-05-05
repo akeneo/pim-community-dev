@@ -17,8 +17,6 @@ class AddToVariantGroup extends AbstractMassEditOperation
     protected $group;
 
     /**
-     * Set group
-     *
      * @param GroupInterface $group
      */
     public function setGroup(GroupInterface $group)
@@ -27,8 +25,6 @@ class AddToVariantGroup extends AbstractMassEditOperation
     }
 
     /**
-     * Get group
-     *
      * @return GroupInterface
      */
     public function getGroup()

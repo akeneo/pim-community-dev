@@ -23,6 +23,8 @@ class MassEditTemporaryFileCleaner extends AbstractConfigurableStepElement imple
 
     /**
      * @param array $configuration
+     *
+     * @throws InvalidArgumentException If 'actions' index is missing from $configuration
      */
     public function execute(array $configuration)
     {

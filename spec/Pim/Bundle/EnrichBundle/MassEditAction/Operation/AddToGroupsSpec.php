@@ -17,18 +17,18 @@ class AddToGroupsSpec extends ObjectBehavior
     }
 
     function it_stores_the_groups_to_add_the_products_to(
-        ArrayCollection $collection,
-        GroupInterface $office,
-        GroupInterface $bedroom
+        ArrayCollection $groupCollection,
+        GroupInterface $officeGroup,
+        GroupInterface $bedroomGroup
     ) {
         $this->getGroups()->shouldReturnAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
 
-        $collection->add($office);
-        $collection->add($bedroom);
+        $groupCollection->add($officeGroup);
+        $groupCollection->add($bedroomGroup);
 
-        $this->setGroups($collection);
+        $this->setGroups($groupCollection);
 
-        $this->getGroups()->shouldReturn($collection);
+        $this->getGroups()->shouldReturn($groupCollection);
     }
 
     function it_provides_a_form_type()
@@ -52,19 +52,19 @@ class AddToGroupsSpec extends ObjectBehavior
     }
 
     function it_provides_correct_actions_to_apply_on_products(
-        GroupInterface $office,
-        GroupInterface $bedroom,
-        ArrayCollection $collection
+        GroupInterface $officeGroup,
+        GroupInterface $bedroomGroup,
+        ArrayCollection $groupCollection
     ) {
-        $office->getCode()->willReturn('office_room');
-        $bedroom->getCode()->willReturn('bedroom');
+        $officeGroup->getCode()->willReturn('office_room');
+        $bedroomGroup->getCode()->willReturn('bedroom');
 
-        $collection->add($office);
-        $collection->add($bedroom);
+        $groupCollection->add($officeGroup);
+        $groupCollection->add($bedroomGroup);
 
-        $this->setGroups($collection);
-        $collection->map(Argument::type('closure'))->willReturn($collection);
-        $collection->toArray()->willReturn(['office_room', 'bedroom']);
+        $this->setGroups($groupCollection);
+        $groupCollection->map(Argument::type('closure'))->willReturn($groupCollection);
+        $groupCollection->toArray()->willReturn(['office_room', 'bedroom']);
 
         $this->getActions()->shouldReturn(
             [
@@ -82,19 +82,19 @@ class AddToGroupsSpec extends ObjectBehavior
     }
 
     function it_provides_formatted_batch_config_for_the_job(
-        GroupInterface $office,
-        GroupInterface $bedroom,
-        ArrayCollection $collection
+        GroupInterface $officeGroup,
+        GroupInterface $bedroomGroup,
+        ArrayCollection $groupCollection
     ) {
-        $office->getCode()->willReturn('office_room');
-        $bedroom->getCode()->willReturn('bedroom');
+        $officeGroup->getCode()->willReturn('office_room');
+        $bedroomGroup->getCode()->willReturn('bedroom');
 
-        $collection->add($office);
-        $collection->add($bedroom);
+        $groupCollection->add($officeGroup);
+        $groupCollection->add($bedroomGroup);
 
-        $this->setGroups($collection);
-        $collection->map(Argument::type('closure'))->willReturn($collection);
-        $collection->toArray()->willReturn(['office_room', 'bedroom']);
+        $this->setGroups($groupCollection);
+        $groupCollection->map(Argument::type('closure'))->willReturn($groupCollection);
+        $groupCollection->toArray()->willReturn(['office_room', 'bedroom']);
 
         $this->setFilters([
             ['id', 'IN', ['22', '7']]

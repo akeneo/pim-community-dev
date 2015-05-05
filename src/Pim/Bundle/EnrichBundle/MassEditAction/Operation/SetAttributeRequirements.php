@@ -47,10 +47,10 @@ class SetAttributeRequirements extends AbstractMassEditOperation
         AttributeRepositoryInterface $attributeRepository,
         AttributeRequirementFactory $factory
     ) {
-        $this->channelRepository = $channelRepository;
+        $this->channelRepository   = $channelRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->factory = $factory;
-        $this->attRequirements = new ArrayCollection();
+        $this->factory             = $factory;
+        $this->attRequirements     = new ArrayCollection();
     }
 
     /**
@@ -144,8 +144,8 @@ class SetAttributeRequirements extends AbstractMassEditOperation
         foreach ($this->attRequirements as $attributeRequirement) {
             $attrRequirements[] = [
                 'attribute_code' => $attributeRequirement->getAttribute()->getCode(),
-                'channel_code' => $attributeRequirement->getChannel()->getCode(),
-                'is_required' => $attributeRequirement->isRequired()
+                'channel_code'   => $attributeRequirement->getChannel()->getCode(),
+                'is_required'    => $attributeRequirement->isRequired()
             ];
         }
 

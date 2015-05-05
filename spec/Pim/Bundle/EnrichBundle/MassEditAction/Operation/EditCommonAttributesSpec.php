@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -102,17 +101,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $catalogContext,
         $attributeRepository,
         $massActionManager,
-        LocaleInterface $locale,
+        LocaleInterface $deLocale,
         AttributeInterface $attr1,
         AttributeInterface $attr2,
         ProductValueInterface $prodVal1,
         ProductValueInterface $prodVal2,
         ChannelInterface $channel,
-        AttributeGroupInterface $attrGroup,
-        ArrayCollection $collection
+        AttributeGroupInterface $attrGroup
     ) {
-        $locale->getCode()->willReturn('de_DE');
-        $this->setLocale($locale);
+        $deLocale->getCode()->willReturn('de_DE');
+        $this->setLocale($deLocale);
 
         $catalogContext->setLocaleCode('de_DE')->shouldBeCalled();
         $attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]])
@@ -131,7 +129,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
             ->willReturn([$attr1, $attr2]);
 
         // First attribute
-        $locale->getChannels()->willReturn([$channel]);
+        $deLocale->getChannels()->willReturn([$channel]);
         $attr1->isScopable()->willReturn(true);
         $attr1->getCode()->willReturn('color');
         $channel->getCode()->willReturn('mobile');
@@ -161,10 +159,10 @@ class EditCommonAttributesSpec extends ObjectBehavior
         AttributeInterface $attr1,
         AttributeInterface $attr2,
         AttributeGroupInterface $attrGroup,
-        LocaleInterface $locale
+        LocaleInterface $enLocale
     ) {
-        $locale->getCode()->willReturn('en_US');
-        $this->setLocale($locale);
+        $enLocale->getCode()->willReturn('en_US');
+        $this->setLocale($enLocale);
 
         $attributeRepository->findWithGroups([], ['conditions' => ['unique' => 0]])
             ->shouldBeCalled()

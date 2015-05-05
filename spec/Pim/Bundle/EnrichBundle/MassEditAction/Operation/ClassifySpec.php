@@ -15,14 +15,14 @@ class ClassifySpec extends ObjectBehavior
     }
 
     function it_stores_the_categories_to_add_the_products_to(
-        CategoryInterface $office,
-        CategoryInterface $bedroom
+        CategoryInterface $officeCategory,
+        CategoryInterface $bedroomCategory
     ) {
         $this->getCategories()->shouldReturn([]);
 
-        $this->setCategories([$office, $bedroom]);
+        $this->setCategories([$officeCategory, $bedroomCategory]);
 
-        $this->getCategories()->shouldReturn([$office, $bedroom]);
+        $this->getCategories()->shouldReturn([$officeCategory, $bedroomCategory]);
         $this->getCategories()->shouldBeArray();
     }
 
@@ -47,13 +47,13 @@ class ClassifySpec extends ObjectBehavior
     }
 
     function it_provides_correct_actions_to_apply_on_products(
-        CategoryInterface $office,
-        CategoryInterface $bedroom
+        CategoryInterface $officeCategory,
+        CategoryInterface $bedroomCategory
     ) {
-        $office->getCode()->willReturn('office_room');
-        $bedroom->getCode()->willReturn('bedroom');
+        $officeCategory->getCode()->willReturn('office_room');
+        $bedroomCategory->getCode()->willReturn('bedroom');
 
-        $this->setCategories([$office, $bedroom]);
+        $this->setCategories([$officeCategory, $bedroomCategory]);
 
         $this->getActions()->shouldReturn(
             [
@@ -71,13 +71,13 @@ class ClassifySpec extends ObjectBehavior
     }
 
     function it_provides_formatted_batch_config_for_the_job(
-        CategoryInterface $office,
-        CategoryInterface $bedroom
+        CategoryInterface $officeCategory,
+        CategoryInterface $bedroomCategory
     ) {
-        $office->getCode()->willReturn('office_room');
-        $bedroom->getCode()->willReturn('bedroom');
+        $officeCategory->getCode()->willReturn('office_room');
+        $bedroomCategory->getCode()->willReturn('bedroom');
 
-        $this->setCategories([$office, $bedroom]);
+        $this->setCategories([$officeCategory, $bedroomCategory]);
 
         $this->setFilters([
             ['id', 'IN', ['49', '2']]

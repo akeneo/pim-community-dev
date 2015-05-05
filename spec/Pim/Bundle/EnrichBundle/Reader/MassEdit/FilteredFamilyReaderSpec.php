@@ -23,8 +23,8 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
         StepExecution $stepExecution,
         JobExecution $jobExecution,
         MassEditJobConfiguration $massEditJobConf,
-        FamilyInterface $familyPants,
-        FamilyInterface $familySocks
+        FamilyInterface $pantFamily,
+        FamilyInterface $sockFamily
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
@@ -38,14 +38,14 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
             ]
         ]));
 
-        $families = [$familyPants, $familySocks];
+        $families = [$pantFamily, $sockFamily];
         $familyRepository->findByIds([12, 13, 14])->willReturn($families);
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
-        $this->read()->shouldReturn($familyPants);
-        $this->read()->shouldReturn($familySocks);
+        $this->read()->shouldReturn($pantFamily);
+        $this->read()->shouldReturn($sockFamily);
         $this->read()->shouldReturn(null);
 
         $stepExecution->incrementSummaryInfo('read')->shouldHaveBeenCalledTimes(2);

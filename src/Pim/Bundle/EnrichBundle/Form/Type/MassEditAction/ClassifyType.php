@@ -19,21 +19,19 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ClassifyType extends AbstractType
 {
-    /** @var string $categoryClass */
+    /** @var string */
     protected $categoryClass;
 
-    /** @var CategoryManager $categoryManager */
+    /** @var CategoryManager */
     protected $categoryManager;
 
-    /** @var string $dataClass */
+    /** @var string */
     protected $dataClass;
 
     /** @var CategoryInterface[] */
     protected $trees;
 
     /**
-     * Constructor.
-     *
      * @param string          $categoryClass
      * @param CategoryManager $categoryManager
      * @param string          $dataClass

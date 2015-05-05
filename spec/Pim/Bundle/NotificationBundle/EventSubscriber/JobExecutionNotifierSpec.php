@@ -34,7 +34,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $stepExecution->getWarnings()->willReturn($warnings);
         $jobExecution->getId()->willReturn(5);
         $jobInstance->getType()->willReturn('export');
-        $jobInstance->getLabel()->willReturn('Foo export');
+        $jobInstance->getLabel()->willReturn('Product export');
         $event->getJobExecution()->willReturn($jobExecution);
     }
 
@@ -72,7 +72,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_importexport_export_execution_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo export']
+                    'messageParams' => ['%label%' => 'Product export']
                 ]
             )
             ->shouldBeCalled();
@@ -90,13 +90,13 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_enrich_job_tracker_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo mass edit']
+                    'messageParams' => ['%label%' => 'Product mass edit']
                 ]
             )
             ->shouldBeCalled();
 
         $jobInstance->getType()->willReturn('mass_edit');
-        $jobInstance->getLabel()->willReturn('Foo mass edit');
+        $jobInstance->getLabel()->willReturn('Product mass edit');
         $event->getJobExecution()->willReturn($jobExecution);
 
         $this->afterJobExecution($event);
@@ -118,7 +118,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_importexport_export_execution_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo export']
+                    'messageParams' => ['%label%' => 'Product export']
                 ]
             )
             ->shouldBeCalled();
@@ -142,7 +142,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_importexport_export_execution_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo export']
+                    'messageParams' => ['%label%' => 'Product export']
                 ]
             )
             ->shouldBeCalled();

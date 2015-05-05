@@ -188,7 +188,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_mass_edit")
      *
-     * @throws NotFoundHttpException
+     * @throws NotFoundResourceException
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

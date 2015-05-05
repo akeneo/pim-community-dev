@@ -26,8 +26,6 @@ class MassEditFormResolver
     protected $chooseActionFormType;
 
     /**
-     * Constructor.
-     *
      * @param OperationRegistryInterface $operationRegistry
      * @param FormFactoryInterface       $formFactory
      * @param MassEditChooseActionType   $chooseActionFormType
@@ -68,6 +66,9 @@ class MassEditFormResolver
      * @param string                              $operationAlias
      * @param ConfigurableOperationInterface|null $operation
      *
+     * @throws \LogicException If operation get from $operationAlias or $operation
+     *                         doesn't implements ConfigurableOperationInterface
+     *
      * @return \Symfony\Component\Form\Form
      */
     public function getConfigurationForm($operationAlias, $operation = null)
@@ -77,10 +78,12 @@ class MassEditFormResolver
         }
 
         if (!$operation instanceof ConfigurableOperationInterface) {
-            throw new \LogicException(sprintf(
-                'Operation with alias "%s" is not an instance of ConfigurableOperationInterface',
-                $operationAlias
-            ));
+            throw new \LogicException(
+                sprintf(
+                    'Operation with alias "%s" is not an instance of ConfigurableOperationInterface',
+                    $operationAlias
+                )
+            );
         }
 
         $operation->initialize();
