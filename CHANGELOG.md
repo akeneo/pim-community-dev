@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.10 (2015-05-05)
 
 ## Bug fixes
 - PIM-4113: Initialize cursors on first item during creation
