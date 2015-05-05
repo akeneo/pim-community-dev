@@ -36,7 +36,7 @@ class DoctrineJobRepository implements JobRepositoryInterface
      */
     public function __construct(
         EntityManager $entityManager,
-        $jobExecutionClass = 'Akeneo\\Bundle\\BatchBundle\\EntityJobExecution'
+        $jobExecutionClass = 'Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution'
     ) {
         $currentConn = $entityManager->getConnection();
 
