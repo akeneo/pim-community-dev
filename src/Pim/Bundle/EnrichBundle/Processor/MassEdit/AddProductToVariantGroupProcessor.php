@@ -4,38 +4,46 @@ namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Processor to add product value in a mass edit
+ * Processor to add product to a variant group in a mass edit
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddProductValueProcessor extends AbstractMassEditProcessor
+class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
 {
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
-
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var GroupRepositoryInterface */
+    protected $groupRepository;
+
+    /** @var ProductTemplateUpdaterInterface */
+    protected $templateUpdater;
+
     /**
-     * @param ProductUpdaterInterface     $productUpdater
-     * @param ValidatorInterface          $validator
-     * @param MassEditRepositoryInterface $massEditRepository
+     * @param ValidatorInterface              $validator
+     * @param MassEditRepositoryInterface     $massEditRepository
+     * @param GroupRepositoryInterface        $groupRepository
+     * @param ProductTemplateUpdaterInterface $templateUpdater
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        MassEditRepositoryInterface $massEditRepository,
         ValidatorInterface $validator,
-        MassEditRepositoryInterface $massEditRepository
+        GroupRepositoryInterface $groupRepository,
+        ProductTemplateUpdaterInterface $templateUpdater
     ) {
         parent::__construct($massEditRepository);
-        $this->productUpdater = $productUpdater;
-        $this->validator      = $validator;
+
+        $this->validator       = $validator;
+        $this->groupRepository = $groupRepository;
+        $this->templateUpdater = $templateUpdater;
     }
 
     /**
@@ -50,8 +58,14 @@ class AddProductValueProcessor extends AbstractMassEditProcessor
         }
 
         $actions = $configuration['actions'];
+        $variantGroup = $actions['value'];
+        $variantGroup = $this->groupRepository->findOneByIdentifier($variantGroup);
 
-        $this->addData($product, $actions);
+        $variantGroup->addProduct($product);
+
+        if (null !== $variantGroup->getProductTemplate()) {
+            $this->templateUpdater->update($variantGroup->getProductTemplate(), [$product]);
+        }
 
         if (null === $product || (null !== $product && !$this->isProductValid($product))) {
             $this->stepExecution->incrementSummaryInfo('skipped_products');
@@ -77,22 +91,5 @@ class AddProductValueProcessor extends AbstractMassEditProcessor
         $this->addWarningMessage($violations, $product);
 
         return 0 === $violations->count();
-    }
-
-    /**
-     * Add data from $actions to the given $product
-     *
-     * @param ProductInterface $product
-     * @param array            $actions
-     *
-     * @return AddProductValueProcessor
-     */
-    protected function addData(ProductInterface $product, array $actions)
-    {
-        foreach ($actions as $action) {
-            $this->productUpdater->addData($product, $action['field'], $action['value']);
-        }
-
-        return $this;
     }
 }

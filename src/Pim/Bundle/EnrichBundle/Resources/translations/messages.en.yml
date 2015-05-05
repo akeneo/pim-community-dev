@@ -151,7 +151,7 @@ pim_enrich:
             label:                                 Add to a variant group
             description:                           Select the variant group in which to add the selected products
             success_flash:                         Products were successfully added to the selected variant group
-            already_in_variant_group_or_not_valid: You cannot group the following products (%products%) because they are already in a variant group or doesn't have the group axis.
+            already_in_variant_group_or_not_valid: You cannot group the following product because it is already in a variant group or doesn't have the group axis.
             no_variant_group:                      No variant group for now. Please start by creating a variant group.
             no_valid_variant_group:                No variant group is sharing attributes with selected products.
             some_variant_groups_are_skipped:       The following variant groups have been skipped because they don't share attributes with selected products : %groups%
@@ -951,6 +951,9 @@ pim_mass_edit_execution_show:  Mass edit executions | Details
 
 edit_common_attributes.steps.edit_common_attributes_processor.title: Edit common attributes
 update_product_value.steps.update_product_value_processor.title: Update product value
+add_to_variant_group_clean.steps.excluded.title: Excluded product
+add_to_variant_group_clean.steps.duplicated.title: Duplicated Axis
+add_to_variant_group.steps.cleaner.warning.description: "Product can't be set in the selected variant group: duplicate variation axis values with another product in selection"
 
 mass_edit report:
     overview: Mass edit reports

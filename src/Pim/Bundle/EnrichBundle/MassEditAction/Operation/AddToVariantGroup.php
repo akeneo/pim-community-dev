@@ -66,10 +66,8 @@ class AddToVariantGroup extends AbstractMassEditOperation
     public function getActions()
     {
         return [
-            [
                 'field' => 'variant_group',
                 'value' => $this->getGroup()->getCode(),
-            ]
         ];
     }
 
@@ -78,7 +76,7 @@ class AddToVariantGroup extends AbstractMassEditOperation
      */
     public function getBatchJobCode()
     {
-        return 'update_product_value';
+        return 'add_to_variant_group';
     }
 
     /**

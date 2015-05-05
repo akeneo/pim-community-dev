@@ -1,9 +1,10 @@
 parameters:
-    pim_enrich.mass_edit.update_product_value.processor.class:       Pim\Bundle\EnrichBundle\Processor\MassEdit\UpdateProductValueProcessor
-    pim_enrich.mass_edit.add_product_value.processor.class:          Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor
-    pim_enrich.mass_edit.edit_common_attributes.processor.class:     Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor
-    pim_enrich.mass_edit.set_attribute_requirements.processor.class: Pim\Bundle\EnrichBundle\Processor\MassEdit\SetAttributeRequirements
-    pim_enrich.mass_edit.product_to_flat_array.processor.class:      Pim\Bundle\EnrichBundle\Processor\MassEdit\ProductToFlatArrayProcessor
+    pim_enrich.mass_edit.update_product_value.processor.class:         Pim\Bundle\EnrichBundle\Processor\MassEdit\UpdateProductValueProcessor
+    pim_enrich.mass_edit.add_product_value.processor.class:            Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor
+    pim_enrich.mass_edit.edit_common_attributes.processor.class:       Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor
+    pim_enrich.mass_edit.set_attribute_requirements.processor.class:   Pim\Bundle\EnrichBundle\Processor\MassEdit\SetAttributeRequirements
+    pim_enrich.mass_edit.product_to_flat_array.processor.class:        Pim\Bundle\EnrichBundle\Processor\MassEdit\ProductToFlatArrayProcessor
+    pim_enrich.mass_edit.add_product_to_variant_group.processor.class: Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductToVariantGroupProcessor
 
 services:
     pim_enrich.mass_edit.update_product_value.processor:
@@ -36,6 +37,14 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.factory.attribute_requirement'
+
+    pim_enrich.mass_edit.add_product_to_variant_group.processor:
+        class: %pim_enrich.mass_edit.add_product_to_variant_group.processor.class%
+        arguments:
+            - '@pim_enrich.repository.mass_edit'
+            - '@pim_validator'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.updater.product_template'
 
     pim_enrich.mass_edit.product_to_flat_array.processor:
         class: %pim_enrich.mass_edit.product_to_flat_array.processor.class%

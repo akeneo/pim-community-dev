@@ -41,17 +41,15 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
         $this->getActions()->shouldReturn(
             [
-                [
-                    'field' => 'variant_group',
-                    'value' => 'oro_tshirt',
-                ]
+                'field' => 'variant_group',
+                'value' => 'oro_tshirt',
             ]
         );
     }
 
     function it_provides_a_batch_job_code()
     {
-        $this->getBatchJobCode()->shouldReturn('update_product_value');
+        $this->getBatchJobCode()->shouldReturn('add_to_variant_group');
     }
 
     function it_provides_formatted_batch_config_for_the_job(GroupInterface $oroTshirt)
@@ -65,7 +63,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"22\",\"7\"]]],\"actions\":[{\"field\":\"variant_group\",\"value\":\"oro_tshirt\"}]}'
+            '{\"filters\":[[\"id\",\"IN\",[\"22\",\"7\"]]],\"actions\":{\"field\":\"variant_group\",\"value\":\"oro_tshirt\"}}'
         );
     }
 }

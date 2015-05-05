@@ -72,6 +72,10 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     {
         $configuration = $this->getJobConfiguration();
 
+        if (null === $configuration) {
+            return null;
+        }
+
         if (!$this->isExecuted) {
             $this->isExecuted = true;
             $this->products = $this->getProductsCursor($configuration['filters']);
@@ -118,9 +122,11 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
         $resolver = new OptionsResolver();
         $resolver->setRequired(['field', 'operator', 'value']);
         $resolver->setOptional(['context']);
-        $resolver->setDefaults([
+        $resolver->setDefaults(
+            [
             'context' => ['locale' => null, 'scope' => null]
-        ]);
+            ]
+        );
 
         foreach ($filters as $filter) {
             $filter = $resolver->resolve($filter);
