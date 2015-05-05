@@ -41,10 +41,8 @@ class AddToVariantGroupSpec extends ObjectBehavior
 
         $this->getActions()->shouldReturn(
             [
-                [
-                    'field' => 'variant_group',
-                    'value' => 'oro_tshirt',
-                ]
+                'field' => 'variant_group',
+                'value' => 'oro_tshirt',
             ]
         );
     }
@@ -65,7 +63,7 @@ class AddToVariantGroupSpec extends ObjectBehavior
         ]);
 
         $this->getBatchConfig()->shouldReturn(
-            '{\"filters\":[[\"id\",\"IN\",[\"22\",\"7\"]]],\"actions\":[{\"field\":\"variant_group\",\"value\":\"oro_tshirt\"}]}'
+            '{\"filters\":[[\"id\",\"IN\",[\"22\",\"7\"]]],\"actions\":{\"field\":\"variant_group\",\"value\":\"oro_tshirt\"}}'
         );
     }
 }

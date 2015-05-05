@@ -33,7 +33,7 @@ connector:
                         writer:    pim_base_connector.writer.doctrine.product
                 clean:
                     title: edit_common_attributes_clean
-                    class: "%pim_enrich.step.mass_edit.remove_temporary_media.class%"
+                    class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
                         cleaner: pim_enrich.mass_edit.temporary_file.cleaner
         set_attribute_requirements:
@@ -62,7 +62,7 @@ connector:
             steps:
                 clean:
                     title: add_to_variant_group_clean
-                    class: "%pim_enrich.step.mass_edit.remove_temporary_media.class%"
+                    class: "%pim_enrich.step.mass_edit.step.class%"
                     services:
                         cleaner: pim_enrich.mass_edit.add_to_variant.cleaner
                 perform:
