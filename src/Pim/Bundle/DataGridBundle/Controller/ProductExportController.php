@@ -112,9 +112,9 @@ class ProductExportController
     /**
      * Get the context (locale and scope) from the datagrid
      *
-     * @return string[] Returns [] || ['locale' => 'en_US', 'scope' => 'mobile']
+     * @throws \LogicException If datasource is not a ProductDatasource
      *
-     * @throws \LogicException
+     * @return string[] Returns [] || ['locale' => 'en_US', 'scope' => 'mobile']
      */
     protected function getContextParameters()
     {
