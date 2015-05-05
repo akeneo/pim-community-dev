@@ -137,9 +137,14 @@ class MediaManagerSpec extends ObjectBehavior
         $this->getExportPath($media, 'custom-sku')->shouldReturn('files/custom-sku/thumbnail/en_US/mobile/akeneo.jpg');
     }
 
-    function it_generates_filename_prefix(ProductInterface $product, ProductValueInterface $value, AttributeInterface $attribute)
-    {
-        $product->getIdentifier()->shouldBeCalled();
+    function it_generates_filename_prefix(
+        ProductInterface $product,
+        ProductValueInterface $value,
+        ProductValueInterface $identifier,
+        AttributeInterface $attribute
+    ) {
+        $identifier->getData()->shouldBeCalled();
+        $product->getIdentifier()->willReturn($identifier);
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->shouldBeCalled();
         $value->getLocale()->shouldBeCalled();
