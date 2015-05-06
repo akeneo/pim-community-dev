@@ -166,6 +166,9 @@ pim_enrich:
                     no: No
             optional_attribute:
                 remove: Remove this attribute
+        attribute_option:
+            code: Code
+            label: Label
     confirmation:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
@@ -208,3 +211,11 @@ pim_enrich:
                 btn:
                     save_and_next: Save and next
                     save_and_finish: Save and finish
+        attribute_option:
+            flash:
+                option_created: Attribute option successfully created
+                error_creating_option: An error ocurred when trying to create the attribute option
+            add_option_modal:
+                title: Add attribute option
+                confirm: Add
+                cancel: Cancel
