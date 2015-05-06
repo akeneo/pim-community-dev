@@ -68,9 +68,9 @@ class EditCommonAttributesProcessor extends BaseProcessor
         $this->initSecurityContext($this->stepExecution);
         if ($this->hasRight($product)) {
             return parent::process($product);
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**

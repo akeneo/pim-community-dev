@@ -2,81 +2,63 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Unpublish handler for published products
+ *
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class UnpublishProductHandler extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
+class UnpublishProductHandler extends AbstractProductPublisherHandler
 {
-    /** @var PublishedProductManager */
-    protected $manager;
-
-    /** @var PaginatorFactoryInterface */
-    protected $paginatorFactory;
-
-    /** @var StepExecution */
-    protected $stepExecution;
-
     /** @var ProductQueryBuilderFactoryInterface */
     protected $publishedPqbFactory;
 
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var SecurityContextInterface */
-    protected $securityContext;
-
     /**
-     * Constructor.
-     *
-     * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
+     * @param ValidatorInterface                  $validator
      * @param ObjectDetacherInterface             $objectDetacher
      * @param UserManager                         $userManager
      * @param SecurityContextInterface            $securityContext
+     * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
      */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $publishedPqbFactory,
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
+        ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        ProductQueryBuilderFactoryInterface $publishedPqbFactory
     ) {
-        $this->manager             = $manager;
-        $this->paginatorFactory    = $paginatorFactory;
+        parent::__construct(
+            $manager,
+            $paginatorFactory,
+            $validator,
+            $objectDetacher,
+            $userManager,
+            $securityContext
+        );
+
         $this->publishedPqbFactory = $publishedPqbFactory;
-        $this->userManager         = $userManager;
-        $this->securityContext     = $securityContext;
-        $this->objectDetacher      = $objectDetacher;
     }
 
     /**
-     * @param array $configuration
+     * {@inheritdoc}
      */
     public function execute(array $configuration)
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $cursor = $this->getPublishedProductsCursor($configuration['filters']);
+        $cursor = $this->getProductsCursor($configuration['filters']);
         $paginator = $this->paginatorFactory->createPaginator($cursor);
 
         foreach ($paginator as $productsPage) {
@@ -108,79 +90,8 @@ class UnpublishProductHandler extends AbstractConfigurableStepElement implements
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-
-        return $this;
-    }
-
-    /**
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->securityContext->setToken($token);
-    }
-
-    /**
-     * @param array $productsPage
-     */
-    protected function detachProducts(array $productsPage)
-    {
-        foreach ($productsPage as $product) {
-            $this->objectDetacher->detach($product);
-        }
-    }
-
-    /**
-     * @return ProductQueryBuilderInterface
-     */
-    protected function getPublishedProductQueryBuilder()
+    protected function getProductQueryBuilder()
     {
         return $this->publishedPqbFactory->create();
-    }
-
-    /**
-     * @param array $filters
-     *
-     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
-     */
-    protected function getPublishedProductsCursor(array $filters)
-    {
-        $productQueryBuilder = $this->getPublishedProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['context']);
-        $resolver->setDefaults([
-            'context' => ['locale' => null, 'scope' => null]
-        ]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $productQueryBuilder->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
-        }
-
-        return $productQueryBuilder->execute();
     }
 }
