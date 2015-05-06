@@ -17,6 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class UnpublishProductHandlerSpec extends ObjectBehavior
 {
@@ -24,6 +25,7 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
+        ValidatorInterface $validator,
         ProductQueryBuilder $pqb,
         CursorInterface $cursor,
         ObjectDetacherInterface $objectDetacher,
@@ -42,12 +44,13 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $userManager->findUserByUsername('mary')->willReturn($userMary);
 
         $this->beConstructedWith(
-            $pqbFactory,
             $manager,
             $paginatorFactory,
+            $validator,
             $objectDetacher,
             $userManager,
-            $securityContext
+            $securityContext,
+            $pqbFactory
         );
     }
 

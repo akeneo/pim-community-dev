@@ -47,13 +47,13 @@ class PublishProductHandlerSpec extends ObjectBehavior
         $userManager->findUserByUsername('mary')->willReturn($userMary);
 
         $this->beConstructedWith(
-            $pqbFactory,
             $manager,
             $paginatorFactory,
             $validator,
             $objectDetacher,
             $userManager,
-            $securityContext
+            $securityContext,
+            $pqbFactory
         );
     }
 

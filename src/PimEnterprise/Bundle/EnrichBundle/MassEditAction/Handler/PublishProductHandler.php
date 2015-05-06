@@ -2,81 +2,53 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
 
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * Publish handler for products
+ *
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class PublishProductHandler extends AbstractConfigurableStepElement implements StepExecutionAwareInterface
+class PublishProductHandler extends AbstractProductPublisherHandler
 {
-    /** @var StepExecution */
-    protected $stepExecution;
-
     /** @var ProductQueryBuilderFactoryInterface */
     protected $pqbFactory;
 
-    /** @var PublishedProductManager */
-    protected $manager;
-
-    /** @var PaginatorFactoryInterface */
-    protected $paginatorFactory;
-
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var ObjectDetacherInterface */
-    protected $objectDetacher;
-
-    /** @var UserManager */
-    protected $userManager;
-
-    /** @var SecurityContextInterface */
-    protected $securityContext;
-
     /**
-     * Constructor.
-     *
-     * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param PublishedProductManager             $manager
      * @param PaginatorFactoryInterface           $paginatorFactory
      * @param ValidatorInterface                  $validator
      * @param ObjectDetacherInterface             $objectDetacher
      * @param UserManager                         $userManager
      * @param SecurityContextInterface            $securityContext
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
     public function __construct(
-        ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
         ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
-        $this->pqbFactory       = $pqbFactory;
-        $this->manager          = $manager;
-        $this->paginatorFactory = $paginatorFactory;
-        $this->validator        = $validator;
-        $this->objectDetacher   = $objectDetacher;
-        $this->userManager      = $userManager;
-        $this->securityContext  = $securityContext;
+        parent::__construct(
+            $manager,
+            $paginatorFactory,
+            $validator,
+            $objectDetacher,
+            $userManager,
+            $securityContext
+        );
+
+        $this->pqbFactory = $pqbFactory;
     }
 
     /**
@@ -125,105 +97,8 @@ class PublishProductHandler extends AbstractConfigurableStepElement implements S
     /**
      * {@inheritdoc}
      */
-    public function getConfigurationFields()
-    {
-        return [];
-    }
-
-    /**
-     * {inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-
-        return $this;
-    }
-
-    /**
-     * TODO: Extract this when refactoring handlers.
-     * Initialize the SecurityContext from the given $stepExecution
-     *
-     * @param StepExecution $stepExecution
-     */
-    protected function initSecurityContext(StepExecution $stepExecution)
-    {
-        $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userManager->findUserByUsername($username);
-
-        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
-        $this->securityContext->setToken($token);
-    }
-
-    /**
-     * @param array $productsPage
-     */
-    protected function detachProducts(array $productsPage)
-    {
-        foreach ($productsPage as $product) {
-            $this->objectDetacher->detach($product);
-        }
-    }
-
-    /**
-     * @return ProductQueryBuilderInterface
-     */
     protected function getProductQueryBuilder()
     {
         return $this->pqbFactory->create();
-    }
-
-    /**
-     * @param array $filters
-     *
-     * @return \Akeneo\Component\StorageUtils\Cursor\CursorInterface
-     */
-    protected function getProductsCursor(array $filters)
-    {
-        $productQueryBuilder = $this->getProductQueryBuilder();
-
-        $resolver = new OptionsResolver();
-        $resolver->setRequired(['field', 'operator', 'value']);
-        $resolver->setOptional(['context']);
-        $resolver->setDefaults([
-            'context' => ['locale' => null, 'scope' => null]
-        ]);
-
-        foreach ($filters as $filter) {
-            $filter = $resolver->resolve($filter);
-            $productQueryBuilder->addFilter(
-                $filter['field'],
-                $filter['operator'],
-                $filter['value'],
-                $filter['context']
-            );
-        }
-
-        return $productQueryBuilder->execute();
-    }
-
-    /**
-     * @param ConstraintViolationListInterface $violations
-     * @param ProductInterface                 $product
-     */
-    protected function addWarningMessage($violations, $product)
-    {
-        foreach ($violations as $violation) {
-            // TODO re-format the message, property path doesn't exist for class constraint
-            // for instance cf VariantGroupAxis
-            $invalidValue = $violation->getInvalidValue();
-            if (is_object($invalidValue) && method_exists($invalidValue, '__toString')) {
-                $invalidValue = (string) $invalidValue;
-            } elseif (is_object($invalidValue)) {
-                $invalidValue = get_class($invalidValue);
-            }
-            $errors = sprintf(
-                "%s: %s: %s\n",
-                $violation->getPropertyPath(),
-                $violation->getMessage(),
-                $invalidValue
-            );
-            $this->stepExecution->addWarning($this->getName(), $errors, [], $product);
-        }
     }
 }
