@@ -115,13 +115,13 @@ class JobExecutionController extends AbstractDoctrineController
      * Show a job execution report
      *
      * @param Request $request
-     * @param int     $jobExecutionId
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
-    public function showAction(Request $request, $jobExecutionId)
+    public function showAction(Request $request, $id)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $jobExecutionId);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
@@ -164,13 +164,13 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * Download the log file of the job execution
      *
-     * @param int $jobExecutionId
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function downloadLogFileAction($jobExecutionId)
+    public function downloadLogFileAction($id)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $jobExecutionId);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
@@ -183,15 +183,15 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * Download an archived file
      *
-     * @param int    $jobExecutionId
+     * @param int    $id
      * @param string $archiver
      * @param string $key
      *
      * @return StreamedResponse
      */
-    public function downloadFilesAction($jobExecutionId, $archiver, $key)
+    public function downloadFilesAction($id, $archiver, $key)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $jobExecutionId);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
