@@ -26,7 +26,7 @@ class AddToVariantGroupType extends AbstractType
     protected $groupClassName;
 
     /** @var array */
-    protected $skippedObjects = [];
+    protected $skippedObjects;
 
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
@@ -36,9 +36,6 @@ class AddToVariantGroupType extends AbstractType
 
     /** @var GroupInterface */
     protected $group;
-
-    /** @var string[] */
-    protected $warningMessages = null;
 
     /** @var ProductMassActionRepositoryInterface */
     protected $prodMassActionRepo;
@@ -59,6 +56,8 @@ class AddToVariantGroupType extends AbstractType
         $this->groupClassName     = $groupClassName;
         $this->dataClass          = $dataClass;
         $this->groupRepository    = $groupRepository;
+
+        $this->skippedObjects = [];
     }
 
     /**

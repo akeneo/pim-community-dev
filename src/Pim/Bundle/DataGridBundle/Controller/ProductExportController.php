@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
 use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
@@ -39,7 +39,7 @@ class ProductExportController
     /** @var SimpleJobLauncher */
     protected $jobLauncher;
 
-    /** @var Manager */
+    /** @var DataGridManager */
     protected $datagridManager;
 
     /**
@@ -49,7 +49,7 @@ class ProductExportController
      * @param JobInstanceRepository      $jobInstanceRepository
      * @param SecurityContextInterface   $securityContext
      * @param SimpleJobLauncher          $jobLauncher
-     * @param Manager                    $datagridManager
+     * @param DataGridManager            $datagridManager
      */
     public function __construct(
         Request $request,
@@ -58,7 +58,7 @@ class ProductExportController
         JobInstanceRepository $jobInstanceRepository,
         SecurityContextInterface $securityContext,
         SimpleJobLauncher $jobLauncher,
-        Manager $datagridManager
+        DataGridManager $datagridManager
     ) {
         $this->request               = $request;
         $this->massActionDispatcher  = $massActionDispatcher;

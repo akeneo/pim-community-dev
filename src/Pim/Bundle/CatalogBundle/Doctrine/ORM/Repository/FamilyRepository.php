@@ -191,9 +191,7 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}*
      */
     public function findByIds(array $familyIds)
     {

@@ -140,7 +140,7 @@ class ProductToFlatArrayProcessor extends AbstractMassEditProcessor
     }
 
     /**
-     * Fetch product medias
+     * Fetch product media
      *
      * @param ProductInterface $product
      *

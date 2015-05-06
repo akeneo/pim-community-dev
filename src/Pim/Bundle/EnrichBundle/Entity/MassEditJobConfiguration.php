@@ -26,7 +26,7 @@ class MassEditJobConfiguration
      * @param JobExecution $jobExecution
      * @param string       $configuration
      */
-    public function __construct($jobExecution, $configuration)
+    public function __construct(JobExecution $jobExecution, $configuration)
     {
         $this->jobExecution  = $jobExecution;
         $this->configuration = $configuration;
@@ -38,18 +38,6 @@ class MassEditJobConfiguration
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return MassEditJobConfiguration
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**

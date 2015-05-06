@@ -25,7 +25,7 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /** @var bool */
-    protected $isExecuted = false;
+    protected $isExecuted;
 
     /** @var ArrayCollection */
     protected $families;
@@ -43,6 +43,8 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     ) {
         $this->massEditRepository = $massEditRepository;
         $this->familyRepository   = $familyRepository;
+
+        $this->isExecuted = false;
     }
 
     /**

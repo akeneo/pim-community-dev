@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class MassEditTemporaryFileCleanerSpec extends ObjectBehavior
 {
-    function it_remove_temporary_files()
+    function it_removes_temporary_files()
     {
         fopen("/tmp/testfile.txt", "w");
         $configuration = ['actions' => [['value' => ['filePath' => '/tmp/testfile.txt']]]];

@@ -67,6 +67,8 @@ interface FamilyRepositoryInterface extends
     /**
      * @param array $familyIds
      *
+     * @throws \InvalidArgumentException array of id should not be empty
+     *
      * @return array
      */
     public function findByIds(array $familyIds);

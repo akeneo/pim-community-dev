@@ -3,8 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
+use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -46,7 +45,7 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var SimpleJobLauncher */
     protected $simpleJobLauncher;
 
-    /** @var DoctrineJobRepository */
+    /** @var JobRepositoryInterface */
     protected $jobRepository;
 
     /** @var ConnectorRegistry */
@@ -68,7 +67,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param SimpleJobLauncher          $simpleJobLauncher
-     * @param DoctrineJobRepository      $jobRepository
+     * @param JobRepositoryInterface     $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
      * @param MassEditFormResolver       $massEditFormResolver
@@ -86,7 +85,7 @@ class MassEditActionController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
         SimpleJobLauncher $simpleJobLauncher,
-        DoctrineJobRepository $jobRepository,
+        JobRepositoryInterface $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,
         MassEditFormResolver $massEditFormResolver
@@ -122,7 +121,7 @@ class MassEditActionController extends AbstractDoctrineController
     {
         $gridName     = $this->request->get('gridName');
         $objectsCount = $this->request->get('objectsCount');
-        $itemsName    = $this->getItemsName($gridName);
+        $itemsName    = $this->getItemName($gridName);
 
         $form = $this->massEditFormResolver->getAvailableOperationsForm($gridName);
 
@@ -253,7 +252,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @return string
      */
-    protected function getItemsName($gridName)
+    protected function getItemName($gridName)
     {
         switch ($gridName) {
             case 'product-grid':

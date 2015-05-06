@@ -48,6 +48,9 @@ class JobExecutionController extends AbstractDoctrineController
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
 
+    /** @staticvar string */
+    const BLOCK_SIZE = 8192;
+
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
@@ -201,7 +204,7 @@ class JobExecutionController extends AbstractDoctrineController
             function () use ($stream) {
                 $stream->open(new StreamMode('rb'));
                 while (!$stream->eof()) {
-                    echo $stream->read(8192);
+                    echo $stream->read(self::BLOCK_SIZE);
                 }
                 $stream->close();
             },

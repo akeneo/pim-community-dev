@@ -32,7 +32,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     protected $products;
 
     /** @var bool */
-    protected $isExecuted = false;
+    protected $isExecuted;
 
     /** @var string */
     protected $channel;
@@ -56,6 +56,8 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
         $this->pqbFactory         = $pqbFactory;
         $this->jobRepository      = $jobRepository;
         $this->massEditRepository = $massEditRepository;
+
+        $this->isExecuted = false;
     }
 
     /**

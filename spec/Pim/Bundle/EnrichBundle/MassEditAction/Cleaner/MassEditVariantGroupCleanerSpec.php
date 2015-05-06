@@ -48,7 +48,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         );
     }
 
-    function it_executes_products_with_no_eligible_products(
+    function it_cleans_products_that_are_not_eligible(
         $groupRepository,
         $productRepository,
         $massEditRepository,
@@ -120,7 +120,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $this->execute($configuration);
     }
 
-    function it_executes_with_no_duplicated_axis(
+    function it_checks_if_products_have_duplicated_axis(
         $groupRepository,
         $productRepository,
         $massEditRepository,
@@ -217,7 +217,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $this->execute($configuration);
     }
 
-    function it_executes_with_duplicated_axis(
+    function it_cleans_products_with_duplicated_axis(
         $groupRepository,
         $productRepository,
         $massEditRepository,
