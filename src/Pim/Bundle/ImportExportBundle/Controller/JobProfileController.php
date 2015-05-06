@@ -5,8 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Controller;
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
@@ -50,7 +50,7 @@ class JobProfileController extends AbstractDoctrineController
     /** @var ConstraintViolationListInterface  */
     protected $fileError;
 
-    /** @var SimpleJobLauncher */
+    /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
 
     /** @var File */
@@ -72,7 +72,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param string                   $jobType
      * @param JobInstanceType          $jobInstanceType
      * @param JobInstanceFactory       $jobInstanceFactory
-     * @param SimpleJobLauncher        $simpleJobLauncher
+     * @param JobLauncherInterface     $simpleJobLauncher
      */
     public function __construct(
         Request $request,
@@ -88,7 +88,7 @@ class JobProfileController extends AbstractDoctrineController
         $jobType,
         JobInstanceType $jobInstanceType,
         JobInstanceFactory $jobInstanceFactory,
-        SimpleJobLauncher $simpleJobLauncher
+        JobLauncherInterface $simpleJobLauncher
     ) {
         parent::__construct(
             $request,

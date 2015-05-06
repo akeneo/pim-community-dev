@@ -4,10 +4,10 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditFormResolver;
@@ -42,7 +42,7 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var GridFilterAdapterInterface */
     protected $gridFilterAdapter;
 
-    /** @var SimpleJobLauncher */
+    /** @var JobLauncherInterface */
     protected $simpleJobLauncher;
 
     /** @var JobRepositoryInterface */
@@ -66,7 +66,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ManagerRegistry            $doctrine
      * @param MassActionParametersParser $parametersParser
      * @param GridFilterAdapterInterface $gridFilterAdapter
-     * @param SimpleJobLauncher          $simpleJobLauncher
+     * @param JobLauncherInterface       $simpleJobLauncher
      * @param JobRepositoryInterface     $jobRepository
      * @param ConnectorRegistry          $connectorRegistry
      * @param OperationRegistryInterface $operationRegistry
@@ -84,7 +84,7 @@ class MassEditActionController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         MassActionParametersParser $parametersParser,
         GridFilterAdapterInterface $gridFilterAdapter,
-        SimpleJobLauncher $simpleJobLauncher,
+        JobLauncherInterface $simpleJobLauncher,
         JobRepositoryInterface $jobRepository,
         ConnectorRegistry $connectorRegistry,
         OperationRegistryInterface $operationRegistry,

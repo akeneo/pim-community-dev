@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DataGridManager;
-use Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher;
 use Pim\Bundle\DataGridBundle\Adapter\GridFilterAdapterInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
@@ -36,7 +36,7 @@ class ProductExportController
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var SimpleJobLauncher */
+    /** @var JobLauncherInterface */
     protected $jobLauncher;
 
     /** @var DataGridManager */
@@ -48,7 +48,7 @@ class ProductExportController
      * @param GridFilterAdapterInterface $gridFilterAdapter
      * @param JobInstanceRepository      $jobInstanceRepository
      * @param SecurityContextInterface   $securityContext
-     * @param SimpleJobLauncher          $jobLauncher
+     * @param JobLauncherInterface       $jobLauncher
      * @param DataGridManager            $datagridManager
      */
     public function __construct(
@@ -57,7 +57,7 @@ class ProductExportController
         GridFilterAdapterInterface $gridFilterAdapter,
         JobInstanceRepository $jobInstanceRepository,
         SecurityContextInterface $securityContext,
-        SimpleJobLauncher $jobLauncher,
+        JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager
     ) {
         $this->request               = $request;

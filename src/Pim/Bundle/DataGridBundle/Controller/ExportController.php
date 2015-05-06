@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -26,7 +27,7 @@ class ExportController
     /** @var SerializerInterface $serializer */
     protected $serializer;
 
-    /** @var \Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction $exportMassAction */
+    /** @var ExportMassAction $exportMassAction */
     protected $exportMassAction;
 
     /**
