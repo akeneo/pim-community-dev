@@ -5,4 +5,4 @@ services:
     pim_base_connector.factory.job_configuration:
         class: %pim_base_connector.factory.job_configuration.class%
         arguments:
-            - %pim_enrich.entity.mass_edit.job_configuration.class%
+            - %pim_base_connector.entity.job_configuration.class%
