@@ -7,7 +7,7 @@ use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher as BaseSimpleJobLauncher;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\EnrichBundle\Factory\MassEditJobConfigurationFactory;
+use Pim\Bundle\BaseConnectorBundle\Factory\JobConfigurationFactory;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,22 +24,22 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
     /** @var SaverInterface */
     protected $jobConfigSaver;
 
-    /** @var MassEditJobConfigurationFactory */
+    /** @var JobConfigurationFactory */
     protected $jobConfigFactory;
 
     /** @var ObjectManager */
     protected $objectManager;
 
     /**
-     * @param JobRepositoryInterface          $jobRepository
-     * @param MassEditJobConfigurationFactory $jobConfigFactory
-     * @param ObjectManager                   $objectManager
-     * @param string                          $rootDir
-     * @param string                          $environment
+     * @param JobRepositoryInterface  $jobRepository
+     * @param JobConfigurationFactory $jobConfigFactory
+     * @param ObjectManager           $objectManager
+     * @param string                  $rootDir
+     * @param string                  $environment
      */
     public function __construct(
         JobRepositoryInterface $jobRepository,
-        MassEditJobConfigurationFactory $jobConfigFactory,
+        JobConfigurationFactory $jobConfigFactory,
         ObjectManager $objectManager,
         $rootDir,
         $environment

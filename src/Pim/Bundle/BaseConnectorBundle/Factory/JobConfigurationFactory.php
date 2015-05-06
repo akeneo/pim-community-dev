@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Factory;
+namespace Pim\Bundle\BaseConnectorBundle\Factory;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
@@ -12,7 +12,7 @@ use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditJobConfigurationFactory
+class JobConfigurationFactory
 {
     /** @var string */
     protected $jobConfigClass;

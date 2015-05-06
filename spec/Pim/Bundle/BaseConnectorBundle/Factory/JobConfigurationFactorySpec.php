@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\Factory;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Factory;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use PhpSpec\ObjectBehavior;
 
-class MassEditJobConfigurationFactorySpec extends ObjectBehavior
+class JobConfigurationFactorySpec extends ObjectBehavior
 {
     const JOB_CONFIGURATION_CLASS = 'Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration';
 
