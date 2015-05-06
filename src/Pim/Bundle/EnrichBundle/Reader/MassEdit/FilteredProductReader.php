@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityNotFoundException;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
@@ -29,9 +28,6 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var ObjectManager */
-    protected $objectManager;
-
     /** @var CursorInterface */
     protected $products;
 
@@ -49,18 +45,15 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
-     * @param ObjectManager                       $objectManager
      * @param JobRepositoryInterface              $jobRepository
      * @param MassEditRepositoryInterface         $massEditRepository
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        ObjectManager $objectManager,
         JobRepositoryInterface $jobRepository,
         MassEditRepositoryInterface $massEditRepository
     ) {
         $this->pqbFactory         = $pqbFactory;
-        $this->objectManager      = $objectManager;
         $this->jobRepository      = $jobRepository;
         $this->massEditRepository = $massEditRepository;
     }
@@ -106,7 +99,6 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
      */
     public function initialize()
     {
-        $this->objectManager->clear();
         $this->isExecuted = false;
     }
 
