@@ -192,6 +192,12 @@ pim_enrich:
                     info:
                         search_attributes: Search
                         no_available_attributes: There are no more attributes to add
+                    add_option:
+                        add: Add
+                        cancel: Cancel
+                        title: Add attribute option
+                        code: Code
+                        value: Value
             panel:
                 completeness:
                     info:

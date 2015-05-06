@@ -154,6 +154,11 @@ extensions:
         parent: attributes
         targetZone: attributes
 
+    add-option:
+        module: pim/product-edit-form/attributes/add-option
+        parent: attributes
+        targetZone: attributes
+
     completeness:
         parent: panels
         module: pim/product-edit-form/panel/completeness
