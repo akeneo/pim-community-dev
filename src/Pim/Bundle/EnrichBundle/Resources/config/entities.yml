@@ -1,3 +1,2 @@
 parameters:
     pim_enrich.entity.sequential_edit.class:             Pim\Bundle\EnrichBundle\Entity\SequentialEdit
-    pim_enrich.entity.mass_edit.job_configuration.class: Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration

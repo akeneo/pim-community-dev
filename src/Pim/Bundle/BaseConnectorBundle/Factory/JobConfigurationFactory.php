@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Factory;
+namespace Pim\Bundle\BaseConnectorBundle\Factory;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
 
 /**
  * Job configuration factory
@@ -12,27 +11,27 @@ use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditJobConfigurationFactory
+class JobConfigurationFactory
 {
     /** @var string */
-    protected $massEditJobConfClass;
+    protected $jobConfigClass;
 
     /**
-     * @param string $massEditJobConfClass
+     * @param string $jobConfigClass
      */
-    public function __construct($massEditJobConfClass)
+    public function __construct($jobConfigClass)
     {
-        $this->massEditJobConfClass = $massEditJobConfClass;
+        $this->jobConfigClass = $jobConfigClass;
     }
 
     /**
      * @param JobExecution $jobExecution
      * @param string       $configuration
      *
-     * @return MassEditJobConfiguration
+     * @return \Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface
      */
     public function create(JobExecution $jobExecution, $configuration)
     {
-        return new $this->massEditJobConfClass($jobExecution, $configuration);
+        return new $this->jobConfigClass($jobExecution, $configuration);
     }
 }

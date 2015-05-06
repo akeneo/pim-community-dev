@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Reader\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 
 class FilteredFamilyReaderSpec extends ObjectBehavior
@@ -22,13 +22,13 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
         $familyRepository,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfigurationInterface $jobConfiguration,
         FamilyInterface $pantFamily,
         FamilyInterface $sockFamily
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(json_encode([
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(json_encode([
             'filters' => [
                 [
                     'field'    => 'id',

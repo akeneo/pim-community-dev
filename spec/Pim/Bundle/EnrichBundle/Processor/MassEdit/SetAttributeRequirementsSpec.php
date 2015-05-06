@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
@@ -12,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -48,7 +48,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         ValidatorInterface $validator,
         FamilyInterface $family,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfigurationInterface $jobConfiguration,
         AttributeInterface $attributeColor,
         ChannelInterface $channelMobile,
         ChannelInterface $channelEcommerce,
@@ -77,8 +77,8 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channelEcommerce);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'actions' => $actions])
         );
 
