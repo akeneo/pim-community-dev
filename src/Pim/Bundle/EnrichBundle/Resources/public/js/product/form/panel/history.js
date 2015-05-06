@@ -90,7 +90,7 @@ define(
                 }
             },
             prepareVersions: function (versions) {
-                return EntityManager.getRepository('attribute').findAll().done(_.bind(function (attributes) {
+                return EntityManager.getRepository('attribute').findAll().then(_.bind(function (attributes) {
                     _.each(versions, _.bind(function (version) {
                         _.each(version.changeset, _.bind(function (data, index) {
                             var code = index.split('-').shift();
