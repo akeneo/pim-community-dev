@@ -3,6 +3,8 @@
 
 {% block content %}
 
+    {{ elements.page_header("job_tracker.tab.title"|trans) }}
+
     {{ dataGrid.renderStatefulGrid('job-tracker-grid', { localeCode: locale_code() }) }}
 
 {% endblock %}

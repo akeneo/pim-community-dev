@@ -76,6 +76,10 @@ pim_enrich:
             no_attributes: This variant group has no attributes yet
             no_attributes_in_selected_locale: This variant group has no attributes in this locale
 
+job_tracker:
+    tab:
+        title: Process tracker
+
     # Product completeness
     completeness:
         progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'

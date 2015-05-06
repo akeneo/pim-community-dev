@@ -7,6 +7,7 @@ datagrid:
         columns:
             type:
                 label: Type
+                type:  job_type
             job:
                 label: Job
                 data_name: jobLabel
@@ -18,6 +19,13 @@ datagrid:
                 label: Started at
                 data_name: startTime
                 frontend_type: datetime
+        actions:
+            view:
+                type:      navigate
+                label:     pim.grid.action.show.title
+                icon:      list-alt
+                link:      show_link
+                rowAction: true
         sorters:
             columns:
                 type:
@@ -58,3 +66,10 @@ datagrid:
                     type:             datetime
                     data_name:        startTime
                     filter_by_having: true
+        properties:
+            id: ~
+            show_link:
+                type: url
+                params:
+                    - id
+                route: pim_enrich_job_tracker_show
