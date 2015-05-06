@@ -9,7 +9,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
@@ -102,9 +101,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         }
         $this->mediaManager->handleAllProductsMedias($items);
         $this->productSaver->saveAll($items, ['recalculate' => false]);
-
-        //TODO: see with @nidup if we can remove this!
-        //$this->cacheClearer->clear();
     }
 
     /**
@@ -125,14 +121,5 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function flush()
-    {
-        //TODO: see with @nidup if we can remove this!
-        //$this->cacheClearer->clear(true);
     }
 }

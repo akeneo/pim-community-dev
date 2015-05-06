@@ -7,7 +7,6 @@ services:
         class: %pim_enrich.mass_edit.reader.class%
         arguments:
             - '@pim_catalog.query.product_query_builder_factory'
-            - '@pim_catalog.object_manager.product'
             - '@akeneo_batch.job_repository'
             - '@pim_enrich.repository.mass_edit'
     pim_enrich.mass_edit.family.reader:

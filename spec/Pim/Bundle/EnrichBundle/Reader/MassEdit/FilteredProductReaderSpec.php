@@ -22,13 +22,11 @@ class FilteredProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
-        EntityManager $entityManager,
         DoctrineJobRepository $jobRepository,
         MassEditRepository $massEditRepository
     ) {
         $this->beConstructedWith(
             $pqbFactory,
-            $entityManager,
             $jobRepository,
             $massEditRepository,
             'update_product_value'
