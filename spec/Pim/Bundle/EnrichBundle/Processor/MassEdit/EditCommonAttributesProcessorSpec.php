@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -12,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -58,7 +58,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -97,7 +97,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 

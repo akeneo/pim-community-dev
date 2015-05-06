@@ -11,6 +11,7 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -19,7 +20,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -62,7 +62,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         CursorInterface $cursor,
         JobExecution $jobExecution,
         TranslatorInterface $translator,
-        JobConfiguration $jobConfiguration,
+        JobConfigurationInterface $jobConfiguration,
         AttributeInterface $attribute1,
         ProductInterface $product1,
         ProductInterface $product2
@@ -133,7 +133,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         CursorInterface $cursor,
         JobExecution $jobExecution,
         PaginatorInterface $paginator,
-        JobConfiguration $jobConfiguration,
+        JobConfigurationInterface $jobConfiguration,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -232,7 +232,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         PaginatorInterface $paginator1,
         PaginatorInterface $paginator2,
         TranslatorInterface $translator,
-        JobConfiguration $jobConfiguration,
+        JobConfigurationInterface $jobConfiguration,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,

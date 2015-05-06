@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -35,7 +35,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $violations = new ConstraintViolationList([]);
         $validator->validate($product)->willReturn($violations);
@@ -62,7 +62,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
         $violations = new ConstraintViolationList([$violation, $violation]);

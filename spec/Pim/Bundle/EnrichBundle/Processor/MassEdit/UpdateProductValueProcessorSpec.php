@@ -5,9 +5,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -36,7 +36,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -70,7 +70,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 

@@ -5,13 +5,13 @@ namespace Pim\Bundle\BaseConnectorBundle\Model;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
 /**
- * Mass edit job configuration
+ * Job configuration implementation
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobConfiguration
+class JobConfiguration implements JobConfigurationInterface
 {
     /** @var int */
     protected $id;
@@ -33,7 +33,7 @@ class JobConfiguration
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -41,7 +41,7 @@ class JobConfiguration
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
@@ -49,9 +49,7 @@ class JobConfiguration
     }
 
     /**
-     * @param string $configuration
-     *
-     * @return JobConfiguration
+     * {@inheritdoc}
      */
     public function setConfiguration($configuration)
     {
@@ -61,7 +59,7 @@ class JobConfiguration
     }
 
     /**
-     * @return JobExecution
+     * {@inheritdoc}
      */
     public function getJobExecution()
     {
@@ -69,9 +67,7 @@ class JobConfiguration
     }
 
     /**
-     * @param JobExecution $jobExecution
-     *
-     * @return JobConfiguration
+     * {@inheritdoc}
      */
     public function setJobExecution(JobExecution $jobExecution)
     {

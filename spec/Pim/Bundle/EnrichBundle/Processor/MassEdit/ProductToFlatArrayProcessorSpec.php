@@ -6,13 +6,13 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\ChannelNotFoundException;
 use Prophecy\Argument;
@@ -45,7 +45,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $stepExecution,
         $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->getChannelCode()->shouldReturn(null);
         $this->setChannelCode('print');
@@ -70,7 +70,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $stepExecution,
         $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration
+        JobConfigurationInterface $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);

@@ -5,12 +5,12 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
@@ -43,7 +43,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration,
+        JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
         $violations = new ConstraintViolationList([]);
@@ -80,7 +80,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration,
+        JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BaseConnectorBundle\Factory;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 
 /**
  * Job configuration factory
@@ -29,7 +28,7 @@ class JobConfigurationFactory
      * @param JobExecution $jobExecution
      * @param string       $configuration
      *
-     * @return \Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration
+     * @return \Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface
      */
     public function create(JobExecution $jobExecution, $configuration)
     {

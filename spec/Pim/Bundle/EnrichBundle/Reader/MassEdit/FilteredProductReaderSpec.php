@@ -8,14 +8,13 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Job\DoctrineJobRepository;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Cursor\Cursor;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 
 class FilteredProductReaderSpec extends ObjectBehavior
@@ -39,7 +38,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
         MassEditRepository $massEditRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
-        JobConfiguration $jobConfiguration,
+        JobConfigurationInterface $jobConfiguration,
         ProductQueryBuilderFactory $pqbFactory,
         ProductQueryBuilder $pqb,
         StepExecution $stepExecution,
