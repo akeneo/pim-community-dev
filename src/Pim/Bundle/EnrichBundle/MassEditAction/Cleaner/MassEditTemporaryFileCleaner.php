@@ -5,11 +5,10 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Cleaner;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 
 /**
  * Temporary file cleaner. It cleans file after the mass edit is done because
- * we have 2 PHP process, and once the first process is finished, temporary files
+ * we have 2 PHP processes, and once the first process is finished, temporary files
  * are deleted and we cannot retrieve uploaded files so we moved temporary files to the upload directory
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
@@ -24,12 +23,12 @@ class MassEditTemporaryFileCleaner extends AbstractConfigurableStepElement imple
     /**
      * @param array $configuration
      *
-     * @throws InvalidArgumentException If 'actions' index is missing from $configuration
+     * @throws \InvalidArgumentException If 'actions' index is missing from $configuration
      */
     public function execute(array $configuration)
     {
         if (!array_key_exists('actions', $configuration)) {
-            throw new InvalidArgumentException('Missing configuration \'actions\'.');
+            throw new \InvalidArgumentException('Missing configuration \'actions\'.');
         }
 
         $actions = $configuration['actions'];

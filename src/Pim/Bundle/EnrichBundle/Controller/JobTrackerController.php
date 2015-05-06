@@ -10,6 +10,7 @@ use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,8 +49,11 @@ class JobTrackerController extends Controller
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var JobExecutionManager */
+    /** @var EventSubscriberInterface */
     protected $jobExecutionManager;
+
+    /** @staticvar string */
+    const BLOCK_SIZE = 8192;
 
     /**
      * @param EngineInterface          $templating
@@ -58,7 +62,7 @@ class JobTrackerController extends Controller
      * @param ManagerRegistry          $doctrine
      * @param JobExecutionArchivist    $archivist
      * @param SerializerInterface      $serializer
-     * @param JobExecutionManager      $jobExecutionManager
+     * @param EventSubscriberInterface $jobExecutionManager
      */
     public function __construct(
         EngineInterface $templating,
@@ -67,7 +71,7 @@ class JobTrackerController extends Controller
         ManagerRegistry $doctrine,
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
-        JobExecutionManager $jobExecutionManager
+        EventSubscriberInterface $jobExecutionManager
     ) {
         $this->templating          = $templating;
         $this->translator          = $translator;
@@ -176,7 +180,7 @@ class JobTrackerController extends Controller
             function () use ($stream) {
                 $stream->open(new StreamMode('rb'));
                 while (!$stream->eof()) {
-                    echo $stream->read(8192);
+                    echo $stream->read(self::BLOCK_SIZE);
                 }
                 $stream->close();
             },

@@ -131,7 +131,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     }
 
     /**
-     * Return the job configuration
+     * Save the job configuration
      *
      * @param string $configuration
      */
