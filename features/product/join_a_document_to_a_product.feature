@@ -1,3 +1,4 @@
+@javascript
 Feature: Join a document to a product
   In order to join a document to a product
   As a product manager
@@ -23,7 +24,6 @@ Feature: Join a document to a product
     And I save the product
     Then I should see "akeneo.txt"
 
-  @javascript
   Scenario: Successfully display the document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
@@ -37,7 +37,6 @@ Feature: Join a document to a product
     And I save the product
     Then I should not see "akeneo.txt"
 
-  @javascript
   Scenario: Successfully replace a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
@@ -47,7 +46,6 @@ Feature: Join a document to a product
     Then I should not see "akeneo.txt"
     But I should see "akeneo2.txt"
 
-  @javascript
   Scenario: Successfully replace and remove a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product

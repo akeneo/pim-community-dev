@@ -221,6 +221,10 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeHistory(TableNode $table)
     {
+        if ($this->getCurrentPage()->find('css', '.panel-container')) {
+            return $this->iShouldSeeHistoryInPanel($table);
+        }
+
         $updates = [];
         $rows = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
@@ -286,43 +290,87 @@ class AssertionContext extends RawMinkContext
 
     /**
      * @param TableNode $table
-     *
-     * @Then /^I should see this exact history:$/
      */
-    public function iShouldSeeThisExactHistory(TableNode $table)
+    public function iShouldSeeHistoryInPanel(TableNode $table)
     {
-        $actualUpdates = array();
-        $rows = $this->getCurrentPage()->getHistoryRows();
-        foreach ($rows as $row) {
-            $version = (int) $row->find('css', 'td.number-cell')->getHtml();
-            $allData = $row->findAll('css', 'td>ul');
+        $block = $this->getCurrentPage()->find('css', '.history-block');
 
-            $beforeData = str_replace(" ", "", strip_tags($allData[0]->getHtml()));
-            $beforeData = explode("\n", $beforeData);
-            foreach ($beforeData as $dataItem) {
-                if ("" !== $dataItem) {
-                    list($property, $value) = explode(':', $dataItem);
-                    $actualUpdates[$version.$property] = [
-                        'version'  => $version,
-                        'property' => $property,
-                        'before'   => $value
-                    ];
+        foreach ($table->getHash() as $data) {
+            $row = $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
+            if (!$row) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see history row for version %s, not found', $data['version'])
+                );
+            }
+            if (!$row->hasClass('expanded')) {
+                $row->click();
+            }
+            if (isset($data['author'])) {
+                $author = $row->find('css', 'td.author')->getText();
+                assertEquals(
+                    $data['author'],
+                    $author,
+                    sprintf(
+                        'Expecting the author of version %s to be %s, got %s',
+                        $data['version'],
+                        $data['author'],
+                        $author
+                    )
+                );
+            }
+
+            $changeset = $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
+            if (!$changeset) {
+                throw $this->createExpectationException(
+                    sprintf('No changeset found for version %s', $data['version'])
+                );
+            }
+            $changesetRows = $changeset->findAll('css', 'tr');
+            if (!$changesetRows) {
+                throw $this->createExpectationException(
+                    sprintf('No changeset rows found for version %s', $data['version'])
+                );
+            }
+
+            $matchingRow = null;
+            foreach ($changesetRows as $row) {
+                if ($row->find('css', 'td:first-of-type')->getText() === $data['property']) {
+                    $matchingRow = $row;
+                    break;
                 }
             }
 
-            $afterData = str_replace(" ", "", strip_tags($allData[1]->getHtml()));
-            $afterData = explode("\n", $afterData);
-            foreach ($afterData as $dataItem) {
-                if ("" !== $dataItem) {
-                    list($property, $value) = explode(':', $dataItem);
-                    $actualUpdates[$version.$property]['after'] = $value;
-                }
+            if (!$matchingRow) {
+                throw $this->createExpectationException(
+                    sprintf('No row found for property %s', $data['property'])
+                );
+            }
+
+            $newValue = isset($data['value']) ? $data['value'] : $data['after'];
+            $oldValue = isset($data['before']) ? $data['before'] : null;
+
+            if ($matchingRow->find('css', 'td:nth-of-type(2)')->getText() !== $oldValue && $oldValue) {
+                throw $this->createExpectationException(
+                    sprintf('Wrong old value in row %s, expected %s', $data['property'], $newValue)
+                );
+            }
+
+            if (
+                !preg_match(
+                    sprintf('/^%s$/', $newValue),
+                    $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
+                )
+            ) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Wrong new value in row %s, expected %s, got %s',
+                        $data['property'],
+                        $newValue,
+                        $actual
+                    )
+                );
             }
         }
-        $actualUpdates = array_values($actualUpdates);
-        $expectedUpdates = $table->getHash();
-
-        assertEquals($actualUpdates, $expectedUpdates);
     }
 
     /**
@@ -513,14 +561,14 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
     {
-        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
-        foreach ($icons as $icon) {
-            if ($icon->hasClass('icon-lock')) {
-                return true;
-            }
-        }
+        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
+        $error = $footer->find('css', 'div:contains("Updated by variant group")');
 
-        throw $this->createExpectationException('Affected by a variant group icon was not found');
+        if (!$error) {
+            throw $this->createExpectationException(
+                'Affected by a variant group error was not found'
+            );
+        }
     }
 
     /**
@@ -534,14 +582,14 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
     {
-        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
-        foreach ($icons as $icon) {
-            if (!$icon->hasClass('icon-lock')) {
-                return true;
-            }
-        }
+        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
+        $error = $footer->find('css', 'span:contains("Updated by variant group")');
 
-        throw $this->createExpectationException('Affected by a variant group icon is found and it should not');
+        if ($error) {
+            throw $this->createExpectationException(
+                'Affected by a variant group error was found'
+            );
+        }
     }
 
     /**

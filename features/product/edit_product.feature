@@ -55,6 +55,7 @@ Feature: Edit a product
   Scenario: Successfully preserve channel filter between datagrid and edit form
     Given I am logged in as "Sandra"
     And I am on the "sandal" product page
+    And I switch the scope to "mobile"
     Then I should see "My awesome description for mobile"
     When I am on the products page
     And I filter by "Channel" with value "E-Commerce"
