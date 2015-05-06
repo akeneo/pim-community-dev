@@ -62,7 +62,7 @@ class JobTrackerController extends Controller
      * @param ManagerRegistry          $doctrine
      * @param JobExecutionArchivist    $archivist
      * @param SerializerInterface      $serializer
-     * @param EventSubscriberInterface $jobExecutionManager
+     * @param JobExecutionManager      $jobExecutionManager
      */
     public function __construct(
         EngineInterface $templating,
@@ -71,7 +71,7 @@ class JobTrackerController extends Controller
         ManagerRegistry $doctrine,
         JobExecutionArchivist $archivist,
         SerializerInterface $serializer,
-        EventSubscriberInterface $jobExecutionManager
+        JobExecutionManager $jobExecutionManager
     ) {
         $this->templating          = $templating;
         $this->translator          = $translator;
