@@ -27,7 +27,7 @@ class AddToGroupsType extends AbstractType
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
 
-    /** @var string[] */
+    /** @var array */
     protected $warningMessages;
 
     /**
