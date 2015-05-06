@@ -89,26 +89,26 @@ class JobTrackerController extends Controller
     }
 
     /**
-     * Show a report
+     * Show a job executions report
      *
      * @param Request $request
-     * @param int     $id
+     * @param int     $jobExecutionId
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
-    public function showAction(Request $request, $id)
+    public function showAction(Request $request, $jobExecutionId)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $jobExecutionId);
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
             $archives = [];
-            foreach ($this->archivist->getArchives($jobExecution) as $key => $files) {
+            foreach ($this->archivist->getArchives($jobExecution) as $archiveName => $files) {
                 $label = $this->translator->transchoice(
-                    sprintf('pim_import_export.download_archive.%s', $key),
+                    sprintf('pim_import_export.download_archive.%s', $archiveName),
                     count($files)
                 );
-                $archives[$key] = [
+                $archives[$archiveName] = [
                     'label' => ucfirst($label),
                     'files' => $files,
                 ];
@@ -139,13 +139,13 @@ class JobTrackerController extends Controller
     /**
      * Download the log file of the job execution
      *
-     * @param int $id
+     * @param int $jobExecutionId
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function downloadLogFileAction($id)
+    public function downloadLogFileAction($jobExecutionId)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $jobExecutionId);
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
@@ -158,15 +158,15 @@ class JobTrackerController extends Controller
     /**
      * Download an archived file
      *
-     * @param int    $id
+     * @param int    $jobExecutionId
      * @param string $archiver
      * @param string $key
      *
      * @return StreamedResponse
      */
-    public function downloadFilesAction($id, $archiver, $key)
+    public function downloadFilesAction($jobExecutionId, $archiver, $key)
     {
-        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
+        $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $jobExecutionId);
 
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 

@@ -62,8 +62,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $massActionManager;
 
     /**
-     * Constructor
-     *
      * @param ProductBuilder               $productBuilder
      * @param UserContext                  $userContext
      * @param CatalogContext               $catalogContext
@@ -96,8 +94,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Set values
-     *
      * @param Collection $values
      *
      * @return EditCommonAttributes
@@ -110,8 +106,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Get values
-     *
      * @return Collection
      */
     public function getValues()
@@ -120,8 +114,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Set locale
-     *
      * @param LocaleInterface $locale
      *
      * @return EditCommonAttributes
@@ -134,8 +126,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Get locale
-     *
      * @return LocaleInterface
      */
     public function getLocale()
@@ -148,8 +138,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Set displayed attributes
-     *
      * @param Collection $displayedAttributes
      *
      * @return EditCommonAttributes
@@ -162,8 +150,6 @@ class EditCommonAttributes extends AbstractMassEditOperation
     }
 
     /**
-     * Get displayed attributes
-     *
      * @return Collection
      */
     public function getDisplayedAttributes()

@@ -26,8 +26,6 @@ class AddToGroups extends AbstractMassEditOperation
     }
 
     /**
-     * Set groups
-     *
      * @param ArrayCollection $groups
      *
      * @return AddToGroups
@@ -40,8 +38,6 @@ class AddToGroups extends AbstractMassEditOperation
     }
 
     /**
-     * Get groups
-     *
      * @return ArrayCollection
      */
     public function getGroups()

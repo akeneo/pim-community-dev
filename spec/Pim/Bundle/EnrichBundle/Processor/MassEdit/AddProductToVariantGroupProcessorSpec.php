@@ -54,7 +54,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
         $massEditJobConf->getConfiguration()->willReturn(
             json_encode(
-                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code',]]
+                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
             )
         );
 
@@ -92,7 +92,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
         $massEditJobConf->getConfiguration()->willReturn(
             json_encode(
-                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code',]]
+                ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
             )
         );
 

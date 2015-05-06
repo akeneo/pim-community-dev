@@ -53,8 +53,6 @@ class MassEditJobConfiguration
     }
 
     /**
-     * Return the job configuration
-     *
      * @return string
      */
     public function getConfiguration()
@@ -63,8 +61,6 @@ class MassEditJobConfiguration
     }
 
     /**
-     * Set the job configuration
-     *
      * @param string $configuration
      *
      * @return MassEditJobConfiguration

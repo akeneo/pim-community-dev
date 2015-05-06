@@ -111,9 +111,7 @@ class ProductToFlatArrayProcessor extends AbstractMassEditProcessor
     }
 
     /**
-     * Get normalizer context
-     *
-     * @return array $normalizerContext
+     * @return array
      */
     protected function getNormalizerContext()
     {

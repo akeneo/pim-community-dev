@@ -25,8 +25,6 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
     protected $referenceFactory;
 
     /**
-     * Constructor.
-     *
      * @param ReferenceFactory $referenceFactory
      */
     public function __construct(ReferenceFactory $referenceFactory)
@@ -39,12 +37,11 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $registry = $container->getDefinition(self::OPERATION_REGISTRY);
+        $registry   = $container->getDefinition(self::OPERATION_REGISTRY);
         $operations = $container->findTaggedServiceIds(self::OPERATION_TAG);
 
         foreach ($operations as $operationsId => $operation) {
-            $config = $operation[0];
-
+            $config   = $operation[0];
             $alias    = $config['alias'];
             $acl      = isset($config['acl']) ? $config['acl'] : null;
             $gridName = isset($config['datagrid']) ? $config['datagrid'] : null;

@@ -33,6 +33,10 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     /** @var FamilyRepositoryInterface */
     protected $familyRepository;
 
+    /**
+     * @param MassEditRepositoryInterface $massEditRepository
+     * @param FamilyRepositoryInterface   $familyRepository
+     */
     public function __construct(
         MassEditRepositoryInterface $massEditRepository,
         FamilyRepositoryInterface $familyRepository

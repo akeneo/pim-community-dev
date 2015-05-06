@@ -19,6 +19,8 @@ class OperationRegistry implements OperationRegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException If the operation is already registered
      */
     public function register(MassEditOperationInterface $operation, $operationAlias, $acl = null, $gridName = null)
     {
@@ -41,6 +43,8 @@ class OperationRegistry implements OperationRegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException If the operation is not registered
      */
     public function get($operationAlias)
     {
@@ -55,6 +59,8 @@ class OperationRegistry implements OperationRegistryInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException If no operation is registered for the given datagrid name
      */
     public function getAllByGridName($gridName)
     {

@@ -15,6 +15,7 @@ class ChangeStatusSpec extends ObjectBehavior
 
     function it_stores_the_state_to_apply_to_the_products()
     {
+        $this->isToEnable()->shouldReturn(false);
         $this->setToEnable(true);
         $this->isToEnable()->shouldReturn(true);
 

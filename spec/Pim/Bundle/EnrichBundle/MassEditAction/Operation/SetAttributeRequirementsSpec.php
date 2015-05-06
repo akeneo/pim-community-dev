@@ -51,47 +51,47 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
 
     function it_initializes_attribute_requirements_with_all_channels_and_attributes_in_the_PIM(
         ChannelRepositoryInterface $channelRepository,
-        ChannelInterface $ecommerce,
-        ChannelInterface $mobile,
+        ChannelInterface $ecommerceChannel,
+        ChannelInterface $mobileChannel,
         AttributeRepositoryInterface $attributeRepository,
-        AttributeInterface $name,
-        AttributeInterface $description,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descriptionAttribute,
         AttributeRequirementFactory $factory,
-        AttributeRequirementInterface $r1,
-        AttributeRequirementInterface $r2,
-        AttributeRequirementInterface $r3,
-        AttributeRequirementInterface $r4
+        AttributeRequirementInterface $nameECommerceRequirement,
+        AttributeRequirementInterface $nameMobileRequirement,
+        AttributeRequirementInterface $descriptionECommerceRequirement,
+        AttributeRequirementInterface $descriptionMobileRequirement
     ) {
         $channelRepository->findAll()->willReturn([
-            $ecommerce, $mobile
+            $ecommerceChannel, $mobileChannel
         ]);
         $attributeRepository->getNonIdentifierAttributes()->willReturn([
-            $name, $description
+            $nameAttribute, $descriptionAttribute
         ]);
 
-        $factory->createAttributeRequirement($name, $ecommerce, false)->willReturn($r1);
-        $r1->getAttributeCode()->willReturn('name');
-        $r1->getChannelCode()->willReturn('ecommerce');
+        $factory->createAttributeRequirement($nameAttribute, $ecommerceChannel, false)->willReturn($nameECommerceRequirement);
+        $nameECommerceRequirement->getAttributeCode()->willReturn('name');
+        $nameECommerceRequirement->getChannelCode()->willReturn('ecommerce');
 
-        $factory->createAttributeRequirement($name, $mobile, false)->willReturn($r2);
-        $r2->getAttributeCode()->willReturn('name');
-        $r2->getChannelCode()->willReturn('mobile');
+        $factory->createAttributeRequirement($nameAttribute, $mobileChannel, false)->willReturn($nameMobileRequirement);
+        $nameMobileRequirement->getAttributeCode()->willReturn('name');
+        $nameMobileRequirement->getChannelCode()->willReturn('mobile');
 
-        $factory->createAttributeRequirement($description, $ecommerce, false)->willReturn($r3);
-        $r3->getAttributeCode()->willReturn('description');
-        $r3->getChannelCode()->willReturn('ecommerce');
+        $factory->createAttributeRequirement($descriptionAttribute, $ecommerceChannel, false)->willReturn($descriptionECommerceRequirement);
+        $descriptionECommerceRequirement->getAttributeCode()->willReturn('description');
+        $descriptionECommerceRequirement->getChannelCode()->willReturn('ecommerce');
 
-        $factory->createAttributeRequirement($description, $mobile, false)->willReturn($r4);
-        $r4->getAttributeCode()->willReturn('description');
-        $r4->getChannelCode()->willReturn('mobile');
+        $factory->createAttributeRequirement($descriptionAttribute, $mobileChannel, false)->willReturn($descriptionMobileRequirement);
+        $descriptionMobileRequirement->getAttributeCode()->willReturn('description');
+        $descriptionMobileRequirement->getChannelCode()->willReturn('mobile');
 
         $this->initialize();
 
         $this->getAttributeRequirements()->toArray()->shouldReturn([
-            'name_ecommerce' => $r1,
-            'name_mobile' => $r2,
-            'description_ecommerce' => $r3,
-            'description_mobile' => $r4,
+            'name_ecommerce'        => $nameECommerceRequirement,
+            'name_mobile'           => $nameMobileRequirement,
+            'description_ecommerce' => $descriptionECommerceRequirement,
+            'description_mobile'    => $descriptionMobileRequirement,
         ]);
     }
 
@@ -100,9 +100,9 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         AttributeInterface $attrSize,
         ChannelInterface $channelMobile,
         ChannelInterface $channelEcommerce,
-        AttributeRequirementInterface $attrReqColorMobile,
-        AttributeRequirementInterface $attrReqColorEcommerce,
-        AttributeRequirementInterface $attrReqSizeEcommerce
+        AttributeRequirementInterface $colorMobileRequirement,
+        AttributeRequirementInterface $colorEcommerceRequirement,
+        AttributeRequirementInterface $sizeEcommerceRequirement
     ) {
         $attrColor->getCode()->willReturn('color');
         $attrSize->getCode()->willReturn('size');
@@ -110,29 +110,29 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $channelMobile->getCode()->willReturn('mobile');
         $channelEcommerce->getCode()->willReturn('ecommerce');
 
-        $attrReqColorMobile->getAttribute()->willReturn($attrColor);
-        $attrReqColorEcommerce->getAttribute()->willReturn($attrColor);
-        $attrReqSizeEcommerce->getAttribute()->willReturn($attrSize);
+        $colorMobileRequirement->getAttribute()->willReturn($attrColor);
+        $colorEcommerceRequirement->getAttribute()->willReturn($attrColor);
+        $sizeEcommerceRequirement->getAttribute()->willReturn($attrSize);
 
-        $attrReqColorMobile->getChannel()->willReturn($channelMobile);
-        $attrReqColorEcommerce->getChannel()->willReturn($channelEcommerce);
-        $attrReqSizeEcommerce->getChannel()->willReturn($channelEcommerce);
+        $colorMobileRequirement->getChannel()->willReturn($channelMobile);
+        $colorEcommerceRequirement->getChannel()->willReturn($channelEcommerce);
+        $sizeEcommerceRequirement->getChannel()->willReturn($channelEcommerce);
 
-        $attrReqColorMobile->isRequired()->willReturn(false);
-        $attrReqColorEcommerce->isRequired()->willReturn(true);
-        $attrReqSizeEcommerce->isRequired()->willReturn(true);
+        $colorMobileRequirement->isRequired()->willReturn(false);
+        $colorEcommerceRequirement->isRequired()->willReturn(true);
+        $sizeEcommerceRequirement->isRequired()->willReturn(true);
 
-        $attrReqColorMobile->getAttributeCode()->willReturn('color');
-        $attrReqColorEcommerce->getAttributeCode()->willReturn('color');
-        $attrReqSizeEcommerce->getAttributeCode()->willReturn('size');
+        $colorMobileRequirement->getAttributeCode()->willReturn('color');
+        $colorEcommerceRequirement->getAttributeCode()->willReturn('color');
+        $sizeEcommerceRequirement->getAttributeCode()->willReturn('size');
 
-        $attrReqColorMobile->getChannelCode()->willReturn('mobile');
-        $attrReqColorEcommerce->getChannelCode()->willReturn('ecommerce');
-        $attrReqSizeEcommerce->getChannelCode()->willReturn('ecommerce');
+        $colorMobileRequirement->getChannelCode()->willReturn('mobile');
+        $colorEcommerceRequirement->getChannelCode()->willReturn('ecommerce');
+        $sizeEcommerceRequirement->getChannelCode()->willReturn('ecommerce');
 
-        $this->addAttributeRequirement($attrReqColorMobile);
-        $this->addAttributeRequirement($attrReqColorEcommerce);
-        $this->addAttributeRequirement($attrReqSizeEcommerce);
+        $this->addAttributeRequirement($colorMobileRequirement);
+        $this->addAttributeRequirement($colorEcommerceRequirement);
+        $this->addAttributeRequirement($sizeEcommerceRequirement);
 
         $this->getActions()->shouldReturn([
             [
