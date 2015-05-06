@@ -149,3 +149,5 @@ oro_titles:
     pim_enrich_mass_edit_action_choose:    pim_title.mass_edit_action.choose
     pim_enrich_mass_edit_action_configure: pim_title.mass_edit_action.configure
     pim_enrich_mass_edit_action_perform:   pim_title.mass_edit_action.configure
+    pim_enrich_job_tracker_index:          pim_title.job_tracker.index
+    pim_enrich_job_tracker_show:           pim_title.job_tracker.show
