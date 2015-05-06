@@ -197,6 +197,14 @@ define(
                 }
             },
 
+            _onReadCriteriaInputKey: function(e) {
+                if (e.which == 13) {
+                    this.$(this.criteriaValueSelectors.value).select2('close');
+                    this._hideCriteria();
+                    this.setValue(this._formatRawValue(this._readDOMValue()));
+                }
+            },
+
             _cacheResults: function (results) {
                 _.each(results, function (result) {
                     this.resultCache[result.id] = result.text;
