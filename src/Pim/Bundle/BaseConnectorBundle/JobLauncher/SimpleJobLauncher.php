@@ -66,10 +66,10 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
 
         $jobExecution = $this->objectManager->merge($jobExecution);
 
-        $massEditConf = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
+        $jobConfiguration = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
 
-        $this->objectManager->persist($massEditConf);
-        $this->objectManager->flush($massEditConf);
+        $this->objectManager->persist($jobConfiguration);
+        $this->objectManager->flush($jobConfiguration);
 
         $cmd = sprintf(
             '%s %s/console akeneo:batch:job --env=%s %s %s %s %s >> %s/logs/batch_execute.log 2>&1',

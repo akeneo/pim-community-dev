@@ -19,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -62,7 +62,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         CursorInterface $cursor,
         JobExecution $jobExecution,
         TranslatorInterface $translator,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfiguration $jobConfiguration,
         AttributeInterface $attribute1,
         ProductInterface $product1,
         ProductInterface $product2
@@ -85,9 +85,9 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([5, 6, 7]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
-        $massEditJobConf->setConfiguration(json_encode(null))->shouldBeCalled();
+        $jobConfiguration->setConfiguration(json_encode(null))->shouldBeCalled();
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
@@ -107,8 +107,8 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
             Argument::any()
         )->shouldBeCalledTimes(2);
 
-        $objectManager->persist($massEditJobConf)->shouldBeCalled();
-        $objectManager->flush($massEditJobConf)->shouldBeCalled();
+        $objectManager->persist($jobConfiguration)->shouldBeCalled();
+        $objectManager->flush($jobConfiguration)->shouldBeCalled();
 
         $paginatorFactory->createPaginator($cursor)->willReturn($paginator);
         $paginator->rewind()->willReturn();
@@ -133,7 +133,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         CursorInterface $cursor,
         JobExecution $jobExecution,
         PaginatorInterface $paginator,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfiguration $jobConfiguration,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -190,17 +190,17 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
         $productQueryBuilder->addFilter('id', 'IN', [1, 2, 3, 4], [])->shouldBeCalled();
         $productQueryBuilder->execute()->willReturn($cursor);
 
-        $objectManager->persist($massEditJobConf)->shouldBeCalled();
-        $objectManager->flush($massEditJobConf)->shouldBeCalled();
+        $objectManager->persist($jobConfiguration)->shouldBeCalled();
+        $objectManager->flush($jobConfiguration)->shouldBeCalled();
 
-        $massEditJobConf->setConfiguration(json_encode([
+        $jobConfiguration->setConfiguration(json_encode([
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [1, 2, 3, 4]]],
             'actions' => ['value'  => 'variant_group_code']
         ]))->shouldBeCalled();
@@ -232,7 +232,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         PaginatorInterface $paginator1,
         PaginatorInterface $paginator2,
         TranslatorInterface $translator,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfiguration $jobConfiguration,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
@@ -284,7 +284,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
@@ -321,10 +321,10 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         $productQueryBuilder->addFilter('id', 'IN', [1, 2], ['locale' => null, 'scope' => null])->shouldBeCalledTimes(1);
         $productQueryBuilder->execute()->willReturn($cursor);
 
-        $objectManager->persist($massEditJobConf)->shouldBeCalled();
-        $objectManager->flush($massEditJobConf)->shouldBeCalled();
+        $objectManager->persist($jobConfiguration)->shouldBeCalled();
+        $objectManager->flush($jobConfiguration)->shouldBeCalled();
 
-        $massEditJobConf->setConfiguration(json_encode([
+        $jobConfiguration->setConfiguration(json_encode([
             'filters' => [['field' => 'id', 'operator' => 'IN', 'value' => [2 => 3, 3 => 4]]],
             'actions' => ['value'  => 'variant_group_code']
         ]))->shouldBeCalled();

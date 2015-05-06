@@ -7,15 +7,15 @@ use PhpSpec\ObjectBehavior;
 
 class MassEditJobConfigurationFactorySpec extends ObjectBehavior
 {
-    const MASS_EDIT_JOB_CONFIGURATION_CLASS = 'Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration';
+    const JOB_CONFIGURATION_CLASS = 'Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration';
 
     function let()
     {
-        $this->beConstructedWith(self::MASS_EDIT_JOB_CONFIGURATION_CLASS);
+        $this->beConstructedWith(self::JOB_CONFIGURATION_CLASS);
     }
 
     function it_creates_a_mass_edit_configuration(JobExecution $jobExecution)
     {
-        $this->create($jobExecution, ['configuration'])->shouldReturnAnInstanceOf(self::MASS_EDIT_JOB_CONFIGURATION_CLASS);
+        $this->create($jobExecution, ['configuration'])->shouldReturnAnInstanceOf(self::JOB_CONFIGURATION_CLASS);
     }
 }

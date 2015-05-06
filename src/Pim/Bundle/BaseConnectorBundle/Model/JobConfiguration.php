@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Entity;
+namespace Pim\Bundle\BaseConnectorBundle\Model;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 
@@ -11,7 +11,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditJobConfiguration
+class JobConfiguration
 {
     /** @var int */
     protected $id;
@@ -51,7 +51,7 @@ class MassEditJobConfiguration
     /**
      * @param string $configuration
      *
-     * @return MassEditJobConfiguration
+     * @return JobConfiguration
      */
     public function setConfiguration($configuration)
     {
@@ -71,7 +71,7 @@ class MassEditJobConfiguration
     /**
      * @param JobExecution $jobExecution
      *
-     * @return MassEditJobConfiguration
+     * @return JobConfiguration
      */
     public function setJobExecution(JobExecution $jobExecution)
     {

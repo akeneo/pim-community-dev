@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\ChannelNotFoundException;
 use Prophecy\Argument;
@@ -45,15 +45,15 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $stepExecution,
         $massEditRepository,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf
+        JobConfiguration $jobConfiguration
     ) {
         $this->getChannelCode()->shouldReturn(null);
         $this->setChannelCode('print');
         $this->getChannelCode()->shouldReturn('print');
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce']])
         );
 
@@ -70,11 +70,11 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $stepExecution,
         $massEditRepository,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf
+        JobConfiguration $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'mainContext' => ['scope' => null]])
         );
 

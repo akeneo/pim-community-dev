@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 
 class FilteredProductReaderSpec extends ObjectBehavior
@@ -39,7 +39,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
         MassEditRepository $massEditRepository,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfiguration $jobConfiguration,
         ProductQueryBuilderFactory $pqbFactory,
         ProductQueryBuilder $pqb,
         StepExecution $stepExecution,
@@ -53,10 +53,10 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $customEntityRepository->findOneBy(['code' => 'update_product_value'])->willReturn($jobInstance);
 
         $jobInstance->getJobExecutions()->willReturn(new ArrayCollection([$jobExecution]));
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($pqb);
-        $massEditJobConf->getConfiguration()->willReturn(json_encode(['filters' => [], 'actions' => []]));
+        $jobConfiguration->getConfiguration()->willReturn(json_encode(['filters' => [], 'actions' => []]));
         $pqb->execute()->willReturn($cursor);
         $cursor->next()->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(1);

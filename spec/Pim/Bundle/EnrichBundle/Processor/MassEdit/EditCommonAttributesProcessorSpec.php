@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -58,13 +58,13 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf
+        JobConfiguration $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],
@@ -97,12 +97,12 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf
+        JobConfiguration $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
                     'filters' => [],

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
@@ -43,7 +43,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfiguration $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
         $violations = new ConstraintViolationList([]);
@@ -51,8 +51,8 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
             )
@@ -80,7 +80,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         StepExecution $stepExecution,
         MassEditRepository $massEditRepository,
         JobExecution $jobExecution,
-        MassEditJobConfiguration $massEditJobConf,
+        JobConfiguration $jobConfiguration,
         ProductTemplateInterface $productTemplate
     ) {
         $violation = new ConstraintViolation('error2', 'spec', [], '', '', $product);
@@ -89,8 +89,8 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
             )
