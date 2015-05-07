@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -14,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Exception\ChannelNotFoundException;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -78,7 +78,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             json_encode(['filters' => [], 'mainContext' => ['scope' => null]])
         );
 
-        $this->shouldThrow(new ChannelNotFoundException())->duringInitialize();
+        $this->shouldThrow(new InvalidArgumentException('No channel found'))->duringInitialize();
     }
 
     function it_returns_flat_data_with_media(
