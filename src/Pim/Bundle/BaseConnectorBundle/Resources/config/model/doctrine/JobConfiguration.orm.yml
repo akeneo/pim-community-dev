@@ -11,9 +11,9 @@ Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration:
         configuration:
             type: text
             column: configuration
-    manyToOne:
+    oneToOne:
         jobExecution:
             targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobExecution
-            inversedBy: JobExecution
             joinColumn:
+                name: job_execution_id
                 onDelete: CASCADE
