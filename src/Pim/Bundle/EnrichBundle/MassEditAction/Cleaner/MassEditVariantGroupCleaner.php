@@ -110,7 +110,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
             $axisAttributeCodes
         );
 
-        $excludedIds = $this->addSkippedMessage($productAttributeAxis);
+        $excludedIds = $this->addSkippedMessageForDuplicatedProducts($productAttributeAxis);
         $acceptedIds = array_diff($acceptedIds, $excludedIds);
 
         $configuration['filters'] = [['field' => 'id', 'operator' => 'IN', 'value' => $acceptedIds]];
@@ -304,9 +304,9 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     protected function getExcludedProductIds(array $productAttributeAxis)
     {
         $excludedIds = [];
-        foreach ($productAttributeAxis as $attribute) {
-            if (1 < count($attribute)) {
-                $excludedIds = array_merge($excludedIds, $attribute);
+        foreach ($productAttributeAxis as $productId) {
+            if (1 < count($productId)) {
+                $excludedIds = array_merge($excludedIds, $productId);
             }
         }
 
@@ -320,7 +320,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      *
      * @return array
      */
-    protected function addSkippedMessage(array $productAttributeAxis)
+    protected function addSkippedMessageForDuplicatedProducts(array $productAttributeAxis)
     {
         $excludedIds = $this->getExcludedProductIds($productAttributeAxis);
         if (!empty($excludedIds)) {

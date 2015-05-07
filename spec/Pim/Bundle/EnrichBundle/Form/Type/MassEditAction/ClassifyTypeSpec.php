@@ -18,8 +18,8 @@ class ClassifyTypeSpec extends ObjectBehavior
         $categoryManager->getEntityRepository()->willReturn($categoryRepository);
 
         $this->beConstructedWith(
-            'Pim\Bundle\CatalogBundle\Entity\Category',
             $categoryManager,
+            'Pim\Bundle\CatalogBundle\Entity\Category',
             'Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify'
         );
     }

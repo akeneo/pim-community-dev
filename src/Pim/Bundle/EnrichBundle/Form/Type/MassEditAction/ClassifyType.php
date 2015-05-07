@@ -32,14 +32,14 @@ class ClassifyType extends AbstractType
     protected $trees;
 
     /**
-     * @param string          $categoryClass
      * @param CategoryManager $categoryManager
+     * @param string          $categoryClass
      * @param string          $dataClass
      */
-    public function __construct($categoryClass, $categoryManager, $dataClass)
+    public function __construct(CategoryManager $categoryManager, $categoryClass, $dataClass)
     {
-        $this->categoryClass   = $categoryClass;
         $this->categoryManager = $categoryManager;
+        $this->categoryClass   = $categoryClass;
         $this->dataClass       = $dataClass;
         $this->trees           = $categoryManager->getEntityRepository()->findBy(['parent' => null]);
     }

@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Exception\ChannelNotFoundException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -161,14 +161,14 @@ class ProductToFlatArrayProcessor extends AbstractMassEditProcessor
     /**
      * Set the channel in parameter from the job configuration
      *
-     * @throws ChannelNotFoundException
+     * @throws InvalidArgumentException
      */
     protected function setChannelCodeFromJobConfiguration()
     {
         $configuration = $this->getJobConfiguration();
 
         if (!isset($configuration['mainContext']['scope'])) {
-            throw new ChannelNotFoundException();
+            throw new InvalidArgumentException('No channel found');
         }
         $this->setChannelCode($configuration['mainContext']['scope']);
     }
