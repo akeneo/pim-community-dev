@@ -103,10 +103,14 @@ class Config
         );
 
         $config['build']['paths'] = array_merge($config['build']['paths'], $paths);
-        $config['build']['include'] = array_merge(
-            array_keys($paths),
-            array_keys($config['config']['paths'])
-        );
+
+        $include = array_keys($paths);
+        foreach ($config['config']['paths'] as $key => $path) {
+            // If path references a template, load it via the require text plugin
+            $include[] = substr($path, -5) === '.html' ? sprintf('text!%s', $key) : $key;
+        }
+
+        $config['build']['include'] = $include;
 
         return $config['build'];
     }
