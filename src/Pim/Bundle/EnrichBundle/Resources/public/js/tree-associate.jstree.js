@@ -6,7 +6,7 @@ define(
         return function (elementId, hiddenCategoryId) {
             var $el = $(elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
-                throw new Error('Unable to instantiate tree on this element');
+                return;
             }
             var self         = this;
             var currentTree  = -1;
