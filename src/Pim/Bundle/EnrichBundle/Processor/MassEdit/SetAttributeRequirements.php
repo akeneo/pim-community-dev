@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use InvalidArgumentException;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 
 /**
  * Applies modifications on families to add attribute requirements.
@@ -28,18 +28,18 @@ class SetAttributeRequirements extends AbstractMassEditProcessor
     protected $factory;
 
     /**
-     * @param MassEditRepositoryInterface  $massEditRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ChannelRepositoryInterface   $channelRepository
-     * @param AttributeRequirementFactory  $factory
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param AttributeRepositoryInterface        $attributeRepository
+     * @param ChannelRepositoryInterface          $channelRepository
+     * @param AttributeRequirementFactory         $factory
      */
     public function __construct(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory
     ) {
-        parent::__construct($massEditRepository);
+        parent::__construct($jobConfigurationRepo);
 
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;

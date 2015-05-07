@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -25,9 +25,6 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var AttributeRepositoryInterface */
-    protected $massActionRepository;
-
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
@@ -39,16 +36,16 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
-     * @param MassEditRepositoryInterface          $massEditRepository
+     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      */
     public function __construct(
         ProductUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
-        MassEditRepositoryInterface $massEditRepository
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
-        parent::__construct($massEditRepository);
+        parent::__construct($jobConfigurationRepo);
 
         $this->productUpdater       = $productUpdater;
         $this->validator            = $validator;

@@ -6,9 +6,9 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -19,12 +19,12 @@ class AddProductValueProcessorSpec extends ObjectBehavior
     function let(
         ProductUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
-        MassEditRepository $massEditRepository
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         $this->beConstructedWith(
             $productUpdater,
             $validator,
-            $massEditRepository
+            $jobConfigurationRepo
         );
     }
 
@@ -33,7 +33,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
@@ -42,7 +42,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
@@ -60,7 +60,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
@@ -70,7 +70,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );

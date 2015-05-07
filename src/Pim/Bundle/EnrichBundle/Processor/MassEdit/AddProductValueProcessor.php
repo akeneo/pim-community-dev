@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -24,16 +24,16 @@ class AddProductValueProcessor extends AbstractMassEditProcessor
     protected $validator;
 
     /**
-     * @param ProductUpdaterInterface     $productUpdater
-     * @param ValidatorInterface          $validator
-     * @param MassEditRepositoryInterface $massEditRepository
+     * @param ProductUpdaterInterface             $productUpdater
+     * @param ValidatorInterface                  $validator
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
         ProductUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
-        MassEditRepositoryInterface $massEditRepository
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
-        parent::__construct($massEditRepository);
+        parent::__construct($jobConfigurationRepo);
 
         $this->productUpdater = $productUpdater;
         $this->validator      = $validator;

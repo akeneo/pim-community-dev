@@ -8,8 +8,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityNotFoundException;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -34,15 +34,15 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     protected $familyRepository;
 
     /**
-     * @param MassEditRepositoryInterface $massEditRepository
-     * @param FamilyRepositoryInterface   $familyRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param FamilyRepositoryInterface           $familyRepository
      */
     public function __construct(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         FamilyRepositoryInterface $familyRepository
     ) {
-        $this->massEditRepository = $massEditRepository;
-        $this->familyRepository   = $familyRepository;
+        $this->jobConfigurationRepo = $jobConfigurationRepo;
+        $this->familyRepository     = $familyRepository;
 
         $this->isExecuted = false;
     }
@@ -119,7 +119,7 @@ class FilteredFamilyReader extends AbstractConfigurableStepElement implements
     protected function getJobConfiguration()
     {
         $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
+        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
 
         if (null === $massEditJobConf) {
             throw new EntityNotFoundException(sprintf(
