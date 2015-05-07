@@ -1,6 +1,6 @@
 Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration:
     type: entity
-    table: pim_mass_edit_job_configuration
+    table: pim_job_configuration
     repositoryClass: Pim\Bundle\EnrichBundle\Entity\Repository\MassEdit\MassEditRepository
     fields:
         id:

@@ -15,6 +15,6 @@ services:
         class: %pim_enrich.repository.mass_edit.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
-        arguments: [%pim_base_connector.entity.job_configuration.class%]
+        arguments: [%pim_base_connector.model.job_configuration.class%]
         tags:
             - { name: 'pim_repository' }

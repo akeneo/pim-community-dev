@@ -4,6 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle;
 
 use Akeneo\Bundle\BatchBundle\Connector\Connector;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -21,6 +22,7 @@ class PimBaseConnectorBundle extends Connector
     public function build(ContainerBuilder $container)
     {
         $container
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
             ->addCompilerPass(new DependencyInjection\Compiler\RegisterArchiversPass());
 
         $mappings = array(
@@ -31,7 +33,7 @@ class PimBaseConnectorBundle extends Connector
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 $mappings,
                 ['doctrine.orm.entity_manager'],
-                'akeneo_storage_utils.storage_driver.doctrine/orm'
+                false
             )
         );
     }

@@ -4,4 +4,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
-            - %pim_base_connector.entity.job_configuration.class%
+            - %pim_base_connector.model.job_configuration.class%
