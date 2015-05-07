@@ -249,7 +249,7 @@ class Edit extends Form
             }
         }
 
-        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', lcfirst($name)));
+        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($name)));
 
         if (!$container) {
             throw new ElementNotFoundException($this->getSession(), 'form container ', 'value', $name);
@@ -336,12 +336,7 @@ class Edit extends Form
         } elseif ($container->hasClass('textarea-field')) {
             return 'textArea';
         } else {
-            throw new \Exception(
-                sprintf(
-                    'Could not find field type for field with label "%s".',
-                    $label->getParent()->getHtml()
-                )
-            );
+            return parent::getFieldType($label);
         }
     }
 
@@ -357,7 +352,7 @@ class Edit extends Form
      */
     protected function findCompoundField($name, $subLabelText)
     {
-        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', lcfirst($name)));
+        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($name)));
 
         if (!$container) {
             throw new ElementNotFoundException($this->getSession(), 'compound form container ', 'value', $name);
@@ -382,6 +377,9 @@ class Edit extends Form
     {
         $field = $label->getParent()->getParent()->find('css', 'div.field-input input');
 
+        if (!$field) {
+            $field = $label->getParent()->find('css', 'div.controls input');
+        }
         $field->setValue($value);
     }
 
@@ -557,7 +555,7 @@ class Edit extends Form
      */
     public function getAddOptionLinkFor($field)
     {
-        return $this->find('css', sprintf('.control-group:contains("%s") .add-attribute-option', $field));
+        return $this->findField($field)->getParent()->getParent()->getParent()->find('css', '.add-attribute-option');
     }
 
     /**

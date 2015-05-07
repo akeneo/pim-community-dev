@@ -863,6 +863,9 @@ class WebUser extends RawMinkContext
     public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
         $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
+        if ($popin && !$element) {
+            $element = $this->getCurrentPage()->find('css', '.modal');
+        }
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
@@ -1172,10 +1175,15 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButtonInThePopin($button)
     {
-        $this
+        $button = $this
             ->getCurrentPage()
-            ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
-            ->press();
+            ->find('css', sprintf('.ui-dialog button:contains("%s")', $button));
+        if (!$button) {
+            $button = $this
+            ->getCurrentPage()
+            ->find('css', sprintf('.modal a:contains("%s")', $button));
+        }
+        $button->press();
         $this->wait();
     }
 

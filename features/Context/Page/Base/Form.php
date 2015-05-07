@@ -511,11 +511,9 @@ class Form extends Base
             if (false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
                 return 'wysiwyg';
             }
-
-            return 'text';
         }
 
-        return 'compound';
+        return 'text';
     }
 
     /**
