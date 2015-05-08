@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
-    function ($, Navigation, LoadingMask, initSelect2) {
+    ['jquery', 'backbone', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
+    function ($, Backbone, LoadingMask, initSelect2) {
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog
@@ -114,7 +114,7 @@ define(
                     if (callback) {
                         callback(data);
                     } else {
-                        Navigation.getInstance().setLocation(data.url);
+                        Backbone.history.navigate(data.url);
                     }
                 } else if ($(data).prop('tagName').toLowerCase() === 'form') {
                     createDialog(data);

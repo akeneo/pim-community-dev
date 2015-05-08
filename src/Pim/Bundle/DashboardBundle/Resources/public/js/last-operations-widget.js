@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'moment'],
-    function ($, _, Routing, Navigation, AbstractWidget, moment) {
+    ['jquery', 'underscore', 'backbone', 'routing', 'pim/dashboard/abstract-widget', 'moment'],
+    function ($, _, Backbone, Routing, AbstractWidget, moment) {
         'use strict';
 
         var LastOperationsWidget = AbstractWidget.extend({
@@ -74,7 +74,7 @@ define(
             followLink: function(e) {
                 e.preventDefault();
 
-                Navigation.getInstance().setLocation(
+                Backbone.history.navigate(
                     Routing.generate(
                         'pim_importexport_' + $(e.currentTarget).data('operation-type') + '_execution_show',
                         { id: $(e.currentTarget).data('id') }
