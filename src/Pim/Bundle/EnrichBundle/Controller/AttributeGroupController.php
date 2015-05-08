@@ -187,8 +187,6 @@ class AttributeGroupController extends AbstractDoctrineController
 
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
-
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', ['id' => $group->getId()]);
         }
 
         return [

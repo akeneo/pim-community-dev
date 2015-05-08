@@ -3,11 +3,13 @@
 
 {% set entityId = form.vars.value.id %}
 {% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
-{% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
 {% set gridName = 'pim-group-user-grid' %}
 {% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
 
 {% block navButtons %}
+    <script type="text/javascript">
+        require('pim/page-title').set({'group': '{{ form.vars.value.name }}'});
+    </script>
     {% if entityId and resource_granted('pim_user_group_remove') %}
         {{ UI.deleteButton({
             'dataUrl': path('oro_user_group_delete', {'id': entityId}),

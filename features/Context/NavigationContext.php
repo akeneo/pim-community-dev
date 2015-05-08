@@ -116,10 +116,17 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmLoggedInAs($username)
     {
+        $this->getSession()->visit($this->locatePath('/user/logout'));
+        $this->wait();
         $this->username = $username;
         $this->password = $username;
 
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+        $this->getPage('Base Login')->authenticate($username, $username);
+        if (null === $this->currentPage) {
+            $this->currentPage = 'Dashboard index';
+        }
+        $this->wait();
     }
 
     /**
@@ -747,7 +754,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->currentPage = $page;
 
-        /** @var Base $page */
         $page = $this->getCurrentPage()->open($options);
 
         // spin function to deal with invalid CSRF problems
@@ -785,7 +791,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $expected = str_replace('#', '', $expected);
+        $actualFullUrl = str_replace('#', '', $this->getSession()->getCurrentUrl());
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
 
         $result = parse_url($expected, PHP_URL_PATH) === $actualUrl;

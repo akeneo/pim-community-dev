@@ -1,3 +1,8 @@
 config:
     paths:
-        pim/job-execution-view: pimimportexport/js/job-execution-view
+        pim/job-execution-view:                pimimportexport/js/job-execution-view
+
+        pim/template/job-execution-summary:    pimimportexport/templates/job-execution-summary.html
+        pim/template/job-execution-status:     pimimportexport/templates/job-execution-status.html
+        pim/template/job-execution-buttons:    pimimportexport/templates/job-execution-buttons.html
+        pim/template/job-execution-log-button: pimimportexport/templates/job-execution-log-button.html

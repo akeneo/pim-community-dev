@@ -1,8 +1,6 @@
 pim_enrich_attribute_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.attribute:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.attribute:indexAction }
 
 pim_enrich_attribute_create:
     path: /create
@@ -34,5 +32,5 @@ pim_enrich_attribute_create_option:
 
 pim_enrich_attribute_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.rest.attribute:indexAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.attribute:indexAction }
     methods: [GET]

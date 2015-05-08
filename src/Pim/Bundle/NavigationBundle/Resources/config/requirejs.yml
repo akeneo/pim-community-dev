@@ -11,7 +11,6 @@ config:
         routing:                          fosjsrouting/js/router
         jquery.form:                      pimnavigation/lib/jquery-form/jquery.form
         url:                              pimnavigation/lib/url/url.min
-        oro/navigation:                   pimnavigation/js/navigation
         oro/navigation/abstract-view:     pimnavigation/js/navigation/abstract-view
         oro/navigation/collection:        pimnavigation/js/navigation/collection
         oro/navigation/dotmenu/item-view: pimnavigation/js/navigation/dotmenu/item-view

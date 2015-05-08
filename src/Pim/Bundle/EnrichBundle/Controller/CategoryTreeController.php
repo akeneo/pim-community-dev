@@ -104,7 +104,7 @@ class CategoryTreeController extends Controller
      *
      * @return array
      *
-     * @Template
+     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
      */
     public function listTreeAction(Request $request)
     {
@@ -172,9 +172,7 @@ class CategoryTreeController extends Controller
      *
      * @param Request $request
      *
-     * @throws AccessDeniedException
-     *
-     * @Template
+     * @Template("PimEnrichBundle:CategoryTree:children.json.twig")
      *
      * @return array
      */

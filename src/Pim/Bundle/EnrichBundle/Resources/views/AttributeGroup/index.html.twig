@@ -1,12 +1,4 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
-
 {% set currentGroup = group is defined and group is not empty ? group.id : null %}
-
-{% block head_script_component %}
-    {{ parent() }}
-    {% set sortFieldId = form is defined and form.sort_order is defined ? form.sort_order.vars.id : null %}
-    {% include 'PimEnrichBundle:AttributeGroup:_js-handler.html.twig' with { sortFieldId: sortFieldId, currentGroup: currentGroup } %}
-{% endblock %}
 
 {% block content %}
     <div id="group-container" class="row-fluid">
@@ -22,7 +14,7 @@
                                     <input name="{{ groupId }}" type="hidden" value="{{ loop.index }}">
                                 </span>
                                 {% if editGranted %}
-                                    <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                    <a href="#{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                                 {% else %}
                                     {{ groupName }}
                                 {% endif %}
@@ -35,7 +27,7 @@
                     {% for groupId, groupName in groups %}
                         <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
                             {% if editGranted %}
-                                <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                <a href="#{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                             {% else %}
                                 {{ groupName }}
                             {% endif %}
@@ -52,7 +44,7 @@
                         <br/>
                         <br/>
                         {{ 'attribute group.or'|trans }}
-                        <a href="{{ path('pim_enrich_attributegroup_create') }}">
+                        <a href="#{{ path('pim_enrich_attributegroup_create') }}">
                             <span class="label link-label large">{{ 'attribute group.create new'|trans }}</span>
                         </a>
                     {% endif %}
@@ -60,4 +52,7 @@
             {% endblock groupTab %}
         </div>
     </div>
+
+    {% set sortFieldId = form is defined and form.sort_order is defined ? form.sort_order.vars.id : null %}
+    {% include 'PimEnrichBundle:AttributeGroup:_js-handler.html.twig' with { sortFieldId: sortFieldId, currentGroup: currentGroup } %}
 {% endblock %}

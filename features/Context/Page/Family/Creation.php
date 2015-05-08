@@ -14,5 +14,5 @@ use Context\Page\Base\Form;
 class Creation extends Form
 {
     /** @var string */
-    protected $path = '/configuration/family/create';
+    protected $path = '#/configuration/family/create';
 }
