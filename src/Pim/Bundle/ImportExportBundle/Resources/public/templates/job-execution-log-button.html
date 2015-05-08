@@ -1,0 +1,6 @@
+<% if (hasLog) { %>
+    <a class="btn no-hash icons-holder-text" title="<%= downloadLabel %>" href="<%= Routing.generate(downloadLogRoute, {id: executionId}) %>">
+        <i class="icon-download"></i>
+        <%= downloadLabel %>
+    </a>
+<% } %>
