@@ -1,5 +1,5 @@
 pim_enrich_categorytree_listtree:
-    path: /list-tree.{_format}
+    path: /list-tree
     defaults: { _controller: pim_enrich.controller.category_tree:listTreeAction }
     requirements:
         _format: json
@@ -9,7 +9,7 @@ pim_enrich_categorytree_movenode:
     defaults: { _controller: pim_enrich.controller.category_tree:moveNodeAction }
 
 pim_enrich_categorytree_children:
-    path: /children.{_format}
+    path: /children
     defaults: { _controller: pim_enrich.controller.category_tree:childrenAction }
     requirements:
         _format: json

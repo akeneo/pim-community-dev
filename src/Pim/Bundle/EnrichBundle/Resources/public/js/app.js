@@ -9,8 +9,8 @@ define(function (require) {
     return (function () {
         return {
             debug: false,
-            bootstrap: function (debug) {
-                this.debug = !!debug;
+            bootstrap: function (options) {
+                this.debug = !!options.debug;
                 this.router = new (require('pim/router'))();
 
                 messenger.setup({
