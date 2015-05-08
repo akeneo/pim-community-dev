@@ -88,14 +88,6 @@ define(['jquery', 'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'], function ($
         }, 500);
     };
 
-    layout.hideProgressBar = function () {
-        var $bar = $('#progressbar');
-        if ($bar.is(':visible')) {
-            $bar.hide();
-            $('#page').show();
-        }
-    };
-
     layout.adjustScrollspy = function () {
         $('[data-spy="scroll"]').each(function () {
             var $spy = $(this);

@@ -2,11 +2,6 @@
 
 {% oro_title_set({ params: { "%product.sku%": product.label } }) %}
 
-{% block head_script %}
-    {{ parent() }}
-    {% include 'PimEnrichBundle:Product:_js-handler.html.twig' %}
-{% endblock %}
-
 {% if elements is not defined %}
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
@@ -77,4 +72,6 @@
     <a href="javascript:void(0);"
         id="create-product"
         data-form-url="{{ path('pim_enrich_product_create', { 'dataLocale': dataLocale }) }}"></a>
+
+    {% include 'PimEnrichBundle:Product:_js-handler.html.twig' %}
 {% endblock %}

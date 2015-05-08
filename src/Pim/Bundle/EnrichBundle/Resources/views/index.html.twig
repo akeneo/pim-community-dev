@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>{% trans %}Loading...{% endtrans %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block head_style %}
+            <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+            {% include 'OroAsseticBundle:Assets:oro_css.html.twig' %}
+        {% endblock %}
+
+        {% block script %}
+            {% block scripts_before %}
+                {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
+                {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
+            {% endblock %}
+            {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
+            {% include 'OroLocaleBundle::locale_settings.html.twig' %}
+
+            <script type="text/javascript">
+                require(['pim/app'], function (app) {
+                    app.bootstrap({{ app.debug }});
+                });
+            </script>
+
+        {% endblock %}
+    {% endblock %}
+</head>
+<body class="{% block bodyClass %}{% endblock %}">
+
+<div id="page">
+    <div id="top-page">
+        {% block header %}
+            <header class="navbar" id="oroplatform-header">
+                {% include 'OroNavigationBundle:ApplicationMenu:dotsMenu.html.twig' %}
+                <div class="navbar-inner">
+                    <div class="container">
+                        {% include 'PimUIBundle:Default:logo.html.twig' %}
+
+                        <div class="navbar-responsive-collapse">
+                            {% block navbar %}
+                            <div class="nav pull-left top-search shortcuts">
+                            </div>
+                            {% endblock navbar %}
+                            <div class="divider-vertical small-divider"></div>
+                            <div id="main-menu">
+                                {% block application_menu %}
+                                    {% include 'OroNavigationBundle:ApplicationMenu:applicationMenu.html.twig' %}
+                                {% endblock application_menu %}
+                             </div>
+                            {% block user_menu %}
+                                <ul class="nav pull-right user-menu">
+                                    {% include 'PimNotificationBundle:Default:notifications.html.twig' %}
+                                    {% include 'PimUserBundle:Menu:menuProfile.html.twig' %}
+                                    {% include 'OroUIBundle:Default:help.html.twig' %}
+                                </ul>
+                            {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </header>
+        {% endblock header %}
+        {% block main %}
+            <div id="main" >
+                <div class="container-fluid breadcrumb-pin">
+                    <div id="breadcrumb">
+                        {% block breadcrumb %}
+                            {% include 'OroNavigationBundle:ApplicationMenu:breabcrumbs.html.twig' %}
+                        {% endblock breadcrumb %}
+                    </div>
+
+                    {% include 'OroNavigationBundle:ApplicationMenu:pinButton.html.twig' %}
+
+                    <div id="flash-messages">
+                        {% block messages %}
+                            <div class="flash-messages-frame">
+                                <div class="flash-messages-holder"></div>
+                            </div>
+                            <script type="text/template" id="message-item-template">
+                                <div class="alert <% if (type) {  %><%= 'alert-' + type %><% } %> fade in top-messages ">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    <div class="message"><%= message %></div>
+                                </div>
+                            </script>
+                        {% endblock messages %}
+                    </div>
+                </div>
+                <div class="hash-loading-mask"></div>
+                <div id="container" class="scrollable-container">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+        {% endblock main %}
+    </div>
+</div>
+</body>
+</html>

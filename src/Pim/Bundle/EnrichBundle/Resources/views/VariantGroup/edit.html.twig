@@ -8,11 +8,6 @@
 
 {% oro_title_set({ params: { '%group.label%': form.vars.data.label } }) %}
 
-{% block head_script %}
-    {{ parent() }}
-    {% include 'PimEnrichBundle:VariantGroup:_js-handler.html.twig' %}
-{% endblock %}
-
 {% block content %}
 
     {% if resource_granted('pim_enrich_variant_group_add_attributes') %}
@@ -79,4 +74,6 @@
             {{ view_elements(form.vars.id ~ '.form_tab') }}
         </div>
         {{ form_end(form) }}
+
+    {% include 'PimEnrichBundle:VariantGroup:_js-handler.html.twig' %}
 {% endblock %}

@@ -11,6 +11,9 @@ config:
                 - jquery.jstree
 
     paths:
+        pim/app:                            pimenrich/js/app
+        pim/router:                         pimenrich/js/router
+
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
         jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch

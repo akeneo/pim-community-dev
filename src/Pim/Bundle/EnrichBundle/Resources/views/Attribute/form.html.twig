@@ -51,9 +51,6 @@
             {{ form_row(form.id) }}
         </div>
     {{ form_end(form) }}
-{% endblock %}
 
-{% block head_script_component %}
-    {{ parent() }}
     {% include 'PimEnrichBundle:Attribute:_js-handler.html.twig' with measures %}
 {% endblock %}

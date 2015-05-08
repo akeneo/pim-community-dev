@@ -3,21 +3,6 @@
 
 {% set title = 'products'|trans %}
 
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'jquery.sidebarize'],
-            function ($) {
-                'use strict';
-                $(function() {
-                    $('.has-sidebar').sidebarize();
-                });
-            }
-        );
-    </script>
-{% endblock %}
-
 {% block content %}
 
     {% set buttons %}
@@ -59,5 +44,17 @@
             {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }) }}
         </div>
     </div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'jquery.sidebarize'],
+            function ($) {
+                'use strict';
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            }
+        );
+    </script>
 
 {% endblock %}

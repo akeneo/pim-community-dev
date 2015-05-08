@@ -2,12 +2,6 @@
 
 {% set currentGroup = group is defined and group is not empty ? group.id : null %}
 
-{% block head_script_component %}
-    {{ parent() }}
-    {% set sortFieldId = form is defined and form.sort_order is defined ? form.sort_order.vars.id : null %}
-    {% include 'PimEnrichBundle:AttributeGroup:_js-handler.html.twig' with { sortFieldId: sortFieldId, currentGroup: currentGroup } %}
-{% endblock %}
-
 {% block content %}
     <div id="group-container" class="row-fluid">
         <div class="sidebar-list">
@@ -60,4 +54,7 @@
             {% endblock groupTab %}
         </div>
     </div>
+
+    {% set sortFieldId = form is defined and form.sort_order is defined ? form.sort_order.vars.id : null %}
+    {% include 'PimEnrichBundle:AttributeGroup:_js-handler.html.twig' with { sortFieldId: sortFieldId, currentGroup: currentGroup } %}
 {% endblock %}

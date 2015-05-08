@@ -46,8 +46,14 @@ function(_, mediator, ModelAction) {
         /**
          * Execute redirect
          */
-        execute: function() {
-            window.location.href = this.getLink();
+        execute: function () {
+            var link = this.getLink();
+
+            if (link.substring(0, 1) !== '#') {
+                link = '#' + link;
+            }
+
+            window.location.href = link;
         },
 
         /**
