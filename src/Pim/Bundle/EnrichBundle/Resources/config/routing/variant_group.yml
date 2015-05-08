@@ -1,8 +1,6 @@
 pim_enrich_variant_group_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.variant_group:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.variant_group:indexAction }
 
 pim_enrich_variant_group_create:
     path: /create

@@ -1,8 +1,6 @@
 pim_enrich_product_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.product:indexAction, _format: html }
-    requirements:
-        _format: html|json|csv
+    path: /
+    defaults: { _controller: pim_enrich.controller.product:indexAction }
 
 pim_enrich_product_create:
     path: /create/{dataLocale}
@@ -52,7 +50,7 @@ pim_enrich_product_remove:
     methods: [DELETE]
 
 pim_enrich_product_listcategories:
-    path: /list-categories/product/{id}/parent/{categoryId}.{_format}
+    path: /list-categories/product/{id}/parent/{categoryId}
     defaults: { _controller: pim_enrich.controller.product:listCategoriesAction }
     requirements:
         id: '[0-9a-f]+'
@@ -72,15 +70,13 @@ pim_enrich_product_completeness:
         id: '[0-9a-f]+'
 
 pim_enrich_product_history:
-    path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.product:historyAction, _format: html }
+    path: /{id}/history
+    defaults: { _controller: pim_enrich.controller.product:historyAction }
     requirements:
         id: '[0-9a-f]+'
-        _format: html|json
 
 pim_enrich_product_comments:
-    path: /{id}/comments.{_format}
-    defaults: { _controller: pim_enrich.controller.product_comment:listCommentsAction, _format: html }
+    path: /{id}/comments
+    defaults: { _controller: pim_enrich.controller.product_comment:listCommentsAction }
     requirements:
         id: '[0-9a-f]+'
-        _format: html|json

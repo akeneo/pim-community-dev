@@ -1,21 +1,21 @@
 pim_notification_notification_list:
     path: /notification/list
-    defaults: { _controller: pim_notification.controller.notification:listAction, _format: json }
+    defaults: { _controller: pim_notification.controller.notification:listAction }
 
 pim_notification_notification_count_unread:
     path: /notification/count_unread
-    defaults: { _controller: pim_notification.controller.notification:countUnreadAction, _format: json }
+    defaults: { _controller: pim_notification.controller.notification:countUnreadAction }
 
 pim_notification_notification_mark_viewed:
     path: /notification/mark_viewed/{id}
-    defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, _format: json, id: ~ }
+    defaults: { _controller: pim_notification.controller.notification:markAsViewedAction, id: ~ }
     requirements:
         id: \d+
         _method: POST
 
 pim_notification_notification_remove:
     path: /notification/remove/{id}
-    defaults: { _controller: pim_notification.controller.notification:removeAction, _format: json }
+    defaults: { _controller: pim_notification.controller.notification:removeAction }
     requirements:
         id: \d+
         _method: DELETE

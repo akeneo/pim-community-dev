@@ -1,8 +1,6 @@
 pim_enrich_family_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.family:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.family:indexAction }
 
 pim_enrich_family_create:
     path: /create
@@ -37,8 +35,7 @@ pim_enrich_family_removeattribute:
     methods: [DELETE]
 
 pim_enrich_family_history:
-    path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.family:historyAction, _format: html }
+    path: /{id}/history
+    defaults: { _controller: pim_enrich.controller.family:historyAction }
     requirements:
         id: \d+
-        _format: html|json

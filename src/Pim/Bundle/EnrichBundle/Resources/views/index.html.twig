@@ -17,7 +17,9 @@
 
             <script type="text/javascript">
                 require(['pim/app'], function (app) {
-                    app.bootstrap({{ app.debug }});
+                    app.bootstrap({
+                        debug: {{ app.debug ? 'true' : 'false' }}
+                    });
                 });
             </script>
 

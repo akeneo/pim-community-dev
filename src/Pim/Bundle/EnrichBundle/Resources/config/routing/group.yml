@@ -1,8 +1,6 @@
 pim_enrich_group_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.group:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.group:indexAction }
 
 pim_enrich_group_create:
     path: /create
@@ -28,8 +26,7 @@ pim_enrich_group_productlist:
         id: \d+
 
 pim_enrich_group_history:
-    path: /{id}/history.{_format}
-    defaults: { _controller: pim_enrich.controller.group:historyAction, _format: html }
+    path: /{id}/history
+    defaults: { _controller: pim_enrich.controller.group:historyAction }
     requirements:
         id: \d+
-        _format: html|json

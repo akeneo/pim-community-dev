@@ -1,8 +1,6 @@
 pim_enrich_channel_index:
-    path: /.{_format}
-    defaults: { _controller: pim_enrich.controller.channel:indexAction, _format: html }
-    requirements:
-        _format: html|json
+    path: /
+    defaults: { _controller: pim_enrich.controller.channel:indexAction }
 
 pim_enrich_channel_create:
     path: /create
