@@ -56,7 +56,7 @@ define(
             open: function (e) {
                 this.preventOpen(e);
                 if (this.model.get('url')) {
-                    Navigation.getInstance().setLocation(this.model.get('url'));
+                    window.location.hash = this.model.get('url');
                 }
             },
 

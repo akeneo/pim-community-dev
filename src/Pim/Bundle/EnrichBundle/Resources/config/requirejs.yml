@@ -78,6 +78,9 @@ config:
                             list: pim_enrich_mass_edit_action_sequential_edit_get
 
     paths:
+        pim/app:                            pimenrich/js/app
+        pim/router:                         pimenrich/js/router
+
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
         jstree/nested_switch:               pimenrich/js/jstree/jquery.jstree.nested_switch

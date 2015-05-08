@@ -38,7 +38,7 @@ pim_reference_data:
 oro_default:
     pattern:  /
     defaults:
-        template:    PimDashboardBundle:Dashboard:index.html.twig
+        template:    PimEnrichBundle::index.html.twig
         _controller: FrameworkBundle:Template:template
 
 oro_auto_routing:

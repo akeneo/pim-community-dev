@@ -89,7 +89,7 @@ define(function (require) {
 
         /** @property */
         routes: {
-            "(url=*page)(|g/*encodedStateData)": "defaultAction"
+            // "(url=*page)(|g/*encodedStateData)": "defaultAction"
         },
 
         skipAjaxCall: false,
@@ -208,6 +208,7 @@ define(function (require) {
          * Init
          */
         init: function() {
+            return;
             /**
              * Processing all links in grid after grid load
              */

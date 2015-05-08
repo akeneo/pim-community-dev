@@ -52,6 +52,7 @@ define(
             },
 
             isDashboardPage: function () {
+                return '' === Backbone.history.getFragment();
                 return Navigation.getInstance().url === Routing.generate('oro_default');
             },
 

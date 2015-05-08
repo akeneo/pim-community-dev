@@ -30,9 +30,9 @@
         </div>
 
     {{ form_end(form) }}
-{% endblock %}
+    {% block body_script %}
+        {% set currentStep = 2 %}
+        {{ parent() }}
+    {% endblock %}
 
-{% block head_script_component %}
-    {% set currentStep = 2 %}
-    {{ parent() }}
 {% endblock %}

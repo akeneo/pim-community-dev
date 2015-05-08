@@ -3,25 +3,6 @@
 
 {% set title = 'products'|trans %}
 
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/user-context', 'jquery.sidebarize'],
-            function ($, UserContext) {
-                'use strict';
-                UserContext.set('catalogLocale', '{{ dataLocale.code }}');
-                $(function() {
-                    $('.has-sidebar').sidebarize();
-
-                });
-            }
-        );
-
-        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
-    </script>
-{% endblock %}
-
 {% block content %}
 
     {% set buttons %}
@@ -63,4 +44,20 @@
             {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale.code }) }}
         </div>
     </div>
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/user-context', 'jquery.sidebarize'],
+            function ($, UserContext) {
+                'use strict';
+                UserContext.set('catalogLocale', '{{ dataLocale.code }}');
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            }
+        );
+
+        sessionStorage.setItem('mass_edit_selected_attributes', JSON.stringify([]));
+    </script>
+
 {% endblock %}
