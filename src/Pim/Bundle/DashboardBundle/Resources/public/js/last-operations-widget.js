@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/navigation', 'pim/dashboard/abstract-widget', 'moment'],
-    function ($, _, Routing, Navigation, AbstractWidget, moment) {
+    ['jquery', 'underscore', 'backbone', 'routing', 'pim/dashboard/abstract-widget', 'moment'],
+    function ($, _, Backbone, Routing, AbstractWidget, moment) {
         'use strict';
 
         return AbstractWidget.extend({
@@ -109,7 +109,7 @@ define(
                         break;
                 }
 
-                Navigation.getInstance().setLocation(route);
+                Backbone.history.navigate(route);
             },
 
             setShowListBtn: function () {
@@ -124,7 +124,7 @@ define(
             showList: function (e) {
                 e.preventDefault();
 
-                Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));
+                Backbone.history.navigate(Routing.generate('pim_enrich_job_tracker_index'));
             },
 
             _processResponse: function (data) {
