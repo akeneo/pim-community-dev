@@ -1,5 +1,3 @@
-{% extends 'PimEnrichBundle::layout.html.twig' %}
-
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
         <div id="tree" {% if resource_granted("pim_enrich_category_edit") %} data-editable="true"{% endif %}{% if resource_granted("pim_enrich_category_create") %} data-creatable="true"{% endif %}></div>
