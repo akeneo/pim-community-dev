@@ -1,6 +1,6 @@
 define(
-    ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation'],
-    function (Backbone, $, _, Routing, Navigation) {
+    ['backbone', 'jquery', 'underscore', 'routing'],
+    function (Backbone, $, _, Routing) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -56,7 +56,7 @@ define(
             open: function (e) {
                 this.preventOpen(e);
                 if (this.model.get('url')) {
-                    window.location.hash = this.model.get('url');
+                    Backbone.history.navigate(this.model.get('url'));
                 }
             },
 
