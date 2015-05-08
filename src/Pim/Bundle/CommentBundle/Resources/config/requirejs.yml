@@ -1,0 +1,5 @@
+config:
+    paths:
+        pim/comment/comment-create-action: pimcomment/js/comment-create-action
+        pim/comment/comment-listing:       pimcomment/js/comment-listing
+        pim/comment/comment-reply-action:  pimcomment/js/comment-reply-action
