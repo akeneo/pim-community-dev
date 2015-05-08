@@ -53,8 +53,7 @@
                                 mediator
                                     .trigger('column_form_listener:set_selectors:' + datagrid.name, { included: appendFieldId, excluded: removeFieldId })
                                     .trigger('datagrid:removeParam:' + datagrid.name, datagrid.paramName)
-                                    .trigger('datagrid:setParam:' + datagrid.name, datagrid.paramName, datagrid.getParamValue(associationId))
-                                    .trigger('datagrid:doRefresh:' + datagrid.name);
+                                    .trigger('datagrid:setParam:' + datagrid.name, datagrid.paramName, datagrid.getParamValue(associationId));
                         });
                     };
 
