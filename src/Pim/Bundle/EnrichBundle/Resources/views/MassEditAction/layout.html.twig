@@ -11,21 +11,19 @@
             {% endspaceless %}
         </ul>
     </div>
-{% endblock %}
 
-{% block head_script_component %}
-
-    <script type="text/javascript" charset="utf-8">
-        require(
-            ['jquery', 'jquery.wizard'],
-            function($) {
-                $(function() {
-                    $('.wizard').wizard({
-                        currentStep: {{ currentStep }}
+    {% block body_script %}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'jquery.wizard'],
+                function($) {
+                    $(function() {
+                        $('.wizard').wizard({
+                            currentStep: {{ currentStep }}
+                        });
                     });
-                });
-            }
-        );
-    </script>
-
+                }
+            );
+        </script>
+    {% endblock %}
 {% endblock %}

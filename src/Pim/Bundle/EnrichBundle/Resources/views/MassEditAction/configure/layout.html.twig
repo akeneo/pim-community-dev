@@ -47,96 +47,94 @@
         </div>
 
     {{ form_end(form) }}
-{% endblock %}
+    {% block body_script %}
+        {% set currentStep = 3 %}
 
-{% block head_script_component %}
-    {% set currentStep = 3 %}
-    {{ parent() }}
+        {% set action = path('pim_enrich_mass_edit_action_configure', queryParams|merge({ 'operationAlias': operationAlias })) %}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
+                function ($, mediator, wysiwyg) {
+                    'use strict';
 
-    {% set action = path('pim_enrich_mass_edit_action_configure', queryParams|merge({ 'operationAlias': operationAlias })) %}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'oro/mediator', 'wysiwyg', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
-            function ($, mediator, wysiwyg) {
-                'use strict';
+                    $(function () {
+                        var disableForm = function() {
+                            // Disable common fields
+                            $('input, select, textarea').each(function() {
+                                $(this).prop('readonly', true);
+                            });
 
-                $(function () {
-                    var disableForm = function() {
-                        // Disable common fields
-                        $('input, select, textarea').each(function() {
-                            $(this).prop('readonly', true);
+                            // Disable select2
+                            $('select').select2('readonly', true);
+
+                            // Disable multiselect
+                            $('select.pimmultiselect').multiselect('disable');
+
+                            // Disable switcher
+                            $('.has-switch').bootstrapSwitch('setActive', false);
+
+                            // Trigger jstree lock
+                            mediator.trigger('jstree:lock');
+
+                            // Disable wysiwyg
+                            $('textarea.wysiwyg[id]').each(function () {
+                                wysiwyg.readonly($(this), true);
+                            });
+
+                            {% block disableFormScript %}
+                            {% endblock %}
+                        }
+
+                        var enableForm = function() {
+                            // Enable common fields
+                            $('input, textarea').each(function() {
+                                $(this).prop('readonly', false);
+                            });
+
+                            // Enable select2
+                            $('select').select2('readonly', false);
+
+                            // Enable multiselect
+                            $('select.pimmultiselect').multiselect('enable');
+
+                            // Enable switcher
+                            $('.has-switch').bootstrapSwitch('setActive', true);
+
+                            // Trigger jstree unlock
+                            mediator.trigger('jstree:unlock');
+
+                            // Enable wysiwyg
+                            $('textarea.wysiwyg[id]').each(function () {
+                                wysiwyg.readonly($(this), false);
+                            });
+
+                            {% block enableFormScript %}
+                            {% endblock %}
+                        };
+
+                        $('select.operation-param').change(function () {
+                            $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
                         });
 
-                        // Disable select2
-                        $('select').select2('readonly', true);
-
-                        // Disable multiselect
-                        $('select.pimmultiselect').multiselect('disable');
-
-                        // Disable switcher
-                        $('.has-switch').bootstrapSwitch('setActive', false);
-
-                        // Trigger jstree lock
-                        mediator.trigger('jstree:lock');
-
-                        // Disable wysiwyg
-                        $('textarea.wysiwyg[id]').each(function () {
-                            wysiwyg.readonly($(this), true);
+                        /**
+                         * Confirmation
+                         */
+                        $('a.next').on('click', function() {
+                            $('.wizard').wizard({ currentStep: 4});
+                            disableForm();
+                            $('.configuration').addClass('hide');
+                            $('.confirmation').removeClass('hide');
                         });
 
-                        {% block disableFormScript %}
-                        {% endblock %}
-                    }
-
-                    var enableForm = function() {
-                        // Enable common fields
-                        $('input, textarea').each(function() {
-                            $(this).prop('readonly', false);
+                        $('a.cancel').on('click', function() {
+                            $('.wizard').wizard({ currentStep: 3});
+                            enableForm();
+                            $('.configuration').removeClass('hide');
+                            $('.confirmation').addClass('hide');
                         });
-
-                        // Enable select2
-                        $('select').select2('readonly', false);
-
-                        // Enable multiselect
-                        $('select.pimmultiselect').multiselect('enable');
-
-                        // Enable switcher
-                        $('.has-switch').bootstrapSwitch('setActive', true);
-
-                        // Trigger jstree unlock
-                        mediator.trigger('jstree:unlock');
-
-                        // Enable wysiwyg
-                        $('textarea.wysiwyg[id]').each(function () {
-                            wysiwyg.readonly($(this), false);
-                        });
-
-                        {% block enableFormScript %}
-                        {% endblock %}
-                    };
-
-                    $('select.operation-param').change(function () {
-                        $('#{{ form.vars.id }}').attr('action', '{{ action|raw }}').submit();
                     });
-
-                    /**
-                     * Confirmation
-                     */
-                    $('a.next').on('click', function() {
-                        $('.wizard').wizard({ currentStep: 4});
-                        disableForm();
-                        $('.configuration').addClass('hide');
-                        $('.confirmation').removeClass('hide');
-                    });
-
-                    $('a.cancel').on('click', function() {
-                        $('.wizard').wizard({ currentStep: 3});
-                        enableForm();
-                        $('.configuration').removeClass('hide');
-                        $('.confirmation').addClass('hide');
-                    });
-                });
-            }
-        );
-    </script>
+                }
+            );
+        </script>
+    {% endblock %}
 {% endblock %}

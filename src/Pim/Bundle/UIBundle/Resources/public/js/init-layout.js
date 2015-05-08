@@ -25,7 +25,6 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             if ($('#page-title').size()) {
                 document.title = _.unescape($('#page-title').text());
             }
-            layout.hideProgressBar();
         }
 
         /* ============================================================
@@ -61,7 +60,6 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
      * Init page layout js and hide progress bar after hash navigation request is completed
      */
     mediator.bind('hash_navigation_request:complete', function () {
-        layout.hideProgressBar();
         layout.init();
     });
 
