@@ -15,8 +15,7 @@
     'flashMessages': app.session.flashbag.all,
     'history': oro_menu_render('history'),
     'mostviewed': oro_menu_render('mostviewed'),
-    'content': content,
-    'showPinButton': (app.request.attributes.get('_route') != bap.start_route)
+    'content': content
     } %}
     {{ data|json_encode|raw }}
 {% endspaceless %}

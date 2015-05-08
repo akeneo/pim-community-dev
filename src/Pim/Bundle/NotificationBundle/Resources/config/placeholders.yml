@@ -1,9 +1,0 @@
-placeholders:
-    user_menu:
-        items:
-            notifications:
-                order: 50
-
-items:
-    notifications:
-        template: PimNotificationBundle:Default:notifications.html.twig
