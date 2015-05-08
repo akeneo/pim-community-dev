@@ -31,8 +31,8 @@
         {% endset %}
         <script type="text/javascript">
             require(
-                ['jquery', 'backbone/bootstrap-modal'],
-                function($) {
+                ['jquery', 'backbone', 'backbone/bootstrap-modal'],
+                function($, Backbone) {
                     $(function() {
                         var modal = null;
                         $('#create-attribute').on('click', function() {
@@ -54,7 +54,7 @@
                                     e.preventDefault();
                                     modal.close();
                                     modal.$el.remove();
-                                    window.location.hash = $(this).attr('href');
+                                    Backbone.history.navigate($(this).attr('href'));
                                 });
                             }
                         });
