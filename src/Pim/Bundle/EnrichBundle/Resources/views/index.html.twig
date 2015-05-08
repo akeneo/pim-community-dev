@@ -10,10 +10,8 @@
         {% endblock %}
 
         {% block script %}
-            {% block scripts_before %}
-                {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
-                {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
-            {% endblock %}
+            {% include 'OroNavigationBundle:Js:dot.menu.js.twig' %}
+            {% include 'OroNavigationBundle:Js:pinbar.js.twig' %}
             {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
             {% include 'OroLocaleBundle::locale_settings.html.twig' %}
 
@@ -94,5 +92,8 @@
         {% endblock main %}
     </div>
 </div>
+{% if uservoice_key is not null %}
+    {% include 'PimUIBundle:Default:pim_uservoice.js.twig' %}
+{% endif %}
 </body>
 </html>
