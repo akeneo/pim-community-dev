@@ -9,6 +9,8 @@ define(function (require) {
         var routes = this.getRoutes().c;
         var route;
 
+        url = url.replace(this.getBaseUrl(), '');
+
         if (url.indexOf('?') !== -1) {
             url = url.substring(0, url.indexOf('?'));
         }
@@ -31,6 +33,12 @@ define(function (require) {
             var variables = [];
             var matching = true;
 
+            if (route.requirements._method &&
+                -1 === route.requirements._method.indexOf('GET') &&
+                -1 === route.requirements._method.indexOf('POST')) {
+                continue;
+            }
+
             route.tokens.forEach(function (token) {
                 switch (token[0]) {
                     case 'text':
@@ -50,7 +58,7 @@ define(function (require) {
                 continue;
             }
 
-            var matches = url.match(new RegExp(pattern + '$'));
+            var matches = url.match(new RegExp('^' + pattern + '$'));
 
             if (matches) {
                 var params = {};
@@ -71,24 +79,30 @@ define(function (require) {
         return false;
     }
 
-    return Backbone.Router.extend({
+    var Router = Backbone.Router.extend({
+        DEFAULT_ROUTE: 'oro_default',
         routes: {
             '': 'dashboard',
-            '*route': 'defaultRoute'
+            '*path': 'defaultRoute'
         },
         dashboard: function () {
             return this.defaultRoute(Routing.generate('pim_dashboard_index'));
         },
-        defaultRoute: function (route) {
-            if (route.indexOf('/') !== 0) {
-                route = '/' + route;
+        defaultRoute: function (path) {
+            if (path.indexOf('/') !== 0) {
+                path = '/' + path;
             }
-            var routeData = Routing.match(route);
+            var routeData = Routing.match(path);
             if (false === routeData) {
                 return this.notFound();
             }
+            if (this.DEFAULT_ROUTE === routeData.name) {
+                return this.dashboard();
+            }
             this.trigger('route:' + routeData.name, routeData.params);
-            $.get(route).done(function (template) {
+            this.trigger('route_start', routeData.name, routeData.params);
+            this.trigger('route_start:' + routeData.name, routeData.params);
+            $.get(path).done(_.bind(function (template) {
                 $('#container').html(template);
 
                 // temp
@@ -99,11 +113,15 @@ define(function (require) {
                     }
                     $(link).attr('href', href);
                 });
+                this.trigger('route_complete', routeData.name, routeData.params);
+                this.trigger('route_complete:' + routeData.name, routeData.params);
 
-            }).fail(this.notFound);
+            }, this)).fail(this.notFound);
         },
         notFound: function () {
             $('#container').html('Whoops, no such page!');
         }
     });
+
+    return new Router();
 });
