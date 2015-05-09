@@ -7,7 +7,7 @@ function($) {
     $(function() {
 
         var hashUrl = window.location.hash,
-            hashUrlTag = '#url=',
+            hashUrlTag = '#',
             hashArray;
         if (hashUrl.length && hashUrl.match(hashUrlTag)) {
             if (hashUrl.indexOf('|') !== -1) {

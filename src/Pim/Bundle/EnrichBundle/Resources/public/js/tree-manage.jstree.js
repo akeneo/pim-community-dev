@@ -126,7 +126,7 @@ define(
                     }
                     var id  = data.rslt.obj.attr('id').replace('node_', ''),
                         url = Routing.generate('pim_enrich_categorytree_edit', { id: id });
-                    if ('#url=' + url === Backbone.history.location.hash || preventFirst) {
+                    if (url === Backbone.history.location.hash || preventFirst) {
                         preventFirst = false;
                         return;
                     }
@@ -138,7 +138,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate('url=' + url, {trigger: false});
+                                Backbone.history.navigate(url, {trigger: false});
                                 UI($('#category-form'));
                                 loadingMask.hide();
                             }
@@ -168,7 +168,7 @@ define(
                         success: function (data) {
                             if (data) {
                                 $('#category-form').html(data);
-                                Backbone.history.navigate('url=' + url, {trigger: false});
+                                Backbone.history.navigate(url, {trigger: false});
                                 loadingMask.hide();
                             }
                         },

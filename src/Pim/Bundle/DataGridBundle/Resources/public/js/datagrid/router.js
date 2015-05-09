@@ -71,7 +71,7 @@ function(_, Backbone, Navigation, mediator) {
                 url = '',
                 navigation = Navigation.getInstance();
             if (navigation) {
-                url = 'url=' + navigation.getHashUrl() + '|g/' + encodedStateData;
+                url = navigation.getHashUrl() + '|g/' + encodedStateData;
             } else {
                 url = 'g/' + encodedStateData;
             }
