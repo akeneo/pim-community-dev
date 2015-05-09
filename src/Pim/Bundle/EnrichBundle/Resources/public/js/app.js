@@ -12,6 +12,7 @@ define(function (require) {
             bootstrap: function (options) {
                 this.debug = !!options.debug;
                 require('pim/router');
+                require('pim/page-title');
 
                 messenger.setup({
                     container: '#flash-messages .flash-messages-holder',

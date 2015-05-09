@@ -9,8 +9,6 @@ define(function (require) {
         var routes = this.getRoutes().c;
         var route;
 
-        url = url.replace(this.getBaseUrl(), '');
-
         if (url.indexOf('?') !== -1) {
             url = url.substring(0, url.indexOf('?'));
         }
@@ -22,6 +20,12 @@ define(function (require) {
         if (url.indexOf('#') !== -1) {
             url = url.substring(0, url.indexOf('#'));
         }
+
+        if (url.indexOf('/') !== 0) {
+            url = '/' + url;
+        }
+
+        url = url.replace(this.getBaseUrl(), '');
 
         var escape = function (value) {
             return value.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');

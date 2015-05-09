@@ -1,3 +1,6 @@
+page_title:
+    pim_dashboard_index: Dashboard
+
 pim_dashboard:
     widget:
         last_operations:

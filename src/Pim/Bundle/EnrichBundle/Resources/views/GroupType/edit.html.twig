@@ -1,6 +1,8 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
-{% oro_title_set({ params: { '%group type.label%': form.vars.value.label } }) %}
+<script type="text/javascript">
+    require('pim/page-title').set({'group type.label': '{{ form.vars.value.label }}'});
+</script>
 
 {% block content %}
     {{ JSFV(form) }}

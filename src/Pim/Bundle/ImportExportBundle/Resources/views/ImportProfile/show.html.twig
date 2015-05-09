@@ -1,7 +1,5 @@
 {% extends 'PimImportExportBundle:JobProfile:show.html.twig' %}
 
-{% oro_title_set({ params: {"%job.label%": jobInstance.label } }) %}
-
 {% set entityName        = 'import profile' %}
 {% set action            = 'import' %}
 {% set indexRoute        = path('pim_importexport_import_profile_index') %}

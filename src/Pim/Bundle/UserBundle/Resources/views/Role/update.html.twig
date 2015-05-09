@@ -2,7 +2,9 @@
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
+<script type="text/javascript">
+    require('pim/page-title').set({'role': '{{ form.vars.value.label }}'});
+</script>
 
 {% set entityId = form.vars.value.id %}
 

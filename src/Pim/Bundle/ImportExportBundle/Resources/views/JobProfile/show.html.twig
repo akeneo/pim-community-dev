@@ -2,6 +2,10 @@
 
 {% block content %}
 
+    <script type="text/javascript">
+        require('pim/page-title').set({'job.label': '{{ jobInstance.label }}'});
+    </script>
+
     {% include 'PimImportExportBundle:JobProfile:_show_headers.html.twig' %}
 
     {% include 'PimImportExportBundle:JobProfile:_show_form.html.twig' %}

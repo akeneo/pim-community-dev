@@ -2,7 +2,6 @@
 {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 
 {% set fullname = form.vars.value|oro_format_name|default('N/A') %}
-{% oro_title_set({params : {"%username%": fullname }}) %}
 {% set title = form.vars.value.id ? 'Edit user'|trans ~ ' - ' ~ fullname : 'New user'|trans %}
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
@@ -11,6 +10,9 @@
 {% endif %}
 
 {% block content %}
+    <script type="text/javascript">
+        require('pim/page-title').set({'username': '{{ fullname }}'});
+    </script>
     {{ JSFV(form) }}
     {{ form_start(form, {
         'action': formAction,
