@@ -54,14 +54,14 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog'],
-                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog', 'pim/page-title'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog, PageTitle) {
                                 $(function() {
                                     FetcherRegistry.initialize().done(function () {
                                         FormBuilder.build('pim/product-edit-form')
                                             .done(function (form) {
                                                 ProductManager.get('{{ productId }}').done(function (product) {
-                                                    document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
+                                                    PageTitle.set({'product.sku': _.escape(product.meta.label[UserContext.get('catalogLocale')]) });
                                                     form.setData(product, {silent: true});
                                                     form.setElement('#product-edit-form').render();
                                                 });

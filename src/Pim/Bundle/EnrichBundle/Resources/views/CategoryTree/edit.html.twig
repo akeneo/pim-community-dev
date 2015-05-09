@@ -1,4 +1,6 @@
-{% oro_title_set({ params: { "%category.label%": form.vars.value.label } }) %}
+<script type="text/javascript">
+    require('pim/page-title').set({'category.label': '{{ form.vars.value.label }}'});
+</script>
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">

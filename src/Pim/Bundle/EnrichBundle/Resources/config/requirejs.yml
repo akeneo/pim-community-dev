@@ -80,6 +80,7 @@ config:
     paths:
         pim/app:                            pimenrich/js/app
         pim/router:                         pimenrich/js/router
+        pim/page-title:                     pimenrich/js/page-title
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
