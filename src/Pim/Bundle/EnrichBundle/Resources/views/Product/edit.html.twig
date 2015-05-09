@@ -59,7 +59,7 @@
                                     FetcherRegistry.initialize().done(function () {
                                         ProductManager.get('{{ productId }}')
                                             .then(function (product) {
-                                                document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
+                                                PageTitle.set({'product.sku': _.escape(product.meta.label[UserContext.get('catalogLocale')]) });
 
                                                 FormBuilder.build(product.meta.form)
                                                     .then(function (form) {
