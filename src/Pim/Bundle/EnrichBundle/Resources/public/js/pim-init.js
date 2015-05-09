@@ -122,7 +122,7 @@ define(
                             success: function () {
                                 loadingMask.hide().$el.remove();
                                 var navigation = Navigation.getInstance();
-                                var targetUrl = '#url=' + $el.attr('data-redirect-url');
+                                var targetUrl = $el.attr('data-redirect-url');
                                 // If already on the desired page, make sure it is refreshed
                                 Backbone.history.fragment = new Date().getTime();
                                 navigation.navigate(targetUrl, { trigger: true });

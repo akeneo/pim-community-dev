@@ -747,18 +747,11 @@ define(function (require) {
                 if (url === this.getHashUrl()) {
                     this.loadPage();
                 } else {
-                    window.location.hash = '#url=' + url;
+                    window.location.hash = url;
                 }
             } else {
                 window.location.href = url;
             }
-        },
-
-        /**
-         * @return {Boolean}
-         */
-        checkHashForUrl: function() {
-            return window.location.hash.indexOf('#url=') !== -1;
         },
 
         /**
