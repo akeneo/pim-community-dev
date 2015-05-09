@@ -20,13 +20,6 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
     $(function () {
         layout.init();
 
-        /* hide progress bar on page ready in case we don't need hash navigation request*/
-        if (!Navigation.isEnabled() || !Navigation.prototype.checkHashForUrl()) {
-            if ($('#page-title').size()) {
-                document.title = _.unescape($('#page-title').text());
-            }
-        }
-
         /* ============================================================
          * Oro Dropdown close prevent
          * ============================================================ */
