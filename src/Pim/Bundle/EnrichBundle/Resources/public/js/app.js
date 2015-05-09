@@ -11,7 +11,7 @@ define(function (require) {
             debug: false,
             bootstrap: function (options) {
                 this.debug = !!options.debug;
-                this.router = new (require('pim/router'))();
+                require('pim/router');
 
                 messenger.setup({
                     container: '#flash-messages .flash-messages-holder',
