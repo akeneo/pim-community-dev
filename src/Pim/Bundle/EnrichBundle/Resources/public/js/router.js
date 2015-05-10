@@ -4,6 +4,7 @@ define(function (require) {
     var $ = require('jquery');
     var Backbone = require('backbone');
     var Routing = require('routing');
+    var LoadingMask = require('oro/loading-mask');
 
     Routing.match = function (url) {
         var routes = this.getRoutes().c;
@@ -89,6 +90,11 @@ define(function (require) {
             '': 'dashboard',
             '*path': 'defaultRoute'
         },
+        loadingMask: null,
+        initialize: function () {
+            this.loadingMask = new LoadingMask();
+            this.loadingMask.render().$el.appendTo($('.hash-loading-mask'));
+        },
         dashboard: function () {
             return this.defaultRoute(Routing.generate('pim_dashboard_index'));
         },
@@ -103,6 +109,8 @@ define(function (require) {
             if (this.DEFAULT_ROUTE === routeData.name) {
                 return this.dashboard();
             }
+
+            this.loadingMask.show();
             this.trigger('route:' + routeData.name, routeData.params);
             this.trigger('route_start', routeData.name, routeData.params);
             this.trigger('route_start:' + routeData.name, routeData.params);
@@ -120,10 +128,15 @@ define(function (require) {
                 this.trigger('route_complete', routeData.name, routeData.params);
                 this.trigger('route_complete:' + routeData.name, routeData.params);
 
-            }, this)).fail(this.notFound);
+            }, this)).fail(this.notFound).always(_.bind(function() {
+                this.loadingMask.hide();
+            }, this));
         },
         notFound: function () {
             $('#container').html('Whoops, no such page!');
+        },
+        hideLoadingMask: function () {
+            this.loadingMask.hide();
         }
     });
 
