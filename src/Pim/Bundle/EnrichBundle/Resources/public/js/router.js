@@ -5,6 +5,8 @@ define(function (require) {
     var Backbone = require('backbone');
     var Routing = require('routing');
     var LoadingMask = require('oro/loading-mask');
+    var ControllerRegistry = require('pim/controller-registry');
+    var currentController = null;
 
     Routing.match = function (url) {
         var routes = this.getRoutes().c;
@@ -102,34 +104,39 @@ define(function (require) {
             if (path.indexOf('/') !== 0) {
                 path = '/' + path;
             }
-            var routeData = Routing.match(path);
-            if (false === routeData) {
+            var route = Routing.match(path);
+            if (false === route) {
                 return this.notFound();
             }
-            if (this.DEFAULT_ROUTE === routeData.name) {
+            if (this.DEFAULT_ROUTE === route.name) {
                 return this.dashboard();
             }
 
             this.loadingMask.show();
-            this.trigger('route:' + routeData.name, routeData.params);
-            this.trigger('route_start', routeData.name, routeData.params);
-            this.trigger('route_start:' + routeData.name, routeData.params);
-            $.get(path).done(_.bind(function (template) {
-                $('#container').html(template);
+            if (currentController) {
+                currentController.remove();
+            }
+            this.trigger('route:' + route.name, route.params);
+            this.trigger('route_start', route.name, route.params);
+            this.trigger('route_start:' + route.name, route.params);
 
-                // temp
-                _.each($('a[href]'), function (link) {
-                    var href = $(link).attr('href');
-                    if (href.substring(0, 1) !== '#' && href.substring(0, 11) !== 'javascript:') {
-                        href = '#' + href;
-                    }
-                    $(link).attr('href', href);
-                });
-                this.trigger('route_complete', routeData.name, routeData.params);
-                this.trigger('route_complete:' + routeData.name, routeData.params);
+            ControllerRegistry.get(route.name).done(_.bind(function (Controller) {
+                currentController = new Controller();
+                currentController.renderRoute(route, path).done(_.bind(function () {
+                    // temp
+                    _.each($('a[href]'), function (link) {
+                        var href = $(link).attr('href');
+                        if (href.substring(0, 1) !== '#' && href.substring(0, 11) !== 'javascript:') {
+                            href = '#' + href;
+                        }
+                        $(link).attr('href', href);
+                    });
+                    this.trigger('route_complete', route.name, route.params);
+                    this.trigger('route_complete:' + route.name, route.params);
 
-            }, this)).fail(this.notFound).always(_.bind(function() {
-                this.loadingMask.hide();
+                }, this)).fail(this.notFound).always(_.bind(function() {
+                    this.loadingMask.hide();
+                }, this));
             }, this));
         },
         notFound: function () {
