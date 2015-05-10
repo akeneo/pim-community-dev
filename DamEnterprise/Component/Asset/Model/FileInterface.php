@@ -1,6 +1,8 @@
 <?php
 namespace DamEnterprise\Component\Asset\Model;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 interface FileInterface
 {
     /**
@@ -91,4 +93,21 @@ interface FileInterface
      * @return FileInterface
      */
     public function setStorage($storage);
+
+    /**
+     * @return string
+     */
+    public function getPathname();
+
+    /**
+     * @return UploadedFile
+     */
+    public function getUploadedFile();
+
+    /**
+     * @param UploadedFile $uploadedFile
+     *
+     * @return FileInterface
+     */
+    public function setUploadedFile(UploadedFile $uploadedFile);
 }

@@ -4,6 +4,8 @@
 namespace DamEnterprise\Component\Asset\Model;
 
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class File implements FileInterface
 {
     /** @var int */
@@ -29,6 +31,10 @@ class File implements FileInterface
 
     /** @var string */
     protected $storage;
+
+    //TODDO: check if we really need it
+    /** @var UploadedFile */
+    protected $uploadedFile;
 
     /**
      * {@inheritdoc}
@@ -160,6 +166,37 @@ class File implements FileInterface
     public function setStorage($storage)
     {
         $this->storage = $storage;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPathname()
+    {
+        $path = $this->getPath();
+        if (DIRECTORY_SEPARATOR === $path[strlen($path) - 1]) {
+            return $path . $this->getFilename();
+        }
+
+        return $path . DIRECTORY_SEPARATOR  . $this->getFilename();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUploadedFile()
+    {
+        return $this->uploadedFile;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setUploadedFile(UploadedFile $uploadedFile)
+    {
+        $this->uploadedFile = $uploadedFile;
 
         return $this;
     }
