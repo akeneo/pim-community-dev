@@ -17,7 +17,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/enrich/variant-group/{id}/edit';
+    protected $path = '#/enrich/variant-group/{id}/edit';
 
     /**
      * {@inheritdoc}
