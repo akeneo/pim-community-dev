@@ -16,6 +16,11 @@
             {% include 'OroLocaleBundle::locale_settings.html.twig' %}
 
             <script type="text/javascript">
+                {% if app.request.session.get('__target_path') %}
+                    window.location.hash = '{{ app.request.session.get('__target_path') }}';
+                    {% do app.request.session.remove('__target_path') %}
+                {% endif %}
+
                 require(['pim/app'], function (app) {
                     app.bootstrap({
                         debug: {{ app.debug ? 'true' : 'false' }}

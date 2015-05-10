@@ -3,6 +3,8 @@ parameters:
     pim_enrich.event_listener.request.class: Pim\Bundle\EnrichBundle\EventListener\RequestListener
     pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
 
+    security.exception_listener.class: Pim\Bundle\EnrichBundle\Security\Firewall\ExceptionListener
+
 services:
     # User context listener
     stof_doctrine_extensions.event_listener.locale:
