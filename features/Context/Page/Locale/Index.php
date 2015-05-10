@@ -16,5 +16,5 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/configuration/locale/';
+    protected $path = '#/configuration/locale/';
 }

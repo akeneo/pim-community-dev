@@ -16,7 +16,7 @@ class Edit extends Form
     /**
      * @var string
      */
-    protected $path = '/user/role/update/{id}';
+    protected $path = '#/user/role/update/{id}';
 
     /**
      * Grant rights to all ACL resources

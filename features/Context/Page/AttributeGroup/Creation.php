@@ -13,7 +13,7 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    protected $path = '/configuration/attribute-group/create';
+    protected $path = '#/configuration/attribute-group/create';
 
     /**
      * {@inheritdoc}

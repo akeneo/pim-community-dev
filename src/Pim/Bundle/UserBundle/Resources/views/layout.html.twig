@@ -13,6 +13,8 @@
         {% endblock %}
 
         {% block script %}
+            {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
+
             <script type="text/javascript">
                 if (sessionStorage) {
                     sessionStorage.clear()

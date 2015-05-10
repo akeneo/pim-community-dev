@@ -16,7 +16,7 @@ class Index extends Base
     /**
      * @var string
      */
-    protected $path = '/search/';
+    protected $path = '#/search/';
 
     /**
      * {@inheritdoc}

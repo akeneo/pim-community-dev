@@ -16,7 +16,7 @@ class Index extends Grid
     /**
      * @var string
      */
-    protected $path = '/enrich/product/';
+    protected $path = '#/enrich/product/';
 
     /**
      * {@inheritdoc}

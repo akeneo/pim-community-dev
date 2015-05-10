@@ -14,5 +14,5 @@ use Context\Page\Base\Form;
 class Creation extends Form
 {
     /** @var string */
-    protected $path = '/enrich/product/create';
+    protected $path = '#/enrich/product/create';
 }

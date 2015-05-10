@@ -16,5 +16,5 @@ class Edit extends ProductEdit
     /**
      * @var string
      */
-    protected $path = '/enrich/variant-group/{id}/edit';
+    protected $path = '#/enrich/variant-group/{id}/edit';
 }

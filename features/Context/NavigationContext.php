@@ -109,10 +109,16 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmLoggedInAs($username)
     {
+        $this->getSession()->visit($this->locatePath('/user/logout'));
+        $this->wait();
         $this->username = $username;
         $this->password = $username;
-
         $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+        $this->getPage('Base Login')->authenticate($username, $username);
+        if (null === $this->currentPage) {
+            $this->currentPage = 'Dashboard index';
+        }
+        $this->wait();
     }
 
     /**
@@ -639,7 +645,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->currentPage = $page;
 
         $page = $this->getCurrentPage()->open($options);
-        $this->loginIfRequired();
         $this->wait();
 
         return $page;
@@ -669,19 +674,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $actual = $this->getSession()->getCurrentUrl();
         $result = strpos($actual, $expected) !== false;
         assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     */
-    protected function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
-        }
     }
 
     /**

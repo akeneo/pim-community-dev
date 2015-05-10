@@ -16,5 +16,5 @@ class Creation extends JobCreation
     /**
      * @var string
      */
-    protected $path = '/spread/export/create';
+    protected $path = '#/spread/export/create';
 }
