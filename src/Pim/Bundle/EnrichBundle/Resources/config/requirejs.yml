@@ -11,6 +11,9 @@ config:
                 - jquery.jstree
 
     config:
+        pim/controller-registry:
+            defaultController: pim/controller/template
+            controllers: ~
         pim/fetcher-registry:
             fetchers:
                 default: pim/base-fetcher
@@ -81,6 +84,11 @@ config:
         pim/app:                            pimenrich/js/app
         pim/router:                         pimenrich/js/router
         pim/page-title:                     pimenrich/js/page-title
+
+        # Controllers
+        pim/controller-registry:            pimenrich/js/controller/registry
+        pim/controller/base:                pimenrich/js/controller/base
+        pim/controller/template:            pimenrich/js/controller/template
 
         jquery.wizard:                      pimenrich/js/jquery.wizard
         jstree/jquery.jstree.tree_selector: pimenrich/js/jstree/jquery.jstree.tree_selector
