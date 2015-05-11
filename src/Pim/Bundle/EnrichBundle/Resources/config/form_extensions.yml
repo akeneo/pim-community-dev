@@ -26,16 +26,19 @@ extensions:
         module: pim/product-edit-form/download-pdf
         parent: product-edit-form
         targetZone: buttons
+        aclResourceId: pim_pdf_generator_product_download
 
     status-switcher:
         module: pim/product-edit-form/status-switcher
         parent: product-edit-form
         targetZone: buttons
+        aclResourceId: pim_enrich_product_change_state
 
     delete:
         module: pim/product-edit-form/delete
         parent: product-edit-form
         targetZone: buttons
+        aclResourceId: pim_enrich_product_remove
 
     save-buttons:
         module: pim/product-edit-form/save-buttons
@@ -58,6 +61,7 @@ extensions:
         parent: product-edit-form
         insertAction: append
         targetZone: meta
+        aclResourceId: pim_enrich_product_change_family
 
     groups:
         module: pim/product-edit-form/meta/groups
@@ -81,6 +85,7 @@ extensions:
         module: pim/product-edit-form/attributes
         parent: form-tabs
         targetZone: container
+        aclResourceId: pim_enrich_product_edit_attributes
         zones:
             header: .tab-content > header
             edit-actions: .tab-content > header > .attribute-edit-actions
@@ -92,6 +97,7 @@ extensions:
         module: pim/product-edit-form/categories
         parent: form-tabs
         targetZone: container
+        aclResourceId: pim_enrich_product_categories_view
         zones:
             categories: self
 
@@ -122,6 +128,7 @@ extensions:
         parent: attributes
         targetZone: other-actions
         insertAction: append
+        aclResourceId: pim_enrich_product_add_attribute
 
     scope-switcher:
         module: pim/product-edit-form/scope-switcher
@@ -165,12 +172,14 @@ extensions:
         module: pim/product-edit-form/panel/comments
         targetZone: panel-content
         insertAction: append
+        aclResourceId: pim_enrich_product_comment
 
     history:
         parent: panels
         module: pim/product-edit-form/panel/history
         targetZone: panel-content
         insertAction: append
+        aclResourceId: pim_enrich_product_history
         zones:
             history: self
 
