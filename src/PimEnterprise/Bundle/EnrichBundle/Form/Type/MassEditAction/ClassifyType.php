@@ -31,7 +31,7 @@ class ClassifyType extends BaseClassifyType
         $categoryClass,
         $dataClass
     ) {
-        parent::__construct($categoryClass, $categoryManager, $dataClass);
+        parent::__construct($categoryManager, $categoryClass, $dataClass);
 
         $this->securityContext = $securityContext;
         $this->trees = $categoryManager->getAccessibleTrees($this->securityContext->getToken()->getUser());
