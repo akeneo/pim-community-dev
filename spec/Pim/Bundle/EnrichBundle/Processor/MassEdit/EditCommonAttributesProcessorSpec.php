@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
@@ -13,7 +14,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -27,14 +27,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
-        MassEditRepository $massEditRepository
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         $this->beConstructedWith(
             $productUpdater,
             $validator,
             $massActionRepository,
             $attributeRepository,
-            $massEditRepository
+            $jobConfigurationRepo
         );
     }
 
@@ -56,14 +56,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         AttributeRepository $attributeRepository,
         ProductInterface $product,
         StepExecution $stepExecution,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [
@@ -95,13 +95,13 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         ProductInterface $product,
         ConstraintViolationListInterface $violations,
         StepExecution $stepExecution,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 [

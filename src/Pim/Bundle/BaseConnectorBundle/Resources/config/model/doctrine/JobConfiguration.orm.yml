@@ -1,7 +1,7 @@
 Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration:
     type: entity
-    table: pim_mass_edit_job_configuration
-    repositoryClass: Pim\Bundle\EnrichBundle\Entity\Repository\MassEdit\MassEditRepository
+    table: pim_job_configuration
+    repositoryClass: Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepository
     fields:
         id:
             type: integer
@@ -11,9 +11,9 @@ Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration:
         configuration:
             type: text
             column: configuration
-    manyToOne:
+    oneToOne:
         jobExecution:
             targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobExecution
-            inversedBy: JobExecution
             joinColumn:
+                name: job_execution_id
                 onDelete: CASCADE

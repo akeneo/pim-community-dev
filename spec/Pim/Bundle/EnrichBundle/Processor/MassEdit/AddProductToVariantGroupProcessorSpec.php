@@ -6,13 +6,12 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -21,13 +20,13 @@ use Symfony\Component\Validator\ValidatorInterface;
 class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 {
     function let(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
         $this->beConstructedWith(
-            $massEditRepository,
+            $jobConfigurationRepo,
             $validator,
             $groupRepository,
             $templateUpdater
@@ -41,7 +40,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
@@ -51,7 +50,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]
@@ -78,7 +77,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
         GroupInterface $variantGroup,
         ProductInterface $product,
         StepExecution $stepExecution,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration,
         ProductTemplateInterface $productTemplate
@@ -89,7 +88,7 @@ class AddProductToVariantGroupProcessorSpec extends ObjectBehavior
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(
                 ['filters' => [], 'actions' => ['field' => 'variant_group', 'value' => 'variant_group_code']]

@@ -7,10 +7,10 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\EntityNotFoundException;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -40,22 +40,22 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     /** @var JobRepositoryInterface */
     protected $jobRepository;
 
-    /** @var MassEditRepositoryInterface */
-    protected $massEditRepository;
+    /** @var JobConfigurationRepositoryInterface */
+    protected $jobConfigurationRepo;
 
     /**
      * @param ProductQueryBuilderFactoryInterface $pqbFactory
      * @param JobRepositoryInterface              $jobRepository
-     * @param MassEditRepositoryInterface         $massEditRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         JobRepositoryInterface $jobRepository,
-        MassEditRepositoryInterface $massEditRepository
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
-        $this->pqbFactory         = $pqbFactory;
-        $this->jobRepository      = $jobRepository;
-        $this->massEditRepository = $massEditRepository;
+        $this->pqbFactory           = $pqbFactory;
+        $this->jobRepository        = $jobRepository;
+        $this->jobConfigurationRepo = $jobConfigurationRepo;
 
         $this->isExecuted = false;
     }
@@ -179,7 +179,7 @@ class FilteredProductReader extends AbstractConfigurableStepElement implements P
     protected function getJobConfiguration()
     {
         $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
+        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
 
         if (null === $massEditJobConf) {
             throw new EntityNotFoundException(sprintf(

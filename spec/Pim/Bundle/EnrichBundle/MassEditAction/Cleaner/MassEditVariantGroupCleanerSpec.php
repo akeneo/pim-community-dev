@@ -12,6 +12,7 @@ use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -20,7 +21,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -30,7 +30,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
         ObjectDetacherInterface $objectDetacher,
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectManager $objectManager,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
@@ -40,7 +40,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
             $pqbFactory,
             $paginatorFactory,
             $objectDetacher,
-            $massEditRepository,
+            $jobConfigurationRepo,
             $objectManager,
             $groupRepository,
             $productRepository,
@@ -51,7 +51,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
     function it_cleans_products_that_are_not_eligible(
         $groupRepository,
         $productRepository,
-        $massEditRepository,
+        $jobConfigurationRepo,
         $objectManager,
         $paginatorFactory,
         $pqbFactory,
@@ -85,7 +85,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([5, 6, 7]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $jobConfiguration->setConfiguration(json_encode(null))->shouldBeCalled();
 
@@ -123,7 +123,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
     function it_checks_if_products_have_duplicated_axis(
         $groupRepository,
         $productRepository,
-        $massEditRepository,
+        $jobConfigurationRepo,
         $objectManager,
         $paginatorFactory,
         $pqbFactory,
@@ -190,7 +190,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 
@@ -220,7 +220,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
     function it_cleans_products_with_duplicated_axis(
         $groupRepository,
         $productRepository,
-        $massEditRepository,
+        $jobConfigurationRepo,
         $objectManager,
         $paginatorFactory,
         $pqbFactory,
@@ -284,7 +284,7 @@ class MassEditVariantGroupCleanerSpec extends ObjectBehavior
 
         $productRepository->getEligibleProductIdsForVariantGroup(42)->willReturn([1, 2, 3, 4]);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($productQueryBuilder);
 

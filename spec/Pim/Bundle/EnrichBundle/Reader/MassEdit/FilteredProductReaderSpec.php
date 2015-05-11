@@ -11,23 +11,23 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactory;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
 
 class FilteredProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         DoctrineJobRepository $jobRepository,
-        MassEditRepository $massEditRepository
+        JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         $this->beConstructedWith(
             $pqbFactory,
             $jobRepository,
-            $massEditRepository,
+            $jobConfigurationRepo,
             'update_product_value'
         );
     }
@@ -35,7 +35,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
     function it_reads_products(
         $entityManager,
         $jobRepository,
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobInstance $jobInstance,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration,
@@ -52,7 +52,7 @@ class FilteredProductReaderSpec extends ObjectBehavior
         $customEntityRepository->findOneBy(['code' => 'update_product_value'])->willReturn($jobInstance);
 
         $jobInstance->getJobExecutions()->willReturn(new ArrayCollection([$jobExecution]));
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
 
         $pqbFactory->create()->willReturn($pqb);
         $jobConfiguration->getConfiguration()->willReturn(json_encode(['filters' => [], 'actions' => []]));
@@ -66,13 +66,13 @@ class FilteredProductReaderSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_config_is_found(
-        MassEditRepository $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         JobExecution $jobExecution,
         StepExecution $stepExecution
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn(null);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn(null);
 
         $this->shouldThrow('\Doctrine\ORM\EntityNotFoundException')->during('read');
     }

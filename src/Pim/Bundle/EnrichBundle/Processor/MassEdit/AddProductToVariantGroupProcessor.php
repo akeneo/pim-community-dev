@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -28,18 +28,18 @@ class AddProductToVariantGroupProcessor extends AbstractMassEditProcessor
     protected $templateUpdater;
 
     /**
-     * @param ValidatorInterface              $validator
-     * @param MassEditRepositoryInterface     $massEditRepository
-     * @param GroupRepositoryInterface        $groupRepository
-     * @param ProductTemplateUpdaterInterface $templateUpdater
+     * @param ValidatorInterface                  $validator
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param GroupRepositoryInterface            $groupRepository
+     * @param ProductTemplateUpdaterInterface     $templateUpdater
      */
     public function __construct(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ValidatorInterface $validator,
         GroupRepositoryInterface $groupRepository,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
-        parent::__construct($massEditRepository);
+        parent::__construct($jobConfigurationRepo);
 
         $this->validator       = $validator;
         $this->groupRepository = $groupRepository;

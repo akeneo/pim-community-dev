@@ -29,8 +29,9 @@ class PimBaseConnectorExtension extends Extension
         $loader->load('validators.yml');
         $loader->load('steps.yml');
         $loader->load('job_launchers.yml');
-        $loader->load('entities.yml');
+        $loader->load('models.yml');
         $loader->load('factories.yml');
+        $loader->load('repositories.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);

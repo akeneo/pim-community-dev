@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -25,15 +25,15 @@ abstract class AbstractMassEditProcessor extends AbstractConfigurableStepElement
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var MassEditRepositoryInterface */
-    protected $massEditRepository;
+    /** @var JobConfigurationRepositoryInterface */
+    protected $jobConfigurationRepo;
 
     /**
-     * @param MassEditRepositoryInterface $massEditRepository
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
-    public function __construct(MassEditRepositoryInterface $massEditRepository)
+    public function __construct(JobConfigurationRepositoryInterface $jobConfigurationRepo)
     {
-        $this->massEditRepository = $massEditRepository;
+        $this->jobConfigurationRepo = $jobConfigurationRepo;
     }
 
     /**
@@ -92,7 +92,7 @@ abstract class AbstractMassEditProcessor extends AbstractConfigurableStepElement
     protected function getJobConfiguration()
     {
         $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
+        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
 
         return json_decode(stripcslashes($massEditJobConf->getConfiguration()), true);
     }

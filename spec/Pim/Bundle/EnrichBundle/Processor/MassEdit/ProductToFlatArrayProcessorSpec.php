@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -14,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\Serializer;
@@ -22,12 +22,12 @@ use Symfony\Component\Serializer\Serializer;
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
     function let(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         Serializer $serializer,
         ChannelManager $channelManager,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($massEditRepository, $serializer, $channelManager, 'upload/path/');
+        $this->beConstructedWith($jobConfigurationRepo, $serializer, $channelManager, 'upload/path/');
         $this->setStepExecution($stepExecution);
     }
 
@@ -43,7 +43,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_is_configurable(
         $stepExecution,
-        $massEditRepository,
+        $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
@@ -52,7 +52,7 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         $this->getChannelCode()->shouldReturn('print');
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'mainContext' => ['scope' => 'ecommerce']])
         );
@@ -68,12 +68,12 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
     function it_throw_an_exception_if_there_is_no_channel(
         $stepExecution,
-        $massEditRepository,
+        $jobConfigurationRepo,
         JobExecution $jobExecution,
         JobConfigurationInterface $jobConfiguration
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'mainContext' => ['scope' => null]])
         );

@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeRequirementInterface;
@@ -13,20 +14,19 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
     function let(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         AttributeRepositoryInterface $attributeRepository,
         ChannelRepositoryInterface $channelRepository,
         AttributeRequirementFactory $factory
     ) {
         $this->beConstructedWith(
-            $massEditRepository,
+            $jobConfigurationRepo,
             $attributeRepository,
             $channelRepository,
             $factory
@@ -40,7 +40,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
     }
 
     function it_processes_a_family(
-        $massEditRepository,
+        $jobConfigurationRepo,
         $attributeRepository,
         $channelRepository,
         $factory,
@@ -77,7 +77,7 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $channelRepository->findOneByIdentifier('mobile')->willReturn($channelMobile);
         $channelRepository->findOneByIdentifier('ecommerce')->willReturn($channelEcommerce);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'actions' => $actions])
         );

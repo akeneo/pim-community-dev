@@ -10,12 +10,12 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -33,8 +33,8 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var MassEditRepositoryInterface */
-    protected $massEditRepository;
+    /** @var \Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface */
+    protected $jobConfigurationRepo;
 
     /** @var ObjectManager */
     protected $objectManager;
@@ -61,7 +61,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
      * @param ProductQueryBuilderFactoryInterface   $pqbFactory
      * @param PaginatorFactoryInterface             $paginatorFactory
      * @param ObjectDetacherInterface               $objectDetacher
-     * @param MassEditRepositoryInterface           $massEditRepository
+     * @param JobConfigurationRepositoryInterface   $jobConfigurationRepo
      * @param ObjectManager                         $objectManager
      * @param IdentifiableObjectRepositoryInterface $groupRepository
      * @param ProductRepositoryInterface            $productRepository
@@ -71,20 +71,20 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PaginatorFactoryInterface $paginatorFactory,
         ObjectDetacherInterface $objectDetacher,
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         ObjectManager $objectManager,
         IdentifiableObjectRepositoryInterface $groupRepository,
         ProductRepositoryInterface $productRepository,
         TranslatorInterface $translator
     ) {
-        $this->pqbFactory         = $pqbFactory;
-        $this->paginatorFactory   = $paginatorFactory;
-        $this->objectDetacher     = $objectDetacher;
-        $this->massEditRepository = $massEditRepository;
-        $this->objectManager      = $objectManager;
-        $this->groupRepository    = $groupRepository;
-        $this->productRepository  = $productRepository;
-        $this->translator         = $translator;
+        $this->pqbFactory           = $pqbFactory;
+        $this->paginatorFactory     = $paginatorFactory;
+        $this->objectDetacher       = $objectDetacher;
+        $this->jobConfigurationRepo = $jobConfigurationRepo;
+        $this->objectManager        = $objectManager;
+        $this->groupRepository      = $groupRepository;
+        $this->productRepository    = $productRepository;
+        $this->translator           = $translator;
     }
 
     /**
@@ -138,7 +138,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
     protected function setJobConfiguration($configuration)
     {
         $jobExecution    = $this->stepExecution->getJobExecution();
-        $massEditJobConf = $this->massEditRepository->findOneBy(['jobExecution' => $jobExecution]);
+        $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
         $massEditJobConf->setConfiguration($configuration);
 
         $this->objectManager->persist($massEditJobConf);

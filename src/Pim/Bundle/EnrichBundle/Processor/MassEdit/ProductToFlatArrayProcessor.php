@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -37,18 +37,18 @@ class ProductToFlatArrayProcessor extends AbstractMassEditProcessor
     protected $normalizerContext;
 
     /**
-     * @param MassEditRepositoryInterface $massEditRepository
-     * @param SerializerInterface         $serializer
-     * @param ChannelManager              $channelManager
-     * @param string                      $uploadDirectory
+     * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
+     * @param SerializerInterface                 $serializer
+     * @param ChannelManager                      $channelManager
+     * @param string                              $uploadDirectory
      */
     public function __construct(
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         SerializerInterface $serializer,
         ChannelManager $channelManager,
         $uploadDirectory
     ) {
-        parent::__construct($massEditRepository);
+        parent::__construct($jobConfigurationRepo);
 
         $this->serializer      = $serializer;
         $this->channelManager  = $channelManager;

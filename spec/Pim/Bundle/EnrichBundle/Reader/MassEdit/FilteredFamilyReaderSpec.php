@@ -6,19 +6,19 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 
 class FilteredFamilyReaderSpec extends ObjectBehavior
 {
-    function let(MassEditRepositoryInterface $massEditRepository, FamilyRepositoryInterface $familyRepository)
+    function let(JobConfigurationRepositoryInterface $jobConfigurationRepo, FamilyRepositoryInterface $familyRepository)
     {
-        $this->beConstructedWith($massEditRepository, $familyRepository);
+        $this->beConstructedWith($jobConfigurationRepo, $familyRepository);
     }
 
     function it_reads_families(
-        $massEditRepository,
+        $jobConfigurationRepo,
         $familyRepository,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
@@ -27,7 +27,7 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
         FamilyInterface $sockFamily
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(json_encode([
             'filters' => [
                 [
@@ -52,12 +52,12 @@ class FilteredFamilyReaderSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_job_configuration_is_found(
-        $massEditRepository,
+        $jobConfigurationRepo,
         StepExecution $stepExecution,
         JobExecution $jobExecution
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn(null);
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn(null);
         $this->setStepExecution($stepExecution);
 
         $this->shouldThrow('Doctrine\ORM\EntityNotFoundException')
