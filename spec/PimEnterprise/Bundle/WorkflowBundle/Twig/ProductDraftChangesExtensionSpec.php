@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 

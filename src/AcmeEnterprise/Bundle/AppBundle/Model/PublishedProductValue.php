@@ -11,9 +11,9 @@
 
 namespace AcmeEnterprise\Bundle\AppBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface;
 

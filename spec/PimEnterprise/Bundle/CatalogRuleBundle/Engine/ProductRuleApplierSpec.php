@@ -2,6 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
+use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use PhpSpec\ObjectBehavior;
@@ -9,17 +14,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater;
 use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator;
-use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 
 class ProductRuleApplierSpec extends ObjectBehavior
 {
@@ -79,7 +75,7 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $this->apply($rule, $subjectSet);
     }
 
-    function it_applies_a_rule_on_products(
+    function it_applies_a_rule_on_valid_products(
         $eventDispatcher,
         $productsUpdater,
         $productsValidator,
@@ -90,7 +86,9 @@ class ProductRuleApplierSpec extends ObjectBehavior
         ProductInterface $selectedProduct,
         PaginatorFactoryInterface $paginatorFactory,
         PaginatorInterface $paginator,
-        CursorInterface $cursor
+        CursorInterface $cursor,
+        ProductInterface $validProduct1,
+        ProductInterface $validProduct2
     ) {
         $eventDispatcher->dispatch(RuleEvents::PRE_APPLY, Argument::any())->shouldBeCalled();
 
@@ -116,8 +114,8 @@ class ProductRuleApplierSpec extends ObjectBehavior
         $subjectSet->getSubjectsCursor()->shouldBeCalled()->willReturn($cursor);
 
         $productsUpdater->update($rule, Argument::any())->shouldBeCalled();
-        $productsValidator->validate($rule, Argument::any())->shouldBeCalled();
-        $productsSaver->save($rule, Argument::any())->shouldBeCalled();
+        $productsValidator->validate($rule, Argument::any())->willReturn([$validProduct1, $validProduct2]);
+        $productsSaver->save($rule, [$validProduct1, $validProduct2])->shouldBeCalled();
 
         $eventDispatcher->dispatch(RuleEvents::POST_APPLY, Argument::any())->shouldBeCalled();
 

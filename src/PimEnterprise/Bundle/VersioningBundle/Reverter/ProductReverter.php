@@ -109,7 +109,7 @@ class ProductReverter
     /**
      * @param mixed $object
      *
-     * @return boolean
+     * @return bool
      */
     protected function isImpactedByVariantGroup($object)
     {

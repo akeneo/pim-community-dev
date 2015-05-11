@@ -23,7 +23,7 @@ interface ComparatorInterface
      *
      * @param string $attributeType
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsComparison($attributeType);
 

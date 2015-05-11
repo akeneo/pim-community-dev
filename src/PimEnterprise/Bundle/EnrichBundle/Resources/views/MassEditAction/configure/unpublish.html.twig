@@ -1,9 +1,5 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
 
-{% set notGrantedIdentifiers = form.operation.notGrantedIdentifiers.vars.value %}
-{% set nbNotGranted = notGrantedIdentifiers|trim|length == 0 ? 0 : notGrantedIdentifiers|split(', ')|length %}
-{% set productCount = productCount - nbNotGranted %}
-
 {% block head_script %}
     {{ parent() }}
     {% if productCount == 0 %}
@@ -25,9 +21,6 @@
     {% if productCount == 0 %}
         {% set alertClass = 'error' %}
         {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.error'|trans %}
-    {% elseif nbNotGranted > 0 %}
-        {% set alertClass = 'warning' %}
-        {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.warning'|trans({'%notGranted%': notGrantedIdentifiers}) %}
     {% else %}
         {% set alertClass = 'info' %}
         {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.info'|trans({'%nbProducts%': productCount}) %}

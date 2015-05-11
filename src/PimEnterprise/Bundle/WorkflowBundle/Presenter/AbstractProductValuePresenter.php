@@ -55,7 +55,7 @@ abstract class AbstractProductValuePresenter implements PresenterInterface, Rend
      *
      * @param array $change
      *
-     * @return boolean
+     * @return bool
      */
     abstract protected function supportsChange(array $change);
 

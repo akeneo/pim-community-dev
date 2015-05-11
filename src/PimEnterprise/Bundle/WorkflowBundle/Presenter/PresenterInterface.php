@@ -24,7 +24,7 @@ interface PresenterInterface
      * @param mixed $data
      * @param array $change
      *
-     * @return boolean
+     * @return bool
      */
     public function supports($data, array $change);
 

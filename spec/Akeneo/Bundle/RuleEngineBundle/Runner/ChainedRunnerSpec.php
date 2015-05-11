@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Bundle\RuleEngineBundle\Runner;
 
-use PhpSpec\ObjectBehavior;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleDefinitionInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\DryRunnerInterface;
 use Akeneo\Bundle\RuleEngineBundle\Runner\RunnerInterface;
+use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
 class ChainedRunnerSpec extends ObjectBehavior

@@ -130,7 +130,7 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $this->publish($product);
     }
 
-    function it_unpublish_a_product(
+    function it_unpublishes_a_product(
         $eventDispatcher,
         $unpublisher,
         $manager,
@@ -149,5 +149,31 @@ class PublishedProductManagerSpec extends ObjectBehavior
         $om->flush()->shouldBeCalled();
 
         $this->unpublish($published);
+    }
+
+    function it_unpublishes_products(
+        $eventDispatcher,
+        $unpublisher,
+        $manager,
+        ObjectManager $om,
+        PublishedProductInterface $published1,
+        PublishedProductInterface $published2,
+        ProductInterface $product
+    ) {
+        $manager->getObjectManager()->willReturn($om);
+
+        $published1->getOriginalProduct()->willReturn($product);
+        $published2->getOriginalProduct()->willReturn($product);
+
+        $unpublisher->unpublish($published1)->shouldBeCalled();
+        $unpublisher->unpublish($published2)->shouldBeCalled();
+
+        $eventDispatcher->dispatch(PublishedProductEvents::PRE_UNPUBLISH, Argument::cetera())->shouldBeCalled();
+
+        $om->remove($published1)->shouldBeCalled();
+        $om->remove($published2)->shouldBeCalled();
+        $om->flush()->shouldBeCalledTimes(1);
+
+        $this->unpublishAll([$published1, $published2]);
     }
 }

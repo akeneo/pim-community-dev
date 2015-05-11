@@ -18,6 +18,7 @@ class EnterpriseCommandContext extends CommandContext
 {
     /**
      * @param string $product
+     *
      * @throws \Exception
      *
      * @Given /^I publish the product "([^"]*)"$/
@@ -52,6 +53,7 @@ class EnterpriseCommandContext extends CommandContext
 
     /**
      * @param TableNode $tableProducts
+     *
      * @throws \Exception
      *
      * @Then /^I should get the following published products?:$/

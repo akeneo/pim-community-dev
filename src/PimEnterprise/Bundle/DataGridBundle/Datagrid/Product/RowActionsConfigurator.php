@@ -97,8 +97,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
     /**
      * Add a dispatch action to redirect on granted action (view or edit)
-     *
-     * @return null
      */
     protected function addDispatchAction()
     {
@@ -125,8 +123,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
     /**
      * Add dynamic row action and configure the closure
-     *
-     * @return null
      */
     protected function addRowActions()
     {
