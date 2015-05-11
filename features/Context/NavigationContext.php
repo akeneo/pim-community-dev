@@ -700,7 +700,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $actual = $this->getSession()->getCurrentUrl();
+        $actual = str_replace('#', '', $this->getSession()->getCurrentUrl());
+        $expected = str_replace('#', '', $expected);
         $result = strpos($actual, $expected) !== false;
         assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
     }
