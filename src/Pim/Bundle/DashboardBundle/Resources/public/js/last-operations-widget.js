@@ -25,8 +25,8 @@ define(
             },
 
             showListBtnTemplate: _.template(
-                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">'+
-                    '<i class="icon-tasks"></i>'+
+                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">' +
+                    '<i class="icon-tasks"></i>' +
                 '</a>'
             ),
 
@@ -112,7 +112,7 @@ define(
                 Navigation.getInstance().setLocation(route);
             },
 
-            setShowListBtn: function(el) {
+            setShowListBtn: function () {
                 this.$showListBtn = $(this.showListBtnTemplate());
 
                 this.$el.parent().siblings('.widget-header').append(this.$showListBtn);
@@ -121,7 +121,7 @@ define(
                 return this;
             },
 
-            showList: function(e) {
+            showList: function (e) {
                 e.preventDefault();
 
                 Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));

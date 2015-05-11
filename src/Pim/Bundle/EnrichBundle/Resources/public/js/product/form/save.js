@@ -62,11 +62,11 @@ define(
                     switch (response.status) {
                         case 400:
                             mediator.trigger('validation_error', response.responseJSON);
-                        break;
+                            break;
                         case 500:
                             /* global console */
                             console.log('Errors:', response.responseJSON);
-                        break;
+                            break;
                         default:
                     }
 
