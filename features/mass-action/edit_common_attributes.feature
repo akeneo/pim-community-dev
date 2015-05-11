@@ -119,6 +119,7 @@ Feature: Edit common attributes of many products at once
     And the french mobile description of "pump" should be "Foo Fr"
     And the french tablet description of "pump" should be "Bar Fr"
 
+  @skip-pef
   Scenario: Successfully update many price values at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation
@@ -203,7 +204,7 @@ Feature: Edit common attributes of many products at once
     And the english mobile Description of "pump" should be "Foo"
     And the english tablet Description of "pump" should be "Bar"
 
-  @info https://akeneo.atlassian.net/browse/PIM-3070
+  @skip-pef @info https://akeneo.atlassian.net/browse/PIM-3070
   Scenario: Successfully mass edit a price not added to the product
     Given I create a new product
     And I fill in the following information in the popin:
