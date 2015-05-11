@@ -150,6 +150,12 @@ class MassActionDispatcher
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+        $qbLocaleParameter = $qb->getParameter('localeCode');
+
+        if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
+            $qb->setParameter('localeCode', $request->query->get('dataLocale'));
+        }
+
         $repository = $datagrid->getDatasource()->getMassActionRepository();
         $repository->applyMassActionParameters($qb, $inset, $values);
 

@@ -67,6 +67,11 @@ function(_, messenger, __, Modal, AbstractAction) {
             params = collection.processFiltersParams(params, null, 'filters');
 
             var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();
+
+            if ('family-grid' === this.datagrid.name) {
+                locale = decodeURIComponent(this.datagrid.collection.url).split('localeCode]=').pop();
+            }
+
             if (locale) {
                 params.dataLocale = locale;
             }
