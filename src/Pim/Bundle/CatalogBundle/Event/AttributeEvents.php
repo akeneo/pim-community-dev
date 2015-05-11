@@ -12,6 +12,26 @@ namespace Pim\Bundle\CatalogBundle\Event;
 final class AttributeEvents
 {
     /**
+     * This event is thrown before an attribute is saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE = 'pim_catalog.pre_save.attribute';
+
+    /**
+     * This event is thrown after an attribute is saved.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE = 'pim_catalog.post_save.attribute';
+
+    /**
      * This event is thrown before an attribute is removed.
      *
      * The event listener receives an

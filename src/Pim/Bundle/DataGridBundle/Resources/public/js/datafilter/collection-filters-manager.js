@@ -98,6 +98,8 @@ function(_, FiltersManager) {
                 }
             }, this);
 
+            this.trigger('collection-filters:createState.post', state);
+
             return state;
         },
 
