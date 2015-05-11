@@ -261,9 +261,11 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
             var fragment = document.createDocumentFragment();
 
             _.each(this.filters, function(filter) {
-                filter.render();
                 if (!filter.enabled) {
                     filter.hide();
+                }
+                if (filter.enabled) {
+                    filter.render();
                 }
                 fragment.appendChild(filter.$el.get(0));
             }, this);
