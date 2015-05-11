@@ -12,4 +12,4 @@ services:
     pim_enrich.provider.form_extension:
         class: %pim_enrich.provider.form_extension.class%
         arguments:
-            - []
+            - '@oro_security.security_facade'

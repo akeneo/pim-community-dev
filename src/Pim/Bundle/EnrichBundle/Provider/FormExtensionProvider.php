@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Provider;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 /**
  * Form extension provider
  *
@@ -17,13 +19,25 @@ class FormExtensionProvider
     /** @var array */
     protected $attributeFields = [];
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
+    /**
+     * @param SecurityFacade $securityFacade
+     */
+    public function __construct(SecurityFacade $securityFacade)
+    {
+        $this->securityFacade = $securityFacade;
+    }
+
     /** @var array */
     protected $defaults = [
-        'module'       => null,
-        'parent'       => null,
-        'targetZone'   => null,
-        'insertAction' => 'append',
-        'zones'        => []
+        'module'        => null,
+        'parent'        => null,
+        'targetZone'    => null,
+        'insertAction'  => 'append',
+        'zones'         => [],
+        'aclResourceId' => null
     ];
 
     /**
@@ -42,7 +56,16 @@ class FormExtensionProvider
      */
     public function getExtensions()
     {
-        return $this->extensions;
+        $securityFacade = $this->securityFacade;
+
+        return array_filter(
+            $this->extensions,
+            function ($extension) use ($securityFacade) {
+                $acl = $extension['aclResourceId'];
+
+                return null === $acl || $securityFacade->isGranted($acl);
+            }
+        );
     }
 
     /**
