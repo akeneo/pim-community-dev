@@ -23,6 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MassActionDispatcher
 {
+    /** @staticvar string */
+    const FAMILY_GRID_NAME = 'family-grid';
+
     /** @var MassActionHandlerRegistry $handlerRegistry */
     protected $handlerRegistry;
 
@@ -150,10 +153,13 @@ class MassActionDispatcher
         $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-        $qbLocaleParameter = $qb->getParameter('localeCode');
 
-        if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
-            $qb->setParameter('localeCode', $request->query->get('dataLocale'));
+        if (self::FAMILY_GRID_NAME === $datagridName) {
+            $qbLocaleParameter = $qb->getParameter('localeCode');
+
+            if (null !== $qbLocaleParameter && null === $qbLocaleParameter->getValue()) {
+                $qb->setParameter('localeCode', $request->query->get('dataLocale'));
+            }
         }
 
         $repository = $datagrid->getDatasource()->getMassActionRepository();
