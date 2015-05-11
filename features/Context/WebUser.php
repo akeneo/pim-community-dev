@@ -1192,8 +1192,8 @@ class WebUser extends RawMinkContext
      */
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
+        $this->clearUOW();
         $product = $this->getFixturesContext()->getProduct($sku);
-        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
         assertEquals(
@@ -1241,6 +1241,15 @@ class WebUser extends RawMinkContext
     public function iClickOnInTheRightClickMenu($action)
     {
         $this->getCurrentPage()->rightClickAction($action);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I click on the job tracker button on the job widget$/
+     */
+    public function iClickOnTheJobTrackerButtonOnTheJobWidget()
+    {
+        $this->getCurrentPage()->find('css', 'a#btn-show-list')->click();
         $this->wait();
     }
 
@@ -1339,6 +1348,23 @@ class WebUser extends RawMinkContext
             // Call the wait method again to trigger timeout failure
             $this->wait(100, $condition);
         }
+    }
+
+    /**
+     * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
+     *
+     * @param string $code
+     */
+    public function iWaitForTheMassEditJobToFinish($code)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        // Force to retrieve its job executions
+        $jobInstance->getJobExecutions()->setInitialized(false);
+        $jobExecution = $jobInstance->getJobExecutions()->last();
+
+        $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
+
+        $this->iWaitForTheJobToFinish($code);
     }
 
     /**
@@ -2027,6 +2053,24 @@ class WebUser extends RawMinkContext
     public function iSelectVariantGroup($variant)
     {
         $this->getCurrentPage()->fillField('Group', $variant);
+    }
+
+    /**
+     * Clear the Unit of Work
+     */
+    public function clearUOW()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+            $manager->clear();
+        }
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
+    protected function getSmartRegistry()
+    {
+        return $this->getMainContext()->getSmartRegistry();
     }
 
     /**

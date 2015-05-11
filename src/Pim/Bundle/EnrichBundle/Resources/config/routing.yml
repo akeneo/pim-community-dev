@@ -61,3 +61,7 @@ grouptype:
 sequential_edit:
     resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
     prefix: /enrich/sequential_edit
+
+job_tracker:
+    resource: '@PimEnrichBundle/Resources/config/routing/job_tracker.yml'
+    prefix: /job
