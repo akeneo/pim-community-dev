@@ -6,11 +6,10 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\MassEditJobConfiguration;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepository;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -23,14 +22,14 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
     function let(
         ProductUpdaterInterface $productUpdater,
         ValidatorInterface $validator,
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
         $this->beConstructedWith(
             $productUpdater,
             $validator,
-            $massEditRepository,
+            $jobConfigurationRepo,
             $userManager,
             $securityContext
         );
@@ -55,8 +54,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         UserInterface $userJulia,
         ProductInterface $product,
-        MassEditRepository $massEditRepository,
-        MassEditJobConfiguration $massEditJobConf
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $violations = new ConstraintViolationList([]);
@@ -73,8 +72,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
         );
 
@@ -88,8 +87,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
         JobExecution $jobExecution,
         UserInterface $userJulia,
         ProductInterface $product,
-        MassEditRepository $massEditRepository,
-        MassEditJobConfiguration $massEditJobConf
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
+        JobConfigurationInterface $jobConfiguration
     ) {
         $this->setStepExecution($stepExecution);
         $stepExecution->getJobExecution()->willReturn($jobExecution);
@@ -111,8 +110,8 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
 
-        $massEditRepository->findOneBy(['jobExecution' => $jobExecution])->willReturn($massEditJobConf);
-        $massEditJobConf->getConfiguration()->willReturn(
+        $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
+        $jobConfiguration->getConfiguration()->willReturn(
             json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
         );
 

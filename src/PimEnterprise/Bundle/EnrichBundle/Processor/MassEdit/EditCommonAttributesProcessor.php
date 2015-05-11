@@ -4,11 +4,11 @@ namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Bundle\EnrichBundle\Entity\Repository\MassEditRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -33,7 +33,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
-     * @param MassEditRepositoryInterface          $massEditRepository
+     * @param MassEditRepositoryInterface          $jobConfigurationRepo
      * @param UserManager                          $userManager
      * @param SecurityContextInterface             $securityContext
      */
@@ -42,7 +42,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
-        MassEditRepositoryInterface $massEditRepository,
+        JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
@@ -51,7 +51,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
             $validator,
             $massActionRepository,
             $attributeRepository,
-            $massEditRepository
+            $jobConfigurationRepo
         );
 
         $this->securityContext = $securityContext;
