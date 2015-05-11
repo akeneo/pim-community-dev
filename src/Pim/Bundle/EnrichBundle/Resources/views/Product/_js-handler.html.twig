@@ -25,7 +25,7 @@
 
                 var initialScope = '{{ app.user.catalogScope.code }}';
                 var datagridFilters = stateManager.getParsed('product-grid', 'filters')
-                if (null != datagridFilters && undefined != datagridFilters.f.scope) {
+                if (null != datagridFilters && undefined != datagridFilters.f && undefined != datagridFilters.f.scope) {
                     initialScope = datagridFilters.f.scope;
                 }
 

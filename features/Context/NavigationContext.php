@@ -77,6 +77,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'attribute group creation' => 'AttributeGroup creation',
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
+        'job tracker'              => 'JobTracker index',
     ];
 
     /**
@@ -121,6 +122,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iLogout()
     {
         $this->getSession()->visit($this->locatePath('/user/logout'));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @When /^I go on the last executed job resume of "([^"]*)"$/
+     */
+    public function iGoOnTheLastExecutedJobResume($code)
+    {
+        $this->wait();
+        $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
+        $jobExecutions = $jobInstance->getJobExecutions();
+
+        $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecutions->last()->getId()]);
+        $this->getSession()->visit($this->locatePath($url));
+        $this->wait();
     }
 
     /**

@@ -191,6 +191,21 @@ class FamilyRepository extends EntityRepository implements FamilyRepositoryInter
     }
 
     /**
+     * {@inheritdoc}*
+     */
+    public function findByIds(array $familyIds)
+    {
+        if (empty($familyIds)) {
+            throw new \InvalidArgumentException('Array must contain at least one family id');
+        }
+
+        $qb = $this->createQueryBuilder('f');
+        $qb->where($qb->expr()->in('f.id', $familyIds));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findOneByIdentifier($code)

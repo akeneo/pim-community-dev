@@ -240,6 +240,10 @@ pim_enrich:
       from_variant:
         title: Aktualisierung durch eine Variantengruppe
         content: Dieses Feld wurde durch die folgende Variantengruppe aktualisiert
+  reference_data:
+    empty_value:
+      reference_data_type:
+        label: Wählen Sie den Referenz-Datentyp
 attribute:
   title: Attribut
   overview: Attribute Übersicht
@@ -640,6 +644,8 @@ pim_catalog_image: Abbildung
 pim_catalog_boolean: Ja/Nein
 pim_catalog_date: Datum
 pim_catalog_metric: Maßeinheit
+pim_reference_data_simpleselect: Referenz-Datentyp Einfachauswahl
+pim_reference_data_multiselect: Referenz-Datentyp Mehrfachauswahl
 Activated: Aktiviert
 Disable: Deaktivieren
 pim_enrich.sequential_edit_action:
