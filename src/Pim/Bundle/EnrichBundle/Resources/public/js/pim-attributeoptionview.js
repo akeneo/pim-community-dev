@@ -435,7 +435,7 @@ define(
                         var message;
 
                         if (response.responseJSON) {
-                            message = response.responseJSON;
+                            message = response.responseJSON.message;
                         } else {
                             message = response.responseText;
                         }
