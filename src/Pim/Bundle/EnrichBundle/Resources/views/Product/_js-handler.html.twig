@@ -80,7 +80,7 @@
                             {{ path('pim_enrich_group_productlist', { id: group.id })|json_encode|raw }},
                             function (content) {
                                 var groupDoAction = function () {
-                                    var $groupLink = $('<a href="{{ path(group.type.variant ? 'pim_enrich_variant_group_edit' : 'pim_enrich_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                                    var $groupLink = $('<a href="#{{ path(group.type.variant ? 'pim_enrich_variant_group_edit' : 'pim_enrich_group_edit', { 'id': group.id }) }}" class="hide"></a>');
                                     $groupLink.appendTo($('#{{ form.vars.id }}')).click();
                                 };
 

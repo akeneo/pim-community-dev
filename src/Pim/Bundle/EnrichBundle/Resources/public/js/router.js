@@ -2,6 +2,7 @@
 
 define(function (require) {
     var $ = require('jquery');
+    var _ = require('underscore');
     var Backbone = require('backbone');
     var Routing = require('routing');
     var RouteMatcher = require('pim/route-matcher');
@@ -49,20 +50,12 @@ define(function (require) {
                 var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
                 currentController = new Controller({ el: $view });
                 currentController.renderRoute(route, path).done(_.bind(function () {
-                    // temp
-                    _.each($('a[href]'), function (link) {
-                        var href = $(link).attr('href');
-                        if (href.substring(0, 1) !== '#' && href.substring(0, 11) !== 'javascript:') {
-                            href = '#' + href;
-                        }
-                        $(link).attr('href', href);
-                    });
                     this.triggerComplete(route);
-
                 }, this)).fail(this.notFound).always(this.hideLoadingMask);
             }, this));
         },
         notFound: function () {
+            // temp
             $('#container').html('Whoops, no such page!');
         },
         triggerStart: function (route) {

@@ -36,7 +36,7 @@
                 <ul class="dropdown-menu pull-right">
                     {% for locale in locales if locale != dataLocale %}
                         <li class="left-aligned{{ locale.code == comparisonLocale ? ' active' }}">
-                            <a href="{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                            <a href="#{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                                 <span class="indicator">
                                     {% if locale == comparisonLocale %}
                                         <i class="icon-circle"></i>
@@ -56,7 +56,7 @@
                 </ul>
             </div>
             {% if comparisonLocale is not null %}
-                <a href="{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale}) }}" class="btn">
+                <a href="#{{ path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale}) }}" class="btn">
                     &times;
                 </a>
             {% endif %}
