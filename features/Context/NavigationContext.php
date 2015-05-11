@@ -711,6 +711,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             if ($this->loginIfRequired()) {
                 $page = $this->getCurrentPage()->open($options);
                 $this->wait();
+                echo 'login was required' . PHP_EOL;
             }
 
             return $page->verifyAfterLogin();
@@ -741,40 +742,10 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $actualFullUrl = $this->getSession()->getCurrentUrl();
-        $actualUrl     = $this->sanitizeUrl($actualFullUrl);
-
-        $result = parse_url($expected, PHP_URL_PATH) === $actualUrl;
-
-        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actualUrl));
-    }
-
-    /**
-     * Sanitize an url to return the clean it without scheme, host, data locale and grid params
-     *
-     * @param string $fullUrl
-     *
-     * @return string
-     */
-    protected function sanitizeUrl($fullUrl)
-    {
-        $parsedUrl = parse_url($fullUrl);
-
-        if (isset($parsedUrl['fragment'])) {
-            $filteredUrl = preg_split('/url=/', $parsedUrl['fragment'])[1];
-        } else {
-            $filteredUrl = $parsedUrl['path'];
-        }
-
-        if (false !== $urlWithoutLocale = strstr($filteredUrl, '?dataLocale=', true)) {
-            $filteredUrl = $urlWithoutLocale;
-        }
-
-        if (false !== $urlWithoutGrid = strstr($filteredUrl, '|g/', true)) {
-            $filteredUrl = $urlWithoutGrid;
-        }
-
-        return $filteredUrl;
+        $actual = str_replace('#', '', $this->getSession()->getCurrentUrl());
+        $expected = str_replace('#', '', $expected);
+        $result = strpos($actual, $expected) !== false;
+        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
     }
 
     /**
