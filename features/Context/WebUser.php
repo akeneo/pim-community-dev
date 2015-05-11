@@ -1192,8 +1192,8 @@ class WebUser extends RawMinkContext
      */
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
+        $this->clearUOW();
         $product = $this->getFixturesContext()->getProduct($sku);
-        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
         assertEquals(
@@ -2053,6 +2053,24 @@ class WebUser extends RawMinkContext
     public function iSelectVariantGroup($variant)
     {
         $this->getCurrentPage()->fillField('Group', $variant);
+    }
+
+    /**
+     * Clear the Unit of Work
+     */
+    public function clearUOW()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+            $manager->clear();
+        }
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
+    protected function getSmartRegistry()
+    {
+        return $this->getMainContext()->getSmartRegistry();
     }
 
     /**
