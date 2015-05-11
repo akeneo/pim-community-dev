@@ -315,7 +315,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->getSession()->wait($time, $condition);
 
         // The page might load quicky but take a moment to render so let's wait some more
-        $this->getSession()->wait(100, false);
+        $this->getSession()->wait(1000, false);
 
         // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
         if ($condition !== false && microtime(true) > $end) {
