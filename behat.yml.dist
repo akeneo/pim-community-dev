@@ -34,7 +34,7 @@ jenkins-1:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~skip-pef&&~doc
 
 jenkins-2:
     context:
@@ -51,7 +51,7 @@ jenkins-2:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~skip-pef&&~doc
 
 jenkins-3:
     context:
@@ -68,7 +68,7 @@ jenkins-3:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~skip-pef&&~doc
 
 jenkins-4:
     context:
@@ -85,4 +85,4 @@ jenkins-4:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~skip-pef&&~doc
