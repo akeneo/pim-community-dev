@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -34,7 +34,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     /** @var LocaleInterface */
     protected $locale;
 
-    /** @var ProductBuilder */
+    /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /** @var UserContext */
@@ -62,7 +62,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
     protected $massActionManager;
 
     /**
-     * @param ProductBuilder               $productBuilder
+     * @param ProductBuilderInterface      $productBuilder
      * @param UserContext                  $userContext
      * @param CatalogContext               $catalogContext
      * @param AttributeRepositoryInterface $attributeRepository
@@ -72,7 +72,7 @@ class EditCommonAttributes extends AbstractMassEditOperation
      * @param string                       $uploadDir
      */
     public function __construct(
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
         UserContext $userContext,
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,

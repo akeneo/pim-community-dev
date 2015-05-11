@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class EditCommonAttributesSpec extends ObjectBehavior
 {
     function let(
-        ProductBuilder $productBuilder,
+        ProductBuilderInterface $productBuilder,
         UserContext $userContext,
         CatalogContext $catalogContext,
         AttributeRepositoryInterface $attributeRepository,

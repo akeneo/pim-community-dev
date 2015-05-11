@@ -92,7 +92,7 @@ class AddToGroupsType extends AbstractType
     /**
      * Get warning messages
      *
-     * @return string[]
+     * @return array
      */
     protected function getWarningMessages()
     {
