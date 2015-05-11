@@ -44,8 +44,11 @@ config:
                 pim_enrich_variant_group_edit:        pim/controller/form
                 pim_importexport_export_profile_edit: pim/controller/form
                 pim_importexport_import_profile_edit: pim/controller/form
+                oro_user_create:                      pim/controller/form
                 oro_user_update:                      pim/controller/form
+                oro_user_role_create:                 pim/controller/form
                 oro_user_role_update:                 pim/controller/form
+                oro_user_group_create:                pim/controller/form
                 oro_user_group_update:                pim/controller/form
         pim/fetcher-registry:
             fetchers:
