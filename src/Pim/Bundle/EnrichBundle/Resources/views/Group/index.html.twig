@@ -15,7 +15,7 @@
                 'plus'
             ) }}
         {% elseif resource_granted('pim_enrich_grouptype_index') %}
-            <a href="{{ path('pim_enrich_grouptype_index') }}">
+            <a href="#{{ path('pim_enrich_grouptype_index') }}">
                 <span class="label link-label">{{ 'info.group.no group types'|trans }}</span>
             </a>
         {% endif %}

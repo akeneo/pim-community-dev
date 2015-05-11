@@ -115,7 +115,7 @@ define(
                     if (callback) {
                         callback(data);
                     } else {
-                        Backbone.history.navigate(data.url);
+                        Backbone.history.navigate('#' + data.url);
                     }
                 } else if ($(data).prop('tagName').toLowerCase() === 'form') {
                     createDialog(data);
