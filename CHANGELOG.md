@@ -5,7 +5,8 @@
 ## Technical improvements
 - In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
 - Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option)
-- Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack 
+- Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
+- Category filter is separated from other datagrid filters for performance concerns
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission

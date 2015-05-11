@@ -41,6 +41,7 @@ function($, _, tools,  mediator, FiltersManager) {
                 if (this.collection.length === 0) {
                     filtersList.$el.hide();
                 }
+                mediator.trigger('datagrid_filters:build.post', filtersList);
             },
 
             /**

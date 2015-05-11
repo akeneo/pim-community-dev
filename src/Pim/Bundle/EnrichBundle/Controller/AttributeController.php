@@ -350,7 +350,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
-     * @return RedirectResponse|null
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {
