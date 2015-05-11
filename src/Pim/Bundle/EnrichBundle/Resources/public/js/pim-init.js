@@ -1,7 +1,7 @@
 define(
-    ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
+    ['jquery', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'pim/dialog',
      'pim/saveformstate', 'pim/asynctab', 'pim/ui', 'oro/loading-mask'],
-    function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
+    function ($, Backbone, __, mediator, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
         'use strict';
         var initialized = false;
         return function () {
@@ -121,12 +121,11 @@ define(
                             data: { _method: $el.data('method') },
                             success: function () {
                                 loadingMask.hide().$el.remove();
-                                var navigation = Navigation.getInstance();
                                 var targetUrl = $el.attr('data-redirect-url');
                                 // If already on the desired page, make sure it is refreshed
                                 Backbone.history.fragment = new Date().getTime();
-                                navigation.navigate(targetUrl, { trigger: true });
-                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                                Backbone.history.navigate(targetUrl);
+                                messenger.notificationFlashMessage('success', $el.attr('data-success-message'));
                             },
                             error: function (xhr) {
                                 loadingMask.hide().$el.remove();
