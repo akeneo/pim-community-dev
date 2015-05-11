@@ -74,6 +74,10 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
             this.datagrid = options.datagrid;
 
+            _.each(this.messages, _.bind(function (message, key) {
+                this.messages[key] = __(message);
+            }, this));
+
             _.defaults(this.messages, this.defaultMessages);
 
             if (options.launcherOptions) {
@@ -206,7 +210,8 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             this.datagrid.collection.fetch();
 
             var defaultMessage = data.successful ? this.messages.success : this.messages.error,
-                message = data.message || defaultMessage;
+                message = __(data.message) || defaultMessage;
+
             if (message) {
                 messenger.notificationFlashMessage(data.successful ? 'success' : 'error', message);
             }

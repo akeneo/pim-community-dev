@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4044: Fix pressing Enter on a Product grid filter makes the page "unclickable"
+- PIM-4146: Fix the delete confirmation message that was not translated
 
 # 1.3.10 (2015-05-05)
 
