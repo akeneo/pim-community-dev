@@ -14,7 +14,7 @@
                                     <input name="{{ groupId }}" type="hidden" value="{{ loop.index }}">
                                 </span>
                                 {% if editGranted %}
-                                    <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                    <a href="#{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                                 {% else %}
                                     {{ groupName }}
                                 {% endif %}
@@ -27,7 +27,7 @@
                     {% for groupId, groupName in groups %}
                         <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
                             {% if editGranted %}
-                                <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                <a href="#{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
                             {% else %}
                                 {{ groupName }}
                             {% endif %}
@@ -44,7 +44,7 @@
                         <br/>
                         <br/>
                         {{ 'attribute group.or'|trans }}
-                        <a href="{{ path('pim_enrich_attributegroup_create') }}">
+                        <a href="#{{ path('pim_enrich_attributegroup_create') }}">
                             <span class="label link-label large">{{ 'attribute group.create new'|trans }}</span>
                         </a>
                     {% endif %}
