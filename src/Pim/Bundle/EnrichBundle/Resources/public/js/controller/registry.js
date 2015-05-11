@@ -1,6 +1,6 @@
 'use strict';
 
-define(['module', 'require'], function (module, require) {
+define(function (require, exports, module) {
     var $ = require('jquery');
 
     var controllers = module.config().controllers || {};
