@@ -20,20 +20,29 @@ Feature: Publish many products at once
     Then I should see "The 2 selected products will be published"
     And I should see "Confirm"
 
-  Scenario: Successfully publish few products of selected
-    And I am logged in as "Julia"
+  Scenario: Only publish products on which user is the owner
+    Given I am logged in as "Julia"
     And I am on the products page
-    And I mass-edit products unionjack, jackadi and teafortwo
-    When I choose the "Publish products" operation
-    Then I should see "You're not the owner of all the selected products. You can't publish the products \"teafortwo\""
-    And I should see "Confirm"
+    When I mass-edit products unionjack, jackadi and teafortwo
+    And I choose the "Publish products" operation
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
+    Then I should see "You're not the owner of the product, you can't publish it"
+    And I should see "skipped products 1"
+    When I am on the published index page
+    Then the grid should contain 2 elements
 
-  Scenario: Forbid to publish if user is not the owner of at least one product
+  Scenario: Publish nothing if the user is the owner of no product
     And I am logged in as "Mary"
     And I am on the products page
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Publish products" operation
-    Then I should see "You're not the owner of the selected products, you can't publish them"
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
+    Then I should see "You're not the owner of the product, you can't publish it"
+    And I should see "skipped products 3"
+    When I am on the published index page
+    Then the grid should contain 0 elements
 
   @jira https://akeneo.atlassian.net/browse/PIM-3636
   Scenario: Allow to mass publish two products that are associated in two ways (jackadi => unionjack, unionjack => jackadi), I should be able to publish them twice
@@ -56,8 +65,8 @@ Feature: Publish many products at once
     And I mass-edit products unionjack and jackadi
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
-    When I press the "Next" button
-    When I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -65,8 +74,8 @@ Feature: Publish many products at once
     And I mass-edit products unionjack and jackadi
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
-    When I press the "Next" button
-    When I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -100,8 +109,8 @@ Feature: Publish many products at once
     And I mass-edit products unionjack and jackadi
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
-    When I press the "Next" button
-    When I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -109,8 +118,8 @@ Feature: Publish many products at once
     And I mass-edit products unionjack and jackadi
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
-    When I press the "Next" button
-    When I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product unionjack and jackadi
@@ -153,8 +162,8 @@ Feature: Publish many products at once
     And I mass-edit products my-jacket and my-shoes
     When I choose the "Publish products" operation
     Then I should see "The 2 selected products will be published"
-    When I press the "Next" button
-    When I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     And I am on the published index page
     Then the grid should contain 2 elements
     And I should see product my-jacket and my-shoes
@@ -185,8 +194,8 @@ Feature: Publish many products at once
     And I am on the products page
     And I mass-edit products unionjack
     When I choose the "Publish products" operation
-    When I press the "Next" button
-    When I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     And I am on the published index page
     And I should see product unionjack
     Then the row "unionjack" should contain:

@@ -42,3 +42,11 @@ job_profile_accesses:
     footwear_product_import:
         executeJobProfile: [IT support, Manager, Redactor]
         editJobProfile: [IT support, Manager, Redactor]
+
+    publish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+    unpublish_product:
+        executeJobProfile: [IT support, Manager, Redactor]
+
+    set_attribute_requirements:
+        executeJobProfile: [IT support, Manager, Redactor]

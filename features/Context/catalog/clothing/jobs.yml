@@ -142,3 +142,23 @@ jobs:
             delimiter:  ;
             enclosure:  '"'
             withHeader: true
+    publish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     publish_product
+        label:     Mass publish products
+        type:      mass_edit
+    unpublish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     unpublish_product
+        label:     Mass unpublish products
+        type:      mass_edit
+    add_product_value_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value_with_permission
+        label:     Mass add products values with permission check
+        type:      mass_edit
+    update_product_value:
+        connector: Akeneo Mass Edit Connector
+        alias:     update_product_value
+        label:     Mass update products
+        type:      mass_edit
