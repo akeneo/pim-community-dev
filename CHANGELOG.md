@@ -7,6 +7,7 @@
 - Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 - Category filter is separated from other datagrid filters for performance concerns
+- Use MySQL as a non blocking session storage
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission

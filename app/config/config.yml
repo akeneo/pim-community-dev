@@ -19,8 +19,7 @@ framework:
     trusted_proxies:          ~
     session:
         name:                 BAPID
-        handler_id:           %session_handler%
-        save_path:            %kernel.root_dir%/cache/sessions
+        handler_id:           session.handler.pdo
         gc_maxlifetime:       3600
     fragments:
         enabled:              true
