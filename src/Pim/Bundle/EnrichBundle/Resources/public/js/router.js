@@ -115,6 +115,7 @@ define(function (require) {
             this.loadingMask.show();
             if (currentController) {
                 currentController.remove();
+                $('#container').empty();
             }
             this.trigger('route:' + route.name, route.params);
             this.trigger('route_start', route.name, route.params);

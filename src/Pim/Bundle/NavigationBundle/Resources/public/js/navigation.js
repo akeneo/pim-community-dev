@@ -213,7 +213,7 @@ define(function (require) {
              * Processing all links in grid after grid load
              */
             mediator.bind(
-                "grid_load:complete grid_route:loaded",
+                "grid_load:complete",
                 function () {
                     this.processGridLinks();
                 },
@@ -384,37 +384,33 @@ define(function (require) {
                 var data = rawData;
                 data = (rawData.indexOf('http') === 0) ? {'redirect': true, 'fullRedirect': true, 'location': rawData} : this.getCorrectedData(rawData);
                 if (_.isObject(data)) {
-                    if (data.redirect !== undefined && data.redirect) {
-                        this.processRedirect(data);
-                    } else {
-                        this.clearContainer();
-                        var content = data.content;
-                        this.selectorCached.container.html(content);
-                        this.selectorCached.menu.html(data.mainMenu);
-                        this.selectorCached.userMenu.html(data.userMenu);
-                        this.selectorCached.breadcrumb.html(data.breadcrumb);
-                        /**
-                         * Collecting javascript from head and append them to content
-                         */
-                        if (data.scripts.length) {
-                            this.selectorCached.container.append(data.scripts);
-                        }
-                        /**
-                         * Setting page title
-                         */
-                        document.title = data.title;
-                        this.processClicks(this.selectorCached.menu.find(this.selectors.links));
-                        this.processClicks(this.selectorCached.userMenu.find(this.selectors.links));
-                        this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
-                        this.processClicks(this.selectorCached.container.find(this.selectors.links));
-                        this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
-                        this.processPinButton(data);
-                        this.updateMenuTabs(data);
-                        this.addMessages(data.flashMessages);
-                        this.hideActiveDropdowns();
-                        mediator.trigger("hash_navigation_request:refresh", this);
-                        this.loadingMask.hide();
+                    this.clearContainer();
+                    var content = data.content;
+                    this.selectorCached.container.html(content);
+                    this.selectorCached.menu.html(data.mainMenu);
+                    this.selectorCached.userMenu.html(data.userMenu);
+                    this.selectorCached.breadcrumb.html(data.breadcrumb);
+                    /**
+                     * Collecting javascript from head and append them to content
+                     */
+                    if (data.scripts.length) {
+                        this.selectorCached.container.append(data.scripts);
                     }
+                    /**
+                     * Setting page title
+                     */
+                    document.title = data.title;
+                    this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                    this.processClicks(this.selectorCached.userMenu.find(this.selectors.links));
+                    this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
+                    this.processClicks(this.selectorCached.container.find(this.selectors.links));
+                    this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
+                    this.processPinButton(data);
+                    this.updateMenuTabs(data);
+                    this.addMessages(data.flashMessages);
+                    this.hideActiveDropdowns();
+                    mediator.trigger("hash_navigation_request:refresh", this);
+                    this.loadingMask.hide();
                 }
             }
             catch (err) {
@@ -444,24 +440,6 @@ define(function (require) {
 
         processGridLinks: function() {
             this.processClicks($(this.selectors.gridContainer).find(this.selectors.links));
-        },
-
-        processRedirect: function (data) {
-            var redirectUrl = data.location;
-            var urlParts = redirectUrl.split('url=');
-            if (urlParts[1]) {
-                redirectUrl = urlParts[1];
-            }
-            $.isActive(true);
-            if(data.fullRedirect) {
-                var delimiter = '?';
-                if (redirectUrl.indexOf(delimiter) !== -1) {
-                    delimiter = '&';
-                }
-                window.location.replace(redirectUrl + delimiter + '_rand=' + Math.random());
-            } else {
-                this.setLocation(redirectUrl);
-            }
         },
 
         /**

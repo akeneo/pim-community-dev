@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/navigation', 'backbone/bootstrap-modal'],
-    function ($, _, Navigation) {
+    ['jquery', 'underscore', 'backbone/bootstrap-modal'],
+    function ($, _) {
         'use strict';
 
         /**
@@ -51,7 +51,7 @@ define(
                     });
 
                     redirectModal.on('ok', function() {
-                        Navigation.getInstance().setLocation(location);
+                        Backbone.history.navigate(location);
                     });
 
                     $('.modal-body a', redirectModal.el).on('click', function() {

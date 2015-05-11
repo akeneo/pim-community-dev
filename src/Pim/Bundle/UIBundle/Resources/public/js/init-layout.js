@@ -163,14 +163,10 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                     type: 'DELETE',
                     success: function (data) {
                         el.trigger('removesuccess');
-                        messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
+                        messenger.addMessage('success', el.data('success-message'), { 'hashNavEnabled': true });
                         if (el.data('redirect')) {
                             $.isActive(true);
-                            if (navigation) {
-                                navigation.setLocation(el.data('redirect'));
-                            } else {
-                                window.location.href = el.data('redirect');
-                            }
+                            Backbone.history.navigate(el.data('redirect'));
                         } else if (navigation) {
                             navigation.loadingMask.hide();
                         }
