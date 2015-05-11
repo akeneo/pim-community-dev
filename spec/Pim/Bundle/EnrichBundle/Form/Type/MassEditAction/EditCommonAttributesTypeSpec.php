@@ -38,7 +38,7 @@ class EditCommonAttributesTypeSpec extends ObjectBehavior
             [
                 'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
                 'locales' => [],
-                'common_attributes' => [],
+                'all_attributes' => [],
                 'current_locale'    => null
             ]
         )->shouldHaveBeenCalled();

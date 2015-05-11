@@ -59,7 +59,7 @@ class LastOperationsWidget implements WidgetInterface
      */
     public function getData()
     {
-        $operations = $this->manager->getLastOperationsData(['import', 'export']);
+        $operations = $this->manager->getLastOperationsData([]);
 
         foreach ($operations as &$operation) {
             $operation['statusLabel'] = $this

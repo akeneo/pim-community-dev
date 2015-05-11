@@ -1,6 +1,6 @@
 define(
-    ['backbone'],
-    function ( Backbone) {
+    ['backbone', 'oro/messenger'],
+    function (Backbone, messenger) {
         'use strict';
 
         var ExportWidget = Backbone.View.extend({
@@ -12,7 +12,8 @@ define(
             },
 
             run: function () {
-                window.location = this.action.getLinkWithParameters();
+                $.ajax(this.action.getLinkWithParameters());
+                messenger.notificationFlashMessage('success', _.__('pim.grid.mass_action.quick_export.launched'));
             }
         });
 

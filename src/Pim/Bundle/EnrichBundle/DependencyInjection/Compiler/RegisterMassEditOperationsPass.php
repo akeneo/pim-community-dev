@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Register batch operations into the batch operator
+ * Register mass edit operations
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,15 +15,21 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class RegisterMassEditOperationsPass implements CompilerPassInterface
 {
+    /** @staticvar */
+    const OPERATION_REGISTRY = 'pim_enrich.mass_edit_action.operation.registry';
+
+    /** @staticvar */
+    const OPERATION_TAG = 'pim_enrich.mass_edit_action';
+
     /** @var ReferenceFactory */
-    protected $factory;
+    protected $referenceFactory;
 
     /**
-     * @param ReferenceFactory $factory
+     * @param ReferenceFactory $referenceFactory
      */
-    public function __construct(ReferenceFactory $factory = null)
+    public function __construct(ReferenceFactory $referenceFactory)
     {
-        $this->factory = $factory ?: new ReferenceFactory();
+        $this->referenceFactory = $referenceFactory;
     }
 
     /**
@@ -31,24 +37,21 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        foreach ($container->findTaggedServiceIds('pim_enrich.mass_edit_action') as $id => $config) {
-            // Mass Edit Action was originally used by the product grid
-            // so, in order not to break BC, we fallback operator to the product one.
-            // We may deprecate this behaviour in the future and enforce operator parameter
-            // inside the tag.
-            $operatorId = isset($config[0]['operator']) ?
-                $config[0]['operator'] :
-                'pim_enrich.mass_edit_action.operator.product';
-            $operatorDef = $container->getDefinition($operatorId);
+        $registry   = $container->getDefinition(self::OPERATION_REGISTRY);
+        $operations = $container->findTaggedServiceIds(self::OPERATION_TAG);
 
-            $operatorDef->addMethodCall(
-                'registerMassEditAction',
-                [
-                    $config[0]['alias'],
-                    $this->factory->createReference($id),
-                    isset($config[0]['acl']) ? $config[0]['acl'] : null
-                ]
-            );
+        foreach ($operations as $operationsId => $operation) {
+            $config   = $operation[0];
+            $alias    = $config['alias'];
+            $acl      = isset($config['acl']) ? $config['acl'] : null;
+            $gridName = isset($config['datagrid']) ? $config['datagrid'] : null;
+
+            $registry->addMethodCall('register', [
+                $this->referenceFactory->createReference($operationsId),
+                $alias,
+                $acl,
+                $gridName
+            ]);
         }
     }
 }

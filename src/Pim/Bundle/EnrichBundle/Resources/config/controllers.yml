@@ -1,42 +1,43 @@
 parameters:
-    pim_enrich.controller.attribute_group.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
-    pim_enrich.controller.category_tree.class: Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
-    pim_enrich.controller.channel.class: Pim\Bundle\EnrichBundle\Controller\ChannelController
-    pim_enrich.controller.currency.class: Pim\Bundle\EnrichBundle\Controller\CurrencyController
-    pim_enrich.controller.family.class: Pim\Bundle\EnrichBundle\Controller\FamilyController
-    pim_enrich.controller.locale.class: Pim\Bundle\EnrichBundle\Controller\LocaleController
-    pim_enrich.controller.mass_edit_action.class: Pim\Bundle\EnrichBundle\Controller\MassEditActionController
-    pim_enrich.controller.attribute.class: Pim\Bundle\EnrichBundle\Controller\AttributeController
-    pim_enrich.controller.attribute_option.class: Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
-    pim_enrich.controller.product.class: Pim\Bundle\EnrichBundle\Controller\ProductController
-    pim_enrich.controller.association.class: Pim\Bundle\EnrichBundle\Controller\AssociationController
-    pim_enrich.controller.group.class: Pim\Bundle\EnrichBundle\Controller\GroupController
-    pim_enrich.controller.association_type.class: Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
-    pim_enrich.controller.media.class: Pim\Bundle\EnrichBundle\Controller\MediaController
-    pim_enrich.controller.variant_group.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupController
-    pim_enrich.controller.group_type.class: Pim\Bundle\EnrichBundle\Controller\GroupTypeController
-    pim_enrich.controller.completeness.class: Pim\Bundle\EnrichBundle\Controller\CompletenessController
-    pim_enrich.controller.sequential_edit.class: Pim\Bundle\EnrichBundle\Controller\SequentialEditController
-    pim_enrich.controller.product_comment.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentController
-    pim_enrich.controller.product_attribute.class: Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
+    pim_enrich.controller.attribute_group.class:         Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
+    pim_enrich.controller.category_tree.class:           Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
+    pim_enrich.controller.channel.class:                 Pim\Bundle\EnrichBundle\Controller\ChannelController
+    pim_enrich.controller.currency.class:                Pim\Bundle\EnrichBundle\Controller\CurrencyController
+    pim_enrich.controller.family.class:                  Pim\Bundle\EnrichBundle\Controller\FamilyController
+    pim_enrich.controller.locale.class:                  Pim\Bundle\EnrichBundle\Controller\LocaleController
+    pim_enrich.controller.mass_edit_action.class:        Pim\Bundle\EnrichBundle\Controller\MassEditActionController
+    pim_enrich.controller.attribute.class:               Pim\Bundle\EnrichBundle\Controller\AttributeController
+    pim_enrich.controller.attribute_option.class:        Pim\Bundle\EnrichBundle\Controller\AttributeOptionController
+    pim_enrich.controller.product.class:                 Pim\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.association.class:             Pim\Bundle\EnrichBundle\Controller\AssociationController
+    pim_enrich.controller.group.class:                   Pim\Bundle\EnrichBundle\Controller\GroupController
+    pim_enrich.controller.association_type.class:        Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
+    pim_enrich.controller.media.class:                   Pim\Bundle\EnrichBundle\Controller\MediaController
+    pim_enrich.controller.variant_group.class:           Pim\Bundle\EnrichBundle\Controller\VariantGroupController
+    pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
+    pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
+    pim_enrich.controller.sequential_edit.class:         Pim\Bundle\EnrichBundle\Controller\SequentialEditController
+    pim_enrich.controller.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\ProductCommentController
+    pim_enrich.controller.product_attribute.class:       Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
-    pim_enrich.controller.product_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductRestController
-    pim_enrich.controller.product_category_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductCategoryRestController
-    pim_enrich.controller.media_rest.class: Pim\Bundle\EnrichBundle\Controller\MediaRestController
-    pim_enrich.controller.attribute_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeRestController
-    pim_enrich.controller.attribute_group_rest.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
-    pim_enrich.controller.family_rest.class: Pim\Bundle\EnrichBundle\Controller\FamilyRestController
-    pim_enrich.controller.group_rest.class: Pim\Bundle\EnrichBundle\Controller\GroupRestController
-    pim_enrich.controller.variant_group_rest.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupRestController
-    pim_enrich.controller.channel_rest.class: Pim\Bundle\EnrichBundle\Controller\ChannelRestController
-    pim_enrich.controller.locale_rest.class: Pim\Bundle\EnrichBundle\Controller\LocaleRestController
-    pim_enrich.controller.currency_rest.class: Pim\Bundle\EnrichBundle\Controller\CurrencyRestController
-    pim_enrich.controller.measures_rest.class: Pim\Bundle\EnrichBundle\Controller\MeasuresRestController
-    pim_enrich.controller.completeness_rest.class: Pim\Bundle\EnrichBundle\Controller\CompletenessRestController
-    pim_enrich.controller.versioning_rest.class: Pim\Bundle\EnrichBundle\Controller\VersioningRestController
-    pim_enrich.controller.product_comment_rest.class: Pim\Bundle\EnrichBundle\Controller\ProductCommentRestController
-    pim_enrich.controller.association_type_rest.class: Pim\Bundle\EnrichBundle\Controller\AssociationTypeRestController
-    pim_enrich.controller.form_extension_rest.class: Pim\Bundle\EnrichBundle\Controller\FormExtensionRestController
+    pim_enrich.controller.job_tracker.class:             Pim\Bundle\EnrichBundle\Controller\JobTrackerController
+    pim_enrich.controller.product_rest.class:            Pim\Bundle\EnrichBundle\Controller\ProductRestController
+    pim_enrich.controller.product_category_rest.class:   Pim\Bundle\EnrichBundle\Controller\ProductCategoryRestController
+    pim_enrich.controller.media_rest.class:              Pim\Bundle\EnrichBundle\Controller\MediaRestController
+    pim_enrich.controller.attribute_rest.class:          Pim\Bundle\EnrichBundle\Controller\AttributeRestController
+    pim_enrich.controller.attribute_group_rest.class:    Pim\Bundle\EnrichBundle\Controller\AttributeGroupRestController
+    pim_enrich.controller.family_rest.class:             Pim\Bundle\EnrichBundle\Controller\FamilyRestController
+    pim_enrich.controller.group_rest.class:              Pim\Bundle\EnrichBundle\Controller\GroupRestController
+    pim_enrich.controller.variant_group_rest.class:      Pim\Bundle\EnrichBundle\Controller\VariantGroupRestController
+    pim_enrich.controller.channel_rest.class:            Pim\Bundle\EnrichBundle\Controller\ChannelRestController
+    pim_enrich.controller.locale_rest.class:             Pim\Bundle\EnrichBundle\Controller\LocaleRestController
+    pim_enrich.controller.currency_rest.class:           Pim\Bundle\EnrichBundle\Controller\CurrencyRestController
+    pim_enrich.controller.measures_rest.class:           Pim\Bundle\EnrichBundle\Controller\MeasuresRestController
+    pim_enrich.controller.completeness_rest.class:       Pim\Bundle\EnrichBundle\Controller\CompletenessRestController
+    pim_enrich.controller.versioning_rest.class:         Pim\Bundle\EnrichBundle\Controller\VersioningRestController
+    pim_enrich.controller.product_comment_rest.class:    Pim\Bundle\EnrichBundle\Controller\ProductCommentRestController
+    pim_enrich.controller.association_type_rest.class:   Pim\Bundle\EnrichBundle\Controller\AssociationTypeRestController
+    pim_enrich.controller.form_extension_rest.class:     Pim\Bundle\EnrichBundle\Controller\FormExtensionRestController
 
 services:
     pim_enrich.controller.abstract:
@@ -131,7 +132,6 @@ services:
             - '@pim_catalog.remover.attribute'
             - '@pim_catalog.saver.attribute_option'
             - %akeneo_measure.measures_config%
-            - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.attribute_option:
         scope: request
@@ -176,10 +176,13 @@ services:
         class: %pim_enrich.controller.mass_edit_action.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_enrich.mass_edit_action.operator.registry'
             - '@oro_datagrid.mass_action.parameters_parser'
-            - '@pim_datagrid.extension.mass_action.dispatcher'
-            - %mass_edit_limit%
+            - '@pim_datagrid.adapter.oro_to_pim_grid_filter'
+            - '@pim_base_connector.launcher.simple_job_launcher'
+            - '@akeneo_batch.job_repository'
+            - '@akeneo_batch.connectors'
+            - '@pim_enrich.mass_edit_action.operation.registry'
+            - '@pim_enrich.mass_edit_action.form_resolver'
 
     pim_enrich.controller.group:
         scope: request
@@ -284,6 +287,18 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.builder.product_template'
             - '@pim_catalog.resolver.variant_group_attributes'
+
+    pim_enrich.controller.job_tracker:
+        scope: request
+        class: %pim_enrich.controller.job_tracker.class%
+        arguments:
+            - '@templating'
+            - '@translator'
+            - '@event_dispatcher'
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_base_connector.event_listener.archivist'
+            - '@pim_serializer'
+            - '@akeneo_batch.manager.job_execution'
 
     pim_enrich.controller.product_rest:
         class: %pim_enrich.controller.product_rest.class%

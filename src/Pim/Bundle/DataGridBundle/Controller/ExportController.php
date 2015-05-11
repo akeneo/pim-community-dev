@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;

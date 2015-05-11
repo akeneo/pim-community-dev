@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
- * Add current user to version manager
+ * Add current user
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -17,23 +16,14 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class AddUserSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
-     * @var VersionManager
-     */
-    protected $versionManager;
-
-    /**
-     * @param VersionManager           $versionManager
      * @param SecurityContextInterface $securityContext
      */
-    public function __construct(VersionManager $versionManager, SecurityContextInterface $securityContext = null)
+    public function __construct(SecurityContextInterface $securityContext = null)
     {
-        $this->versionManager  = $versionManager;
         $this->securityContext = $securityContext;
     }
 
@@ -42,23 +32,27 @@ class AddUserSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(
-            KernelEvents::REQUEST => 'onKernelRequest',
-        );
+        return [
+            BuildVersionEvents::PRE_BUILD => 'preBuild',
+        ];
     }
 
     /**
-     * @param GetResponseEvent $event
+     * @param BuildVersionEvent $event
+     *
+     * @return BuildVersionEvent
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function preBuild(BuildVersionEvent $event)
     {
         if (null === $this->securityContext) {
-            return;
+            return $event;
         }
 
         $token = $this->securityContext->getToken();
         if (null !== $token && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $this->versionManager->setUsername($token->getUser()->getUsername());
+            $event->setUsername($token->getUser()->getUsername());
         }
+
+        return $event;
     }
 }

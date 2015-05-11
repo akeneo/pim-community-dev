@@ -3,22 +3,22 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
         MediaManager $mediaManager,
-        CacheClearer $cacheClearer,
         VersionManager $versionManager,
-        ProductSaver $productSaver
+        BulkSaverInterface $productSaver,
+        BulkObjectDetacherInterface $detacher
     ) {
-        $this->beConstructedWith($mediaManager, $cacheClearer, $versionManager, $productSaver);
+        $this->beConstructedWith($mediaManager, $versionManager, $productSaver, $detacher);
     }
 
     function it_is_initializable()
@@ -112,7 +112,6 @@ class ProductWriterSpec extends ObjectBehavior
     }
 
     function it_clears_cache(
-        $cacheClearer,
         StepExecution $stepExecution,
         ProductInterface $product1,
         ProductInterface $product2
@@ -122,16 +121,7 @@ class ProductWriterSpec extends ObjectBehavior
         $product1->getId()->willReturn('45');
         $product2->getId()->willReturn(null);
 
-        $cacheClearer->clear()->shouldBeCalled();
-
         $this->setStepExecution($stepExecution);
         $this->write($items);
-    }
-
-    function it_flushes($cacheClearer)
-    {
-        $cacheClearer->clear(true)->shouldBeCalled();
-
-        $this->flush();
     }
 }

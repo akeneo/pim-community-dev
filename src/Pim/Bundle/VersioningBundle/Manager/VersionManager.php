@@ -5,7 +5,10 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvent;
+use Pim\Bundle\VersioningBundle\Event\BuildVersionEvents;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Version manager
@@ -61,11 +64,13 @@ class VersionManager
     public function __construct(
         SmartManagerRegistry $registry,
         VersionBuilder $versionBuilder,
-        VersionContext $versionContext
+        VersionContext $versionContext,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->registry       = $registry;
         $this->versionBuilder = $versionBuilder;
         $this->versionContext = $versionContext;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -111,6 +116,11 @@ class VersionManager
     public function buildVersion($versionable, array $changeset = [])
     {
         $createdVersions = [];
+
+        $event = $this->eventDispatcher->dispatch(BuildVersionEvents::PRE_BUILD, new BuildVersionEvent());
+        if (null !== $event && null !== $event->getUsername()) {
+            $this->username = $event->getUsername();
+        }
 
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(ClassUtils::getClass($versionable))->refresh($versionable);

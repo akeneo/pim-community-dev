@@ -126,6 +126,7 @@ function ($, _, Backbone, app) {
          */
         enable: function () {
             if (!this.enabled) {
+                this.render();
                 this.enabled = true;
                 this.show();
                 this.trigger('enable', this);

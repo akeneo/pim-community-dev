@@ -1,0 +1,10 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+
+    {{ elements.page_header(title) }}
+
+    {{ dataGrid.renderGrid(gridName, { jobType: jobType }) }}
+
+{% endblock %}

@@ -58,6 +58,10 @@ class CommandContext extends RawMinkContext
 
     /**
      * @Then /^I should get the following products after apply the following updater to it:$/
+     *
+     * @param TableNode $updates
+     *
+     * @throws \Exception
      */
     public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {

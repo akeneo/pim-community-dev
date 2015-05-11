@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.factory.sequential_edit.class: Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
+    pim_enrich.factory.sequential_edit.class:             Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory
 
 services:
     pim_enrich.factory.sequential_edit:
