@@ -121,7 +121,8 @@ define(function (require) {
             this.trigger('route_start:' + route.name, route.params);
 
             ControllerRegistry.get(route.name).done(_.bind(function (Controller) {
-                currentController = new Controller();
+                var $view = $('<div>', {'class': 'view'}).appendTo($('#container'));
+                currentController = new Controller({ el: $view });
                 currentController.renderRoute(route, path).done(_.bind(function () {
                     // temp
                     _.each($('a[href]'), function (link) {
