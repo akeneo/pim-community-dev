@@ -36,6 +36,7 @@ Feature: Classify many products at once for the tree I have access
     And I click on the "Vintage" category
     And I click on the "Classy" category
     And I move on to the next step
+    And I wait for the "add_product_value_with_permission" mass-edit job to finish
     And I am on the products page
     And I select the "Shoes" tree
     Then I should see "Vintage (2)"

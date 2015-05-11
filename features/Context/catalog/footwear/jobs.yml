@@ -1,0 +1,11 @@
+jobs:
+    publish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     publish_product
+        label:     Mass publish products
+        type:      mass_edit
+    unpublish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     unpublish_product
+        label:     Mass unpublish products
+        type:      mass_edit

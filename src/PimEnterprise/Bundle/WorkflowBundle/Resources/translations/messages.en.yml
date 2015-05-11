@@ -62,3 +62,6 @@ proposal.overview: Proposals
 
 Attributes.title: Attributes
 Completeness.title: Completeness
+
+publish_product.steps.publish_product_handler.title: Publish product
+unpublish_product.steps.unpublish_product_handler.title: Unpublish product

@@ -27,7 +27,7 @@ Feature: Publish many products at once
     And I mass-edit products red-heels, blue-sneakers and yellow-sneakers
     And I choose the "Publish products" operation
     And I should see "The 3 selected products will be published"
-    And I press the "Next" button
-    Then I press the "Confirm" button
+    And I move on to the next step
+    And I wait for the "publish_product" mass-edit job to finish
     When I am on the published index page
     Then the grid should contain 3 elements
