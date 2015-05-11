@@ -1,8 +1,8 @@
 /* jshint browser:true */
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/navigation', 'oro/mediator', 'oro/navigation/abstract-view',
+define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/navigation/abstract-view',
     'oro/navigation/pinbar/item-view', 'oro/navigation/pinbar/collection', 'oro/navigation/pinbar/model'],
-function($, _, Backbone, Navigation, mediator, AbstractView,
+function($, _, Backbone, mediator, AbstractView,
     PinbarItemView, PinbarCollection, PinbarModel) {
     'use strict';
 
@@ -97,15 +97,13 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
         handleItemStateChange: function(item) {
             if (!this.massAdd) {
                 var url = null,
-                    navigation,
                     changeLocation = item.get('maximized');
                 if (changeLocation) {
                     url = item.get('url');
                 }
                 if (url != this.getCurrentPageItemData().url) {
-                    navigation = Navigation.getInstance();
-                    if (navigation && changeLocation) {
-                        navigation.setLocation(url, {useCache: true});
+                    if (changeLocation) {
+                        Backbone.history.navigate(url);
                     }
                     item.save(
                         null,
@@ -113,9 +111,6 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
                             wait: true,
                             success: _.bind(function () {
                                 this.checkPinbarIcon();
-                                if (!navigation && changeLocation) {
-                                    window.location.href = url;
-                                }
                             }, this)
                         }
                     );
@@ -178,19 +173,15 @@ function($, _, Backbone, Navigation, mediator, AbstractView,
          *  Update current page item state to use new url
          */
         updatePinbarState: function() {
-            var pinnedItem, hashUrl,
-                navigation = Navigation.getInstance();
-            if (navigation && navigation.useCache) {
-                pinnedItem = this.getItemForCurrentPage(true);
-                if (pinnedItem.length) {
-                     hashUrl = navigation.getHashUrl(true, true);
-                     _.each(pinnedItem, function(item) {
-                         if (item.get('url') !== hashUrl) {
-                             item.set('url', hashUrl);
-                             item.save();
-                         }
-                     }, this);
-                }
+            var pinnedItem = this.getItemForCurrentPage(true);
+            if (pinnedItem.length) {
+                var hashUrl = Backbone.history.getFragment();
+                _.each(pinnedItem, function(item) {
+                    if (item.get('url') !== hashUrl) {
+                        item.set('url', hashUrl);
+                        item.save();
+                    }
+                }, this);
             }
         },
 
