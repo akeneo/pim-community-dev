@@ -135,7 +135,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $jobInstance   = $this->getFixturesContext()->getJobInstance($code);
         $jobExecutions = $jobInstance->getJobExecutions();
 
-        $url = '/job/show/' . $jobExecutions->last()->getId();
+        $url = $this->getPage('MassEditJob show')->getUrl(['id' => $jobExecutions->last()->getId()]);
         $this->getSession()->visit($this->locatePath($url));
         $this->wait();
     }
