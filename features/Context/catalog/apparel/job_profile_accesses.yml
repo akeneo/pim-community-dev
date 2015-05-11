@@ -53,6 +53,3 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     unpublish_product:
         executeJobProfile: [IT support, Manager, Redactor]
-
-    set_attribute_requirements:
-        executeJobProfile: [IT support, Manager, Redactor]
