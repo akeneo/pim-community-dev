@@ -741,7 +741,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     protected function assertAddress($expected)
     {
-        $actualFullUrl = $this->getSession()->getCurrentUrl();
+        $expected = str_replace('#', '', $expected);
+        $actualFullUrl = str_replace('#', '', $this->getSession()->getCurrentUrl());
         $actualUrl     = $this->sanitizeUrl($actualFullUrl);
 
         $result = parse_url($expected, PHP_URL_PATH) === $actualUrl;
