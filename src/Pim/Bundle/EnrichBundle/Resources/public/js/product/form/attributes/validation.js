@@ -6,11 +6,12 @@ define(
         'backbone',
         'pim/form',
         'oro/mediator',
+        'oro/messenger',
         'pim/field-manager',
         'pim/product-edit-form/attributes/validation-error',
         'pim/user-context'
     ],
-    function (_, Backbone, BaseForm, mediator, FieldManager, ValidationError, UserContext) {
+    function (_, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
             initialize: function () {
                 mediator.on('validation_error', _.bind(this.validationError, this));
@@ -47,6 +48,10 @@ define(
                     }, this));
                 }, this));
 
+                // Global errors with an empty property path
+                if (data[''] && data[''].message) {
+                    messenger.notificationFlashMessage('error', data[''].message);
+                }
             },
             changeContext: function (locale, scope) {
                 if (locale) {
