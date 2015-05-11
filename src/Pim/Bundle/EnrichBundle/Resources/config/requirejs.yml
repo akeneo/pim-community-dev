@@ -120,6 +120,7 @@ config:
     paths:
         pim/app:                            pimenrich/js/app
         pim/router:                         pimenrich/js/router
+        pim/route-matcher:                  pimenrich/js/route-matcher
         pim/page-title:                     pimenrich/js/page-title
 
         # Controllers
