@@ -18,14 +18,22 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor
 {
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
+
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /** @var string */
     protected $format;
+
+    /** @var string */
+    protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $repository       repository to search the object in
      * @param DenormalizerInterface                 $denormalizer     denormalizer used to transform array to object
      * @param ValidatorInterface                    $validator        validator of the object
-     * @param ObjectDetacherInterface               $detacher         detacher to remove it from UOW when skip
      * @param FieldNameBuilder                      $fieldNameBuilder product manager
      * @param string                                $class            class of the object to instanciate in case if need
      * @param string                                $format           format use to denormalize
@@ -34,16 +42,18 @@ class ProductAssociationProcessor extends AbstractProcessor
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher,
         FieldNameBuilder $fieldNameBuilder,
         $class,
         $productClass,
         $format
     ) {
-        parent::__construct($repository, $denormalizer, $validator, $detacher, $class);
+        parent::__construct($repository, $class);
 
+        $this->denormalizer     = $denormalizer;
+        $this->validator        = $validator;
         $this->fieldNameBuilder = $fieldNameBuilder;
         $this->format           = $format;
+        $this->class            = $class;
         $this->productClass     = $productClass;
     }
 

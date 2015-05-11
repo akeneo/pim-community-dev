@@ -198,7 +198,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_serializer'
             - '@pim_validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@pim_transform.builder.field_name'
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.product.class%
