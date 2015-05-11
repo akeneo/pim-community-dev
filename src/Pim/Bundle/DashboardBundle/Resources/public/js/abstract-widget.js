@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/mediator'],
-    function ($, _, Backbone, Routing, LoadingMask, mediator) {
+    ['jquery', 'underscore', 'backbone', 'pim/router', 'oro/loading-mask', 'oro/mediator'],
+    function ($, _, Backbone, router, LoadingMask, mediator) {
         'use strict';
 
         return Backbone.View.extend({
@@ -52,7 +52,7 @@ define(
             },
 
             isDashboardPage: function () {
-                var route = Routing.match(Backbone.history.getFragment());
+                var route = router.match(Backbone.history.getFragment());
                 if (false !== route) {
                     return route.name === 'oro_default' || route.name === 'pim_dashboard_index';
                 }
@@ -69,7 +69,7 @@ define(
                 this.needsData = false;
                 this._beforeLoad();
 
-                $.get(Routing.generate('pim_dashboard_widget_data', { alias: this.options.alias }))
+                $.get(router.generate('pim_dashboard_widget_data', { alias: this.options.alias }))
                     .then(_.bind(function (resp) {
                         this.data = this._processResponse(resp);
                         this.render();
