@@ -1,7 +1,7 @@
  /* global define */
-define(['jquery', 'underscore', 'backbone', 'routing', 'oro/navigation', 'oro/translator', 'oro/mediator',
+define(['jquery', 'underscore', 'backbone', 'routing', 'oro/translator', 'oro/mediator',
     'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher'],
-function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Modal, ActionLauncher) {
+function($, _, Backbone, routing, __, mediator, messenger, error, Modal, ActionLauncher) {
     'use strict';
 
     /**
@@ -188,16 +188,8 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             if (action.dispatched) {
                 return;
             }
-            var url = action.getLinkWithParameters(),
-                navigation = Navigation.getInstance();
-            if (navigation) {
-                navigation.processRedirect({
-                    fullRedirect: false,
-                    location: url
-                });
-            } else {
-                location.href = url;
-            }
+            var url = action.getLinkWithParameters();
+            Backbone.history.navigate(url);
         },
 
         _handleAjax: function(action) {
