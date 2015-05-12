@@ -9,7 +9,7 @@ PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
                 strategy: AUTO
     oneToOne:
         file:
-            targetEntity: DamEnterprise\Component\Asset\Model\FileInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\FileInterface
             joinColumn:
                 name: file_id
                 referencedColumnName: id

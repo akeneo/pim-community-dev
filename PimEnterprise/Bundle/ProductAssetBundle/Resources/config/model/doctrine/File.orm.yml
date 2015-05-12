@@ -1,6 +1,6 @@
-DamEnterprise\Component\Asset\Model\File:
+PimEnterprise\Component\ProductAsset\Model\File:
     type: entity
-    table: damee_asset_file
+    table: pimee_product_asset_file
     fields:
         id:
             type: integer

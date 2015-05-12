@@ -3,7 +3,7 @@
 namespace DamEnterprise\Component\Asset\Storage;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use DamEnterprise\Component\Asset\Model\FileInterface;
+use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use League\Flysystem\MountManager;
 
 abstract class AbstractFileHandler implements FileHandlerInterface

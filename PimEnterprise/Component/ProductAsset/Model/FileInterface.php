@@ -1,5 +1,5 @@
 <?php
-namespace DamEnterprise\Component\Asset\Model;
+namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

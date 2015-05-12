@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
-use DamEnterprise\Component\Asset\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
