@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;;
+namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;
 
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
@@ -155,6 +154,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * Convert a flat field to a structured one
+     *
      * @param string $column The column name
      * @param string $value  The value in the cell
      *
@@ -184,6 +184,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * Format a value cell
+     *
      * @param string $column The column name
      * @param string $value  The value in the cell
      *
@@ -253,6 +254,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * Format price cell
+     *
      * @param string $value          The value content
      * @param array  $fieldNameInfos The field informations
      *
@@ -276,6 +278,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * Format metric cell
+     *
      * @param string $value          The value content
      * @param array  $fieldNameInfos The field informations
      *

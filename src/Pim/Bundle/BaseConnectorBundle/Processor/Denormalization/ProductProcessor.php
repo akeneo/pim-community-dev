@@ -17,8 +17,14 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractReworkedProcessor
+class ProductProcessor extends AbstractProcessor
 {
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
@@ -44,8 +50,10 @@ class ProductProcessor extends AbstractReworkedProcessor
         ValidatorInterface $validator,
         ObjectDetacherInterface $detacher
     ) {
-        parent::__construct($repository, $validator, $detacher);
+        parent::__construct($repository);
 
+        $this->validator = $validator;
+        $this->detacher = $detacher;
         $this->productBuilder = $productBuilder;
         $this->arrayConverter = $arrayConverter;
         $this->productUpdater = $productUpdater;
