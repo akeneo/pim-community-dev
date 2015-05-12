@@ -13,8 +13,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\UnitOfWork;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
@@ -97,11 +97,18 @@ class DraftBuilder implements BuilderInterface
     public function getOriginalValues(ProductInterface $product)
     {
         $uow = $this->objectManager->getUnitOfWork();
+
         $originalValues = new ArrayCollection();
 
         foreach ($product->getValues() as $value) {
             if ($uow->getEntityState($value) === UnitOfWork::STATE_MANAGED) {
                 $uow->refresh($value);
+
+                if (AbstractAttributeType::BACKEND_TYPE_PRICE === $value->getAttribute()->getBackendType()) {
+                    foreach($value->getData() as $price) {
+                        $uow->refresh($price);
+                    }
+                }
                 $originalValues->add($value);
             }
         }
