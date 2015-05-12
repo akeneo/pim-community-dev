@@ -34,10 +34,10 @@ class OptionsComparator implements ComparatorInterface
     public function getChanges(array $changes, array $originals)
     {
         $codes = [];
-        foreach ($changes['value'] as $iterator => $attribute) {
+        foreach ($changes['value'] as $index => $attribute) {
             if (!array_key_exists('value', $originals)
-                || !isset($originals['value'][$iterator])
-                || $attribute['code'] !== $originals['value'][$iterator]['code']) {
+                || !isset($originals['value'][$index])
+                || $attribute['code'] !== $originals['value'][$index]['code']) {
                 $codes[] = $attribute['code'];
             }
         }

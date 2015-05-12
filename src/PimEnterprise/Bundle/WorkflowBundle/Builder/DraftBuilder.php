@@ -72,11 +72,12 @@ class DraftBuilder implements BuilderInterface
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s". ', $code));
             }
 
-            foreach ($new as $iterator => $changes) {
+            foreach ($new as $index => $changes) {
                 $diffAttribute = $this->comparator->compare(
                     $attributeTypes[$code],
                     $changes,
-                    $this->getOriginalValue($originalValues, $code, $iterator)
+                    $this->getOriginalValue($originalValues, $code, $index)
+
                 );
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
@@ -118,12 +119,12 @@ class DraftBuilder implements BuilderInterface
     /**
      * @param array  $originalValues
      * @param string $code
-     * @param int    $iterator
+     * @param int    $index
      *
      * @return array
      */
-    protected function getOriginalValue($originalValues, $code, $iterator)
+    protected function getOriginalValue($originalValues, $code, $index)
     {
-        return !isset($originalValues[$code][$iterator]) ? [] : $originalValues[$code][$iterator];
+        return !isset($originalValues[$code][$index]) ? [] : $originalValues[$code][$index];
     }
 }
