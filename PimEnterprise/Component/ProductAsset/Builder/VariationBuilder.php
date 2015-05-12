@@ -1,9 +1,9 @@
 <?php
 
-namespace PamEnterprise\Component\ProductAsset\Builder;
+namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
@@ -21,7 +21,7 @@ class VariationBuilder
 
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        $variationClass = 'PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation'
+        $variationClass = 'PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation'
     ) {
         $this->channelRepository = $channelRepository;
         $this->variationClass    = $variationClass;

@@ -1,6 +1,6 @@
-PamEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration:
+PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration:
     type: entity
-    table: pamee_product_asset_channel_variation_configuration
+    table: pimee_product_asset_channel_variation_configuration
     fields:
         id:
             type: integer

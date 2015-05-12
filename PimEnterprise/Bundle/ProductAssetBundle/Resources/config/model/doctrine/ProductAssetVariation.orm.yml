@@ -1,6 +1,6 @@
-PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
+PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
     type: entity
-    table: pamee_product_asset_asset_variation
+    table: pimee_product_asset_asset_variation
     fields:
         id:
             type: integer
@@ -25,7 +25,7 @@ PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
                 name: channel_id
                 referencedColumnName: id
         asset:
-            targetEntity: PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface
             inversedBy: variations
             join_column:
                 name: asset_id

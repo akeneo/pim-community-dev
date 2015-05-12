@@ -1,7 +1,7 @@
-PamEnterprise\Component\ProductAsset\Model\ProductAsset:
+PimEnterprise\Component\ProductAsset\Model\ProductAsset:
     type: entity
     repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
-    table: pamee_product_asset_asset
+    table: pimee_product_asset_asset
     fields:
         id:
             type: integer
@@ -34,5 +34,5 @@ PamEnterprise\Component\ProductAsset\Model\ProductAsset:
                 referencedColumnName: id
     oneToMany:
         variations:
-            targetEntity: PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
             mappedBy: asset

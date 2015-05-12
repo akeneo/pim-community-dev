@@ -1,13 +1,13 @@
 <?php
 
-namespace PamEnterprise\Bundle\ProductAssetBundle;
+namespace PimEnterprise\Bundle\ProductAssetBundle;
 
-use PamEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class PamEnterpriseProductAssetBundle extends Bundle
+class PimEnterpriseProductAssetBundle extends Bundle
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class PamEnterpriseProductAssetBundle extends Bundle
             ->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PamEnterprise\Component\ProductAsset\Model'
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'PimEnterprise\Component\ProductAsset\Model'
         ];
 
         $container->addCompilerPass(

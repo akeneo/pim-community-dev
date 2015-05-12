@@ -1,5 +1,5 @@
 <?php
-namespace PamEnterprise\Component\ProductAsset\Model;
+namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 

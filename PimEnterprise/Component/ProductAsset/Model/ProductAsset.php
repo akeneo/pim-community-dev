@@ -1,6 +1,6 @@
 <?php
 
-namespace PamEnterprise\Component\ProductAsset\Model;
+namespace PimEnterprise\Component\ProductAsset\Model;
 
 use DamEnterprise\Component\Asset\Model\FileInterface;
 use Doctrine\Common\Collections\ArrayCollection;
