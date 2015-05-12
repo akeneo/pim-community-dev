@@ -20,7 +20,9 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                 contentType: 'application/json',
                 data: JSON.stringify(data)
             }).then(_.bind(function (data) {
-                this.productPromises = $.Deferred().resolve(data).promise();
+                this.productPromises[id] = $.Deferred().resolve(data).promise();
+
+                return data;
             }, this)).promise();
         },
         remove: function (id) {

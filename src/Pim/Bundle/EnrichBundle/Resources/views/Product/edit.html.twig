@@ -59,15 +59,15 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/entity-manager', 'pim/form-builder', 'pim/product-manager'],
-                            function($, EntityManager, FormBuilder, ProductManager) {
+                            ['jquery', 'pim/entity-manager', 'pim/form-builder', 'pim/product-manager', 'pim/user-context'],
+                            function($, EntityManager, FormBuilder, ProductManager, UserContext) {
                                 $(function() {
                                     EntityManager.initialize().done(function () {
                                         $.when(
                                             FormBuilder.build('pim/product-edit-form'),
                                             ProductManager.get({{ productId }})
                                         ).done(function(form, product) {
-                                            document.title = document.title.replace('%product.sku%', _.escape(product.meta.label));
+                                            document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
                                             form.setData(product);
                                             form.setElement('#product-edit-form').render();
                                         });

@@ -111,6 +111,7 @@ config:
         pim/form-builder:                                          pimenrich/js/form/builder
         pim/form-registry:                                         pimenrich/js/form/registry
         pim/form-config-provider:                                  pimenrich/js/form/config-provider
+        pim/product-edit-form/product-label:                       pimenrich/js/product/form/product-label
         pim/product-edit-form/attributes:                          pimenrich/js/product/form/attributes
         pim/product-edit-form/attributes/copy:                     pimenrich/js/product/form/attributes/copy
         pim/product-edit-form/attributes/copyfield:                pimenrich/js/product/form/attributes/copy-field
