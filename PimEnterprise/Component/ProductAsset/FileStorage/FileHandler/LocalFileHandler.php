@@ -11,40 +11,39 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
- * Move an uploaded file to the dropbox and save it to the database
+ * Move a local file to the dropbox and save it to the database
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  *
  * TODO: could be moved in a dedicated FileStorage component
  */
-class UploadedFileHandler extends AbstractFileHandler
+class LocalFileHandler extends AbstractFileHandler
 {
     /**
      * {@inheritdoc}
      */
-    public function handle(\SplFileInfo $uploadedFile)
+    public function handle(\SplFileInfo $localFile)
     {
-        if (!$uploadedFile instanceof UploadedFile) {
-            throw new \InvalidArgumentException(
-                'This file handle only supports "Symfony\Component\HttpFoundation\File\UploadedFile".'
-            );
-        }
+        $storageData = $this->pathGenerator->generate($localFile);
 
-        $storageData = $this->pathGenerator->generate($uploadedFile);
+        $mimeType = MimeTypeGuesser::getInstance()->guess($localFile->getPathname());
+        $size = filesize($localFile->getPathname());
 
         $file = $this->createNewFile();
         $file->setFilename($storageData['file_name']);
         $file->setGuid($storageData['guid']);
-        $file->setMimeType($uploadedFile->getMimeType());
-        $file->setOriginalFilename($uploadedFile->getClientOriginalName());
+        $file->setMimeType($mimeType);
+        $file->setOriginalFilename($localFile->getFilename());
         $file->setPath($storageData['path']);
-        $file->setSize($uploadedFile->getClientSize());
+        $file->setSize($size);
 
         $this->mountManager->move(
-            sprintf('%s://%s', $this->srcFsAlias, $uploadedFile->getFilename()),
+            //TODO: $localFile->getPathname() is wrong, maybe we can't use an \SplFileInfo as input of the method
+            sprintf('%s://%s', $this->srcFsAlias, $localFile->getPathname()),
             sprintf('%s://%s', $this->destFsAlias, $file->getPathname())
         );
 

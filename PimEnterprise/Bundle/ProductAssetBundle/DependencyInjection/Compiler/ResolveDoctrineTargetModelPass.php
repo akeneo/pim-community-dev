@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
@@ -7,8 +16,7 @@ use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolv
 /**
  * Resolves doctrine ORM Target entities
  *
- * @author    Julien Janvier <jjanvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelPass
 {

@@ -1,13 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Component\ProductAsset\FileStorage;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Generates all the path data (sanitized and unique filename, path, pathname and guid) of a file
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
+ */
 class PathGenerator
 {
     /**
-     * Generate all the path infos of a file. If the original file name exceeds 100 characters, it is truncated.
+     * Generate all the path data of a file. If the original file name exceeds 100 characters, it is truncated.
      * The file name is sanitized, and a unique ID is appended at the beginning.
      *
      * For example, a file called "this i#s the é file.txt'" will produce the following output:

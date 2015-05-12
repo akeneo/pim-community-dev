@@ -1,7 +1,7 @@
 parameters:
-    pimee_product_asset.model.asset.class: PimEnterprise\Component\ProductAsset\Model\ProductAsset
-    pimee_product_asset.model.asset.interface: PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface
-    pimee_product_asset.model.asset_variation.class: PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation
-    pimee_product_asset.model.asset_variation.interface: PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
-    pimee_product_asset.model.file.class: PimEnterprise\Component\ProductAsset\Model\File
-    pimee_product_asset.model.file.interface: PimEnterprise\Component\ProductAsset\Model\FileInterface
+    pimee_product_asset.model.asset.class:                  PimEnterprise\Component\ProductAsset\Model\ProductAsset
+    pimee_product_asset.model.asset.interface:              PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+    pimee_product_asset.model.asset_variation.class:        PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation
+    pimee_product_asset.model.asset_variation.interface:    PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
+    pimee_product_asset.model.file.class:                   PimEnterprise\Component\ProductAsset\Model\File
+    pimee_product_asset.model.file.interface:               PimEnterprise\Component\ProductAsset\Model\FileInterface

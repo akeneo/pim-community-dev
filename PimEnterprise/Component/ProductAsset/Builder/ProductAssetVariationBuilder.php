@@ -1,24 +1,38 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 
 /**
  * Builds variations related to an asset
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class VariationBuilder
+class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterface
 {
-    /** @var string */
-    protected $variationClass;
-
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
+    /** @var string */
+    protected $variationClass;
+
+    /**
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param string                     $variationClass
+     */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
         $variationClass = 'PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation'
@@ -28,29 +42,7 @@ class VariationBuilder
     }
 
     /**
-     * @param ProductAssetInterface $asset
-     *
-     * @return ProductAssetVariationInterface[]
-     */
-    public function buildAll(ProductAssetInterface $asset)
-    {
-        $variations = [];
-        $channels   = $this->channelRepository->getFullChannels();
-
-        foreach ($channels as $channel) {
-            //todo: check if locale is activated ?
-            foreach ($channel->getLocales() as $locale) {
-                $variations[] = $this->buildOne($asset, $channel, $locale);
-            }
-        }
-
-        return $variations;
-    }
-
-    /**
-     * @param ProductAssetInterface $asset
-     *
-     * @return ProductAssetVariationInterface[]
+     * {@inheritdoc}
      */
     public function buildMissing(ProductAssetInterface $asset)
     {
@@ -70,11 +62,7 @@ class VariationBuilder
     }
 
     /**
-     * @param ProductAssetInterface $asset
-     * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
-     *
-     * @return ProductAssetVariationInterface
+     * {@inheritdoc}
      */
     public function buildOne(ProductAssetInterface $asset, ChannelInterface $channel, LocaleInterface $locale)
     {
@@ -84,5 +72,23 @@ class VariationBuilder
         $variation->setLocale($locale);
 
         return $variation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildAll(ProductAssetInterface $asset)
+    {
+        $variations = [];
+        $channels   = $this->channelRepository->getFullChannels();
+
+        foreach ($channels as $channel) {
+            //todo: check if locale is activated ?
+            foreach ($channel->getLocales() as $locale) {
+                $variations[] = $this->buildOne($asset, $channel, $locale);
+            }
+        }
+
+        return $variations;
     }
 }
