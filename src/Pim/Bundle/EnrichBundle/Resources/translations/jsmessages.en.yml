@@ -198,8 +198,7 @@ pim_enrich:
             panel:
                 completeness:
                     info:
-                        no_family:      No family defined
-                        not_calculated: Not yet calculated
+                        no_family: No family defined
             switch:
                 no: No
                 yes: Yes

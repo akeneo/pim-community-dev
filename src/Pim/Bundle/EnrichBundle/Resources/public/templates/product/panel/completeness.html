@@ -14,9 +14,9 @@
                 </header>
             <div class="content">
                 <% _.each(channels['channels'], function(completeness, channel) { %>
-                    <div>
-                        <span class="channel" data-channel="<%= channel %>"><%= channel %></span>
-                        <% if (completeness.completeness) { %>
+                    <% if (completeness.completeness) { %>
+                        <div>
+                            <span class="channel" data-channel="<%= channel %>"><%= channel %></span>
                             <div class="progress <%= completeness.completeness.ratio === 100 ? 'progress-success' : 'progress-warning' %>">
                                 <div class="bar" data-ratio="<%= completeness.completeness.ratio %>" style="width: <%= completeness.completeness.ratio %>%;"></div>
                             </div>
@@ -30,12 +30,8 @@
                                 </span>
                                 <% } %>
                             </div>
-                        <% } else { %>
-                            <p>
-                                <%= _.__('pim_enrich.form.product.panel.completeness.info.not_calculated') %>
-                            </p>
-                        <% }%>
-                    </div>
+                        </div>
+                    <% }%>
                 <% }); %>
             </div>
         </div>
