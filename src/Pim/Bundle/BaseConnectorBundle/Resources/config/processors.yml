@@ -73,7 +73,7 @@ services:
         arguments:
             - %pim_catalog.entity.group_type.class%
 
-    # @deprecated will be droped in 1.5
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.product:
         class: %pim_base_connector.processor.product.class%
         arguments:
@@ -109,6 +109,12 @@ services:
         parent: pim_base_connector.processor.transformer
         arguments:
             - %pim_catalog.entity.attribute.class%
+
+    # @deprecated will be dropped in 1.5
+    pim_base_connector.processor.attribute_option:
+        parent: pim_base_connector.processor.transformer
+        arguments:
+            - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.family:
         parent: pim_base_connector.processor.transformer
@@ -156,7 +162,6 @@ services:
             - %pim_catalog.entity.product_template.class%
             - 'csv'
 
-
     pim_base_connector.processor.denormalization.attribute_option.flat:
         class: %pim_base_connector.processor.denormalization.attribute_option.class%
         arguments:
@@ -172,15 +177,6 @@ services:
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
             - %pim_catalog.entity.attribute_option.class%
-
-    # Denormalization - ArrayConverter
-    pim_base_connector.denormalization.array_converter.flat.attribute_option:
-        class: %pim_base_connector.denormalization.array_converter.flat.attribute_option.class%
-        arguments:
-            - '@pim_catalog.repository.locale'
-
-    pim_base_connector.denormalization.array_converter.structured.attribute_option:
-        class: %pim_base_connector.denormalization.array_converter.structured.attribute_option.class%
 
     pim_base_connector.processor.denormalization.product.flat:
         class: %pim_base_connector.processor.denormalization.product.class%
@@ -203,15 +199,7 @@ services:
             - %pim_catalog.entity.product.class%
             - 'csv'
 
-    # Denormalization / Converters
-    pim_base_connector.denormalization.array_converter.flat.product:
-        class: %pim_base_connector.denormalization.array_converter.flat.product.class%
-        arguments:
-            - '@pim_transform.builder.field_name'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.currency'
-            - '@pim_catalog.resolver.attribute_values'
-
+    # Denormalization - ArrayConverter
     pim_base_connector.denormalization.array_converter.flat.attribute_option:
         class: %pim_base_connector.denormalization.array_converter.flat.attribute_option.class%
         arguments:
@@ -219,6 +207,14 @@ services:
 
     pim_base_connector.denormalization.array_converter.structured.attribute_option:
         class: %pim_base_connector.denormalization.array_converter.structured.attribute_option.class%
+
+    pim_base_connector.denormalization.array_converter.flat.product:
+        class: %pim_base_connector.denormalization.array_converter.flat.product.class%
+        arguments:
+            - '@pim_transform.builder.field_name'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.resolver.attribute_values'
 
     # Normalization
     pim_base_connector.processor.normalization.csv_group:

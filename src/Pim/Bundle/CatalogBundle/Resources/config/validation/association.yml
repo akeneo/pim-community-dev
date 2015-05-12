@@ -1,3 +1,0 @@
-Pim\Bundle\CatalogBundle\Entity\Association:
-    constraints:
-        - Pim\Bundle\CatalogBundle\Validator\Constraints\Association

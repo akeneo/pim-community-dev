@@ -9,7 +9,6 @@ parameters:
     pim_catalog.validator.constraint.variant_group_values.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
     pim_catalog.validator.constraint.variant_group_axis.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxisValidator
     pim_catalog.validator.constraint.has_variant_axes.class:               Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxesValidator
-    pim_catalog.validator.constraint.association.class:                    Pim\Bundle\CatalogBundle\Validator\Constraints\AssociationValidator
     pim_catalog.validator.constraint_guesser.chained.class:                Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
     pim_catalog.validator.constraint_guesser.email.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
     pim_catalog.validator.constraint_guesser.file.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
@@ -94,11 +93,6 @@ services:
         class: %pim_catalog.validator.constraint.has_variant_axes.class%
         tags:
             - { name: validator.constraint_validator, alias: pim_has_variant_axes_validator }
-
-    pim_catalog.validator.constraint.association:
-        class: %pim_catalog.validator.constraint.association.class%
-        tags:
-            - { name: validator.constraint_validator, alias: pim_association_validator }
 
     # Attribute constraint guesser
     pim_catalog.validator.constraint_guesser.chained_attribute:
