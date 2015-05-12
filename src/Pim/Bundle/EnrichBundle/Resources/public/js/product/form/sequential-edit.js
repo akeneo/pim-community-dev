@@ -12,7 +12,7 @@ define(
         'oro/navigation',
         'pim/product-manager',
         'pim/entity-manager',
-        'oro/mediator',
+        'pim/user-context',
         'bootstrap'
     ],
     function (
@@ -25,7 +25,8 @@ define(
         Routing,
         Navigation,
         ProductManager,
-        EntityManager
+        EntityManager,
+        UserContext
     ) {
         return BaseForm.extend({
             id: 'sequentialEdit',
@@ -99,7 +100,7 @@ define(
                 var promises = [];
                 if (previous) {
                     promises.push(ProductManager.get(previous).then(function (product) {
-                        var label = product.meta.label;
+                        var label = product.meta.label[UserContext.get('catalogLocale')];
                         previousObject = {
                             id:         product.meta.id,
                             label:      label,
@@ -109,7 +110,7 @@ define(
                 }
                 if (next) {
                     promises.push(ProductManager.get(next).then(function (product) {
-                        var label = product.meta.label;
+                        var label = product.meta.label[UserContext.get('catalogLocale')];
                         nextObject = {
                             id:         product.meta.id,
                             label:      label,

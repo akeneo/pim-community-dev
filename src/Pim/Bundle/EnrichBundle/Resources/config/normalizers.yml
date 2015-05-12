@@ -37,6 +37,7 @@ services:
         arguments:
             - '@pim_serializer.normalizer.product'
             - '@pim_versioning.manager.version'
+            - '@pim_catalog.manager.locale'
         tags:
             - { name: pim_internal_api_serializer.normalizer }
 

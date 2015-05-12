@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -32,11 +33,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * @param NormalizerInterface $productNormalizer
      * @param VersionManager      $versionManager
+     * @param LocaleManager       $localeManager
      */
-    public function __construct(NormalizerInterface $productNormalizer, VersionManager $versionManager)
-    {
+    public function __construct(
+        NormalizerInterface $productNormalizer,
+        VersionManager $versionManager,
+        LocaleManager $localeManager
+    ) {
         $this->productNormalizer = $productNormalizer;
         $this->versionManager    = $versionManager;
+        $this->localeManager     = $localeManager;
     }
 
     /**
@@ -47,7 +53,6 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
         $normalizedProduct['meta'] = [
             'id'      => $product->getId(),
-            'label'   => $product->getLabel(),
             'created' => $this->serializer->normalize(
                 $this->versionManager->getOldestLogEntry($product),
                 'array'
@@ -56,7 +61,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 $this->versionManager->getNewestLogEntry($product),
                 'array'
             )
-        ] + $this->getAssociationMeta($product);
+        ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
     }
@@ -75,6 +80,22 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function setSerializer(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getLabels(ProductInterface $product)
+    {
+        $labels = [];
+
+        foreach ($this->localeManager->getActiveCodes() as $localeCode) {
+            $labels[$localeCode] = $product->getLabel($localeCode);
+        }
+
+        return ['label' => $labels];
     }
 
     /**

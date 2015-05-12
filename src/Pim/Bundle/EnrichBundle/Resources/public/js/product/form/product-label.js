@@ -16,7 +16,7 @@ define(
                 var meta = this.getRoot().model.get('meta');
 
                 if (meta && meta.label) {
-                    this.$el.text(meta.label);
+                    this.$el.text(meta.label[UserContext.get('catalogLocale')]);
                 }
 
                 return this;
