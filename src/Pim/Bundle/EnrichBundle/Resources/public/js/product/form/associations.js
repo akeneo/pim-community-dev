@@ -7,6 +7,7 @@ define(
         'backbone',
         'pim/form',
         'text!pim/template/product/tab/associations',
+        'text!pim/template/product/tab/association-panes',
         'pim/entity-manager',
         'pim/attribute-manager',
         'pim/user-context',
@@ -20,6 +21,7 @@ define(
         Backbone,
         BaseForm,
         formTemplate,
+        panesTemplate,
         EntityManager,
         AttributeManager,
         UserContext,
@@ -29,6 +31,7 @@ define(
     ) {
         return BaseForm.extend({
             template: _.template(formTemplate),
+            panesTemplate: _.template(panesTemplate),
             className: 'tab-pane active',
             id: 'product-associations',
             events: {
@@ -97,6 +100,7 @@ define(
 
                 mediator.on('product:action:post_update', _.bind(function () {
                     this.$('.selection-inputs input').val('');
+                    this.renderPanes();
                     var associationType =  this.state.get('currentAssociationType');
                     _.each(this.datagrids, function (datagrid) {
                         if ($('#grid-' + datagrid.name).length) {
@@ -122,7 +126,6 @@ define(
                     this.loadAssociationTypes(),
                     EntityManager.getRepository('attribute').getIdentifier()
                 ).done(_.bind(function (associationTypes, identifierAttribute) {
-                    this.setAssociationCount(associationTypes);
                     this.state.set(
                         'currentAssociationType',
                         associationTypes.length ? _.first(associationTypes).code : null
@@ -137,6 +140,7 @@ define(
                             associationTypes: associationTypes
                         })
                     );
+                    this.renderPanes();
 
                     if (associationTypes.length) {
                         _.each(this.datagrids, _.bind(function (datagrid) {
@@ -152,6 +156,19 @@ define(
                 }, this));
 
                 return this;
+            },
+            renderPanes: function () {
+                this.loadAssociationTypes().then(_.bind(function (associationTypes) {
+                    this.setAssociationCount(associationTypes);
+                    this.$('#association-buttons').siblings('.tab-pane').remove();
+                    this.$('#association-buttons').after(
+                        this.panesTemplate({
+                            state:            this.state.toJSON(),
+                            locale:           UserContext.get('catalogLocale'),
+                            associationTypes: associationTypes
+                        })
+                    );
+                }, this));
             },
             loadAssociationTypes: function () {
                 return EntityManager.getRepository('associationType').findAll();
