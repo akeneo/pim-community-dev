@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\AbstractProductValuePresenter;
 /**
  * Abstract Present changes of reference data
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresenter
 {
@@ -49,7 +49,7 @@ abstract class AbstractReferenceDataPresenter extends AbstractProductValuePresen
     public function supports($data, array $change)
     {
         $supports = parent::supports($data, $change);
-        if (true === $supports) {
+        if ($supports) {
             $this->referenceDataName = $data->getAttribute()->getReferenceDataName();
 
             return true;

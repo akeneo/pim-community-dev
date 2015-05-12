@@ -32,6 +32,11 @@ class ReferenceDataCollectionPresenter extends AbstractReferenceDataPresenter
     protected function normalizeData($data)
     {
         $result = [];
+
+        if (null === $data) {
+            return $result;
+        }
+
         foreach ($data as $reference) {
             $result[] = (string) $reference;
         }

@@ -227,9 +227,14 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected function createFakeValue($code)
     {
         $attribute = $this->attributeRepository->findOneByIdentifier($code);
-        $attribute = $this->attributeManager->createAttribute($attribute->getAttributeType());
-        $value = $this->productManager->createProductValue($attribute);
-        $value->setAttribute($attribute);
+        $newAttribute = $this->attributeManager->createAttribute($attribute->getAttributeType());
+        $value = $this->productManager->createProductValue($newAttribute);
+
+        if (null !== $attribute->getReferenceDataName()) {
+            $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
+        }
+
+        $value->setAttribute($newAttribute);
 
         return $value;
     }
