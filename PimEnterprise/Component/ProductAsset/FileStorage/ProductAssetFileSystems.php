@@ -1,9 +1,9 @@
 <?php
 
-namespace DamEnterprise\Component\Asset;
+namespace PimEnterprise\Component\ProductAsset\FileStorage;
 
 // just the list of the file systems that are used by the asset component
-final class AssetFileSystems
+final class ProductAssetFileSystems
 {
     /**
      * Where files are uploaded by users

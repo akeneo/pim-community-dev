@@ -1,8 +1,8 @@
 <?php
 
-namespace DamEnterprise\Component\Asset\Storage;
+namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
 
-use DamEnterprise\Component\Asset\AssetFileSystems;
+use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UploadedFileHandler extends AbstractFileHandler
@@ -26,8 +26,8 @@ class UploadedFileHandler extends AbstractFileHandler
         $file->setSize($uploadedFile->getClientSize());
 
         $this->mountManager->move(
-            sprintf('%s://%s', AssetFileSystems::FS_INCOMING_UPLOAD, $uploadedFile->getFilename()),
-            sprintf('%s://%s', AssetFileSystems::FS_DROPBOX_AIRLOCK, $file->getPathname())
+            sprintf('%s://%s', ProductAssetFileSystems::FS_INCOMING_UPLOAD, $uploadedFile->getFilename()),
+            sprintf('%s://%s', ProductAssetFileSystems::FS_DROPBOX_AIRLOCK, $file->getPathname())
         );
 
         $this->saver->save($file);

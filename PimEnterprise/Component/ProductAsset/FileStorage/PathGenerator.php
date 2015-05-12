@@ -1,6 +1,6 @@
 <?php
 
-namespace DamEnterprise\Component\Asset\Storage;
+namespace PimEnterprise\Component\ProductAsset\FileStorage;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

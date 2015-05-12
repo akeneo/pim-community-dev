@@ -1,6 +1,6 @@
 <?php
 
-namespace DamEnterprise\Component\Asset\Storage;
+namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
 
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
