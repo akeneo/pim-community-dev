@@ -22,6 +22,12 @@ extensions:
         zones:
             container: .tab-container
 
+    back-to-grid:
+        module: pim/product-edit-form/back-to-grid
+        parent: product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_index
+
     download-pdf:
         module: pim/product-edit-form/download-pdf
         parent: product-edit-form
