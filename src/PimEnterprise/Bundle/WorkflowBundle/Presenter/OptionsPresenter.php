@@ -58,7 +58,7 @@ class OptionsPresenter extends AbstractProductValuePresenter
     protected function normalizeChange(array $change)
     {
         if (null === $change['values']) {
-            return;
+            return null;
         }
 
         $result = [];

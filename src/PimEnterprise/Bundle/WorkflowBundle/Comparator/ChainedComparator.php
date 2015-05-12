@@ -28,11 +28,11 @@ class ChainedComparator
      * @param array  $changes
      * @param array  $originals
      *
-     * @return array|null
+     * @throws \LogicException
      *
-     * @throw \LogicException
+     * @return array|null
      */
-    public function compare($attributeType, $changes, $originals)
+    public function compare($attributeType, array $changes, array $originals)
     {
         foreach ($this->getComparators() as $comparator) {
             if ($comparator->supportsComparison($attributeType)) {

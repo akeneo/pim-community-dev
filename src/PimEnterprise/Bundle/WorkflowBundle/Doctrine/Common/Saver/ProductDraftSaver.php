@@ -11,9 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -21,7 +19,6 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
@@ -133,7 +130,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $productDraft->setChanges($changes);
 
         $this->objectManager->persist($productDraft);
-        $this->objectManager->flush($productDraft);
+        $this->objectManager->flush();
     }
 
     /**

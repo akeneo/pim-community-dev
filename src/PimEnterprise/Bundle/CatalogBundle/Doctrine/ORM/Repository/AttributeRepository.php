@@ -52,13 +52,11 @@ class AttributeRepository extends BaseAttributeRepository implements AttributeRe
             ->getQuery()
             ->getArrayResult();
 
-        if (empty($results)) {
-            return $results;
-        }
-
         $attributes = [];
-        foreach ($results as $attribute) {
-            $attributes[$attribute['code']] = $attribute['attributeType'];
+        if (!empty($results)) {
+            foreach ($results as $attribute) {
+                $attributes[$attribute['code']] = $attribute['attributeType'];
+            }
         }
 
         return $attributes;

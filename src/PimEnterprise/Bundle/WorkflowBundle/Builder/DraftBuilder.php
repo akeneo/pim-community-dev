@@ -18,7 +18,6 @@ use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
-use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -43,7 +42,7 @@ class DraftBuilder implements BuilderInterface
     /**
      * @param ObjectManager                $objectManager
      * @param SerializerInterface          $serializer
-     * @param ComparatorInterface          $comparator
+     * @param ChainedComparator            $comparator
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
@@ -73,11 +72,11 @@ class DraftBuilder implements BuilderInterface
                 throw new \LogicException(sprintf('Cannot find attribute with code "%s". ', $code));
             }
 
-            foreach ($new as $i => $changes) {
+            foreach ($new as $iterator => $changes) {
                 $diffAttribute = $this->comparator->compare(
                     $attributeTypes[$code],
                     $changes,
-                    $this->getOriginalValue($originalValues, $code, $i)
+                    $this->getOriginalValue($originalValues, $code, $iterator)
                 );
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
@@ -119,12 +118,12 @@ class DraftBuilder implements BuilderInterface
     /**
      * @param array  $originalValues
      * @param string $code
-     * @param int    $i
+     * @param int    $iterator
      *
      * @return array
      */
-    protected function getOriginalValue($originalValues, $code, $i)
+    protected function getOriginalValue($originalValues, $code, $iterator)
     {
-        return !isset($originalValues[$code][$i]) ? [] : $originalValues[$code][$i];
+        return !isset($originalValues[$code][$iterator]) ? [] : $originalValues[$code][$iterator];
     }
 }

@@ -133,16 +133,16 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * Present an attribute change
      *
+     * @param ProductDraft $productDraft
      * @param array        $change
      * @param string       $code
-     * @param ProductDraft $productDraft
      *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      *
      * @return string
      */
-    public function presentChange(array $change, $code, ProductDraft $productDraft)
+    public function presentChange(ProductDraft $productDraft, array $change, $code)
     {
         if (null === $value = $productDraft->getProduct()->getValue($code, $change['locale'], $change['scope'])) {
             $value = $this->createFakeValue($code);

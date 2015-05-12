@@ -53,7 +53,7 @@ class OptionPresenter extends AbstractProductValuePresenter
     protected function normalizeChange(array $change)
     {
         if (null === $change['value']) {
-            return;
+            return null;
         }
 
         return (string) $this->repository->findOneByCode($change['value']);

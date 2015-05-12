@@ -34,7 +34,7 @@ class MediaComparator implements ComparatorInterface
     public function getChanges(array $changes, array $originals)
     {
         if (isset($originals['value']['filePath']) && $changes['value']['filePath'] === $originals['value']['filePath']) {
-            return;
+            return null;
         }
 
         $changes['value']['filename'] = str_replace('/', '', strrchr($changes['value']['filePath'], '/'));
