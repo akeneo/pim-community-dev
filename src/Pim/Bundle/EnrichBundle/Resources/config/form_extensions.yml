@@ -22,6 +22,11 @@ extensions:
         zones:
             container: .tab-container
 
+    product-label:
+        module: pim/product-edit-form/product-label
+        parent: product-edit-form
+        targetZone: title
+
     back-to-grid:
         module: pim/product-edit-form/back-to-grid
         parent: product-edit-form
