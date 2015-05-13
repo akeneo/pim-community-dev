@@ -16,10 +16,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\WorkflowBundle\Applier\ApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -46,7 +46,7 @@ class ProductDraftManager
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
 
-    /** @var ProductDraftChangesApplier */
+    /** @var ApplierInterface */
     protected $applier;
 
     /** @var EventDispatcherInterface */
@@ -58,7 +58,7 @@ class ProductDraftManager
      * @param UserContext                     $userContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
-     * @param ProductDraftChangesApplier      $applier
+     * @param ApplierInterface                $applier
      * @param EventDispatcherInterface        $dispatcher
      * @param MediaManager                    $mediaManager
      */
@@ -68,7 +68,7 @@ class ProductDraftManager
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        ProductDraftChangesApplier $applier,
+        ApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         MediaManager $mediaManager
     ) {

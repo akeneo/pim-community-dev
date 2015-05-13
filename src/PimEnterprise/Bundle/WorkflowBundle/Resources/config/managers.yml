@@ -28,6 +28,6 @@ services:
             - '@pim_user.context.user'
             - '@pimee_workflow.factory.product_draft'
             - '@pimee_workflow.repository.product_draft'
-            - '@pimee_workflow.applier.product_draft_changes_applier'
+            - '@pimee_workflow.applier.draft'
             - '@event_dispatcher'
             - '@pim_catalog.manager.media'

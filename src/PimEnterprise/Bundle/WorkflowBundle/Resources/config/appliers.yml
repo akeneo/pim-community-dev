@@ -1,0 +1,8 @@
+parameters:
+    pimee_workflow.applier.draft.class: PimEnterprise\Bundle\WorkflowBundle\Applier\DraftApplier
+
+services:
+    pimee_workflow.applier.draft:
+        class: %pimee_workflow.applier.draft.class%
+        arguments:
+            - '@pim_catalog.updater.product'
