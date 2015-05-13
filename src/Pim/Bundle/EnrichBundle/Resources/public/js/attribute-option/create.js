@@ -41,7 +41,6 @@ define(
                         cancelText: _.__('pim_enrich.form.attribute_option.add_option_modal.cancel'),
                         okText: _.__('pim_enrich.form.attribute_option.add_option_modal.confirm')
                     });
-
                     modal.open();
 
                     form.setElement(modal.$('.modal-body')).render();

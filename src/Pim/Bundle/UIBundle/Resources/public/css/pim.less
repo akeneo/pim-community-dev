@@ -1323,21 +1323,22 @@ h3.tab-header {
       line-height: 22px;
       border: 1px solid #ccc;
       padding: 0;
+      margin: 2px 0 2px 2px;
       .display-flex();
 
       div {
         .flex(1);
-        margin:0 6px 0 6px;
-        line-height: 28px;
+        margin:0 6px 0 10px;
+        line-height: 26px;
         .flex-order(2);
       }
     }
 
     .select2-search-choice-close {
-      line-height: 28px;
+      line-height: 26px;
       border-right: solid 1px #ccc;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       text-align: center;
       position: relative;
       top: auto;
@@ -1359,7 +1360,7 @@ h3.tab-header {
     margin-left: -5px;
   }
 
-  .select2-search-choice-close{
+  .select2-search-choice-close {
     margin-top: 0
   }
 }
@@ -1564,4 +1565,31 @@ h3.tab-header {
   .modal-footer .btn-primary {
     background-color: #7dbf16;
   }
+}
+
+.simple-select-field, .multi-select-field {
+  .field-input {
+    display: flex;
+
+    .select-field {
+      .flex(1);
+    }
+
+    .add-attribute-option {
+      background: none;
+      border-radius: 2px;
+      height: 30px;
+      line-height: 30px;
+      border-color: #ddd;
+      border-left: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+.multi-select-field .btn.add-attribute-option {
+  height: 34px;
+  width: 34px;
+  line-height: 34px;
 }

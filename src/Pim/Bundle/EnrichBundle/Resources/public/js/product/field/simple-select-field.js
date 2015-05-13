@@ -6,29 +6,25 @@ define(
         'pim/field',
         'underscore',
         'text!pim/template/product/field/simple-select',
-        'text!pim/template/product/tab/attribute/add-option-button',
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
         'jquery.select2'
     ],
-    function ($, Field, _, fieldTemplate, addOptionButtonTemplate, Routing, createOption, SecurityContext) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
-            addOptionButtonTemplate: _.template(addOptionButtonTemplate),
             fieldType: 'simple-select',
             events: {
                 'change input': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
-            initialize: function () {
-                Field.prototype.initialize.apply(this, arguments);
+            getTemplateContext: function () {
+                return Field.prototype.getTemplateContext.apply(this, arguments).then(function (templateContext) {
+                    templateContext.userCanAddOption = SecurityContext.isGranted('pim_enrich_attribute_edit');
 
-                if (SecurityContext.isGranted('pim_enrich_attribute_edit')) {
-                    this.addElement('footer', 'add_option', this.addOptionButtonTemplate());
-                }
-
-                return this;
+                    return templateContext;
+                });
             },
             createOption: function () {
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
