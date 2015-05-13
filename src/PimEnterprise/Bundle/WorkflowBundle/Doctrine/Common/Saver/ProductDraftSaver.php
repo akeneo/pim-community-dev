@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
+use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
