@@ -18,18 +18,18 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class PathGenerator
+class PathGenerator implements PathGeneratorInterface
 {
     /**
      * Generate all the path data of a file. If the original file name exceeds 100 characters, it is truncated.
-     * The file name is sanitized, and a unique ID is appended at the beginning.
+     * The file name is sanitized, and a unique ID is prepended.
      *
      * For example, a file called "this i#s the é file.txt'" will produce the following output:
      *   [
      *      'guid'      => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12',
      *      'file_name' => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_i_s_the___file.txt'
      *      'path'      => '2/f/d/4/',
-     *      'path_name' => '2/f/d/4//2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_i_s_the___file.txt',
+     *      'path_name' => '2/f/d/4/2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_i_s_the___file.txt',
      *   ]
      *
      * @param \SplFileInfo $file
