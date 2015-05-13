@@ -57,7 +57,6 @@ class ProductDraftSaverSpec extends ObjectBehavior
         $draftBuilder
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $draftBuilder->builder($product)->willReturn(['values' => ['name' => 'my proposed name']]);
@@ -86,7 +85,6 @@ class ProductDraftSaverSpec extends ObjectBehavior
         $draftBuilder
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $draftBuilder->builder($product)->willReturn(['values' => ['name' => 'my proposed name']]);

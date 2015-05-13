@@ -86,7 +86,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         }
 
         $this->optionsResolver->resolveSaveOptions($options);
-        $this->persistProductDraft($product);
+        $this->persistProductDraft($product, $options);
     }
 
     /**
@@ -116,7 +116,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      *
      * @param ProductInterface $product
      */
-    protected function persistProductDraft(ProductInterface $product)
+    protected function persistProductDraft(ProductInterface $product, $options = [])
     {
         $username = $this->getUser()->getUsername();
         if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
@@ -131,7 +131,12 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $productDraft->setChanges($changes);
 
         $this->objectManager->persist($productDraft);
-        $this->objectManager->flush();
+
+        $allOptions  = $this->optionsResolver->resolveSaveOptions($options);
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
+        }
     }
 
     /**

@@ -14,12 +14,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -67,24 +65,13 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException if not authenticated
      */
     public function save($product, array $options = [])
     {
-        if (!$product instanceof ProductInterface) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "%s" provided',
-                    ClassUtils::getClass($product)
-                )
-            );
-        }
-
         $options = $this->optionsResolver->resolveSaveOptions($options);
-        $isOwner = $this->isOwner($product);
+        $hasPermissions = $this->hasPermissions($product);
 
-        if ($isOwner) {
+        if ($hasPermissions) {
             $this->workingCopySaver->save($product, $options);
         } else {
             $this->draftSaver->save($product, $options);
@@ -114,15 +101,15 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Returns true if user is owner of the product or if the product does not exist yet
+     * Returns true if user is owner of the product or if the product does not exist yet or fi the token does not exist
      *
      * @param ProductInterface $product
      *
      * @return bool
      */
-    protected function isOwner(ProductInterface $product)
+    protected function hasPermissions(ProductInterface $product)
     {
-        if (null === $product->getId()) {
+        if (null === $product->getId() || null === $this->securityContext->getToken()) {
             $isOwner = true;
         } else {
             $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);

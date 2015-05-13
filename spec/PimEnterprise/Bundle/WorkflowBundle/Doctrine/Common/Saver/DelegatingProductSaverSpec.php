@@ -47,13 +47,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $workingCopySaver
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
         $securityContext->isGranted(Attributes::OWN, $product)
-            ->shouldBeCalled()
             ->willReturn(true);
+        $securityContext->getToken()->willReturn('token');
 
         $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled();
@@ -67,7 +66,6 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $workingCopySaver
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(null);
@@ -85,13 +83,12 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $draftSaver
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
-            ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
         $product->getId()->willReturn(42);
         $securityContext->isGranted(Attributes::OWN, $product)
-            ->shouldBeCalled()
             ->willReturn(false);
+        $securityContext->getToken()->willReturn('token');
 
         $draftSaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled();
@@ -99,14 +96,21 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 
-    function it_throws_an_exception_when_try_to_save_something_else_than_a_product(
-        $objectManager
+    function it_delegates_to_working_copy_saver_when_there_is_no_token_generated(
+        ProductInterface $product,
+        $optionsResolver,
+        $securityContext,
+        $workingCopySaver
     ) {
-        $otherObject = new \stdClass();
-        $objectManager->persist(Argument::any())->shouldNotBeCalled();
+        $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
+            ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Expects a Pim\Bundle\CatalogBundle\Model\ProductInterface, "stdClass" provided'))
-            ->duringSave($otherObject, ['recalculate' => false, 'flush' => false, 'schedule' => true]);
+        $product->getId()->willReturn(42);
+        $securityContext->getToken()->willReturn(null);
+
+        $workingCopySaver->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])
+            ->shouldBeCalled();
+
+        $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
 }
