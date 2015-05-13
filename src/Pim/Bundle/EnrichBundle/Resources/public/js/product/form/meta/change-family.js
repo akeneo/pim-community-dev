@@ -2,76 +2,49 @@
 
 define(
     [
-        'jquery',
         'underscore',
+        'backbone',
         'pim/form',
         'pim/entity-manager',
-        'text!pim/template/product/meta/change-family',
-        'pim/dialog',
-        'pim/user-context'
+        'text!pim/template/product/meta/change-family-modal',
+        'pim/user-context',
+        'backbone/bootstrap-modal',
+        'jquery.select2'
     ],
-    function ($, _, BaseForm, EntityManager, formTemplate, Dialog, UserContext) {
+    function (_, Backbone, BaseForm, EntityManager, modalTemplate, UserContext) {
         var FormView = BaseForm.extend({
-            tagName: 'span',
-            className: 'change-family',
-            template: _.template(formTemplate),
+            tagName: 'i',
+            className: 'icon-pencil',
+            modalTemplate: _.template(modalTemplate),
             events: {
-                'click .icon-pencil': 'enterEditMode',
-                'change select':      'changeFamily'
-            },
-            showFamilyList: false,
-            families: [],
-            configure: function () {
-                this.listenTo(this.getRoot().model, 'change:family', this.render);
-
-                return BaseForm.prototype.configure.apply(this, arguments);
+                'click': 'showModal'
             },
             render: function () {
-                if (!this.configured) {
-                    return this;
-                }
-
-                if (this.$('select').length) {
-                    this.$('select').select2('destroy');
-                }
-
-                this.$el.html(
-                    this.template({
-                        product: this.getData(),
-                        families: this.families,
-                        showFamilyList: this.showFamilyList,
-                        locale: UserContext.get('catalogLocale')
-                    })
-                );
-                if (this.showFamilyList) {
-                    this.$('select').select2().select2('open');
-                }
                 this.delegateEvents();
 
-                return this;
+                return BaseForm.prototype.render.apply(this, arguments);
             },
-            enterEditMode: function () {
+            showModal: function () {
                 EntityManager.getRepository('family').findAll().done(_.bind(function (families) {
-                    this.families = families;
-                    this.showFamilyList = true;
-                    this.render();
-                }, this));
-            },
-            changeFamily: function () {
-                Dialog.confirm(
-                    [
-                        _.__('pim_enrich.entity.product.confirmation.change_family.message'),
-                        _.__('pim_enrich.entity.product.confirmation.change_family.merge_attributes'),
-                        _.__('pim_enrich.entity.product.confirmation.change_family.keep_attributes')
-                    ].join('</br>'),
-                    _.__('pim_enrich.entity.product.confirmation.change_family.title')
-                ).done(_.bind(function () {
-                    var selectedFamily = this.$('select').select2('val') || null;
-                    this.showFamilyList = false;
-                    this.getRoot().model.set('family', selectedFamily);
-                }, this)).always(_.bind(function () {
-                    this.showFamilyList = false;
-                    this.render();
+                    var familyModal = new Backbone.BootstrapModal({
+                        allowCancel: true,
+                        title: _.__('pim_enrich.form.product.change_family.modal.title'),
+                        content: this.modalTemplate({
+                            families: families,
+                            product:  this.getData(),
+                            locale:   UserContext.get('catalogLocale')
+                        })
+                    });
+
+                    familyModal.on('ok', _.bind(function () {
+                        var selectedFamily = familyModal.$('select').select2('val') || null;
+                        this.getRoot().model.set('family', selectedFamily);
+                        familyModal.close();
+                    }, this));
+
+                    familyModal.open();
+                    familyModal.$('select').select2({ allowClear: true });
+                    familyModal.$('.modal-body').css({'line-height': '25px', 'height': 130});
                 }, this));
             }
         });

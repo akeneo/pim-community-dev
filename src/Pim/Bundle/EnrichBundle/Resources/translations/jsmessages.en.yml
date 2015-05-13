@@ -137,19 +137,13 @@ pim_enrich:
                 deletion_failed: The product could not be deleted.
                 update_successful: Product successfully updated.
                 update_failed: The product could not be updated.
-            confirmation:
-                change_family:
-                    title:            Change family
-                    message:          Are you sure you want to change the family of this product?
-                    merge_attributes: Current attributes will be merged with the ones in the new family.
-                    keep_attributes:  No attributes will be removed.
             meta:
                 created: Created
                 created_by: By
                 updated_by: By
                 updated: Last update
                 family:
-                    change: Family
+                    title: Family
                     none: None
                 groups:
                     title: Groups
@@ -214,6 +208,14 @@ pim_enrich:
                 btn:
                     save_and_next: Save and next
                     save_and_finish: Save and finish
+            change_family:
+                modal:
+                    title:            Change the product family
+                    merge_attributes: Current attributes will be merged with the ones in the new family.
+                    keep_attributes:  No attributes will be removed.
+                    change_family_to: Change the family to
+                    empty_selection:  Choose a family
+
         attribute_option:
             flash:
                 option_created: Attribute option successfully created

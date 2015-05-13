@@ -67,11 +67,18 @@ extensions:
         insertAction: append
         targetZone: state
 
+    family:
+        module: pim/product-edit-form/meta/family
+        parent: product-edit-form
+        targetZone: meta
+        zones:
+            family: self
+
     change-family:
         module: pim/product-edit-form/meta/change-family
-        parent: product-edit-form
+        parent: family
         insertAction: append
-        targetZone: meta
+        targetZone: family
         aclResourceId: pim_enrich_product_change_family
 
     groups:
@@ -116,6 +123,7 @@ extensions:
         module: pim/product-edit-form/associations
         parent: form-tabs
         targetZone: container
+        aclResourceId: pim_enrich_associations_view
         zones:
             header: .tab-content > header
             associations: self

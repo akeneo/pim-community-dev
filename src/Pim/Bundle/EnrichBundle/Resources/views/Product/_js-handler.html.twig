@@ -43,62 +43,6 @@
 
                 mediator.trigger('pim:reinit');
 
-                {% if resource_granted('pim_enrich_product_change_family') %}
-                    {% set familyWidget %}
-                        {{ 'info.product.merge attributes'|trans }}<br />
-                        {{ 'info.product.keep attributes'|trans }}<br />
-                        {{ 'info.product.change family to'|trans }}:
-                        {{ form_widget(form.family) }}
-                    {% endset %}
-
-                    $('#edit-family').on('click', function () {
-                        Dialog.confirm(
-                            '{{ familyWidget|e("js")|raw }}',
-                            '{{ "info.product.change family"|trans }}',
-                            function () {
-                                $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
-                                if($("#sequentialEdit").length) {
-                                    var formAction = $('#{{ form.vars.id }}').attr('action');
-                                    formAction = formAction.replace('action=SaveAndNext', '');
-                                    formAction = formAction.replace('action=SaveAndFinish', '');
-                                    $('#{{ form.vars.id }}').attr('action', formAction);
-                                }
-                                $('#{{ form.vars.id }}').submit();
-                            }
-                        );
-                        $('#{{ form.family.vars.id }}')
-                            .attr('data-placeholder', '{{ "Choose a family"|trans }}')
-                            .select2({ allowClear: true });
-                        $('#{{ form.family.vars.id }}').closest('.modal-body').css({'line-height': '25px', 'height': 130});
-                    });
-                {% endif %}
-
-                {% for group in form.vars.value.groups %}
-                    $('#group-products-{{ group.id }}').on('click', function (event) {
-                        event.preventDefault();
-                        $.get(
-                            {{ path('pim_enrich_group_productlist', { id: group.id })|json_encode|raw }},
-                            function (content) {
-                                var groupDoAction = function () {
-                                    var $groupLink = $('<a href="{{ path(group.type.variant ? 'pim_enrich_variant_group_edit' : 'pim_enrich_group_edit', { 'id': group.id }) }}" class="hide"></a>');
-                                    $groupLink.appendTo($('#{{ form.vars.id }}')).click();
-                                };
-
-                                var groupModal = new Backbone.BootstrapModal({
-                                    allowCancel: true,
-                                    cancelText: '{{ "Close"|trans }}',
-                                    title: '{{ "Group"|trans }} {{ group.label }}',
-                                    content: content,
-                                    okText: '{{ "View group"|trans }}'
-                                });
-
-                                groupModal.on('ok', groupDoAction);
-                                groupModal.open();
-                            }
-                        )
-                    });
-                {% endfor %}
-
                 // submit form
                 $('div.submit-form a').click(function() {
                     var action = $(this).attr('value');
