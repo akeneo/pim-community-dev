@@ -51,14 +51,18 @@ define(
                 this.delegateEvents();
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
-                currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);
-                /* global console */
-                console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
-                currentTab.render();
+                if (currentTab) {
+                    currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);
+                    /* global console */
+                    console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
+                    currentTab.render();
+                }
 
                 var panels = this.extensions.panels;
-                panels.getTargetElement()[panels.insertAction](panels.el);
-                panels.render();
+                if (panels) {
+                    panels.getTargetElement()[panels.insertAction](panels.el);
+                    panels.render();
+                }
 
                 return this;
             },
