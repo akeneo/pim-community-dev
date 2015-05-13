@@ -9,9 +9,10 @@ define(
         'text!pim/template/product/tab/attribute/add-option-button',
         'routing',
         'pim/attribute-option/create',
+        'pim/security-context',
         'jquery.select2'
     ],
-    function ($, Field, _, fieldTemplate, addOptionButtonTemplate, Routing, createOption) {
+    function ($, Field, _, fieldTemplate, addOptionButtonTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             addOptionButtonTemplate: _.template(addOptionButtonTemplate),
@@ -23,11 +24,16 @@ define(
             initialize: function () {
                 Field.prototype.initialize.apply(this, arguments);
 
-                this.addElement('footer', 'add_option', this.addOptionButtonTemplate());
+                if (SecurityContext.isGranted('pim_enrich_attribute_edit')) {
+                    this.addElement('footer', 'add_option', this.addOptionButtonTemplate());
+                }
 
                 return this;
             },
             createOption: function () {
+                if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
+                    return;
+                }
                 createOption(this.attribute).done(_.bind(function (option) {
                     this.setCurrentValue(option.code);
                     this.render();
