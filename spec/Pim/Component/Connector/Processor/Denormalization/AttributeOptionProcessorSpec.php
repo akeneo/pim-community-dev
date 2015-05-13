@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\ConnectorBundle\Processor\Denormalization;
+namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
@@ -8,7 +8,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
-use Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationList;
 

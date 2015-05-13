@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Writer\Doctrine;
+namespace Pim\Component\Connector\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;

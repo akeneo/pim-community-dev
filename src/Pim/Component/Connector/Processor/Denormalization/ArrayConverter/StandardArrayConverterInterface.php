@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter;
+namespace Pim\Component\Connector\Processor\Denormalization\ArrayConverter;
 
-use Pim\Bundle\ConnectorBundle\Exception\ArrayConversionException;
+use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Standard converter interface, convert a format to the standard one

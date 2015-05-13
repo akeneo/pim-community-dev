@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ConnectorBundle;
 
 use Akeneo\Bundle\BatchBundle\Connector\Connector;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * Connector bundle

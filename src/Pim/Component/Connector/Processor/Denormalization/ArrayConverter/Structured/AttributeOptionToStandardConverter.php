@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\Structured;
+namespace Pim\Component\Connector\Processor\Denormalization\ArrayConverter\Structured;
 
-use Pim\Bundle\ConnectorBundle\Exception\ArrayConversionException;
-use Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\Exception\ArrayConversionException;
+use Pim\Component\Connector\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 
 /**
  * Convert structured format to standard format for attribute option

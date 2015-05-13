@@ -1,5 +1,5 @@
 parameters:
-    pim_base_connector.writer.doctrine.base.class: Pim\Bundle\ConnectorBundle\Writer\Doctrine\BaseWriter
+    pim_base_connector.writer.doctrine.base.class: Pim\Component\Connector\Writer\Doctrine\BaseWriter
 
 services:
     pim_base_connector.writer.doctrine.attribute_option:

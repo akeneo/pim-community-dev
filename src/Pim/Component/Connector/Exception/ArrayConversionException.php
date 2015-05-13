@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ConnectorBundle\Exception;
+namespace Pim\Component\Connector\Exception;
 
 /**
  * Exception which may be thrown when we convert an array
