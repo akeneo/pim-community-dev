@@ -12,7 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator;
+use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use League\Flysystem\MountManager;
 
@@ -30,7 +30,7 @@ abstract class AbstractFileHandler implements FileHandlerInterface
     /** @var SaverInterface */
     protected $saver;
 
-    /** @var PathGenerator */
+    /** @var PathGeneratorInterface */
     protected $pathGenerator;
 
     /** @var MountManager */
@@ -46,7 +46,7 @@ abstract class AbstractFileHandler implements FileHandlerInterface
     protected $fileClass;
 
     /**
-     * @param PathGenerator          $pathGenerator
+     * @param PathGeneratorInterface $pathGenerator
      * @param MountManager           $mountManager
      * @param SaverInterface         $saver
      * @param string                 $srcFsAlias
@@ -54,7 +54,7 @@ abstract class AbstractFileHandler implements FileHandlerInterface
      * @param string                 $fileClass
      */
     public function __construct(
-        PathGenerator $pathGenerator,
+        PathGeneratorInterface $pathGenerator,
         MountManager $mountManager,
         SaverInterface $saver,
         $srcFsAlias,

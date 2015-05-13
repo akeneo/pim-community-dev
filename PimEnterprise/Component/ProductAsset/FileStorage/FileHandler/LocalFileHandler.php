@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
 
-use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
