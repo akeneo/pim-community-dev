@@ -1,12 +1,13 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
+namespace Pim\Bundle\ConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
+use Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 
 /**
  * Attribute option import processor, allows to,

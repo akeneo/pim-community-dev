@@ -1,30 +1,36 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Structured;
+namespace spec\Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 class AttributeOptionToStandardConverterSpec extends ObjectBehavior
 {
+    function let(LocaleRepositoryInterface $localeRepository)
+    {
+        $this->beConstructedWith($localeRepository);
+    }
+
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface'
+            'Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface'
         );
     }
 
-    function it_converts_an_item_to_standard_format()
+    function it_converts_an_item_to_standard_format($localeRepository)
     {
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
+
         $this->convert(
             [
-                'labels' => [
-                    'de_DE' => '210 x 1219 mm',
-                    'en_US' => '210 x 1219 mm',
-                    'fr_FR' => '210 x 1219 mm'
-                ],
                 'attribute'   => 'maximum_print_size',
                 'code'        => '210_x_1219_mm',
-                'sortOrder'  => 2
+                'sort_order'  => '2',
+                'label-de_DE' => '210 x 1219 mm',
+                'label-en_US' => '210 x 1219 mm',
+                'label-fr_FR' => '210 x 1219 mm'
             ]
         )->shouldReturn(
             [
@@ -43,7 +49,7 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
     function it_throws_exception_when_the_attribute_field_is_missing()
     {
         $this
-            ->shouldThrow('Pim\Bundle\BaseConnectorBundle\Exception\ArrayConversionException')
+            ->shouldThrow('Pim\Bundle\ConnectorBundle\Exception\ArrayConversionException')
             ->during(
                 'convert',
                 [
@@ -58,10 +64,12 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
             );
     }
 
-    function it_throws_exception_when_unauthorized_field_is_provided()
+    function it_throws_exception_when_unauthorized_field_is_provided($localeRepository)
     {
+        $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
+
         $this
-            ->shouldThrow('Pim\Bundle\BaseConnectorBundle\Exception\ArrayConversionException')
+            ->shouldThrow('Pim\Bundle\ConnectorBundle\Exception\ArrayConversionException')
             ->during(
                 'convert',
                 [

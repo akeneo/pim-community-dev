@@ -8,10 +8,10 @@ parameters:
     pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
-    pim_base_connector.processor.denormalization.attribute_option.class:    Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AttributeOptionProcessor
+    pim_base_connector.processor.denormalization.attribute_option.class:    Pim\Bundle\ConnectorBundle\Processor\Denormalization\AttributeOptionProcessor
 
-    pim_base_connector.denormalization.array_converter.flat.attribute_option.class:       Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat\AttributeOptionToStandardConverter
-    pim_base_connector.denormalization.array_converter.structured.attribute_option.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Structured\AttributeOptionToStandardConverter
+    pim_base_connector.denormalization.array_converter.flat.attribute_option.class:       Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\Flat\AttributeOptionToStandardConverter
+    pim_base_connector.denormalization.array_converter.structured.attribute_option.class: Pim\Bundle\ConnectorBundle\Processor\Denormalization\ArrayConverter\Structured\AttributeOptionToStandardConverter
 
     pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor

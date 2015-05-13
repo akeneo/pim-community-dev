@@ -3,7 +3,7 @@ parameters:
     pim_base_connector.writer.doctrine.product_association.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductAssociationWriter
     pim_base_connector.writer.doctrine.variant_group.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter
     pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
-    pim_base_connector.writer.doctrine.base.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\BaseWriter
+    pim_base_connector.writer.doctrine.base.class: Pim\Bundle\ConnectorBundle\Writer\Doctrine\BaseWriter
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
     pim_base_connector.writer.file.product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter

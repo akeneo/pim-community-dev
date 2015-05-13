@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
+namespace spec\Pim\Bundle\ConnectorBundle\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
