@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.11 (2015-05-13)
 
 ## Bug fixes
 - PIM-4044: Fix pressing Enter on a Product grid filter makes the page "unclickable"
