@@ -41,7 +41,7 @@ class PricesPresenterSpec extends ObjectBehavior
         $gbp->getCurrency()->willReturn('GBP');
 
         $change = [
-            'values' => [
+            'value' => [
                 [
                     'currency' => 'EUR',
                     'data' => '12',

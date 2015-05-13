@@ -28,7 +28,7 @@ class PricesComparatorSpec extends ObjectBehavior
         $this->getChanges($changes, $originals)->shouldReturn([
             'locale' => null,
             'scope'  => null,
-            'values' => [
+            'value' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],
@@ -49,7 +49,7 @@ class PricesComparatorSpec extends ObjectBehavior
         $this->getChanges($changes, $originals)->shouldReturn([
             'locale' => null,
             'scope'  => null,
-            'values' => [
+            'value' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],

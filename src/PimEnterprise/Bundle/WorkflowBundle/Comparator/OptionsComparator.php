@@ -49,7 +49,7 @@ class OptionsComparator implements ComparatorInterface
         return [
             'locale' => $changes['locale'],
             'scope'  => $changes['scope'],
-            'values' => $codes,
+            'value'  => $codes,
         ];
     }
 }

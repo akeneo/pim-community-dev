@@ -171,7 +171,7 @@ class Migration
                     foreach ($options as $option) {
                         $codes[] = $option->getCode();
                     }
-                    $newValue['values'] = $codes;
+                    $newValue['value'] = $codes;
                 }
                 break;
 
@@ -188,7 +188,7 @@ class Migration
                 $newValue['values'] = [];
                 foreach ($value as $prices) {
                     foreach ($prices as $price) {
-                        $newValue['values'][] = [
+                        $newValue['value'][] = [
                             'currency' => $price['currency'],
                             'data'     => $price['data'],
                         ];

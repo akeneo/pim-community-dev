@@ -52,7 +52,7 @@ class PricesComparator implements ComparatorInterface
             return [
                 'locale' => $changes['locale'],
                 'scope'  => $changes['scope'],
-                'values' => $prices
+                'value'  => $prices
             ];
         }
     }
