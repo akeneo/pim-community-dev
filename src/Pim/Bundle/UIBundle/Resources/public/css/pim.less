@@ -1223,7 +1223,23 @@ h3.tab-header {
     height: 100%;
   }
 
-  .file {
+  .clear-field {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 5%;
+    height: 100%;
+
+    i {
+      margin-top: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .preview {
     height: 100px;
     .display-flex();
     .flex-direction(row);

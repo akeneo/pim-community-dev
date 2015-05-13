@@ -13,7 +13,8 @@ define([
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
             events: {
-                'change .edit input[type="file"]': 'updateModel'
+                'change .edit input[type="file"]': 'updateModel',
+                'click  .clear-field': 'clearField'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
@@ -75,6 +76,11 @@ define([
                     this.render();
                     this.$('.progress').css({opacity: 0});
                 }, this));
+            },
+            clearField: function () {
+                this.setCurrentValue(AttributeManager.getEmptyValue(this.attribute));
+
+                this.render();
             },
             handleProcess: function (e) {
                 this.$('.progress .bar').css({
