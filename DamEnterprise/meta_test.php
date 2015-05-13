@@ -16,14 +16,14 @@ $images = [
     'nin.jpg'
 ];
 
-$exifAdapter = new \DamEnterprise\Component\Metadata\Adapter\Exif();
-$iptcAdapter = new \DamEnterprise\Component\Metadata\Adapter\Iptc();
+$exifAdapter = new \Akeneo\Component\FileMetadata\Adapter\Exif();
+$iptcAdapter = new \Akeneo\Component\FileMetadata\Adapter\Iptc();
 
-$registry = new \DamEnterprise\Component\Metadata\Adapter\AdapterRegistry();
+$registry = new \Akeneo\Component\FileMetadata\Adapter\AdapterRegistry();
 $registry->add($exifAdapter);
 $registry->add($iptcAdapter);
 
-$factory = new \DamEnterprise\Component\Metadata\MetadataFactory($registry);
+$factory = new \Akeneo\Component\FileMetadata\FileMetadataReaderFactory($registry);
 
 foreach ($images as $image) {
     $file = new SplFileInfo(realpath(__DIR__ . '/../../images/' . $image));
@@ -35,6 +35,6 @@ foreach ($images as $image) {
     }
 }
 
-$dumper = new \DamEnterprise\Component\Metadata\Adapter\AdapterDumper($registry);
+$dumper = new \Akeneo\Component\FileMetadata\Adapter\AdapterDumper($registry);
 $dumped = $dumper->dump('image/jpeg');
 var_dump($dumped);
