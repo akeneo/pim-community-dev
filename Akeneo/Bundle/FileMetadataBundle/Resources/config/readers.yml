@@ -1,0 +1,14 @@
+parameters:
+    akeneo_file_metadata.reader.interface: Akeneo\Component\FileMetadata\FileMetadataReaderInterface
+    akeneo_file_metadata.reader.class: Akeneo\Component\FileMetadata\FileMetadataReader
+    akeneo_file_metadata.factory.reader.interface: Akeneo\Component\FileMetadata\FileMetadataReaderFactoryInterface
+    akeneo_file_metadata.factory.reader.class: Akeneo\Component\FileMetadata\FileMetadataReaderFactory
+
+services:
+    akeneo_file_metadata.reader:
+        class: %akeneo_file_metadata.reader.class%
+
+    akeneo_file_metadata.factory.reader:
+        class: %akeneo_file_metadata.factory.reader.class%
+        arguments:
+            - '@akeneo_file_metadata.adapter.registry'
