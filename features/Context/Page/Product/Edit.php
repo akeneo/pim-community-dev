@@ -24,26 +24,26 @@ class Edit extends Form
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Locales dropdown'        => array('css' => '#locale-switcher'),
-                'Locales selector'        => array('css' => '#pim_product_locales'),
-                'Channel dropdown'        => array('css' => '.scope-switcher'),
-                'Status switcher'         => array('css' => '.status-switcher'),
-                'Image preview'           => array('css' => '#lbImage'),
-                'Completeness'            => array('css' => '.completeness-block'),
-                'Category pane'           => array('css' => '#product-categories'),
-                'Category tree'           => array('css' => '#trees'),
-                'Comparison dropdown'     => array('css' => '.attribute-copy-actions'),
-                'Copy selection dropdown' => array('css' => '#copy-selection-switcher'),
-                'Copy translations link'  => array('css' => 'a#copy-selection'),
-                'Comment threads'         => array('css' => '.comment-threads'),
-            )
+            [
+                'Locales dropdown'        => ['css' => '.locale-switcher'],
+                'Locales selector'        => ['css' => '#pim_product_locales'],
+                'Channel dropdown'        => ['css' => '.scope-switcher'],
+                'Status switcher'         => ['css' => '.status-switcher'],
+                'Image preview'           => ['css' => '#lbImage'],
+                'Completeness'            => ['css' => '.completeness-block'],
+                'Category pane'           => ['css' => '#product-categories'],
+                'Category tree'           => ['css' => '#trees'],
+                'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
+                'Copy selection dropdown' => ['css' => '#copy-selection-switcher'],
+                'Copy translations link'  => ['css' => 'a#copy-selection'],
+                'Comment threads'         => ['css' => '.comment-threads'],
+            ]
         );
     }
 
@@ -52,18 +52,21 @@ class Edit extends Form
      */
     public function countLocaleLinks()
     {
-        return count($this->getElement('Locales dropdown')->findAll('css', 'a'));
+        return count($this->getElement('Locales dropdown')->findAll('css', 'li a'));
     }
 
     /**
-     * @param string $locale
-     * @param string $content
+     * @param string $locale locale code
+     * @param string $locale locale label
+     * @param string $flag class of the flag icon
      *
      * @return NodeElement|null
+     *
+     * @throws ElementNotFoundException
      */
-    public function findLocaleLink($locale, $content = null)
+    public function findLocaleLink($locale, $label, $flag = null)
     {
-        $link = $this->getElement('Locales dropdown')->findLink($locale);
+        $link = $this->getElement('Locales dropdown')->find('css', sprintf('a[data-locale="%s"]', $locale));
 
         if (!$link) {
             throw new ElementNotFoundException(
@@ -72,8 +75,15 @@ class Edit extends Form
             );
         }
 
-        if ($content) {
-            if (strpos($link->getText(), $content) === false) {
+        if ($flag) {
+            $flagElement = $link->find('css', 'span.flag-language i');
+            if (!$flagElement) {
+                throw new ElementNotFoundException(
+                    $this->getSession(),
+                    sprintf('Flag not found for locale %s link', $locale)
+                );
+            }
+            if (strpos($flagElement->getAttribute('class'), $flag) === false) {
                 return null;
             }
         }
