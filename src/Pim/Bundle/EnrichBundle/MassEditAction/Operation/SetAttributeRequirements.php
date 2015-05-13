@@ -167,7 +167,7 @@ class SetAttributeRequirements extends AbstractMassEditOperation
      */
     public function getOperationAlias()
     {
-        return 'set_attribute_requirements';
+        return 'set-attribute-requirements';
     }
 
     /**
