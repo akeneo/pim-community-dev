@@ -34,9 +34,9 @@ class OptionPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_simpleselect' === $this->attributeType;
+        return 'pim_catalog_simpleselect' === $attributeType;
     }
 
     /**
@@ -56,6 +56,6 @@ class OptionPresenter extends AbstractProductValuePresenter
             return null;
         }
 
-        return (string) $this->repository->findOneByCode($change['value']);
+        return (string) $this->repository->findOneBy(['code' => $change['value']]);
     }
 }

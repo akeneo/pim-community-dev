@@ -21,9 +21,9 @@ class ReferenceDataCollectionPresenter extends AbstractReferenceDataPresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_reference_data_multiselect' === $this->attributeType;
+        return 'pim_reference_data_multiselect' === $attributeType;
     }
 
     /**

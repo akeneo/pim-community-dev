@@ -25,7 +25,7 @@ class AttributePresenter implements PresenterInterface, TwigAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supports($data)
     {
         return $data instanceof AttributeInterface;
     }

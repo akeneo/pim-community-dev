@@ -23,9 +23,9 @@ class MetricPresenter extends AbstractProductValuePresenter implements Translato
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_metric' === $this->attributeType;
+        return 'pim_catalog_metric' === $attributeType;
     }
 
     /**

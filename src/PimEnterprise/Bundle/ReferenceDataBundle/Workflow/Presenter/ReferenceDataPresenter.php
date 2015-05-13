@@ -21,24 +21,9 @@ class ReferenceDataPresenter extends AbstractReferenceDataPresenter
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supportsChange($attributeType)
     {
-        $supports = parent::supports($data, $change);
-        if (true === $supports) {
-            $this->referenceDataName = $data->getAttribute()->getReferenceDataName();
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsChange(array $change)
-    {
-        return 'pim_reference_data_simpleselect' === $this->attributeType;
+        return 'pim_reference_data_simpleselect' === $attributeType;
     }
 
     /**

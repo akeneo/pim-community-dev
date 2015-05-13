@@ -34,9 +34,9 @@ class OptionsPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_multiselect' === $this->attributeType;
+        return 'pim_catalog_multiselect' === $attributeType;
     }
 
     /**

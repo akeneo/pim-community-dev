@@ -29,9 +29,9 @@ class BooleanPresenter extends AbstractProductValuePresenter implements Translat
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_boolean' === $this->attributeType;
+        return 'pim_catalog_boolean' === $attributeType;
     }
 
     /**

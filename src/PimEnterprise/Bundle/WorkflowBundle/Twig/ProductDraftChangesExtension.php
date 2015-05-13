@@ -199,7 +199,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected function present($object, array $change = [])
     {
         foreach ($this->getPresenters() as $presenter) {
-            if ($presenter->supports($object, $change)) {
+            if ($presenter->supports($object)) {
                 if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
                 }

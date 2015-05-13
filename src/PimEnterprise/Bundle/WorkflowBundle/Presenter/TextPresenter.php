@@ -21,9 +21,9 @@ class TextPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_textarea' === $this->attributeType;
+        return 'pim_catalog_textarea' === $attributeType;
     }
 
     /**

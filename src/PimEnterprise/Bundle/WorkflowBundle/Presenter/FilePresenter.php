@@ -35,7 +35,7 @@ class FilePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supports($data)
     {
         return $data instanceof ProductValueInterface
             && 'pim_catalog_file' === $data->getAttribute()->getAttributeType();

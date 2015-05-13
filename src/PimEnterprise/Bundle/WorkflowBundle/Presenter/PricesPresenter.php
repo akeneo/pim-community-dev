@@ -21,9 +21,9 @@ class PricesPresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_price_collection' === $this->attributeType;
+        return 'pim_catalog_price_collection' === $attributeType;
     }
 
     /**

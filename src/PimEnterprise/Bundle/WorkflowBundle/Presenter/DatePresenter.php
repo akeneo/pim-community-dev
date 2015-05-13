@@ -24,9 +24,9 @@ class DatePresenter extends AbstractProductValuePresenter
     /**
      * {@inheritdoc}
      */
-    public function supportsChange(array $change)
+    public function supportsChange($attributeType)
     {
-        return 'pim_catalog_date' === $this->attributeType;
+        return 'pim_catalog_date' === $attributeType;
     }
 
     /**
