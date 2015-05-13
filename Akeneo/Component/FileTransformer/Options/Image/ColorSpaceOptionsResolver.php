@@ -1,13 +1,27 @@
 <?php
 
-namespace DamEnterprise\Component\Transformer\Options\Image;
+/*
+* This file is part of the Akeneo PIM Enterprise Edition.
+*
+* (c) 2015 Akeneo SAS (http://www.akeneo.com)
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-use DamEnterprise\Component\Transformer\Exception\InvalidOptionsTransformationException;
-use DamEnterprise\Component\Transformer\Options\TransformationOptionsResolverInterface;
+namespace Akeneo\Component\FileTransformer\Options\Image;
+
+use Akeneo\Component\FileTransformer\Exception\InvalidOptionsTransformationException;
+use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
 use Imagine\Image\Palette\PaletteInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Option resolver for ColorSpace transformation
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 class ColorSpaceOptionsResolver implements TransformationOptionsResolverInterface
 {
     /** @var OptionsResolverInterface */
@@ -29,6 +43,9 @@ class ColorSpaceOptionsResolver implements TransformationOptionsResolverInterfac
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function resolve(array $options)
     {
         try {

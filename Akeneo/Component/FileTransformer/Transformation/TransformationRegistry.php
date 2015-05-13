@@ -1,16 +1,32 @@
 <?php
 
-namespace DamEnterprise\Component\Transformer\Transformation;
+/*
+* This file is part of the Akeneo PIM Enterprise Edition.
+*
+* (c) 2015 Akeneo SAS (http://www.akeneo.com)
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-use DamEnterprise\Component\Transformer\Exception\AlreadyRegisteredTransformationException;
-use DamEnterprise\Component\Transformer\Exception\NonRegisteredTransformationException;
+namespace Akeneo\Component\FileTransformer\Transformation;
 
+use Akeneo\Component\FileTransformer\Exception\AlreadyRegisteredTransformationException;
+use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationException;
+
+/**
+ * Registry for transformations
+ *
+ * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ */
 class TransformationRegistry
 {
     /** @var TransformationInterface[] */
     protected $transformations = [];
 
     /**
+     * Allows to retrieve all registered transformations
+     *
      * @return TransformationInterface[]
      */
     public function all()
@@ -19,15 +35,18 @@ class TransformationRegistry
     }
 
     /**
+     * Add a transformation to the registry
+     *
      * @param TransformationInterface $transformation
      *
-     * @return TransformationRegistry
      * @throws AlreadyRegisteredTransformationException
+     *
+     * @return TransformationRegistry
      */
     public function add(TransformationInterface $transformation)
     {
         $name = $transformation->getName();
-        foreach ($transformation->getMimeTypes() as $mimeType) {
+        foreach ($transformation->getSupportedMimeTypes() as $mimeType) {
             if ($this->has($name, $mimeType)) {
                 throw new AlreadyRegisteredTransformationException(
                     sprintf('Transformation "%s" already registered for the mime type. "%s"', $name, $mimeType)
@@ -42,11 +61,14 @@ class TransformationRegistry
     }
 
     /**
+     * Allows to retrieve a specific transformation
+     *
      * @param string $name
      * @param string $mimeType
      *
-     * @return TransformationInterface
      * @throws NonRegisteredTransformationException
+     *
+     * @return TransformationInterface
      */
     public function get($name, $mimeType)
     {
@@ -61,6 +83,8 @@ class TransformationRegistry
     }
 
     /**
+     * Is a transformation registered with the given name and Myme Type ?
+     *
      * @param string $name
      * @param string $mimeType
      *
@@ -74,6 +98,8 @@ class TransformationRegistry
     }
 
     /**
+     * Returns the transformation key build from parameters
+     *
      * @param string $name
      * @param string $mimeType
      *
