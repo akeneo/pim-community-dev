@@ -15,7 +15,7 @@ Feature: Display notifications for mass edit jobs
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (enable / disable)" operation
     And I enable the products
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "change-status" mass-edit job to finish
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:

@@ -46,7 +46,7 @@ Feature: Edit common attributes of many products at once
     And I change the "Weather condition" to "Cold, Wet"
     And I change the "Name" to "Product"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "boots" should have the following values:
       | name-en_US         | Product      |
       | weather_conditions | [wet], [cold] |
@@ -71,7 +71,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the english name of "boots" should be "boots"
     And the english name of "sandals" should be "boots"
     And the english name of "sneakers" should be "boots"
@@ -85,7 +85,7 @@ Feature: Edit common attributes of many products at once
     And I display the [name] attribute
     And I change the "[name]" to "chaussure"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the french name of "boots" should be "chaussure"
     And the french name of "sandals" should be "chaussure"
     And the french name of "sneakers" should be "chaussure"
@@ -103,7 +103,7 @@ Feature: Edit common attributes of many products at once
     And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_mobile_text" with "Foo Fr"
     And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_tablet_text" with "Bar Fr"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the french mobile description of "boots" should be "Foo Fr"
     And the french tablet description of "boots" should be "Bar Fr"
     And the french mobile description of "pump" should be "Foo Fr"
@@ -116,7 +116,7 @@ Feature: Edit common attributes of many products at once
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products boots and sandals should be:
       | amount | currency |
       | 100    | USD      |
@@ -128,7 +128,7 @@ Feature: Edit common attributes of many products at once
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the file "side_view" of products sandals and sneakers should be "SNKRS-1R.png"
 
   Scenario: Successfully update many multi-valued values at once
@@ -137,7 +137,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
@@ -149,7 +149,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "Weight" of products boots and sandals should be "600"
 
   Scenario: Successfully translate groups and labels
@@ -179,7 +179,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "boots"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the english name of "pump" should be "boots"
     And the english name of "sneakers" should be "boots"
 
@@ -193,7 +193,7 @@ Feature: Edit common attributes of many products at once
     And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_mobile_text" with "Foo"
     And fill in "pim_enrich_mass_edit_choose_action_operation_values_description_tablet_text" with "Bar"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the english mobile Description of "boots" should be "Foo"
     And the english tablet Description of "boots" should be "Bar"
     And the english mobile Description of "pump" should be "Foo"
@@ -213,7 +213,7 @@ Feature: Edit common attributes of many products at once
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products Shoes should be:
       | amount | currency |
       | 100    | USD      |
@@ -239,7 +239,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "Weight" of products boots and sneakers should be "600"
     And the metric "Weight" of products sandals, pump and highheels should be "500"
 
@@ -253,7 +253,7 @@ Feature: Edit common attributes of many products at once
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
