@@ -81,11 +81,11 @@ class ProductController extends FOSRestController
         /* Handle requests for skus that contain a period
 	    * cURL cannot handle API requests that contain a period
 	    * but we can substitute with hexidecimal in the cURL request
-        * and then replace it here.
+            * and then replace it here.
 	    * Using additional leading and trailing underscore to limit the
 	    * possibility of conflict with a legitimate sku.
 	    */
-	    $identifier = str_replace('_0x2E_', '.', $identifier);	
+	$identifier = str_replace('_0x2E_', '.', $identifier);	
         
         $manager = $this->get('pim_catalog.manager.product');
         $product = $manager->findByIdentifier($identifier);
