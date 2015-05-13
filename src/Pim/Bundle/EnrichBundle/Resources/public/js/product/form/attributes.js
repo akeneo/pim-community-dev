@@ -13,6 +13,7 @@ define(
         'pim/product-manager',
         'pim/attribute-group-manager',
         'pim/user-context',
+        'pim/security-context',
         'text!pim/template/product/tab/attributes'
     ],
     function (
@@ -27,6 +28,7 @@ define(
         ProductManager,
         AttributeGroupManager,
         UserContext,
+        SecurityContext,
         formTemplate
     ) {
         var FormView = BaseForm.extend({
@@ -112,10 +114,11 @@ define(
             renderField: function (product, attributeCode, values, families) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     field.setContext({
-                        'locale': UserContext.get('catalogLocale'),
-                        'scope': UserContext.get('catalogScope'),
-                        'uiLocale': UserContext.get('catalogLocale'),
-                        'optional': AttributeManager.isOptional(attributeCode, product, families)
+                        locale: UserContext.get('catalogLocale'),
+                        scope: UserContext.get('catalogScope'),
+                        uiLocale: UserContext.get('catalogLocale'),
+                        optional: AttributeManager.isOptional(attributeCode, product, families),
+                        removable: SecurityContext.isGranted('pim_enrich_product_remove_attribute')
                     });
                     field.setValues(values);
 
@@ -168,6 +171,9 @@ define(
 
             },
             removeAttribute: function (event) {
+                if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
+                    return;
+                }
                 var attributeCode = event.currentTarget.dataset.attribute;
                 var product = this.getData();
                 var fields = FieldManager.getFields();
