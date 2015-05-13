@@ -2,23 +2,16 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
-use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\AkeneoStorageUtilsExtension;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
-use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
-use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
-use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -30,12 +23,7 @@ class ProductDraftSaverSpec extends ObjectBehavior
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        EventDispatcherInterface $dispatcher,
-        ChangesCollector $collector,
-        ChangeSetComputerInterface $changeSet,
-        MetricFactory $metricFactory,
-        MediaFactory $mediaFactory
-
+        DraftBuilder $draftBuilder
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -43,12 +31,7 @@ class ProductDraftSaverSpec extends ObjectBehavior
             $securityContext,
             $factory,
             $repository,
-            $dispatcher,
-            $collector,
-            $changeSet,
-            AkeneoStorageUtilsExtension::DOCTRINE_ORM,
-            $metricFactory,
-            $mediaFactory
+            $draftBuilder
         );
     }
 
@@ -65,33 +48,27 @@ class ProductDraftSaverSpec extends ObjectBehavior
     function it_creates_and_saves_a_draft(
         ProductInterface $product,
         $optionsResolver,
-        $collector,
         $securityContext,
         TokenInterface $token,
         User $user,
         $factory,
         ProductDraft $draft,
         $objectManager,
-        $dispatcher,
-        ProductDraftEvent $event
+        $draftBuilder
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
-        $product->getValues()->willReturn([]);
+        $draftBuilder->builder($product)->willReturn(['values' => ['name' => 'my proposed name']]);
 
-        $collector->getData()->willReturn(['values' => ['name' => 'my proposed name']]);
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('julia');
         $factory->createProductDraft($product, 'julia')->willReturn($draft);
-        $objectManager->persist($draft)->shouldBeCalled();
-
-        $dispatcher->dispatch(ProductDraftEvents::PRE_UPDATE, Argument::any())->willReturn($event);
-        $event->getChanges()->willReturn(['values' => ['name' => 'my proposed name']]);
 
         $draft->setChanges(['values' => ['name' => 'my proposed name']])->shouldBeCalled();
+        $objectManager->persist($draft)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
@@ -100,32 +77,27 @@ class ProductDraftSaverSpec extends ObjectBehavior
     function it_updates_and_saves_a_draft(
         ProductInterface $product,
         $optionsResolver,
-        $collector,
         $securityContext,
         TokenInterface $token,
         User $user,
         $repository,
         ProductDraft $draft,
         $objectManager,
-        $dispatcher,
-        ProductDraftEvent $event
+        $draftBuilder
     ) {
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->shouldBeCalled()
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
-        $product->getValues()->willReturn([]);
+        $draftBuilder->builder($product)->willReturn(['values' => ['name' => 'my proposed name']]);
 
-        $collector->getData()->willReturn(['values' => ['name' => 'my proposed name']]);
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('julia');
         $repository->findUserProductDraft($product, 'julia')->willReturn($draft);
 
-        $dispatcher->dispatch(ProductDraftEvents::PRE_UPDATE, Argument::any())->willReturn($event);
-        $event->getChanges()->willReturn(['values' => ['name' => 'my proposed name']]);
-
         $draft->setChanges(['values' => ['name' => 'my proposed name']])->shouldBeCalled();
+        $objectManager->persist($draft)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
