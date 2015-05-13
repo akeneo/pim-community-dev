@@ -1,9 +1,13 @@
 <?php
 
+namespace Akeneo\Component\FileMetadata\Adapter;
 
-namespace DamEnterprise\Component\Metadata\Adapter;
-
-
+/**
+ * Basic implementation of an Adapter
+ *
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ */
 abstract class AbstractAdapter implements AdapterInterface
 {
     //TODO: the list of mimetypes is defined here
@@ -12,12 +16,18 @@ abstract class AbstractAdapter implements AdapterInterface
     /** @var array */
     protected $mimeTypes;
 
-    public function supportsMimeType($mimeType)
+    /**
+     * {@inheritdoc}
+     */
+    public function isMimeTypeSupported($mimeType)
     {
         return in_array($mimeType, $this->mimeTypes);
     }
 
-    public function getMimeTypes()
+    /**
+     * {@inheritdoc}
+     */
+    public function getSupportedMimeTypes()
     {
         return $this->mimeTypes;
     }

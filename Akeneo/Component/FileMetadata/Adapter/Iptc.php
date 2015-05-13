@@ -1,9 +1,16 @@
 <?php
 
-namespace DamEnterprise\Component\Metadata\Adapter;
+namespace Akeneo\Component\FileMetadata\Adapter;
 
+/**
+ * Adapter implementation for IPTC metadata.
+ *
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ */
 class Iptc extends AbstractAdapter
 {
+    /** @staticvar string Metadata segment index for IPTC data */
     const IPTC_BLOCK_KEY = 'APP13';
 
     /** @var array */
@@ -15,17 +22,22 @@ class Iptc extends AbstractAdapter
      * TODO: mimetypes normally supported here http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/IPTC.html
      * TODO: JPG, TIFF, PNG, MIFF, PS, PDF, PSD, XCF and DNG
      */
-    public function __construct($mimeTypes = ['image/jpeg', 'image/tiff'])
-    {
+    public function __construct($mimeTypes = ['image/jpeg', 'image/tiff', 'image/png']) {
         $this->mimeTypes   = $mimeTypes;
         $this->iptcHeaders = $this->getDefaultIptcHeaders();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'iptc';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function all(\SplFileInfo $file)
     {
         getimagesize($file->getPathname(), $info);
@@ -38,6 +50,9 @@ class Iptc extends AbstractAdapter
         return [];
     }
 
+    /**
+     * @return array
+     */
     protected function getDefaultIptcHeaders()
     {
         // list comes from
@@ -46,6 +61,7 @@ class Iptc extends AbstractAdapter
 
         //TODO: careful, not the same that http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf
         //TODO: careful, not the same that http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/IPTC.html
+        // https://www.iptc.org/std/photometadata/documentation/GenericGuidelines/index.htm#!Documents/fieldreferencetable.htm
 
         //TODO: which labels should we use ? IPTC or Photoshop ?
         return [
@@ -71,6 +87,11 @@ class Iptc extends AbstractAdapter
         ];
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     protected function cleanIptcBlock(array $data)
     {
         $res = [];

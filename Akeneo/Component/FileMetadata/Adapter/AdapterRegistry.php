@@ -1,13 +1,24 @@
 <?php
 
-namespace DamEnterprise\Component\Metadata\Adapter;
+namespace Akeneo\Component\FileMetadata\Adapter;
 
+use Akeneo\Component\FileMetadata\Exception\AlreadyRegisteredAdapterException;
+use Akeneo\Component\FileMetadata\Exception\NonRegisteredAdapterException;
+
+/**
+ * Registry for Adapters.
+ *
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ */
 class AdapterRegistry
 {
     /** @var AdapterInterface[] */
     protected $adapters = [];
 
     /**
+     * Return all Adapters.
+     *
      * @return AdapterInterface[]
      */
     public function all()
@@ -24,7 +35,7 @@ class AdapterRegistry
     {
         $name = $adapter->getName();
         if ($this->has($name)) {
-            throw new \LogicException(sprintf('Adapter "%s" already registered.', $name));
+            throw new AlreadyRegisteredAdapterException(sprintf('Adapter "%s" already registered.', $name));
         }
 
         $this->adapters[$name] = $adapter;
@@ -44,7 +55,7 @@ class AdapterRegistry
             return $this->adapters[$name];
         }
 
-        throw new \LogicException(sprintf('No "%s" adapter found.', $name));
+        throw new NonRegisteredAdapterException(sprintf('No "%s" adapter found.', $name));
     }
 
     /**
