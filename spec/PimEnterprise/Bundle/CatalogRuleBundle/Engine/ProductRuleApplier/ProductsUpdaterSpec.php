@@ -7,8 +7,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueAction;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Prophecy\Argument;
@@ -16,11 +16,11 @@ use Prophecy\Argument;
 class ProductsUpdaterSpec extends ObjectBehavior
 {
     function let(
-        ProductUpdaterInterface $productUpdater,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
         $this->beConstructedWith(
-            $productUpdater,
+            $productFieldUpdater,
             $templateUpdater
         );
     }
@@ -31,15 +31,15 @@ class ProductsUpdaterSpec extends ObjectBehavior
     }
 
     function it_does_not_update_products_when_no_actions(
-        $productUpdater,
+        $productFieldUpdater,
         $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product
     ) {
         $rule->getActions()->willReturn([]);
 
-        $productUpdater->setData(Argument::any())->shouldNotBeCalled();
-        $productUpdater->copyData(Argument::any())->shouldNotBeCalled();
+        $productFieldUpdater->setData(Argument::any())->shouldNotBeCalled();
+        $productFieldUpdater->copyData(Argument::any())->shouldNotBeCalled();
 
         $templateUpdater->update(Argument::any(), Argument::any())->shouldNotBeCalled();
 
@@ -47,7 +47,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_product_when_the_rule_has_a_set_action(
-        $productUpdater,
+        $productFieldUpdater,
         $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
@@ -59,7 +59,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $action->getLocale()->willReturn('en_US');
         $rule->getActions()->willReturn([$action]);
 
-        $productUpdater->setData(Argument::any(), 'sku', 'foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])
+        $productFieldUpdater->setData(Argument::any(), 'sku', 'foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])
             ->shouldBeCalled();
 
         $templateUpdater->update(Argument::any(), Argument::any())
@@ -69,7 +69,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
     }
 
     function it_updates_product_when_the_rule_has_a_copy_action(
-        $productUpdater,
+        $productFieldUpdater,
         $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
@@ -83,7 +83,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $action->getToScope()->willReturn('tablet');
         $rule->getActions()->willReturn([$action]);
 
-        $productUpdater
+        $productFieldUpdater
             ->copyData(
                 $product,
                 $product,
@@ -111,7 +111,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
     }
 
     function it_ensures_priority_of_variant_group_values_over_the_rule(
-        $productUpdater,
+        $productFieldUpdater,
         $templateUpdater,
         RuleInterface $rule,
         ProductInterface $product,
@@ -127,7 +127,7 @@ class ProductsUpdaterSpec extends ObjectBehavior
         $action->getToScope()->willReturn('tablet');
         $rule->getActions()->willReturn([$action]);
 
-        $productUpdater
+        $productFieldUpdater
             ->copyData(
                 $product,
                 $product,

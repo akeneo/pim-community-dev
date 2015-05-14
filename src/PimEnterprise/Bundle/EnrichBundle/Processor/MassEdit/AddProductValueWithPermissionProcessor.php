@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\AddProductValueProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -29,21 +29,21 @@ class AddProductValueWithPermissionProcessor extends BaseProcessor
     protected $userManager;
 
     /**
-     * @param ProductUpdaterInterface             $productUpdater
+     * @param ProductFieldUpdaterInterface        $productFieldUpdater
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      * @param UserManager                         $userManager
      * @param SecurityContextInterface            $securityContext
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productUpdater,
+            $productFieldUpdater,
             $validator,
             $jobConfigurationRepo
         );

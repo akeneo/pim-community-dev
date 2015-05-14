@@ -7,7 +7,7 @@ use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -29,7 +29,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $userManager;
 
     /**
-     * @param ProductUpdaterInterface              $productUpdater
+     * @param ProductFieldUpdaterInterface         $productFieldUpdater
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
@@ -38,7 +38,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param SecurityContextInterface             $securityContext
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -47,7 +47,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productUpdater,
+            $productFieldUpdater,
             $validator,
             $massActionRepository,
             $attributeRepository,

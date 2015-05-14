@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRu
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Validator\Constraint;
@@ -26,21 +26,21 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValueActionValidator extends ConstraintValidator
 {
-    /** @var ProductUpdaterInterface */
-    protected $factory;
+    /** @var ProductFieldUpdaterInterface */
+    protected $productFieldUpdater;
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param ProductUpdaterInterface $factory
-     * @param ProductBuilderInterface $productBuilder
+     * @param ProductFieldUpdaterInterface $productFieldUpdater
+     * @param ProductBuilderInterface      $productBuilder
      */
     public function __construct(
-        ProductUpdaterInterface $factory,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ProductBuilderInterface $productBuilder
     ) {
-        $this->factory = $factory;
+        $this->productFieldUpdater = $productFieldUpdater;
         $this->productBuilder = $productBuilder;
     }
 
@@ -66,7 +66,7 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->factory->setData(
+            $this->productFieldUpdater->setData(
                 $fakeProduct,
                 $action->getField(),
                 $action->getValue(),
@@ -88,7 +88,7 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->factory->copyData(
+            $this->productFieldUpdater->copyData(
                 $fakeProduct,
                 $fakeProduct,
                 $action->getFromField(),
