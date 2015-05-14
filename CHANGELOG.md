@@ -117,6 +117,8 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
 - ProductTemplateUpdater now takes ProductFieldUpdaterInterface as argument and not anymore ProductUpdaterInterface
+- Remove fixtures_product_yml from the InstallerBundle, csv format is now mandatory for products
+- ProductUpdater takes ValidatorInterface as second argument
 
 # 1.3.x
 

@@ -56,6 +56,7 @@ services:
         class: %pim_catalog.updater.product.class%
         arguments:
             - @pim_catalog.updater.product_field
+            - @pim_validator
 
     pim_catalog.updater.product_field:
         class: %pim_catalog.updater.product_field.class%

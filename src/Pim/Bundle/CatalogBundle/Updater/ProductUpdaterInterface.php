@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Provides basic operations to update a product
+ * Updates and validates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -15,6 +15,64 @@ interface ProductUpdaterInterface extends UpdaterInterface
 {
     /**
      * Updates a product with associative array of field to data (erase the current data)
+     *
+     * {
+     *      "name": [{
+     *          "locale": "fr_FR",
+     *          "scope":  null,
+     *          "data":  "T-shirt super beau",
+     *      }],
+     *      "description": [
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "mobile",
+     *               "data":   "My description"
+     *           },
+     *           {
+     *               "locale": "fr_FR",
+     *               "scope":  "mobile",
+     *               "data":   "Ma description mobile"
+     *           },
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "ecommerce",
+     *               "data":   "My description for the website"
+     *           },
+     *      ],
+     *      "price": [
+     *           {
+     *               "locale": null,
+     *               "scope":  ecommerce,
+     *               "data":   [
+     *                   {"data": 10, "currency": "EUR"},
+     *                   {"data": 24, "currency": "USD"},
+     *                   {"data": 20, "currency": "CHF"}
+     *               ]
+     *           }
+     *           {
+     *               "locale": null,
+     *               "scope":  mobile,
+     *               "data":   [
+     *                   {"data": 11, "currency": "EUR"},
+     *                   {"data": 25, "currency": "USD"},
+     *                   {"data": 21, "currency": "CHF"}
+     *               ]
+     *           }
+     *      ],
+     *      "length": [{
+     *          "locale": "en_US",
+     *          "scope":  "mobile",
+     *          "data":   {"data": "10", "unit": "CENTIMETER"}
+     *      }],
+     *      "enabled": true,
+     *      "categories": ["tshirt", "men"],
+     *      "associations": {
+     *          "XSELL": {
+     *              "groups": ["akeneo_tshirt", "oro_tshirt"],
+     *              "product": ["AKN_TS", "ORO_TSH"]
+     *          }
+     *      }
+     * }
      *
      * @param object $product The product to update
      * @param array  $data    The data to set
@@ -35,7 +93,7 @@ interface ProductUpdaterInterface extends UpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use setData(
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
@@ -52,7 +110,7 @@ interface ProductUpdaterInterface extends UpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use copyData(
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,

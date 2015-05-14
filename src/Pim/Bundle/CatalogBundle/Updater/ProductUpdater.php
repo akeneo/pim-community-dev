@@ -3,10 +3,14 @@
 namespace Pim\Bundle\CatalogBundle\Updater;
 
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Provides basic operations to update a product
+ * Updates and validates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -17,16 +21,25 @@ class ProductUpdater implements ProductUpdaterInterface
     /** @var ProductFieldUpdaterInterface */
     protected $productFieldUpdater;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param ProductFieldUpdaterInterface $productFieldUpdater
+     * @param ValidatorInterface           $validator
      */
-    public function __construct(ProductFieldUpdaterInterface $productFieldUpdater)
-    {
+    public function __construct(
+        ProductFieldUpdaterInterface $productFieldUpdater,
+        ValidatorInterface $validator
+    ) {
         $this->productFieldUpdater = $productFieldUpdater;
+        $this->validator = $validator;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws BusinessValidationException
      */
     public function update($product, array $data, array $options = [])
     {
@@ -39,27 +52,38 @@ class ProductUpdater implements ProductUpdaterInterface
             );
         }
 
-        foreach ($data as $field => $values) {
-            // TODO: hard coded :(
-            if (in_array($field, ['enabled', 'categories', 'groups', 'associations'])) {
-                $this->productFieldUpdater->setData($product, $field, $values, []);
-            } else {
-                foreach ($values as $value) {
-                    // sets the value if the attribute belongs to the family or if the value already exists as optional
-                    $family = $product->getFamily();
-                    $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
-                    $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
-                    if ($belongsToFamily || $hasValue) {
-                        $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                        $this->productFieldUpdater->setData($product, $field, $value['data'], $options);
-                    }
+        $updateViolations = new ConstraintViolationList();
+        try {
+            foreach ($data as $field => $values) {
+                if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
+                    $this->productFieldUpdater->setData($product, $field, $values, []);
+                } else {
+                    $this->updateProductValues($product, $field, $values);
                 }
             }
+        } catch (\InvalidArgumentException $e) {
+            $setViolation = new ConstraintViolation(
+                $e->getMessage(),
+                $e->getMessage(),
+                [],
+                $product,
+                null,
+                null
+            );
+            $updateViolations->add($setViolation);
+        }
+
+        $validatorViolations = $this->validator->validate($product);
+        $updateViolations->addAll($validatorViolations);
+        if ($updateViolations->count() > 0) {
+            throw new BusinessValidationException($updateViolations);
         }
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
@@ -72,6 +96,8 @@ class ProductUpdater implements ProductUpdaterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,
@@ -93,5 +119,25 @@ class ProductUpdater implements ProductUpdaterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Sets the value if the attribute belongs to the family or if the value already exists as optional
+     *
+     * @param ProductInterface $product
+     * @param string           $field
+     * @param array            $values
+     */
+    protected function updateProductValues(ProductInterface $product, $field, array $values)
+    {
+        foreach ($values as $value) {
+            $family = $product->getFamily();
+            $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
+            $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
+            if ($belongsToFamily || $hasValue) {
+                $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+                $this->productFieldUpdater->setData($product, $field, $value['data'], $options);
+            }
+        }
     }
 }

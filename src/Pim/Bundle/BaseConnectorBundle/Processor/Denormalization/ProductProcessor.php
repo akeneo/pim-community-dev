@@ -3,12 +3,11 @@
 namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Product import processor
@@ -19,12 +18,6 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductProcessor extends AbstractProcessor
 {
-    /** @var ValidatorInterface */
-    protected $validator;
-
-    /** @var ObjectDetacherInterface */
-    protected $detacher;
-
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
@@ -39,21 +32,15 @@ class ProductProcessor extends AbstractProcessor
      * @param IdentifiableObjectRepositoryInterface $repository     product repository
      * @param ProductBuilderInterface               $productBuilder product builder
      * @param ProductUpdaterInterface               $productUpdater product updater
-     * @param ValidatorInterface                    $validator      validator of the object
-     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ProductBuilderInterface $productBuilder,
-        ProductUpdaterInterface $productUpdater,
-        ValidatorInterface $validator,
-        ObjectDetacherInterface $detacher
+        ProductUpdaterInterface $productUpdater
     ) {
         parent::__construct($repository);
 
-        $this->validator = $validator;
-        $this->detacher = $detacher;
         $this->productBuilder = $productBuilder;
         $this->arrayConverter = $arrayConverter;
         $this->productUpdater = $productUpdater;
@@ -70,8 +57,11 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
-        $this->updateProduct($product, $filteredItem);
-        $this->validateProduct($product, $item);
+        try {
+            $this->productUpdater->update($product, $filteredItem);
+        } catch (BusinessValidationException $exception) {
+            $this->skipItemWithConstraintViolations($item, $exception->getViolations());
+        }
 
         return $product;
     }
@@ -109,6 +99,9 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * Filters item data to remove associations which are imported through a dedicated processor because we need to
+     * create any products before to associate them
+     *
      * @param array $convertedItem
      *
      * @return array
@@ -117,8 +110,8 @@ class ProductProcessor extends AbstractProcessor
     {
         unset($convertedItem[$this->repository->getIdentifierProperties()[0]]);
         unset($convertedItem['associations']);
-        unset($convertedItem['family']);
-        unset($convertedItem['groups']); // TODO: until we split groups and variant groups
+        // TODO: until we split groups and variant group columns in the csv file
+        unset($convertedItem['groups']);
 
         return $convertedItem;
     }
@@ -137,27 +130,5 @@ class ProductProcessor extends AbstractProcessor
         }
 
         return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $filteredItem
-     */
-    protected function updateProduct(ProductInterface $product, array $filteredItem)
-    {
-        $this->productUpdater->update($product, $filteredItem);
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $item
-     */
-    protected function validateProduct(ProductInterface $product, array $item)
-    {
-        $violations = $this->validator->validate($product);
-        if ($violations->count() !== 0) {
-            $this->detachObject($product);
-            $this->skipItemWithConstraintViolations($item, $violations);
-        }
     }
 }
