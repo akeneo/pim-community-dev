@@ -8,7 +8,7 @@ Feature: Execute a job
     Given the "apparel" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3369
+  # @jira https://akeneo.atlassian.net/browse/PIM-3369
   Scenario: Skip import with a not available locale for channel of a localizable attribute
     Given the following CSV file to import:
     """

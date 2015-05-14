@@ -8,7 +8,7 @@ Feature: Execute a job
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3376
+  # @jira https://akeneo.atlassian.net/browse/PIM-3376
   Scenario: Skip import with a not expected locale and channel provided for a global attribute
     Given the following CSV file to import:
       """
@@ -23,7 +23,7 @@ Feature: Execute a job
     Then I should see "Status: FAILED"
     And I should see "The field \"comment-fr_FR-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3374
+  # @jira https://akeneo.atlassian.net/browse/PIM-3374
   Scenario: Skip import with a not expected channel for a global attribute
     Given the following CSV file to import:
       """
@@ -38,7 +38,7 @@ Feature: Execute a job
     Then I should see "Status: FAILED"
     And I should see "The field \"comment-mobile\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3375
+  # @jira https://akeneo.atlassian.net/browse/PIM-3375
   Scenario: Skip import with a not expected locale for a global attribute
     Given the following CSV file to import:
       """
@@ -53,7 +53,7 @@ Feature: Execute a job
     Then I should see "Status: FAILED"
     And I should see "The field \"comment-fr_FR\" is not well-formatted, attribute \"comment\" expects no locale, no scope, no currency"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3372
+  # @jira https://akeneo.atlassian.net/browse/PIM-3372
   Scenario: Skip import with a not available locale for a localizable attribute
     Given the following CSV file to import:
       """
@@ -68,7 +68,7 @@ Feature: Execute a job
     Then I should see "Status: FAILED"
     And I should see "Locale fr_CA does not exist"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3370
+  # @jira https://akeneo.atlassian.net/browse/PIM-3370
   Scenario: Skip import with a not existing channel for a scopable attribute
     Given the following CSV file to import:
       """

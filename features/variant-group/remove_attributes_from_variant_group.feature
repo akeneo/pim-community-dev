@@ -27,7 +27,7 @@ Feature: Remove an attribute from a variant group
     Then I should see flash message "Attribute successfully removed from the variant group"
     And I should see available attribute Comment in group "Other"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3697
+  # @jira https://akeneo.atlassian.net/browse/PIM-3697
   Scenario: Successfully remove an attribute from a variant group and ensure the field is enabled back
     Given I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab

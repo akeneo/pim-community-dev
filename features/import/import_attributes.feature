@@ -64,7 +64,7 @@ Feature: Import attributes
     And I wait for the "attribute_import" job to finish
     And I should see "metricFamily: This property cannot be changed."
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip new attributes with invalid data during an import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -86,7 +86,7 @@ Feature: Import attributes
       | simpleselect | lace_color | New lace color | colors | 0      | 1                      | 0           | 0        |                    |               |                     |
     And there should be 22 attributes
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3266
+  # @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing attributes with invalid data during an import
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -109,7 +109,7 @@ Feature: Import attributes
       | metric       | length     | Length         | info   | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |
 
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip attributes with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -126,7 +126,7 @@ Feature: Import attributes
     Then I should see "skipped 1"
     And I should see "code: This value should not be blank"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3786
+  # @jira https://akeneo.atlassian.net/browse/PIM-3786
   Scenario: Skip attributes with empty type
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

@@ -8,7 +8,7 @@ Feature: Filter products by boolean field
     Given the "apparel" catalog configuration
     And I am logged in as "Mary"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3406
+  # @jira https://akeneo.atlassian.net/browse/PIM-3406
   Scenario: Successfully filter products by boolean value for boolean attributes
     Given the following products:
       | sku   | family  | handmade |
@@ -25,7 +25,7 @@ Feature: Filter products by boolean field
       | Handmade | yes   | pants and socks      |
       | Handmade | no    | shirt, shoes and hat |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3406
+  # @jira https://akeneo.atlassian.net/browse/PIM-3406
   Scenario: Successfully filter products by boolean value for boolean attributes
     Given the following products:
       | sku   |

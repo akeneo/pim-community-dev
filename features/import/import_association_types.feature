@@ -25,7 +25,7 @@ Feature: Import association types
       | X_SELL_footwear | Cross Sell footwear | Vente croisée footwear    |
       | UPSELL_footwear | Upsell footwear     | Vente incitative footwear |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip association types with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"

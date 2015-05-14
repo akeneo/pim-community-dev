@@ -34,7 +34,8 @@ Feature: Edit common attributes of many products at once
     And I should see available attribute Weight in group "Other"
 
   # TODO: Re enable this test
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-2163
+  # @jira https://akeneo.atlassian.net/browse/PIM-2163
+  @skip
   Scenario: Allow editing only common attributes define from families
     Given I mass-edit products boots and highheels
     And I choose the "Edit common attributes" operation
@@ -53,7 +54,7 @@ Feature: Edit common attributes of many products at once
     And the product "highheels" should have the following values:
       | name-en_US | Product  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2183
+  # @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
     Given the following attribute:
       | code         | label | families   |
@@ -76,7 +77,7 @@ Feature: Edit common attributes of many products at once
     And the english name of "sandals" should be "boots"
     And the english name of "sneakers" should be "boots"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3281
+  # @jira https://akeneo.atlassian.net/browse/PIM-3281
   Scenario: Successfully update localized values on selected locale
     Given I add the "french" locale to the "mobile" channel
     When I mass-edit products boots, sandals and sneakers
@@ -90,7 +91,7 @@ Feature: Edit common attributes of many products at once
     And the french name of "sandals" should be "chaussure"
     And the french name of "sneakers" should be "chaussure"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3281
+  # @jira https://akeneo.atlassian.net/browse/PIM-3281
   Scenario: Successfully update localized and scoped values on selected locale
     Given I add the "french" locale to the "mobile" channel
     And I add the "french" locale to the "tablet" channel
@@ -172,7 +173,7 @@ Feature: Edit common attributes of many products at once
     And I should see "Nom"
     And I should see "Taille"
 
-  @info https://akeneo.atlassian.net/browse/PIM-2163
+  # @info https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Successfully mass edit product values that does not belong yet to the product
     Given I set product "pump" family to "sneakers"
     When I mass-edit products pump and sneakers
@@ -184,7 +185,7 @@ Feature: Edit common attributes of many products at once
     Then the english name of "pump" should be "boots"
     And the english name of "sneakers" should be "boots"
 
-  @info https://akeneo.atlassian.net/browse/PIM-2163
+  # @info https://akeneo.atlassian.net/browse/PIM-2163
   Scenario: Successfully mass edit scoped product values
     Given I set product "pump" family to "boots"
     When I mass-edit products boots and pump
@@ -200,7 +201,8 @@ Feature: Edit common attributes of many products at once
     And the english mobile Description of "pump" should be "Foo"
     And the english tablet Description of "pump" should be "Bar"
 
-  @skip-pef @info https://akeneo.atlassian.net/browse/PIM-3070
+  # @info https://akeneo.atlassian.net/browse/PIM-3070
+  @skip-pef
   Scenario: Successfully mass edit a price not added to the product
     Given I create a new product
     And I fill in the following information in the popin:
@@ -220,7 +222,7 @@ Feature: Edit common attributes of many products at once
       | 100    | USD      |
       | 150    | EUR      |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
+  # @jira https://akeneo.atlassian.net/browse/PIM-3282, https://akeneo.atlassian.net/browse/PIM-3880
   Scenario: Successfully mass edit products on the non default channel
     Given the following product values:
       | product   | attribute                | value                   |
@@ -244,7 +246,7 @@ Feature: Edit common attributes of many products at once
     Then the metric "Weight" of products boots and sneakers should be "600"
     And the metric "Weight" of products sandals, pump and highheels should be "500"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3426
+  # @jira https://akeneo.atlassian.net/browse/PIM-3426
   Scenario: Successfully update multi-valued value at once where the product have already one of the value
     Given the following product values:
       | product | attribute          | value   |

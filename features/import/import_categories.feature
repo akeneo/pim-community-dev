@@ -58,7 +58,7 @@ Feature: Import categories
     # 5 from the catalog + 5 from this test
     And there should be 10 categories
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip categories with empty code
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
