@@ -56,7 +56,7 @@ Feature: Delete many product at once
     When I confirm the removal
     Then the grid should contain 0 elements
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3849
+  # @jira https://akeneo.atlassian.net/browse/PIM-3849
   Scenario: Successfully mass delete complete products on a different scope
     Given the following products:
       | sku       | family | categories        | name-en_US    | price          | size | color | lace_color  |

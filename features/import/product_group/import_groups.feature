@@ -62,7 +62,7 @@ Feature: Import groups
       | ORO_XSELL     | Oro X          |             | XSELL   |            |
       | AKENEO_XSELL  | Akeneo X       |             | XSELL   |            |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip the line when encounter an empty code
     Given the following CSV file to import:
     """

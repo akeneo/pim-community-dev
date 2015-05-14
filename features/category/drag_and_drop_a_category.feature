@@ -8,7 +8,8 @@ Feature: Drag and drop a category
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
-  @javascript @info This scenario does not accurately describe dragging because of limited behat/selenium dragging capabilities
+  # @info This scenario does not accurately describe dragging because of limited behat/selenium dragging capabilities
+  @javascript
   Scenario: Move category to a different position in the tree
     Given I am on the categories page
     And I select the "2014 collection" tree

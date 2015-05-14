@@ -59,7 +59,7 @@ Feature: Validate values for unique attributes when importing products
     Then I should see "The value \"foo\" for unique attribute \"text\" was already read in this file"
     And there should be 1 product
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3309
+  # @jira https://akeneo.atlassian.net/browse/PIM-3309
   Scenario: Import a file with same value in unique attribute and with existing product with this value
     Given the following products:
       | sku         | test_unique_attribute |

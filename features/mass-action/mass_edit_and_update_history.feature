@@ -1,4 +1,5 @@
-@javascript @jira https://akeneo.atlassian.net/browse/PIM-1920
+# @jira https://akeneo.atlassian.net/browse/PIM-1920
+@javascript
 Feature: Update product history when mass editing products
   In order see what changes have been made to products in mass edit
   As a product manager

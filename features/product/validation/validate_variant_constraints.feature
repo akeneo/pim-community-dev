@@ -4,7 +4,7 @@ Feature:
   as Julia
   I need to be prevented from saving a variant product with an existing combination
 
-  @info https://akeneo.atlassian.net/browse/PIM-2113
+  # @info https://akeneo.atlassian.net/browse/PIM-2113
   Scenario: Fail to save a variant product with an existing combination
     Given a "footwear" catalog configuration
     And the following products:

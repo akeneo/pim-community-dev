@@ -30,7 +30,7 @@ Feature: Import options
       | brand     | Nike        | Nike        |
       | brand     | Caterpillar | Caterpillar |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3311
+  # @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip options with empty code
     Given the "footwear" catalog configuration
     And the following attributes:
@@ -69,7 +69,7 @@ Feature: Import options
     Then I should see "skipped 1"
     And I should see "Attribute \"unknown\" does not exist"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3820
+  # @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Import options with localizable label
     Given the "apparel" catalog configuration
     And the following attributes:
@@ -99,7 +99,7 @@ Feature: Import options
     And I should see "05GB"
     And I should see "05GB"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3820
+  # @jira https://akeneo.atlassian.net/browse/PIM-3820
   Scenario: Stop an import when a label is provided for a disabled language
     Given the "apparel" catalog configuration
     And the following attributes:

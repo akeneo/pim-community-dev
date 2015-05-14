@@ -193,7 +193,7 @@ Feature: Execute a job
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3377
+  # @jira https://akeneo.atlassian.net/browse/PIM-3377
   Scenario: Fail when import invalid attribute with nonexistent specific locale
     Given the following attributes:
       | code                      | type | localizable | availableLocales |

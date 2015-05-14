@@ -37,7 +37,7 @@ Feature: Export products with media
       | files/SNKRS-1C/side_view/SNKRS-1C-s.png |
       | files/SNKRS-1C/top_view/SNKRS-1C-t.png  |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3785
+  # @jira https://akeneo.atlassian.net/browse/PIM-3785
   Scenario: Successfully export products with nullable media
     Given the following family:
       | code      |

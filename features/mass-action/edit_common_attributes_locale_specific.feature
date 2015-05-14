@@ -12,14 +12,14 @@ Feature: Edit common attributes of many products at once with locale specific ca
     And I am logged in as "Julia"
     And I am on the products page
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3298
+  # @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Allow editing only common attributes, including locale specific attribute
     Given I mass-edit products tshirt
     And I choose the "Edit common attributes" operation
     And I switch the locale to "German (Germany)"
     Then I should see available attributes Kosten, Anzahl auf Lager, Datenblatt, Zollsteuer in group "Intern"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3298
+  # @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Allow editing only common attributes, excluding locale specific attribute
     Given I mass-edit products tshirt
     And I choose the "Edit common attributes" operation

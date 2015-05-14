@@ -59,7 +59,7 @@ Feature: Add attribute options
     Then I should see "green"
     But I should not see "yellow"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-2166
+  # @jira https://akeneo.atlassian.net/browse/PIM-2166
   Scenario: Successfully delete some attribute options
     Given I create the following attribute options:
       | Code        |
