@@ -12,10 +12,12 @@
     "jshint-stylish": "~1.0.1",
     "grunt-jscs": "~1.6.0",
     "jscs-stylish": "~0.3.1",
-    "grunt-recess": "~1.0.1"
-  },
-  "scripts": {
-    "test": "grunt test"
+    "grunt-recess": "~1.0.1",
+    "cucumber": "~0.4.8",
+    "grunt-cucumberjs": "~0.5.2",
+    "phantomjs": "^1.9.7-3",
+    "webdriverio": "*",
+    "yamljs": "~0.2.2"
   },
   "repository": {
     "type": "git",

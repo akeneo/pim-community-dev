@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Behat\Event\ScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
@@ -59,8 +60,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * @BeforeScenario
      */
-    public function purgeDatabase()
+    public function purgeDatabase(ScenarioEvent $event)
     {
+        if ($event->getScenario()->hasTag('keepdb')) {
+            return;
+        }
         $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
         if (file_exists($excludedTablesFile)) {
             $parser = new Parser();
