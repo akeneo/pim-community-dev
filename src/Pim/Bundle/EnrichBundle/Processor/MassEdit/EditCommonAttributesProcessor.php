@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
-use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -25,21 +25,21 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    /** @var ProductFieldUpdaterInterface */
+    protected $productFieldUpdater;
 
     /** @var array */
     protected $skippedAttributes = [];
 
     /**
-     * @param ProductUpdaterInterface              $productUpdater
+     * @param ProductFieldUpdaterInterface         $productFieldUpdater
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
      * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -47,7 +47,7 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->productUpdater       = $productUpdater;
+        $this->productFieldUpdater       = $productFieldUpdater;
         $this->validator            = $validator;
         $this->attributeRepository  = $attributeRepository;
     }
@@ -117,7 +117,7 @@ class EditCommonAttributesProcessor extends AbstractMassEditProcessor
             $family = $product->getFamily();
 
             if (null !== $family && $family->hasAttribute($attribute)) {
-                $this->productUpdater->setData($product, $action['field'], $action['value'], $action['options']);
+                $this->productFieldUpdater->setData($product, $action['field'], $action['value'], $action['options']);
                 $modifiedAttributesNb++;
             }
         }
