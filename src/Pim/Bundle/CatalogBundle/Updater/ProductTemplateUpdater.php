@@ -13,15 +13,15 @@ use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
  */
 class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
 {
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    /** @var ProductFieldUpdaterInterface */
+    protected $productFieldUpdater;
 
     /**
-     * @param ProductUpdaterInterface $productUpdater
+     * @param ProductFieldUpdaterInterface $productFieldUpdater
      */
-    public function __construct(ProductUpdaterInterface $productUpdater)
+    public function __construct(ProductFieldUpdaterInterface $productFieldUpdater)
     {
-        $this->productUpdater = $productUpdater;
+        $this->productFieldUpdater = $productFieldUpdater;
     }
 
     /**
@@ -45,7 +45,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     protected function updateProducts(array $products, $attributeCode, $data)
     {
         foreach ($products as $product) {
-            $this->productUpdater->setData(
+            $this->productFieldUpdater->setData(
                 $product,
                 $attributeCode,
                 $data['value'],

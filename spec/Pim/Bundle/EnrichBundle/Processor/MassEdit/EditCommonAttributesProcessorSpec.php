@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -23,14 +23,14 @@ use Symfony\Component\Validator\ValidatorInterface;
 class EditCommonAttributesProcessorSpec extends ObjectBehavior
 {
     function let(
-        ProductUpdaterInterface $productUpdater,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         $this->beConstructedWith(
-            $productUpdater,
+            $productFieldUpdater,
             $validator,
             $massActionRepository,
             $attributeRepository,
@@ -50,7 +50,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
 
     function it_sets_values_to_attributes(
         $validator,
-        $productUpdater,
+        $productFieldUpdater,
         FamilyInterface $family,
         AttributeInterface $attribute,
         AttributeRepository $attributeRepository,
@@ -81,14 +81,14 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $product->getFamily()->willReturn($family);
         $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
 
-        $productUpdater->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+        $productFieldUpdater->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
 
         $this->process($product);
     }
 
     function it_sets_invalid_values_to_attributes(
         $validator,
-        $productUpdater,
+        $productFieldUpdater,
         FamilyInterface $family,
         AttributeInterface $attribute,
         AttributeRepository $attributeRepository,
@@ -120,7 +120,7 @@ class EditCommonAttributesProcessorSpec extends ObjectBehavior
         $family->hasAttribute($attribute)->willReturn(true);
         $product->getFamily()->willReturn($family);
 
-        $productUpdater->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
+        $productFieldUpdater->setData($product, 'categories', ['office', 'bedroom'], [])->shouldBeCalled();
         $this->setStepExecution($stepExecution);
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();

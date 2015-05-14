@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -17,25 +17,25 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class AddProductValueProcessor extends AbstractMassEditProcessor
 {
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    /** @var ProductFieldUpdaterInterface */
+    protected $productFieldUpdater;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param ProductUpdaterInterface             $productUpdater
+     * @param ProductFieldUpdaterInterface        $productFieldUpdater
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
-        ProductUpdaterInterface $productUpdater,
+        ProductFieldUpdaterInterface $productFieldUpdater,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->productUpdater = $productUpdater;
+        $this->productFieldUpdater = $productFieldUpdater;
         $this->validator      = $validator;
     }
 
@@ -91,7 +91,7 @@ class AddProductValueProcessor extends AbstractMassEditProcessor
     protected function addData(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
-            $this->productUpdater->addData($product, $action['field'], $action['value']);
+            $this->productFieldUpdater->addData($product, $action['field'], $action['value']);
         }
 
         return $this;
