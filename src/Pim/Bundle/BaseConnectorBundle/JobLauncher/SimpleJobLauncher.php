@@ -68,6 +68,7 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
 
         $jobConfiguration = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
 
+        // TODO: inject and use the $jobConfigSaver
         $this->objectManager->persist($jobConfiguration);
         $this->objectManager->flush($jobConfiguration);
 

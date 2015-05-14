@@ -5,68 +5,82 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Provides basic operations to update a product
+ * Updates and validates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductUpdaterInterface
+interface ProductUpdaterInterface extends UpdaterInterface
 {
     /**
-     * Sets a data in a product field (erase the current data)
+     * Updates a product with associative array of field to data (erase the current data)
      *
-     * @param ProductInterface $product The product to update
-     * @param string           $field   The field to update
-     * @param mixed            $data    The data to set
-     * @param array            $options Options to pass to the setter
+     * {
+     *      "name": [{
+     *          "locale": "fr_FR",
+     *          "scope":  null,
+     *          "data":  "T-shirt super beau",
+     *      }],
+     *      "description": [
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "mobile",
+     *               "data":   "My description"
+     *           },
+     *           {
+     *               "locale": "fr_FR",
+     *               "scope":  "mobile",
+     *               "data":   "Ma description mobile"
+     *           },
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "ecommerce",
+     *               "data":   "My description for the website"
+     *           },
+     *      ],
+     *      "price": [
+     *           {
+     *               "locale": null,
+     *               "scope":  ecommerce,
+     *               "data":   [
+     *                   {"data": 10, "currency": "EUR"},
+     *                   {"data": 24, "currency": "USD"},
+     *                   {"data": 20, "currency": "CHF"}
+     *               ]
+     *           }
+     *           {
+     *               "locale": null,
+     *               "scope":  mobile,
+     *               "data":   [
+     *                   {"data": 11, "currency": "EUR"},
+     *                   {"data": 25, "currency": "USD"},
+     *                   {"data": 21, "currency": "CHF"}
+     *               ]
+     *           }
+     *      ],
+     *      "length": [{
+     *          "locale": "en_US",
+     *          "scope":  "mobile",
+     *          "data":   {"data": "10", "unit": "CENTIMETER"}
+     *      }],
+     *      "enabled": true,
+     *      "categories": ["tshirt", "men"],
+     *      "associations": {
+     *          "XSELL": {
+     *              "groups": ["akeneo_tshirt", "oro_tshirt"],
+     *              "product": ["AKN_TS", "ORO_TSH"]
+     *          }
+     *      }
+     * }
+     *
+     * @param object $product The product to update
+     * @param array  $data    The data to set
+     * @param array  $options Options to pass to the setter
      *
      * @return ProductUpdaterInterface
      */
-    public function setData(ProductInterface $product, $field, $data, array $options = []);
-
-    /**
-     * Adds a data in a product field (complete the current data)
-     *
-     * @param ProductInterface $product The product to update
-     * @param string           $field   The field to update
-     * @param mixed            $data    The data to add
-     * @param array            $options Options to pass to the adder
-     *
-     * @return ProductUpdaterInterface
-     */
-    public function addData(ProductInterface $product, $field, $data, array $options = []);
-
-    /**
-     * Copy a data from a source field to a destination field (erase the current destination data)
-     *
-     * @param ProductInterface $fromProduct The product to read from
-     * @param ProductInterface $toProduct   The product to update
-     * @param string           $fromField   The field to read from
-     * @param string           $toField     The field to update
-     * @param array            $options     Options to pass to the copier
-     *
-     * @return ProductUpdaterInterface
-     */
-    public function copyData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        $fromField,
-        $toField,
-        array $options = []
-    );
-
-    /**
-     * Removes a data in a product field (only provided data will be removed)
-     *
-     * @param ProductInterface $product The product to update
-     * @param string           $field   The field to update
-     * @param mixed            $data    The data to remove
-     * @param array            $options Options to pass to the remover
-     *
-     * @return ProductUpdaterInterface
-     */
-    public function removeData(ProductInterface $product, $field, $data, array $options = []);
+    public function update($product, array $data, array $options = []);
 
     /**
      * Sets the data in values of many products
@@ -79,7 +93,7 @@ interface ProductUpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use setData(
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
@@ -96,7 +110,7 @@ interface ProductUpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use copyData(
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,

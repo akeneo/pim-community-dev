@@ -100,7 +100,7 @@ class AssociationDenormalizerSpec extends ObjectBehavior
         $association->addGroup($group)->shouldBeCalled();
 
         $this->setSerializer($serializer);
-        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV, ['part' => 'groups', 'entity' => $association]);
+        $this->denormalize(['foo'], self::ENTITY_CLASS, self::FORMAT_CSV, ['part' => 'groups', 'entity' => $association]);
     }
 
     function it_denormalizes_association_with_products(
@@ -117,7 +117,7 @@ class AssociationDenormalizerSpec extends ObjectBehavior
 
         $this->setSerializer($serializer);
         $this->denormalize(
-            'foo,bar',
+            ['foo', 'bar'],
             self::ENTITY_CLASS,
             self::FORMAT_CSV,
             ['part' => 'products', 'entity' => $association]

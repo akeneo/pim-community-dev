@@ -2,16 +2,15 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Provides basic operations to update a product
+ * Updates and validates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -19,154 +18,77 @@ use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
  */
 class ProductUpdater implements ProductUpdaterInterface
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var ProductFieldUpdaterInterface */
+    protected $productFieldUpdater;
 
-    /** @var SetterRegistryInterface */
-    protected $setterRegistry;
-
-    /** @var CopierRegistryInterface */
-    protected $copierRegistry;
-
-    /** @var AdderRegistryInterface */
-    protected $adderRegistry;
-
-    /** @var RemoverRegistryInterface */
-    protected $removerRegistry;
+    /** @var ValidatorInterface */
+    protected $validator;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param SetterRegistryInterface      $setterRegistry
-     * @param CopierRegistryInterface      $copierRegistry
-     * @param AdderRegistryInterface       $adderRegistry
+     * @param ProductFieldUpdaterInterface $productFieldUpdater
+     * @param ValidatorInterface           $validator
      */
     public function __construct(
-        AttributeRepositoryInterface $repository,
-        SetterRegistryInterface $setterRegistry,
-        CopierRegistryInterface $copierRegistry,
-        AdderRegistryInterface $adderRegistry,
-        RemoverRegistryInterface $removerRegistry
+        ProductFieldUpdaterInterface $productFieldUpdater,
+        ValidatorInterface $validator
     ) {
-        $this->attributeRepository = $repository;
-        $this->setterRegistry      = $setterRegistry;
-        $this->copierRegistry      = $copierRegistry;
-        $this->adderRegistry       = $adderRegistry;
-        $this->removerRegistry     = $removerRegistry;
+        $this->productFieldUpdater = $productFieldUpdater;
+        $this->validator = $validator;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws BusinessValidationException
      */
-    public function setData(ProductInterface $product, $field, $data, array $options = [])
+    public function update($product, array $data, array $options = [])
     {
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $setter = $this->setterRegistry->getAttributeSetter($attribute);
-        } else {
-            $setter = $this->setterRegistry->getFieldSetter($field);
+        if (!$product instanceof ProductInterface) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expects a "Pim\Bundle\CatalogBundle\Model\ProductInterface", "%s" provided.',
+                    ClassUtils::getClass($product)
+                )
+            );
         }
 
-        if (null === $setter) {
-            throw new \LogicException(sprintf('No setter found for field "%s"', $field));
+        $updateViolations = new ConstraintViolationList();
+        try {
+            foreach ($data as $field => $values) {
+                if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
+                    $this->productFieldUpdater->setData($product, $field, $values, []);
+                } else {
+                    $this->updateProductValues($product, $field, $values);
+                }
+            }
+        } catch (\InvalidArgumentException $e) {
+            $setViolation = new ConstraintViolation(
+                $e->getMessage(),
+                $e->getMessage(),
+                [],
+                $product,
+                null,
+                null
+            );
+            $updateViolations->add($setViolation);
         }
 
-        if (null !== $attribute) {
-            $setter->setAttributeData($product, $attribute, $data, $options);
-        } else {
-            $setter->setFieldData($product, $field, $data, $options);
+        $validatorViolations = $this->validator->validate($product);
+        $updateViolations->addAll($validatorViolations);
+        if ($updateViolations->count() > 0) {
+            throw new BusinessValidationException($updateViolations);
         }
-
-        return $this;
     }
 
     /**
      * {@inheritdoc}
-     */
-    public function addData(ProductInterface $product, $field, $data, array $options = [])
-    {
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $adder = $this->adderRegistry->getAttributeAdder($attribute);
-        } else {
-            $adder = $this->adderRegistry->getFieldAdder($field);
-        }
-
-        if (null === $adder) {
-            throw new \LogicException(sprintf('No adder found for field "%s"', $field));
-        }
-
-        if (null !== $attribute) {
-            $adder->addAttributeData($product, $attribute, $data, $options);
-        } else {
-            $adder->addFieldData($product, $field, $data, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function copyData(
-        ProductInterface $fromProduct,
-        ProductInterface $toProduct,
-        $fromField,
-        $toField,
-        array $options = []
-    ) {
-        $fromAttribute = $this->getAttribute($fromField);
-        $toAttribute = $this->getAttribute($toField);
-        if (null !== $fromAttribute && null !== $toAttribute) {
-            $copier = $this->copierRegistry->getAttributeCopier($fromAttribute, $toAttribute);
-        } else {
-            $copier = $this->copierRegistry->getFieldCopier($fromField, $toField);
-        }
-
-        if (null === $copier) {
-            throw new \LogicException(sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
-        }
-
-        if (null !== $fromAttribute && null !== $toAttribute) {
-            $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
-        } else {
-            $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeData(ProductInterface $product, $field, $data, array $options = [])
-    {
-        $attribute = $this->getAttribute($field);
-        if (null !== $attribute) {
-            $remover = $this->removerRegistry->getAttributeRemover($attribute);
-        } else {
-            $remover = $this->removerRegistry->getFieldRemover($field);
-        }
-
-        if (null === $remover) {
-            throw new \LogicException(sprintf('No remover found for field "%s"', $field));
-        }
-
-        if (null !== $attribute) {
-            $remover->removeAttributeData($product, $attribute, $data, $options);
-        } else {
-            $remover->removeFieldData($product, $field, $data, $options);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
         foreach ($products as $product) {
-            $this->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
+            $this->productFieldUpdater->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
         }
 
         return $this;
@@ -174,6 +96,8 @@ class ProductUpdater implements ProductUpdaterInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,
@@ -191,25 +115,29 @@ class ProductUpdater implements ProductUpdaterInterface
             'to_scope' => $toScope,
         ];
         foreach ($products as $product) {
-            $this->copyData($product, $product, $fromField, $toField, $options);
+            $this->productFieldUpdater->copyData($product, $product, $fromField, $toField, $options);
         }
 
         return $this;
     }
 
     /**
-     * Fetch the attribute by its code
+     * Sets the value if the attribute belongs to the family or if the value already exists as optional
      *
-     * @param string $code
-     *
-     * @throws \LogicException
-     *
-     * @return AttributeInterface|null
+     * @param ProductInterface $product
+     * @param string           $field
+     * @param array            $values
      */
-    protected function getAttribute($code)
+    protected function updateProductValues(ProductInterface $product, $field, array $values)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
-
-        return $attribute;
+        foreach ($values as $value) {
+            $family = $product->getFamily();
+            $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
+            $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
+            if ($belongsToFamily || $hasValue) {
+                $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+                $this->productFieldUpdater->setData($product, $field, $value['data'], $options);
+            }
+        }
     }
 }
