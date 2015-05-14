@@ -5,12 +5,15 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
-    function let(ProductFieldUpdaterInterface $productFieldUpdater)
-    {
-        $this->beConstructedWith($productFieldUpdater);
+    function let(
+        ProductFieldUpdaterInterface $productFieldUpdater,
+        ValidatorInterface $validator
+    ) {
+        $this->beConstructedWith($productFieldUpdater, $validator);
     }
 
     function it_is_initializable()

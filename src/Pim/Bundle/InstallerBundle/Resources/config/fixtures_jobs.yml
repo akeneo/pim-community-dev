@@ -104,16 +104,6 @@ jobs:
             filePath: groups.yml
             multiple: false
 
-    fixtures_product_yml:
-        order: 80
-        connector: Data fixtures
-        alias:     fixtures_product_yml
-        label:     Product data fixtures
-        type:      fixtures
-        configuration:
-            filePath: products.yml
-            multiple: false
-
     fixtures_product_csv:
         order: 80
         connector: Data fixtures
