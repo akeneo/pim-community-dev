@@ -104,7 +104,7 @@ var steps = function () {
         }, callback);
     });
 
-    this.Then(/^I should see "((?:[^"]|\\")*)"$/, function (text, callback) {
+    this.Then(/^I should see "((?:[^"]|\\")+)"$/, function (text, callback) {
         this.browser
             .execute(
                 function (text) {
