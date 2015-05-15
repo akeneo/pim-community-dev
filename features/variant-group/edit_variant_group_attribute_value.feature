@@ -76,7 +76,7 @@ Feature: Editing attribute values of a variant group also updates products
     Then the product "boot" should have the following values:
       | number_in_stock | 8000.0000 |
 
-  @skip-pef
+  @cucumberjs
   Scenario: Change a pim_catalog_price_collection attribute of a variant group
     When I visit the "Marketing" group
     And I change the "€ Price" to "89"

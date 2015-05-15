@@ -14,6 +14,28 @@ var steps = function () {
     this.When(/^I am on the dashboard page$/, function (callback) {
         this.visit('', callback);
     });
+
+    this.Given(/^I am on the "([^"]*)" variant group page$/, function (code, callback) {
+        this
+            .visit('#url=/enrich/variant-group/')
+            .waitFor('.row-click-action', 5000)
+            .click('//tr//td[normalize-space() = "' + code + '"]')
+            .waitForComplete(callback);
+    });
+
+    this.When(/^I am on the variant groups page$/, function (callback) {
+        this
+            .visit('#url=/enrich/variant-group/')
+            .waitForComplete(callback);
+    });
+
+    this.Then(/^I edit the "([^"]*)" product$/, function (code, callback) {
+        this
+            .visit('/enrich/product/')
+            .waitFor('.row-click-action', 5000)
+            .click('//tr//td[normalize-space() = "' + code + '"]')
+            .waitForComplete(callback);
+    });
 };
 
 module.exports = steps;
