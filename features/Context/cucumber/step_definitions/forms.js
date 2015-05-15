@@ -11,27 +11,48 @@ var steps = function () {
     });
 
     this.When(/^I visit the "([^"]*)" group$/, function (group, callback) {
-        this.browser
-            .waitFor('.tab-groups', 5000)
-            .element('.tab-groups').click('=' + group, callback);
+        var browser = this.browser;
+        browser.element('.tab-groups', function (err) {
+            if (err) {
+                return browser.click(
+                    '.attribute-group-selector [data-attribute-group="' + group.toLowerCase() + '"]',
+                    callback
+                );
+            }
+            browser.click('=' + group, callback);
+        });
     });
 
     // Price input
-    this.When(/^I change the "(?:(\$|\€)([^"]*))" to "([^"]*)"$/, function (currency, attribute, value, callback) {
+    this.When(/^I change the "(\$|\€) ([^"]*)" to "([^"]*)"$/, function (currency, attribute, value, callback) {
         this.browser
             .waitFor('.attribute-field.currency')
             .setValue('.attribute-field.currency input.input-small', value, callback);
     });
 
-    this.When(/^I save the variant group$/, function (callback) {
-        this.browser.click('button[type="submit"]', callback);
+    this.When(/^I change the "([^"\$\€]*)" to "([^"]*)"$/, function (field, value, callback) {
+        this.browser.execute(
+            function (fieldName, value) {
+                /* global $ */
+                var $field = $('div [data-attribute="' + fieldName + '"] .field-input');
+                $field.find('input').select2('val', value).trigger('change');
+            },
+            field.toLowerCase(),
+            value,
+            callback
+        );
+    });
+
+    this.When(/^I save the (.*)/, function (entity, callback) {
+        this.browser
+            .click('button[type="submit"]')
+            .waitForComplete(callback);
     });
 
     this.Then(/^I press the "([^"]*)" button$/, function (name, callback) {
         var browser = this.browser;
         browser
             .execute(function (button) {
-                /* global $ */
                 $('button.btn-primary:contains("' + button + '")').click();
             }, name, function () {
                 browser.waitForComplete(callback);

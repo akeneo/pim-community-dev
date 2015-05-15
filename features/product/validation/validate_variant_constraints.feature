@@ -1,4 +1,4 @@
-@javascript
+@cucumberjs
 Feature:
   In order to have only one combination of variant of product in a variant group
   as Julia
