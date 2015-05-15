@@ -21,9 +21,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class SimpleJobLauncher extends BaseSimpleJobLauncher
 {
-    /** @var SaverInterface */
-    protected $jobConfigSaver;
-
     /** @var JobConfigurationFactory */
     protected $jobConfigFactory;
 
@@ -68,7 +65,6 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
 
         $jobConfiguration = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
 
-        // TODO: please use saver (done in coming PR)!
         $this->objectManager->persist($jobConfiguration);
         $this->objectManager->flush($jobConfiguration);
 
