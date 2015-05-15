@@ -17,12 +17,12 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ApplierInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Manage product product drafts
@@ -89,10 +89,7 @@ class ProductDraftManager
      */
     public function approve(ProductDraft $productDraft)
     {
-        $this->dispatcher->dispatch(
-            ProductDraftEvents::PRE_APPROVE,
-            new ProductDraftEvent($productDraft)
-        );
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft));
 
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
@@ -103,6 +100,8 @@ class ProductDraftManager
         $objectManager->flush();
 
         $this->workingCopySaver->save($product);
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft));
     }
 
     /**
