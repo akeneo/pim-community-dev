@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\DependencyInjection\Compiler;
+namespace Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler;
 
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
@@ -17,7 +17,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Pim\Bundle\BasConnectorBundle\Model\JobConfigurationInterface' => 'pim_base_connector.model.job_configuration.class',
+            'Pim\Component\Connector\Model\JobConfigurationInterface' => 'pim_base_connector.model.job_configuration.class',
         ];
     }
 }

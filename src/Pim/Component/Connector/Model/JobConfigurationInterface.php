@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Model;
+namespace Pim\Component\Connector\Model;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 

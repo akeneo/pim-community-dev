@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Model\Repository;
+namespace Pim\Bundle\ConnectorBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 /**
  * Implementation of JobConfigurationRepository

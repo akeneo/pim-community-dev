@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**

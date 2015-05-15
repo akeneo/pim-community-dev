@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Model\Repository;
+namespace Pim\Component\Connector\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 

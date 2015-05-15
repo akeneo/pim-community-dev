@@ -1,5 +1,5 @@
 parameters:
-    pim_base_connector.repository.job_configuration.class: Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepository
+    pim_base_connector.repository.job_configuration.class: Pim\Bundle\ConnectorBundle\Doctrine\ORM\Repository\JobConfigurationRepository
 
 services:
     pim_base_connector.repository.job_configuration:

@@ -28,7 +28,7 @@ class JobConfigurationFactory
      * @param JobExecution $jobExecution
      * @param string       $configuration
      *
-     * @return \Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface
+     * @return \Pim\Component\Connector\Model\JobConfigurationInterface
      */
     public function create(JobExecution $jobExecution, $configuration)
     {

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 
 class JobConfigurationFactorySpec extends ObjectBehavior
 {
-    const JOB_CONFIGURATION_CLASS = 'Pim\Bundle\BaseConnectorBundle\Model\JobConfiguration';
+    const JOB_CONFIGURATION_CLASS = 'Pim\Component\Connector\Model\JobConfiguration';
 
     function let()
     {

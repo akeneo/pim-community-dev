@@ -3,10 +3,10 @@
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\Serializer\SerializerInterface;
 
