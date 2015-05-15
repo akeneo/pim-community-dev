@@ -11,6 +11,62 @@ var steps = function () {
         this.executeBehat('the product "' + product + '" should have the following values', values, callback);
     });
 
+    this.Then(/^the locale switcher should contain the following items:$/, function (table, callback) {
+        var browser = this.browser;
+
+        async.eachSeries(table.hashes(), function (hash, cb) {
+            browser.execute(
+                function (hash) {
+                    /* global $ */
+                    var $localeSwitcherContainer = $('div.locale-switcher');
+                    if (!$localeSwitcherContainer.length) {
+                        return 'locale switcher not found';
+                    }
+
+                    var $localeLink = $localeSwitcherContainer.find('a[data-locale="' + hash.locale + '"]');
+                    if (!$localeLink.length) {
+                        return 'locale "' + hash.locale + '" not found';
+                    }
+
+                    return true;
+                },
+                hash,
+                function (err, result) {
+                    assert.equal(result.value, true, result.value);
+                    cb();
+                }
+            );
+        }, callback);
+    });
+
+    this.Then(/^the product "([^"]+)" should be "([^"]+)"$/, function (attributeCode, attributeValue, callback) {
+        var browser = this.browser;
+
+        browser.execute(
+            function (attributeCode, attributeValue) {
+                var $fieldContainer = $('div[data-attribute="' + attributeCode + '"]');
+                if (!$fieldContainer.length) {
+                    return 'No container found for attribute ' + attributeCode;
+                }
+
+                var foundValue = $fieldContainer.find('.field-input input').val();
+                if (foundValue !== attributeValue) {
+                    return 'Expected attribute "' + attributeCode + '"' +
+                        ' to be "' + attributeValue + '"' +
+                        ', got ' + foundValue;
+                }
+
+                return true;
+            },
+            attributeCode,
+            attributeValue,
+            function (err, result) {
+                assert.equal(result.value, true, result.value);
+                callback();
+            }
+        );
+    });
+
     this.Then(/^I should see history:$/, function (table, callback) {
         var browser = this.browser;
 
