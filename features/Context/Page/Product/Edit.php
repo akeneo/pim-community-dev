@@ -206,8 +206,16 @@ class Edit extends Form
      */
     public function fillField($fieldName, $value, Element $element = null)
     {
-        $fieldContainer = $this->findFieldContainer($fieldName, $element);
-        $fieldType = $this->getFieldType($fieldContainer);
+        $isLabel = false;
+
+        try {
+            $fieldContainer = $this->findFieldContainer($fieldName, $element);
+        } catch (ElementNotFoundException $e) {
+            $isLabel = true;
+            $fieldContainer = $this->extractLabelElement($fieldName, $element);
+        }
+
+        $fieldType = $this->getFieldType($fieldContainer, $isLabel);
 
         switch ($fieldType) {
             case 'text':
@@ -277,6 +285,41 @@ class Edit extends Form
     }
 
     /**
+     * Extracts and returns the label NodeElement, identified by $field content and $element
+     *
+     * @param string  $field
+     * @param Element $element
+     *
+     * @return NodeElement
+     */
+    protected function extractLabelElement($field, $element)
+    {
+        $subLabelContent = null;
+        $labelContent = $field;
+
+        if (strstr($field, 'USD') || strstr($field, 'EUR')) {
+            if (false !== strpos($field, ' ')) {
+                list($subLabelContent, $labelContent) = explode(' ', $field);
+            }
+        }
+
+        if ($element) {
+            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+        } else {
+            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+        }
+
+        if (!$label) {
+            $label = new \stdClass();
+        }
+
+        $label->labelContent = $labelContent;
+        $label->subLabelContent = $subLabelContent;
+
+        return $label;
+    }
+
+    /**
      * Guesses the type of field identified by $label and returns it.
      *
      * Possible identified fields are :
@@ -286,13 +329,17 @@ class Edit extends Form
      *
      * @return string
      */
-    protected function getFieldType($fieldContainer)
+    protected function getFieldType($fieldContainer, $isLabel = false)
     {
         if (null === $fieldContainer || !$fieldContainer instanceof NodeElement) {
             return null;
         }
 
-        $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
+        if ($isLabel) {
+            $formFieldWrapper = $fieldContainer->getParent()->getParent();
+        } else {
+            $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
+        }
 
         if ($formFieldWrapper->hasClass('date-field')) {
             return 'date';
@@ -350,14 +397,24 @@ class Edit extends Form
     }
 
     /**
-     * Fills a text field element with $value, identified by its $label.
+     * Fills a text field element with $value, identified by its container or label.
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainerOrLabel
      * @param string      $value
      */
-    protected function fillTextField(NodeElement $fieldContainer, $value)
+    protected function fillTextField(NodeElement $fieldContainerOrLabel, $value)
     {
-        $field = $fieldContainer->find('css', 'div.field-input input');
+        $field = $fieldContainerOrLabel->find('css', 'div.field-input input');
+
+        // no field found, we're using a label
+        if (!$field) {
+            $field = $fieldContainerOrLabel->getParent()->getParent()->find('css', 'div.field-input input');
+        }
+
+        if (!$field) {
+            $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
+        }
+
         $field->setValue($value);
     }
 
