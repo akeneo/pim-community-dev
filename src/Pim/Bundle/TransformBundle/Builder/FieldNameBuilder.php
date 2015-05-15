@@ -112,6 +112,28 @@ class FieldNameBuilder
     }
 
     /**
+     * Extract field name information from a potential association field name
+     *
+     * Returned array like:
+     * [
+     *     "assoc_type_code"   => <assoc_type_code>,
+     *     "part" => "groups"|"products",
+     * ]
+     *
+     * @param string $fieldName
+     *
+     * @return string[]|null
+     */
+    public function extractAssociationFieldNameInfos($fieldName)
+    {
+        $matches = [];
+        $regex = '/^([a-zA-Z0-9_]+)-(groups|products)$/';
+        if (preg_match($regex, $fieldName, $matches)) {
+            return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
+        }
+    }
+
+    /**
      * Extract information from an attribute and exploded field name
      * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
      *
@@ -137,28 +159,6 @@ class FieldNameBuilder
         }
 
         return $info;
-    }
-
-    /**
-     * Extract field name information from a potential association field name
-     *
-     * Returned array like:
-     * [
-     *     "assoc_type_code"   => <assoc_type_code>,
-     *     "part" => "groups"|"products",
-     * ]
-     *
-     * @param string $fieldName
-     *
-     * @return string[]|null
-     */
-    public function extractAssociationFieldNameInfos($fieldName)
-    {
-        $matches = [];
-        $regex = '/^([a-zA-Z0-9_]+)-(groups|products)$/';
-        if (preg_match($regex, $fieldName, $matches)) {
-            return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
-        }
     }
 
     /**
@@ -282,46 +282,5 @@ class FieldNameBuilder
                 );
             }
         }
-    }
-
-    /**
-     * Split a collection in a flat value :
-     *
-     * '10 EUR, 24 USD' => ['10 EUR', '24 USD']
-     *
-     * @param string $value Raw value
-     *
-     * @return array
-     */
-    public static function splitCollection($value)
-    {
-        return '' === $value ? [] : explode(self::ARRAY_SEPARATOR, $value);
-    }
-
-    /**
-     * Split a field name:
-     * 'description-en_US-mobile' => ['description', 'en_US', 'mobile']
-     *
-     * @param string $field Raw field name
-     *
-     * @return array
-     */
-    public static function splitFieldName($field)
-    {
-        return '' === $field ? [] : explode(self::FIELD_SEPARATOR, $field);
-    }
-
-    /**
-     * Split a value with it's unit/currency:
-     * '10 EUR'   => ['10', 'EUR']
-     * '10 METER' => ['10', 'METER']
-     *
-     * @param string $value Raw value
-     *
-     * @return array
-     */
-    public static function splitUnitValue($value)
-    {
-        return '' === $value ? [] : explode(self::UNIT_SEPARATOR, $value);
     }
 }

@@ -165,12 +165,12 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         $associationFields = $this->fieldNameBuilder->getAssociationFieldNames();
 
         if (in_array($column, $associationFields)) {
-            $value = FieldNameBuilder::splitCollection($value);
-            list($associationTypeCode, $associatedWith) = FieldNameBuilder::splitFieldName($column);
+            $value = $this->splitCollection($value);
+            list($associationTypeCode, $associatedWith) = $this->splitFieldName($column);
 
             return ['associations' => [$associationTypeCode => [$associatedWith => $value]]];
         } elseif (in_array($column, ['categories', 'groups'])) {
-            return [$column => FieldNameBuilder::splitCollection($value)];
+            return [$column => $this->splitCollection($value)];
         } elseif ('enabled' === $column) {
             return [$column => (bool) $value];
         } elseif ('family' === $column) {
@@ -218,7 +218,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     {
         switch ($fieldNameInfos['attribute']->getAttributeType()) {
             case 'pim_catalog_price_collection':
-                $value = FieldNameBuilder::splitCollection($value);
+                $value = $this->splitCollection($value);
 
                 $value = array_map(function ($priceValue) use ($fieldNameInfos) {
                     return $this->formatPrice($priceValue, $fieldNameInfos);
@@ -228,7 +228,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
                 $value = $this->formatMetric($value, $fieldNameInfos);
                 break;
             case 'pim_catalog_multiselect':
-                $value = FieldNameBuilder::splitCollection($value);
+                $value = $this->splitCollection($value);
                 break;
             case 'pim_catalog_simpleselect':
                 $value = $value === "" ? null : $value;
@@ -270,7 +270,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         if (isset($fieldNameInfos['price_currency'])) {
             $currency = $fieldNameInfos['price_currency'];
         } else {
-            list($value, $currency) = FieldNameBuilder::splitUnitValue($value);
+            list($value, $currency) = $this->splitUnitValue($value);
         }
 
         return ['data' => (float) $value, 'currency' => $currency];
@@ -294,7 +294,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         if (isset($fieldNameInfos['metric_unit'])) {
             $unit = $fieldNameInfos['metric_unit'];
         } else {
-            list($value, $unit) = FieldNameBuilder::splitUnitValue($value);
+            list($value, $unit) = $this->splitUnitValue($value);
         }
 
         return ['data' => (float) $value, 'unit' => $unit];
@@ -430,5 +430,47 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         }
 
         return $this->optionalAssociationFields;
+    }
+
+
+    /**
+     * Split a collection in a flat value :
+     *
+     * '10 EUR, 24 USD' => ['10 EUR', '24 USD']
+     *
+     * @param string $value Raw value
+     *
+     * @return array
+     */
+    protected function splitCollection($value)
+    {
+        return '' === $value ? [] : explode(FieldNameBuilder::ARRAY_SEPARATOR, $value);
+    }
+
+    /**
+     * Split a field name:
+     * 'description-en_US-mobile' => ['description', 'en_US', 'mobile']
+     *
+     * @param string $field Raw field name
+     *
+     * @return array
+     */
+    protected function splitFieldName($field)
+    {
+        return '' === $field ? [] : explode(FieldNameBuilder::FIELD_SEPARATOR, $field);
+    }
+
+    /**
+     * Split a value with it's unit/currency:
+     * '10 EUR'   => ['10', 'EUR']
+     * '10 METER' => ['10', 'METER']
+     *
+     * @param string $value Raw value
+     *
+     * @return array
+     */
+    protected function splitUnitValue($value)
+    {
+        return '' === $value ? [] : explode(FieldNameBuilder::UNIT_SEPARATOR, $value);
     }
 }
