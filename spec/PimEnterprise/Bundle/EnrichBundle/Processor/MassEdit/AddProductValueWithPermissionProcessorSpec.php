@@ -6,8 +6,8 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
+use Pim\Component\Connector\Model\JobConfigurationInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -101,7 +101,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
             [],
             $product
         )->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
