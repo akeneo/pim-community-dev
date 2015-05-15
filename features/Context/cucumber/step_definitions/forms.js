@@ -30,7 +30,7 @@ var steps = function () {
             .setValue('.attribute-field.currency input.input-small', value, callback);
     });
 
-    this.When(/^I change the "([^"\$\€]*)" to "([^"]*)"$/, function (field, value, callback) {
+    this.When(/^I change the "([^"\$\€]*)" to "([^"]+)"$/, function (field, value, callback) {
         this.browser.execute(
             function (fieldName, value) {
                 /* global $ */
@@ -38,7 +38,7 @@ var steps = function () {
 
                 var $inputElement = $field.find('input');
 
-                var isSelect2 =  $inputElement.data('select2');
+                var isSelect2 =  $inputElement.hasClass('select-field');
 
                 if (isSelect2) {
                     $inputElement.select2('val', value).trigger('change');
@@ -53,9 +53,10 @@ var steps = function () {
     });
 
     this.When(/^I save the (.+)/, function (entity, callback) {
-        this.browser
-            .click('button[type="submit"]')
-            .waitForComplete(callback);
+        //this.browser
+        //    .click('button[type="submit"]')
+        //    .waitForComplete(callback);
+        this.browser.click('button[type="submit"]', callback);
     });
 
     this.Then(/^I press the "([^"]*)" button$/, function (name, callback) {
