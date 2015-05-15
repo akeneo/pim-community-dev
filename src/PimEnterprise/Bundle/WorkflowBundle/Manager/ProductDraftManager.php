@@ -157,13 +157,12 @@ class ProductDraftManager
      */
     public function markAsReady(ProductDraft $productDraft)
     {
-        $this->dispatcher->dispatch(
-            ProductDraftEvents::PRE_READY,
-            new ProductDraftEvent($productDraft)
-        );
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
         $productDraft->setStatus(ProductDraft::READY);
 
         $manager = $this->registry->getManagerForClass(get_class($productDraft));
         $manager->flush();
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_READY, new GenericEvent($productDraft));
     }
 }
