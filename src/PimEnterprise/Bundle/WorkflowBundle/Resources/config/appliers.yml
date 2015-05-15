@@ -6,3 +6,4 @@ services:
         class: %pimee_workflow.applier.draft.class%
         arguments:
             - '@pim_catalog.updater.product'
+            - '@event_dispatcher'

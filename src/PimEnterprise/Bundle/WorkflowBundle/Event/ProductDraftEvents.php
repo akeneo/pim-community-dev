@@ -39,6 +39,15 @@ class ProductDraftEvents
     const PRE_APPLY = 'pimee_workflow.product_draft.pre_apply';
 
     /**
+     * This event is dispatched after product draft is applied a product
+     *
+     * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
+     *
+     * @staticvar string
+     */
+    const POST_APPLY = 'pimee_workflow.product_draft.post_apply';
+
+    /**
      * This event is dispatched before product draft is approved
      *
      * The event listener receives an
