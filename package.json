@@ -17,7 +17,8 @@
     "grunt-cucumberjs": "~0.5.2",
     "phantomjs": "^1.9.7-3",
     "webdriverio": "*",
-    "yamljs": "~0.2.2"
+    "yamljs": "~0.2.2",
+    "async": "~0.9.0"
   },
   "repository": {
     "type": "git",
