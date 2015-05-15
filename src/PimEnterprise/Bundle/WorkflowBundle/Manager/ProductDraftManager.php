@@ -111,6 +111,8 @@ class ProductDraftManager
      */
     public function refuse(ProductDraft $productDraft)
     {
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft));
+
         $objectManager = $this->registry->getManagerForClass(get_class($productDraft));
 
         if (!$productDraft->isInProgress()) {
@@ -119,12 +121,9 @@ class ProductDraftManager
             $objectManager->remove($productDraft);
         }
 
-        $this->dispatcher->dispatch(
-            ProductDraftEvents::PRE_REFUSE,
-            new ProductDraftEvent($productDraft)
-        );
-
         $objectManager->flush();
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft));
     }
 
     /**
