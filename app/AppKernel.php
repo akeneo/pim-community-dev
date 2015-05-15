@@ -127,6 +127,7 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\CatalogRuleBundle\PimEnterpriseCatalogRuleBundle(),
             new Pim\Bundle\ReferenceDataBundle\PimReferenceDataBundle(),
             new PimEnterprise\Bundle\ReferenceDataBundle\PimEnterpriseReferenceDataBundle(),
+            new Pim\Bundle\ConnectorBundle\PimConnectorBundle(),
         ];
     }
 

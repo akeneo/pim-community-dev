@@ -6,10 +6,10 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
+use Pim\Component\Connector\Model\JobConfigurationInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -74,7 +74,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
+            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
         $this->process($product)->shouldReturn($product);
@@ -112,7 +112,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
+            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
         $this->process($product)->shouldReturn(null);
