@@ -277,38 +277,6 @@ class Edit extends Form
     }
 
     /**
-     * Extracts and returns the label NodeElement, identified by $field content and $element
-     *
-     * @param string  $fieldName
-     * @param Element $element
-     *
-     * @return NodeElement
-     */
-    protected function extractFieldContainerElement($fieldName, $element)
-    {
-        if (strstr($fieldName, 'USD') || strstr($fieldName, 'EUR')) {
-            if (false !== strpos($fieldName, ' ')) {
-                list($subLabelContent, $labelContent) = explode(' ', $fieldName);
-            }
-        }
-
-        if ($element) {
-            $label = $element->find('css', sprintf('div.:contains("%s")', $labelContent));
-        } else {
-            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
-        }
-
-        if (!$label) {
-            $label = new \stdClass();
-        }
-
-        $label->labelContent = $labelContent;
-        $label->subLabelContent = $subLabelContent;
-
-        return $label;
-    }
-
-    /**
      * Guesses the type of field identified by $label and returns it.
      *
      * Possible identified fields are :
@@ -357,17 +325,16 @@ class Edit extends Form
      *
      * @return NodeElement
      */
-    protected function findCompoundField($name, $subLabelText)
+    protected function findCompoundField($name, $value, $currency)
     {
         $container = $this->findFieldContainer($name);
 
-        $subLabel = $container->find('css', sprintf('span:contains("%s")', $subLabelText));
-        if (!$subLabel) {
+        $input = $container->find('css', sprintf('input[data-currency=%s]', $currency));
+        if (!$input) {
             throw new ElementNotFoundException($this->getSession(), 'compound field ', 'id|name|label|value', $name);
         }
-        $field = $subLabel->getParent()->find('css', 'input');
 
-        return $field;
+        return $input;
     }
 
     protected function findFieldContainer($fieldName)
@@ -376,6 +343,9 @@ class Edit extends Form
         if (!$container) {
             throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $fieldName);
         }
+
+        $container->name = $fieldName;
+
         return $container;
     }
 
@@ -433,24 +403,33 @@ class Edit extends Form
     /**
      * Fills a compound field with $value, by passing the $label
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainer
      * @param string      $value
      *
      * @throws ElementNotFoundException
      */
-    protected function fillCompoundField(NodeElement $label, $value)
+    protected function fillCompoundField(NodeElement $fieldContainer, $value)
     {
-        if (!$label->subLabelContent) {
+        $amount = null;
+        $currency = null;
+
+        if (strstr($value, 'USD') || strstr($value, 'EUR')) {
+            if (false !== strpos($value, ' ')) {
+                list($amount, $currency) = explode(' ', $value);
+            }
+        }
+
+        if (!$currency) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',
-                    $label->labelContent
+                    $amount
                 )
             );
         }
 
-        $field = $this->findCompoundField($label->labelContent, $label->subLabelContent);
-        $field->setValue($value);
+        $field = $this->findCompoundField($fieldContainer->name, $amount, $currency);
+        $field->setValue($amount);
     }
 
     /**
