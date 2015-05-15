@@ -13,6 +13,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Util\ClassUtils;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -54,6 +57,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
      * @param DraftBuilder                    $draftBuilder
+     * @param EventDispatcherInterface        $dispatcher
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -61,7 +65,8 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        DraftBuilder $draftBuilder
+        DraftBuilder $draftBuilder,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
@@ -69,6 +74,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $this->factory = $factory;
         $this->repository = $repository;
         $this->draftBuilder = $draftBuilder;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -85,8 +91,29 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             );
         }
 
-        $this->optionsResolver->resolveSaveOptions($options);
-        $this->persistProductDraft($product, $options);
+        $allOptions = $this->optionsResolver->resolveSaveOptions($options);
+
+        $username = $this->getUser()->getUsername();
+        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
+            $productDraft = $this->factory->createProductDraft($product, $username);
+        }
+
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_SAVE, new GenericEvent($productDraft));
+
+        $changes = $this->draftBuilder->builder($product);
+        if (empty($changes)) {
+            return null;
+        }
+
+        $productDraft->setChanges($changes);
+
+        $this->objectManager->persist($productDraft);
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
+        }
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_SAVE, new GenericEvent($productDraft));
     }
 
     /**
@@ -105,35 +132,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         foreach ($products as $product) {
             $this->save($product, $itemOptions);
         }
-
-        if (true === $allOptions['flush']) {
-            $this->objectManager->flush();
-        }
-    }
-
-    /**
-     * Persist a product draft of the product
-     *
-     * @param ProductInterface $product
-     * @param array            $options
-     */
-    protected function persistProductDraft(ProductInterface $product, array $options = [])
-    {
-        $username = $this->getUser()->getUsername();
-        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
-            $productDraft = $this->factory->createProductDraft($product, $username);
-        }
-
-        $changes = $this->draftBuilder->builder($product);
-        if (empty($changes)) {
-            return;
-        }
-
-        $productDraft->setChanges($changes);
-
-        $this->objectManager->persist($productDraft);
-
-        $allOptions  = $this->optionsResolver->resolveSaveOptions($options);
 
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
