@@ -47,6 +47,20 @@ var steps = function () {
             );
         }, callback);
     });
+
+    this.Then(/^I should see "((?:[^"]|\\")*)"$/, function (text, callback) {
+        this.browser
+            .execute(
+                function (text) {
+                    return $('*:contains("' + text + '")').length;
+                },
+                text.replace(/\\"/g, '"'),
+                function (err, response) {
+                    assert(response.value > 0, 'Expected to see text"' + text + '", not found');
+                    callback();
+                }
+            );
+    });
 };
 
 module.exports = steps;

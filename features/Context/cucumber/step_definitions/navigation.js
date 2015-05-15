@@ -29,7 +29,7 @@ var steps = function () {
             .waitForComplete(callback);
     });
 
-    this.Then(/^I edit the "([^"]*)" product$/, function (code, callback) {
+    this.When(/^(?:I edit the|I am on the) "([^"]*)" product(?: page)?$/, function (code, callback) {
         this
             .visit('/enrich/product/')
             .waitFor('.row-click-action', 5000)
