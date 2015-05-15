@@ -17,6 +17,12 @@ var WorldConstructor = function WorldConstructor(callback) {
         visit: function (link, callback) {
             return this.browser.url(url.resolve(this.baseUrl, link), callback);
         },
+        listToArray: function (list) {
+            if (list) {
+                return list.replace(' and ', ', ').split(', ');
+            }
+            return [];
+        },
         logLevel: null
     };
 
@@ -35,6 +41,23 @@ var WorldConstructor = function WorldConstructor(callback) {
     };
 
     world.browser = webdriverio.remote(browserOptions).init();
+
+    world.browser.addCommand('waitForComplete', function (cb) {
+        var active = 3;
+
+        var checkStatus = function () {
+            world.browser.execute('return $.active;', function (err, result) {
+                active = active - (1 - result.value);
+                if (active) {
+                    setTimeout(checkStatus, 50);
+                } else {
+                    cb();
+                }
+            });
+        };
+
+        checkStatus();
+    });
 
     world.executeBehat = function (step, table, callback) {
         var content = '';

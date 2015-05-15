@@ -54,6 +54,7 @@ Feature: Add products to a variant group
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
 
+  @cucumberjs
   Scenario: Successfully delete a variant group, product history should be updated without context
     Given I am on the "SANDAL" variant group page
     Then the grid should contain 3 elements

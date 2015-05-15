@@ -10,6 +10,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'src/**/*.js',
+                'features/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
                 '!src/**/NavigationBundle/**/*.js'
@@ -23,6 +24,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'src/**/*.js',
+                'features/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
                 '!src/**/NavigationBundle/**/*.js'
