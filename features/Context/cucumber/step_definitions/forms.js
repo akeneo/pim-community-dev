@@ -52,14 +52,10 @@ var steps = function () {
         );
     });
 
-    this.When(/^I save the (.*)/, function (entity, callback) {
+    this.When(/^I save the (.+)/, function (entity, callback) {
         this.browser
             .click('button[type="submit"]')
             .waitForComplete(callback);
-    });
-
-    this.When(/^I save the product$/, function (callback) {
-        this.browser.click('button[type="submit"]', callback);
     });
 
     this.Then(/^I press the "([^"]*)" button$/, function (name, callback) {
