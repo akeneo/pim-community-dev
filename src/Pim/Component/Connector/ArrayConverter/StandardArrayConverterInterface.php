@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\Processor\Denormalization\ArrayConverter;
+namespace Pim\Component\Connector\ArrayConverter;
 
 use Pim\Component\Connector\Exception\ArrayConversionException;
 

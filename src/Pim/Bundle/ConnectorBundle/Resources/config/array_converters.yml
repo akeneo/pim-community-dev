@@ -1,0 +1,21 @@
+parameters:
+    pim_base_connector.array_converter.flat.attribute_option.class:       Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionToStandardConverter
+    pim_base_connector.array_converter.structured.attribute_option.class: Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionToStandardConverter
+    pim_base_connector.array_converter.flat.product.class:                Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter
+
+services:
+    pim_base_connector.array_converter.flat.attribute_option:
+        class: %pim_base_connector.array_converter.flat.attribute_option.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
+
+    pim_base_connector.array_converter.structured.attribute_option:
+        class: %pim_base_connector.array_converter.structured.attribute_option.class%
+
+    pim_base_connector.array_converter.flat.product:
+        class: %pim_base_connector.array_converter.flat.product.class%
+        arguments:
+            - '@pim_transform.builder.field_name'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.resolver.attribute_values'

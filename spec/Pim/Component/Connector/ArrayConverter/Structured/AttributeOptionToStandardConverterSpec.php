@@ -1,36 +1,30 @@
 <?php
 
-namespace spec\Pim\Component\Connector\Processor\Denormalization\ArrayConverter\Flat;
+namespace spec\Pim\Component\Connector\ArrayConverter\Structured;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 class AttributeOptionToStandardConverterSpec extends ObjectBehavior
 {
-    function let(LocaleRepositoryInterface $localeRepository)
-    {
-        $this->beConstructedWith($localeRepository);
-    }
-
     function it_is_a_standard_array_converter()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface'
+            'Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface'
         );
     }
 
-    function it_converts_an_item_to_standard_format($localeRepository)
+    function it_converts_an_item_to_standard_format()
     {
-        $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
-
         $this->convert(
             [
+                'labels' => [
+                    'de_DE' => '210 x 1219 mm',
+                    'en_US' => '210 x 1219 mm',
+                    'fr_FR' => '210 x 1219 mm'
+                ],
                 'attribute'   => 'maximum_print_size',
                 'code'        => '210_x_1219_mm',
-                'sort_order'  => '2',
-                'label-de_DE' => '210 x 1219 mm',
-                'label-en_US' => '210 x 1219 mm',
-                'label-fr_FR' => '210 x 1219 mm'
+                'sortOrder'  => 2
             ]
         )->shouldReturn(
             [
@@ -64,10 +58,8 @@ class AttributeOptionToStandardConverterSpec extends ObjectBehavior
             );
     }
 
-    function it_throws_exception_when_unauthorized_field_is_provided($localeRepository)
+    function it_throws_exception_when_unauthorized_field_is_provided()
     {
-        $localeRepository->getActivatedLocaleCodes()->willReturn(['de_DE', 'en_US', 'fr_FR']);
-
         $this
             ->shouldThrow('Pim\Component\Connector\Exception\ArrayConversionException')
             ->during(

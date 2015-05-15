@@ -7,7 +7,7 @@ use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
-use Pim\Component\Connector\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
  * Attribute option import processor, allows to,
