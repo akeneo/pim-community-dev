@@ -11,6 +11,7 @@ use Akeneo\Component\Batch\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -368,8 +369,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     protected function initializeRead()
     {
-        // TODO mime_content_type is deprecated, use Symfony\Component\HttpFoundation\File\MimeTypeMimeTypeGuesser?
-        if ('application/zip' === mime_content_type($this->filePath)) {
+        $guesser = MimeTypeGuesser::getInstance();
+        if ('application/zip' === $guesser->guess($this->filePath)) {
             $this->extractZipArchive();
         }
 
