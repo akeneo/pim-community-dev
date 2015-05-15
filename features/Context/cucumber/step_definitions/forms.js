@@ -35,7 +35,16 @@ var steps = function () {
             function (fieldName, value) {
                 /* global $ */
                 var $field = $('div [data-attribute="' + fieldName + '"] .field-input');
-                $field.find('input').select2('val', value).trigger('change');
+
+                var $inputElement = $field.find('input');
+
+                var isSelect2 =  $inputElement.data('select2');
+
+                if (isSelect2) {
+                    $inputElement.select2('val', value).trigger('change');
+                } else {
+                    $inputElement.val(value);
+                }
             },
             field.toLowerCase(),
             value,
@@ -47,6 +56,10 @@ var steps = function () {
         this.browser
             .click('button[type="submit"]')
             .waitForComplete(callback);
+    });
+
+    this.When(/^I save the product$/, function (callback) {
+        this.browser.click('button[type="submit"]', callback);
     });
 
     this.Then(/^I press the "([^"]*)" button$/, function (name, callback) {
