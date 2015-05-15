@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat;
+namespace Pim\Component\Connector\Processor\Denormalization\ArrayConverter\Flat;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\Processor\Denormalization\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 

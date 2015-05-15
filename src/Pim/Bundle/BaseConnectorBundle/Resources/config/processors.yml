@@ -8,10 +8,6 @@ parameters:
     pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
-    pim_base_connector.processor.denormalization.product.class:                 Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductProcessor
-    pim_base_connector.processor.denormalization.product_association.class:     Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ProductAssociationProcessor
-
-    pim_base_connector.denormalization.array_converter.flat.product.class:                Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\ArrayConverter\Flat\ProductToStandardConverter
 
     pim_base_connector.processor.product_to_flat_array.class:           Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.normalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Normalization\VariantGroupProcessor
@@ -37,28 +33,6 @@ services:
         parent: pim_base_connector.processor.csv_serializer
         arguments:
             - '@pim_catalog.manager.channel'
-
-    pim_base_connector.processor.denormalization.csv_product:
-        class: %pim_base_connector.processor.denormalization.csv_product.class%
-        arguments:
-            - '@pim_base_connector.converter.flat.product'
-            - '@pim_catalog.repository.product'
-            - '@pim_validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
-
-    pim_base_connector.processor.denormalization.csv_product_association:
-        class: %pim_base_connector.processor.denormalization.csv_product_association.class%
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_serializer'
-            - '@pim_validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-            - '@pim_transform.builder.field_name'
-            - %pim_catalog.entity.association.class%
-            - %pim_catalog.entity.product.class%
-            - 'csv'
 
     pim_base_connector.processor.product_to_flat_array:
         class: %pim_base_connector.processor.product_to_flat_array.class%
@@ -180,36 +154,6 @@ services:
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_template.class%
             - 'csv'
-
-    pim_base_connector.processor.denormalization.product.flat:
-        class: %pim_base_connector.processor.denormalization.product.class%
-        arguments:
-            - '@pim_base_connector.denormalization.array_converter.flat.product'
-            - '@pim_catalog.repository.product'
-            - '@pim_catalog.builder.product'
-            - '@pim_catalog.updater.product'
-            - '@pim_validator'
-            - '@akeneo_storage_utils.doctrine.object_detacher'
-
-    pim_base_connector.processor.denormalization.product_association.flat:
-        class: %pim_base_connector.processor.denormalization.product_association.class%
-        arguments:
-            - '@pim_catalog.repository.product'
-            - '@pim_serializer'
-            - '@pim_validator'
-            - '@pim_transform.builder.field_name'
-            - %pim_catalog.entity.association.class%
-            - %pim_catalog.entity.product.class%
-            - 'csv'
-
-    # Denormalization / Converters
-    pim_base_connector.denormalization.array_converter.flat.product:
-        class: %pim_base_connector.denormalization.array_converter.flat.product.class%
-        arguments:
-            - '@pim_transform.builder.field_name'
-            - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.currency'
-            - '@pim_catalog.resolver.attribute_values'
 
     # Normalization
     pim_base_connector.processor.normalization.csv_group:
