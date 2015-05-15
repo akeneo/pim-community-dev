@@ -7,10 +7,10 @@ use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Component\StorageUtils\Cursor\CursorInterface;
 use Doctrine\ORM\EntityNotFoundException;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

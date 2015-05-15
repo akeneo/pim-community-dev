@@ -5,10 +5,10 @@ namespace spec\Pim\Bundle\EnrichBundle\Reader\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface;
-use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Repository\FamilyRepositoryInterface;
+use Pim\Component\Connector\Model\JobConfigurationInterface;
+use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 
 class FilteredFamilyReaderSpec extends ObjectBehavior
 {
