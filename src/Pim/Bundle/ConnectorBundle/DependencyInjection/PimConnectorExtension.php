@@ -22,6 +22,8 @@ class PimConnectorExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('factories.yml');
+        $loader->load('job_launchers.yml');
         $loader->load('models.yml');
         $loader->load('processors.yml');
         $loader->load('repositories.yml');

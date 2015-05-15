@@ -1,5 +1,5 @@
 parameters:
-    pim_base_connector.launcher.simple_job_launcher.class: Pim\Bundle\BaseConnectorBundle\JobLauncher\SimpleJobLauncher
+    pim_base_connector.launcher.simple_job_launcher.class: Pim\Bundle\ConnectorBundle\JobLauncher\SimpleJobLauncher
 
 services:
     pim_base_connector.launcher.simple_job_launcher:

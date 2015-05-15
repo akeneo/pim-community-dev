@@ -1,7 +1,7 @@
 Pim\Component\Connector\Model\JobConfiguration:
     type: entity
     table: pim_job_configuration
-    repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\JobConfigurationRepository
+    repositoryClass: Pim\Bundle\ConnectorBundle\Doctrine\ORM\Repository\JobConfigurationRepository
     fields:
         id:
             type: integer

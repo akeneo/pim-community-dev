@@ -24,9 +24,7 @@ class PimConnectorBundle extends Connector
         $container
             ->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
-        $mappings = array(
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Connector\Model'
-        );
+        $mappings = [realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Connector\Model'];
 
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(

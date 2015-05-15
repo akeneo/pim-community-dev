@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Factory;
+namespace spec\Pim\Component\Connector\Factory;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use PhpSpec\ObjectBehavior;
