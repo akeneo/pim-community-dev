@@ -1,61 +1,39 @@
 <?php
 
-namespace spec\Pim\Bundle\TransformBundle\Builder;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
-use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
-class FieldNameBuilderSpec extends ObjectBehavior
+class ProductAttributeFieldExtractorSpec extends ObjectBehavior
 {
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
     const ATTRIBUTE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
     const CHANNEL_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Channel';
     const LOCALE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Locale';
 
-    function let(SmartManagerRegistry $managerRegistry)
-    {
-        $this->beConstructedWith($managerRegistry, self::ASSOC_TYPE_CLASS, self::ATTRIBUTE_CLASS, self::CHANNEL_CLASS, self::LOCALE_CLASS);
-    }
-
-    function it_returns_association_type_field_names(
-        $managerRegistry,
-        AssociationTypeRepositoryInterface $repository,
-        AssociationTypeInterface $assocType1,
-        AssociationTypeInterface $assocType2
+    function let(
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
-        $assocType1->getCode()->willReturn("ASSOC_TYPE_1");
-        $assocType2->getCode()->willReturn("ASSOC_TYPE_2");
-        $repository->findAll()->willReturn([$assocType1, $assocType2]);
-        $managerRegistry->getRepository(self::ASSOC_TYPE_CLASS)->willReturn($repository);
-
-        $this->getAssociationFieldNames()->shouldReturn(
-            [
-                "ASSOC_TYPE_1-groups",
-                "ASSOC_TYPE_1-products",
-                "ASSOC_TYPE_2-groups",
-                "ASSOC_TYPE_2-products"
-            ]
-        );
+        $this->beConstructedWith($attributeRepository, $channelRepository, $localeRepository);
     }
 
     function it_returns_attribute_informations_from_field_name(
-        $managerRegistry,
-        AttributeRepositoryInterface $repository,
+        $attributeRepository,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('bar');
-        $repository->findOneByIdentifier('foo')->willReturn($attribute);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
         $this->extractAttributeFieldNameInfos('foo')->shouldReturn(
             [
@@ -67,20 +45,17 @@ class FieldNameBuilderSpec extends ObjectBehavior
     }
 
     function it_returns_null_attribute_informations_from_unknown_field_name(
-        $managerRegistry,
-        AttributeRepositoryInterface $repository
+        $channelRepository
     ) {
-        $repository->findOneByIdentifier('foo')->willReturn(null);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+        $channelRepository->findOneByIdentifier('foo')->willReturn(null);
 
         $this->extractAttributeFieldNameInfos('foo')->shouldReturn(null);
     }
 
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
-        $managerRegistry,
-        AttributeRepositoryInterface $attributeRepository,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
+        $attributeRepository,
+        $channelRepository,
+        $localeRepository,
         AttributeInterface $attribute,
         LocaleInterface $locale,
         ChannelInterface $channel
@@ -91,14 +66,9 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('bar');
         $attribute->isLocaleSpecific()->willReturn(false);
 
-        $managerRegistry->getRepository(self::CHANNEL_CLASS)->shouldBeCalled()->willReturn($channelRepository);
         $channelRepository->findOneByIdentifier('ecommerce')->shouldBeCalled()->willReturn($channel);
-
-        $managerRegistry->getRepository(self::LOCALE_CLASS)->shouldBeCalled()->willReturn($localeRepository);
         $localeRepository->findOneByIdentifier('en_US')->shouldBeCalled()->willReturn($locale);
-
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attributeRepository);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
 
@@ -145,16 +115,14 @@ class FieldNameBuilderSpec extends ObjectBehavior
     }
 
     function it_returns_attribute_informations_from_field_name_with_scopable_attribute(
-        $managerRegistry,
-        AttributeRepositoryInterface $repository,
+        $attributeRepository,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('bar');
-        $repository->findOneByIdentifier('foo')->willReturn($attribute);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
         // Test only scopable attribute
         $this->extractAttributeFieldNameInfos('foo-ecommerce')->shouldReturn(
@@ -178,16 +146,14 @@ class FieldNameBuilderSpec extends ObjectBehavior
     }
 
     function it_returns_attribute_informations_from_field_name_with_price_attribute(
-        $managerRegistry,
-        AttributeRepositoryInterface $repository,
+        $attributeRepository,
         AttributeInterface $attribute
     ) {
         $attribute->getCode()->willReturn('foo');
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('prices');
-        $repository->findOneByIdentifier('foo')->willReturn($attribute);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+        $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
         $this->extractAttributeFieldNameInfos('foo-USD')->shouldReturn(
             [
@@ -199,32 +165,8 @@ class FieldNameBuilderSpec extends ObjectBehavior
         );
     }
 
-    function it_extracts_association_field_name_informations()
-    {
-        $this
-            ->extractAssociationFieldNameInfos('X_SELL-groups')
-            ->shouldReturn(['assoc_type_code' => 'X_SELL', 'part' => 'groups']);
-
-        $this
-            ->extractAssociationFieldNameInfos('X_SELL-products')
-            ->shouldReturn(['assoc_type_code' => 'X_SELL', 'part' => 'products']);
-
-        $this
-            ->extractAssociationFieldNameInfos('10Foo-groups')
-            ->shouldReturn(['assoc_type_code' => '10Foo', 'part' => 'groups']);
-
-        $this
-            ->extractAssociationFieldNameInfos('X_SELL-foo')
-            ->shouldBe(null);
-
-        $this
-            ->extractAssociationFieldNameInfos('bar')
-            ->shouldBe(null);
-    }
-
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_attribute_property(
-        $managerRegistry,
-        AttributeRepositoryInterface $repository,
+        $attributeRepository,
         AttributeInterface $attribute
     ) {
         // global with extra locale
@@ -232,8 +174,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(false);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('text');
-        $repository->findOneByIdentifier('sku')->willReturn($attribute);
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
+        $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
             ->duringExtractAttributeFieldNameInfos('sku-fr_FR');
@@ -243,7 +184,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(false);
         $attribute->getBackendType()->willReturn('text');
-        $repository->findOneByIdentifier('name')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formatted, attribute "name" expects a locale, no scope, no currency'))
             ->duringExtractAttributeFieldNameInfos('name');
@@ -253,18 +194,17 @@ class FieldNameBuilderSpec extends ObjectBehavior
         $attribute->isLocalizable()->willReturn(true);
         $attribute->isScopable()->willReturn(true);
         $attribute->getBackendType()->willReturn('prices');
-        $repository->findOneByIdentifier('cost')->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('cost')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formatted, attribute "cost" expects a locale, a scope, an optional currency'))
             ->duringExtractAttributeFieldNameInfos('cost');
     }
 
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_channel_locale(
-        $managerRegistry,
-        IdentifiableObjectRepositoryInterface $repository,
+        $attributeRepository,
+        $channelRepository,
+        $localeRepository,
         AttributeInterface $attribute,
-        IdentifiableObjectRepositoryInterface $channelRepository,
-        IdentifiableObjectRepositoryInterface $localeRepository,
         LocaleInterface $locale,
         ChannelInterface $channel
     ) {
@@ -282,13 +222,8 @@ class FieldNameBuilderSpec extends ObjectBehavior
                 'scope_code'  => 'mobile'
             ];
 
-        $managerRegistry->getRepository(self::ATTRIBUTE_CLASS)->willReturn($repository);
-        $repository->findOneByIdentifier('description')->willReturn($attribute);
-
-        $managerRegistry->getRepository(self::CHANNEL_CLASS)->shouldBeCalled()->willReturn($channelRepository);
+        $attributeRepository->findOneByIdentifier('description')->willReturn($attribute);
         $channelRepository->findOneByIdentifier($attributeInfos['scope_code'])->shouldBeCalled()->willReturn($channel);
-
-        $managerRegistry->getRepository(self::LOCALE_CLASS)->shouldBeCalled()->willReturn($localeRepository);
         $localeRepository->findOneByIdentifier($attributeInfos['locale_code'])->shouldBeCalled()->willReturn($locale);
 
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(false);

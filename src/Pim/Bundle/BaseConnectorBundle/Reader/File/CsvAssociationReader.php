@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
 
 /**
  * Association csv reader
@@ -13,17 +14,15 @@ use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
  */
 class CsvAssociationReader extends CsvReader
 {
-    /** @var FieldNameBuilder */
-    protected $fieldNameBuilder;
+    /** @var ProductAssociationFieldResolver */
+    protected $assocFieldResolver;
 
     /**
-     * Constructor
-     *
-     * @param FieldNameBuilder $fieldNameBuilder
+     * @param ProductAssociationFieldResolver $assocFieldResolver
      */
-    public function __construct(FieldNameBuilder $fieldNameBuilder)
+    public function __construct(ProductAssociationFieldResolver $assocFieldResolver)
     {
-        $this->fieldNameBuilder = $fieldNameBuilder;
+        $this->assocFieldResolver = $assocFieldResolver;
     }
 
     /**
@@ -37,7 +36,7 @@ class CsvAssociationReader extends CsvReader
         }
 
         // Get association field names and add associations
-        $assocFieldNames  = $this->fieldNameBuilder->getAssociationFieldNames();
+        $assocFieldNames  = $this->assocFieldResolver->resolveAssociationFields();
         $associations = [
             'product'      => $data,
             'associations' => []
@@ -45,10 +44,10 @@ class CsvAssociationReader extends CsvReader
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 if (strlen($data[$assocFieldName]) > 0) {
-                    list($assocTypeCode, $part) = explode(FieldNameBuilder::FIELD_SEPARATOR, $assocFieldName);
+                    list($assocTypeCode, $part) = explode(ProductAttributeFieldExtractor::FIELD_SEPARATOR, $assocFieldName);
 
                     $associations['associations'][] = [
-                        'associated_items'      => explode(FieldNameBuilder::ARRAY_SEPARATOR, $data[$assocFieldName]),
+                        'associated_items'      => explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $data[$assocFieldName]),
                         'association_type_code' => $assocTypeCode,
                         'item_type'             => $part
                     ];

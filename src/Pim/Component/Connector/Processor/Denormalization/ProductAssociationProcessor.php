@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -31,30 +30,27 @@ class ProductAssociationProcessor extends AbstractProcessor
     protected $class;
 
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository       repository to search the object in
-     * @param DenormalizerInterface                 $denormalizer     denormalizer used to transform array to object
-     * @param ValidatorInterface                    $validator        validator of the object
-     * @param FieldNameBuilder                      $fieldNameBuilder product manager
-     * @param string                                $class            class of the object to instanciate in case if need
-     * @param string                                $format           format use to denormalize
+     * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
+     * @param DenormalizerInterface                 $denormalizer denormalizer used to transform array to object
+     * @param ValidatorInterface                    $validator    validator of the object
+     * @param string                                $class        class of the object to instanciate in case if need
+     * @param string                                $format       format use to denormalize
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $repository,
         DenormalizerInterface $denormalizer,
         ValidatorInterface $validator,
-        FieldNameBuilder $fieldNameBuilder,
         $class,
         $productClass,
         $format
     ) {
         parent::__construct($repository, $class);
 
-        $this->denormalizer     = $denormalizer;
-        $this->validator        = $validator;
-        $this->fieldNameBuilder = $fieldNameBuilder;
-        $this->format           = $format;
-        $this->class            = $class;
-        $this->productClass     = $productClass;
+        $this->denormalizer = $denormalizer;
+        $this->validator    = $validator;
+        $this->format       = $format;
+        $this->class        = $class;
+        $this->productClass = $productClass;
     }
 
     /**

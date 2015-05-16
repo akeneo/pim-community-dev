@@ -9,7 +9,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Repository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO: we should move this class in StorageUtils component
+ * TODO: move this class in StorageUtils component (to do on master to avoid impacts on other feature branches)
  */
 interface IdentifiableObjectRepositoryInterface
 {

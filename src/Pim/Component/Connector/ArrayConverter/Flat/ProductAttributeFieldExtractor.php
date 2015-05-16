@@ -1,78 +1,47 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Builder;
+namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
- * Create field names for associations and product values
+ * Extracts attribute field information
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO rename to CsvFieldExtractor?
  */
-class FieldNameBuilder
+class ProductAttributeFieldExtractor
 {
     const ARRAY_SEPARATOR            = ',';
     const FIELD_SEPARATOR            = '-';
     const UNIT_SEPARATOR             = ' ';
-    const GROUP_ASSOCIATION_SUFFIX   = '-groups';
-    const PRODUCT_ASSOCIATION_SUFFIX = '-products';
 
-    /** @var ManagerRegistry */
-    protected $managerRegistry;
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
-    /** @var string */
-    protected $assocTypeClass;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /** @var string */
-    protected $attributeClass;
-
-    /** @var string */
-    protected $channelClass;
-
-    /** @var string */
-    protected $localeClass;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
     /**
-     * @param ManagerRegistry $managerRegistry
-     * @param string          $assocTypeClass
-     * @param string          $attributeClass
-     * @param string          $channelClass
-     * @param string          $localeClass
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ChannelRepositoryInterface   $channelRepository
+     * @param LocaleRepositoryInterface    $localeRepository
      */
     public function __construct(
-        ManagerRegistry $managerRegistry,
-        $assocTypeClass,
-        $attributeClass,
-        $channelClass,
-        $localeClass
+        AttributeRepositoryInterface $attributeRepository,
+        ChannelRepositoryInterface $channelRepository,
+        LocaleRepositoryInterface $localeRepository
     ) {
-        $this->managerRegistry = $managerRegistry;
-        $this->assocTypeClass  = $assocTypeClass;
-        $this->attributeClass  = $attributeClass;
-        $this->channelClass    = $channelClass;
-        $this->localeClass     = $localeClass;
-    }
-
-    /**
-     * Get the association field names
-     *
-     * @return array
-     */
-    public function getAssociationFieldNames()
-    {
-        $fieldNames = [];
-        $assocTypes = $this->getRepository($this->assocTypeClass)->findAll();
-        foreach ($assocTypes as $assocType) {
-            $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
-            $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
-        }
-
-        return $fieldNames;
+        $this->attributeRepository = $attributeRepository;
+        $this->channelRepository   = $channelRepository;
+        $this->localeRepository    = $localeRepository;
     }
 
     /**
@@ -97,8 +66,7 @@ class FieldNameBuilder
     {
         $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
         $attributeCode = $explodedFieldName[0];
-        $repository = $this->getRepository($this->attributeClass);
-        $attribute = $repository->findOneByIdentifier($attributeCode);
+        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
         if (null !== $attribute) {
             $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
@@ -109,28 +77,6 @@ class FieldNameBuilder
         }
 
         return null;
-    }
-
-    /**
-     * Extract field name information from a potential association field name
-     *
-     * Returned array like:
-     * [
-     *     "assoc_type_code"   => <assoc_type_code>,
-     *     "part" => "groups"|"products",
-     * ]
-     *
-     * @param string $fieldName
-     *
-     * @return string[]|null
-     */
-    public function extractAssociationFieldNameInfos($fieldName)
-    {
-        $matches = [];
-        $regex = '/^([a-zA-Z0-9_]+)-(groups|products)$/';
-        if (preg_match($regex, $fieldName, $matches)) {
-            return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
-        }
     }
 
     /**
@@ -232,11 +178,8 @@ class FieldNameBuilder
             isset($attributeInfos['scope_code']) &&
             isset($attributeInfos['locale_code'])
         ) {
-            $channelRepository = $this->getRepository($this->channelClass);
-            $localeRepository = $this->getRepository($this->localeClass);
-
-            $channel = $channelRepository->findOneByIdentifier($attributeInfos['scope_code']);
-            $locale = $localeRepository->findOneByIdentifier($attributeInfos['locale_code']);
+            $channel = $this->channelRepository->findOneByIdentifier($attributeInfos['scope_code']);
+            $locale = $this->localeRepository->findOneByIdentifier($attributeInfos['locale_code']);
 
             if ($channel !== null && $locale !== null && !$channel->hasLocale($locale)) {
                 throw new \InvalidArgumentException(
@@ -249,16 +192,6 @@ class FieldNameBuilder
                 );
             }
         }
-    }
-
-    /**
-     * @param string $entityClass
-     *
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository($entityClass)
-    {
-        return $this->managerRegistry->getRepository($entityClass);
     }
 
     /**

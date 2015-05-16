@@ -36,7 +36,6 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_serializer'
             - '@pim_validator'
-            - '@pim_transform.builder.field_name'
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.product.class%
             - 'csv'

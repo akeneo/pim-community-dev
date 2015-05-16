@@ -119,6 +119,8 @@
 - ProductTemplateUpdater now takes ProductFieldUpdaterInterface as argument and not anymore ProductUpdaterInterface
 - Remove fixtures_product_yml from the InstallerBundle, csv format is now mandatory for products
 - ProductUpdater takes ValidatorInterface as second argument
+- Remove method getAssociationFieldNames() from `Pim\Bundle\TransformBundle\Builder\FieldBuilder`
+- Rename `Pim\Bundle\TransformBundle\Builder\FieldBuilder` to `Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor`
 
 # 1.3.x
 

@@ -5,7 +5,6 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -16,11 +15,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: rewrite this class, extract value convertion logic to make it extensible (tagged services) and add support
+ * for reference data
  */
 class ProductToStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var FieldNameBuilder */
-    protected $fieldNameBuilder;
+    /** @var ProductAttributeFieldExtractor */
+    protected $fieldExtractor;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -31,6 +33,9 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var AttributeValuesResolver */
     protected $valuesResolver;
 
+    /** @var ProductAssociationFieldResolver */
+    protected $assocFieldResolver;
+
     /** @var array */
     protected $optionalAttributeFields;
 
@@ -38,20 +43,23 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     protected $optionalAssociationFields;
 
     /**
-     * @param FieldNameBuilder             $fieldNameBuilder
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param CurrencyRepositoryInterface  $currencyRepository
-     * @param AttributeValuesResolver      $valuesResolver
+     * @param ProductAttributeFieldExtractor  $fieldExtractor
+     * @param AttributeRepositoryInterface    $attributeRepository
+     * @param CurrencyRepositoryInterface     $currencyRepository
+     * @param ProductAssociationFieldResolver $assocFieldResolver
+     * @param AttributeValuesResolver         $valuesResolver
      */
     public function __construct(
-        FieldNameBuilder $fieldNameBuilder,
+        ProductAttributeFieldExtractor $fieldExtractor,
         AttributeRepositoryInterface $attributeRepository,
         CurrencyRepositoryInterface  $currencyRepository,
+        ProductAssociationFieldResolver $assocFieldResolver,
         AttributeValuesResolver $valuesResolver
     ) {
-        $this->fieldNameBuilder = $fieldNameBuilder;
+        $this->fieldExtractor = $fieldExtractor;
         $this->attributeRepository = $attributeRepository;
         $this->currencyRepository = $currencyRepository;
+        $this->assocFieldResolver = $assocFieldResolver;
         $this->valuesResolver = $valuesResolver;
     }
 
@@ -162,7 +170,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertToStructuredField($column, $value)
     {
-        $associationFields = $this->fieldNameBuilder->getAssociationFieldNames();
+        $associationFields = $this->assocFieldResolver->resolveAssociationFields();
 
         if (in_array($column, $associationFields)) {
             $value = $this->splitCollection($value);
@@ -192,7 +200,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function formatValue($column, $value)
     {
-        $fieldNameInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($column);
+        $fieldNameInfos = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
         $data = $this->formatValueData($value, $fieldNameInfos);
 
         return [$fieldNameInfos['attribute']->getCode() => [[
@@ -367,7 +375,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /**
      * @return array
      *
-     * TODO: extract in a FieldNameBuilder / refactor the existing one
+     * TODO: extract in a fieldExtractor / refactor the existing one
      */
     protected function getOptionalAttributeFields()
     {
@@ -420,18 +428,15 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
     /**
      * @return array
-     *
-     * TODO: extract in a FieldNameBuilder / refactor the existing one
      */
     protected function getOptionalAssociationFields()
     {
         if (empty($this->optionalAssociationFields)) {
-            $this->optionalAssociationFields = $this->fieldNameBuilder->getAssociationFieldNames();
+            $this->optionalAssociationFields = $this->assocFieldResolver->resolveAssociationFields();
         }
 
         return $this->optionalAssociationFields;
     }
-
 
     /**
      * Split a collection in a flat value :
@@ -444,7 +449,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function splitCollection($value)
     {
-        return '' === $value ? [] : explode(FieldNameBuilder::ARRAY_SEPARATOR, $value);
+        return '' === $value ? [] : explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $value);
     }
 
     /**
@@ -457,7 +462,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function splitFieldName($field)
     {
-        return '' === $field ? [] : explode(FieldNameBuilder::FIELD_SEPARATOR, $field);
+        return '' === $field ? [] : explode(ProductAttributeFieldExtractor::FIELD_SEPARATOR, $field);
     }
 
     /**
@@ -471,6 +476,6 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function splitUnitValue($value)
     {
-        return '' === $value ? [] : explode(FieldNameBuilder::UNIT_SEPARATOR, $value);
+        return '' === $value ? [] : explode(ProductAttributeFieldExtractor::UNIT_SEPARATOR, $value);
     }
 }

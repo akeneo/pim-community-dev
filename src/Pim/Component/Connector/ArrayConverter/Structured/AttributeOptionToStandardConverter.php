@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Structured;
 
-use Pim\Component\Connector\Exception\ArrayConversionException;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
  * Convert structured format to standard format for attribute option

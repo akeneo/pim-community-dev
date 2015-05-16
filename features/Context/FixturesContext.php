@@ -1259,7 +1259,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->getFieldNameBuilder()->extractAttributeFieldNameInfos($rawCode);
+            $infos = $this->getFieldExtractor()->extractAttributeFieldNameInfos($rawCode);
 
             $attribute = $infos['attribute'];
             $attributeCode = $attribute->getCode();
@@ -2244,11 +2244,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Bundle\TransformBundle\Builder\FieldNameBuilder
+     * @return \Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor
      */
-    protected function getFieldNameBuilder()
+    protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_transform.builder.field_name');
+        return $this->getContainer()->get('pim_base_connector.array_converter.flat.attribute_field_extractor');
     }
 
     /**
