@@ -19,7 +19,7 @@ Feature: Unpublish many products at once
     When I choose the "Unpublish products" operation
     Then I should see "The 2 selected products will be unpublished"
     And I move on to the next step
-    And I wait for the "unpublish_product" mass-edit job to finish
+    And I wait for the "unpublish" mass-edit job to finish
     And I am on the published page
     Then I should not see products unionjack and jackadi
 
@@ -29,7 +29,7 @@ Feature: Unpublish many products at once
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Unpublish products" operation
     And I move on to the next step
-    And I wait for the "unpublish_product" mass-edit job to finish
+    And I wait for the "unpublish" mass-edit job to finish
     Then I should see "You're not the owner of the product, you can't unpublish it"
     And I should see "skipped products 1"
     When I am on the published index page
@@ -41,7 +41,7 @@ Feature: Unpublish many products at once
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Unpublish products" operation
     And I move on to the next step
-    And I wait for the "unpublish_product" mass-edit job to finish
+    And I wait for the "unpublish" mass-edit job to finish
     Then I should see "You're not the owner of the product, you can't unpublish it"
     And I should see "skipped products 3"
     When I am on the published index page

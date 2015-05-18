@@ -50,7 +50,7 @@ Feature: Revert a product to a previous version
     And I choose the "Change the family of products" operation
     And I change the Family to "Jackets"
     And I move on to the next step
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "change-family" mass-edit job to finish
     Then the family of product "jean" should be "jackets"
     And I am on the "jean" product page
     And I visit the "History" tab
