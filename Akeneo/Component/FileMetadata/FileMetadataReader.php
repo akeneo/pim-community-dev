@@ -39,7 +39,7 @@ class FileMetadataReader implements FileMetadataReaderInterface
     {
         $metadata = [];
         foreach ($this->adapters as $adapter) {
-            $metadata = array_merge($metadata, $adapter->all($file));
+            $metadata[$adapter->getName()] = $adapter->all($file);
         }
 
         return $metadata;
