@@ -200,36 +200,44 @@ class Edit extends Form
     /**
      * This method allows to fill a field by passing the label
      *
-     * @param string  $field
+     * @param string  $fieldName
      * @param string  $value
      * @param Element $element
      */
-    public function fillField($field, $value, Element $element = null)
+    public function fillField($fieldName, $value, Element $element = null)
     {
-        $label = $this->extractLabelElement($field, $element);
-        $fieldType = $this->getFieldType($label);
+        $isLabel = false;
+
+        try {
+            $fieldContainer = $this->findFieldContainer($fieldName, $element);
+        } catch (ElementNotFoundException $e) {
+            $isLabel = true;
+            $fieldContainer = $this->extractLabelElement($fieldName, $element);
+        }
+
+        $fieldType = $this->getFieldType($fieldContainer, $isLabel);
 
         switch ($fieldType) {
             case 'text':
             case 'textArea':
             case 'date':
             case 'number':
-                $this->fillTextField($label, $value);
+                $this->fillTextField($fieldContainer, $value);
                 break;
             case 'metric':
-                $this->fillMetricField($label, $value);
+                $this->fillMetricField($fieldContainer, $value);
                 break;
             case 'multiSelect':
-                $this->fillMultiSelectField($label, $value);
+                $this->fillMultiSelectField($fieldContainer, $value);
                 break;
             case 'price':
-                $this->fillCompoundField($label, $value);
+                $this->fillCompoundField($fieldContainer, $value);
                 break;
             case 'select':
-                $this->fillSelectField($label, $value);
+                $this->fillSelectField($fieldContainer, $value);
                 break;
             default:
-                parent::fillField($label->labelContent, $value);
+                parent::fillField($fieldContainer->labelContent, $value);
                 break;
         }
     }
@@ -317,36 +325,40 @@ class Edit extends Form
      * Possible identified fields are :
      * [date, metric, multiSelect, number, price, select, text, textArea]
      *
-     * @param $label
+     * @param $fieldContainer
      *
      * @return string
      */
-    protected function getFieldType($label)
+    protected function getFieldType($fieldContainer, $isLabel = false)
     {
-        if (null === $label || !$label instanceof NodeElement) {
+        if (null === $fieldContainer || !$fieldContainer instanceof NodeElement) {
             return null;
         }
 
-        $container = $label->getParent()->getParent();
+        if ($isLabel) {
+            $formFieldWrapper = $fieldContainer->getParent()->getParent();
+        } else {
+            $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
+        }
 
-        if ($container->hasClass('date-field')) {
+        if ($formFieldWrapper->hasClass('date-field')) {
             return 'date';
-        } elseif ($container->hasClass('metric-field')) {
+        } elseif ($formFieldWrapper->hasClass('metric-field')) {
             return 'metric';
-        } elseif ($container->hasClass('multi-select-field')) {
+        } elseif ($formFieldWrapper->hasClass('multi-select-field')) {
             return 'multiSelect';
-        } elseif ($container->hasClass('number-field')) {
+        } elseif ($formFieldWrapper->hasClass('number-field')) {
             return 'number';
-        } elseif ($container->hasClass('price-collection-field')) {
+        } elseif ($formFieldWrapper->hasClass('price-collection-field')) {
             return 'price';
-        } elseif ($container->hasClass('simple-select-field')) {
+        } elseif ($formFieldWrapper->hasClass('simple-select-field')) {
             return 'select';
-        } elseif ($container->hasClass('text-field')) {
+        } elseif ($formFieldWrapper->hasClass('text-field')) {
             return 'text';
-        } elseif ($container->hasClass('textarea-field')) {
+        } elseif ($formFieldWrapper->hasClass('textarea-field')) {
             return 'textArea';
         } else {
-            return parent::getFieldType($label);
+            return parent::getFieldType($fieldContainer);
         }
     }
 
@@ -360,36 +372,49 @@ class Edit extends Form
      *
      * @return NodeElement
      */
-    protected function findCompoundField($name, $subLabelText)
+    protected function findCompoundField($name, $value, $currency)
     {
-        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($name)));
+        $container = $this->findFieldContainer($name);
 
-        if (!$container) {
-            throw new ElementNotFoundException($this->getSession(), 'compound form container ', 'value', $name);
-        }
-
-        $subLabel = $container->find('css', sprintf('span:contains("%s")', $subLabelText));
-        if (!$subLabel) {
+        $input = $container->find('css', sprintf('input[data-currency=%s]', $currency));
+        if (!$input) {
             throw new ElementNotFoundException($this->getSession(), 'compound field ', 'id|name|label|value', $name);
         }
-        $field = $subLabel->getParent()->find('css', 'input');
 
-        return $field;
+        return $input;
+    }
+
+    protected function findFieldContainer($fieldName)
+    {
+        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($fieldName)));
+        if (!$container) {
+            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $fieldName);
+        }
+
+        $container->name = $fieldName;
+
+        return $container;
     }
 
     /**
-     * Fills a text field element with $value, identified by its $label.
+     * Fills a text field element with $value, identified by its container or label.
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainerOrLabel
      * @param string      $value
      */
-    protected function fillTextField(NodeElement $label, $value)
+    protected function fillTextField(NodeElement $fieldContainerOrLabel, $value)
     {
-        $field = $label->getParent()->getParent()->find('css', 'div.field-input input');
+        $field = $fieldContainerOrLabel->find('css', 'div.field-input input');
+
+        // no field found, we're using a label
+        if (!$field) {
+            $field = $fieldContainerOrLabel->getParent()->getParent()->find('css', 'div.field-input input');
+        }
 
         if (!$field) {
-            $field = $label->getParent()->find('css', 'div.controls input');
+            $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
         }
+
         $field->setValue($value);
     }
 
@@ -399,7 +424,7 @@ class Edit extends Form
      * @param NodeElement $label
      * @param string      $value
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function fillSelectField(NodeElement $label, $value)
     {
@@ -435,24 +460,33 @@ class Edit extends Form
     /**
      * Fills a compound field with $value, by passing the $label
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainer
      * @param string      $value
      *
      * @throws ElementNotFoundException
      */
-    protected function fillCompoundField(NodeElement $label, $value)
+    protected function fillCompoundField(NodeElement $fieldContainer, $value)
     {
-        if (!$label->subLabelContent) {
+        $amount = null;
+        $currency = null;
+
+        if (strstr($value, 'USD') || strstr($value, 'EUR')) {
+            if (false !== strpos($value, ' ')) {
+                list($amount, $currency) = explode(' ', $value);
+            }
+        }
+
+        if (!$currency) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'The "%s" field is compound but the sub label was not provided',
-                    $label->labelContent
+                    $amount
                 )
             );
         }
 
-        $field = $this->findCompoundField($label->labelContent, $label->subLabelContent);
-        $field->setValue($value);
+        $field = $this->findCompoundField($fieldContainer->name, $amount, $currency);
+        $field->setValue($amount);
     }
 
     /**
