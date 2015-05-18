@@ -65,9 +65,7 @@ class CommandContext extends RawMinkContext
      */
     public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {
-        $application = new Application();
-        $application->add(new UpdateProductCommand());
-        $application->add(new GetProductCommand());
+        $application = $this->getApplicationsForUpdaterProduct();
 
         $updateCommand = $application->find('pim:product:update');
         $updateCommand->setContainer($this->getMainContext()->getContainer());
@@ -129,6 +127,18 @@ class CommandContext extends RawMinkContext
                 $diff
             );
         }
+    }
+
+    /**
+     * @return Application
+     */
+    protected function getApplicationsForUpdaterProduct()
+    {
+        $application = new Application();
+        $application->add(new UpdateProductCommand());
+        $application->add(new GetProductCommand());
+
+        return $application;
     }
 
     /**
