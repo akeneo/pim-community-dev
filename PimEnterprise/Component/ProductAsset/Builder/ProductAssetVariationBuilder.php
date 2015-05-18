@@ -11,13 +11,13 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 
 /**
- * Builds variations related to an asset
+ * Builds variations related to an asset reference
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -44,17 +44,14 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildMissing(ProductAssetInterface $asset)
+    public function buildMissing(ProductAssetReferenceInterface $reference)
     {
         $variations = [];
         $channels   = $this->channelRepository->getFullChannels();
 
         foreach ($channels as $channel) {
-            foreach ($channel->getLocales() as $locale) {
-                //todo: check if locale is activated ?
-                if (!$asset->hasVariation($channel, $locale)) {
-                    $variations[] = $this->buildOne($asset, $channel, $locale);
-                }
+            if ($this->canBuildOne($reference, $channel) && !$reference->hasVariation($channel)) {
+                $variations[] = $this->buildOne($reference, $channel);
             }
         }
 
@@ -64,12 +61,21 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildOne(ProductAssetInterface $asset, ChannelInterface $channel, LocaleInterface $locale)
+    public function buildOne(ProductAssetReferenceInterface $reference, ChannelInterface $channel)
     {
+        if (!$this->canBuildOne($reference, $channel)) {
+            throw new \LogicException(
+                sprintf(
+                    'Impossible to build a variation on channel "%s" for the reference with locale "%s".',
+                    $channel->getCode(),
+                    $reference->getLocale()->getCode()
+                )
+            );
+        }
+
         $variation = new $this->variationClass();
-        $variation->setAsset($asset);
+        $variation->setReference($reference);
         $variation->setChannel($channel);
-        $variation->setLocale($locale);
 
         return $variation;
     }
@@ -77,18 +83,42 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildAll(ProductAssetInterface $asset)
+    public function buildAll(ProductAssetReferenceInterface $reference)
     {
         $variations = [];
         $channels   = $this->channelRepository->getFullChannels();
 
         foreach ($channels as $channel) {
-            //todo: check if locale is activated ?
-            foreach ($channel->getLocales() as $locale) {
-                $variations[] = $this->buildOne($asset, $channel, $locale);
+            if ($this->canBuildOne($reference, $channel)) {
+                $variations[] = $this->buildOne($reference, $channel);
             }
         }
 
         return $variations;
+    }
+
+    /**
+     * Possible to build a variation on a reference for a channel when:
+     *    - either the reference has no locale
+     *    - either the reference has a locale, this locale is activated and belongs to the channel
+     *
+     * @param ProductAssetReferenceInterface $reference
+     * @param ChannelInterface               $channel
+     *
+     * @return bool
+     */
+    protected function canBuildOne(ProductAssetReferenceInterface $reference, ChannelInterface $channel)
+    {
+        $referenceLocale = $reference->getLocale();
+
+        if (null === $referenceLocale) {
+            return true;
+        }
+
+        if ($channel->hasLocale($referenceLocale) && $referenceLocale->isActivated()) {
+            return true;
+        }
+
+        return false;
     }
 }
