@@ -777,6 +777,7 @@ h3.tab-header {
       white-space: nowrap;
       margin-right: 20px;
       .display-flex();
+      .flex(1);
 
       span {
         font-size: 11px;
@@ -1206,10 +1207,6 @@ h3.tab-header {
   height: 100px;
   border-radius: 2px;
 
-  &:not(.has-file) {
-    background-image: url("/bundles/pimui/images/upload.png");
-  }
-
   background-position: center center;
   background-repeat: no-repeat;
   position: relative;
@@ -1221,6 +1218,24 @@ h3.tab-header {
     left: 0;
     width: 100%;
     height: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .uploader {
+    .display-flex();
+    .flex-direction(column);
+
+    img {
+      align-self: center;
+      margin-top: 20px;
+    }
+
+    span {
+      align-self: center;
+    }
   }
 
   .preview {
@@ -1234,6 +1249,12 @@ h3.tab-header {
       max-width: 150px;
       margin: 5px;
       border-radius: 2px;
+    }
+
+    .file i {
+      font-size: 90px;
+      margin-left: 10px;
+      color: #999;
     }
 
     .info {
@@ -1257,7 +1278,7 @@ h3.tab-header {
           cursor: pointer;
         }
 
-        & > * {
+        & > *:not(:first-child) {
           margin-left: 10px;
         }
 

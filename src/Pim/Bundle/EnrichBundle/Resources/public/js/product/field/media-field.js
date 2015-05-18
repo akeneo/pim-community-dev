@@ -6,7 +6,8 @@ define([
         'underscore',
         'routing',
         'pim/attribute-manager',
-        'text!pim/template/product/field/media'
+        'text!pim/template/product/field/media',
+        'jquery.slimbox'
     ],
     function ($, Field, _, Routing, AttributeManager, fieldTemplate) {
         return Field.extend({
@@ -14,7 +15,8 @@ define([
             fieldType: 'media',
             events: {
                 'change .edit input[type="file"]': 'updateModel',
-                'click  .clear-field': 'clearField'
+                'click  .clear-field': 'clearField',
+                'click  .open-media': 'previewImage'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
@@ -22,20 +24,21 @@ define([
             getTemplateContext: function () {
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
-                        this.setMediaUrl(templateContext);
+                        templateContext.mediaUrl = this.getMediaUrl(templateContext.value.value);
+
                         return templateContext;
                     }, this));
             },
-            setMediaUrl: function (templateContext) {
-                if (templateContext.value.value && templateContext.value.value.filePath) {
-                    var filename = templateContext.value.value.filePath;
+            getMediaUrl: function (value) {
+                if (value && value.filePath) {
+                    var filename = value.filePath;
                     filename = filename.substring(filename.lastIndexOf('/') + 1);
-                    templateContext.mediaUrl = Routing.generate('pim_enrich_media_show', {
+                    return Routing.generate('pim_enrich_media_show', {
                         filename: filename
                     });
-                } else {
-                    templateContext.mediaUrl = null;
                 }
+
+                return null;
             },
             renderCopyInput: function (context, locale, scope) {
                 context.value = AttributeManager.getValue(
@@ -86,6 +89,12 @@ define([
                 this.$('.progress .bar').css({
                     width: ((e.loaded / e.total) * 100) + '%'
                 });
+            },
+            previewImage: function () {
+                var mediaUrl = this.getMediaUrl(this.getCurrentValue().value);
+                if (mediaUrl) {
+                    $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
+                }
             }
         });
     }

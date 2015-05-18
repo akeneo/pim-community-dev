@@ -2,6 +2,10 @@
     <div>
         <% if (!value.value || value.value.filePath === null) { %>
             <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>/>
+            <div class="uploader">
+                <img src="/bundles/pimui/images/upload.png" alt="upload icon"/>
+                <span><%= _.__('pim_enrich.entity.product.media.upload')%></span>
+            </div>
         <% } else { %>
             <div class="preview">
                 <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
