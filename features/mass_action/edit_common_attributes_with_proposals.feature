@@ -27,7 +27,9 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
     And I change the "Name" to "My awesome name"
     And I move on to the next step
     And I wait for the "edit_common_attributes" mass-edit job to finish
-    Then I am logged in as "Julia"
+    And I should see "Proposal created 2"
+    Then I logout
+    And I am logged in as "Julia"
     And I edit the "viewable1" product
     And I visit the "Proposals" tab
     Then I should see "My awesome name"
