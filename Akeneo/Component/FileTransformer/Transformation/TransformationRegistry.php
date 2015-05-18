@@ -83,7 +83,7 @@ class TransformationRegistry
     }
 
     /**
-     * Is a transformation registered with the given name and Myme Type ?
+     * Is a transformation registered with the given name and Mime Type ?
      *
      * @param string $name
      * @param string $mimeType
@@ -98,7 +98,7 @@ class TransformationRegistry
     }
 
     /**
-     * Returns the transformation key build from parameters
+     * Returns the transformation key used in the registry
      *
      * @param string $name
      * @param string $mimeType

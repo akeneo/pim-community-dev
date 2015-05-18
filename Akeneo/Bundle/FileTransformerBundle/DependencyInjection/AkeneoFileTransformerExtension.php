@@ -30,7 +30,7 @@ class AkeneoFileTransformerExtension extends Extension
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('transformations.yml');
-        $loader->load('resolvers.yml');
+        $loader->load('options_resolvers.yml');
         $loader->load('transformers.yml');
     }
 }

@@ -12,21 +12,38 @@
 namespace Akeneo\Component\FileTransformer;
 
 /**
- * Allow to apply a transformation on a file
+ * Allow to apply a set of transformations on a file
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
 interface FileTransformerInterface
 {
     /**
-     * Allows to apply a transformation on the given file with the given configuration
+     * Allows to apply a set of transformations on the given file with the given configuration
      *
-     * $rawConfiguration
+     * $transformationPipeline = [
+     *   [
+     *        'outputFile' => string|null, (optional)
+     *        'pipeline'   => [
+     *            'colorspace' => ['colorspace' => 'gray'],
+     *            'resize'     => ['width' => 400, 'height' => 50]
+     *
+     *        ]
+     *   ],
+     *   [
+     *        'outputFile' => string|null, (optional)
+     *        'pipeline'   => [
+     *            'resolution' => ['resolution' => 5, 'resolution-unit' => 'ppi']
+     *            'colorspace' => ['colorspace' => 'gray'],
+     *            'thumbnail'  => ['width' => 100, 'height' => 100]
+     *        ]
+     *   ]
+     * ]
      *
      * @param \SplFileInfo $file
-     * @param array        $rawTransformations
+     * @param array        $transformationPipeline
      *
      * @return FileTransformerInterface
      */
-    public function transform(\SplFileInfo $file, array $rawTransformations);
+    public function transform(\SplFileInfo $file, array $transformationPipeline);
 }

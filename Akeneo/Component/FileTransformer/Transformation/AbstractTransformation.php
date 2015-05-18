@@ -53,7 +53,7 @@ abstract class AbstractTransformation implements TransformationInterface
     /**
      * {@inheritdoc}
      */
-    public function setOptionsResolver($optionsResolver)
+    public function setOptionsResolver(TransformationOptionsResolverInterface $optionsResolver)
     {
         $this->optionsResolver = $optionsResolver;
 

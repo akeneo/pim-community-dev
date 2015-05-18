@@ -23,18 +23,18 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterTransformationPass extends CompilerPassInterface
 {
     /** @staticvar */
-    const TransformationRegistry = 'akeneo_file_transformer.transformation.registry';
+    const TRANSFORMATION_REGISTRY = 'akeneo_file_transformer.transformation.registry';
 
     /** @staticvar */
-    const TransformationTag = 'akeneo_file_transformer.transformation';
+    const TRANSFORMATION_TAG = 'akeneo_file_transformer.transformation';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $registry = $container->getDefinition(self::TransformationRegistry);
-        $transformations = $container->findTaggedServiceIds(self::TransformationTag);
+        $registry = $container->getDefinition(self::TRANSFORMATION_REGISTRY);
+        $transformations = $container->findTaggedServiceIds(self::TRANSFORMATION_TAG);
 
         foreach (array_keys($transformations) as $transformationId) {
             $registry->addMethodCall('add', [new Reference($transformationId)]);

@@ -40,7 +40,7 @@ interface TransformationInterface
     public function getName();
 
     /**
-     * Is Myme Type supported by the transformation ?
+     * Is Mime Type supported by the transformation ?
      *
      * @param string $mimeType
      *
@@ -49,7 +49,7 @@ interface TransformationInterface
     public function isMimeTypeSupported($mimeType);
 
     /**
-     * Returns Myme Types supported by the transformation
+     * Returns Mime Types supported by the transformation
      *
      * @return array
      */
@@ -65,5 +65,5 @@ interface TransformationInterface
      *
      * @return TransformationInterface
      */
-    public function setOptionsResolver($optionsResolver);
+    public function setOptionsResolver(TransformationOptionsResolverInterface $optionsResolver);
 }

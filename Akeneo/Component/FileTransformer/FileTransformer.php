@@ -46,25 +46,6 @@ class FileTransformer implements FileTransformerInterface
     }
 
     /**
-     * $transformationPipeline = [
-     *   [
-     *        'outputFile' => string|null, (optional)
-     *        'pipeline'   => [
-     *            'colorspace' => ['colorspace' => 'gray'],
-     *            'resize'     => ['width' => 400, 'height' => 50]
-     *
-     *        ]
-     *   ],
-     *   [
-     *        'outputFile' => string|null, (optional)
-     *        'pipeline'   => [
-     *            'resolution' => ['resolution' => 5, 'resolution-unit' => 'ppi']
-     *            'colorspace' => ['colorspace' => 'gray'],
-     *            'thumbnail'  => ['width' => 100, 'height' => 100]
-     *        ]
-     *   ]
-     * ]
-     *
      * {@inheritdoc}
      */
     public function transform(\SplFileInfo $file, array $transformationPipeline)
@@ -124,7 +105,7 @@ class FileTransformer implements FileTransformerInterface
      */
     protected function getOutputFile(\SplFileInfo $file, $outputFileName)
     {
-        $fullOutputFilePath = sprintf('%s%s', $file->getRealPath(), $outputFileName);
+        $fullOutputFilePath = sprintf('%s/%s', $file->getPath(), $outputFileName);
 
         if (!copy($file->getPathname(), $fullOutputFilePath)) {
             throw new \LogicException(
