@@ -9,12 +9,13 @@
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\Component\FileMetadata\Exception;
+namespace Akeneo\Component\FileTransformer\Exception;
 
 /**
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * Thrown options given to FileTransformer are wrong
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class MetadataNotFoundException extends \Exception
+class InvalidFileTransformerOptionsException extends \Exception
 {
 }

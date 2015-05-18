@@ -1,9 +1,29 @@
 <?php
 
-namespace DamEnterprise\Component\Transformer\Exception;
+/*
+* This file is part of the Akeneo PIM Enterprise Edition.
+*
+* (c) 2015 Akeneo SAS (http://www.akeneo.com)
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
+namespace Akeneo\Component\FileTransformer\Exception;
+
+/**
+ * Exception thrown when Transformation options are invalid
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
+ */
 class InvalidOptionsTransformationException extends NotApplicableTransformationException
 {
+    /**
+     * @param \Exception $e
+     * @param string     $transformation
+     *
+     * @return InvalidOptionsTransformationException
+     */
     public static function general(\Exception $e, $transformation)
     {
         return new self(
@@ -13,6 +33,12 @@ class InvalidOptionsTransformationException extends NotApplicableTransformationE
         );
     }
 
+    /**
+     * @param array  $options
+     * @param string $transformation
+     *
+     * @return InvalidOptionsTransformationException
+     */
     public static function chooseOneOption(array $options, $transformation)
     {
         $options = '"' . implode('", "', $options) . '"';
@@ -22,6 +48,12 @@ class InvalidOptionsTransformationException extends NotApplicableTransformationE
         );
     }
 
+    /**
+     * @param string $option
+     * @param string $transformation
+     *
+     * @return InvalidOptionsTransformationException
+     */
     public static function ratio($option, $transformation)
     {
         return new self(

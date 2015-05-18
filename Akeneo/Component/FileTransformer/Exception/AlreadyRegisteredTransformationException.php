@@ -9,12 +9,13 @@
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\Component\FileMetadata\Exception;
+namespace Akeneo\Component\FileTransformer\Exception;
 
 /**
- * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * Exception thrown when a Transformation is already registered in the registry
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class MetadataNotFoundException extends \Exception
+class AlreadyRegisteredTransformationException extends \Exception
 {
 }

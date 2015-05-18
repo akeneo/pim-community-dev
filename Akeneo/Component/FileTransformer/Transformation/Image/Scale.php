@@ -1,22 +1,50 @@
 <?php
 
-namespace DamEnterprise\Component\Transformer\Transformation\Image;
+/*
+* This file is part of the Akeneo PIM Enterprise Edition.
+*
+* (c) 2015 Akeneo SAS (http://www.akeneo.com)
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
-use DamEnterprise\Component\Transformer\Exception\NotApplicableTransformationException;
-use DamEnterprise\Component\Transformer\Options\TransformationOptionsResolverInterface;
-use DamEnterprise\Component\Transformer\Transformation\AbstractTransformation;
+namespace Akeneo\Component\FileTransformer\Transformation\Image;
+
+use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformationException;
+use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterface;
+use Akeneo\Component\FileTransformer\Transformation\AbstractTransformation;
 use Imagine\Imagick\Imagine;
 
+/**
+ * Transform the size of an image with scale
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
+ */
 class Scale extends AbstractTransformation
 {
+    /**
+     * @param TransformationOptionsResolverInterface $optionsResolver
+     * @param array                                  $supportedMimeTypes
+     */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
-        array $mimeTypes = ['image/jpeg', 'image/tiff']
+        array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
-        $this->optionsResolver = $optionsResolver;
-        $this->mimeTypes = $mimeTypes;
+        $this->optionsResolver    = $optionsResolver;
+        $this->supportedMimeTypes = $supportedMimeTypes;
     }
 
+    /**
+     * $options =
+     * [
+     *      'ratio'  => float|null (optional)
+     *      'width'  => int|null   (optional)
+     *      'height' => int|null   (optional)
+     * ]
+     *
+     * {@inheritdoc}
+     */
     public function transform(\SplFileInfo $file, array $options = [])
     {
         $options = $this->optionsResolver->resolve($options);
@@ -46,6 +74,9 @@ class Scale extends AbstractTransformation
         $image->save();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'scale';
