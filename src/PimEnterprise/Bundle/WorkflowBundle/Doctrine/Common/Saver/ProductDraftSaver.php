@@ -115,8 +115,9 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      * Persist a product draft of the product
      *
      * @param ProductInterface $product
+     * @param array            $options
      */
-    protected function persistProductDraft(ProductInterface $product, $options = [])
+    protected function persistProductDraft(ProductInterface $product, array $options = [])
     {
         $username = $this->getUser()->getUsername();
         if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {

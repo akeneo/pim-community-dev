@@ -101,7 +101,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     }
 
     /**
-     * Returns true if user is owner of the product or if the product does not exist yet or fi the token does not exist
+     * Returns true if user is owner of the product or if the product does not exist yet or if the token does not exist
      *
      * @param ProductInterface $product
      *
