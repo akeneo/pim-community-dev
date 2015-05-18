@@ -130,7 +130,9 @@ define(
                 var product = this.getData();
 
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
-                promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
+                if (this.extensions['add-attribute']) {
+                    promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
+                }
 
                 return $.when.apply($, promises).promise();
             },
