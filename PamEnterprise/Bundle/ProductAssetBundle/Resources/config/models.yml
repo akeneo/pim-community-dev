@@ -1,5 +1,0 @@
-parameters:
-    pamee_product_asset.model.asset.class: PamEnterprise\Component\ProductAsset\Model\ProductAsset
-    pamee_product_asset.model.asset.interface: PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface
-    pamee_product_asset.model.asset_variation.class: PamEnterprise\Component\ProductAsset\Model\ProductAssetVariation
-    pamee_product_asset.model.asset_variation.interface: PamEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface

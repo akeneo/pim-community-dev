@@ -41,7 +41,7 @@ foreach ($images as $imageName) {
     $mimeType = MimeTypeGuesser::getInstance()->guess($imagePath);
     $storage = $pathGenerator->generate($imageFile);
 
-    $file = new \DamEnterprise\Component\Asset\Model\File();
+    $file = new \PimEnterprise\Component\ProductAsset\Model\File();
     $file->setFilename($storage['file_name']);
     $file->setGuid($storage['guid']);
     $file->setMimeType($mimeType);
