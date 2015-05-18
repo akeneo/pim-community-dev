@@ -24,14 +24,16 @@ define(
         return BaseForm.extend({
             className: 'btn-group',
             configure: function () {
-                this.parent.extensions['save-buttons'].addButton({
-                    className: 'save-product',
-                    priority: 200,
-                    label: _.__('pim_enrich.entity.product.btn.save'),
-                    events: {
-                        'click .save-product': _.bind(this.save, this)
-                    }
-                });
+                if ('save-buttons' in this.parent.extensions) {
+                    this.parent.extensions['save-buttons'].addButton({
+                        className: 'save-product',
+                        priority: 200,
+                        label: _.__('pim_enrich.entity.product.btn.save'),
+                        events: {
+                            'click .save-product': _.bind(this.save, this)
+                        }
+                    });
+                }
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
