@@ -318,6 +318,7 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheLocaleTo($locale)
     {
+        $this->wait();
         $this->getCurrentPage()->switchLocale($locale);
         $this->wait();
     }
@@ -340,6 +341,7 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
+        $this->wait();
         $linkCount = $this->getPage('Product edit')->countLocaleLinks();
         $expectedLinkCount = count($table->getHash());
 
@@ -350,12 +352,12 @@ class WebUser extends RawMinkContext
         }
 
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage('Product edit')->findLocaleLink($data['language'], $data['label'])) {
+            if (!$this->getPage('Product edit')->findLocaleLink($data['locale'], $data['language'], $data['flag'])) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Could not find locale "%s %s" in the locale switcher',
-                        $data['language'],
-                        $data['label']
+                        $data['locale'],
+                        $data['language']
                     )
                 );
             }
@@ -558,7 +560,7 @@ class WebUser extends RawMinkContext
                 $options = $field->findAll('css', 'li.select2-search-choice div');
             }
 
-            $actual  = array();
+            $actual  = [];
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
             }
@@ -901,7 +903,7 @@ class WebUser extends RawMinkContext
      */
     public function iCanSearchByTheFollowingTypes(TableNode $table)
     {
-        $list = array();
+        $list = [];
         foreach ($table->getHash() as $row) {
             $list[] = $row['type'];
         }
@@ -915,7 +917,7 @@ class WebUser extends RawMinkContext
      */
     public function iCanNotSearchByTheFollowingTypes(TableNode $table)
     {
-        $list = array();
+        $list = [];
         foreach ($table->getHash() as $row) {
             $list[] = $row['type'];
         }
@@ -953,11 +955,11 @@ class WebUser extends RawMinkContext
      */
     public function iResetTheRights($role)
     {
-        return array(
+        return [
             new Step\Then(sprintf('I am on the "%s" role page', $role)),
             new Step\Then('I grant all rights'),
             new Step\Then('I save the role')
-        );
+        ];
     }
 
     /**
@@ -969,7 +971,7 @@ class WebUser extends RawMinkContext
      */
     public function removingPermissionsShouldHideTheButtons(TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then('I am on the "Administrator" role page');
@@ -995,7 +997,7 @@ class WebUser extends RawMinkContext
      */
     public function removingPermissionsShouldHideTheHistory(TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
@@ -1518,7 +1520,7 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }
 
-        $categories = array();
+        $categories = [];
         foreach (array_keys($table->getRowsHash()) as $category) {
             $categories[] = $category;
         }
@@ -1800,14 +1802,14 @@ class WebUser extends RawMinkContext
         );
         $csvFile->setCsvControl($delimiter, $enclosure, $escape);
 
-        $expectedLines = array();
+        $expectedLines = [];
         foreach ($csv->getLines() as $line) {
             if (!empty($line)) {
                 $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
             }
         }
 
-        $actualLines = array();
+        $actualLines = [];
         while ($data = $csvFile->fgetcsv()) {
             if (!empty($data)) {
                 $actualLines[] = array_map(
@@ -2168,7 +2170,7 @@ class WebUser extends RawMinkContext
      *
      * @return Page
      */
-    protected function openPage($page, array $options = array())
+    protected function openPage($page, array $options = [])
     {
         $page = $this->getNavigationContext()->openPage($page, $options);
         $this->wait();
