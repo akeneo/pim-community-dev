@@ -100,7 +100,6 @@ class UpdateProductCommand extends ContainerAwareCommand
         }
 
         $this->save($product);
-        $this->removeToken();
         $output->writeln(sprintf('<info>product "%s" has been updated<info>', $identifier));
     }
 
@@ -291,7 +290,7 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param OutputInterface  $output
      * @param string           $username
      *
-     * @param boolean
+     * @return bool
      */
     protected function createToken(OutputInterface $output, $username)
     {
@@ -317,15 +316,13 @@ class UpdateProductCommand extends ContainerAwareCommand
      * @param string           $username
      * @param string           $identifier
      *
-     * @return boolean
+     * @return bool
      */
     protected function isGranted(OutputInterface $output, $username, $identifier)
     {
         $isGranted = $this->getSecurityFacade()->isGranted('pim_enrich_product_edit_attributes');
 
         if (!$isGranted) {
-            $this->removeToken();
-
             $output->writeln(sprintf(
                 '<error>User "%s" is not allowed to edit product "%s"<error>',
                 $username,
@@ -334,13 +331,5 @@ class UpdateProductCommand extends ContainerAwareCommand
         }
 
         return $isGranted;
-    }
-
-    /**
-     * Remove user token
-     */
-    protected function removeToken()
-    {
-        $this->getSecurityContext()->setToken(null);
     }
 }
