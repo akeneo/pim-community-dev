@@ -17,9 +17,17 @@ category_accesses:
         ownProducts: [IT support, Manager]
     tees:
         viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support]
+    jackets:
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager]
+    pants:
+        viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager]
         ownProducts: [IT support, Manager]
-    jackets:
+    tops:
         viewProducts: [IT support, Manager, Redactor]
         editProducts: [IT support, Manager, Redactor]
         ownProducts: [IT support, Manager, Redactor]

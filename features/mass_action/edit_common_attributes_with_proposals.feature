@@ -11,9 +11,9 @@ Feature: Apply permissions for an attribute group when mass edit common attribut
       | high_heels | sku, name  |
     And the following products:
       | sku          | categories | family     |
-      | owned        | jackets    | high_heels |
-      | viewable1    | tees       | high_heels |
-      | viewable2    | tees       | high_heels |
+      | owned        | tops       | high_heels |
+      | viewable1    | pants      | high_heels |
+      | viewable2    | pants      | high_heels |
       | notviewable  | jeans      | high_heels |
       | unclassified |            | high_heels |
     And I am logged in as "Mary"
