@@ -43,7 +43,7 @@ var steps = function () {
                 if (isSelect2) {
                     $inputElement.select2('val', value).trigger('change');
                 } else {
-                    $inputElement.val(value);
+                    $inputElement.val(value).trigger('change');
                 }
             },
             field.toLowerCase(),
