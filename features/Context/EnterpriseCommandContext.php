@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Command\UpdateProductCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -184,6 +185,42 @@ class EnterpriseCommandContext extends CommandContext
                     )
                 );
             }
+        }
+    }
+
+    /**
+     * @param string $not
+     * @param string $product
+     * @param string $username
+     *
+     * @throws \Exception
+     *
+     * @Given /^I( failed to)? approve the proposal of the product "([^"]*)" created by user "([^"]*)"$/
+     */
+    public function iApproveTheProposal($not, $product, $username)
+    {
+        $application = new Application();
+        $application->add(new ApproveProposalCommand());
+
+        $proposal = $application->find('pim:proposal:approve');
+        $proposal->setContainer($this->getContainer());
+        $proposalTester = new CommandTester($proposal);
+
+        $proposalTester->execute(
+            [
+                'command'    => $proposal->getName(),
+                'identifier' => $product,
+                'username'   => $username,
+            ]
+        );
+
+        $result = trim($proposalTester->getDisplay());
+        $expectedResult = sprintf('Proposal "%s" has been approved', $product);
+
+        if ('' === $not && $result !== $expectedResult) {
+            throw new \Exception($result);
+        } elseif ('' !== $not && $result === $expectedResult) {
+            throw new \Exception($result);
         }
     }
 
