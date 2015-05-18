@@ -12,10 +12,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 
 use Doctrine\Common\Util\ClassUtils;
-use PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
@@ -47,7 +46,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
 
-    /** @var DraftBuilder */
+    /** @var ProductDraftBuilderInterface */
     protected $draftBuilder;
 
     /**
@@ -56,8 +55,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
      * @param SecurityContextInterface        $securityContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
-     * @param DraftBuilder                    $draftBuilder
-     * @param EventDispatcherInterface        $dispatcher
+     * @param ProductDraftBuilderInterface    $draftBuilder
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -65,8 +63,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        DraftBuilder $draftBuilder,
-        EventDispatcherInterface $dispatcher
+        ProductDraftBuilderInterface $draftBuilder
     ) {
         $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
@@ -74,7 +71,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         $this->factory = $factory;
         $this->repository = $repository;
         $this->draftBuilder = $draftBuilder;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -98,9 +94,7 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
             $productDraft = $this->factory->createProductDraft($product, $username);
         }
 
-        $this->dispatcher->dispatch(ProductDraftEvents::PRE_SAVE, new GenericEvent($productDraft));
-
-        $changes = $this->draftBuilder->builder($product);
+        $changes = $this->draftBuilder->build($product);
         if (empty($changes)) {
             return null;
         }
@@ -112,8 +106,6 @@ class ProductDraftSaver implements SaverInterface, BulkSaverInterface
         if (true === $allOptions['flush']) {
             $this->objectManager->flush();
         }
-
-        $this->dispatcher->dispatch(ProductDraftEvents::POST_SAVE, new GenericEvent($productDraft));
     }
 
     /**

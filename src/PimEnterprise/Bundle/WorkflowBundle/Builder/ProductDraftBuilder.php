@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\UnitOfWork;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
@@ -25,7 +24,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class DraftBuilder implements BuilderInterface
+class ProductDraftBuilder implements ProductDraftBuilderInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -58,9 +57,9 @@ class DraftBuilder implements BuilderInterface
     }
 
     /**
-     * {$inheritdoc}
+     * {@inheritdoc}
      */
-    public function builder(ProductInterface $product)
+    public function build(ProductInterface $product)
     {
         $newValues = $this->serializer->normalize($product->getValues(), 'json');
         $originalValues = $this->getOriginalValues($product);
@@ -97,7 +96,6 @@ class DraftBuilder implements BuilderInterface
     public function getOriginalValues(ProductInterface $product)
     {
         $uow = $this->objectManager->getUnitOfWork();
-
         $originalValues = new ArrayCollection();
 
         foreach ($product->getValues() as $value) {

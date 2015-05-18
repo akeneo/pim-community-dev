@@ -7,13 +7,12 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -25,8 +24,7 @@ class ProductDraftSaverSpec extends ObjectBehavior
         SecurityContextInterface $securityContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        DraftBuilder $draftBuilder,
-        EventDispatcherInterface $dispatcher
+        ProductDraftBuilderInterface $draftBuilder
     ) {
         $this->beConstructedWith(
             $objectManager,
@@ -34,8 +32,7 @@ class ProductDraftSaverSpec extends ObjectBehavior
             $securityContext,
             $factory,
             $repository,
-            $draftBuilder,
-            $dispatcher
+            $draftBuilder
         );
     }
 
@@ -58,19 +55,12 @@ class ProductDraftSaverSpec extends ObjectBehavior
         $factory,
         ProductDraft $draft,
         $objectManager,
-        $draftBuilder,
-        $dispatcher
+        $draftBuilder
     ) {
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::PRE_SAVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
-        $draftBuilder->builder($product)->willReturn(['values' => ['name' => 'my proposed name']]);
+        $draftBuilder->build($product)->willReturn(['values' => ['name' => 'my proposed name']]);
 
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -80,13 +70,6 @@ class ProductDraftSaverSpec extends ObjectBehavior
         $draft->setChanges(['values' => ['name' => 'my proposed name']])->shouldBeCalled();
         $objectManager->persist($draft)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
-
-        $dispatcher
-            ->dispatch(
-                ProductDraftEvents::POST_SAVE,
-                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
-            )
-            ->shouldBeCalled();
 
         $this->save($product, ['recalculate' => true, 'flush' => true, 'schedule' => true]);
     }
@@ -105,7 +88,7 @@ class ProductDraftSaverSpec extends ObjectBehavior
         $optionsResolver->resolveSaveOptions(['recalculate' => true, 'flush' => true, 'schedule' => true])
             ->willReturn(['recalculate' => true, 'flush' => true, 'schedule' => true]);
 
-        $draftBuilder->builder($product)->willReturn(['values' => ['name' => 'my proposed name']]);
+        $draftBuilder->build($product)->willReturn(['values' => ['name' => 'my proposed name']]);
 
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);

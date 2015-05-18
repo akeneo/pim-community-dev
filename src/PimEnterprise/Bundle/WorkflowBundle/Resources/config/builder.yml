@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.builder.draft.class: PimEnterprise\Bundle\WorkflowBundle\Builder\DraftBuilder
+    pimee_workflow.builder.draft.class: PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilder
 
 services:
     pimee_workflow.builder.draft:
