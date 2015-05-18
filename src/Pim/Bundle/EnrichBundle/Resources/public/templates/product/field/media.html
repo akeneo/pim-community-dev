@@ -1,15 +1,23 @@
 <div class="media-uploader <%= value.value && value.value.filePath ? 'has-file' : '' %>" >
     <div class="file">
-        <% if (!value.value || value.value.filePath === null) { %><input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>/><% } %>
-        <div class="preview">
-            <% if (value.value) { %>
-                <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
-                    <img class="preview" src="<%= mediaUrl %>"/>
+        <% if (!value.value || value.value.filePath === null) { %>
+            <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>/>
+        <% } else { %>
+            <div class="preview">
+                <% if (value.value) { %>
+                    <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
+                        <img class="preview" src="<%= mediaUrl %>"/>
+                    <% } %>
+                    <span><%= value.value.originalFilename %></span>
+                    <span class="actions">
+                        <span class="clear-field"><i class="icon icon-trash"></i></span>
+                        <span class="clear-field"><i class="icon icon-eye-open"></i></span>
+                        <span class="clear-field"><i class="icon icon-trash"></i></span>
+                    </span>
                 <% } %>
-                <span><%= value.value.originalFilename %></span>
-            <% } %>
-        </div>
-        <% if (value.value && value.value.filePath !== null) { %><span class="clear-field"><i class="icon icon-trash"></i></span><% } %>
+            </div>
+
+        <% } %>
     </div>
     <div class="progress">
       <div class="bar"></div>
