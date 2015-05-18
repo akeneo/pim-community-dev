@@ -2,7 +2,7 @@ parameters:
     pimee_enrich.writer.mass_edit.product.class: PimEnterprise\Bundle\EnrichBundle\Writer\MassEdit\ProductWriter
 
 services:
-    pim_base_connector.writer.doctrine.product:
+    pimee_enrich.writer.doctrine.product:
         class: %pimee_enrich.writer.mass_edit.product.class%
         arguments:
             - '@pim_catalog.manager.media'

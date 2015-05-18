@@ -14,9 +14,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Product writer
  *
- * @author    Soulet Olivier <olivier.soulet@akeneo.com>
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @author Soulet Olivier <olivier.soulet@akeneo.com>
  */
 class ProductWriter extends BaseProductWriter
 {
@@ -24,8 +22,6 @@ class ProductWriter extends BaseProductWriter
     protected $securityContext;
 
     /**
-     * Constructor
-     *
      * @param MediaManager                $mediaManager
      * @param VersionManager              $versionManager
      * @param BulkSaverInterface          $productSaver
@@ -43,7 +39,6 @@ class ProductWriter extends BaseProductWriter
 
         $this->securityContext = $securityContext;
     }
-
 
     /**
      * Returns true if user is owner of the product or if the product does not exist yet or if the token does not exist

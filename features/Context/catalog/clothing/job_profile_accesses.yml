@@ -54,5 +54,5 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     update_product_value:
         executeJobProfile: [IT support, Manager, Redactor]
-    edit_common_attributes:
+    edit_common_attributes_with_permission:
         executeJobProfile: [IT support, Manager, Redactor]
