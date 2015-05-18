@@ -13,6 +13,7 @@ extensions:
         parent: product-edit-form
         insertAction: before
         targetZone: header
+        aclResourceId: pim_enrich_product_edit_attributes
 
     form-tabs:
         module: pim/product-edit-form/form-tabs

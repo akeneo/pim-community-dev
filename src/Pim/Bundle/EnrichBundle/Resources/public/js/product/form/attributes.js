@@ -180,7 +180,10 @@ define(
                 var product = this.getData();
                 var fields = FieldManager.getFields();
 
-                this.extensions['add-attribute'].updateOptionalAttributes(product);
+                if (this.extensions['add-attribute']) {
+                    this.extensions['add-attribute'].updateOptionalAttributes(product);
+                }
+
                 delete product.values[attributeCode];
                 delete fields[attributeCode];
                 /* jshint sub:true */
