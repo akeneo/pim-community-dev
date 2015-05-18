@@ -35,5 +35,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('models.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
+        $loader->load('services.yml');
     }
 }
