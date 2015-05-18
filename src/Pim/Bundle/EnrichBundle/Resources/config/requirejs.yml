@@ -179,7 +179,6 @@ config:
         pim/template/product/tab/attribute/attribute-group-selector: pimenrich/templates/product/tab/attributes/attribute-group-selector.html
         pim/template/product/tab/attribute/add-attribute:            pimenrich/templates/product/tab/attributes/add-attribute.html
         pim/template/product/tab/attribute/variant-group:            pimenrich/templates/product/tab/attributes/variant-group.html
-        pim/template/product/tab/attribute/add-option-button:        pimenrich/templates/product/tab/attributes/add-option-button.html
         pim/template/product/tab/associations:                       pimenrich/templates/product/tab/associations.html
         pim/template/product/tab/association-panes:                  pimenrich/templates/product/tab/association-panes.html
         pim/template/product/panel/container:                        pimenrich/templates/product/panel/container.html

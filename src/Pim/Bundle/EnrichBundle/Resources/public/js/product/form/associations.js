@@ -101,7 +101,8 @@ define(
                 mediator.on('product:action:post_update', _.bind(function () {
                     this.$('.selection-inputs input').val('');
                     this.renderPanes();
-                    var associationType =  this.state.get('currentAssociationType');
+                    var associationType = this.state.get('currentAssociationType');
+
                     _.each(this.datagrids, function (datagrid) {
                         if ($('#grid-' + datagrid.name).length) {
                             mediator

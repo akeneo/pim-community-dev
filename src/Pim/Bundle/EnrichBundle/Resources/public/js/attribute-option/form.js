@@ -13,7 +13,7 @@ define(
         return BaseForm.extend({
             template: _.template(template),
             events: {
-                'change form': 'updateModel'
+                'change input': 'updateModel'
             },
             initialize: function () {
                 this.model = new Backbone.Model();
