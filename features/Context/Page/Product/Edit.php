@@ -58,7 +58,7 @@ class Edit extends Form
     /**
      * @param string $locale locale code
      * @param string $locale locale label
-     * @param string $flag class of the flag icon
+     * @param string $flag   class of the flag icon
      *
      * @return NodeElement|null
      *
