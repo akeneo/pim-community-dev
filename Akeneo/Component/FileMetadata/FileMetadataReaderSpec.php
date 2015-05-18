@@ -19,6 +19,9 @@ class FileMetadataReaderSpec extends ObjectBehavior
 
     function it_returns_all_metadata_from_its_adapters($exifAdapter, $iptcAdapter, \SplFileInfo $file)
     {
+        $exifAdapter->getName()->willReturn('exif');
+        $iptcAdapter->getName()->willReturn('iptc');
+
         $exifAdapter->all($file)->willReturn([
             'author'   => 'Georges',
             'exposure' => '55'
@@ -29,9 +32,13 @@ class FileMetadataReaderSpec extends ObjectBehavior
         ]);
 
         $this->all($file)->shouldReturn([
-            'author'   => 'Georges',
-            'exposure' => '55',
-            'colorscale' => 'RGB'
+            'exif' => [
+                'author'   => 'Georges',
+                'exposure' => '55'
+            ],
+            'iptc' => [
+                'colorscale' => 'RGB'
+            ]
         ]);
     }
 }

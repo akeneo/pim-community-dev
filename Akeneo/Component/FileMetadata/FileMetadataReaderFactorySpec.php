@@ -32,6 +32,7 @@ class FileMetadataReaderFactorySpec extends ObjectBehavior
         $exifAdapter->isMimeTypeSupported('text/x-php')->willReturn(true);
         $iptcAdapter->isMimeTypeSupported('text/x-php')->willReturn(false);
 
+        $exifAdapter->getName()->willReturn('exif');
         $exifAdapter->all($file)->willReturn(['exif' => []])->shouldBeCalled();
         $iptcAdapter->all($file)->shouldNotBeCalled();
 
