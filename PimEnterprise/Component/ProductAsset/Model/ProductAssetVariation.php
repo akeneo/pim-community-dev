@@ -12,7 +12,6 @@
 namespace PimEnterprise\Component\ProductAsset\Model;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Product asset variation
@@ -24,14 +23,11 @@ class ProductAssetVariation implements ProductAssetVariationInterface
     /** @var int */
     protected $id;
 
-    /** @var ProductAssetInterface */
-    protected $asset;
+    /** @var ProductAssetReferenceInterface */
+    protected $reference;
 
     /** @var ChannelInterface */
     protected $channel;
-
-    /** @var LocaleInterface */
-    protected $locale;
 
     /** @var FileInterface */
     protected $file;
@@ -49,15 +45,39 @@ class ProductAssetVariation implements ProductAssetVariationInterface
      */
     public function getAsset()
     {
-        return $this->asset;
+        if (null !== $this->getReference()) {
+            return $this->getReference()->getAsset();
+        }
+
+        return null;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setAsset(ProductAssetInterface $asset)
+    public function getLocale()
     {
-        $this->asset = $asset;
+        if (null !== $this->getReference()) {
+            return $this->getReference()->getLocale();
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setReference(ProductAssetReferenceInterface $reference)
+    {
+        $this->reference = $reference;
 
         return $this;
     }
@@ -76,24 +96,6 @@ class ProductAssetVariation implements ProductAssetVariationInterface
     public function setChannel(ChannelInterface $channel)
     {
         $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale(LocaleInterface $locale)
-    {
-        $this->locale = $locale;
 
         return $this;
     }
