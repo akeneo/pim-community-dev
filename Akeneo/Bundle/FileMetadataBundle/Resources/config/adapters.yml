@@ -1,6 +1,5 @@
 parameters:
     akeneo_file_metadata.adapter.registry.class: Akeneo\Component\FileMetadata\Adapter\AdapterRegistry
-    akeneo_file_metadata.adapter.interface: Akeneo\Component\FileMetadata\Adapter\AdapterInterface
     akeneo_file_metadata.adapter.exif.class: Akeneo\Component\FileMetadata\Adapter\Exif
     akeneo_file_metadata.adapter.iptc.class: Akeneo\Component\FileMetadata\Adapter\Iptc
 
@@ -11,6 +10,10 @@ services:
     # Metadata adapters
     akeneo_file_metadata.adapter.exif:
         class: %akeneo_file_metadata.adapter.exif.class%
+        tags:
+            - { name: akeneo_file_metadata.adapter, alias: adapter_exif }
 
     akeneo_file_metadata.adapter.iptc:
         class: %akeneo_file_metadata.adapter.iptc.class%
+        tags:
+            - { name: akeneo_file_metadata.adapter, alias: adapter_iptc }
