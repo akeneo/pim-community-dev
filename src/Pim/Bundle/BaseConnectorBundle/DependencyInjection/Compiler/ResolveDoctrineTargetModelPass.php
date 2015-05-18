@@ -17,7 +17,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'Pim\Bundle\BasConnectorBundle\Model\JobConfigurationInterface' => 'pim_base_connector.model.job_configuration.class',
+            'Pim\Bundle\BaseConnectorBundle\Model\JobConfigurationInterface' => 'pim_base_connector.model.job_configuration.class',
         ];
     }
 }

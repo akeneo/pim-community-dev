@@ -15,7 +15,7 @@ Feature: Configure action to change status of many products at once
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (enable / disable)" operation
     And I enable the products
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "change-status" mass-edit job to finish
     Then product "boat" should be enabled
     And product "jet-ski" should be enabled
 
@@ -26,6 +26,6 @@ Feature: Configure action to change status of many products at once
     When I mass-edit products boat and jet-ski
     And I choose the "Change status (enable / disable)" operation
     And I disable the products
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "change-status" mass-edit job to finish
     Then product "boat" should be disabled
     And product "jet-ski" should be disabled

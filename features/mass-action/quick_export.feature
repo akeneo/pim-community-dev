@@ -18,7 +18,7 @@ Feature: Quick export many products from datagrid
     Given I am on the products page
     And I select rows boots, sneakers
     Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
-    And I wait for the "csv_product_quick_export" mass-edit job to finish
+    And I wait for the quick export to finish
     When I am on the dashboard page
     Then I should have 1 new notification
     And I should see notification:
