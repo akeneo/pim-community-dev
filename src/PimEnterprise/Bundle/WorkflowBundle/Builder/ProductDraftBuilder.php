@@ -17,7 +17,7 @@ use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
  * Draft builder to have modifications on product values
@@ -29,8 +29,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var ObjectManager */
     protected $objectManager;
 
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var NormalizerInterface */
+    protected $normalizer;
 
     /** @var ChainedComparator */
     protected $comparator;
@@ -40,18 +40,18 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
     /**
      * @param ObjectManager                $objectManager
-     * @param SerializerInterface          $serializer
+     * @param NormalizerInterface          $normalizer
      * @param ChainedComparator            $comparator
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         ObjectManager $objectManager,
-        SerializerInterface $serializer,
+        NormalizerInterface $normalizer,
         ChainedComparator $comparator,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->objectManager       = $objectManager;
-        $this->serializer          = $serializer;
+        $this->normalizer          = $normalizer;
         $this->comparator          = $comparator;
         $this->attributeRepository = $attributeRepository;
     }
@@ -61,7 +61,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     public function build(ProductInterface $product)
     {
-        $newValues = $this->serializer->normalize($product->getValues(), 'json');
+        $newValues = $this->normalizer->normalize($product->getValues(), 'json');
         $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
@@ -83,7 +83,6 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
                 }
             }
         }
-
 
         return $diff;
     }
@@ -111,7 +110,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             }
         }
 
-        return $this->serializer->normalize($originalValues, 'json');
+        return $this->normalizer->normalize($originalValues, 'json');
     }
 
     /**
