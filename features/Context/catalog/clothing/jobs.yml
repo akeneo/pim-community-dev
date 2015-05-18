@@ -162,3 +162,8 @@ jobs:
         alias:     update_product_value
         label:     Mass update products
         type:      mass_edit
+    edit_common_attributes_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes_with_permission
+        label:     Mass edit common product attributes with permission check
+        type:      mass_edit

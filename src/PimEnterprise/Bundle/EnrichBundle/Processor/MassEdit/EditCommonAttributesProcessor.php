@@ -5,12 +5,10 @@ namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\BaseConnectorBundle\Model\Repository\JobConfigurationRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -33,7 +31,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
-     * @param MassEditRepositoryInterface          $jobConfigurationRepo
+     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param UserManager                          $userManager
      * @param SecurityContextInterface             $securityContext
      */
@@ -66,11 +64,8 @@ class EditCommonAttributesProcessor extends BaseProcessor
     public function process($product)
     {
         $this->initSecurityContext($this->stepExecution);
-        if ($this->hasRight($product)) {
-            return parent::process($product);
-        }
 
-        return null;
+        return parent::process($product);
     }
 
     /**
@@ -85,27 +80,5 @@ class EditCommonAttributesProcessor extends BaseProcessor
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->securityContext->setToken($token);
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @return bool
-     */
-    protected function hasRight(ProductInterface $product)
-    {
-        $isAuthorized = $this->securityContext->isGranted(Attributes::OWN, $product);
-
-        if (!$isAuthorized) {
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                'pim_enrich.mass_edit_action.edit_common_attributes.message.error',
-                [],
-                $product
-            );
-            $this->stepExecution->incrementSummaryInfo('skipped_products');
-        }
-
-        return $isAuthorized;
     }
 }
