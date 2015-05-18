@@ -92,7 +92,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      *
      * @return array
      */
-    public function getOriginalValues(ProductInterface $product)
+    protected function getOriginalValues(ProductInterface $product)
     {
         $uow = $this->objectManager->getUnitOfWork();
         $originalValues = new ArrayCollection();
