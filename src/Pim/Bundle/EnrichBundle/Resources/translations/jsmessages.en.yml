@@ -164,6 +164,8 @@ pim_enrich:
                     no: No
             optional_attribute:
                 remove: Remove this attribute
+            media:
+                upload: Drag and drop to upload or click here
         attribute_option:
             code: Code
             label: Label

@@ -22,7 +22,7 @@ define(
         mediator
     ) {
         return BaseForm.extend({
-            className: 'pull-right updated-status',
+            className: 'updated-status',
             template: _.template(template),
             state: null,
             linkSelector: 'a[href^="/"]:not(".no-hash")',

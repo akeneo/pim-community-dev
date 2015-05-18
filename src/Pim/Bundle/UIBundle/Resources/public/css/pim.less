@@ -777,6 +777,7 @@ h3.tab-header {
       white-space: nowrap;
       margin-right: 20px;
       .display-flex();
+      .flex(1);
 
       span {
         font-size: 11px;
@@ -1206,55 +1207,86 @@ h3.tab-header {
   height: 100px;
   border-radius: 2px;
 
-  &:not(.has-file) {
-    background-image: url("/bundles/pimui/images/upload.png");
-  }
-
   background-position: center center;
   background-repeat: no-repeat;
   position: relative;
 
-  input {
+  input[type="file"] {
     position: absolute;
     opacity: 0;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 
-  .clear-field {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 5%;
-    height: 100%;
+  .uploader {
+    .display-flex();
+    .flex-direction(column);
 
-    i {
-      margin-top: 10px;
+    img {
+      align-self: center;
+      margin-top: 20px;
+    }
 
-      &:hover {
-        cursor: pointer;
-      }
+    span {
+      align-self: center;
     }
   }
 
   .preview {
-    height: 100px;
     .display-flex();
     .flex-direction(row);
-    align-items: center;
+    .align-items(center);
+    height: 100px;
 
-    img {
+    .file img {
       max-height: 90px;
       max-width: 150px;
-      margin-left: 5px;
+      margin: 5px;
       border-radius: 2px;
     }
 
-    span {
-      margin-left: 5px;
-      line-height: 100px;
+    .file i {
+      font-size: 90px;
+      margin-left: 10px;
+      color: #999;
+    }
+
+    .info {
+      width: 100%;
+      .display-flex();
+      .flex-direction(column);
+      .align-items(center);
+
+      .filename {
+        &:first-letter {
+          text-transform: uppercase;
+        }
+      }
+
+      .actions {
+        .display-flex();
+        .justify-content(center);
+        margin-top: 10px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        & > *:not(:first-child) {
+          margin-left: 10px;
+        }
+
+        i {
+          font-size: 20px;
+          color: #444;
+        }
+      }
     }
   }
 
