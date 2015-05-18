@@ -31,7 +31,8 @@ class Iptc extends AbstractAdapter
      * TODO: mimetypes normally supported here http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/IPTC.html
      * TODO: JPG, TIFF, PNG, MIFF, PS, PDF, PSD, XCF and DNG
      */
-    public function __construct($mimeTypes = ['image/jpeg', 'image/tiff', 'image/png']) {
+    public function __construct(array $mimeTypes = ['image/jpeg', 'image/tiff', 'image/png'])
+    {
         $this->mimeTypes   = $mimeTypes;
         $this->iptcHeaders = $this->getDefaultIptcHeaders();
     }
@@ -70,7 +71,8 @@ class Iptc extends AbstractAdapter
 
         //TODO: careful, not the same that http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf
         //TODO: careful, not the same that http://www.sno.phy.queensu.ca/~phil/exiftool/TagNames/IPTC.html
-        // https://www.iptc.org/std/photometadata/documentation/GenericGuidelines/index.htm#!Documents/fieldreferencetable.htm
+        // https://www.iptc.org/std/photometadata/documentation/GenericGuidelines/
+        //index.htm#!Documents/fieldreferencetable.htm
 
         //TODO: which labels should we use ? IPTC or Photoshop ?
         return [

@@ -19,5 +19,4 @@ namespace Akeneo\Component\FileMetadata\Exception;
  */
 class NonRegisteredAdapterException extends \Exception
 {
-
 }

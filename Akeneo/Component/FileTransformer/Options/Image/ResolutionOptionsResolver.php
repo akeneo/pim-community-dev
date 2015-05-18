@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Option resolver for Resolution transformation
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ResolutionOptionsResolver implements TransformationOptionsResolverInterface
 {

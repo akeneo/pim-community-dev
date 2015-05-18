@@ -19,7 +19,7 @@ use Imagine\Imagick\Imagine;
 /**
  * Transform resolution of an image
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class Resolution extends AbstractTransformation
 {
@@ -28,7 +28,7 @@ class Resolution extends AbstractTransformation
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
-        array $supportedMimeTypes = ['image/jpeg', 'image/tiff']
+        array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;

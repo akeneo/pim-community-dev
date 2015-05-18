@@ -14,7 +14,7 @@ namespace Akeneo\Component\FileTransformer\Exception;
 /**
  * Exception thrown when a Transformation is not registered in the registry
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class NonRegisteredTransformationException extends \Exception
 {

@@ -20,7 +20,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Option resolver for ColorSpace transformation
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ColorSpaceOptionsResolver implements TransformationOptionsResolverInterface
 {

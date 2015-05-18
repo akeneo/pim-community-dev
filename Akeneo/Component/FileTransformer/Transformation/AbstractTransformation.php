@@ -16,7 +16,7 @@ use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterf
 /**
  * Allow to apply a transformation on a file
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 abstract class AbstractTransformation implements TransformationInterface
 {

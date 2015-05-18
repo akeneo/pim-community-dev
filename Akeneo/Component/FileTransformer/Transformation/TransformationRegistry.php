@@ -17,7 +17,7 @@ use Akeneo\Component\FileTransformer\Exception\NonRegisteredTransformationExcept
 /**
  * Registry for transformations
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class TransformationRegistry
 {
@@ -83,7 +83,7 @@ class TransformationRegistry
     }
 
     /**
-     * Is a transformation registered with the given name and Mime Type ?
+     * Return whether or not a transformation is registered with the given $name and $mimeType
      *
      * @param string $name
      * @param string $mimeType

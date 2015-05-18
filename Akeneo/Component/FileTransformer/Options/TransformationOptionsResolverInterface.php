@@ -14,7 +14,7 @@ namespace Akeneo\Component\FileTransformer\Options;
 /**
  * Resolve transformation options
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface TransformationOptionsResolverInterface
 {

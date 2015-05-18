@@ -16,7 +16,7 @@ use Akeneo\Component\FileTransformer\Options\TransformationOptionsResolverInterf
 /**
  * Transformation interface
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface TransformationInterface
 {
@@ -40,7 +40,7 @@ interface TransformationInterface
     public function getName();
 
     /**
-     * Is Mime Type supported by the transformation ?
+     * Is mime type supported by the transformation ?
      *
      * @param string $mimeType
      *
@@ -49,7 +49,7 @@ interface TransformationInterface
     public function isMimeTypeSupported($mimeType);
 
     /**
-     * Returns Mime Types supported by the transformation
+     * Returns mime types supported by the transformation
      *
      * @return array
      */

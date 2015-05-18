@@ -12,18 +12,18 @@
 namespace Akeneo\Component\FileTransformer;
 
 /**
- * Allow to apply a set of transformations on a file
+ * Apply a set of transformations on a file
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface FileTransformerInterface
 {
     /**
-     * Allows to apply a set of transformations on the given file with the given configuration
+     * Apply a set of transformations on the given file with the given configuration
      *
      * $transformationPipeline = [
      *   [
-     *        'outputFile' => string|null, (optional)
+     *        'outputFile' => 'myNewFile.jpg' (string|null optional)
      *        'pipeline'   => [
      *            'colorspace' => ['colorspace' => 'gray'],
      *            'resize'     => ['width' => 400, 'height' => 50]
@@ -31,7 +31,6 @@ interface FileTransformerInterface
      *        ]
      *   ],
      *   [
-     *        'outputFile' => string|null, (optional)
      *        'pipeline'   => [
      *            'resolution' => ['resolution' => 5, 'resolution-unit' => 'ppi']
      *            'colorspace' => ['colorspace' => 'gray'],

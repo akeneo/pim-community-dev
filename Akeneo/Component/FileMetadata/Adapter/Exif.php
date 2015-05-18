@@ -25,7 +25,7 @@ class Exif extends AbstractAdapter
     /**
      * @param array $mimeTypes
      */
-    public function __construct($mimeTypes = ['image/jpeg', 'image/tiff'])
+    public function __construct(array $mimeTypes = ['image/jpeg', 'image/tiff'])
     {
         $this->mimeTypes = $mimeTypes;
     }

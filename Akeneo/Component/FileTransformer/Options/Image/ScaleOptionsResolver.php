@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 /**
  * Option resolver for Scale transformation
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ScaleOptionsResolver implements TransformationOptionsResolverInterface
 {

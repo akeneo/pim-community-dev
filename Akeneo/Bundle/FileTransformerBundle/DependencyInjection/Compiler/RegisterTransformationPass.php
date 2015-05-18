@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\Reference;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class RegisterTransformationPass extends CompilerPassInterface
+class RegisterTransformationPass implements CompilerPassInterface
 {
     /** @staticvar */
     const TRANSFORMATION_REGISTRY = 'akeneo_file_transformer.transformation.registry';

@@ -17,9 +17,9 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Allow to call good transformers and apply asked transformations on a file
+ * File transformer implementation
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class FileTransformer implements FileTransformerInterface
 {
@@ -53,7 +53,7 @@ class FileTransformer implements FileTransformerInterface
         $mimeType = MimeTypeGuesser::getInstance()->guess($file->getPathname());
 
         foreach ($transformationPipeline as $transformation) {
-            $pipelineOptions = $this->resolve($transformation);
+            $pipelineOptions = $this->resolvePipelineOptions($transformation);
 
             if (null !== $pipelineOptions['outputFile']) {
                 $file = $this->getOutputFile($file, $pipelineOptions['outputFile']);
@@ -69,7 +69,7 @@ class FileTransformer implements FileTransformerInterface
     }
 
     /**
-     * Resolves given options
+     * Resolves pipeline options
      *
      * @param array $options
      *
@@ -77,7 +77,7 @@ class FileTransformer implements FileTransformerInterface
      *
      * @return array
      */
-    protected function resolve(array $options)
+    protected function resolvePipelineOptions(array $options)
     {
         try {
             $options = $this->resolver->resolve($options);
@@ -105,14 +105,15 @@ class FileTransformer implements FileTransformerInterface
      */
     protected function getOutputFile(\SplFileInfo $file, $outputFileName)
     {
-        $fullOutputFilePath = sprintf('%s/%s', $file->getPath(), $outputFileName);
+        $outputFilePath = sprintf('%s/%s', $file->getPath(), $outputFileName);
 
-        if (!copy($file->getPathname(), $fullOutputFilePath)) {
+        // TODO: handle case where the output file already exists
+        if (!copy($file->getPathname(), $outputFilePath)) {
             throw new \LogicException(
-                sprintf('Copy file from "%s" to "%s" has failed.', $file->getPathname(), $fullOutputFilePath)
+                sprintf('Copy file from "%s" to "%s" has failed.', $file->getPathname(), $outputFilePath)
             );
         }
 
-        return new \SplFileInfo($fullOutputFilePath);
+        return new \SplFileInfo($outputFilePath);
     }
 }

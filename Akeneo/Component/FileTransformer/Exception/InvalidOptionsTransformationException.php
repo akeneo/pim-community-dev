@@ -14,7 +14,7 @@ namespace Akeneo\Component\FileTransformer\Exception;
 /**
  * Exception thrown when Transformation options are invalid
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class InvalidOptionsTransformationException extends NotApplicableTransformationException
 {

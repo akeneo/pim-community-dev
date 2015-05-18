@@ -14,7 +14,7 @@ namespace Akeneo\Component\FileTransformer\Exception;
 /**
  * Thrown options given to FileTransformer are wrong
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class InvalidFileTransformerOptionsException extends \Exception
 {

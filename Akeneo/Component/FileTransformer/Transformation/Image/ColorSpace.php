@@ -22,7 +22,7 @@ use Imagine\Imagick\Imagine;
 /**
  * Transform the color space of an image
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class ColorSpace extends AbstractTransformation
 {
@@ -32,7 +32,7 @@ class ColorSpace extends AbstractTransformation
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
-        array $supportedMimeTypes = ['image/jpeg', 'image/tiff']
+        array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;

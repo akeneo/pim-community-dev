@@ -28,9 +28,9 @@ class AkeneoFileTransformerExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('transformations.yml');
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('options_resolvers.yml');
+        $loader->load('transformations.yml');
         $loader->load('transformers.yml');
     }
 }

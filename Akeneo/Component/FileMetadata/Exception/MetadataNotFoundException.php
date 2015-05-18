@@ -17,5 +17,4 @@ namespace Akeneo\Component\FileMetadata\Exception;
  */
 class MetadataNotFoundException extends \Exception
 {
-
 }

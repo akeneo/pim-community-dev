@@ -20,19 +20,17 @@ use Imagine\Imagick\Imagine;
 /**
  * Transform the size of an image without scaling
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class Resize extends AbstractTransformation
 {
-    //TODO: the list of mimetypes is defined here
-    // vendor/symfony/symfony/src/Symfony/Component/HttpFoundation/File/MimeType/MimeTypeExtensionGuesser.php
     /**
      * @param TransformationOptionsResolverInterface $optionsResolver
      * @param array                                  $supportedMimeTypes
      */
     public function __construct(
         TransformationOptionsResolverInterface $optionsResolver,
-        array $supportedMimeTypes = ['image/jpeg', 'image/tiff']
+        array $supportedMimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
     ) {
         $this->optionsResolver    = $optionsResolver;
         $this->supportedMimeTypes = $supportedMimeTypes;

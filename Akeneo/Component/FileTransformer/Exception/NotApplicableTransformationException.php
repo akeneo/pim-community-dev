@@ -14,7 +14,7 @@ namespace Akeneo\Component\FileTransformer\Exception;
 /**
  * Exception thrown when Transformation is not applicable due to a bad option value
  *
- * @author Willy Mesnage <willy.mesnage@akeneo.com>
+ * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class NotApplicableTransformationException extends \Exception
 {
