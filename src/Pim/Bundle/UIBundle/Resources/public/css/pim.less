@@ -1214,7 +1214,7 @@ h3.tab-header {
   background-repeat: no-repeat;
   position: relative;
 
-  input {
+  input[type="file"] {
     position: absolute;
     opacity: 0;
     top: 0;
@@ -1223,38 +1223,49 @@ h3.tab-header {
     height: 100%;
   }
 
-  .clear-field {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 5%;
-    height: 100%;
-
-    i {
-      margin-top: 10px;
-
-      &:hover {
-        cursor: pointer;
-      }
-    }
-  }
-
   .preview {
-    height: 100px;
     .display-flex();
     .flex-direction(row);
-    align-items: center;
+    .align-items(center);
+    height: 100px;
 
-    img {
+    .file img {
       max-height: 90px;
       max-width: 150px;
-      margin-left: 5px;
+      margin: 5px;
       border-radius: 2px;
     }
 
-    span {
-      margin-left: 5px;
-      line-height: 100px;
+    .info {
+      width: 100%;
+      .display-flex();
+      .flex-direction(column);
+      .align-items(center);
+
+      .filename {
+        &:first-letter {
+          text-transform: uppercase;
+        }
+      }
+
+      .actions {
+        .display-flex();
+        .justify-content(center);
+        margin-top: 10px;
+
+        &:hover {
+          cursor: pointer;
+        }
+
+        & > * {
+          margin-left: 10px;
+        }
+
+        i {
+          font-size: 20px;
+          color: #444;
+        }
+      }
     }
   }
 
