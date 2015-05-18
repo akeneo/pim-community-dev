@@ -287,8 +287,8 @@ class UpdateProductCommand extends ContainerAwareCommand
     /**
      * Create a security token from the given username
      *
-     * @param OutputInterface  $output
-     * @param string           $username
+     * @param OutputInterface $output
+     * @param string          $username
      *
      * @return bool
      */
@@ -312,9 +312,9 @@ class UpdateProductCommand extends ContainerAwareCommand
     /**
      * Returns true if user is allowed to edit product
      *
-     * @param OutputInterface  $output
-     * @param string           $username
-     * @param string           $identifier
+     * @param OutputInterface $output
+     * @param string          $username
+     * @param string          $identifier
      *
      * @return bool
      */

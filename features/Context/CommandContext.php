@@ -78,11 +78,14 @@ class CommandContext extends RawMinkContext
         $getCommandTester = new CommandTester($getCommand);
 
         foreach ($updates->getHash() as $update) {
+            $username = isset($update['username']) ? $update['username'] : null;
+
             $updateCommandTester->execute(
                 [
                     'command'      => $updateCommand->getName(),
                     'identifier'   => $update['product'],
-                    'json_updates' => $update['actions']
+                    'json_updates' => $update['actions'],
+                    'username'     => $username
                 ]
             );
 
