@@ -25,12 +25,19 @@ class FileMetadataReaderFactory implements FileMetadataReaderFactoryInterface
     /** @var AdapterRegistry */
     protected $registry;
 
+    /** @var string */
+    protected $metadataReaderClass;
+
     /**
      * @param AdapterRegistry $registry
+     * @param string          $metadataReaderClass
      */
-    public function __construct(AdapterRegistry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        AdapterRegistry $registry,
+        $metadataReaderClass = 'Akeneo\Component\FileMetadata\FileMetadataReader'
+    ) {
+        $this->registry            = $registry;
+        $this->metadataReaderClass = $metadataReaderClass;
     }
 
     /**
@@ -49,6 +56,6 @@ class FileMetadataReaderFactory implements FileMetadataReaderFactoryInterface
             }
         }
 
-        return new FileMetadataReader($adapters);
+        return new $this->metadataReaderClass($adapters);
     }
 }
