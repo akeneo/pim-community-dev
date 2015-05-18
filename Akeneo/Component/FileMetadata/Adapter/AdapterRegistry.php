@@ -38,6 +38,8 @@ class AdapterRegistry
     /**
      * @param AdapterInterface $adapter
      *
+     * @throws AlreadyRegisteredAdapterException
+     *
      * @return AdapterRegistry
      */
     public function add(AdapterInterface $adapter)
@@ -55,8 +57,9 @@ class AdapterRegistry
     /**
      * @param string $name
      *
+     * @throws NonRegisteredAdapterException
+     *
      * @return AdapterInterface
-     * @throws \LogicException
      */
     public function get($name)
     {

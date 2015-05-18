@@ -12,6 +12,8 @@
 namespace Akeneo\Component\FileMetadata\Adapter;
 
 /**
+ * Dumps all the adapters that are registered
+ *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  */
@@ -25,11 +27,13 @@ class AdapterDumper
      */
     public function __construct(AdapterRegistry $registry)
     {
-        $this->registry =$registry;
+        $this->registry = $registry;
     }
 
     /**
-     * @param null $mimeType
+     * Dumps all the adapters that are registered
+     *
+     * @param string|null $mimeType
      *
      * @return array
      */
