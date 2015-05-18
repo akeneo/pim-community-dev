@@ -82,7 +82,7 @@ var WorldConstructor = function WorldConstructor(callback) {
 
         var featureFilePath = path.resolve(__dirname, './../cucumber.feature');
         fs.writeFileSync(featureFilePath, content);
-        var process = exec('bin/behat features/Context/cucumber/cucumber.feature');
+        var process = exec('bin/behat features/Context/cucumber/cucumber.feature --strict');
 
         if ('verbose' === world.logLevel) {
             process.stdout.on('data', function (data) {

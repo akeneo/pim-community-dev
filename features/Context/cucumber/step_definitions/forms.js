@@ -27,13 +27,28 @@ var steps = function () {
     this.When(/^I change the "(\$|\€) ([^"]*)" to "([^"]*)"$/, function (currency, attribute, value, callback) {
         this.browser
             .waitFor('.attribute-field.currency')
-            .setValue('.attribute-field.currency input.input-small', value, callback);
+            .execute(
+                function (currencySymbol, attributeLabel, value) {
+                    /* global $ */
+                    var $field = $('.attribute-field.currency label:contains("' + attributeLabel + '")').parent();
+                    var fieldIndex;
+                    $field.find('.currency-label').each(function (index, subLabel) {
+                        if ($(subLabel).text() === currencySymbol) {
+                            fieldIndex = index;
+                        }
+                    });
+                    $field.find('.controls input.input-small').eq(fieldIndex).val(value).trigger('change');
+                },
+                currency,
+                attribute,
+                value,
+                callback
+            );
     });
 
     this.When(/^I change the "([^"\$\€]*)" to "([^"]+)"$/, function (field, value, callback) {
         this.browser.execute(
             function (fieldName, value) {
-                /* global $ */
                 var $field = $('div [data-attribute="' + fieldName + '"] .field-input');
 
                 var $inputElement = $field.find('input');

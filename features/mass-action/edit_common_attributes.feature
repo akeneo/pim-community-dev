@@ -110,7 +110,7 @@ Feature: Edit common attributes of many products at once
     And the french mobile description of "pump" should be "Foo Fr"
     And the french tablet description of "pump" should be "Bar Fr"
 
-  @skip-pef
+  @cucumberjs
   Scenario: Successfully update many price values at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit common attributes" operation

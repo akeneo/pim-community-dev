@@ -29,6 +29,12 @@ var steps = function () {
             .waitForComplete(callback);
     });
 
+    this.Given(/^I am on the products page$/, function (callback) {
+        this
+            .visit('/enrich/product/')
+            .waitForComplete(callback);
+    });
+
     this.When(/^(?:I edit the|I am on the) "([^"]*)" product(?: page)?$/, function (code, callback) {
         this
             .visit('/enrich/product/')

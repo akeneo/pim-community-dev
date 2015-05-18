@@ -117,6 +117,17 @@ var steps = function () {
                 }
             );
     });
+
+    this.Then(
+        /^the prices "([^"]*)" of products (.+) should be:$/,
+        function (attribute, products, prices, callback) {
+            this.executeBehat(
+                'the prices "' + attribute + '" of products ' + products + ' should be',
+                prices,
+                callback
+            );
+        }
+    );
 };
 
 module.exports = steps;

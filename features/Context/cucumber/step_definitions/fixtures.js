@@ -19,6 +19,10 @@ var steps = function () {
     this.Given(/^the following product groups?:$/, function (groups, callback) {
         this.executeBehat('the following product groups', groups, callback);
     });
+
+    this.Given(/^the following family:$/, function (data, callback) {
+        this.executeBehat('the following family', data, callback);
+    });
 };
 
 module.exports = steps;
