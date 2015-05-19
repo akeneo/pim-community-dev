@@ -1,6 +1,7 @@
 parameters:
-    pimee_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
-    pim_enrich.twig.category_extension.class:  PimEnterprise\Bundle\EnrichBundle\Twig\CategoryExtension
+    pimee_enrich.twig.version_extension.class:   PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
+    pim_enrich.twig.category_extension.class:    PimEnterprise\Bundle\EnrichBundle\Twig\CategoryExtension
+    pimee_enrich.twig.attribute_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\AttributeExtension
 
 services:
     pimee_enrich.twig.version_extension:
@@ -13,5 +14,13 @@ services:
         arguments:
             - '@pim_catalog.manager.product_category'
             - '@pimee_workflow.manager.published_product_category'
+        tags:
+            - { name: twig.extension }
+
+    pimee_enrich.twig.attribute_extension:
+        class: %pimee_enrich.twig.attribute_extension.class%
+        arguments:
+            - %pim_enrich.attribute_icons%
+            - %pimee_enrich.attribute_icons%
         tags:
             - { name: twig.extension }

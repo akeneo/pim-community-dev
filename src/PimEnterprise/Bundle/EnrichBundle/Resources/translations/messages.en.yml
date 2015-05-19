@@ -124,3 +124,5 @@ job_execution.summary:
     mass_unpublished: Product unpublished
 
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
+
+pim_assets_collection: Assets collection
