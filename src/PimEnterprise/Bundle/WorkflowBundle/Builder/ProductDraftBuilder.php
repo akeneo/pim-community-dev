@@ -17,7 +17,7 @@ use Doctrine\ORM\UnitOfWork;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
+use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorRegistry;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -33,8 +33,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
-    /** @var ChainedComparator */
-    protected $comparator;
+    /** @var ComparatorRegistry */
+    protected $comparatorRegistry;
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -42,18 +42,18 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     /**
      * @param ObjectManager                $objectManager
      * @param NormalizerInterface          $normalizer
-     * @param ChainedComparator            $comparator
+     * @param ComparatorRegistry           $comparatorRegistry
      * @param AttributeRepositoryInterface $attributeRepository
      */
     public function __construct(
         ObjectManager $objectManager,
         NormalizerInterface $normalizer,
-        ChainedComparator $comparator,
+        ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository
     ) {
         $this->objectManager       = $objectManager;
         $this->normalizer          = $normalizer;
-        $this->comparator          = $comparator;
+        $this->comparatorRegistry  = $comparatorRegistry;
         $this->attributeRepository = $attributeRepository;
     }
 
@@ -73,12 +73,13 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             }
 
             foreach ($new as $index => $changes) {
-                $diffAttribute = $this->comparator->compare(
-                    $attributeTypes[$code],
+                $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
+                $diffAttribute = $comparator->getChanges(
                     $changes,
                     $this->getOriginalValue($originalValues, $code, $index)
 
                 );
+
                 if (null !== $diffAttribute) {
                     $diff['values'][$code][] = $diffAttribute;
                 }

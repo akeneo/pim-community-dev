@@ -7,5 +7,5 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - @pim_serializer
-            - @pimee_workflow.comparator.chained
+            - @pimee_workflow.comparator.registry
             - @pim_catalog.repository.attribute
