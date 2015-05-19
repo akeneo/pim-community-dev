@@ -64,6 +64,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
     public function setAsset(ProductAssetInterface $asset)
     {
         $this->asset = $asset;
+        $asset->addReference($this);
 
         return $this;
     }
@@ -154,7 +155,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
         }
 
         foreach ($this->getVariations() as $variation) {
-            if ($channel === $variation->getChannel()) {
+            if ($variation->getChannel() === $channel) {
                 return $variation;
             }
         }

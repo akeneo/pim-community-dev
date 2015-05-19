@@ -49,6 +49,9 @@ class ProductAsset implements ProductAssetInterface
     public function __construct()
     {
         $this->references = new ArrayCollection();
+        $this->isEnabled = true;
+        $this->createdAt = new \Datetime();
+        $this->updatedAt = new \Datetime();
     }
 
     /**
@@ -188,7 +191,7 @@ class ProductAsset implements ProductAssetInterface
     public function getVariation(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         foreach ($this->getVariations() as $variation) {
-            if ($channel === $variation->getChannel() && $locale === $variation->getLocale()) {
+            if ($variation->getChannel() === $channel && $variation->getLocale() === $locale) {
                 return $variation;
             }
         }
@@ -325,7 +328,7 @@ class ProductAsset implements ProductAssetInterface
 
         if ($nbReferences > 1 && $nbReferences !== $nbLocalizable) {
             throw new \LogicException(
-                'All references of an asset that contains several references should be localized.'
+                'All references of an asset that contains several references must be localized.'
             );
         }
     }

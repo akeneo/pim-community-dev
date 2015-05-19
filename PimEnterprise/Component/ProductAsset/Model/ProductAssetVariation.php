@@ -78,6 +78,7 @@ class ProductAssetVariation implements ProductAssetVariationInterface
     public function setReference(ProductAssetReferenceInterface $reference)
     {
         $this->reference = $reference;
+        $reference->addVariation($this);
 
         return $this;
     }

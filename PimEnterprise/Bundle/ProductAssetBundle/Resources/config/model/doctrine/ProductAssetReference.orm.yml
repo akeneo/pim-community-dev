@@ -29,3 +29,7 @@ PimEnterprise\Component\ProductAsset\Model\ProductAssetReference:
         variations:
             targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface
             mappedBy: reference
+            cascade:
+                - persist
+                - refresh
+                - detach
