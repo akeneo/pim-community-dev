@@ -21,6 +21,9 @@ use Akeneo\Component\FileMetadata\Adapter\AdapterInterface;
  */
 class FileMetadataReader implements FileMetadataReaderInterface
 {
+    /** @var FileMetadataBag */
+    public $metadata;
+
     /** @var AdapterInterface[] */
     protected $adapters = [];
 
@@ -30,6 +33,7 @@ class FileMetadataReader implements FileMetadataReaderInterface
     public function __construct(array $adapters)
     {
         $this->adapters = $adapters;
+        $this->metadata = new FileMetadataBag();
     }
 
     /**
@@ -37,11 +41,13 @@ class FileMetadataReader implements FileMetadataReaderInterface
      */
     public function all(\SplFileInfo $file)
     {
-        $metadata = [];
+        $metadataArray = [];
         foreach ($this->adapters as $adapter) {
-            $metadata[$adapter->getName()] = $adapter->all($file);
+            $metadataArray[$adapter->getName()] = $adapter->all($file);
         }
 
-        return $metadata;
+        $this->metadata->add($metadataArray);
+
+        return $this->metadata->all();
     }
 }
