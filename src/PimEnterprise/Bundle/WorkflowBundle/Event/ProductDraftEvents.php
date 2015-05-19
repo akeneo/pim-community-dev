@@ -19,24 +19,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 class ProductDraftEvents
 {
     /**
-     * This event is dispatched before product draft is flushed to database
-     *
-     * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
-     *
-     * @staticvar string
-     */
-    const PRE_SAVE = 'pimee_workflow.product_draft.pre_save';
-
-    /**
-     * This event is dispatched after product draft is flushed to database
-     *
-     * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
-     *
-     * @staticvar string
-     */
-    const POST_SAVE = 'pimee_workflow.product_draft.post_save';
-
-    /**
      * This event is dispatched before product draft is applied a product
      *
      * The event listener receives an Symfony\Component\EventDispatcher\GenericEvent instance
