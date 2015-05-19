@@ -390,7 +390,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             );
         }
         $script = file_get_contents($filepath);
-        $this->getSession()
+        $result = $this->getSession()
             ->getDriver()
             ->getWebDriverSession()
             ->execute(
@@ -399,6 +399,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     'args' => $args
                 ]
             );
+
+        assertTrue($result, $result);
     }
 
     /**

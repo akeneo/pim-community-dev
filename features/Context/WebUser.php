@@ -599,9 +599,8 @@ class WebUser extends RawMinkContext
      * @param string $value
      * @param string $language
      *
-     *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
-     * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
+     * @When /^I change the "(?P<field>[^"\$\€]*)" to "([^"]*)"$/
      * @When /^I change the (?P<language>\w+) (?P<field>\w+) to "(?P<value>[^"]*)"$/
      * @When /^I change the (?P<field>\w+) to an invalid value$/
      */
@@ -621,6 +620,18 @@ class WebUser extends RawMinkContext
 
         $this->getCurrentPage()->fillField($field, $value);
         $this->wait();
+    }
+
+    /**
+     * @param string $currency
+     * @param string $attribute
+     * @param string $value
+     *
+     * @When /^I change the "(\$|\€) ([^"]*)" to "([^"]*)"$/
+     */
+    public function iChangeThePriceFieldTo($currency, $attribute, $value)
+    {
+        $this->getMainContext()->execute('form/fill-price-field', $currency, $attribute, $value);
     }
 
     /**
