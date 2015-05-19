@@ -45,7 +45,7 @@ define(
                     .then(_.bind(function (attributeGroups) {
                         this.state.set('attributeGroups', attributeGroups);
 
-                        if (undefined === this.state.get('current')) {
+                        if (undefined === this.state.get('current') || !attributeGroups[this.state.get('current')]) {
                             this.state.set('current', _.first(_.keys(attributeGroups)));
                         }
 
@@ -62,6 +62,10 @@ define(
                 return this.state.get('current');
             },
             getCurrentAttributeGroup: function () {
+                if (!this.state.get('attributeGroups')[this.state.get('current')]) {
+                    this.state.set('current', _.first(_.keys(this.state.get('attributeGroups'))));
+                }
+
                 return this.state.get('attributeGroups')[this.state.get('current')];
             },
             setCurrent: function (current) {

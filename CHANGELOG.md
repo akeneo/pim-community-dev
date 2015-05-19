@@ -119,6 +119,7 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
 - Remove Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface replaced by Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface
 - Remove Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface
+- Remove `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 
 # 1.3.x
 

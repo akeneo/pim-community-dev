@@ -6,6 +6,7 @@ define(
         'underscore',
         'backbone',
         'oro/mediator',
+        'routing',
         'pim/form',
         'pim/field-manager',
         'pim/entity-manager',
@@ -14,13 +15,16 @@ define(
         'pim/attribute-group-manager',
         'pim/user-context',
         'pim/security-context',
-        'text!pim/template/product/tab/attributes'
+        'text!pim/template/product/tab/attributes',
+        'pim/dialog',
+        'oro/messenger'
     ],
     function (
         $,
         _,
         Backbone,
         mediator,
+        Routing,
         BaseForm,
         FieldManager,
         EntityManager,
@@ -29,7 +33,9 @@ define(
         AttributeGroupManager,
         UserContext,
         SecurityContext,
-        formTemplate
+        formTemplate,
+        Dialog,
+        messenger
     ) {
         var FormView = BaseForm.extend({
             template: _.template(formTemplate),
@@ -180,26 +186,44 @@ define(
                 var product = this.getData();
                 var fields = FieldManager.getFields();
 
-                if (this.extensions['add-attribute']) {
-                    this.extensions['add-attribute'].updateOptionalAttributes(product);
-                }
+                Dialog.confirm(
+                    _.__('pim_enrich.confirmation.delete.product_attribute'),
+                    _.__('pim_enrich.confirmation.delete_item'),
+                    _.bind(function () {
+                        EntityManager.getRepository('attribute').find(attributeCode).done(_.bind(function (attribute) {
+                            $.ajax({
+                                type: 'DELETE',
+                                url: Routing.generate(
+                                    'pim_enrich_product_remove_attribute_rest',
+                                    {
+                                        productId: this.getData().meta.id,
+                                        attributeId: attribute.id
+                                    }
+                                ),
+                                contentType: 'application/json'
+                            }).then(_.bind(function () {
+                                if (this.extensions['add-attribute']) {
+                                    this.extensions['add-attribute'].updateOptionalAttributes(product);
+                                }
 
-                delete product.values[attributeCode];
-                delete fields[attributeCode];
-                /* jshint sub:true */
-                this.extensions['copy'].generateCopyFields();
-                /* jscs:enable requireDotNotation */
+                                delete product.values[attributeCode];
+                                delete fields[attributeCode];
+                                /* jshint sub:true */
+                                this.extensions['copy'].generateCopyFields();
+                                /* jscs:enable requireDotNotation */
 
-                this.setData(product);
+                                this.setData(product);
 
-                this.getRoot().model.trigger('change');
-            },
-            getValuesData: function () {
-                // We will have to decide if we keep this behavior
-                // (not sure if getting the field value is the good strategy)
-                /* global console */
-                console.log(this.getData().values);
-                return this.getData().values;
+                                this.getRoot().model.trigger('change');
+                            }, this)).fail(function () {
+                                messenger.notificationFlashMessage(
+                                    'error',
+                                    _.__('pim_enrich.form.product.flash.attribute_deletion_error')
+                                );
+                            });
+                        }, this));
+                    }, this)
+                );
             },
             setScope: function (scope, options) {
                 UserContext.set('catalogScope', scope, options);
