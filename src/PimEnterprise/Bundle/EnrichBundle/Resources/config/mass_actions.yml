@@ -67,7 +67,7 @@ services:
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@oro_user.manager'
             - '@security.context'
@@ -78,7 +78,7 @@ services:
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
             - '@oro_user.manager'
             - '@security.context'
