@@ -55,7 +55,6 @@ define(
             },
             addSaveButton: function () {
                 if (!('save-buttons' in this.parent.extensions)) {
-
                     return;
                 }
                 var objectSet = this.model.get('objectSet');

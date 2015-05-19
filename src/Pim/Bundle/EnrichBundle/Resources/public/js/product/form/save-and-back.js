@@ -36,15 +36,23 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             saveAndCreate: function () {
-                this.parent.extensions.save.save({ silent: true }).done(_.bind(function () {
-                    messenger.addMessage(
-                        'success',
-                        _.__('pim_enrich.entity.product.info.update_successful'),
-                        {hashNavEnabled: true}
-                    );
-                    var navigation = Navigation.getInstance();
-                    navigation.setLocation(Routing.generate('pim_enrich_product_index'));
-                }, this));
+                this.parent.extensions.save
+                    .save({silent: true})
+                    .done(_.bind(function () {
+                        messenger.addMessage(
+                            'success',
+                            _.__('pim_enrich.entity.product.info.update_successful'),
+                            {hashNavEnabled: true}
+                        );
+                        var navigation = Navigation.getInstance();
+                        navigation.setLocation(Routing.generate('pim_enrich_product_index'));
+                    }, this))
+                    .fail(function (response) {
+                        messenger.notificationFlashMessage(
+                            'error',
+                            _.__('pim_enrich.entity.product.info.update_failed')
+                        );
+                    });
             }
         });
     }
