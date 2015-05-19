@@ -46,7 +46,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Available attribute
     And I check the "Available" switch
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Available of "boots" should be "true"
     And attribute Available of "sneakers" should be "true"
     When I am on the products page
@@ -55,7 +55,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Available attribute
     And I uncheck the "Available" switch
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Available of "boots" should be "false"
     And attribute Available of "sandals" should be "false"
     And attribute Available of "sneakers" should be "false"
@@ -66,7 +66,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Date attribute
     And I change the Date to "2015-01-01"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Date of "boots" should be "2015-01-01"
     And attribute Date of "sneakers" should be "2015-01-01"
     When I am on the products page
@@ -74,7 +74,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Date attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Date of "boots" should be ""
     And attribute Date of "sandals" should be ""
     And attribute Date of "sneakers" should be ""
@@ -103,7 +103,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the File attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the file "file" of products boots, sandals and sneakers should be ""
     When I am on the products page
     And I mass-edit products boots, sandals and sneakers
@@ -120,14 +120,14 @@ Feature: Validate editing common attributes of multiple products
     And I display the Side view attribute
     And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the file "side_view" of products boots and sneakers should be "SNKRS-1R.png"
     When I am on the products page
     And I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Side view attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the file "side_view" of products boots, sandals and sneakers should be ""
     When I am on the products page
     And I mass-edit products boots, sandals and sneakers
@@ -144,14 +144,14 @@ Feature: Validate editing common attributes of multiple products
     And I display the Length attribute
     And I change the Length to "10"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "Length" of products boots and sneakers should be "10"
     When I am on the products page
     And I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Length attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the metric "Length" of products boots, sandals and sneakers should be ""
     When I am on the products page
     And I mass-edit products boots, sandals and sneakers
@@ -170,7 +170,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Weather conditions attribute
     And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       | dry   |
@@ -180,7 +180,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Weather conditions attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
       |       |
@@ -191,14 +191,14 @@ Feature: Validate editing common attributes of multiple products
     And I display the Manufacturer attribute
     And I change the "Manufacturer" to "Converse"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the option "manufacturer" of products boots and sneakers should be "Converse"
     When I am on the products page
     And I mass-edit products boots, sandals and sneakers
     And I choose the "Edit common attributes" operation
     And I display the Manufacturer attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the option "manufacturer" of products boots, sandals and sneakers should be ""
 
   Scenario: Successfully mass edit a number attribute
@@ -207,7 +207,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Number in stock attribute
     And I change the "Number in stock" to "10"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute number_in_stock of "boots" should be "10"
     And attribute number_in_stock of "sneakers" should be "10"
     When I am on the products page
@@ -215,7 +215,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Number in stock attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute number_in_stock of "boots" should be ""
     And attribute number_in_stock of "sandals" should be ""
     And attribute number_in_stock of "sneakers" should be ""
@@ -238,7 +238,7 @@ Feature: Validate editing common attributes of multiple products
     And I change the "$ Price" to "10"
     And I change the "€ Price" to "15"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products boots and sneakers should be:
       | amount | currency |
       | 10     | USD      |
@@ -248,7 +248,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Price attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the prices "Price" of products boots, sandals and sneakers should be:
       | amount | currency |
       |        | USD      |
@@ -273,7 +273,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Comment attribute
     And I change the "Comment" to "Very nice comment"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Comment of "boots" should be "Very nice comment"
     And attribute Comment of "sneakers" should be "Very nice comment"
     When I am on the products page
@@ -281,7 +281,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Comment attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Comment of "boots" should be ""
     And attribute Comment of "sandals" should be ""
     And attribute Comment of "sneakers" should be ""
@@ -302,7 +302,7 @@ Feature: Validate editing common attributes of multiple products
     And I display the Info attribute
     And I change the "Info" to "Very useful information"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Info of "boots" should be "Very useful information"
     And attribute Info of "sneakers" should be "Very useful information"
     When I am on the products page
@@ -310,7 +310,7 @@ Feature: Validate editing common attributes of multiple products
     And I choose the "Edit common attributes" operation
     And I display the Info attribute
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then attribute Info of "boots" should be ""
     And attribute Info of "sandals" should be ""
     And attribute Info of "sneakers" should be ""

@@ -19,7 +19,7 @@ Feature: Classify many products at once
     And I click on the "Winter collection" category
     And I click on the "Summer collection" category
     And I move on to the next step
-    And I wait for the "add_product_value" mass-edit job to finish
+    And I wait for the "classify" mass-edit job to finish
     When I am on the products page
     And I select the "2014 collection" tree
     Then I should see "Summer collection (2)"
