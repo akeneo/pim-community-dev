@@ -23,7 +23,7 @@ function (currencySymbol, attributeLabel, value) {
         }
     }
 
-    if ($input && $input.length) {
+    if ($input && $input.length && $input.is(':visible')) {
         $input.val(value).trigger('change');
         return true;
     }
