@@ -4,13 +4,15 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 class AttributeOptionProcessorSpec extends ObjectBehavior
 {
@@ -18,6 +20,7 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
         UpdaterInterface $optionUpdater,
+        ValidatorInterface $optionValidator,
         StepExecution $stepExecution
     ) {
         $optionClass = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
@@ -25,6 +28,7 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
             $arrayConverter,
             $optionRepository,
             $optionUpdater,
+            $optionValidator,
             $optionClass
         );
         $this->setStepExecution($stepExecution);
@@ -46,7 +50,9 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
         $arrayConverter,
         $optionRepository,
         $optionUpdater,
-        AttributeOptionInterface $option
+        $optionValidator,
+        AttributeOptionInterface $option,
+        ConstraintViolationListInterface $violationList
     ) {
         $optionRepository->getIdentifierProperties()->willReturn(['attribute', 'code']);
         $optionRepository->findOneByIdentifier(Argument::any())->willReturn($option);
@@ -56,7 +62,13 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
             ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
-            ->update($option, ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])->shouldBeCalled();
+            ->update($option, ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
+            ->shouldBeCalled();
+
+        $option->getAttribute()->willReturn(null);
+        $optionValidator
+            ->validate($option)
+            ->willReturn($violationList);
 
         $this
             ->process(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
@@ -66,7 +78,9 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     function it_creates_an_attribute_option(
         $arrayConverter,
         $optionRepository,
-        $optionUpdater
+        $optionUpdater,
+        $optionValidator,
+        ConstraintViolationListInterface $violationList
     ) {
         $optionRepository->getIdentifierProperties()->willReturn(['attribute', 'code']);
         $optionRepository->findOneByIdentifier(Argument::any())->willReturn(null);
@@ -75,14 +89,19 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
             ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
-            ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])->shouldBeCalled();
+            ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
+            ->shouldBeCalled();
+
+        $optionValidator
+            ->validate(Argument::any())
+            ->willReturn($violationList);
 
         $this
             ->process(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
             ->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeOption');
     }
 
-    function it_skips_an_attribute_option_when_data_is_invalid(
+    function it_skips_an_attribute_option_when_update_fails(
         $arrayConverter,
         $optionRepository,
         $optionUpdater
@@ -95,7 +114,38 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
             ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
         $optionUpdater
             ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
-            ->willThrow(new BusinessValidationException(new ConstraintViolationList()));
+            ->willThrow(new \InvalidArgumentException('attribute does not exists'));
+
+        $this
+            ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
+            ->during(
+                'process',
+                [['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]]
+            );
+    }
+
+    function it_skips_an_attribute_option_when_object_is_invalid(
+        $arrayConverter,
+        $optionRepository,
+        $optionUpdater,
+        $optionValidator,
+        AttributeOptionInterface $option
+    ) {
+        $optionRepository->getIdentifierProperties()->willReturn(['attribute', 'code']);
+        $optionRepository->findOneByIdentifier(Argument::any())->willReturn($option);
+
+        $arrayConverter
+            ->convert(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
+            ->willReturn(['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12]);
+        $optionUpdater
+            ->update(Argument::any(), ['attribute' => 'myattribute', 'code' => 'mycode', 'sort_order' => 12])
+            ->shouldBeCalled();
+
+        $violation = new ConstraintViolation('There is a small problem with option code', 'foo', [], 'bar', 'code', 'mycode');
+        $violations = new ConstraintViolationList([$violation]);
+        $optionValidator
+            ->validate($option)
+            ->willReturn($violations);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')

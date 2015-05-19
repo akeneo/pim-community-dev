@@ -56,7 +56,6 @@ services:
         class: %pim_catalog.updater.product.class%
         arguments:
             - @pim_catalog.updater.product_field
-            - @pim_validator
 
     pim_catalog.updater.product_field:
         class: %pim_catalog.updater.product_field.class%
@@ -76,7 +75,6 @@ services:
         class: %pim_catalog.updater.attribute_option.class%
         arguments:
             - @pim_catalog.repository.attribute
-            - @validator
 
     # Setters
     pim_catalog.updater.setter.registry:

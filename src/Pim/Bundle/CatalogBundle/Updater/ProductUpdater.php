@@ -2,44 +2,90 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Updates and validates a product
+ * Updates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements ProductUpdaterInterface
+class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
 {
     /** @var ProductFieldUpdaterInterface */
     protected $productFieldUpdater;
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
     /**
      * @param ProductFieldUpdaterInterface $productFieldUpdater
-     * @param ValidatorInterface           $validator
      */
-    public function __construct(
-        ProductFieldUpdaterInterface $productFieldUpdater,
-        ValidatorInterface $validator
-    ) {
+    public function __construct(ProductFieldUpdaterInterface $productFieldUpdater)
+    {
         $this->productFieldUpdater = $productFieldUpdater;
-        $this->validator = $validator;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws BusinessValidationException
+     * {
+     *      "name": [{
+     *          "locale": "fr_FR",
+     *          "scope":  null,
+     *          "data":  "T-shirt super beau",
+     *      }],
+     *      "description": [
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "mobile",
+     *               "data":   "My description"
+     *           },
+     *           {
+     *               "locale": "fr_FR",
+     *               "scope":  "mobile",
+     *               "data":   "Ma description mobile"
+     *           },
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "ecommerce",
+     *               "data":   "My description for the website"
+     *           },
+     *      ],
+     *      "price": [
+     *           {
+     *               "locale": null,
+     *               "scope":  ecommerce,
+     *               "data":   [
+     *                   {"data": 10, "currency": "EUR"},
+     *                   {"data": 24, "currency": "USD"},
+     *                   {"data": 20, "currency": "CHF"}
+     *               ]
+     *           }
+     *           {
+     *               "locale": null,
+     *               "scope":  mobile,
+     *               "data":   [
+     *                   {"data": 11, "currency": "EUR"},
+     *                   {"data": 25, "currency": "USD"},
+     *                   {"data": 21, "currency": "CHF"}
+     *               ]
+     *           }
+     *      ],
+     *      "length": [{
+     *          "locale": "en_US",
+     *          "scope":  "mobile",
+     *          "data":   {"data": "10", "unit": "CENTIMETER"}
+     *      }],
+     *      "enabled": true,
+     *      "categories": ["tshirt", "men"],
+     *      "associations": {
+     *          "XSELL": {
+     *              "groups": ["akeneo_tshirt", "oro_tshirt"],
+     *              "product": ["AKN_TS", "ORO_TSH"]
+     *          }
+     *      }
+     * }
      */
     public function update($product, array $data, array $options = [])
     {
@@ -52,32 +98,15 @@ class ProductUpdater implements ProductUpdaterInterface
             );
         }
 
-        $updateViolations = new ConstraintViolationList();
-        try {
-            foreach ($data as $field => $values) {
-                if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
-                    $this->productFieldUpdater->setData($product, $field, $values, []);
-                } else {
-                    $this->updateProductValues($product, $field, $values);
-                }
+        foreach ($data as $field => $values) {
+            if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
+                $this->updateProductFields($product, $field, $values);
+            } else {
+                $this->updateProductValues($product, $field, $values);
             }
-        } catch (\InvalidArgumentException $e) {
-            $setViolation = new ConstraintViolation(
-                $e->getMessage(),
-                $e->getMessage(),
-                [],
-                $product,
-                null,
-                null
-            );
-            $updateViolations->add($setViolation);
         }
 
-        $validatorViolations = $this->validator->validate($product);
-        $updateViolations->addAll($validatorViolations);
-        if ($updateViolations->count() > 0) {
-            throw new BusinessValidationException($updateViolations);
-        }
+        return $this;
     }
 
     /**
@@ -119,6 +148,18 @@ class ProductUpdater implements ProductUpdaterInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Sets the field
+     *
+     * @param ProductInterface $product
+     * @param string           $field
+     * @param mixed            $value
+     */
+    protected function updateProductFields(ProductInterface $product, $field, $value)
+    {
+        $this->productFieldUpdater->setData($product, $field, $value);
     }
 
     /**

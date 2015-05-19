@@ -23,7 +23,7 @@ class ProductUpdaterSpec extends ObjectBehavior
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\UpdaterInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\UpdaterInterface');
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_product()

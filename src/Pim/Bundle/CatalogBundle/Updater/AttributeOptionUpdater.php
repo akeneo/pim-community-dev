@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
+use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Updates and validates an attribute option
@@ -22,17 +19,12 @@ class AttributeOptionUpdater implements UpdaterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ValidatorInterface */
-    protected $validator;
-
     /**
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param ValidatorInterface           $validator
      */
-    public function __construct(AttributeRepositoryInterface $attributeRepository, ValidatorInterface $validator)
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
     {
         $this->attributeRepository = $attributeRepository;
-        $this->validator           = $validator;
     }
 
     /**
@@ -49,8 +41,6 @@ class AttributeOptionUpdater implements UpdaterInterface
      *         'fr_FR': '210 x 1219 mm'
      *     }
      * }
-     *
-     * @throws BusinessValidationException
      */
     public function update($attributeOption, array $data, array $options = [])
     {
@@ -63,37 +53,13 @@ class AttributeOptionUpdater implements UpdaterInterface
             );
         }
 
-        // TODO: ugly fix to workaround issue with "attribute.group.code: This value should not be blank."
-        // in case of existing option, attribute is a proxy, attribute group too, the validated group code is null
-        ($attributeOption->getAttribute() !== null) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
-
         $isNew = $attributeOption->getId() === null;
         $readOnlyFields = ['attribute', 'code'];
-        $updateViolations = new ConstraintViolationList();
         foreach ($data as $field => $data) {
             $isReadOnlyField = in_array($field, $readOnlyFields);
             if ($isNew || !$isReadOnlyField) {
-                try {
-                    $this->setData($attributeOption, $field, $data);
-                } catch (\InvalidArgumentException $e) {
-                    $setViolation = new ConstraintViolation(
-                        $e->getMessage(),
-                        $e->getMessage(),
-                        [],
-                        $attributeOption,
-                        null,
-                        null
-                    );
-                    $updateViolations->add($setViolation);
-                }
+                $this->setData($attributeOption, $field, $data);
             }
-        }
-
-        $validatorViolations = $this->validator->validate($attributeOption);
-        $updateViolations->addAll($validatorViolations);
-
-        if ($updateViolations->count() > 0) {
-            throw new BusinessValidationException($updateViolations);
         }
 
         return $this;

@@ -10,6 +10,7 @@ services:
             - '@pim_base_connector.array_converter.flat.attribute_option'
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
+            - '@validator'
             - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.denormalization.attribute_option.structured:
@@ -18,6 +19,7 @@ services:
             - '@pim_base_connector.array_converter.structured.attribute_option'
             - '@pim_catalog.repository.attribute_option'
             - '@pim_catalog.updater.attribute_option'
+            - '@validator'
             - %pim_catalog.entity.attribute_option.class%
 
     pim_base_connector.processor.denormalization.product.flat:
@@ -27,7 +29,7 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.updater.product'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
     pim_base_connector.processor.denormalization.product_association.flat:
@@ -35,7 +37,7 @@ services:
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_serializer'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.product.class%
             - 'csv'

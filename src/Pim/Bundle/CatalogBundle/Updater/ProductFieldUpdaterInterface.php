@@ -21,7 +21,7 @@ interface ProductFieldUpdaterInterface
      * @param mixed            $data    The data to set
      * @param array            $options Options to pass to the setter
      *
-     * @return ProductUpdaterInterface
+     * @return ProductFieldUpdaterInterface
      */
     public function setData(ProductInterface $product, $field, $data, array $options = []);
 
@@ -33,7 +33,7 @@ interface ProductFieldUpdaterInterface
      * @param mixed            $data    The data to add
      * @param array            $options Options to pass to the adder
      *
-     * @return ProductUpdaterInterface
+     * @return ProductFieldUpdaterInterface
      */
     public function addData(ProductInterface $product, $field, $data, array $options = []);
 
@@ -46,7 +46,7 @@ interface ProductFieldUpdaterInterface
      * @param string           $toField     The field to update
      * @param array            $options     Options to pass to the copier
      *
-     * @return ProductUpdaterInterface
+     * @return ProductFieldUpdaterInterface
      */
     public function copyData(
         ProductInterface $fromProduct,
@@ -64,7 +64,7 @@ interface ProductFieldUpdaterInterface
      * @param mixed            $data    The data to remove
      * @param array            $options Options to pass to the remover
      *
-     * @return ProductUpdaterInterface
+     * @return ProductFieldUpdaterInterface
      */
     public function removeData(ProductInterface $product, $field, $data, array $options = []);
 }

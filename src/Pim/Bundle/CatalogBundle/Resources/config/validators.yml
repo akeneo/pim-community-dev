@@ -191,7 +191,7 @@ services:
             - [ 'addMetadataFactory', [ '@pim_catalog.validator.mapping.product_value_metadata_factory' ] ]
             - [ 'addMetadataFactory', [ '@validator.mapping.class_metadata_factory' ] ]
 
-    pim_validator:
+    pim_catalog.validator.product:
         class: %validator.class%
         arguments:
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
@@ -199,3 +199,7 @@ services:
             - '@translator.default'
             - %validator.translation_domain%
             - []
+
+    # deprecated will be removed in 1.5, please use pim_catalog.validator.product
+    pim_validator:
+        alias: pim_catalog.validator.product

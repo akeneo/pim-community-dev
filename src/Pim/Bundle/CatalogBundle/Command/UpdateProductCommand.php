@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Command;
 
+use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -227,11 +227,11 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProductUpdaterInterface
+     * @return UpdaterInterface
      */
     protected function getUpdater()
     {
-        return $this->getContainer()->get('pim_catalog.updater.product');
+        return $this->getContainer()->get('pim_catalog.updater.product_field');
     }
 
     /**

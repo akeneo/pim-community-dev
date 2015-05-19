@@ -7,7 +7,7 @@ services:
         class: %pim_enrich.mass_edit.temporary_file.cleaner.class%
         arguments:
             - '@pim_catalog.updater.product'
-            - '@pim_validator'
+            - '@pim_catalog.validator.product'
             - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
 

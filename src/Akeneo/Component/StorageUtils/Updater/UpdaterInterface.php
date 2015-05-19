@@ -1,11 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater;
-
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
+namespace Akeneo\Component\StorageUtils\Updater;
 
 /**
- * Updates and validates an object
+ * Updates an object
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -20,10 +18,9 @@ interface UpdaterInterface
      * @param array  $data    The data to update
      * @param array  $options The options to use
      *
-     * @throws BusinessValidationException
      * @throws \InvalidArgumentException
      *
-     * @return object
+     * @return UpdaterInterface
      */
     public function update($object, array $data, array $options = []);
 }
