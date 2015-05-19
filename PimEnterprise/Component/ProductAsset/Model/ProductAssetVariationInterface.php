@@ -32,11 +32,21 @@ interface ProductAssetVariationInterface
     public function getAsset();
 
     /**
-     * @param ProductAssetInterface $asset
+     * @return LocaleInterface
+     */
+    public function getLocale();
+
+    /**
+     * @return ProductAssetReferenceInterface
+     */
+    public function getReference();
+
+    /**
+     * @param ProductAssetReferenceInterface $reference
      *
      * @return ProductAssetVariationInterface
      */
-    public function setAsset(ProductAssetInterface $asset);
+    public function setReference(ProductAssetReferenceInterface $reference);
 
     /**
      * @return ChannelInterface
@@ -49,18 +59,6 @@ interface ProductAssetVariationInterface
      * @return ProductAssetVariationInterface
      */
     public function setChannel(ChannelInterface $channel);
-
-    /**
-     * @return LocaleInterface
-     */
-    public function getLocale();
-
-    /**
-     * @param LocaleInterface $locale
-     *
-     * @return ProductAssetVariationInterface
-     */
-    public function setLocale(LocaleInterface $locale);
 
     /**
      * @return FileInterface

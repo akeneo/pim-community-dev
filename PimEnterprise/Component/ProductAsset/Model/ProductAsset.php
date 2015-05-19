@@ -31,11 +31,8 @@ class ProductAsset implements ProductAssetInterface
     /** @var string */
     protected $description;
 
-    /** @var FileInterface */
-    protected $reference;
-
-    /** @var ArrayCollection of ProductAssetVariationInterface */
-    protected $variations;
+    /** @var ArrayCollection of ProductAssetReferenceInterface */
+    protected $references;
 
     /** @var bool */
     protected $isEnabled;
@@ -51,7 +48,10 @@ class ProductAsset implements ProductAssetInterface
 
     public function __construct()
     {
-        $this->variations = new ArrayCollection();
+        $this->references = new ArrayCollection();
+        $this->isEnabled = true;
+        $this->createdAt = new \Datetime();
+        $this->updatedAt = new \Datetime();
     }
 
     /**
@@ -101,19 +101,73 @@ class ProductAsset implements ProductAssetInterface
     /**
      * {@inheritdoc}
      */
-    public function getReference()
+    public function getReferences()
     {
-        return $this->reference;
+        return $this->references;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setReference(FileInterface $reference)
+    public function setReferences(ArrayCollection $references)
     {
-        $this->reference = $reference;
+        $this->references = $references;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addReference(ProductAssetReferenceInterface $reference)
+    {
+        if (!$this->references->contains($reference)) {
+            $this->references->add($reference);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeReference(ProductAssetReferenceInterface $reference)
+    {
+        if ($this->references->contains($reference)) {
+            $this->references->removeElement($reference);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getReference(LocaleInterface $locale = null)
+    {
+        if ($this->getReferences()->isEmpty()) {
+            return null;
+        }
+
+        if (null === $locale) {
+            return $this->getReferences()->first();
+        }
+
+        foreach ($this->getReferences() as $reference) {
+            if ($locale === $reference->getLocale()) {
+                return $reference;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasReference(LocaleInterface $locale = null)
+    {
+        return null !== $this->getReference($locale);
     }
 
     /**
@@ -121,48 +175,23 @@ class ProductAsset implements ProductAssetInterface
      */
     public function getVariations()
     {
-        return $this->variations;
-    }
+        $variations = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setVariations(ArrayCollection $variations)
-    {
-        $this->variations = $variations;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addVariation(ProductAssetVariationInterface $variation)
-    {
-        if (!$this->variations->contains($variation)) {
-            $this->variations->add($variation);
+        foreach ($this->getReferences() as $reference) {
+            $variations = array_merge($variations, $reference->getVariations()->toArray());
         }
 
-        return $this;
+
+        return $variations;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function removeVariation(ProductAssetVariationInterface $variation)
-    {
-        if ($this->variations->contains($variation)) {
-            $this->variations->removeElement($variation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getVariation(ChannelInterface $channel, LocaleInterface $locale)
+    public function getVariation(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         foreach ($this->getVariations() as $variation) {
-            if ($channel === $variation->getChannel() && $locale === $variation->getLocale()) {
+            if ($variation->getChannel() === $channel && $variation->getLocale() === $locale) {
                 return $variation;
             }
         }
@@ -173,7 +202,7 @@ class ProductAsset implements ProductAssetInterface
     /**
      * {@inheritdoc}
      */
-    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale)
+    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale = null)
     {
         return null !== $this->getVariation($channel, $locale);
     }
@@ -192,6 +221,8 @@ class ProductAsset implements ProductAssetInterface
     public function setEnabled($isEnabled)
     {
         $this->isEnabled = $isEnabled;
+
+        return $this;
     }
 
     /**
@@ -270,5 +301,35 @@ class ProductAsset implements ProductAssetInterface
     public function __toString()
     {
         return $this->getCode();
+    }
+
+    /**
+     * TODO: check this in the validation instead
+     * Assert that:
+     *   - The unique reference of an asset is not localized
+     *   - All the references of an asset that contains several references are localized
+     *
+     * @throws \LogicException
+     */
+    protected function assertValidReferences()
+    {
+        $nbReferences  = $this->getReferences()->count();
+        $nbLocalizable = 0;
+
+        foreach ($this->getReferences() as $reference) {
+            if (null !== $reference->getLocale()) {
+                $nbLocalizable++;
+            }
+        }
+
+        if (1 === $nbReferences && 0 !== $nbLocalizable) {
+            throw new \LogicException('The unique reference of an asset can not be localized.');
+        }
+
+        if ($nbReferences > 1 && $nbReferences !== $nbLocalizable) {
+            throw new \LogicException(
+                'All references of an asset that contains several references must be localized.'
+            );
+        }
     }
 }

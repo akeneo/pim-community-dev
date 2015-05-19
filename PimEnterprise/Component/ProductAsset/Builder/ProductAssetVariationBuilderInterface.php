@@ -11,38 +11,39 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
- * Builds variations related to an asset
+ * Builds variations related to an asset reference
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface ProductAssetVariationBuilderInterface
 {
     /**
-     * @param ProductAssetInterface $asset
+     * @param ProductAssetReferenceInterface $reference
      *
      * @return ProductAssetVariationInterface[]
      */
-    public function buildAll(ProductAssetInterface $asset);
+    public function buildAll(ProductAssetReferenceInterface $reference);
 
     /**
-     * @param ProductAssetInterface $asset
+     * @param ProductAssetReferenceInterface $reference
      *
      * @return ProductAssetVariationInterface[]
      */
-    public function buildMissing(ProductAssetInterface $asset);
+    public function buildMissing(ProductAssetReferenceInterface $reference);
 
     /**
-     * @param ProductAssetInterface $asset
+     * @param ProductAssetReferenceInterface $reference
      * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
+     *
+     * @throws \LogicException in case it's impossible to build the variation
      *
      * @return ProductAssetVariationInterface
      */
-    public function buildOne(ProductAssetInterface $asset, ChannelInterface $channel, LocaleInterface $locale);
+    public function buildOne(ProductAssetReferenceInterface $reference, ChannelInterface $channel);
 }

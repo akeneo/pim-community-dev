@@ -53,58 +53,65 @@ interface ProductAssetInterface extends ReferenceDataInterface
     public function setDescription($description);
 
     /**
-     * @return FileInterface
+     * @return ArrayCollection
      */
-    public function getReference();
+    public function getReferences();
 
     /**
-     * @param FileInterface $reference
+     * @param ArrayCollection $references
      *
      * @return ProductAssetInterface
      */
-    public function setReference(FileInterface $reference);
+    public function setReferences(ArrayCollection $references);
 
     /**
-     * @return ArrayCollection
+     * @param ProductAssetReferenceInterface $reference
+     *
+     * @return ProductAssetInterface
+     */
+    public function addReference(ProductAssetReferenceInterface $reference);
+
+    /**
+     * @param ProductAssetReferenceInterface $reference
+     *
+     * @return ProductAssetInterface
+     */
+    public function removeReference(ProductAssetReferenceInterface $reference);
+
+    /**
+     * @param LocaleInterface|null $locale
+     *
+     * @return ProductAssetReferenceInterface|null
+     */
+    public function getReference(LocaleInterface $locale = null);
+
+    /**
+     * @param LocaleInterface|null $locale
+     *
+     * @return bool
+     */
+    public function hasReference(LocaleInterface $locale = null);
+
+    /**
+     * @return ProductAssetVariationInterface[]
      */
     public function getVariations();
 
     /**
-     * @param ArrayCollection $variations
-     *
-     * @return ProductAssetInterface
-     */
-    public function setVariations(ArrayCollection $variations);
-
-    /**
-     * @param ProductAssetVariationInterface $variation
-     *
-     * @return ProductAssetInterface
-     */
-    public function addVariation(ProductAssetVariationInterface $variation);
-
-    /**
-     * @param ProductAssetVariationInterface $variation
-     *
-     * @return ProductAssetInterface
-     */
-    public function removeVariation(ProductAssetVariationInterface $variation);
-
-    /**
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
+     * @param ChannelInterface     $channel
+     * @param LocaleInterface|null $locale
      *
      * @return ProductAssetVariationInterface|null
      */
-    public function getVariation(ChannelInterface $channel, LocaleInterface $locale);
+    public function getVariation(ChannelInterface $channel, LocaleInterface $locale = null);
 
     /**
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
+     * @param ChannelInterface     $channel
+     * @param LocaleInterface|null $locale
      *
      * @return bool
      */
-    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale);
+    public function hasVariation(ChannelInterface $channel, LocaleInterface $locale = null);
 
     /**
      * @return bool
