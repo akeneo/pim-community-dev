@@ -9,7 +9,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Applier\ApplierInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -26,7 +26,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        ApplierInterface $applier,
+        ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         MediaManager $mediaManager
     ) {

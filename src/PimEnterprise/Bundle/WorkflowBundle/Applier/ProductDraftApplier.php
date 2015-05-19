@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class DraftApplier implements ApplierInterface
+class ProductDraftApplier implements ProductDraftApplierInterface
 {
     /** @var ProductUpdater */
     protected $productUpdater;

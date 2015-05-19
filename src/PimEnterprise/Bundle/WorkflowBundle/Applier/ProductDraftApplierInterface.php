@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface ApplierInterface
+interface ProductDraftApplierInterface
 {
     /**
      * Apply a product

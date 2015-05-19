@@ -10,7 +10,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class DraftApplierSpec extends ObjectBehavior
+class ProductDraftApplierSpec extends ObjectBehavior
 {
     function let(ProductUpdater $productUpdater, EventDispatcherInterface $dispatcher)
     {
@@ -19,7 +19,7 @@ class DraftApplierSpec extends ObjectBehavior
 
     function it_is_a_applier()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Applier\ApplierInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface');
     }
 
     function it_does_not_apply_a_draft_without_values(
