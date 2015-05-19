@@ -43,34 +43,41 @@ define(
 
                 var $elem = this.$('input.select-field');
 
-                $elem.select2('destroy').select2({
-                    ajax: {
-                        url: Routing.generate(
-                            'pim_ui_ajaxentity_list',
-                            {
-                                'class': 'PimCatalogBundle:AttributeOption',
-                                'dataLocale': this.context.locale,
-                                'collectionId': this.attribute.id,
-                                'options': {'type': 'code'}
+                this.getChoiceUrl().done(function (choiceUrl) {
+                    $elem.select2('destroy').select2({
+                        ajax: {
+                            url: choiceUrl,
+                            cache: true,
+                            data: function (term) {
+                                return {search: term};
+                            },
+                            results: function (data) {
+                                return data;
                             }
-                        ),
-                        cache: true,
-                        data: function (term) {
-                            return {search: term};
                         },
-                        results: function (data) {
-                            return data;
-                        }
-                    },
-                    initSelection: function (element, callback) {
-                        var id = $(element).val();
-                        if (id !== '') {
-                            callback({'id': id, 'text': id});
-                        }
-                    },
-                    placeholder: ' ',
-                    allowClear: true
+                        initSelection: function (element, callback) {
+                            var id = $(element).val();
+                            if (id !== '') {
+                                callback({'id': id, 'text': id});
+                            }
+                        },
+                        placeholder: ' ',
+                        allowClear: true
+                    });
                 });
+            },
+            getChoiceUrl: function () {
+                return $.Deferred().resolve(
+                    Routing.generate(
+                        'pim_ui_ajaxentity_list',
+                        {
+                            'class': 'PimCatalogBundle:AttributeOption',
+                            'dataLocale': this.context.locale,
+                            'collectionId': this.attribute.id,
+                            'options': {'type': 'code'}
+                        }
+                    )
+                ).promise();
             },
             updateModel: function (event) {
                 var data = event.currentTarget.value;

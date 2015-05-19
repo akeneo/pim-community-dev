@@ -33,6 +33,7 @@ define(['jquery', 'underscore', 'pim/entity-manager'], function ($, _, EntityMan
                 case 'pim_catalog_file':
                 case 'pim_catalog_image':
                 case 'pim_catalog_simpleselect':
+                case 'pim_reference_data_simpleselect':
                 case 'pim_catalog_identifier':
                     return null;
                 case 'pim_catalog_metric':
@@ -41,6 +42,7 @@ define(['jquery', 'underscore', 'pim/entity-manager'], function ($, _, EntityMan
                         'unit': attribute.default_metric_unit
                     };
                 case 'pim_catalog_multiselect':
+                case 'pim_reference_data_multiselect':
                     return [];
                 case 'pim_catalog_text':
                 case 'pim_catalog_textarea':
