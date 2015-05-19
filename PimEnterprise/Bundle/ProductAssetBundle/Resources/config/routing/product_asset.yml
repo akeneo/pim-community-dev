@@ -1,0 +1,5 @@
+pimee_product_asset_view:
+    path: /{id}/view
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:viewAction }
+    requirements:
+        id: '[0-9a-f]+'

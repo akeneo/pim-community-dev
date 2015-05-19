@@ -1,0 +1,9 @@
+parameters:
+    pimee_product_asset.controller.produt_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
+
+services:
+    pimee_product_asset.controller.produt_asset:
+        class: %pimee_product_asset.controller.produt_asset.class%
+        arguments:
+            - '@pimee_product_asset.repository.product_asset'
+            - '@pimee_product_asset.repository.file_metadata'

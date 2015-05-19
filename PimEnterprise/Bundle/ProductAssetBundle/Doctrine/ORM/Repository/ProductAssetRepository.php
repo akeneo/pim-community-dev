@@ -1,13 +1,13 @@
 <?php
 
 /*
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+* This file is part of the Akeneo PIM Enterprise Edition.
+*
+* (c) 2015 Akeneo SAS (http://www.akeneo.com)
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*/
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
@@ -32,8 +32,8 @@ class ProductAssetRepository extends EntityRepository implements ProductAssetRep
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier($code)
     {
-        return $this->findOneBy(['code' => $identifier]);
+        return $this->findOneBy(['code' => $code]);
     }
 }
