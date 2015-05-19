@@ -29,6 +29,7 @@ class PimEnterpriseEnrichExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('attribute_icons.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('event_listeners.yml');

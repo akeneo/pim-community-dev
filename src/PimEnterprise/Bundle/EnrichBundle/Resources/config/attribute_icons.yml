@@ -1,0 +1,4 @@
+# Attribute icons (should be valid FontAwesome icons)
+parameters:
+    pimee_enrich.attribute_icons:
+        pim_assets_collection: paper-clip
