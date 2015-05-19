@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for metrics
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class MetricComparator implements ComparatorInterface
+class MetricComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}

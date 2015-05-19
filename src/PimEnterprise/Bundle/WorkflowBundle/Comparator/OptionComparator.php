@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for options
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class OptionComparator implements ComparatorInterface
+class OptionComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}

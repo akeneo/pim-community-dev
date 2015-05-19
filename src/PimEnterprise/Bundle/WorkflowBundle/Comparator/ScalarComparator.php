@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for scalars
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class ScalarComparator implements ComparatorInterface
+class ScalarComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}

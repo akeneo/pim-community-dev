@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for medias
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class MediaComparator implements ComparatorInterface
+class MediaComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}
