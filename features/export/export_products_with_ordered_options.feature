@@ -4,7 +4,7 @@ Feature: Export products with ordered options
   As a product manager
   I need to be able to export the products
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3558
+  # @jira https://akeneo.atlassian.net/browse/PIM-3558
   Scenario: Export products with options ordered by sort order
     Given an "apparel" catalog configuration
     And the following job "ecommerce_product_export" configuration:

@@ -10,6 +10,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'src/**/*.js',
+                'features/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
                 '!src/**/NavigationBundle/**/*.js'
@@ -23,6 +24,7 @@ module.exports = function (grunt) {
             all: [
                 'Gruntfile.js',
                 'src/**/*.js',
+                'features/**/*.js',
                 '!src/**/lib/**/*.js',
                 '!src/**/DataGridBundle/**/*.js',
                 '!src/**/NavigationBundle/**/*.js'
@@ -82,6 +84,19 @@ module.exports = function (grunt) {
                     }
                 }
             }
+        },
+        cucumberjs: {
+            features: 'features/',
+            options: {
+                format: 'pretty',
+                // This can be used to generate a nice html report
+                // format: 'html',
+                // output: 'report.html',
+                // theme: 'bootstrap',
+                require: 'features/Context/cucumber/',
+                tags: '@cucumberjs',
+                debug: true
+            }
         }
     });
 
@@ -89,6 +104,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jasmine');
     grunt.loadNpmTasks('grunt-recess');
     grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-cucumberjs');
 
     grunt.registerTask('test', ['jasmine']);
     grunt.registerTask('codestyle', ['jshint', 'jscs', 'recess']);

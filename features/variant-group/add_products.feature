@@ -54,6 +54,7 @@ Feature: Add products to a variant group
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
 
+  @cucumberjs
   Scenario: Successfully delete a variant group, product history should be updated without context
     Given I am on the "SANDAL" variant group page
     Then the grid should contain 3 elements
@@ -72,7 +73,8 @@ Feature: Add products to a variant group
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3736 @unstable
+  # @jira https://akeneo.atlassian.net/browse/PIM-3736
+  @unstable
   Scenario: Reject product addition in a variant group, products count should be correct
     Given the following products:
       | SKU              | family  | categories        | size | color | name-en_US |
