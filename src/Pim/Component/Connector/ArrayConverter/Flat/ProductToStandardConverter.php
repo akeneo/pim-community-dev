@@ -2,8 +2,9 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\ConvertToStructuredField;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ConverterRegistry;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
@@ -18,23 +19,40 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  */
 class ProductToStandardConverter implements StandardArrayConverterInterface
 {
-    // TODO: interface ?
     /** @var OptionsResolverConverter */
     protected $optionsResolverConverter;
 
-    /** @var ConvertToStructuredField */
-    protected $convertToStructuredField;
+    /** @var ConverterRegistry */
+    protected $converterRegistry;
+
+    /** @var ProductAttributeFieldExtractor */
+    protected $fieldExtractor;
+
+    /** @var ProductAssociationFieldResolver */
+    protected $assocFieldResolver;
+
+    /** @var FieldSplitter */
+    protected $fieldSplitter;
 
     /**
-     * @param OptionsResolverConverter $optionsResolverConverter
-     * @param ConvertToStructuredField $convertToStructuredField
+     * @param ProductAttributeFieldExtractor  $fieldExtractor
+     * @param OptionsResolverConverter        $optionsResolverConverter
+     * @param ConverterRegistry               $converterRegistry
+     * @param ProductAssociationFieldResolver $assocFieldResolver
+     * @param FieldSplitter                   $fieldSplitter
      */
     public function __construct(
+        ProductAttributeFieldExtractor $fieldExtractor,
         OptionsResolverConverter $optionsResolverConverter,
-        ConvertToStructuredField $convertToStructuredField
+        ConverterRegistry $converterRegistry,
+        ProductAssociationFieldResolver $assocFieldResolver,
+        FieldSplitter $fieldSplitter
     ) {
         $this->optionsResolverConverter = $optionsResolverConverter;
-        $this->convertToStructuredField = $convertToStructuredField;
+        $this->converterRegistry        = $converterRegistry;
+        $this->fieldExtractor           = $fieldExtractor;
+        $this->assocFieldResolver       = $assocFieldResolver;
+        $this->fieldSplitter            = $fieldSplitter;
     }
 
     /**
@@ -122,15 +140,63 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
         $result = [];
         foreach ($resolvedItem as $column => $value) {
-            $value = $this->convertToStructuredField->convert($column, $value);
-            $result = $this->addFieldToCollection($result, $value);
-
-            // TODO: filter empty values, for instance a simple select with "" should not be kept as an update
-            // TODO: does not work with media
+            $value = $this->convertToStructuredField($column, $value);
+            if (null !== $value) {
+                $result = $this->addFieldToCollection($result, $value);
+            }
             // TODO: does not work with no groups
         }
 
         return $result;
+    }
+
+    /**
+     * Convert a flat field to a structured one
+     *
+     * @param string $column The column name
+     * @param string $value  The value in the cell
+     *
+     * @return array
+     */
+    protected function convertToStructuredField($column, $value)
+    {
+        $associationFields = $this->assocFieldResolver->resolveAssociationFields();
+
+        if (in_array($column, $associationFields)) {
+            $value = $this->fieldSplitter->splitCollection($value);
+            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($column);
+
+            return ['associations' => [$associationTypeCode => [$associatedWith => $value]]];
+        } elseif (in_array($column, ['categories', 'groups'])) {
+            return [$column => $this->fieldSplitter->splitCollection($value)];
+        } elseif ('enabled' === $column) {
+            return [$column => (bool) $value];
+        } elseif ('family' === $column) {
+            return [$column => $value];
+        } else {
+            return $this->formatValue($column, $value);
+        }
+    }
+
+    /**
+     * @param string $column
+     * @param string $value
+     *
+     * @return array
+     */
+    public function formatValue($column, $value)
+    {
+        $fieldNameInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
+
+        if (null !== $fieldNameInfo && array_key_exists('attribute', $fieldNameInfo) && isset($fieldNameInfo['attribute'])) {
+            $converter = $this->converterRegistry->getConverter($fieldNameInfo['attribute']->getAttributeType());
+
+            if (null !== $converter) {
+                return $converter->convert($fieldNameInfo, $value);
+            }
+        }
+
+        return [];
     }
 
     /**
