@@ -1,9 +1,12 @@
 parameters:
-    pim_base_connector.array_converter.flat.attribute_option.class:           Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionToStandardConverter
-    pim_base_connector.array_converter.structured.attribute_option.class:     Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionToStandardConverter
-    pim_base_connector.array_converter.flat.product.class:                    Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter
-    pim_base_connector.array_converter.flat.attribute_field_extractor.class:  Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor
-    pim_base_connector.array_converter.flat.association_field_resolver.class: Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver
+    pim_base_connector.array_converter.flat.attribute_option.class:                   Pim\Component\Connector\ArrayConverter\Flat\AttributeOptionToStandardConverter
+    pim_base_connector.array_converter.structured.attribute_option.class:             Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionToStandardConverter
+    pim_base_connector.array_converter.flat.product.class:                            Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter
+    pim_base_connector.array_converter.flat.attribute_field_extractor.class:          Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor
+    pim_base_connector.array_converter.flat.optional_attribute_field_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldExtractor
+    pim_base_connector.array_converter.flat.association_field_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver
+    pim_base_connector.array_converter.flat.converter_options_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter
+    pim_base_connector.array_converter.flat.converter_to_structured_field.class:      Pim\Component\Connector\ArrayConverter\Flat\Product\ConvertToStructuredField
 
 services:
     pim_base_connector.array_converter.flat.attribute_option:
@@ -17,11 +20,15 @@ services:
     pim_base_connector.array_converter.flat.product:
         class: %pim_base_connector.array_converter.flat.product.class%
         arguments:
-            - '@pim_base_connector.array_converter.flat.attribute_field_extractor'
+            - '@pim_base_connector.array_converter.flat.converter_options_resolver'
+            - '@pim_base_connector.array_converter.flat.converter_to_structured_field'
+
+    pim_base_connector.array_converter.flat.converter_options_resolver:
+        class: %pim_base_connector.array_converter.flat.converter_options_resolver.class%
+        arguments:
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.repository.currency'
             - '@pim_base_connector.array_converter.flat.association_field_resolver'
-            - '@pim_catalog.resolver.attribute_values'
+            - '@pim_base_connector.array_converter.flat.optional_attribute_field_extractor'
 
     pim_base_connector.array_converter.flat.attribute_field_extractor:
         class: %pim_base_connector.array_converter.flat.attribute_field_extractor.class%
@@ -30,7 +37,24 @@ services:
             - '@pim_catalog.repository.channel'
             - '@pim_catalog.repository.locale'
 
+    pim_base_connector.array_converter.flat.optional_attribute_field_extractor:
+        class: %pim_base_connector.array_converter.flat.optional_attribute_field_extractor.class%
+        arguments:
+            - '@pim_catalog.repository.currency'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.resolver.attribute_values'
+
+
     pim_base_connector.array_converter.flat.association_field_resolver:
         class: %pim_base_connector.array_converter.flat.association_field_resolver.class%
         arguments:
             - '@pim_catalog.repository.association_type'
+
+    pim_base_connector.array_converter.flat.converter_to_structured_field:
+        class: %pim_base_connector.array_converter.flat.converter_to_structured_field.class%
+        arguments:
+            - '@pim_base_connector.array_converter.flat.attribute_field_extractor'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.currency'
+            - '@pim_base_connector.array_converter.flat.association_field_resolver'
+            - '@pim_catalog.resolver.attribute_values'
