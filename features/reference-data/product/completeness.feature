@@ -29,41 +29,41 @@ Feature: Display the completeness of a product
 
   Scenario: Successfully display the completeness of the products with reference data
     Given I am on the "red-heels" product page
-    When I visit the "Completeness" tab
+    When I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | warning | 2 missing values | 50%   |
-      | mobile  | French (France)         | success | Complete         | 100%  |
-      | tablet  | English (United States) | warning | 2 missing values | 50%   |
-      | tablet  | French (France)         | warning | 1 missing value  | 75%   |
+      | channel | locale | state   | message          | ratio |
+      | mobile  | en_US  | warning | 2 missing values | 50%   |
+      | mobile  | fr_FR  | success | Complete         | 100%  |
+      | tablet  | en_US  | warning | 2 missing values | 50%   |
+      | tablet  | fr_FR  | warning | 1 missing value  | 75%   |
     When I am on the "black-heels" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | warning | 2 missing values | 50%   |
-      | mobile  | French (France)         | warning | 3 missing values | 25%   |
-      | tablet  | English (United States) | success | Complete         | 100%  |
-      | tablet  | French (France)         | warning | 1 missing value  | 75%   |
+      | channel | locale | state   | message          | ratio |
+      | mobile  | en_US  | warning | 2 missing values | 50%   |
+      | mobile  | fr_FR  | warning | 3 missing values | 25%   |
+      | tablet  | en_US  | success | Complete         | 100%  |
+      | tablet  | fr_FR  | warning | 1 missing value  | 75%   |
     When I am on the "green-heels" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | warning | 2 missing values | 50%   |
-      | mobile  | French (France)         | warning | 2 missing values | 50%   |
-      | tablet  | English (United States) | success | Complete         | 100%  |
-      | tablet  | French (France)         | success | Complete         | 100%  |
+      | channel | locale | state   | message          | ratio |
+      | mobile  | en_US  | warning | 2 missing values | 50%   |
+      | mobile  | fr_FR  | warning | 2 missing values | 50%   |
+      | tablet  | en_US  | success | Complete         | 100%  |
+      | tablet  | fr_FR  | success | Complete         | 100%  |
     When I am on the "high-heels" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | warning | 3 missing values | 25%   |
-      | mobile  | French (France)         | warning | 3 missing values | 25%   |
-      | tablet  | English (United States) | warning | 3 missing values | 25%   |
-      | tablet  | French (France)         | warning | 3 missing values | 25%   |
+      | channel | locale | state   | message          | ratio |
+      | mobile  | en_US  | warning | 3 missing values | 25%   |
+      | mobile  | fr_FR  | warning | 3 missing values | 25%   |
+      | tablet  | en_US  | warning | 3 missing values | 25%   |
+      | tablet  | fr_FR  | warning | 3 missing values | 25%   |
 
   Scenario: Successfully display the completeness of the products with reference data in the grid
     Given I am on the products page

@@ -27,8 +27,8 @@ Feature: Edit a product
       | Sole fabric | [neoprene], Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "Red"
-    Then the product Sole fabric should be "[neoprene], Silk"
+    Then the product heel_color should be "Red"
+    Then the product sole_fabric should be "[neoprene], Silk"
 
   Scenario: Successfully edit reference data values to a product
     Given I am logged in as "Mary"
@@ -43,8 +43,8 @@ Feature: Edit a product
       | Sole fabric | Cashmerewool, Silk |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Heel color should be "[blue]"
-    Then the product Sole fabric should be "Cashmerewool, Silk"
+    Then the product heel_color should be "[blue]"
+    Then the product sole_fabric should be "Cashmerewool, Silk"
 
   Scenario: Successfully remove reference data values to a product
     Given I am logged in as "Mary"
@@ -58,4 +58,4 @@ Feature: Edit a product
       | Sole fabric |  |
     When I press the "Save" button
     Then I should be on the product "high-heels" edit page
-    Then the product Sole fabric should be ""
+    Then the product sole_fabric should be ""
