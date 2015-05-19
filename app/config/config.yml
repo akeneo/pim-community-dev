@@ -96,5 +96,5 @@ pim_reference_data:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
     assets:
-        class: PamEnterprise\Component\ProductAsset\Model\ProductAsset
+        class: PimEnterprise\Component\ProductAsset\Model\ProductAsset
         type: multi

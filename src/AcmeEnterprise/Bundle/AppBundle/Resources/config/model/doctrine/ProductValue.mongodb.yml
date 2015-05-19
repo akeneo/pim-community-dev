@@ -65,7 +65,7 @@ AcmeEnterprise\Bundle\AppBundle\Model\ProductValue:
         asset:
             notSaved: true
             type: entities
-            targetEntity: PamEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface
             idsField: fabricIds
         assetIds:
             type: collection
