@@ -54,6 +54,9 @@ define(
                 );
             },
             addSaveButton: function () {
+                if (!('save-buttons' in this.parent.extensions)) {
+                    return;
+                }
                 var objectSet = this.model.get('objectSet');
                 var currentIndex = objectSet.indexOf(this.getData().meta.id);
                 var nextObject = objectSet[currentIndex + 1];

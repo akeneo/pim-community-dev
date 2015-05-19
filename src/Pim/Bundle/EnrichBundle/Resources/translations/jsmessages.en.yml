@@ -120,6 +120,7 @@ pim_enrich:
                 copy: Copy
                 delete: Delete
                 save: Save
+                save_and_back: Save and back to grid
             history:
                 version: Version
                 author: Author
