@@ -47,7 +47,7 @@ define(
                         var navigation = Navigation.getInstance();
                         navigation.setLocation(Routing.generate('pim_enrich_product_index'));
                     }, this))
-                    .fail(function (response) {
+                    .fail(function () {
                         messenger.notificationFlashMessage(
                             'error',
                             _.__('pim_enrich.entity.product.info.update_failed')

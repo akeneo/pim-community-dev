@@ -73,7 +73,10 @@ define(
                             default:
                         }
 
-                        messenger.notificationFlashMessage('error', _.__('pim_enrich.entity.product.info.update_failed'));
+                        messenger.notificationFlashMessage(
+                            'error',
+                            _.__('pim_enrich.entity.product.info.update_failed')
+                        );
                     }).always(function () {
                         loadingMask.hide().$el.remove();
                     });

@@ -58,11 +58,11 @@ class Edit extends Form
     /**
      * @param string $locale locale code
      * @param string $locale locale label
-     * @param string $flag class of the flag icon
-     *
-     * @return NodeElement|null
+     * @param string $flag   class of the flag icon
      *
      * @throws ElementNotFoundException
+     *
+     * @return NodeElement|null
      */
     public function findLocaleLink($locale, $label, $flag = null)
     {
