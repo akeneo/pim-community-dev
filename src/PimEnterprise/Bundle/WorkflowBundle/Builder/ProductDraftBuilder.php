@@ -14,8 +14,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\UnitOfWork;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
  *
  * @author Romain Monceau <romain@akeneo.com>
  */
-class AttributeRepository extends BaseAttributeRepository implements AttributeRepositoryInterface
+class AttributeRepository extends BaseAttributeRepository
 {
     /**
      * {@inheritdoc}
@@ -38,27 +38,5 @@ class AttributeRepository extends BaseAttributeRepository implements AttributeRe
         }
 
         return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAttributeTypeByCodes(array $codes)
-    {
-        $results = $this->createQueryBuilder('a')
-            ->select('a.code, a.attributeType')
-            ->where('a.code IN (:codes)')
-            ->setParameter('codes', $codes)
-            ->getQuery()
-            ->getArrayResult();
-
-        $attributes = [];
-        if (!empty($results)) {
-            foreach ($results as $attribute) {
-                $attributes[$attribute['code']] = $attribute['attributeType'];
-            }
-        }
-
-        return $attributes;
     }
 }
