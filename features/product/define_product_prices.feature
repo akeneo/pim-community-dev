@@ -25,7 +25,7 @@ Feature: Define product prices
   Scenario: Successfully update the french public prices
     Given I am on the "bike" product page
     And I switch the locale to "fr_FR"
-    When I change the "USD publicPrice" to "700.00"
+    When I change the "publicPrice" to "700.00 USD"
     And I save the product
     Then the product publicPrice in USD should be "700.00"
     And the product publicPrice in EUR should be "150.00"

@@ -254,7 +254,7 @@ class Edit extends Form
             // Price in EUR
             list($name, $currency) = explode(' in ', $name);
 
-            return $this->findCompoundField($name, $currency);
+            return $this->findCompoundField($name, 0, $currency);
         } elseif (1 < str_word_count($name, 0, '_')) {
             // mobile Description
             $words = explode(' ', $name);
@@ -386,7 +386,7 @@ class Edit extends Form
 
     protected function findFieldContainer($fieldName)
     {
-        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($fieldName)));
+        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', $fieldName));
         if (!$container) {
             throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $fieldName);
         }
