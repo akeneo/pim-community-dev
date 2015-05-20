@@ -256,23 +256,14 @@ class Edit extends Form
 
             return $this->findCompoundField($name, 0, $currency);
         }
-//        elseif (1 < str_word_count($name, 0, '_')) {
-//            // mobile Description
-//            $words = explode(' ', $name);
-//            $scope = array_shift($words);
-//            $name = implode(' ', $words);
-//
-//            // Check that it is really a scoped field, not a field with a two word label
-//            if (strtolower($scope) === $scope) {
-//                return $this->findScopedField($name, $scope);
-//            }
-//        }
 
-        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($name)));
+        $labelNode = $this->find('css', sprintf('.form-field > header > label:contains("%s")', $name));
 
-        if (!$container) {
-            throw new ElementNotFoundException($this->getSession(), 'form container ', 'value', $name);
+        if (!$labelNode) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
         }
+
+        $container = $labelNode->getParent()->getParent()->getParent();
 
         $field = $container->find('css', 'div.field-input input');
         if (!$field) {
@@ -477,10 +468,8 @@ class Edit extends Form
         $amount = null;
         $currency = null;
 
-        if (strstr($value, 'USD') || strstr($value, 'EUR')) {
-            if (false !== strpos($value, ' ')) {
-                list($amount, $currency) = explode(' ', $value);
-            }
+        if (false !== strpos($value, ' ')) {
+            list($amount, $currency) = explode(' ', $value);
         }
 
         if (!$currency) {
@@ -507,8 +496,7 @@ class Edit extends Form
     protected function fillMetricField(NodeElement $label, $value)
     {
         list($text, $select) = explode(' ', $value);
-        $field = $label->getParent()->getParent()->find('css', 'div.field-input');
-
+        $field = $label->getParent()->find('css', 'div.field-input');
         $this->fillTextField($label, $text);
 
         if (null !== $link = $field->find('css', 'a.select2-choice')) {
