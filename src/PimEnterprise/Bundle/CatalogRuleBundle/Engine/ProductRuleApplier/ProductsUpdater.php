@@ -12,9 +12,10 @@
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
@@ -26,21 +27,27 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
  */
 class ProductsUpdater
 {
-    /** @var ProductFieldUpdaterInterface */
-    protected $productFieldUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
+
+    /** @var PropertyCopierInterface */
+    protected $propertyCopier;
 
     /** @var ProductTemplateUpdaterInterface */
     protected $templateUpdater;
 
     /**
-     * @param ProductFieldUpdaterInterface    $productFieldUpdater
+     * @param PropertySetterInterface         $propertySetter
+     * @param PropertyCopierInterface         $propertyCopier,
      * @param ProductTemplateUpdaterInterface $templateUpdater
      */
     public function __construct(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertySetterInterface $propertySetter,
+        PropertyCopierInterface $propertyCopier,
         ProductTemplateUpdaterInterface $templateUpdater
     ) {
-        $this->productFieldUpdater  = $productFieldUpdater;
+        $this->propertySetter  = $propertySetter;
+        $this->propertyCopier  = $propertyCopier;
         $this->templateUpdater = $templateUpdater;
     }
 
@@ -99,7 +106,7 @@ class ProductsUpdater
     protected function applyCopyAction(array $products, ProductCopyValueActionInterface $action)
     {
         foreach ($products as $product) {
-            $this->productFieldUpdater->copyData(
+            $this->propertyCopier->copyData(
                 $product,
                 $product,
                 $action->getFromField(),
@@ -127,7 +134,7 @@ class ProductsUpdater
     protected function applySetAction(array $products, ProductSetValueActionInterface $action)
     {
         foreach ($products as $product) {
-            $this->productFieldUpdater->setData(
+            $this->propertySetter->setData(
                 $product,
                 $action->getField(),
                 $action->getValue(),

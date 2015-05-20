@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Validator\Constraint;
@@ -26,21 +27,27 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class ValueActionValidator extends ConstraintValidator
 {
-    /** @var ProductFieldUpdaterInterface */
-    protected $productFieldUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
+
+    /** @var PropertyCopierInterface */
+    protected $propertyCopier;
 
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param ProductFieldUpdaterInterface $productFieldUpdater
-     * @param ProductBuilderInterface      $productBuilder
+     * @param PropertySetterInterface $propertySetter
+     * @param PropertyCopierInterface $propertyCopier
+     * @param ProductBuilderInterface $productBuilder
      */
     public function __construct(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertySetterInterface $propertySetter,
+        PropertyCopierInterface $propertyCopier,
         ProductBuilderInterface $productBuilder
     ) {
-        $this->productFieldUpdater = $productFieldUpdater;
+        $this->propertySetter = $propertySetter;
+        $this->propertyCopier = $propertyCopier;
         $this->productBuilder = $productBuilder;
     }
 
@@ -66,7 +73,7 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->productFieldUpdater->setData(
+            $this->propertySetter->setData(
                 $fakeProduct,
                 $action->getField(),
                 $action->getValue(),
@@ -88,7 +95,7 @@ class ValueActionValidator extends ConstraintValidator
     {
         try {
             $fakeProduct = $this->createProduct();
-            $this->productFieldUpdater->copyData(
+            $this->propertyCopier->copyData(
                 $fakeProduct,
                 $fakeProduct,
                 $action->getFromField(),

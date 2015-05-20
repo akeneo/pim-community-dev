@@ -3,11 +3,11 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Bundle\EnrichBundle\Processor\MassEdit\EditCommonAttributesProcessor as BaseProcessor;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -29,7 +29,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
     protected $userManager;
 
     /**
-     * @param ProductFieldUpdaterInterface         $productFieldUpdater
+     * @param PropertySetterInterface              $propertySetter
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
@@ -38,7 +38,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param SecurityContextInterface             $securityContext
      */
     public function __construct(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepositoryInterface $attributeRepository,
@@ -47,7 +47,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
-            $productFieldUpdater,
+            $propertySetter,
             $validator,
             $massActionRepository,
             $attributeRepository,
