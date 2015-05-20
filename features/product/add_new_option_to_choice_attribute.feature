@@ -24,7 +24,7 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     Then the product Size should be "47 (XXL)"
 
   Scenario: Sucessfully add a new option to a multi select attribute
-    Given I add a new option to the "weather_conditions" attribute
+    Given I add a new option to the "Weather conditions" attribute
     When I fill in the following information in the popin:
       | Code | very_wet      |
       | en   | Extremely wet |
