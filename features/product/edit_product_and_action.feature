@@ -25,6 +25,7 @@ Feature: Product edition clicking on another action
       | sku    | sandal    |
       | name   | My Sandal |
 
+  @skip-pef
   Scenario: Display a message when form submission fails and I try to leave the page
     Given I am on the "sandal" product page
     And I visit the "Marketing" group
@@ -37,6 +38,7 @@ Feature: Product edition clicking on another action
       | title   | Are you sure you want to leave this page?                   |
       | content | You will lose changes to the product if you leave the page. |
 
+  @skip-pef
   Scenario: Display a message when I try to leave the page and there are unsaved values
     Given I am on the "sandal" product page
     And I visit the "Marketing" group
