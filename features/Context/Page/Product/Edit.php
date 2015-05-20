@@ -427,26 +427,27 @@ class Edit extends Form
     /**
      * Fills a simple select2 field with $value, identified by its $label.
      *
-     * @param NodeElement $label
+     * @param NodeElement $fieldContainer
      * @param string      $value
      *
      * @throws \InvalidArgumentException
      */
-    protected function fillSelectField(NodeElement $label, $value)
+    protected function fillSelectField(NodeElement $fieldContainer, $value)
     {
-        if (null !== $link = $label->getParent()->getParent()->find('css', 'a.select2-choice')) {
+        if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
             $link->click();
 
-            $this->getSession()->wait(5000, '!$.active');
+            $this->getSession()->wait(500);
 
+            $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
             // Select the value in the displayed dropdown
-            if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
+            if (null !== $item) {
                 return $item->click();
             }
         }
 
         throw new \InvalidArgumentException(
-            sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml())
         );
     }
 
