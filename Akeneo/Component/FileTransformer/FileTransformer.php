@@ -48,20 +48,21 @@ class FileTransformer implements FileTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform(\SplFileInfo $file, array $transformationPipeline)
+    public function transform(\SplFileInfo $baseFile, array $transformationPipeline)
     {
-        $mimeType = MimeTypeGuesser::getInstance()->guess($file->getPathname());
+        $mimeType = MimeTypeGuesser::getInstance()->guess($baseFile->getPathname());
 
         foreach ($transformationPipeline as $transformation) {
             $pipelineOptions = $this->resolvePipelineOptions($transformation);
 
+            $outputFile = $baseFile;
             if (null !== $pipelineOptions['outputFile']) {
-                $file = $this->getOutputFile($file, $pipelineOptions['outputFile']);
+                $outputFile = $this->getOutputFile($baseFile, $pipelineOptions['outputFile']);
             }
 
             foreach ($pipelineOptions['pipeline'] as $name => $options) {
                 $transformation = $this->registry->get($name, $mimeType);
-                $transformation->transform($file, $options);
+                $transformation->transform($outputFile, $options);
             }
         }
 
