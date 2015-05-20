@@ -26,6 +26,7 @@ Feature: Review a product draft
       | datasheet                 |                   |
       | side_view                 |                   |
 
+  @skip-pef
   Scenario: Successfully accept an identifier attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field | value       |
@@ -38,6 +39,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     But the field SKU should contain "your-jacket"
 
+  @skip-pef
   Scenario: Successfully accept a text attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field | value |
@@ -50,6 +52,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product Name should be "Coat"
 
+  @skip-pef
   Scenario: Successfully accept a textarea attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field              | value           |
@@ -62,6 +65,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product mobile Description should be "An awesome coat"
 
+  @skip-pef
   Scenario: Successfully accept a number attribute from a product draft
     Given Mary proposed the following scopable change to "my-jacket":
       | tab       | field                     | value |
@@ -82,6 +86,7 @@ Feature: Review a product draft
     And the product print Number in stock should be "50"
     And the product tablet Number in stock should be "200"
 
+  @skip-pef
   Scenario: Successfully accept a prices attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab       | field   | value |
@@ -97,6 +102,7 @@ Feature: Review a product draft
     Then the product Price in $ should be "90.00"
     Then the product Price in € should be "150.00"
 
+  @skip-pef
   Scenario: Successfully accept a simpleselect attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field        | value |
@@ -109,6 +115,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "Nike"
 
+  @skip-pef
   Scenario: Successfully accept a multiselect attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field              | value               |
@@ -121,6 +128,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
 
+  @skip-pef
   Scenario: Successfully accept a file attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab   | field     | value            |
@@ -134,6 +142,7 @@ Feature: Review a product draft
     And I visit the "Media" group
     Then I should see "akeneo.txt"
 
+  @skip-pef
   Scenario: Successfully accept an image attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab   | field     | value            |
@@ -147,6 +156,7 @@ Feature: Review a product draft
     And I visit the "Media" group
     Then I should see "akeneo.jpg"
 
+  @skip-pef
   Scenario: Successfully accept a boolean attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field    | value      |
@@ -159,6 +169,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product Handmade should be "1"
 
+  @skip-pef
   Scenario: Successfully accept a date attribute from a product draft
     Given Mary proposed the following scopable change to "my-jacket":
       | field                  | value      |
@@ -171,6 +182,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product ecommerce Release date should be "2014-05-20"
 
+  @skip-pef
   Scenario: Successfully accept a metric attribute from a product draft
     Given Mary proposed the following scopable change to "my-jacket":
       | tab   | field  | value |
@@ -184,6 +196,7 @@ Feature: Review a product draft
     And I visit the "Sizes" group
     Then the product Length should be "40"
 
+  @skip-pef
   Scenario: Successfully refuse a waiting for approval product draft
     Given Mary proposed the following change to "my-jacket":
       | field | value |
@@ -199,6 +212,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product Name should be "Jacket"
 
+  @skip-pef
   Scenario: Successfully remove an in progress product draft
     Given Mary started to propose the following change to "my-jacket":
       | field | value |
@@ -211,6 +225,7 @@ Feature: Review a product draft
     When I visit the "Attributes" tab
     Then the product Name should be "Jacket"
 
+  @skip-pef
   Scenario: Not being able to approve or refuse a proposal with values I can't edit
     Given Mary proposed the following change to "my-jacket":
       | field                          | value                                | tab                        |
@@ -222,6 +237,7 @@ Feature: Review a product draft
     And I should not be able to view the "Refuse" action of the row which contains "Old attribute not used anymore"
     And I should see "Can't be approved or refused"
 
+  @skip-pef
   Scenario: Not being able to delete a draft with values I can't edit
     Given Mary started to propose the following change to "my-jacket":
       | field                          | value                                | tab                        |
@@ -232,6 +248,7 @@ Feature: Review a product draft
     Then I should not be able to view the "Delete" action of the row which contains "Old attribute not used anymore"
     And I should see "Can't be deleted"
 
+  @skip-pef
   Scenario: Successfully display the original value in the tooltip
     Given Mary proposed the following change to "my-jacket":
       | field | value       |
