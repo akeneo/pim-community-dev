@@ -9,9 +9,9 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
@@ -26,7 +26,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        ProductDraftChangesApplier $applier,
+        ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         MediaManager $mediaManager
     ) {
@@ -59,14 +59,22 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_APPROVE,
-                Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent')
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
+
         $applier->apply($product, $productDraft)->shouldBeCalled();
         $mediaManager->handleProductMedias($product)->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
         $objectManager->remove($productDraft)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_APPROVE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
 
         $this->approve($productDraft);
     }
@@ -83,11 +91,18 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_REFUSE,
-                Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent')
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
         $productDraft->setStatus(ProductDraft::IN_PROGRESS)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_REFUSE,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
 
         $this->refuse($productDraft);
     }
@@ -157,11 +172,18 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher
             ->dispatch(
                 ProductDraftEvents::PRE_READY,
-                Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent')
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
         $productDraft->setStatus(ProductDraft::READY)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $dispatcher
+            ->dispatch(
+                ProductDraftEvents::POST_READY,
+                Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+            )
+            ->shouldBeCalled();
 
         $this->markAsReady($productDraft);
     }

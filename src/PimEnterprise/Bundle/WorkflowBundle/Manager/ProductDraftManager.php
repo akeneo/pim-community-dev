@@ -16,13 +16,13 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * Manage product product drafts
@@ -46,7 +46,7 @@ class ProductDraftManager
     /** @var ProductDraftRepositoryInterface */
     protected $repository;
 
-    /** @var ProductDraftChangesApplier */
+    /** @var ProductDraftApplierInterface */
     protected $applier;
 
     /** @var EventDispatcherInterface */
@@ -58,7 +58,7 @@ class ProductDraftManager
      * @param UserContext                     $userContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
-     * @param ProductDraftChangesApplier      $applier
+     * @param ProductDraftApplierInterface    $applier
      * @param EventDispatcherInterface        $dispatcher
      * @param MediaManager                    $mediaManager
      */
@@ -68,7 +68,7 @@ class ProductDraftManager
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
-        ProductDraftChangesApplier $applier,
+        ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
         MediaManager $mediaManager
     ) {
@@ -89,10 +89,7 @@ class ProductDraftManager
      */
     public function approve(ProductDraft $productDraft)
     {
-        $this->dispatcher->dispatch(
-            ProductDraftEvents::PRE_APPROVE,
-            new ProductDraftEvent($productDraft)
-        );
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, new GenericEvent($productDraft));
 
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
@@ -103,6 +100,8 @@ class ProductDraftManager
         $objectManager->flush();
 
         $this->workingCopySaver->save($product);
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft));
     }
 
     /**
@@ -112,6 +111,8 @@ class ProductDraftManager
      */
     public function refuse(ProductDraft $productDraft)
     {
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft));
+
         $objectManager = $this->registry->getManagerForClass(get_class($productDraft));
 
         if (!$productDraft->isInProgress()) {
@@ -120,12 +121,9 @@ class ProductDraftManager
             $objectManager->remove($productDraft);
         }
 
-        $this->dispatcher->dispatch(
-            ProductDraftEvents::PRE_REFUSE,
-            new ProductDraftEvent($productDraft)
-        );
-
         $objectManager->flush();
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft));
     }
 
     /**
@@ -159,13 +157,12 @@ class ProductDraftManager
      */
     public function markAsReady(ProductDraft $productDraft)
     {
-        $this->dispatcher->dispatch(
-            ProductDraftEvents::PRE_READY,
-            new ProductDraftEvent($productDraft)
-        );
+        $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
         $productDraft->setStatus(ProductDraft::READY);
 
         $manager = $this->registry->getManagerForClass(get_class($productDraft));
         $manager->flush();
+
+        $this->dispatcher->dispatch(ProductDraftEvents::POST_READY, new GenericEvent($productDraft));
     }
 }
