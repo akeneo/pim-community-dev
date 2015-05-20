@@ -703,7 +703,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 10000, $condition = null)
+    protected function wait($time = 30000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }
