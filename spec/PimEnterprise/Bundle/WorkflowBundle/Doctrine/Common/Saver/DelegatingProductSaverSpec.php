@@ -118,7 +118,8 @@ class DelegatingProductSaverSpec extends ObjectBehavior
         $securityContext->isGranted(Attributes::OWN, $product)
             ->shouldBeCalled()
             ->willReturn(false);
-
+        $securityContext->getToken()->willReturn('token');
+        
         $productDraft = new ProductDraft();
         $productDraftBuilder->build($product)
             ->willReturn($productDraft)
