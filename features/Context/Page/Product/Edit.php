@@ -200,19 +200,19 @@ class Edit extends Form
     /**
      * This method allows to fill a field by passing the label
      *
-     * @param string  $fieldName
+     * @param string  $label
      * @param string  $value
      * @param Element $element
      */
-    public function fillField($fieldName, $value, Element $element = null)
+    public function fillField($label, $value, Element $element = null)
     {
         $isLabel = false;
 
         try {
-            $fieldContainer = $this->findFieldContainer($fieldName, $element);
+            $fieldContainer = $this->findFieldContainer($label, $element);
         } catch (ElementNotFoundException $e) {
             $isLabel = true;
-            $fieldContainer = $this->extractLabelElement($fieldName, $element);
+            $fieldContainer = $this->extractLabelElement($label, $element);
         }
 
         $fieldType = $this->getFieldType($fieldContainer, $isLabel);
@@ -385,14 +385,19 @@ class Edit extends Form
         return $input;
     }
 
-    protected function findFieldContainer($fieldName)
+    protected function findFieldContainer($label)
     {
-        $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', $fieldName));
-        if (!$container) {
-            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $fieldName);
+        $labelNode = $this->find('css', sprintf('.field-container header label:contains("%s")', $label));
+        if (!$labelNode) {
+            throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $label);
         }
 
-        $container->name = $fieldName;
+        $container = $labelNode->getParent()->getParent();
+        if (!$container) {
+            throw new ElementNotFoundException($this->getSession(), 'field container ', 'value', $label);
+        }
+
+        $container->name = $label;
 
         return $container;
     }
