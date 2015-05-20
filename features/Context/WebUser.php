@@ -6,6 +6,7 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Model\Product;
@@ -1172,21 +1173,21 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $button
+     * @param string $buttonLabel
      *
      * @Given /^I press the "([^"]*)" button in the popin$/
      */
-    public function iPressTheButtonInThePopin($button)
+    public function iPressTheButtonInThePopin($buttonLabel)
     {
-        $button = $this
+        $buttonElement = $this
             ->getCurrentPage()
-            ->find('css', sprintf('.ui-dialog button:contains("%s")', $button));
-        if (!$button) {
-            $button = $this
+            ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
+        if (!$buttonElement) {
+            $buttonElement = $this
             ->getCurrentPage()
-            ->find('css', sprintf('.modal a:contains("%s")', $button));
+            ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
         }
-        $button->press();
+        $buttonElement->press();
         $this->wait();
     }
 

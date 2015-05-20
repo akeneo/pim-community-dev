@@ -255,17 +255,18 @@ class Edit extends Form
             list($name, $currency) = explode(' in ', $name);
 
             return $this->findCompoundField($name, 0, $currency);
-        } elseif (1 < str_word_count($name, 0, '_')) {
-            // mobile Description
-            $words = explode(' ', $name);
-            $scope = array_shift($words);
-            $name = implode(' ', $words);
-
-            // Check that it is really a scoped field, not a field with a two word label
-            if (strtolower($scope) === $scope) {
-                return $this->findScopedField($name, $scope);
-            }
         }
+//        elseif (1 < str_word_count($name, 0, '_')) {
+//            // mobile Description
+//            $words = explode(' ', $name);
+//            $scope = array_shift($words);
+//            $name = implode(' ', $words);
+//
+//            // Check that it is really a scoped field, not a field with a two word label
+//            if (strtolower($scope) === $scope) {
+//                return $this->findScopedField($name, $scope);
+//            }
+//        }
 
         $container = $this->find('css', sprintf('.field-container[data-attribute="%s"]', strtolower($name)));
 
@@ -599,7 +600,8 @@ class Edit extends Form
      */
     public function getAddOptionLinkFor($field)
     {
-        return $this->findField($field)->getParent()->getParent()->getParent()->find('css', '.add-attribute-option');
+        $fieldContainer = $this->findFieldContainer($field);
+        return $fieldContainer->find('css', '.add-attribute-option');
     }
 
     /**
