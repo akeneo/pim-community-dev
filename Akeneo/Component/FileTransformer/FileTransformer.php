@@ -11,7 +11,6 @@
 
 namespace Akeneo\Component\FileTransformer;
 
-use Akeneo\Component\FileTransformer\Exception\InvalidFileTransformerOptionsException;
 use Akeneo\Component\FileTransformer\Transformation\TransformationRegistry;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,71 +25,33 @@ class FileTransformer implements FileTransformerInterface
     /** @var TransformationRegistry */
     protected $registry;
 
-    /** @var \Symfony\Component\OptionsResolver\OptionsResolverInterface */
-    protected $resolver;
-
     /**
      * @param TransformationRegistry $registry
      */
     public function __construct(TransformationRegistry $registry)
     {
         $this->registry = $registry;
-
-        $this->resolver = new OptionsResolver();
-        $this->resolver->setOptional(['outputFile']);
-        $this->resolver->setRequired(['pipeline']);
-        $this->resolver->setAllowedTypes(
-            ['outputFile' => ['string', 'null'], 'pipeline' => 'array']
-        );
-        $this->resolver->setDefaults(['outputFile' => null]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function transform(\SplFileInfo $baseFile, array $transformationPipeline)
+    public function transform(\SplFileInfo $inputFile, array $rawTransformations, $outputFilename = null)
     {
-        $mimeType = MimeTypeGuesser::getInstance()->guess($baseFile->getPathname());
+        $mimeType = MimeTypeGuesser::getInstance()->guess($inputFile->getPathname());
 
-        foreach ($transformationPipeline as $transformation) {
-            $pipelineOptions = $this->resolvePipelineOptions($transformation);
-
-            $outputFile = $baseFile;
-            if (null !== $pipelineOptions['outputFile']) {
-                $outputFile = $this->getOutputFile($baseFile, $pipelineOptions['outputFile']);
-            }
-
-            foreach ($pipelineOptions['pipeline'] as $name => $options) {
-                $transformation = $this->registry->get($name, $mimeType);
-                $transformation->transform($outputFile, $options);
-            }
+        if (null !== $outputFilename) {
+            $outputFile = $this->createOutputFile($inputFile, $outputFilename);
+        } else {
+            $outputFile = $inputFile;
         }
 
-        return $this;
-    }
-
-    /**
-     * Resolves pipeline options
-     *
-     * @param array $options
-     *
-     * @throws InvalidFileTransformerOptionsException
-     *
-     * @return array
-     */
-    protected function resolvePipelineOptions(array $options)
-    {
-        try {
-            $options = $this->resolver->resolve($options);
-        } catch (\Exception $e) {
-            throw new InvalidFileTransformerOptionsException(
-                'Your options does not fulfil the requirements of the transformation.',
-                $e->getCode(),
-                $e
-            );
+        foreach ($rawTransformations as $name => $options) {
+            $transformation = $this->registry->get($name, $mimeType);
+            $transformation->transform($outputFile, $options);
         }
 
-        return $options;
+        return $outputFile;
     }
 
     /**
@@ -104,17 +65,17 @@ class FileTransformer implements FileTransformerInterface
      *
      * @return \SplFileInfo
      */
-    protected function getOutputFile(\SplFileInfo $file, $outputFileName)
+    protected function createOutputFile(\SplFileInfo $file, $outputFileName)
     {
-        $outputFilePath = sprintf('%s/%s', $file->getPath(), $outputFileName);
+        $outputPathname = sprintf('%s/%s', $file->getPath(), $outputFileName);
 
         // TODO: handle case where the output file already exists
-        if (!copy($file->getPathname(), $outputFilePath)) {
+        if (!copy($file->getPathname(), $outputPathname)) {
             throw new \LogicException(
-                sprintf('Copy file from "%s" to "%s" has failed.', $file->getPathname(), $outputFilePath)
+                sprintf('Copy file from "%s" to "%s" has failed.', $file->getPathname(), $outputPathname)
             );
         }
 
-        return new \SplFileInfo($outputFilePath);
+        return new \SplFileInfo($outputPathname);
     }
 }

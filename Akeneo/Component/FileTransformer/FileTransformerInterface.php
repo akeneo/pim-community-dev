@@ -13,36 +13,29 @@ namespace Akeneo\Component\FileTransformer;
 
 /**
  * Apply a set of transformations on a file
- *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface FileTransformerInterface
 {
     /**
-     * Apply a set of transformations on the given file with the given configuration
+     * Apply a set of transformations on the given input file with the given configuration
+     * and store it in the output filename.
+     * The output file is created at the same location than the input file.
+     * If no output filename is provided, the transformations are done on the input file directly.
      *
-     * $transformationPipeline = [
-     *   [
-     *        'outputFile' => 'myNewFile.jpg' (string|null optional)
-     *        'pipeline'   => [
-     *            'colorspace' => ['colorspace' => 'gray'],
-     *            'resize'     => ['width' => 400, 'height' => 50]
+     * The file where transformations have been applied is returned.
      *
-     *        ]
-     *   ],
+     * $rawTransformations =
      *   [
-     *        'pipeline'   => [
-     *            'resolution' => ['resolution' => 5, 'resolution-unit' => 'ppi']
-     *            'colorspace' => ['colorspace' => 'gray'],
-     *            'thumbnail'  => ['width' => 100, 'height' => 100]
-     *        ]
+     *         'colorspace' => ['colorspace' => 'gray'],
+     *         'resize'     => ['width' => 400, 'height' => 50]
      *   ]
-     * ]
      *
-     * @param \SplFileInfo $file
-     * @param array        $transformationPipeline
+     * @param \SplFileInfo $inputFile
+     * @param array        $rawTransformations
+     * @param string       $outputFilename
      *
-     * @return FileTransformerInterface
+     * @return \SplFileInfo The file where transformations have been applied
      */
-    public function transform(\SplFileInfo $file, array $transformationPipeline);
+    public function transform(\SplFileInfo $inputFile, array $rawTransformations, $outputFilename = null);
 }

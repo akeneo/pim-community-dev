@@ -1,7 +1,10 @@
 <?php
-require_once '/home/willy/project/akeneo/pim-enterprise-dev/vendor/autoload.php';
-require_once __DIR__ . '/../../vendor/autoload.php';
-require_once '/home/willy/project/akeneo/pim-enterprise-dev/app/AppKernel.php';
+
+//require_once '/home/willy/project/akeneo/pim-enterprise-dev/vendor/autoload.php';
+//require_once '/home/willy/project/akeneo/pim-enterprise-dev/app/AppKernel.php';
+
+require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/vendor/autoload.php';
+require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/app/AppKernel.php';
 
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
@@ -106,14 +109,16 @@ function getPrintVariation($imageName, $ext)
 }
 
 foreach ($images as $image) {
-    $file = new SplFileInfo(realpath(__DIR__ . '/../../dataset/' . $image));
+    $fileInfo = new SplFileInfo(realpath(__DIR__ . '/../../dataset/' . $image));
+
     try {
         $pipeline = getVariationPipeline($image);
-        $transformer->transform($file, $pipeline);
 
         foreach ($pipeline as $transformation) {
             $imageName = $transformation['outputFile'];
             $imagePath = $directory . '/' .$imageName;
+
+            $transformer->transform($fileInfo, $transformation['pipeline'], $imageName);
 
             $imageFile = new \SplFileInfo($imagePath);
             $mimeType = MimeTypeGuesser::getInstance()->guess($imagePath);
@@ -138,4 +143,4 @@ foreach ($images as $image) {
     }
 }
 
-$em->flush();
+//$em->flush();
