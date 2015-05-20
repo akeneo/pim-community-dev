@@ -31,7 +31,9 @@ class MediaComparator implements AttributeComparatorInterface
      */
     public function getChanges(array $changes, array $originals)
     {
-        if (isset($originals['value']['filePath']) && $changes['value']['filePath'] === $originals['value']['filePath']) {
+        if ((!isset($originals['value']) && !isset($changes['value']))
+            || (isset($originals['value']['filePath'])
+                && $changes['value']['filePath'] === $originals['value']['filePath'])) {
             return null;
         }
 
