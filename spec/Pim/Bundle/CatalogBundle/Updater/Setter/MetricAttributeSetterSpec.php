@@ -122,25 +122,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_attribute_data_is_not_a_number_or_null(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = ['data' => 'text', 'unit' => 'KILOGRAM'];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayNumericKeyExpected(
-                'attributeCode',
-                'data',
-                'setter',
-                'metric',
-                'string'
-            )
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_throws_an_error_if_unit_from_attribute_data_is_not_a_string(
         AttributeInterface $attribute,
         ProductInterface $product
@@ -200,6 +181,48 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $locale = 'fr_FR';
         $scope = 'mobile';
         $data = ['data' => 107, 'unit' => 'KILOGRAM'];
+
+        $attribute->getCode()->willReturn('attributeCode');
+        $attribute->getMetricFamily()->willReturn('Weight');
+
+        $measureManager->getUnitSymbolsForFamily('Weight')
+            ->shouldBeCalled()
+            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
+
+        $productValue->getMetric()->willReturn(null);
+        $productValue->setMetric($metric)->shouldBeCalled();
+
+        $metric->setUnit('KILOGRAM')->shouldBeCalled();
+        $metric->setData($data['data'])->shouldBeCalled();
+
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->willReturn($productValue);
+
+        $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
+
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
+
+        $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+    }
+    function it_sets_non_numeric_attribute_data_to_a_product_value(
+        AttributeInterface $attribute,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        $builder,
+        $measureManager,
+        $factory,
+        MetricInterface $metric,
+        ProductValue $productValue
+    ) {
+        $locale = 'fr_FR';
+        $scope = 'mobile';
+        $data = ['data' => 'foo', 'unit' => 'KILOGRAM'];
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
