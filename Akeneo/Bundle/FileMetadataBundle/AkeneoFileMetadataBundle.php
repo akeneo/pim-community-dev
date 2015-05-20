@@ -11,12 +11,23 @@
 
 namespace Akeneo\Bundle\FileMetadataBundle;
 
+use Akeneo\Bundle\FileMetadataBundle\DependencyInjection\Compiler\RegisterAdaptersPass;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
+ * Register the bundle
+ *
+ * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  */
 class AkeneoFileMetadataBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new RegisterAdaptersPass());
+    }
 }
