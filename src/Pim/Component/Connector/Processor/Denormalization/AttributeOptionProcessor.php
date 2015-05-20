@@ -3,15 +3,17 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
-use Pim\Bundle\CatalogBundle\Updater\UpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Attribute option import processor, allows to,
  *  - create / update
+ *  - validate
  *  - skip invalid ones
  *  - return the valid ones
  *
@@ -24,28 +26,34 @@ class AttributeOptionProcessor extends AbstractProcessor
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
-    /** @var UpdaterInterface */
-    protected $optionUpdater;
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
 
     /** @var string */
     protected $class;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter   format converter
-     * @param IdentifiableObjectRepositoryInterface $optionRepository option repository
-     * @param UpdaterInterface                      $optionUpdater    option updater
-     * @param string                                $class            attribute option class
+     * @param StandardArrayConverterInterface       $arrayConverter array converter
+     * @param IdentifiableObjectRepositoryInterface $repository     attribute option repository
+     * @param ObjectUpdaterInterface                $updater        attribute option updater
+     * @param ValidatorInterface                    $validator      attribute option validator
+     * @param string                                $class          attribute option class
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
-        IdentifiableObjectRepositoryInterface $optionRepository,
-        UpdaterInterface $optionUpdater,
+        IdentifiableObjectRepositoryInterface $repository,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator,
         $class
     ) {
-        parent::__construct($optionRepository);
+        parent::__construct($repository);
         $this->arrayConverter = $arrayConverter;
-        $this->optionUpdater  = $optionUpdater;
-        $this->class          = $class;
+        $this->updater = $updater;
+        $this->validator = $validator;
+        $this->class = $class;
     }
 
     /**
@@ -56,9 +64,14 @@ class AttributeOptionProcessor extends AbstractProcessor
         $convertedItem = $this->convertItemData($item);
         $attributeOption = $this->findOrCreateAttributeOption($convertedItem);
         try {
-            $this->optionUpdater->update($attributeOption, $convertedItem);
-        } catch (BusinessValidationException $exception) {
-            $this->skipItemWithConstraintViolations($item, $exception->getViolations());
+            $this->updateAttributeOption($attributeOption, $convertedItem);
+        } catch (\InvalidArgumentException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+        }
+
+        $violations = $this->validateAttributeOption($attributeOption);
+        if ($violations->count() > 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
         }
 
         return $attributeOption;
@@ -87,5 +100,32 @@ class AttributeOptionProcessor extends AbstractProcessor
         }
 
         return $attributeOption;
+    }
+
+    /**
+     * @param AttributeOptionInterface $attributeOption
+     * @param array                    $convertedItem
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function updateAttributeOption(AttributeOptionInterface $attributeOption, array $convertedItem)
+    {
+        $this->updater->update($attributeOption, $convertedItem);
+    }
+
+    /**
+     * @param AttributeOptionInterface $attributeOption
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function validateAttributeOption(AttributeOptionInterface $attributeOption)
+    {
+        // TODO: ugly fix to workaround issue with "attribute.group.code: This value should not be blank."
+        // in case of existing option, attribute is a proxy, attribute group too, the validated group code is null
+        ($attributeOption->getAttribute() !== null) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
+
+        return $this->validator->validate($attributeOption);
     }
 }

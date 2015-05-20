@@ -2,18 +2,20 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 class ProductUpdaterSpec extends ObjectBehavior
 {
     function let(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertySetterInterface $propertySetter,
+        PropertyCopierInterface $propertyCopier,
         ValidatorInterface $validator
     ) {
-        $this->beConstructedWith($productFieldUpdater, $validator);
+        $this->beConstructedWith($propertySetter, $propertyCopier, $validator);
     }
 
     function it_is_initializable()
@@ -23,7 +25,7 @@ class ProductUpdaterSpec extends ObjectBehavior
 
     function it_is_a_updater()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\UpdaterInterface');
+        $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_product()
@@ -33,14 +35,14 @@ class ProductUpdaterSpec extends ObjectBehavior
         );
     }
 
-    function it_sets_a_value($productFieldUpdater, ProductInterface $product1, ProductInterface $product2)
+    function it_sets_a_value($propertySetter, ProductInterface $product1, ProductInterface $product2)
     {
         $products = [$product1, $product2];
 
-        $productFieldUpdater
+        $propertySetter
             ->setData($product1, 'field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])
             ->shouldBeCalled();
-        $productFieldUpdater
+        $propertySetter
             ->setData($product2, 'field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce'])
             ->shouldBeCalled();
 
@@ -48,7 +50,7 @@ class ProductUpdaterSpec extends ObjectBehavior
     }
 
     function it_copies_a_value(
-        $productFieldUpdater,
+        $propertyCopier,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -60,10 +62,10 @@ class ProductUpdaterSpec extends ObjectBehavior
             'to_scope' => 'to_scope',
         ];
 
-        $productFieldUpdater
+        $propertyCopier
             ->copyData($product1, $product1, 'from_field', 'to_field', $options)
             ->shouldBeCalled();
-        $productFieldUpdater
+        $propertyCopier
             ->copyData($product2, $product2, 'from_field', 'to_field', $options)
             ->shouldBeCalled();
 

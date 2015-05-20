@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -17,25 +17,25 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class UpdateProductValueProcessor extends AbstractMassEditProcessor
 {
-    /** @var ProductFieldUpdaterInterface */
-    protected $productFieldUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
 
     /** @var ValidatorInterface */
     protected $validator;
 
     /**
-     * @param ProductFieldUpdaterInterface        $productFieldUpdater
+     * @param PropertySetterInterface             $propertySetter
      * @param ValidatorInterface                  $validator
      * @param JobConfigurationRepositoryInterface $jobConfigurationRepo
      */
     public function __construct(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         parent::__construct($jobConfigurationRepo);
 
-        $this->productFieldUpdater = $productFieldUpdater;
+        $this->propertySetter = $propertySetter;
         $this->validator      = $validator;
     }
 
@@ -91,7 +91,7 @@ class UpdateProductValueProcessor extends AbstractMassEditProcessor
     protected function setData(ProductInterface $product, array $actions)
     {
         foreach ($actions as $action) {
-            $this->productFieldUpdater->setData($product, $action['field'], $action['value']);
+            $this->propertySetter->setData($product, $action['field'], $action['value']);
         }
 
         return $this;

@@ -3,15 +3,19 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Product import processor
+ * Product import processor, allows to,
+ *  - create / update
+ *  - validate
+ *  - skip invalid ones
+ *  - return the valid ones
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -23,28 +27,34 @@ class ProductProcessor extends AbstractProcessor
     protected $arrayConverter;
 
     /** @var ProductBuilderInterface */
-    protected $productBuilder;
+    protected $builder;
 
     /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    protected $updater;
+
+    /** @var ValidatorInterface */
+    protected $validator;
 
     /**
      * @param StandardArrayConverterInterface       $arrayConverter array converter
      * @param IdentifiableObjectRepositoryInterface $repository     product repository
-     * @param ProductBuilderInterface               $productBuilder product builder
-     * @param ProductUpdaterInterface               $productUpdater product updater
+     * @param ProductBuilderInterface               $builder        product builder
+     * @param ObjectUpdaterInterface                $updater        product updater
+     * @param ValidatorInterface                    $validator      product validator
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        ProductBuilderInterface $productBuilder,
-        ProductUpdaterInterface $productUpdater
+        ProductBuilderInterface $builder,
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
-        $this->productBuilder = $productBuilder;
         $this->arrayConverter = $arrayConverter;
-        $this->productUpdater = $productUpdater;
+        $this->builder = $builder;
+        $this->updater = $updater;
+        $this->validator = $validator;
     }
 
     /**
@@ -58,10 +68,16 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
+
         try {
-            $this->productUpdater->update($product, $filteredItem);
-        } catch (BusinessValidationException $exception) {
-            $this->skipItemWithConstraintViolations($item, $exception->getViolations());
+            $this->updateProduct($product, $filteredItem);
+        } catch (\InvalidArgumentException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
+        }
+
+        $violations = $this->validateProduct($product);
+        if ($violations->count() > 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
         }
 
         return $product;
@@ -127,9 +143,32 @@ class ProductProcessor extends AbstractProcessor
     {
         $product = $this->repository->findOneByIdentifier($identifier);
         if (false === $product) {
-            $product = $this->productBuilder->createProduct($identifier, $familyCode);
+            $product = $this->builder->createProduct($identifier, $familyCode);
         }
 
         return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $filteredItem
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function updateProduct(ProductInterface $product, array $filteredItem)
+    {
+        $this->updater->update($product, $filteredItem);
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return ConstraintViolationListInterface
+     */
+    protected function validateProduct(ProductInterface $product)
+    {
+        return $this->validator->validate($product);
     }
 }

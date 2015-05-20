@@ -2,44 +2,97 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Exception\BusinessValidationException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
-use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Updates and validates a product
+ * Updates a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements ProductUpdaterInterface
+class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 {
-    /** @var ProductFieldUpdaterInterface */
-    protected $productFieldUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
 
-    /** @var ValidatorInterface */
-    protected $validator;
+    /** @var PropertyCopierInterface */
+    protected $propertyCopier;
 
     /**
-     * @param ProductFieldUpdaterInterface $productFieldUpdater
-     * @param ValidatorInterface           $validator
+     * @param PropertySetterInterface $propertySetter
+     * @param PropertyCopierInterface $propertyCopier this argument will be deprecated in 1.5
      */
-    public function __construct(
-        ProductFieldUpdaterInterface $productFieldUpdater,
-        ValidatorInterface $validator
-    ) {
-        $this->productFieldUpdater = $productFieldUpdater;
-        $this->validator = $validator;
+    public function __construct(PropertySetterInterface $propertySetter, PropertyCopierInterface $propertyCopier)
+    {
+        $this->propertySetter = $propertySetter;
+        $this->propertyCopier = $propertyCopier;
     }
 
     /**
      * {@inheritdoc}
      *
-     * @throws BusinessValidationException
+     * {
+     *      "name": [{
+     *          "locale": "fr_FR",
+     *          "scope":  null,
+     *          "data":  "T-shirt super beau",
+     *      }],
+     *      "description": [
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "mobile",
+     *               "data":   "My description"
+     *           },
+     *           {
+     *               "locale": "fr_FR",
+     *               "scope":  "mobile",
+     *               "data":   "Ma description mobile"
+     *           },
+     *           {
+     *               "locale": "en_US",
+     *               "scope":  "ecommerce",
+     *               "data":   "My description for the website"
+     *           },
+     *      ],
+     *      "price": [
+     *           {
+     *               "locale": null,
+     *               "scope":  ecommerce,
+     *               "data":   [
+     *                   {"data": 10, "currency": "EUR"},
+     *                   {"data": 24, "currency": "USD"},
+     *                   {"data": 20, "currency": "CHF"}
+     *               ]
+     *           }
+     *           {
+     *               "locale": null,
+     *               "scope":  mobile,
+     *               "data":   [
+     *                   {"data": 11, "currency": "EUR"},
+     *                   {"data": 25, "currency": "USD"},
+     *                   {"data": 21, "currency": "CHF"}
+     *               ]
+     *           }
+     *      ],
+     *      "length": [{
+     *          "locale": "en_US",
+     *          "scope":  "mobile",
+     *          "data":   {"data": "10", "unit": "CENTIMETER"}
+     *      }],
+     *      "enabled": true,
+     *      "categories": ["tshirt", "men"],
+     *      "associations": {
+     *          "XSELL": {
+     *              "groups": ["akeneo_tshirt", "oro_tshirt"],
+     *              "product": ["AKN_TS", "ORO_TSH"]
+     *          }
+     *      }
+     * }
      */
     public function update($product, array $data, array $options = [])
     {
@@ -52,43 +105,12 @@ class ProductUpdater implements ProductUpdaterInterface
             );
         }
 
-        $updateViolations = new ConstraintViolationList();
-        try {
-            foreach ($data as $field => $values) {
-                if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
-                    $this->productFieldUpdater->setData($product, $field, $values, []);
-                } else {
-                    $this->updateProductValues($product, $field, $values);
-                }
+        foreach ($data as $field => $values) {
+            if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
+                $this->updateProductFields($product, $field, $values);
+            } else {
+                $this->updateProductValues($product, $field, $values);
             }
-        } catch (\InvalidArgumentException $e) {
-            $setViolation = new ConstraintViolation(
-                $e->getMessage(),
-                $e->getMessage(),
-                [],
-                $product,
-                null,
-                null
-            );
-            $updateViolations->add($setViolation);
-        }
-
-        $validatorViolations = $this->validator->validate($product);
-        $updateViolations->addAll($validatorViolations);
-        if ($updateViolations->count() > 0) {
-            throw new BusinessValidationException($updateViolations);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
-     */
-    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
-    {
-        foreach ($products as $product) {
-            $this->productFieldUpdater->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
         }
 
         return $this;
@@ -97,7 +119,21 @@ class ProductUpdater implements ProductUpdaterInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
+     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::setData(
+     */
+    public function setValue(array $products, $field, $data, $locale = null, $scope = null)
+    {
+        foreach ($products as $product) {
+            $this->propertySetter->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,
@@ -115,10 +151,22 @@ class ProductUpdater implements ProductUpdaterInterface
             'to_scope' => $toScope,
         ];
         foreach ($products as $product) {
-            $this->productFieldUpdater->copyData($product, $product, $fromField, $toField, $options);
+            $this->propertyCopier->copyData($product, $product, $fromField, $toField, $options);
         }
 
         return $this;
+    }
+
+    /**
+     * Sets the field
+     *
+     * @param ProductInterface $product
+     * @param string           $field
+     * @param mixed            $value
+     */
+    protected function updateProductFields(ProductInterface $product, $field, $value)
+    {
+        $this->propertySetter->setData($product, $field, $value);
     }
 
     /**
@@ -136,7 +184,7 @@ class ProductUpdater implements ProductUpdaterInterface
             $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
             if ($belongsToFamily || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                $this->productFieldUpdater->setData($product, $field, $value['data'], $options);
+                $this->propertySetter->setData($product, $field, $value['data'], $options);
             }
         }
     }

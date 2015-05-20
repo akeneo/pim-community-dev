@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
@@ -18,19 +18,19 @@ use Symfony\Component\Validator\ValidatorInterface;
 class UpdateProductValueProcessorSpec extends ObjectBehavior
 {
     function let(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertySetterInterface $propertySetter,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         $this->beConstructedWith(
-            $productFieldUpdater,
+            $propertySetter,
             $validator,
             $jobConfigurationRepo
         );
     }
 
     function it_sets_values_to_product(
-        $productFieldUpdater,
+        $propertySetter,
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
@@ -54,7 +54,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $validator->validate($product)->willReturn($violations);
         $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
 
-        $productFieldUpdater->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
+        $propertySetter->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
 
@@ -62,7 +62,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
     }
 
     function it_sets_invalid_values_to_product(
-        $productFieldUpdater,
+        $propertySetter,
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
@@ -88,7 +88,7 @@ class UpdateProductValueProcessorSpec extends ObjectBehavior
         $violations = new ConstraintViolationList([$violation, $violation]);
         $validator->validate($product)->willReturn($violations);
 
-        $productFieldUpdater->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
+        $propertySetter->setData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
         $this->setStepExecution($stepExecution);
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
