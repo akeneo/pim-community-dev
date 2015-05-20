@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\Component\FileTransformer\DependencyInjection\Compiler;
+namespace Akeneo\Bundle\FileTransformerBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

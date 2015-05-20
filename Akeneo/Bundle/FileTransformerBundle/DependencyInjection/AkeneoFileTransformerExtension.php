@@ -9,7 +9,7 @@
 * file that was distributed with this source code.
 */
 
-namespace Akeneo\Component\FileTransformer\DependencyInjection;
+namespace Akeneo\Bundle\FileTransformerBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

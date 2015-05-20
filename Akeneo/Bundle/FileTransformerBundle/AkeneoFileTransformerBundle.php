@@ -11,7 +11,7 @@
 
 namespace Akeneo\Bundle\FileTransformerBundle;
 
-use Akeneo\Component\FileTransformer\DependencyInjection\Compiler\RegisterTransformationPass;
+use Akeneo\Bundle\FileTransformerBundle\DependencyInjection\Compiler\RegisterTransformationPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
