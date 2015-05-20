@@ -5,29 +5,27 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/vendor/autoload.php';
-require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/app/AppKernel.php';
+require_once '/home/willy/project/akeneo/pim-enterprise-dev/vendor/autoload.php';
+require_once '/home/willy/project/akeneo/pim-enterprise-dev/app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
 $kernel->boot();
 
-$directory = realpath(__DIR__ . '/../../images/');
+$directory = realpath(__DIR__ . '/../../dataset');
 $images = [
-    'akene.jpg',
-    'aurora.jpg',
-    'boat.jpg',
-    'col.jpg',
-    'EPSN0043.jpg',
-    'IMG_0002.jpg',
-    'IMG_0011.tiff',
-    'IMG_0012.jpg',
-    'IMG_7376.JPG.jpg',
-    'IMGP9262.jpg',
-    'nin.jpg'
+    'hammer-en.jpg',
+    'hammer-fr.jpg',
+    'paint.jpg',
+    'round-sofa-en.jpg',
+    'round-sofa-fr.jpg',
+    'square-sofa-en.jpg',
+    'square-sofa-fr.jpg',
+    'wrench-en.jpg',
+    'wrench-fr.jpg'
 ];
 
-$pathGenerator = new \Trial\Storage\StoragePathGenerator();
+$pathGenerator = new \PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator();
 $filesystem = new \League\Flysystem\Filesystem(new \League\Flysystem\Adapter\Local($directory));
 $em = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
 
@@ -46,7 +44,8 @@ foreach ($images as $imageName) {
     $file->setGuid($storage['guid']);
     $file->setMimeType($mimeType);
     $file->setOriginalFilename($imageName);
-    $file->setPath($storage['path']);
+    $file->setPath($storage['path_name']);
+    $file->setSize(filesize($imagePath));
 
     var_dump($file);
 
