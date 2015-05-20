@@ -65,3 +65,12 @@ Feature: Mass Edit Families
     And I am on the families page
     When I mass-edit families first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
     Then I should see "Mass Edit (11 families)"
+
+  @jira https://akeneo.atlassian.net/browse/PIM-4203
+  Scenario: Successfully mass edit families after sorting by label
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the families page
+    When I sort by "label" value ascending
+    And I mass-edit families boots, sneakers and sandals
+    Then I should see "Mass Edit (3 families)"

@@ -1,6 +1,7 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-4203: fix mass edit of families after sorting by label
 - PIM-4208: Fix js memory leak on a product edit form with scopable attributes
 
 # 1.3.11 (2015-05-13)
