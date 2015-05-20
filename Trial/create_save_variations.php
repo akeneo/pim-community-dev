@@ -124,11 +124,11 @@ foreach ($images as $image) {
             $file->setGuid($storage['guid']);
             $file->setMimeType($mimeType);
             $file->setOriginalFilename($imageName);
-            $file->setPath($storage['path_name']);
+            $file->setPath($storage['path']);
             $file->setSize(filesize($imagePath));
 
             $em->persist($file);
-            $filesystem->copy($imageName, 'stored/' . $file->getPath());
+            $filesystem->copy($imageName, 'stored/' . $file->getPathname());
         }
 
         echo "Image $image transformed.\n";
