@@ -337,13 +337,17 @@ class Edit extends Form
             return 'date';
         } elseif ($formFieldWrapper->hasClass('metric-field')) {
             return 'metric';
-        } elseif ($formFieldWrapper->hasClass('multi-select-field')) {
+        } elseif ($formFieldWrapper->hasClass('multi-select-field') ||
+            $formFieldWrapper->hasClass('reference-multi-select-field')
+        ) {
             return 'multiSelect';
         } elseif ($formFieldWrapper->hasClass('number-field')) {
             return 'number';
         } elseif ($formFieldWrapper->hasClass('price-collection-field')) {
             return 'price';
-        } elseif ($formFieldWrapper->hasClass('simple-select-field')) {
+        } elseif ($formFieldWrapper->hasClass('simple-select-field') ||
+            $formFieldWrapper->hasClass('reference-simple-select-field')
+        ) {
             return 'select';
         } elseif ($formFieldWrapper->hasClass('text-field')) {
             return 'text';
@@ -428,7 +432,7 @@ class Edit extends Form
         if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
             $link->click();
 
-            $this->getSession()->wait(500);
+            $this->getSession()->wait(3000);
 
             $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
             // Select the value in the displayed dropdown
@@ -451,8 +455,41 @@ class Edit extends Form
     protected function fillMultiSelectField(NodeElement $label, $values)
     {
         foreach ($this->listToArray($values) as $value) {
-            $this->fillSelectField($label, $value);
+            if (null !== $link = $label->find('css', 'ul.select2-choices')) {
+                $link->click();
+                $this->getSession()->wait(3000);
+
+                $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
+                // Select the value in the displayed dropdown
+                if (null !== $item) {
+                    $item->click();
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+                    );
+                }
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+                );
+            }
         }
+    }
+
+    /**
+     * Transform a list to array
+     *
+     * @param string $list
+     *
+     * @return array
+     */
+    public function listToArray($list)
+    {
+        if (empty($list)) {
+            return [];
+        }
+
+        return explode(', ', str_replace(' and ', ', ', $list));
     }
 
     /**
