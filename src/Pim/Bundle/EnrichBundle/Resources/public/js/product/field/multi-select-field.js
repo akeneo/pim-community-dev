@@ -58,7 +58,6 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            debugger;
                             $.ajax(choiceUrl).done(function(response){
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
