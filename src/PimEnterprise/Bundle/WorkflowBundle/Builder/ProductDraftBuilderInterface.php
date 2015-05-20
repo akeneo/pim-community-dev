@@ -25,7 +25,7 @@ interface ProductDraftBuilderInterface
      *
      * @throws \LogicException
      *
-     * @return array
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
      */
     public function build(ProductInterface $product);
 }

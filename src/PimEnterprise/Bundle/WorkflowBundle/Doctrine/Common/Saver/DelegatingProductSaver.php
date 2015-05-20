@@ -14,10 +14,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSaver;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -27,10 +28,10 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
 {
-    /** @var ProductSaver */
+    /** @var SaverInterface */
     protected $workingCopySaver;
 
-    /** @var ProductDraftSaver */
+    /** @var SaverInterface */
     protected $draftSaver;
 
     /** @var ObjectManager */
@@ -42,29 +43,37 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var ProductDraftBuilderInterface */
+    protected $productDraftBuilder;
+
     /**
-     * @param ProductSaver                 $workingCopySaver
-     * @param ProductDraftSaver            $draftSaver
+     * @param SaverInterface               $workingCopySaver
+     * @param SaverInterface               $draftSaver
      * @param ObjectManager                $objectManager
      * @param ProductSavingOptionsResolver $optionsResolver
      * @param SecurityContextInterface     $securityContext
+     * @param ProductDraftBuilderInterface $productDraftBuilder
      */
     public function __construct(
-        ProductSaver $workingCopySaver,
-        ProductDraftSaver $draftSaver,
+        SaverInterface $workingCopySaver,
+        SaverInterface $draftSaver,
         ObjectManager $objectManager,
         ProductSavingOptionsResolver $optionsResolver,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        ProductDraftBuilderInterface $productDraftBuilder
     ) {
-        $this->workingCopySaver = $workingCopySaver;
-        $this->draftSaver = $draftSaver;
-        $this->objectManager = $objectManager;
-        $this->optionsResolver = $optionsResolver;
-        $this->securityContext = $securityContext;
+        $this->workingCopySaver    = $workingCopySaver;
+        $this->draftSaver          = $draftSaver;
+        $this->objectManager       = $objectManager;
+        $this->optionsResolver     = $optionsResolver;
+        $this->securityContext     = $securityContext;
+        $this->productDraftBuilder = $productDraftBuilder;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException if not authenticated
      */
     public function save($product, array $options = [])
     {
@@ -74,7 +83,10 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         if ($hasPermissions) {
             $this->workingCopySaver->save($product, $options);
         } else {
-            $this->draftSaver->save($product, $options);
+            $productDraft = $this->productDraftBuilder->build($product);
+            if (null !== $productDraft) {
+                $this->draftSaver->save($productDraft, $options);
+            }
         }
     }
 

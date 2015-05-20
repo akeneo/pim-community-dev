@@ -28,3 +28,4 @@ services:
             - '@pim_catalog.object_manager.product'
             - '@pim_catalog.saver.product_options_resolver'
             - '@security.context'
+            - '@pimee_workflow.builder.draft'
