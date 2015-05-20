@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -19,7 +19,7 @@ class AttributeOptionProcessorSpec extends ObjectBehavior
     function let(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $optionRepository,
-        UpdaterInterface $optionUpdater,
+        ObjectUpdaterInterface $optionUpdater,
         ValidatorInterface $optionValidator,
         StepExecution $stepExecution
     ) {

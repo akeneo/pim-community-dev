@@ -2,14 +2,14 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 
 class ProductTemplateUpdaterSpec extends ObjectBehavior
 {
-    function let(ProductFieldUpdaterInterface $productFieldUpdater)
+    function let(PropertySetterInterface $productFieldUpdater)
     {
         $this->beConstructedWith($productFieldUpdater);
     }

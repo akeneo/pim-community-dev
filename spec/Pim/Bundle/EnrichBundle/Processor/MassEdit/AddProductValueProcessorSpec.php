@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductFieldUpdaterInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use Prophecy\Argument;
@@ -17,19 +17,19 @@ use Symfony\Component\Validator\ValidatorInterface;
 class AddProductValueProcessorSpec extends ObjectBehavior
 {
     function let(
-        ProductFieldUpdaterInterface $productFieldUpdater,
+        PropertyAdderInterface $propertyAdder,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo
     ) {
         $this->beConstructedWith(
-            $productFieldUpdater,
+            $propertyAdder,
             $validator,
             $jobConfigurationRepo
         );
     }
 
     function it_adds_values_to_product(
-        $productFieldUpdater,
+        $propertyAdder,
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
@@ -47,7 +47,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
             json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
-        $productFieldUpdater->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
+        $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('mass_edited')->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
@@ -56,7 +56,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
     }
 
     function it_adds_invalid_values_to_product(
-        $productFieldUpdater,
+        $propertyAdder,
         $validator,
         ProductInterface $product,
         StepExecution $stepExecution,
@@ -75,7 +75,7 @@ class AddProductValueProcessorSpec extends ObjectBehavior
             json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
-        $productFieldUpdater->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
+        $propertyAdder->addData($product, 'categories', ['office', 'bedroom'])->shouldBeCalled();
         $stepExecution->addWarning(Argument::cetera())->shouldBeCalled();
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalled();
 

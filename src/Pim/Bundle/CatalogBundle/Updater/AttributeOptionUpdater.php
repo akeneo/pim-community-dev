@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionUpdater implements UpdaterInterface
+class AttributeOptionUpdater implements ObjectUpdaterInterface
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;

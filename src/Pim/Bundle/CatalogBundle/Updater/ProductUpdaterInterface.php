@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated, please use UpdaterInterface
+ * @deprecated, please use ObjectUpdaterInterface we keep this one for BC reasons
  */
 interface ProductUpdaterInterface
 {
@@ -26,7 +26,7 @@ interface ProductUpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
+     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null);
 
@@ -43,7 +43,7 @@ interface ProductUpdaterInterface
      *
      * @return ProductUpdaterInterface
      *
-     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
+     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,

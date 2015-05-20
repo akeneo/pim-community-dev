@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
-use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -13,17 +15,22 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
+class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 {
-    /** @var ProductFieldUpdaterInterface */
-    protected $productFieldUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
+
+    /** @var PropertyCopierInterface */
+    protected $propertyCopier;
 
     /**
-     * @param ProductFieldUpdaterInterface $productFieldUpdater
+     * @param PropertySetterInterface $propertySetter
+     * @param PropertyCopierInterface $propertyCopier this argument will be deprecated in 1.5
      */
-    public function __construct(ProductFieldUpdaterInterface $productFieldUpdater)
+    public function __construct(PropertySetterInterface $propertySetter, PropertyCopierInterface $propertyCopier)
     {
-        $this->productFieldUpdater = $productFieldUpdater;
+        $this->propertySetter = $propertySetter;
+        $this->propertyCopier = $propertyCopier;
     }
 
     /**
@@ -112,12 +119,12 @@ class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::setData(
+     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::setData(
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
         foreach ($products as $product) {
-            $this->productFieldUpdater->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
+            $this->propertySetter->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
         }
 
         return $this;
@@ -126,7 +133,7 @@ class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
     /**
      * {@inheritdoc}
      *
-     * @deprecated will be removed in 1.5, please use ProductFieldUpdaterInterface::copyData(
+     * @deprecated will be removed in 1.5, please use ProductPropertyUpdaterInterface::copyData(
      */
     public function copyValue(
         array $products,
@@ -144,7 +151,7 @@ class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
             'to_scope' => $toScope,
         ];
         foreach ($products as $product) {
-            $this->productFieldUpdater->copyData($product, $product, $fromField, $toField, $options);
+            $this->propertyCopier->copyData($product, $product, $fromField, $toField, $options);
         }
 
         return $this;
@@ -159,7 +166,7 @@ class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
      */
     protected function updateProductFields(ProductInterface $product, $field, $value)
     {
-        $this->productFieldUpdater->setData($product, $field, $value);
+        $this->propertySetter->setData($product, $field, $value);
     }
 
     /**
@@ -177,7 +184,7 @@ class ProductUpdater implements UpdaterInterface, ProductUpdaterInterface
             $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
             if ($belongsToFamily || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                $this->productFieldUpdater->setData($product, $field, $value['data'], $options);
+                $this->propertySetter->setData($product, $field, $value['data'], $options);
             }
         }
     }

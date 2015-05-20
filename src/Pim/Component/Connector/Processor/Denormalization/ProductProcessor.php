@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -39,14 +39,14 @@ class ProductProcessor extends AbstractProcessor
      * @param StandardArrayConverterInterface       $arrayConverter array converter
      * @param IdentifiableObjectRepositoryInterface $repository     product repository
      * @param ProductBuilderInterface               $builder        product builder
-     * @param UpdaterInterface                      $updater        product updater
+     * @param ObjectUpdaterInterface                $updater        product updater
      * @param ValidatorInterface                    $validator      product validator
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ProductBuilderInterface $builder,
-        UpdaterInterface $updater,
+        ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);

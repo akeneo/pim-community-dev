@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -21,7 +21,7 @@ class ProductProcessorSpec extends ObjectBehavior
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $productRepository,
         ProductBuilderInterface $productBuilder,
-        UpdaterInterface $productUpdater,
+        ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
         StepExecution $stepExecution
     ) {

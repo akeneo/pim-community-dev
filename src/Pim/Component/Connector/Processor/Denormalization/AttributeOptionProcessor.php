@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
-use Akeneo\Component\StorageUtils\Updater\UpdaterInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -26,7 +26,7 @@ class AttributeOptionProcessor extends AbstractProcessor
     /** @var StandardArrayConverterInterface */
     protected $arrayConverter;
 
-    /** @var UpdaterInterface */
+    /** @var ObjectUpdaterInterface */
     protected $updater;
 
     /** @var ValidatorInterface */
@@ -38,14 +38,14 @@ class AttributeOptionProcessor extends AbstractProcessor
     /**
      * @param StandardArrayConverterInterface       $arrayConverter array converter
      * @param IdentifiableObjectRepositoryInterface $repository     attribute option repository
-     * @param UpdaterInterface                      $updater        attribute option updater
+     * @param ObjectUpdaterInterface                $updater        attribute option updater
      * @param ValidatorInterface                    $validator      attribute option validator
      * @param string                                $class          attribute option class
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        UpdaterInterface $updater,
+        ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
         $class
     ) {
