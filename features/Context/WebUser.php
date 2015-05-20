@@ -1780,7 +1780,11 @@ class WebUser extends RawMinkContext
      */
     public function iDisplayTheAttributes($fields)
     {
-        $this->getCurrentPage()->addAvailableAttributes($this->listToArray($fields));
+        $this->getMainContext()
+            ->execute(
+                'mass-edit/display-attributes',
+                $this->listToArray($fields)
+            );
         $this->wait();
     }
 
