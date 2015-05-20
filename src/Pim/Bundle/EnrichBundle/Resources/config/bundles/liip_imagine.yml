@@ -6,19 +6,19 @@ liip_imagine:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
         thumbnail_small:
-            cache: local_dir
+#            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [80, 120], mode: inset }
                 strip:        ~
         thumbnail:
-            cache: local_dir
+#            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [320, 240], mode: inset }
                 strip:        ~
         image_preview:
-            cache: local_dir
+#            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [900, 600], mode: inset }
