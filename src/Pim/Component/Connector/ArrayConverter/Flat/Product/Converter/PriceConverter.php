@@ -37,7 +37,7 @@ class PriceConverter extends AbstractConverter
         $data = $this->fieldSplitter->splitCollection($value);
 
         $data = array_map(function ($priceValue) use ($fieldNameInfo) {
-            return $this->convertPrice($priceValue, $fieldNameInfo);
+            return $this->convertPrice($fieldNameInfo, $priceValue);
         }, $data);
 
         return [$fieldNameInfo['attribute']->getCode() => [[
@@ -48,12 +48,12 @@ class PriceConverter extends AbstractConverter
     }
 
     /**
-     * @param $priceValue
-     * @param $fieldNameInfo
+     * @param string $priceValue
+     * @param array  $fieldNameInfo
      *
      * @return array
      */
-    protected function convertPrice($priceValue, $fieldNameInfo)
+    protected function convertPrice(array $fieldNameInfo, $priceValue)
     {
         //Due to the multiple column for price collections
         if (isset($fieldNameInfo['price_currency'])) {

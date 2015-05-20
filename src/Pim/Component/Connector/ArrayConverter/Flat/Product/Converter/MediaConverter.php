@@ -34,7 +34,7 @@ class MediaConverter extends AbstractConverter
             return null;
         }
 
-        $data = $value === "" ? null : ['filePath' => $value, 'originalFilename' => basename($value)];
+        $data = ['filePath' => $value, 'originalFilename' => basename($value)];
 
         return [$fieldNameInfo['attribute']->getCode() => [[
             'locale' => $fieldNameInfo['locale_code'],

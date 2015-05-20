@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
 
 /**
  * Abstract converter
@@ -21,7 +20,7 @@ abstract class AbstractConverter implements ConverterInterface
     protected $fieldSplitter;
 
     /**
-     * @param FieldSplitter                  $fieldSplitter
+     * @param FieldSplitter $fieldSplitter
      */
     public function __construct(FieldSplitter $fieldSplitter)
     {

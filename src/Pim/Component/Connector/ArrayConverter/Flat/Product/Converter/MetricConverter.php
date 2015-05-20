@@ -34,23 +34,13 @@ class MetricConverter extends AbstractConverter
             return null;
         }
 
-        //TODO: refactor this
-        if ('' === $value) {
-            $data = ['data' => null, 'unit' => null];
-
-            return [$fieldNameInfo['attribute']->getCode() => [[
-                'locale' => $fieldNameInfo['locale_code'],
-                'scope'  => $fieldNameInfo['scope_code'],
-                'data'   => $data,
-            ]]];
-        }
-
         //Due to the multi column format for metrics
         if (isset($fieldNameInfo['metric_unit'])) {
             $unit = $fieldNameInfo['metric_unit'];
         } else {
             list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
         }
+
 
         $data = ['data' => (float) $value, 'unit' => $unit];
 
