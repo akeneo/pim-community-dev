@@ -93,8 +93,8 @@ class GetProductCommand extends ContainerAwareCommand
     /**
      * Create a security token from the given username
      *
-     * @param OutputInterface  $output
-     * @param string           $username
+     * @param OutputInterface $output
+     * @param string          $username
      *
      * @return bool
      */
