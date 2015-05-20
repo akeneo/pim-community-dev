@@ -90,7 +90,9 @@ class AppKernel extends Kernel
             new PimEnterprise\Bundle\WebServiceBundle\PimEnterpriseWebServiceBundle(),
             new PimEnterprise\Bundle\PdfGeneratorBundle\PimEnterprisePdfGeneratorBundle(),
 
-            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle()
+            new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
+            new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
+            new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
         ];
     }
 
@@ -143,6 +145,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new Oneup\FlysystemBundle\OneupFlysystemBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
             new Akeneo\Bundle\BatchBundle\AkeneoBatchBundle(),
             new Akeneo\Bundle\StorageUtilsBundle\AkeneoStorageUtilsBundle(),
