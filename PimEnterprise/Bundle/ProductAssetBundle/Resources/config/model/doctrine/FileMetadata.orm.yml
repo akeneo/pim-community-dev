@@ -1,0 +1,14 @@
+PimEnterprise\Component\ProductAsset\Model\FileMetadata:
+    type: entity
+    inheritanceType: SINGLE_TABLE
+    table: pimee_product_asset_file_metadata
+    id:
+        id:
+            type: integer
+            id: true
+            generator: { strategy: AUTO }
+    fields:
+        fileDatetime:
+            type: string
+            length: 255
+            nullable: true

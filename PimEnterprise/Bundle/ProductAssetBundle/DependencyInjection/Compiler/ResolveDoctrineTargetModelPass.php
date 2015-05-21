@@ -30,6 +30,8 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface' => 'pimee_product_asset.model.asset_variation.class',
             'PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface' => 'pimee_product_asset.model.asset_reference.class',
             'PimEnterprise\Component\ProductAsset\Model\FileInterface' => 'pimee_product_asset.model.file.class',
+            'PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface' => 'pimee_product_asset.model.file_metadata.interface',
+            'PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface' => 'pimee_product_asset.model.image_metadata.interface'
         ];
     }
 }
