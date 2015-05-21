@@ -30,4 +30,4 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | en   | Extremely wet |
     And I press the "Add" button in the popin
     And I save the product
-    Then the product weather_conditions should be "Wet, Extremely wet"
+    Then the product Weather conditions should be "Wet, Extremely wet"
