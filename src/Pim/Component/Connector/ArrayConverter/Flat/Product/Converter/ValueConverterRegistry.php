@@ -9,7 +9,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConverterRegistry implements ConverterRegistryInterface
+class ValueConverterRegistry implements ValueConverterRegistryInterface
 {
     /** @var array */
     protected $converters = [];
@@ -17,9 +17,9 @@ class ConverterRegistry implements ConverterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function register(ConverterInterface $converter)
+    public function register(ValueConverterInterface $converter)
     {
-        if ($converter instanceof ConverterInterface) {
+        if ($converter instanceof ValueConverterInterface) {
             $this->converters[] = $converter;
         }
 
@@ -29,10 +29,10 @@ class ConverterRegistry implements ConverterRegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function getConverter($field)
+    public function getConverter($attributeType)
     {
         foreach ($this->converters as $converter) {
-            if ($converter->supportsField($field)) {
+            if ($converter->supportsField($attributeType)) {
                 return $converter;
             }
         }

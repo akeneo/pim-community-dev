@@ -9,21 +9,21 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ConverterRegistryInterface
+interface ValueConverterRegistryInterface
 {
     /**
      * Register a copier
      *
-     * @param ConverterInterface $converter
+     * @param ValueConverterInterface $converter
      *
-     * @return ConverterRegistryInterface
+     * @return ValueConverterRegistry
      */
-    public function register(ConverterInterface $converter);
+    public function register(ValueConverterInterface $converter);
 
     /**
-     * @param string $field
+     * @param string $attributeType
      *
-     * @return ConverterInterface
+     * @return ValueConverterInterface
      */
-    public function getConverter($field);
+    public function getConverter($attributeType);
 }

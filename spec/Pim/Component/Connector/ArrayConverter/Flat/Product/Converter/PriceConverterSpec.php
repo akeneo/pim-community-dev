@@ -15,7 +15,7 @@ class PriceConverterSpec extends ObjectBehavior
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ConverterInterface');
+        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface');
     }
 
     function it_supports_converter_field()
@@ -40,7 +40,7 @@ class PriceConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['data' => 10, 'currency' => 'EUR'],
+            'data'   => [['data' => 10.00, 'currency' => 'EUR']],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

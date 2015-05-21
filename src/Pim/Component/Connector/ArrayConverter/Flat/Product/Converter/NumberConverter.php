@@ -3,7 +3,6 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
 
 /**
  * Converts flat numbers value into structured one
@@ -12,7 +11,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NumberConverter extends AbstractConverter
+class NumberConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -27,7 +26,7 @@ class NumberConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($fieldNameInfo, $value)
+    public function convert($attributeFieldInfo, $value)
     {
         if ('' === $value) {
             return null;
@@ -35,9 +34,9 @@ class NumberConverter extends AbstractConverter
 
         $data = (float) $value;
 
-        return [$fieldNameInfo['attribute']->getCode() => [[
-            'locale' => $fieldNameInfo['locale_code'],
-            'scope'  => $fieldNameInfo['scope_code'],
+        return [$attributeFieldInfo['attribute']->getCode() => [[
+            'locale' => $attributeFieldInfo['locale_code'],
+            'scope'  => $attributeFieldInfo['scope_code'],
             'data'   => $data,
         ]]];
     }

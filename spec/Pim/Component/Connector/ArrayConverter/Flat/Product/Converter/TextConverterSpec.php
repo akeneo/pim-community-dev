@@ -6,21 +6,27 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
-class IdentifierConverterSpec extends ObjectBehavior
+class TextConverterSpec extends ObjectBehavior
 {
     function let(FieldSplitter $fieldSplitter)
     {
-        $this->beConstructedWith($fieldSplitter, ['pim_catalog_identifier']);
+        $this->beConstructedWith(
+            $fieldSplitter,
+            ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textaera']
+        );
     }
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ConverterInterface');
+        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface');
     }
 
     function it_supports_converter_field()
     {
         $this->supportsField('pim_catalog_identifier')->shouldReturn(true);
+        $this->supportsField('pim_catalog_text')->shouldReturn(true);
+        $this->supportsField('pim_catalog_textaera')->shouldReturn(true);
+        $this->supportsField('pim_catalog_price')->shouldReturn(false);
     }
 
     function it_converts(AttributeInterface $attribute)

@@ -11,7 +11,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricConverter extends AbstractConverter
+class MetricConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -26,24 +26,24 @@ class MetricConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($fieldNameInfo, $value)
+    public function convert($attributeFieldInfo, $value)
     {
         if ('' === $value) {
             return null;
         }
 
         //Due to the multi column format for metrics
-        if (isset($fieldNameInfo['metric_unit'])) {
-            $unit = $fieldNameInfo['metric_unit'];
+        if (isset($attributeFieldInfo['metric_unit'])) {
+            $unit = $attributeFieldInfo['metric_unit'];
         } else {
             list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
         }
 
         $data = ['data' => (float) $value, 'unit' => $unit];
 
-        return [$fieldNameInfo['attribute']->getCode() => [[
-            'locale' => $fieldNameInfo['locale_code'],
-            'scope'  => $fieldNameInfo['scope_code'],
+        return [$attributeFieldInfo['attribute']->getCode() => [[
+            'locale' => $attributeFieldInfo['locale_code'],
+            'scope'  => $attributeFieldInfo['scope_code'],
             'data'   => $data,
         ]]];
     }

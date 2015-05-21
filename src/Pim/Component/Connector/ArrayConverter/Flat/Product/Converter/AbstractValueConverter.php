@@ -11,7 +11,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractConverter implements ConverterInterface
+abstract class AbstractValueConverter implements ValueConverterInterface
 {
     /** @var array */
     protected $supportedFieldType;
@@ -30,8 +30,8 @@ abstract class AbstractConverter implements ConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsField($fieldType)
+    public function supportsField($attributeType)
     {
-        return in_array($fieldType, $this->supportedFieldType);
+        return in_array($attributeType, $this->supportedFieldType);
     }
 }

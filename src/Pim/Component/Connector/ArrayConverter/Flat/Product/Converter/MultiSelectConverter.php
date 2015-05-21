@@ -11,7 +11,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MultiSelectConverter extends AbstractConverter
+class MultiSelectConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -26,7 +26,7 @@ class MultiSelectConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($fieldNameInfo, $value)
+    public function convert($attributeFieldInfo, $value)
     {
         if ('' === $value) {
             return null;
@@ -34,9 +34,9 @@ class MultiSelectConverter extends AbstractConverter
 
         $value = $this->fieldSplitter->splitCollection($value);
 
-        return [$fieldNameInfo['attribute']->getCode() => [[
-            'locale' => $fieldNameInfo['locale_code'],
-            'scope'  => $fieldNameInfo['scope_code'],
+        return [$attributeFieldInfo['attribute']->getCode() => [[
+            'locale' => $attributeFieldInfo['locale_code'],
+            'scope'  => $attributeFieldInfo['scope_code'],
             'data'   => $value,
         ]]];
     }

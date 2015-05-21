@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ConverterRegistry;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistry;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -22,7 +22,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var OptionsResolverConverter */
     protected $optionsResolverConverter;
 
-    /** @var ConverterRegistry */
+    /** @var ValueConverterRegistry */
     protected $converterRegistry;
 
     /** @var ProductAttributeFieldExtractor */
@@ -37,14 +37,14 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /**
      * @param ProductAttributeFieldExtractor  $fieldExtractor
      * @param OptionsResolverConverter        $optionsResolverConverter
-     * @param ConverterRegistry               $converterRegistry
+     * @param ValueConverterRegistry               $converterRegistry
      * @param ProductAssociationFieldResolver $assocFieldResolver
      * @param FieldSplitter                   $fieldSplitter
      */
     public function __construct(
         ProductAttributeFieldExtractor $fieldExtractor,
         OptionsResolverConverter $optionsResolverConverter,
-        ConverterRegistry $converterRegistry,
+        ValueConverterRegistry $converterRegistry,
         ProductAssociationFieldResolver $assocFieldResolver,
         FieldSplitter $fieldSplitter
     ) {
@@ -186,14 +186,22 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertValue($column, $value)
     {
-        $fieldNameInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
+        $attributeFieldInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
 
-        if (null !== $fieldNameInfo && array_key_exists('attribute', $fieldNameInfo) && isset($fieldNameInfo['attribute'])) {
-            $converter = $this->converterRegistry->getConverter($fieldNameInfo['attribute']->getAttributeType());
+        if (null !== $attributeFieldInfo && array_key_exists(
+                'attribute',
+                $attributeFieldInfo
+            ) && isset($attributeFieldInfo['attribute'])
+        ) {
+            $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
 
-            if (null !== $converter) {
-                return $converter->convert($fieldNameInfo, $value);
+            if (null === $converter) {
+                throw new \LogicException(
+                    sprintf('No converters found for attribute type "%s"', $attributeFieldInfo['attribute']->getCode())
+                );
             }
+
+            return $converter->convert($attributeFieldInfo, $value);
         }
 
         return [];
