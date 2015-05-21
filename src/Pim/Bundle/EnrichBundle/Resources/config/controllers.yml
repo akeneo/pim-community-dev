@@ -18,7 +18,6 @@ parameters:
     pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
     pim_enrich.controller.sequential_edit.class:         Pim\Bundle\EnrichBundle\Controller\SequentialEditController
     pim_enrich.controller.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\ProductCommentController
-    pim_enrich.controller.product_attribute.class:       Pim\Bundle\EnrichBundle\Controller\ProductAttributeController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
     pim_enrich.controller.job_tracker.class:             Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.product_rest.class:            Pim\Bundle\EnrichBundle\Controller\ProductRestController
@@ -267,15 +266,6 @@ services:
             - '@pim_comment.manager.comment'
             - '@pim_comment.builder.comment'
 
-    pim_enrich.controller.product_attribute:
-        scope: request
-        class: %pim_enrich.controller.product_attribute.class%
-        arguments:
-            - '@router'
-            - '@form.factory'
-            - '@pim_catalog.manager.product'
-            - '@pim_catalog.repository.attribute'
-
     pim_enrich.controller.variant_group_attribute:
         scope: request
         class: %pim_enrich.controller.variant_group_attribute.class%
@@ -304,6 +294,7 @@ services:
         class: %pim_enrich.controller.product_rest.class%
         arguments:
             - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.attribute'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.saver.product'
             - '@pim_internal_api_serializer'

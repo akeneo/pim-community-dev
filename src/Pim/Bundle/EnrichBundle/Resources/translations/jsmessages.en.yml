@@ -114,7 +114,6 @@ pim_enrich:
     navigation:
         link:
             back_to_grid: Back to grid
-
     entity:
         product:
             title: product
@@ -181,7 +180,8 @@ pim_enrich:
         leave:           Are you sure you want to leave this page?
         discard_changes: You will lose changes to the {{ entity }} if you leave the page.
         delete_item:     Confirm deletion
-
+        delete:
+            product_attribute: Are you sure you want to delete this attribute from the product?
     info:
         not_applicable: N/A
         entity:
@@ -225,7 +225,8 @@ pim_enrich:
                     keep_attributes:  No attributes will be removed.
                     change_family_to: Change the family to
                     empty_selection:  Choose a family
-
+            flash:
+                attribute_deletion_error: An error occured during the attribute deletion
         attribute_option:
             flash:
                 option_created: Attribute option successfully created
