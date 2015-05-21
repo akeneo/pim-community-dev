@@ -120,7 +120,7 @@ class MediaManager
     {
         try {
             if ($file = $media->getFile()) {
-                if ($media->getFilename() && $this->fileExists($media) && !$media->getOriginalFilename()) {
+                if ($media->getFilename() && $this->fileExists($media) && '' === $media->getOriginalFilename()) {
                     $this->delete($media);
                 }
                 $filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename();

@@ -71,7 +71,6 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'media');
         $this->checkData($attribute, $data);
-
         $file = $this->getFileData($attribute, $data);
         $this->setMedia($product, $attribute, $file, $data['originalFilename'], $options['locale'], $options['scope']);
         $this->mediaManager->handleProductMedias($product);
@@ -102,6 +101,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
 
         if (null === $media = $value->getMedia()) {
             $media = $this->mediaFactory->createMedia($file);
+            $media->setOriginalFilename($originalFilename);
         } else {
             if (null === $file) {
                 $media->setRemoved(true);

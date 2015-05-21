@@ -1054,7 +1054,7 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
-        $script = sprintf("$('label:contains(\"%s\")').parent().find('.remove-upload').click();", $field);
+        $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
@@ -1075,7 +1075,7 @@ class WebUser extends RawMinkContext
             $this->getCurrentPage()
                 ->find('css', sprintf('div.preview span:contains("%s")', $link))
                 ->getParent()
-                ->getParent()
+                ->find('css', sprintf('span.open-media', $link))
                 ->click();
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');
