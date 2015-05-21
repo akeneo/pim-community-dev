@@ -11,34 +11,34 @@ Feature: Create a draft with a text fields
 
   Scenario: Successfully add a draft without add attribute in product
     Given I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Tshirt Akeneo", "locale": null, "scope": null}] | {}     | Mary     |
+      | product       | actions                                                                                                       | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Tshirt Akeneo", "locale": "en_US", "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                   |
-      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": null, "scope": null, "value": "Tshirt Akeneo"}]}} |
+      | product        | username | result                                                                                          |
+      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": "en_US", "scope": "mobile", "value": "Tshirt Akeneo"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | description | |
+      | description-en_US-mobile | |
 
   Scenario: Successfully add a draft without update attribute in product
     Given the following product values:
-      | product       | attribute | value |
-      | akeneo_tshirt | description    | "Tshirt Akeneo"     |
+      | product       | attribute   | value         | locale | scope  |
+      | akeneo_tshirt | description | Tshirt Akeneo | en_US  | mobile |
     Then I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                          | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Wonderful Akeneo Tshirt", "locale": null, "scope": null}] | {}     | Mary     |
+      | product       | actions                                                                                                                 | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Wonderful Akeneo Tshirt", "locale": "en_US", "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                             |
-      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": null, "scope": null, "value": "Wonderful Akeneo Tshirt"}]}} |
+      | product        | username | result                                                                                                    |
+      | akeneo_tshirt  | Mary     | {"values": {"description": [{"locale": "en_US", "scope": "mobile", "value": "Wonderful Akeneo Tshirt"}]}} |
     And the product "akeneo_tshirt" should have the following values:
-      | description | "Tshirt Akeneo" |
+      | description-en_US-mobile | Tshirt Akeneo |
 
   Scenario: Do not create a draft with same values as product
     Given the following product values:
-      | product       | attribute   | value           |
-      | akeneo_tshirt | description | "Tshirt Akeneo" |
+      | product       | attribute   | value         | locale | scope  |
+      | akeneo_tshirt | description | Tshirt Akeneo | en_US  | mobile |
     Then I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Tshirt Akeneo", "locale": null, "scope": null}] | {}     | Mary     |
+      | product       | actions                                                                                                       | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "description", "data": "Tshirt Akeneo", "locale": "en_US", "scope": "mobile"}] | {}     | Mary     |
     And I should not get the following proposal:
       | product       | username |
       | akeneo_tshirt | Mary     |

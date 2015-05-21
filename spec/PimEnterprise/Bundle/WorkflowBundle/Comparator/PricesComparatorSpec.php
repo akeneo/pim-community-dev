@@ -8,7 +8,7 @@ class PricesComparatorSpec extends ObjectBehavior
 {
     function it_is_a_comparator()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\AttributeComparatorInterface');
     }
 
     function it_supports_price_type()
@@ -28,7 +28,7 @@ class PricesComparatorSpec extends ObjectBehavior
         $this->getChanges($changes, $originals)->shouldReturn([
             'locale' => null,
             'scope'  => null,
-            'values' => [
+            'value' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],
@@ -49,7 +49,7 @@ class PricesComparatorSpec extends ObjectBehavior
         $this->getChanges($changes, $originals)->shouldReturn([
             'locale' => null,
             'scope'  => null,
-            'values' => [
+            'value' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],

@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for prices
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class PricesComparator implements ComparatorInterface
+class PricesComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -52,7 +50,7 @@ class PricesComparator implements ComparatorInterface
             return [
                 'locale' => $changes['locale'],
                 'scope'  => $changes['scope'],
-                'values' => $prices
+                'value'  => $prices
             ];
         }
     }

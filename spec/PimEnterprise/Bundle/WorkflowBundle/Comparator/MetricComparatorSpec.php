@@ -8,7 +8,7 @@ class MetricComparatorSpec extends ObjectBehavior
 {
     function it_is_a_comparator()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\AttributeComparatorInterface');
     }
 
     function it_supports_metric_type()

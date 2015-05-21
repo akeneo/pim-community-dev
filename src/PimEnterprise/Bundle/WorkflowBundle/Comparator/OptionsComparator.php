@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for collections of options
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class OptionsComparator implements ComparatorInterface
+class OptionsComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -34,10 +32,10 @@ class OptionsComparator implements ComparatorInterface
     public function getChanges(array $changes, array $originals)
     {
         $codes = [];
-        foreach ($changes['value'] as $iterator => $attribute) {
+        foreach ($changes['value'] as $index => $attribute) {
             if (!array_key_exists('value', $originals)
-                || !isset($originals['value'][$iterator])
-                || $attribute['code'] !== $originals['value'][$iterator]['code']) {
+                || !isset($originals['value'][$index])
+                || $attribute['code'] !== $originals['value'][$index]['code']) {
                 $codes[] = $attribute['code'];
             }
         }
@@ -49,7 +47,7 @@ class OptionsComparator implements ComparatorInterface
         return [
             'locale' => $changes['locale'],
             'scope'  => $changes['scope'],
-            'values' => $codes,
+            'value'  => $codes,
         ];
     }
 }

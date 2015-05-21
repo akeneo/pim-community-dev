@@ -11,18 +11,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 
-use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Builder to compare values
+ * Builder to compare values of product
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-interface BuilderInterface
+interface ProductDraftBuilderInterface
 {
     /**
      * @param ProductInterface $product
+     *
+     * @throws \LogicException
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
      */
-    public function builder(ProductInterface $product);
+    public function build(ProductInterface $product);
 }

@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-interface ComparatorInterface
+interface AttributeComparatorInterface
 {
     /**
      * Whether or not the class supports comparison

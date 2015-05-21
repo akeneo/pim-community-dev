@@ -14,29 +14,23 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 /**
  * A comparator that delegates comparison to a chain of comparators
  *
- * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ChainedComparator
+class ComparatorRegistry implements RegistryInterface
 {
+    const COMPARATOR_ATTRIBUTE = 'attribute';
+
     /** @var ComparatorInterface[] */
     protected $comparators = [];
 
     /**
-     * @param string $attributeType
-     * @param array  $changes
-     * @param array  $originals
-     *
-     * @throws \LogicException
-     *
-     * @return array|null
+     * {@inheritdoc}
      */
-    public function compare($attributeType, array $changes, array $originals)
+    public function getAttributeComparator($attributeType)
     {
-        foreach ($this->getComparators() as $comparator) {
+        foreach ($this->getComparators(self::COMPARATOR_ATTRIBUTE) as $comparator) {
             if ($comparator->supportsComparison($attributeType)) {
-                return $comparator->getChanges($changes, $originals);
+                return $comparator;
             }
         }
 
@@ -50,27 +44,26 @@ class ChainedComparator
     }
 
     /**
-     * Add a comparator to the chain of comparators
-     *
-     * @param ComparatorInterface $comparator
-     * @param int                 $priority
+     * {@inheritdoc}
      */
-    public function addComparator(ComparatorInterface $comparator, $priority)
+    public function addAttributeComparator(AttributeComparatorInterface $comparator, $priority)
     {
-        $this->comparators[$priority][] = $comparator;
+        $this->comparators[self::COMPARATOR_ATTRIBUTE][$priority][] = $comparator;
     }
 
     /**
      * Get the registered comparators
      *
+     * @param string $type
+     *
      * @return ComparatorInterface[]
      */
-    public function getComparators()
+    protected function getComparators($type = self::COMPARATOR_ATTRIBUTE)
     {
-        krsort($this->comparators);
+        krsort($this->comparators[$type]);
 
         $comparators = [];
-        foreach ($this->comparators as $groupedComparators) {
+        foreach ($this->comparators[$type] as $groupedComparators) {
             $comparators = array_merge($comparators, $groupedComparators);
         }
 

@@ -4,6 +4,47 @@
 
 > Please perform a backup of your codebase if you don't use any VCS.
 
+WorkflowBundle
+--------------
+
+Workflowbundle has been reworked to propose a new feature: the import of proposals.
+In previous version, drafts could only be proposed via the product edit form, and structure of bundle was build around form events.
+All BC breaks have been written in CHANGELOG.md file.
+To start again on clean basis, we changed storage format (which was serialize before) to JSON (but normally you should not much be impacted by this internal change).
+The new structure is more simple to read and respect our exchange format.
+
+```
+             Old structure                       |                  New structure               
+-------------------------------------------------------------------------------------------------
+["values": [                                     |["values": [ 
+    "description-en_US-ecommerce": [             |    "description": [
+         "text": "Text of description",          |        [
+         "__context__": [                        |            "text": "Text of description",
+             "attribute": "description",         |            "locale": "en_US",
+             "locale": "en_US",                  |            "scope": "ecommerce"
+             "scope": "ecommerce"                |        ],
+         ]                                       |        [
+                                                 |             "text": "Text of description",
+    ],                                           |             "locale": "en_US",   
+    "description-en_US-mobile": [                |             "scope": "mobile"
+        "text": "Text of description",           |        ]
+        "__context__": [                         |    ]
+            "attribute": "description",          |]
+            "locale": "en_US",                   |
+            "scope": "mobile"                    |
+        ]                                        |
+    ]                                            |
+]                                                |
+```
+
+To migrate all drafts structure to new JSON structure, you can execute the following command in your project folder:
+
+```
+    php upgrades/1.3-1.4/common/migrate_draft.php --env=YOUR_ENV
+```
+
+
+
 ## Partially fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.

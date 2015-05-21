@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -31,9 +31,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 class ProductDraftManager
 {
-    /** @var ManagerRegistry */
-    protected $registry;
-
     /** @var SaverInterface */
     protected $workingCopySaver;
 
@@ -52,8 +49,16 @@ class ProductDraftManager
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
+    /** @var MediaManager */
+    protected $mediaManager;
+
+    /** @var SaverInterface */
+    protected $productDraftSaver;
+
+    /** @var RemoverInterface */
+    protected $productDraftRemover;
+
     /**
-     * @param ManagerRegistry                 $registry
      * @param SaverInterface                  $workingCopySaver
      * @param UserContext                     $userContext
      * @param ProductDraftFactory             $factory
@@ -61,18 +66,20 @@ class ProductDraftManager
      * @param ProductDraftApplierInterface    $applier
      * @param EventDispatcherInterface        $dispatcher
      * @param MediaManager                    $mediaManager
+     * @param SaverInterface                  $productDraftSaver
+     * @param RemoverInterface                $productDraftRemover
      */
     public function __construct(
-        ManagerRegistry $registry,
         SaverInterface $workingCopySaver,
         UserContext $userContext,
         ProductDraftFactory $factory,
         ProductDraftRepositoryInterface $repository,
         ProductDraftApplierInterface $applier,
         EventDispatcherInterface $dispatcher,
-        MediaManager $mediaManager
+        MediaManager $mediaManager,
+        SaverInterface $productDraftSaver,
+        RemoverInterface $productDraftRemover
     ) {
-        $this->registry = $registry;
         $this->workingCopySaver = $workingCopySaver;
         $this->userContext = $userContext;
         $this->factory = $factory;
@@ -80,6 +87,8 @@ class ProductDraftManager
         $this->applier = $applier;
         $this->dispatcher = $dispatcher;
         $this->mediaManager = $mediaManager;
+        $this->productDraftSaver = $productDraftSaver;
+        $this->productDraftRemover = $productDraftRemover;
     }
 
     /**
@@ -95,10 +104,7 @@ class ProductDraftManager
         $this->applier->apply($product, $productDraft);
         $this->mediaManager->handleProductMedias($product);
 
-        $objectManager = $this->registry->getManagerForClass(get_class($productDraft));
-        $objectManager->remove($productDraft);
-        $objectManager->flush();
-
+        $this->productDraftRemover->remove($productDraft);
         $this->workingCopySaver->save($product);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft));
@@ -113,15 +119,12 @@ class ProductDraftManager
     {
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, new GenericEvent($productDraft));
 
-        $objectManager = $this->registry->getManagerForClass(get_class($productDraft));
-
         if (!$productDraft->isInProgress()) {
             $productDraft->setStatus(ProductDraft::IN_PROGRESS);
+            $this->productDraftSaver->save($productDraft);
         } else {
-            $objectManager->remove($productDraft);
+            $this->productDraftRemover->remove($productDraft);
         }
-
-        $objectManager->flush();
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_REFUSE, new GenericEvent($productDraft));
     }
@@ -160,8 +163,7 @@ class ProductDraftManager
         $this->dispatcher->dispatch(ProductDraftEvents::PRE_READY, new GenericEvent($productDraft));
         $productDraft->setStatus(ProductDraft::READY);
 
-        $manager = $this->registry->getManagerForClass(get_class($productDraft));
-        $manager->flush();
+        $this->productDraftSaver->save($productDraft);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_READY, new GenericEvent($productDraft));
     }

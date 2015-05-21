@@ -8,7 +8,7 @@ class OptionsComparatorSpec extends ObjectBehavior
 {
     function it_is_a_comparator()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\AttributeComparatorInterface');
     }
 
     function it_supports_multiselect_type()
@@ -26,7 +26,7 @@ class OptionsComparatorSpec extends ObjectBehavior
         $this->getChanges($changes, $originals)->shouldReturn([
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
-            'values' => ['42', '43'],
+            'value' => ['42', '43'],
         ]);
     }
 
@@ -42,7 +42,7 @@ class OptionsComparatorSpec extends ObjectBehavior
         $this->getChanges($changes, $originals)->shouldReturn([
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
-            'values' => ['43', '45'],
+            'value' => ['43', '45'],
         ]);
     }
 

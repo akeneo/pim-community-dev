@@ -15,10 +15,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  * Comparator which calculate change set for medias
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class MediaComparator implements ComparatorInterface
+class MediaComparator implements AttributeComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -33,7 +31,9 @@ class MediaComparator implements ComparatorInterface
      */
     public function getChanges(array $changes, array $originals)
     {
-        if (isset($originals['value']['filePath']) && $changes['value']['filePath'] === $originals['value']['filePath']) {
+        if ((!isset($originals['value']) && !isset($changes['value']))
+            || (isset($originals['value']['filePath'])
+                && $changes['value']['filePath'] === $originals['value']['filePath'])) {
             return null;
         }
 
