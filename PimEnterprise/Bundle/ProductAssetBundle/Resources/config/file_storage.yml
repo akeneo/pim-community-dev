@@ -1,6 +1,7 @@
 parameters:
     pimee_product_asset.file_storage.raw_file.local_storer.class: PimEnterprise\Component\ProductAsset\FileStorage\RawFile\LocalStorer
     pimee_product_asset.file_storage.raw_file.uploaded_storer.class: PimEnterprise\Component\ProductAsset\FileStorage\RawFile\UploadedStorer
+    pimee_product_asset.file_storage.raw_file.local_getter.class: PimEnterprise\Component\ProductAsset\FileStorage\RawFile\LocalGetter
     pimee_product_asset.file_storage.path_generator.class: PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator
 
 services:
@@ -17,6 +18,9 @@ services:
             - '@pimee_product_asset.file_storage.path_generator'
             - '@oneup_flysystem.mount_manager'
             - '@pimee_product_asset.saver.file'
+
+    pimee_product_asset.file_storage.raw_file.local_getter:
+        class: %pimee_product_asset.file_storage.raw_file.local_getter.class%
 
     pimee_product_asset.file_storage.path_generator:
         class: %pimee_product_asset.file_storage.path_generator.class%
