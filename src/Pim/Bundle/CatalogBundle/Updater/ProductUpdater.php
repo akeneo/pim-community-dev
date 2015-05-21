@@ -23,14 +23,22 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     /** @var PropertyCopierInterface */
     protected $propertyCopier;
 
+    /** @var ProductTemplateUpdaterInterface */
+    protected $templateUpdater;
+
     /**
-     * @param PropertySetterInterface $propertySetter
-     * @param PropertyCopierInterface $propertyCopier this argument will be deprecated in 1.5
+     * @param PropertySetterInterface         $propertySetter
+     * @param PropertyCopierInterface         $propertyCopier  this argument will be deprecated in 1.5
+     * @param ProductTemplateUpdaterInterface $templateUpdater
      */
-    public function __construct(PropertySetterInterface $propertySetter, PropertyCopierInterface $propertyCopier)
-    {
+    public function __construct(
+        PropertySetterInterface $propertySetter,
+        PropertyCopierInterface $propertyCopier,
+        ProductTemplateUpdaterInterface $templateUpdater
+    ) {
         $this->propertySetter = $propertySetter;
         $this->propertyCopier = $propertyCopier;
+        $this->templateUpdater = $templateUpdater;
     }
 
     /**
@@ -106,12 +114,13 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         }
 
         foreach ($data as $field => $values) {
-            if (in_array($field, ['enabled', 'family', 'categories', 'groups', 'associations'])) {
+            if (in_array($field, ['enabled', 'family', 'categories', 'variant_group', 'groups', 'associations'])) {
                 $this->updateProductFields($product, $field, $values);
             } else {
                 $this->updateProductValues($product, $field, $values);
             }
         }
+        $this->updateProductVariantValues($product, $data);
 
         return $this;
     }
@@ -170,7 +179,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     }
 
     /**
-     * Sets the value if the attribute belongs to the family or if the value already exists as optional
+     * Sets the product values
      *
      * @param ProductInterface $product
      * @param string           $field
@@ -179,12 +188,31 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     protected function updateProductValues(ProductInterface $product, $field, array $values)
     {
         foreach ($values as $value) {
-            $family = $product->getFamily();
-            $belongsToFamily = $family === null ? false : $family->hasAttributeCode($field);
-            $hasValue = $product->getValue($field, $value['locale'], $value['scope']) !== null;
-            if ($belongsToFamily || $hasValue) {
-                $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-                $this->propertySetter->setData($product, $field, $value['data'], $options);
+            $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+            $this->propertySetter->setData($product, $field, $value['data'], $options);
+        }
+    }
+
+    /**
+     * Updates product with its variant group values to ensure that values coming from variant group are always
+     * applied after the product values (if a product value is updated and should come from variant group)
+     *
+     * @param ProductInterface $product
+     * @param array            $data
+     */
+    protected function updateProductVariantValues(ProductInterface $product, array $data)
+    {
+        $variantGroup = $product->getVariantGroup();
+        $shouldEraseData = false;
+        if (null !== $variantGroup && null !== $variantGroup->getProductTemplate()) {
+            $template = $variantGroup->getProductTemplate();
+            foreach (array_keys($data) as $field) {
+                if ($template->hasValueForAttributeCode($field)) {
+                    $shouldEraseData = true;
+                }
+            }
+            if ($shouldEraseData) {
+                $this->templateUpdater->update($template, [$product]);
             }
         }
     }

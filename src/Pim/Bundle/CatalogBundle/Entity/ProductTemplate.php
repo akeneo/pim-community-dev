@@ -111,6 +111,14 @@ class ProductTemplate implements ProductTemplateInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function hasValueForAttributeCode($attributeCode)
+    {
+        return isset($this->valuesData[$attributeCode]);
+    }
+
+    /**
      * Get attributes of the product template
      *
      * @return array

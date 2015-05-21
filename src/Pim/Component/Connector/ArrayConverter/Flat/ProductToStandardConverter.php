@@ -188,7 +188,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     {
         $attributeFieldInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
 
-        if (null !== $attributeFieldInfo && isset($fieldNameInfo['attribute'])) {
+        if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
             $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
 
             if (null === $converter) {

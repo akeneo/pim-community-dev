@@ -23,7 +23,7 @@ class OptionsResolverConverter
     protected $optAttrFieldExtractor;
 
     /**
-     * @param ProductAssociationFieldResolver        $assocFieldResolver
+     * @param ProductAssociationFieldResolver       $assocFieldResolver
      * @param ProductOptionalAttributeFieldResolver $optAttrFieldExtractor
      */
     public function __construct(
@@ -53,7 +53,7 @@ class OptionsResolverConverter
     {
         $resolver = new OptionsResolver();
 
-        $required = ['family', 'enabled', 'categories', 'groups'];
+        $required = [];
         $allowedTypes = [
             'family'     => 'string',
             'enabled'    => 'bool',
@@ -61,6 +61,7 @@ class OptionsResolverConverter
             'groups'     => 'string'
         ];
         $optional = array_merge(
+            ['family', 'enabled', 'categories', 'groups'],
             $this->optAttrFieldExtractor->resolveOptionalAttributeFields(),
             $this->getOptionalAssociationFields()
         );
