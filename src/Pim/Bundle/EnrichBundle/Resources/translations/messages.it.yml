@@ -1,4 +1,165 @@
 pim_enrich:
+    # Product
+    product:
+        tab:
+            attribute.title:    Attributi
+            category.title:     Categorie
+            association.title:  Associazioni
+            completeness.title: Completamento
+            history.title:      Cronologia
+        # Product comparison
+        no_comparison_locale_available: Non sono disponibili altre impostazioni locali per la comparazione
+        no_compared_media: Non sono disponibili altri media per la comparazione
+    # Attribute
+    attribute:
+        tab:
+            parameter.title: Parametri
+            value.title:     Valori
+            history.title:   Cronologia
+    # Attribute group
+    attribute_group:
+        tab:
+            property.title:  Proprietà
+            attribute.title: Attributi
+            history.title:   Cronologia
+    # Family
+    family:
+        tab:
+            property.title:  Proprietà
+            attribute.title: Attributi
+            history.title:   Cronologia
+    # Association type
+    association_type:
+        tab:
+            property.title: Proprietà
+            history.title:  Cronologia
+    # Group type
+    group_type:
+        tab:
+            property.title: Proprietà
+    # Channel
+    channel:
+        pick_conversion_unit: Scegli un'unità di conversione per ogni attributo metrico che verrà utilizzato durante l'esportazione
+        tab:
+            property.title: Proprietà
+            history.title:  Cronologia
+    # Category
+    category:
+        tab:
+            property.title: Proprietà
+            history.title:  Cronologia
+    # Product group
+    group:
+        axis.help: 'Gli assi definiscono gli attributi sui quali i prodotti di un gruppo dovrebbero variare. Gli assi sono attributi con opzioni, non localizzabili e senza ambito. Non possono essere modificati dopo la creazione della variante di gruppo.'
+        type:
+            VARIANT:    Variante
+            X_SELL:     Vendita incrociata
+            ADDITIONAL: Addizionale
+            RELATED:    Associato
+        tab:
+            product.title:  Articoli
+            property.title: Proprietà
+            history.title:  Cronologia
+    # Variant group
+    variant_group:
+        type:
+            VARIANT:    Variante
+            X_SELL:     Vendita incrociata
+            ADDITIONAL: Addizionale
+            RELATED:    Associato
+        tab:
+            product.title:  Articoli
+            property.title: Proprietà
+            history.title:  Cronologia
+            attribute.title: Attributi
+        info:
+            no_attributes: Questa variante di gruppo non ha ancora attributi
+            no_attributes_in_selected_locale: Questa variante di gruppo non ha attributi per queste impostazioni locali
+
+    # Product completeness
+    completeness:
+        progress_bar.title: 'completo al %ratio%% (1 valore obbligatorio)|completo al %ratio%% (%count% valori obbligatori)'
+        subtitle:           '{0} Completo|{1} 1 valore mancante|]1,Inf] %count% valori mancanti'
+        missing_attributes: Valore mancante|Valori mancanti
+        legend:
+            locale_not_associated: Impostazioni locali non associate a questo canale
+
+    # Mass edit operations
+    mass_edit_action:
+        limit_exceeded: Si prega di scegliere meno di %limit% articoli da modificare
+        product:
+            page_title: Articoli
+            page_subtitle: Modifica di massa (1 articolo)|Modifica di massa (%count% articoli)
+            title: Scegli Operazione
+            subtitle: Scegli l'operazione che desideri eseguire sull'articolo selezionato|Scegli l'operazione che desideri eseguire sui %count% articoli selezionati
+            confirm: Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare.|Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.
+            steps:
+                first: Scegli gli articoli
+                second: Scegli Operazione
+                third: Configura
+                fourth: Conferma
+
+        family:
+            page_title: Famiglie
+            page_subtitle: Modifica di massa (1 famiglia)|Modifica di massa  (%count% famiglie)
+            title: Scegli Operazione
+            subtitle: Scegli l'operazione che desideri eseguire sulla famiglia selezionata|Scegli l'operazione che desideri eseguire sulle %count% famiglie selezionate
+            confirm: Stai per aggiornare una famiglia con le seguenti informazioni, si prega di confermare.|Stai per aggiornare %count% famiglie con le seguenti informazioni, si prega di confermare.
+            steps:
+                first: Scegli le famiglie
+                second: Scegli un'operazione
+                third: Configura
+                fourth: Conferma
+
+        change-status:
+            label: Cambia stato (attiva / disattiva)
+            description: Gli articoli selezionati saranno attivati o disattivati.
+            success_flash: "Lo stato dell'articolo/degli articoli è stato modificato"
+
+        edit-common-attributes:
+            label:         Modifica attributi
+            description: "Gli attributi dell'articolo selezionato verranno modificati con i seguenti dati per le impostazioni locali selezionate."
+            empty: "Si prega di selezionare l'attributo/gli attributi che si desidera modificare"
+            success_flash: "L'attributo (/gli attributi) dell'articolo (/degli articoli) è stato caricato"
+            message:
+                warning: Non esistono attributi comuni tra gli articoli selezionati. Si prega di modificare la selezione.
+        classify:
+            label: Classificare i prodotti in categorie
+            description: Gli articoli saranno posizionati nelle seguenti categorie, il posizionamento attuale è mantenuto.
+            success_flash: "L'articolo/gli articoli è stato classificato nelle categorie selezionate"
+
+        change-family:
+            label: Cambiare la famiglia degli articoli
+            description: La famiglia degli articoli selezionati verrà modificata nella famiglia selezionata
+            success_flash: La famiglia del prodotto(i) selezionato è stata cambiata con successo
+
+        add-to-groups:
+            label: Aggiungere ai gruppi
+            description: Selezionare i gruppi in cui aggiungere gli articoli selezionati
+            success_flash: Gli articoli sono stati aggiunti ai gruppi selezionati con successo
+            no_group:      Non sono presenti gruppi per ora. Si prega di iniziare creando un gruppo
+
+        add-to-variant-group:
+            label:                                 Aggiungere ad una variante di gruppo
+            description:                           Selezionare la variante di gruppo in cui aggiungere  gli articoli selezionati
+            success_flash:                         Gli articoli sono stati aggiunti alla variante di gruppo selezionata
+            already_in_variant_group_or_not_valid: Non è possibile raggruppare i seguenti articoli (%products%) perché sono già in una variante di gruppo oppure non hanno un asse di gruppo.
+            no_variant_group:                      Non sono presenti varianti di gruppo per ora. Si prega di iniziare creando una variante di gruppo.
+            no_valid_variant_group:                Nessuna variante di gruppo condivide attributi con gli articoli selezionati.
+            some_variant_groups_are_skipped:       The following variant groups have been skipped because they don't share attributes with selected products : %groups%
+            some_variant_groups_are_skipped:       Le seguenti varianti di gruppo sono state saltate perché non condividono attributi con gli articoli selezionati : %groups%
+
+        set-attribute-requirements:
+            label: Impostare gli attributi richiesti
+            description: I seguenti attributi richiesti verranno applicati alle famiglie selezionate
+            success_flash: Gli attributi richiesti sono stati applicati alle famiglie selezionate
+
+    # Sequential edit operations
+    sequential_edit_action:
+        product:
+            previous: Torna indietro a "%product%" senza salvare.
+            next: Vai a "%product%" senza salvare.
+
   acl:
     locale:
       index: Elenco formato impostazioni locali
@@ -481,7 +642,7 @@ pim_enrich.mass_edit_action:
     page_subtitle: 'Modifica di massa (1 famiglia) | Modifica di massa (%count% famiglie)'
     title: Scegli Operazione
     subtitle: "Scegliere l'operazione che si desidera eseguire sulla famiglia selezionata| Scegliere l'operazione che si desidera eseguire sulle %count% famiglie selezionate"
-    confirm: 'Stai per aggiornare un articolo con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% articoli con le seguenti informazioni, si prega di confermare.'
+    confirm: 'Stai per aggiornare una famiglia con le seguenti informazioni, si prega di confermare. |Stai per aggiornare %count% famiglie con le seguenti informazioni, si prega di confermare.'
     steps:
       first: Scegli le famiglie
       second: Scegli Operazione
