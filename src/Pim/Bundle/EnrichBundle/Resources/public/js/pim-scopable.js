@@ -67,7 +67,7 @@ define(
 
                     field.input = $field.get(0).outerHTML;
 
-                    _.each($field.siblings('input, select'), function(el) {
+                    _.each($field.siblings('input, select'), function (el) {
                         field.input += el.outerHTML;
                     });
 
@@ -79,7 +79,7 @@ define(
                         field.input += $field.siblings('a.add-attribute-option').get(0).outerHTML;
                     }
 
-                    _.each($field.siblings('.validation-tooltip'), function(icon) {
+                    _.each($field.siblings('.validation-tooltip'), function (icon) {
                         $(icon).appendTo(this.$el.find('.icons-container'));
                     }, this);
                 }
@@ -216,15 +216,9 @@ define(
                     this.expanded = true;
 
                     this._destroyUI();
-                    this._reindexFields();
-
-                    var first = true;
-                    _.each(this.fields, function (field) {
-                        this._showField(field, first);
-                        first = false;
-                    }, this);
-
+                    this._refreshFieldsDisplay();
                     this._initUI();
+
                     this.$el.find('i.field-toggle').removeClass(this.expandIcon).addClass(this.collapseIcon);
                     this.$el.removeClass('collapsed').addClass('expanded').trigger('expand');
                 }
@@ -237,24 +231,25 @@ define(
                     this.expanded = false;
 
                     this._destroyUI();
-                    this._reindexFields();
-
-                    var first = true;
-                    _.each(this.fields, function (field) {
-                        if (first) {
-                            this._showField(field, first);
-                            first = false;
-                        } else {
-                            this._hideField(field);
-                        }
-                    }, this);
-
+                    this._refreshFieldsDisplay();
                     this._initUI();
+
                     this.$el.find('i.field-toggle').removeClass(this.collapseIcon).addClass(this.expandIcon);
                     this.$el.removeClass('expanded').addClass('collapsed').trigger('collapse');
                 }
 
                 return this;
+            },
+
+            _refreshFieldsDisplay: function () {
+                _.each(this.fields, function (field) {
+                    var $field = $(field);
+                    if (this.expanded || $field.hasClass('first')) {
+                        this._showField($field);
+                    } else {
+                        this._hideField($field);
+                    }
+                }, this);
             },
 
             _toggle: function (e) {
@@ -265,20 +260,12 @@ define(
             },
 
             _changeDefault: function (scope) {
-                this.skipUIInit = true;
-                this._toggle();
+                this._destroyUI();
 
-                _.each(this.fields, function (field) {
-                    if ($(field).data('scope') === scope) {
-                        $(field).addClass('first');
-                        this._setFieldFirst(field);
-                    } else {
-                        $(field).removeClass('first');
-                    }
-                }, this);
+                this._setFieldFirst(this.fields.filter('[data-scope="' + scope + '"]:first'));
+                this._refreshFieldsDisplay(this.expanded);
 
-                this.skipUIInit = false;
-                this._toggle();
+                this._initUI();
 
                 return this;
             },
@@ -287,8 +274,9 @@ define(
                 this.fields = this.$el.find('[data-scope]');
             },
 
-            _setFieldFirst: function (field) {
-                var $field = $(field);
+            _setFieldFirst: function ($field) {
+                this.fields.removeClass('first');
+                $field.addClass('first');
 
                 var $target = this.$el.find('>label');
                 if ($target.length) {
@@ -296,25 +284,24 @@ define(
                 } else {
                     $field.prependTo(this.$el);
                 }
+
+                this._reindexFields();
             },
 
-            _showField: function (field, first) {
-                var $icons = $(field).find('.icons-container i:not(".validation-tooltip")');
+            _showField: function ($field) {
+                var $icons = $field.find('.icons-container i:not(".validation-tooltip")');
 
-                if (first) {
-                    $(field).addClass('first');
+                if ($field.hasClass('first')) {
                     $icons.attr('style', 'display: inline !important');
-                    this._setFieldFirst(field);
                 } else {
-                    $(field).removeClass('first');
                     $icons.attr('style', 'display: none !important');
                 }
 
-                $(field).show();
+                $field.show();
             },
 
-            _hideField: function (field) {
-                $(field).hide();
+            _hideField: function ($field) {
+                $field.hide();
             },
 
             _destroyUI: function () {
@@ -331,12 +318,13 @@ define(
             _initUI: function () {
                 if (!this.skipUIInit) {
                     _.each(this.fields, function (field) {
-                        var $textarea = $(field).find('textarea.wysiwyg');
+                        var $field = $(field);
+                        var $textarea = $field.find('textarea.wysiwyg');
                         if ($textarea.length) {
                             wysiwyg.init($textarea);
                         }
 
-                        var $fileInput = $(field).find('input[type=file][id]');
+                        var $fileInput = $field.find('input[type=file][id]');
                         if ($fileInput.length) {
                             fileinput.init($fileInput.attr('id'));
                         }
