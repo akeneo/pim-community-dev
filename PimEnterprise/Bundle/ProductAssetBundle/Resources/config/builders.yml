@@ -1,0 +1,17 @@
+parameters:
+    pimee_product_asset.builder.file_metadata.class: PimEnterprise\Component\ProductAsset\Builder\FileMetadataBuilder
+    pimee_product_asset.builder.image_metadata.class: PimEnterprise\Component\ProductAsset\Builder\ImageMetadataBuilder
+
+services:
+    pimee_product_asset.builder.file_metadata:
+        class: %pimee_product_asset.builder.file_metadata.class%
+        arguments:
+            - '@akeneo_file_metadata.reader_factory'
+            - %pimee_product_asset.model.file_metadata.class%
+
+    pimee_product_asset.builder.image_metadata:
+        class: %pimee_product_asset.builder.image_metadata.class%
+        arguments:
+            - '@akeneo_file_metadata.reader_factory'
+            - '@pimee_product_asset.builder.file_metadata'
+            - %pimee_product_asset.model.image_metadata.class%
