@@ -332,7 +332,6 @@ class MediaManager
             $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);
             $media->setMimeType($file->getMimeType());
-            $media->resetFile();
         }
     }
 

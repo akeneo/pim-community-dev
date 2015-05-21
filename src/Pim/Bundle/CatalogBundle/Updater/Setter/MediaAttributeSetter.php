@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Sets a media value in many products
@@ -83,14 +83,14 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param UploadedFile|null  $file
+     * @param File|null  $file
      * @param string|null        $locale
      * @param string|null        $scope
      */
     protected function setMedia(
         ProductInterface $product,
         AttributeInterface $attribute,
-        UploadedFile $file = null,
+        File $file = null,
         $locale = null,
         $scope = null
     ) {
@@ -153,7 +153,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      *
      * @throws \Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException If an invalid filePath is provided
      *
-     * @return UploadedFile|null
+     * @return File|null
      */
     protected function getFileData(AttributeInterface $attribute, $data)
     {
@@ -164,7 +164,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $data = $this->resolveFilePath($data);
 
         try {
-            return new UploadedFile($data['filePath'], $data['originalFilename']);
+            return new File($data['filePath'], $data['originalFilename']);
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),
