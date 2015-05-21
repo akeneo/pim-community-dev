@@ -26,7 +26,7 @@ Feature: Edit a product
     Given I am logged in as "Mary"
     And I am on the "sandal" product page
     And I fill in the following information:
-      | name | My Sandal |
+      | Name | My Sandal |
     When I press the "Save" button
     Then I should be on the product "sandal" edit page
     Then the product Name should be "My Sandal"
