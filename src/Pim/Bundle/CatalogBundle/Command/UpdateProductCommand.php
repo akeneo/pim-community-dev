@@ -81,7 +81,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         }
 
         if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
-            if (!$this->createToken($output, $username) || !$this->isGranted($output, $username, $identifier)) {
+            if (!$this->createToken($output, $username)) {
                 return;
             }
         }
@@ -255,14 +255,6 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return \Oro\Bundle\SecurityBundle\SecurityFacade
-     */
-    public function getSecurityFacade()
-    {
-        return $this->getContainer()->get('oro_security.security_facade');
-    }
-
-    /**
      * @param ProductInterface $product
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
@@ -307,29 +299,5 @@ class UpdateProductCommand extends ContainerAwareCommand
         $this->getSecurityContext()->setToken($token);
 
         return true;
-    }
-
-    /**
-     * Returns true if user is allowed to edit product
-     *
-     * @param OutputInterface $output
-     * @param string          $username
-     * @param string          $identifier
-     *
-     * @return bool
-     */
-    protected function isGranted(OutputInterface $output, $username, $identifier)
-    {
-        $isGranted = $this->getSecurityFacade()->isGranted('pim_enrich_product_edit_attributes');
-
-        if (!$isGranted) {
-            $output->writeln(sprintf(
-                '<error>User "%s" is not allowed to edit product "%s"<error>',
-                $username,
-                $identifier
-            ));
-        }
-
-        return $isGranted;
     }
 }
