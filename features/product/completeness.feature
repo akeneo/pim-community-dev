@@ -102,7 +102,6 @@ Feature: Display the completeness of a product
       | tablet  | en_US  | success |                 | 100%  |
       | tablet  | fr_FR  | warning | description     | 89%   |
 
-  @skip-pef
   Scenario: Successfully display the completeness of the product in the grid after product save (PIM-2916)
     Given I am on the "sneakers" product page
     And I visit the "Attributes" tab
@@ -204,7 +203,6 @@ Feature: Display the completeness of a product
       | channel | locale | state    | missing_values        | ratio |
       | mobile  | en_US  | success  |                       | 100%  |
       | mobile  | fr_FR  | success  |                       | 100%  |
-      | tablet  | en_US  | disabled | none                  | none  |
       | tablet  | fr_FR  | warning  | description side_view | 78%   |
     # Fix fake product update and remove the next two steps
     And I click on the Akeneo logo
@@ -213,11 +211,10 @@ Feature: Display the completeness of a product
     And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale | state    | missing_values   | ratio |
-      | mobile  | en_US  | warning  | 3 missing_values | 40%   |
-      | mobile  | fr_FR  | warning  | 2 missing_values | 60%   |
-      | tablet  | en_US  | disabled | none             | none  |
-      | tablet  | fr_FR  | warning  | 4 missing_values | 50%   |
+      | channel | locale | state    | missing_values              | ratio |
+      | mobile  | en_US  | warning  | name price size             | 40%   |
+      | mobile  | fr_FR  | warning  | price size                  | 60%   |
+      | tablet  | fr_FR  | warning  | price rating side_view size | 50%   |
 
   Scenario: Remove completeness from grid when locales of a channel are deleted
     Given I am on the "tablet" channel page
