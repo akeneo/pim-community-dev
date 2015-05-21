@@ -24,6 +24,18 @@ interface FileMetadataInterface
     public function getId();
 
     /**
+     * @return File
+     */
+    public function getFile();
+
+    /**
+     * @param File $file
+     *
+     * @return FileMetadataInterface
+     */
+    public function setFile(File $file);
+
+    /**
      * @return string
      */
     public function getFileDatetime();

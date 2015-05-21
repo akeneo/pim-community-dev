@@ -21,6 +21,9 @@ class FileMetadata implements FileMetadataInterface
     /** @var integer */
     protected $id;
 
+    /** @var File */
+    protected $file;
+
     /** @var string */
     protected $fileDatetime;
 
@@ -30,6 +33,24 @@ class FileMetadata implements FileMetadataInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFile(File $file)
+    {
+        $this->file = $file;
+
+        return $this;
     }
 
     /**
