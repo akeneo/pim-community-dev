@@ -10,7 +10,7 @@ class MultiSelectConverterSpec extends ObjectBehavior
 {
     function let(FieldSplitter $fieldSplitter)
     {
-        $this->beConstructedWith($fieldSplitter, ['pim_catalog_multiselect']);
+        $this->beConstructedWith($fieldSplitter, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
     }
 
     function it_is_a_converter()
@@ -21,15 +21,17 @@ class MultiSelectConverterSpec extends ObjectBehavior
     function it_supports_converter_field()
     {
         $this->supportsField('pim_catalog_multiselect')->shouldReturn(true);
+        $this->supportsField('pim_reference_data_multiselect')->shouldReturn(true);
         $this->supportsField('pim_catalog_metric')->shouldReturn(false);
     }
 
     function it_converts($fieldSplitter, AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute'   => $attribute,
-                          'locale_code' => 'en_US',
-                          'scope_code'  => 'mobile'
+        $fieldNameInfo = [
+            'attribute'   => $attribute,
+            'locale_code' => 'en_US',
+            'scope_code'  => 'mobile'
         ];
 
         $value = 'dry,wet';
