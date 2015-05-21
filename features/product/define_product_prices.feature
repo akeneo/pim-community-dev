@@ -16,8 +16,8 @@ Feature: Define product prices
 
   Scenario: Successfully display english and french public prices
     Given I am on the "bike" product page
-    Then the product publicPrice in USD should be "100.00"
-    And the product publicPrice in EUR should be "50.00"
+    Then the product Public price in USD should be "100.00"
+    And the product Public price in EUR should be "50.00"
     When I switch the locale to "fr_FR"
     Then the product publicPrice in USD should be "200.00"
     And the product publicPrice in EUR should be "150.00"
