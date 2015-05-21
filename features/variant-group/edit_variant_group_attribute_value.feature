@@ -103,6 +103,7 @@ Feature: Editing attribute values of a variant group also updates products
     Then the product "boot" should have the following values:
       | description-en_US-tablet | The best boots! |
 
+  @skip-pef
   Scenario: Change a pim_catalog_image attribute of a variant group
     When I add available attributes Side view
     And I visit the "Media" group
@@ -111,6 +112,7 @@ Feature: Editing attribute values of a variant group also updates products
     Then the product "boot" should have the following values:
       | side_view | SNKRS-1R.png |
 
+  @skip-pef
   Scenario: Change a pim_catalog_file attribute of a variant group
     When I add available attributes Technical description
     And I visit the "Media" group
