@@ -120,7 +120,7 @@ class MediaManager
     {
         try {
             if ($file = $media->getFile()) {
-                if ($media->getFilename() && $this->fileExists($media)) {
+                if ($media->getFilename() && $this->fileExists($media) && !$media->getOriginalFilename()) {
                     $this->delete($media);
                 }
                 $filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename();
@@ -326,8 +326,13 @@ class MediaManager
 
             $pathname = $file->getPathname();
             $this->write($filename, file_get_contents($pathname), $overwrite);
-
-            $originalFilename = $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename();
+            if ($file instanceof UploadedFile) {
+                $originalFilename = $file->getClientOriginalName();
+            } elseif ($media->getOriginalFilename()) {
+                $originalFilename = $media->getOriginalFilename();
+            } else {
+                $originalFilename = $file->getFilename();
+            }
 
             $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);

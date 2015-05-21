@@ -73,8 +73,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $this->checkData($attribute, $data);
 
         $file = $this->getFileData($attribute, $data);
-        $this->setMedia($product, $attribute, $file, $options['locale'], $options['scope']);
-
+        $this->setMedia($product, $attribute, $file, $data['originalFilename'], $options['locale'], $options['scope']);
         $this->mediaManager->handleProductMedias($product);
     }
 
@@ -83,7 +82,8 @@ class MediaAttributeSetter extends AbstractAttributeSetter
      *
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
-     * @param File|null  $file
+     * @param File|null          $file
+     * @param string|null        $originalFilename
      * @param string|null        $locale
      * @param string|null        $scope
      */
@@ -91,6 +91,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         ProductInterface $product,
         AttributeInterface $attribute,
         File $file = null,
+        $originalFilename = null,
         $locale = null,
         $scope = null
     ) {
@@ -106,6 +107,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
                 $media->setRemoved(true);
             } else {
                 $media->setFile($file);
+                $media->setOriginalFilename($originalFilename);
             }
         }
 
@@ -164,7 +166,7 @@ class MediaAttributeSetter extends AbstractAttributeSetter
         $data = $this->resolveFilePath($data);
 
         try {
-            return new File($data['filePath'], $data['originalFilename']);
+            return new File($data['filePath']);
         } catch (FileNotFoundException $e) {
             throw InvalidArgumentException::expected(
                 $attribute->getCode(),

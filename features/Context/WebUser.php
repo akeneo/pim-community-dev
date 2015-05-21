@@ -1044,6 +1044,7 @@ class WebUser extends RawMinkContext
         }
 
         $this->getMainContext()->executeScript($script);
+        $this->getMainContext()->wait();
     }
 
     /**
@@ -1072,7 +1073,7 @@ class WebUser extends RawMinkContext
             );
             $this->wait();
             $this->getCurrentPage()
-                ->find('css', sprintf('div.file span:contains("%s")', $link))
+                ->find('css', sprintf('div.preview span:contains("%s")', $link))
                 ->getParent()
                 ->getParent()
                 ->click();
