@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
+use PimEnterprise\Component\ProductAsset\Exception\DeletionFileException;
+use PimEnterprise\Component\ProductAsset\Exception\TransferFileException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
@@ -31,6 +33,9 @@ interface RawFileStorerInterface
      *
      * @param \SplFileInfo $file        file to store
      * @param string       $destFsAlias alias of the destination filesystem
+     *
+     * @throws TransferFileException
+     * @throws DeletionFileException
      *
      * @return FileInterface
      */

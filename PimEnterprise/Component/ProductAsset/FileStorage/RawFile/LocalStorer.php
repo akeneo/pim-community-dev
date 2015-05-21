@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
+use PimEnterprise\Component\ProductAsset\Exception\DeletionFileException;
+use PimEnterprise\Component\ProductAsset\Exception\TransferFileException;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
@@ -46,14 +48,16 @@ class LocalStorer extends AbstractRawFileStorer
 
         $resource = fopen($localFile->getPathname(), 'r');
         if (false === $filesystem->writeStream($file->getPathname(), $resource)) {
-            //TODO: use a business exception
-            throw new \LogicException(
+            throw new TransferFileException(
                 sprintf('Unable to move the file "%s" to the "%s" filesystem.', $localFile->getPathname(), $destFsAlias)
             );
         }
 
         $this->saver->save($file);
-        unlink($localFile->getPathname());
+
+        if (false === unlink($localFile->getPathname())) {
+            throw new DeletionFileException(sprintf('Unable to delete the file "%s".', $localFile->getPathname()));
+        }
 
         return $file;
     }
