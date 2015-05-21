@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
+namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
@@ -17,7 +17,7 @@ use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use League\Flysystem\MountManager;
 
 /**
- * Move a file from a source filesystem to the storage destination filesystem
+ * Move a raw file to the storage destination filesystem
  * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
  * and save it to the database.
  *
@@ -25,7 +25,7 @@ use League\Flysystem\MountManager;
  *
  * TODO: could be moved in a dedicated FileStorage component
  */
-abstract class AbstractFileHandler implements FileHandlerInterface
+abstract class AbstractRawFileStorer implements RawFileStorerInterface
 {
     /** @var SaverInterface */
     protected $saver;
@@ -37,35 +37,23 @@ abstract class AbstractFileHandler implements FileHandlerInterface
     protected $mountManager;
 
     /** @var string */
-    protected $srcFsAlias;
-
-    /** @var string */
-    protected $destFsAlias;
-
-    /** @var string */
     protected $fileClass;
 
     /**
      * @param PathGeneratorInterface $pathGenerator
      * @param MountManager           $mountManager
      * @param SaverInterface         $saver
-     * @param string                 $srcFsAlias
-     * @param string                 $destFsAlias
      * @param string                 $fileClass
      */
     public function __construct(
         PathGeneratorInterface $pathGenerator,
         MountManager $mountManager,
         SaverInterface $saver,
-        $srcFsAlias,
-        $destFsAlias,
         $fileClass = '\PimEnterprise\Component\ProductAsset\Model\File'
     ) {
         $this->pathGenerator = $pathGenerator;
         $this->mountManager  = $mountManager;
         $this->saver         = $saver;
-        $this->srcFsAlias    = $srcFsAlias;
-        $this->destFsAlias   = $destFsAlias;
         $this->fileClass     = $fileClass;
     }
 

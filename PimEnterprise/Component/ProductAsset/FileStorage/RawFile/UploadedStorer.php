@@ -9,30 +9,33 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage\FileHandler;
+namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Move an uploaded file to the dropbox and save it to the database
+ * Move a Symfony UploadedFile to the storage destination filesystem
+ * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
+ * and save it to the database.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  *
  * TODO: could be moved in a dedicated FileStorage component
  */
-class UploadedFileHandler extends AbstractFileHandler
+class UploadedStorer extends AbstractRawFileStorer
 {
     /**
      * {@inheritdoc}
      */
-    public function handle(\SplFileInfo $uploadedFile)
+    public function store(\SplFileInfo $uploadedFile, $destFsAlias)
     {
         if (!$uploadedFile instanceof UploadedFile) {
             throw new \InvalidArgumentException(
-                'This file handle only supports "Symfony\Component\HttpFoundation\File\UploadedFile".'
+                'This raw file storer only supports "Symfony\Component\HttpFoundation\File\UploadedFile" files.'
             );
         }
 
+        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $storageData = $this->pathGenerator->generate($uploadedFile);
 
         $file = $this->createNewFile();
@@ -42,13 +45,22 @@ class UploadedFileHandler extends AbstractFileHandler
         $file->setOriginalFilename($uploadedFile->getClientOriginalName());
         $file->setPath($storageData['path']);
         $file->setSize($uploadedFile->getClientSize());
+        $file->setStorage($destFsAlias);
 
-        $this->mountManager->move(
-            sprintf('%s://%s', $this->srcFsAlias, $uploadedFile->getFilename()),
-            sprintf('%s://%s', $this->destFsAlias, $file->getPathname())
-        );
+        $resource = fopen($uploadedFile->getPathname(), 'r');
+        if (false === $filesystem->writeStream($file->getPathname(), $resource)) {
+            //TODO: use a business exception
+            throw new \LogicException(
+                sprintf(
+                    'Unable to move the file "%s" to the "%s" filesystem.',
+                    $uploadedFile->getPathname(),
+                    $destFsAlias
+                )
+            );
+        }
 
         $this->saver->save($file);
+        unlink($uploadedFile->getPathname());
 
         return $file;
     }
