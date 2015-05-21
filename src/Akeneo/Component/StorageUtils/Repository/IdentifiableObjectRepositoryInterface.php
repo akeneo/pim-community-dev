@@ -1,6 +1,6 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\Repository;
+namespace Akeneo\Component\StorageUtils\Repository;
 
 /**
  * Interface for repositories of unique code objects
