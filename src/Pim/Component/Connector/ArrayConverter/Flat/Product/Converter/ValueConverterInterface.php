@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 /**
- * Converts data
+ * Converts data.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 interface ValueConverterInterface
 {
     /**
-     * Converts value
+     * Converts value.
      *
      * @param string $attributeFieldInfo
      * @param string $value
@@ -22,7 +22,7 @@ interface ValueConverterInterface
     public function convert($attributeFieldInfo, $value);
 
     /**
-     * Supports the field
+     * Supports the field.
      *
      * @param string $attributeType
      *

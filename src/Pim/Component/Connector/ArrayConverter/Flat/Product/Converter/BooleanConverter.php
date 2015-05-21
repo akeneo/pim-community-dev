@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
- * Converts flat boolean value into structured one
+ * Converts flat boolean value into structured one.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

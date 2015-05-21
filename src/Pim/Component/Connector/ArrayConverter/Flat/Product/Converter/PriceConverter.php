@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
- * Converts flat price into structured one
+ * Converts flat price into structured one.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
- * Abstract converter
+ * Abstract converter.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

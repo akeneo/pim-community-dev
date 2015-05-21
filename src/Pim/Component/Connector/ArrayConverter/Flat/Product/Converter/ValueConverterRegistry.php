@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 /**
- * Registry of converters
+ * Registry of converters.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

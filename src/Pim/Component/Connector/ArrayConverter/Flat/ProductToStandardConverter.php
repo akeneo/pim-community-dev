@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistry;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -22,7 +22,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var OptionsResolverConverter */
     protected $optionsResolverConverter;
 
-    /** @var ValueConverterRegistry */
+    /** @var ValueConverterRegistryInterface */
     protected $converterRegistry;
 
     /** @var ProductAttributeFieldExtractor */
@@ -37,14 +37,14 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /**
      * @param ProductAttributeFieldExtractor  $fieldExtractor
      * @param OptionsResolverConverter        $optionsResolverConverter
-     * @param ValueConverterRegistry               $converterRegistry
+     * @param ValueConverterRegistryInterface $converterRegistry
      * @param ProductAssociationFieldResolver $assocFieldResolver
      * @param FieldSplitter                   $fieldSplitter
      */
     public function __construct(
         ProductAttributeFieldExtractor $fieldExtractor,
         OptionsResolverConverter $optionsResolverConverter,
-        ValueConverterRegistry $converterRegistry,
+        ValueConverterRegistryInterface $converterRegistry,
         ProductAssociationFieldResolver $assocFieldResolver,
         FieldSplitter $fieldSplitter
     ) {
@@ -188,11 +188,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     {
         $attributeFieldInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
 
-        if (null !== $attributeFieldInfo && array_key_exists(
-                'attribute',
-                $attributeFieldInfo
-            ) && isset($attributeFieldInfo['attribute'])
-        ) {
+        if (null !== $attributeFieldInfo && isset($fieldNameInfo['attribute'])) {
             $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
 
             if (null === $converter) {
