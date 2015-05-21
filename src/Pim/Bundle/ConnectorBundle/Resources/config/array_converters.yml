@@ -17,6 +17,7 @@ parameters:
     pim_base_connector.array_converter.flat.product.media.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\MediaConverter
     pim_base_connector.array_converter.splitter.field.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
     pim_base_connector.array_converter.flat.product.identifier.class:                 Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\TextConverter
+    pim_base_connector.array_converter.flat.product.field.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter
 
 services:
     pim_base_connector.array_converter.flat.attribute_option:
@@ -35,6 +36,7 @@ services:
             - '@pim_base_connector.array_converter.flat.product.registry'
             - '@pim_base_connector.array_converter.flat.association_field_resolver'
             - '@pim_base_connector.array_converter.splitter.field'
+            - '@pim_base_connector.array_converter.flat.product.field'
 
     pim_base_connector.array_converter.flat.converter_options_resolver:
         class: %pim_base_connector.array_converter.flat.converter_options_resolver.class%
@@ -113,7 +115,7 @@ services:
         class: %pim_base_connector.array_converter.flat.product.identifier.class%
         parent: pim_base_connector.array_converter.flat.product.abstract
         arguments:
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea']
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_date']
         tags:
             - { name: 'pim_base_connector.array_converter.flat.product_value' }
 
@@ -132,6 +134,12 @@ services:
             - ['pim_catalog_image', 'pim_catalog_file']
         tags:
             - { name: 'pim_base_connector.array_converter.flat.product_value' }
+
+    pim_base_connector.array_converter.flat.product.field:
+        class: %pim_base_connector.array_converter.flat.product.field.class%
+        arguments:
+            - '@pim_base_connector.array_converter.splitter.field'
+            - '@pim_base_connector.array_converter.flat.association_field_resolver'
 
     pim_base_connector.array_converter.splitter.field:
         class: %pim_base_connector.array_converter.splitter.field.class%
