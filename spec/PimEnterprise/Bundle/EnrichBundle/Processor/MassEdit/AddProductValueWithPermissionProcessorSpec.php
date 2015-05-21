@@ -74,7 +74,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
+            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
         $this->process($product)->shouldReturn($product);
@@ -112,7 +112,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 
         $jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution])->willReturn($jobConfiguration);
         $jobConfiguration->getConfiguration()->willReturn(
-            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom'],]]])
+            json_encode(['filters' => [], 'actions' => [['field' => 'categories', 'value' => ['office', 'bedroom']]]])
         );
 
         $this->process($product)->shouldReturn(null);
