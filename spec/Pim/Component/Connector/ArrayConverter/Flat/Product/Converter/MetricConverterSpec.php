@@ -15,7 +15,7 @@ class MetricConverterSpec extends ObjectBehavior
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ConverterInterface');
+        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface');
     }
 
     function it_supports_converter_field()

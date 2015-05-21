@@ -3,30 +3,30 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 /**
- * Converts data
+ * Converts data.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ConverterInterface
+interface ValueConverterInterface
 {
     /**
-     * Converts value
+     * Converts value.
      *
-     * @param string $fieldNameInfo
+     * @param string $attributeFieldInfo
      * @param string $value
      *
      * @return array
      */
-    public function convert($fieldNameInfo, $value);
+    public function convert($attributeFieldInfo, $value);
 
     /**
-     * Supports the field
+     * Supports the field.
      *
-     * @param string $fieldType
+     * @param string $attributeType
      *
      * @return bool
      */
-    public function supportsField($fieldType);
+    public function supportsField($attributeType);
 }

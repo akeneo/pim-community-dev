@@ -16,10 +16,10 @@ use Symfony\Component\DependencyInjection\Reference;
 class RegisterConverterPass implements CompilerPassInterface
 {
     /** @staticvar */
-    const CONVERTER_REGISTRY = 'pim_base_connector.array_converter.flat.registry';
+    const CONVERTER_REGISTRY = 'pim_base_connector.array_converter.flat.product.registry';
 
     /** @staticvar */
-    const CONVERTER_TAG = 'pim_base_connector.array_converter.flat';
+    const CONVERTER_TAG = 'pim_base_connector.array_converter.flat.product_value';
 
     /**
      * {@inheritdoc}
