@@ -22,7 +22,6 @@ Feature: Display the completeness of a product
     And I am logged in as "Julia"
     And I launched the completeness calculator
 
-  @skip-pef
   Scenario: Successfully display the completeness of the products
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
@@ -108,7 +107,7 @@ Feature: Display the completeness of a product
     Given I am on the "sneakers" product page
     And I visit the "Attributes" tab
     And I visit the "Media" group
-    And I attach file "SNKRS-1C-s.png" to "side_view"
+    And I attach file "SNKRS-1C-s.png" to "Side view"
     And I save the product
     And I am on the products page
     And I switch the locale to "English (United States)"

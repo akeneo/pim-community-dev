@@ -1,4 +1,4 @@
-@javascript
+@javascript @jira https://akeneo.atlassian.net/browse/PIM-4216
 Feature: Validate date attributes of a product
   In order to keep my data consistent
   As a regular user

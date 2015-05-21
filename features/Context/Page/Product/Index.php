@@ -30,7 +30,7 @@ class Index extends Grid
             array(
                 'Categories tree'  => array('css' => '#tree'),
                 'Tree select'      => array('css' => '#tree_select'),
-                'Locales dropdown' => array('css' => '.locale-switcher'),
+                'Locales dropdown' => array('css' => '#locale-switcher'),
             )
         );
     }
