@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM\Repository\CursorableRepositoryInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;

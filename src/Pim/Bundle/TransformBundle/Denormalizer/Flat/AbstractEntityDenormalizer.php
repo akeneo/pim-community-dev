@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
@@ -145,7 +145,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
             throw new \LogicException(
                 sprintf(
                     'Repository "%s" does not implement ' .
-                    '"Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface".',
+                    '"Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface".',
                     get_class($this->getRepository())
                 )
             );

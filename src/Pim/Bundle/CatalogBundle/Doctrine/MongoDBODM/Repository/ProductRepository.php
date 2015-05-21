@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Doctrine\ORM\EntityManager;

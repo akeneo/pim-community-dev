@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as ODMMongoDBClassMetadataInfo;
