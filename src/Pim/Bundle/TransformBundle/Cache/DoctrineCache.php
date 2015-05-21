@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -115,7 +115,7 @@ class DoctrineCache
                 throw new \Exception(
                     sprintf(
                         'Repository "%s" of class "%s" does not implement ' .
-                        '"Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface".',
+                        '"Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface".',
                         get_class($repository),
                         $class
                     )
