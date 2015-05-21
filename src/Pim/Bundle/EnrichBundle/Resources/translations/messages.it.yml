@@ -160,7 +160,7 @@ pim_enrich:
             previous: Torna indietro a "%product%" senza salvare.
             next: Vai a "%product%" senza salvare.
 
-  acl:
+acl:
     locale:
       index: Elenco formato impostazioni locali
     currency:
@@ -227,7 +227,7 @@ pim_enrich:
       create: Crea un tipo di associazione
       edit: Modifica un tipo di associazione
       remove: Rimuovi un tipo di associazione
-  acl_group:
+acl_group:
     association_type: Tipi di associazione
     attribute: Attributi
     attribute_group: Gruppi di attributi
