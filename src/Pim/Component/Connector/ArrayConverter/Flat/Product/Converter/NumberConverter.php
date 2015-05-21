@@ -18,10 +18,8 @@ class NumberConverter extends AbstractConverter
      * @param FieldSplitter $fieldSplitter
      * @param array         $supportedFieldType
      */
-    public function __construct(
-        FieldSplitter $fieldSplitter,
-        array $supportedFieldType
-    ) {
+    public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
+    {
         parent::__construct($fieldSplitter);
         $this->supportedFieldType = $supportedFieldType;
     }

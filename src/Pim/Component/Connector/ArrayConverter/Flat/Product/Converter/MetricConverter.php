@@ -17,10 +17,8 @@ class MetricConverter extends AbstractConverter
      * @param FieldSplitter $fieldSplitter
      * @param array         $supportedFieldType
      */
-    public function __construct(
-        FieldSplitter $fieldSplitter,
-        array $supportedFieldType
-    ) {
+    public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType )
+    {
         parent::__construct($fieldSplitter);
         $this->supportedFieldType = $supportedFieldType;
     }
@@ -40,7 +38,6 @@ class MetricConverter extends AbstractConverter
         } else {
             list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
         }
-
 
         $data = ['data' => (float) $value, 'unit' => $unit];
 

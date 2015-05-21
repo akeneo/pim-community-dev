@@ -174,7 +174,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         } elseif ('family' === $column) {
             return [$column => $value];
         } else {
-            return $this->formatValue($column, $value);
+            return $this->convertValue($column, $value);
         }
     }
 
@@ -184,7 +184,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *
      * @return array
      */
-    public function formatValue($column, $value)
+    protected function convertValue($column, $value)
     {
         $fieldNameInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
 

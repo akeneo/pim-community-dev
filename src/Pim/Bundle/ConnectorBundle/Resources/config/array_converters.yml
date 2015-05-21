@@ -3,10 +3,9 @@ parameters:
     pim_base_connector.array_converter.structured.attribute_option.class:             Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionToStandardConverter
     pim_base_connector.array_converter.flat.product.class:                            Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter
     pim_base_connector.array_converter.flat.attribute_field_extractor.class:          Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor
-    pim_base_connector.array_converter.flat.optional_attribute_field_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldExtractor
+    pim_base_connector.array_converter.flat.optional_attribute_field_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldResolver
     pim_base_connector.array_converter.flat.association_field_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver
     pim_base_connector.array_converter.flat.converter_options_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter
-
     pim_base_connector.array_converter.flat.registry.class:                           Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ConverterRegistry
     pim_base_connector.array_converter.flat.abstract.class:                           Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\AbstractConverter
     pim_base_connector.array_converter.flat.price.class:                              Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\PriceConverter
@@ -40,7 +39,6 @@ services:
     pim_base_connector.array_converter.flat.converter_options_resolver:
         class: %pim_base_connector.array_converter.flat.converter_options_resolver.class%
         arguments:
-            - '@pim_catalog.repository.attribute'
             - '@pim_base_connector.array_converter.flat.association_field_resolver'
             - '@pim_base_connector.array_converter.flat.optional_attribute_field_extractor'
 
@@ -64,7 +62,6 @@ services:
         arguments:
             - '@pim_catalog.repository.association_type'
 
-    #tests
     pim_base_connector.array_converter.flat.registry:
         class: %pim_base_connector.array_converter.flat.registry.class%
 

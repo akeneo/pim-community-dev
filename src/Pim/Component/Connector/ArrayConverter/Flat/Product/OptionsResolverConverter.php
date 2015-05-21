@@ -2,12 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -20,35 +16,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class OptionsResolverConverter
 {
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var CurrencyRepositoryInterface */
-    protected $currencyRepository;
-
-    /** @var AttributeValuesResolver */
-    protected $valuesResolver;
-
-    /** @var array */
-    protected $optionalAttributeFields;
-
     /** @var ProductAssociationFieldResolver */
     protected $assocFieldResolver;
 
-    /** @var ProductOptionalAttributeFieldExtractor */
+    /** @var ProductOptionalAttributeFieldResolver */
     protected $optAttrFieldExtractor;
 
     /**
-     * @param AttributeRepositoryInterface           $attributeRepository
      * @param ProductAssociationFieldResolver        $assocFieldResolver
-     * @param ProductOptionalAttributeFieldExtractor $optAttrFieldExtractor
+     * @param ProductOptionalAttributeFieldResolver $optAttrFieldExtractor
      */
     public function __construct(
-        AttributeRepositoryInterface $attributeRepository,
         ProductAssociationFieldResolver $assocFieldResolver,
-        ProductOptionalAttributeFieldExtractor $optAttrFieldExtractor
+        ProductOptionalAttributeFieldResolver $optAttrFieldExtractor
     ) {
-        $this->attributeRepository   = $attributeRepository;
         $this->assocFieldResolver    = $assocFieldResolver;
         $this->optAttrFieldExtractor = $optAttrFieldExtractor;
     }
@@ -80,7 +61,7 @@ class OptionsResolverConverter
             'groups'     => 'string'
         ];
         $optional = array_merge(
-            $this->optAttrFieldExtractor->getOptionalAttributeFields(),
+            $this->optAttrFieldExtractor->resolveOptionalAttributeFields(),
             $this->getOptionalAssociationFields()
         );
 

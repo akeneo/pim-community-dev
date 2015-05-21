@@ -18,7 +18,6 @@ interface ConverterInterface
      * @param string $value
      *
      * @return array
-     *
      */
     public function convert($fieldNameInfo, $value);
 

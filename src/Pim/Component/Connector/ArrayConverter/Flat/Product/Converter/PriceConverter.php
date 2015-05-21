@@ -17,10 +17,8 @@ class PriceConverter extends AbstractConverter
      * @param FieldSplitter $fieldSplitter
      * @param array         $supportedFieldType
      */
-    public function __construct(
-        FieldSplitter $fieldSplitter,
-        array $supportedFieldType
-    ) {
+    public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
+    {
         parent::__construct($fieldSplitter);
         $this->supportedFieldType = $supportedFieldType;
     }
@@ -48,8 +46,8 @@ class PriceConverter extends AbstractConverter
     }
 
     /**
-     * @param string $priceValue
      * @param array  $fieldNameInfo
+     * @param string $priceValue
      *
      * @return array
      */

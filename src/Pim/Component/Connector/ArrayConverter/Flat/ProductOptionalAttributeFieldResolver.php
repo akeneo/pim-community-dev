@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 /**
@@ -14,13 +13,10 @@ use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductOptionalAttributeFieldExtractor
+class ProductOptionalAttributeFieldResolver
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
-
-    /** @var ChannelRepositoryInterface */
-    protected $channelRepository;
 
     /** @var array */
     protected $optionalAttributeFields;
@@ -49,27 +45,27 @@ class ProductOptionalAttributeFieldExtractor
     /**
      * @return array
      */
-    public function getOptionalAttributeFields()
+    public function resolveOptionalAttributeFields()
     {
         if (empty($this->optionalAttributeFields)) {
             $attributes = $this->attributeRepository->findAll();
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
             foreach ($values as $value) {
-                if ($value['locale'] !== null && $value['scope'] !== null) {
+                if (null !== $value['locale'] && null !== $value['scope']) {
                     $field = sprintf(
                         '%s-%s-%s',
                         $value['attribute'],
                         $value['locale'],
                         $value['scope']
                     );
-                } elseif ($value['locale'] !== null) {
+                } elseif (null !== $value['locale']) {
                     $field = sprintf(
                         '%s-%s',
                         $value['attribute'],
                         $value['locale']
                     );
-                } elseif ($value['scope'] !== null) {
+                } elseif (null !== $value['scope']) {
                     $field = sprintf(
                         '%s-%s',
                         $value['attribute'],
