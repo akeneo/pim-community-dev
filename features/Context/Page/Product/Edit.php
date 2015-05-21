@@ -219,10 +219,12 @@ class Edit extends Form
 
         switch ($fieldType) {
             case 'text':
-            case 'textArea':
             case 'date':
             case 'number':
                 $this->fillTextField($fieldContainer, $value);
+                break;
+            case 'textArea':
+                $this->fillTextAreaField($fieldContainer, $value);
                 break;
             case 'metric':
                 $this->fillMetricField($fieldContainer, $value);
@@ -414,6 +416,24 @@ class Edit extends Form
 
         if (!$field) {
             $field = $fieldContainerOrLabel->getParent()->find('css', 'div.controls input');
+        }
+
+        $field->setValue($value);
+    }
+
+    /**
+     * Fills a textarea field element with $value, identified by its container or label.
+     *
+     * @param NodeElement $fieldContainerOrLabel
+     * @param string      $value
+     */
+    protected function fillTextAreaField(NodeElement $fieldContainer, $value)
+    {
+        $field = $fieldContainer->find('css', 'div.field-input > textarea');
+
+        if (!$field || !$field->isVisible()) {
+            // the textarea can be hidden (display=none) when using WYSIWYG
+            $field = $fieldContainer->find('css', 'div.note-editor > div.note-editable');
         }
 
         $field->setValue($value);
