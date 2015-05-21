@@ -54,7 +54,9 @@ class Iptc extends AbstractAdapter
         if (isset($info[self::IPTC_BLOCK_KEY])) {
             $iptc = iptcparse($info[self::IPTC_BLOCK_KEY]);
 
-            return $this->cleanIptcBlock($iptc);
+            if (false !== $iptc) {
+                return $this->cleanIptcBlock($iptc);
+            }
         }
 
         return [];
@@ -108,8 +110,10 @@ class Iptc extends AbstractAdapter
         $res = [];
 
         foreach ($data as $key => $row) {
-            $field       = isset($this->iptcHeaders[$key]) ? $this->iptcHeaders[$key] : $key;
-            $res[$field] = $row[0];
+            $field = isset($this->iptcHeaders[$key]) ? $this->iptcHeaders[$key] : $key;
+            
+            // Directly returns an array for Keywords
+            $res[$field] = ('2#025' === $key) ? $row : $row[0];
         }
 
         return $res;
