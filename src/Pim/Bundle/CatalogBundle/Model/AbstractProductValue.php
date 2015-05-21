@@ -280,10 +280,6 @@ abstract class AbstractProductValue implements ProductValueInterface
             $getter = $this->attribute->getReferenceDataName();
         }
 
-        if (null === $getter) {
-            return;
-        }
-
         $getter = 'get'.ucfirst($getter);
 
         return $this->$getter();
