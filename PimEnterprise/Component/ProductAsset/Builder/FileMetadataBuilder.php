@@ -45,7 +45,7 @@ class FileMetadataBuilder implements FileMetadataBuilderInterface
     {
         $metadataReader = $this->getMetadataReader($file);
         $metadataReader->all($file);
-        $metadata = $metadataReader->metadata;
+        $metadata = $metadataReader->getMetadata();
 
         $fileMetadata = new $this->metadataClass();
         $fileMetadata->setFileDatetime($metadata->get('exif.FILE.FileDateTime'));

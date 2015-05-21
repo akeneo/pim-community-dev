@@ -55,7 +55,7 @@ class ImageMetadataBuilder implements ImageMetadataBuilderInterface
 
         $metadataReader = $this->getMetadataReader($file);
         $metadataReader->all($file);
-        $metadata = $metadataReader->metadata;
+        $metadata = $metadataReader->getMetadata();
 
         $imageMetadata = new $this->imageMetadataClass($fileMetadata);
         $imageMetadata->setExifResolution($this->getHumanReadableResolution($metadata));

@@ -22,7 +22,7 @@ use Akeneo\Component\FileMetadata\Adapter\AdapterInterface;
 class FileMetadataReader implements FileMetadataReaderInterface
 {
     /** @var FileMetadataBag */
-    public $metadata;
+    protected $metadata;
 
     /** @var AdapterInterface[] */
     protected $adapters = [];
@@ -49,5 +49,13 @@ class FileMetadataReader implements FileMetadataReaderInterface
         $this->metadata->add($metadataArray);
 
         return $this->metadata->all();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 }

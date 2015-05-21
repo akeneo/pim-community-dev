@@ -28,4 +28,9 @@ interface FileMetadataReaderInterface
      * @return array
      */
     public function all(\SplFileInfo $file);
+
+    /**
+     * @return FileMetadataBag
+     */
+    public function getMetadata();
 }
