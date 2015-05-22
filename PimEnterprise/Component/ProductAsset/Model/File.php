@@ -44,6 +44,9 @@ class File implements FileInterface
     protected $size;
 
     /** @var string */
+    protected $extension;
+
+    /** @var string */
     protected $storage;
 
     //TODDO: check if we really need it
@@ -162,6 +165,24 @@ class File implements FileInterface
     public function setSize($size)
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
 
         return $this;
     }

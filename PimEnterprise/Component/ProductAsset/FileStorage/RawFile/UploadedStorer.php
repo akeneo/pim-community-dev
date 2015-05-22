@@ -47,6 +47,7 @@ class UploadedStorer extends AbstractRawFileStorer
         $file->setOriginalFilename($uploadedFile->getClientOriginalName());
         $file->setPath($storageData['path']);
         $file->setSize($uploadedFile->getClientSize());
+        $file->setExtension($uploadedFile->getExtension());
         $file->setStorage($destFsAlias);
 
         $resource = fopen($uploadedFile->getPathname(), 'r');

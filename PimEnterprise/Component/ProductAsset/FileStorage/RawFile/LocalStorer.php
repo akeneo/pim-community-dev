@@ -44,6 +44,7 @@ class LocalStorer extends AbstractRawFileStorer
         $file->setOriginalFilename($localFile->getFilename());
         $file->setPath($storageData['path']);
         $file->setSize($size);
+        $file->setExtension($localFile->getExtension());
         $file->setStorage($destFsAlias);
 
         $resource = fopen($localFile->getPathname(), 'r');

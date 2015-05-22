@@ -102,6 +102,18 @@ interface FileInterface
     /**
      * @return string
      */
+    public function getExtension();
+
+    /**
+     * @param string $extension
+     *
+     * @return FileInterface
+     */
+    public function setExtension($extension);
+
+    /**
+     * @return string
+     */
     public function getStorage();
 
     /**
