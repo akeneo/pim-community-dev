@@ -33,7 +33,7 @@ define(
                 if (sessionStorage.redirectTab) {
                     $redirectTab = $('a[href=' + sessionStorage.redirectTab + ']');
                 }
-                if(!($redirectTab && $redirectTab.length) && sessionStorage[formId + '_activeGroup']) {
+                if(!($redirectTab && $redirectTab.length) && sessionStorage[formId + '_activeTab']) {
                     $redirectTab = $('a[href=' + sessionStorage[formId + '_activeTab'] + ']');
                 }
                 if ($redirectTab && $redirectTab.length) {
