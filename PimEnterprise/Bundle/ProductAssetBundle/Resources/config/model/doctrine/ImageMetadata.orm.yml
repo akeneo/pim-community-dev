@@ -45,6 +45,10 @@ PimEnterprise\Component\ProductAsset\Model\ImageMetadata:
             type: string
             length: 255
             nullable: true
+        exifColorSpace:
+            type: string
+            length: 255
+            nullable: true
         iptcKeywords:
             type: string
             length: 255

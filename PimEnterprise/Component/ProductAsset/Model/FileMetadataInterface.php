@@ -36,14 +36,14 @@ interface FileMetadataInterface
     public function setFile(File $file);
 
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getFileDatetime();
+    public function getModificationDatetime();
 
     /**
-     * @param string $fileDatetime
+     * @param \DateTime $fileDatetime
      *
      * @return FileMetadataInterface
      */
-    public function setFileDatetime($fileDatetime);
+    public function setModificationDatetime(\DateTime $fileDatetime);
 }

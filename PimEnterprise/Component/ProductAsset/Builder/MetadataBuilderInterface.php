@@ -12,16 +12,16 @@
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
 /**
- * Builder for FileMetadata
+ * Metadata builder
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-interface FileMetadataBuilderInterface
+interface MetadataBuilderInterface
 {
     /**
      * @param \SplFileInfo $file
      *
-     * @return \PimEnterprise\Component\ProductAsset\Model\FileMetadata
+     * @return \PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface
      */
     public function build(\SplFileInfo $file);
 }

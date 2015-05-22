@@ -21,7 +21,7 @@ use Akeneo\Component\FileMetadata\Adapter\AdapterInterface;
  */
 class FileMetadataReader implements FileMetadataReaderInterface
 {
-    /** @var FileMetadataBag */
+    /** @var FileMetadataBagInterface */
     protected $metadata;
 
     /** @var AdapterInterface[] */

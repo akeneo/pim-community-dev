@@ -30,7 +30,7 @@ interface FileMetadataReaderInterface
     public function all(\SplFileInfo $file);
 
     /**
-     * @return FileMetadataBag
+     * @return FileMetadataBagInterface
      */
     public function getMetadata();
 }

@@ -153,6 +153,18 @@ interface ImageMetadataInterface extends FileMetadataInterface
     /**
      * @return string
      */
+    public function getExifColorSpace();
+
+    /**
+     * @param string $exifColorSpace
+     *
+     * @return ImageMetadataInterface
+     */
+    public function setExifColorSpace($exifColorSpace);
+
+    /**
+     * @return string
+     */
     public function getIptcKeywords();
 
     /**

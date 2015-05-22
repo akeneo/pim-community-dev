@@ -52,6 +52,9 @@ class ImageMetadata extends FileMetadata implements ImageMetadataInterface
     protected $exifDescription;
 
     /** @var string */
+    protected $exifColorSpace;
+
+    /** @var string */
     protected $iptcKeywords;
 
     /** @var string */
@@ -66,7 +69,7 @@ class ImageMetadata extends FileMetadata implements ImageMetadataInterface
     public function __construct(FileMetadataInterface $fileMetadata = null)
     {
         if (null !== $fileMetadata) {
-            $this->fileDatetime = $fileMetadata->getFileDatetime();
+            $this->modificationDatetime = $fileMetadata->getModificationDatetime();
         }
     }
 
@@ -266,6 +269,22 @@ class ImageMetadata extends FileMetadata implements ImageMetadataInterface
         $this->exifDescription = $exifDescription;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getExifColorSpace()
+    {
+        return $this->exifColorSpace;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setExifColorSpace($exifColorSpace)
+    {
+        $this->exifColorSpace = $exifColorSpace;
     }
 
     /**

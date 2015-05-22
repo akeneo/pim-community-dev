@@ -20,12 +20,12 @@ use PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface;
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class ImageMetadataBuilder implements ImageMetadataBuilderInterface
+class ImageMetadataBuilder implements MetadataBuilderInterface
 {
     /** @var FileMetadataReaderFactoryInterface */
     protected $metaReaderFactory;
 
-    /** @var FileMetadataBuilderInterface */
+    /** @var MetadataBuilderInterface */
     protected $fileMetaBuidler;
 
     /** @var string */
@@ -33,12 +33,12 @@ class ImageMetadataBuilder implements ImageMetadataBuilderInterface
 
     /**
      * @param FileMetadataReaderFactoryInterface $metaReaderFactory
-     * @param FileMetadataBuilderInterface       $fileMetaBuidler
+     * @param MetadataBuilderInterface       $fileMetaBuidler
      * @param string                             $imageMetadataClass
      */
     public function __construct(
         FileMetadataReaderFactoryInterface $metaReaderFactory,
-        FileMetadataBuilderInterface $fileMetaBuidler,
+        MetadataBuilderInterface $fileMetaBuidler,
         $imageMetadataClass = 'PimEnterprise\Component\ProductAsset\Model\ImageMetadata'
     ) {
         $this->metaReaderFactory  = $metaReaderFactory;
@@ -69,6 +69,7 @@ class ImageMetadataBuilder implements ImageMetadataBuilderInterface
         $imageMetadata->setExifKeywords($metadata->get('exif.IFD0.Keywords'));
         $imageMetadata->setExifTitle($metadata->get('exif.IFD0.Title'));
         $imageMetadata->setExifDescription($metadata->get('exif.IFD0.Subject'));
+        $imageMetadata->setExifColorSpace($metadata->get('exif.EXIF.ColorSpace'));
         $imageMetadata->setIptcKeywords(implode(',', $metadata->get('iptc.Keywords', [])));
         $imageMetadata->setIptcLocationCountry($metadata->get('iptc.LocationName'));
         $imageMetadata->setIptcLocationCity($metadata->get('iptc.City'));

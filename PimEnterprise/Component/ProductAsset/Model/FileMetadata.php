@@ -24,8 +24,8 @@ class FileMetadata implements FileMetadataInterface
     /** @var File */
     protected $file;
 
-    /** @var string */
-    protected $fileDatetime;
+    /** @var \DateTime */
+    protected $modificationDatetime;
 
     /**
      * {@inheritdoc}
@@ -56,17 +56,17 @@ class FileMetadata implements FileMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function getFileDatetime()
+    public function getModificationDatetime()
     {
-        return $this->fileDatetime;
+        return $this->modificationDatetime;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setFileDatetime($fileDatetime)
+    public function setModificationDatetime(\DateTime $modificationDatetime)
     {
-        $this->fileDatetime = $fileDatetime;
+        $this->modificationDatetime = $modificationDatetime;
 
         return $this;
     }

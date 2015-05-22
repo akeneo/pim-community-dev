@@ -6,7 +6,6 @@ services:
     pimee_product_asset.builder.file_metadata:
         class: %pimee_product_asset.builder.file_metadata.class%
         arguments:
-            - '@akeneo_file_metadata.reader_factory'
             - %pimee_product_asset.model.file_metadata.class%
 
     pimee_product_asset.builder.image_metadata:

@@ -2,19 +2,19 @@ PimEnterprise\Component\ProductAsset\Model\FileMetadata:
     type: entity
     inheritanceType: SINGLE_TABLE
     table: pimee_product_asset_file_metadata
-    oneToOne:
-        file:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\File
-            joinColumn:
-                name: file_id
-                referencedColumnName: id
-    id:
+    fields:
         id:
             type: integer
             id: true
-            generator: { strategy: AUTO }
-    fields:
-        fileDatetime:
-            type: string
+            generator:
+                strategy: AUTO
+        modificationDatetime:
+            type: datetime
             length: 255
             nullable: true
+    oneToOne:
+        file:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\FileInterface
+            joinColumn:
+                name: file_id
+                referencedColumnName: id
