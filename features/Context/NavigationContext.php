@@ -632,6 +632,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
         $this->assertAddress($expectedAddress);
+        $this->wait();
     }
 
     /**
