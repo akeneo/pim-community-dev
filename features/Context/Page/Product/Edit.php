@@ -5,6 +5,7 @@ namespace Context\Page\Product;
 use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\ExpectationException;
 use Context\Page\Base\Form;
 
 /**
@@ -452,7 +453,7 @@ class Edit extends Form
         if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
             $link->click();
 
-            $this->getSession()->wait(3000);
+            $this->getSession()->wait(1000);
 
             $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
             // Select the value in the displayed dropdown
@@ -461,36 +462,45 @@ class Edit extends Form
             }
         }
 
-        throw new \InvalidArgumentException(
-            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml())
+        throw new ExpectationException(
+            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()), $this->getSession()
         );
     }
 
     /**
      * Fills a select2 multi-select field with $values, identified by its $label.
      *
-     * @param NodeElement $label
-     * @param string      $value
+     * @param NodeElement $fieldContainer
+     * @param string      $values
      */
-    protected function fillMultiSelectField(NodeElement $label, $values)
+    protected function fillMultiSelectField(NodeElement $fieldContainer, $values)
     {
-        foreach ($this->listToArray($values) as $value) {
-            if (null !== $link = $label->find('css', 'ul.select2-choices')) {
-                $link->click();
-                $this->getSession()->wait(3000);
+        // clear multi select first
+        $containerClasses = $fieldContainer->getAttribute('class');
+        if (preg_match('/(\S+\-multi\-select\-field) /', $containerClasses, $matches)) {
+            $select2Selector = sprintf('.%s div.field-input > input', $matches[1]);
+            $script = sprintf('$("%s").select2("val", "");', $select2Selector);
+            $this->getSession()->executeScript($script);
+        }
 
-                $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
-                // Select the value in the displayed dropdown
-                if (null !== $item) {
-                    $item->click();
-                } else {
-                    throw new \InvalidArgumentException(
-                        sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
-                    );
-                }
+        $link = $fieldContainer->find('css', 'ul.select2-choices');
+        if (null === $link) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml())
+            );
+        }
+
+        foreach ($this->listToArray($values) as $value) {
+            $link->click();
+            $this->getSession()->wait(1000);
+
+            $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
+            // Select the value in the displayed dropdown
+            if (null !== $item) {
+                $item->click();
             } else {
                 throw new \InvalidArgumentException(
-                    sprintf('Could not find select2 widget inside %s', $label->getParent()->getHtml())
+                    sprintf('Could not find select2 item with value %s inside %s', $value, $link->getHtml())
                 );
             }
         }
