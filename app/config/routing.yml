@@ -39,6 +39,9 @@ pim_notification:
 pim_catalog_rule:
     resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
 
+pimee_product_asset:
+    resource: "@PimEnterpriseProductAssetBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
