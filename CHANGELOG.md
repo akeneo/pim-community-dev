@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.12 (2015-05-22)
 
 ## Bug fixes
 - PIM-4182: Fix product values normalization when decimals are not allowed
