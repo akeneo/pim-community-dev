@@ -263,7 +263,7 @@ define(
                 this._destroyUI();
 
                 this._setFieldFirst(this.fields.filter('[data-scope="' + scope + '"]:first'));
-                this._refreshFieldsDisplay(this.expanded);
+                this._refreshFieldsDisplay();
 
                 this._initUI();
 
@@ -272,6 +272,9 @@ define(
 
             _reindexFields: function () {
                 this.fields = this.$el.find('[data-scope]');
+                if (!this.fields.filter('.first').length) {
+                    this.fields.first().addClass('first');
+                }
             },
 
             _setFieldFirst: function ($field) {
