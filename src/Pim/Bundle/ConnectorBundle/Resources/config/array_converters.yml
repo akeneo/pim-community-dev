@@ -89,7 +89,7 @@ services:
         class: %pim_base_connector.array_converter.flat.product.multiselect.class%
         parent: pim_base_connector.array_converter.flat.product.abstract
         arguments:
-            - ['pim_catalog_multiselect']
+            - ['pim_catalog_multiselect', 'pim_reference_data_multiselect']
         tags:
             - { name: 'pim_base_connector.array_converter.flat.product_value' }
 
@@ -97,7 +97,7 @@ services:
         class: %pim_base_connector.array_converter.flat.product.simpleselect.class%
         parent: pim_base_connector.array_converter.flat.product.abstract
         arguments:
-            - ['pim_catalog_simpleselect']
+            - ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']
         tags:
             - { name: 'pim_base_connector.array_converter.flat.product_value' }
 
