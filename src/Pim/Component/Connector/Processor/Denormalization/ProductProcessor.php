@@ -112,7 +112,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function getFamilyCode(array $convertedItem)
     {
-        return $convertedItem['family'];
+        return isset($convertedItem['family']) ? $convertedItem['family'] : null;
     }
 
     /**
@@ -127,15 +127,13 @@ class ProductProcessor extends AbstractProcessor
     {
         unset($convertedItem[$this->repository->getIdentifierProperties()[0]]);
         unset($convertedItem['associations']);
-        // TODO: until we split groups and variant group columns in the csv file
-        unset($convertedItem['groups']);
 
         return $convertedItem;
     }
 
     /**
-     * @param string $identifier
-     * @param string $familyCode
+     * @param string      $identifier
+     * @param string|null $familyCode
      *
      * @return ProductInterface
      */

@@ -38,7 +38,15 @@ class FieldSplitter
      */
     public function splitCollection($value)
     {
-        return '' === $value ? [] : explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $value);
+        $tokens = [];
+        if ('' !== $value) {
+            $tokens = explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $value);
+            array_walk($tokens, function (&$token) {
+               $token = trim($token);
+            });
+        }
+
+        return $tokens;
     }
 
     /**

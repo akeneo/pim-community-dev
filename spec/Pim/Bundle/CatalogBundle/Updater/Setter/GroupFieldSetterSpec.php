@@ -104,30 +104,4 @@ class GroupFieldSetterSpec extends ObjectBehavior
             )
         )->during('setFieldData', [$product, 'groups', ['pack', 'not valid code']]);
     }
-
-    function it_fails_if_the_group_code_does_not_correspond_to_a_simple_group(
-        $groupRepository,
-        ProductInterface $product,
-        GroupInterface $pack,
-        GroupInterface $variant,
-        GroupTypeInterface $nonVariantType,
-        GroupTypeInterface $variantType
-    ) {
-        $groupRepository->findOneByIdentifier('pack')->willReturn($pack);
-        $pack->getType()->willReturn($nonVariantType);
-        $nonVariantType->isVariant()->willReturn(false);
-        $groupRepository->findOneByIdentifier('variant')->willReturn($variant);
-        $variant->getType()->willReturn($variantType);
-        $variantType->isVariant()->willReturn(true);
-
-        $this->shouldThrow(
-            InvalidArgumentException::expected(
-                'groups',
-                'non variant group code',
-                'setter',
-                'groups',
-                'variant'
-            )
-        )->during('setFieldData', [$product, 'groups', ['pack', 'variant']]);
-    }
 }

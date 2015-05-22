@@ -7,7 +7,8 @@ use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Sets the group field
+ * Sets the group field, for now, it handles groups and variant group, in the future, we'll separate them, we can
+ * already use the VariantGroupFieldSetter
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -51,14 +52,6 @@ class GroupFieldSetter extends AbstractFieldSetter
                     'groups',
                     $groupCode
                 );
-            } elseif ($group->getType()->isVariant()) {
-                throw InvalidArgumentException::expected(
-                    $field,
-                    'non variant group code',
-                    'setter',
-                    'groups',
-                    $groupCode
-                );
             } else {
                 $groups[] = $group;
             }
@@ -66,9 +59,7 @@ class GroupFieldSetter extends AbstractFieldSetter
 
         $oldGroups = $product->getGroups();
         foreach ($oldGroups as $group) {
-            if (!$group->getType()->isVariant()) {
-                $product->removeGroup($group);
-            }
+            $product->removeGroup($group);
         }
 
         foreach ($groups as $group) {
