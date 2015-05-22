@@ -479,7 +479,7 @@ class Edit extends Form
         $containerClasses = $fieldContainer->getAttribute('class');
         if (preg_match('/(\S+\-multi\-select\-field) /', $containerClasses, $matches)) {
             $select2Selector = sprintf('.%s div.field-input > input', $matches[1]);
-            $script = sprintf('$("%s").select2("val", "");', $select2Selector);
+            $script = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
             $this->getSession()->executeScript($script);
         }
 
