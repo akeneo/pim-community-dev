@@ -1,6 +1,7 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-4182: Fix product values normalization when decimals are not allowed
 - PIM-4203: fix mass edit of families after sorting by label
 - PIM-4208: Fix js memory leak on a product edit form with scopable attributes
 
