@@ -16,8 +16,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\FileMoverInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileGetterInterface;
+use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
@@ -29,11 +28,10 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelVariationsConfigurati
 
 /**
  * Generate the variation files, store them in the filesystem and link them to the reference:
- *      - move the reference file from STORAGE to FILE_PROCESSING
+ *      - download the raw reference file from STORAGE to TMP
  *      - generate the variation file
  *      - store the variation file in STORAGE
  *      - set the variation file to the variation
- *      - move bask the reference file from FILE_PROCESSING to STORAGE
  *
  * Where:
  *      - STORAGE is the virtual filesystem where files are stored
@@ -59,11 +57,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var FileTransformerInterface */
     protected $fileTransformer;
 
-    /** @var FileMoverInterface */
-    protected $fileMover;
-
-    /** @var RawFileGetterInterface */
-    protected $rawFileGetter;
+    /** @var RawFileDownloaderInterface */
+    protected $rawFileDownloader;
 
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
@@ -74,9 +69,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param SaverInterface                                    $fileSaver
      * @param SaverInterface                                    $variationSaver
      * @param FileTransformerInterface                          $fileTransformer
-     * @param FileMoverInterface                                $fileMover
      * @param RawFileStorerInterface                            $rawFileStorer
-     * @param RawFileGetterInterface                            $rawFileGetter
+     * @param RawFileDownloaderInterface                        $rawFileDownloader
      */
     public function __construct(
         ChannelVariationsConfigurationRepositoryInterface $repository,
@@ -84,9 +78,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         SaverInterface $fileSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
-        FileMoverInterface $fileMover,
         RawFileStorerInterface $rawFileStorer,
-        RawFileGetterInterface $rawFileGetter
+        RawFileDownloaderInterface $rawFileDownloader
     ) {
         $this->configurationRepository = $repository;
         $this->fileTransformer         = $fileTransformer;
@@ -94,8 +87,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->fileSaver               = $fileSaver;
         $this->variationSaver          = $variationSaver;
         $this->rawFileStorer           = $rawFileStorer;
-        $this->fileMover               = $fileMover;
-        $this->rawFileGetter           = $rawFileGetter;
+        $this->rawFileDownloader       = $rawFileDownloader;
     }
 
     /**
@@ -125,8 +117,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: 4 calls to Doctrine flush are performed here, can we do better ?
      */
     public function generateFromReference(
         ProductAssetReferenceInterface $reference,
@@ -137,14 +127,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variation     = $this->retrieveVariation($reference, $channel);
         $referenceFile = $this->retrieveReferenceFile($reference);
 
-        $this->fileMover->move(
-            $referenceFile,
-            ProductAssetFileSystems::FS_STORAGE,
-            ProductAssetFileSystems::FS_DAM_PROCESSING
-        );
-
-        $processingFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_DAM_PROCESSING);
-        $referenceFileInfo    = $this->rawFileGetter->get($referenceFile, $processingFilesystem);
+        $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
+        $referenceFileInfo = $this->rawFileDownloader->download($referenceFile, $storageFilesystem);
 
         //TODO: maybe we should not store the whole FileTransformer config in the channel configuration
         //TODO: (but only what's useful for us)
@@ -157,16 +141,15 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
                 $outputFileName
             );
             $variationFile     = $this->rawFileStorer->store($variationFileInfo, ProductAssetFileSystems::FS_STORAGE);
+
+            //TODO: extract and save variation metadata
+
             $this->fileSaver->save($variationFile);
             $variation->setFile($variationFile);
             $this->variationSaver->save($variation);
         }
 
-        $this->fileMover->move(
-            $referenceFile,
-            ProductAssetFileSystems::FS_DAM_PROCESSING,
-            ProductAssetFileSystems::FS_STORAGE
-        );
+        unlink($referenceFileInfo->getPathname());
     }
 
 
