@@ -15,11 +15,12 @@ use League\Flysystem\FilesystemInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
- * Get the raw file of a file stored in a virtual filesystem
+ * Download the raw file of a file stored in a virtual filesystem
+ * into the temporary directory of the local filesystem.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface RawFileGetterInterface
+interface RawFileDownloaderInterface
 {
     /**
      * @param FileInterface       $file
@@ -27,5 +28,5 @@ interface RawFileGetterInterface
      *
      * @return \SplFileInfo
      */
-    public function get(FileInterface $file, FilesystemInterface $filesystem);
+    public function download(FileInterface $file, FilesystemInterface $filesystem);
 }
