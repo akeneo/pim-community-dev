@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository as BaseAttributeRepository;
-use PimEnterprise\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 
 /**
  * Override attribute repository

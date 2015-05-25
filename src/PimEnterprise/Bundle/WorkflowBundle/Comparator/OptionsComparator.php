@@ -21,21 +21,22 @@ class OptionsComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison($attributeType)
+    public function supportsComparison($type)
     {
-        return in_array($attributeType, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
+        return in_array($type, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(array $changes, array $originals)
+    public function getChanges(array $data, array $originals)
     {
         $codes = [];
-        foreach ($changes['value'] as $index => $attribute) {
+        foreach ($data['value'] as $index => $attribute) {
             if (!array_key_exists('value', $originals)
                 || !isset($originals['value'][$index])
-                || $attribute['code'] !== $originals['value'][$index]['code']) {
+                || $attribute['code'] !== $originals['value'][$index]['code'])
+            {
                 $codes[] = $attribute['code'];
             }
         }
@@ -45,8 +46,8 @@ class OptionsComparator implements ComparatorInterface
         }
 
         return [
-            'locale' => $changes['locale'],
-            'scope'  => $changes['scope'],
+            'locale' => $data['locale'],
+            'scope'  => $data['scope'],
             'value'  => $codes,
         ];
     }

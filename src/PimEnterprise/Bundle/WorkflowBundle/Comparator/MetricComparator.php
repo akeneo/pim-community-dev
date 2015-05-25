@@ -21,24 +21,26 @@ class MetricComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison($attributeType)
+    public function supportsComparison($type)
     {
-        return 'pim_catalog_metric' === $attributeType;
+        return 'pim_catalog_metric' === $type;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(array $changes, array $originals)
+    public function getChanges(array $data, array $originals)
     {
         if (!array_key_exists('value', $originals)) {
-            return $changes;
+            return $data;
         }
 
-        $diff = array_diff_assoc($changes['value'], $originals['value']);
+        $diff = array_diff_assoc($data['value'], $originals['value']);
 
         if (!empty($diff)) {
-            return $changes;
+            return $data;
         }
+
+        return null;
     }
 }

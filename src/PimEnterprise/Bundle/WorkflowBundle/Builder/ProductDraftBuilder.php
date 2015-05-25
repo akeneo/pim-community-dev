@@ -89,7 +89,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         $diff = [];
         foreach ($newValues as $code => $new) {
             if (!isset($attributeTypes[$code])) {
-                throw new \LogicException(sprintf('Cannot find attribute with code "%s". ', $code));
+                throw new \LogicException(sprintf('Cannot find attribute with code "%s".', $code));
             }
 
             foreach ($new as $index => $changes) {
@@ -97,7 +97,6 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
                 $diffAttribute = $comparator->getChanges(
                     $changes,
                     $this->getOriginalValue($originalValues, $code, $index)
-
                 );
 
                 if (null !== $diffAttribute) {
@@ -112,6 +111,8 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
             return $productDraft;
         }
+
+        return null;
     }
 
     /**

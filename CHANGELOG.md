@@ -6,7 +6,7 @@
 
 ## BC Breaks
 - Remove `PimEnterprise\Bundle\WorkflowBundle\Comparator\DateComparator`
-- Rename `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface` to `PimEnterprise\Bundle\WorkflowBundle\Comparator\AttributeComparatorInterface`. First argument of method `supportsComparison` is replaced by a string $attributeType
+- Rename `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface` to `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface`. First argument of method `supportsComparison` is replaced by a string $type
 - `PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator` is replaced by `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorRegistry`
 - Replace tag `pimee_workflow.comparator` by `pimee_workflow.attribute.comparator`
 - Remove `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver`

@@ -59,12 +59,12 @@ class ProductWriter extends BaseProductWriter
     protected function hasPermissions(ProductInterface $product)
     {
         if (null === $product->getId() || null === $this->securityContext->getToken()) {
-            $isOwner = true;
+            $hasRight = true;
         } else {
-            $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
+            $hasRight = $this->securityContext->isGranted(Attributes::OWN, $product);
         }
 
-        return $isOwner;
+        return $hasRight;
     }
 
     /**

@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Builder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Builder to compare values of product
+ * Product draft builder interface
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -25,7 +25,7 @@ interface ProductDraftBuilderInterface
      *
      * @throws \LogicException
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null returns null if no draft is created
      */
     public function build(ProductInterface $product);
 }

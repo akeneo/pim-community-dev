@@ -3,7 +3,7 @@
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
- * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,6 +18,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  */
 class ComparatorRegistry implements RegistryInterface
 {
+    /** @staticvar string */
     const COMPARATOR_ATTRIBUTE = 'attribute';
 
     /** @var ComparatorInterface[] */
@@ -58,10 +59,8 @@ class ComparatorRegistry implements RegistryInterface
      *
      * @return ComparatorInterface[]
      */
-    protected function getComparators($type = self::COMPARATOR_ATTRIBUTE)
+    protected function getComparators($type)
     {
-        krsort($this->comparators[$type]);
-
         $comparators = [];
         foreach ($this->comparators[$type] as $groupedComparators) {
             $comparators = array_merge($comparators, $groupedComparators);

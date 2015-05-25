@@ -21,22 +21,24 @@ class OptionComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison($attributeType)
+    public function supportsComparison($type)
     {
-        return in_array($attributeType, ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']);
+        return in_array($type, ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(array $changes, array $originals)
+    public function getChanges(array $data, array $originals)
     {
-        if (!array_key_exists('value', $originals) || $changes['value']['code'] !== $originals['value']['code']) {
+        if (!array_key_exists('value', $originals) || $data['value']['code'] !== $originals['value']['code']) {
             return [
-                'locale' => $changes['locale'],
-                'scope'  => $changes['scope'],
-                'value'  => $changes['value']['code'],
+                'locale' => $data['locale'],
+                'scope'  => $data['scope'],
+                'value'  => $data['value']['code'],
             ];
         }
+
+        return null;
     }
 }

@@ -21,15 +21,15 @@ class PricesComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison($attributeType)
+    public function supportsComparison($type)
     {
-        return 'pim_catalog_price_collection' === $attributeType;
+        return 'pim_catalog_price_collection' === $type;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(array $changes, array $originals)
+    public function getChanges(array $data, array $originals)
     {
         $originalPrices = [];
         if (array_key_exists('value', $originals)) {
@@ -39,7 +39,7 @@ class PricesComparator implements ComparatorInterface
         }
 
         $prices = [];
-        foreach ($changes['value'] as $price) {
+        foreach ($data['value'] as $price) {
             $currency = $price['currency'];
             if (!array_key_exists($currency, $originalPrices) || $originalPrices[$currency] !== $price['data']) {
                 $prices[] = $price;
@@ -48,10 +48,12 @@ class PricesComparator implements ComparatorInterface
 
         if (!empty($prices)) {
             return [
-                'locale' => $changes['locale'],
-                'scope'  => $changes['scope'],
+                'locale' => $data['locale'],
+                'scope'  => $data['scope'],
                 'value'  => $prices
             ];
         }
+
+        return null;
     }
 }

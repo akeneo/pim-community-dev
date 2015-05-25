@@ -18,27 +18,32 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  */
 class MediaComparator implements ComparatorInterface
 {
+    /** @staticvar string */
+    const SEPATATOR_FILE = '/';
+
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison($attributeType)
+    public function supportsComparison($type)
     {
-        return in_array($attributeType, ['pim_catalog_file', 'pim_catalog_image']);
+        return in_array($type, ['pim_catalog_file', 'pim_catalog_image']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(array $changes, array $originals)
+    public function getChanges(array $data, array $originals)
     {
-        if ((!isset($originals['value']) && !isset($changes['value']))
-            || (isset($originals['value']['filePath'])
-                && $changes['value']['filePath'] === $originals['value']['filePath'])) {
+        $noValue = !isset($originals['value']) && !isset($data['value']) && !isset($originals['value']['filePath']);
+        $noFilepathChange = $data['value']['filePath'] === $originals['value']['filePath'];
+
+        if ($noValue || $noFilepathChange) {
             return null;
         }
 
-        $changes['value']['filename'] = str_replace('/', '', strrchr($changes['value']['filePath'], '/'));
+        $filename = strrchr($data['value']['filePath'], self::SEPATATOR_FILE);
+        $data['value']['filename'] = str_replace(self::SEPATATOR_FILE, '', $filename);
 
-        return $changes;
+        return $data;
     }
 }

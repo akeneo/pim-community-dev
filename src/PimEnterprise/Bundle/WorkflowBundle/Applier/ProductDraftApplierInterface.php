@@ -15,15 +15,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
- * Applier interface
+ * Product draft applier interface
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
 interface ProductDraftApplierInterface
 {
     /**
-     * Apply a product
-     *
      * @param ProductInterface $product
      * @param ProductDraft     $productDraft
      */

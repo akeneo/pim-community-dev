@@ -21,9 +21,9 @@ class ScalarComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison($attributeType)
+    public function supportsComparison($type)
     {
-        return in_array($attributeType, [
+        return in_array($type, [
             'pim_catalog_boolean',
             'pim_catalog_date',
             'pim_catalog_identifier',
@@ -36,8 +36,8 @@ class ScalarComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(array $changes, array $originals)
+    public function getChanges(array $data, array $originals)
     {
-        return !array_key_exists('value', $originals) || $changes['value'] !== $originals['value'] ? $changes : null;
+        return !array_key_exists('value', $originals) || $data['value'] !== $originals['value'] ? $data : null;
     }
 }

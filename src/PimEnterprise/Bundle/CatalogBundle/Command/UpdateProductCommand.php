@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\CatalogBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand as BaseUpdateProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Updates a product
@@ -23,9 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class UpdateProductCommand extends BaseUpdateProductCommand
 {
     /**
-     * Call DelegatingProductSaver to save product if user is owner of product but save a draft if not
+     * {@inheritdoc}
      *
-     * @param ProductInterface $product
+     * Call DelegatingProductSaver to save product if user is owner of product but save a draft if not
      */
     protected function save(ProductInterface $product)
     {
