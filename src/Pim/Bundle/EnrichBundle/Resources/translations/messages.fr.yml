@@ -102,7 +102,6 @@ pim_enrich:
       label: Modifier les attributs
       description: Les attributs sélectionnés vont être modifié avec les valeurs suivantes pour la locale choisie.
       empty: Veuillez sélectionner le ou les attribut(s) à modifier
-      success_flash: Le(s) attribut(s) ont été mis à jour
       message:
         warning: "Il n'y a pas d'attribut en commun pour les produits sélectionnés. Veuillez modifier votre sélection."
     classify:
@@ -122,7 +121,6 @@ pim_enrich:
       label: Ajouter à un groupe de variantes
       description: Choisissez le groupe de variantes auquel associer les produits sélectionnés
       success_flash: Les produits ont bien été associés au groupe de variantes sélectionné
-      already_in_variant_group_or_not_valid: "Vous ne pouvez pas associer à ce groupe les produits suivants (%products%). Ils sont peut-être déjà associés à un groupe de variantes ou n'ont pas les bons axes de variation."
       no_variant_group: "Aucun groupe de variantes pour l'instant. Veuillez commencer par créer un groupe de variantes."
       no_valid_variant_group: Aucun groupe de variantes ne partage des attributs avec les produits sélectionnés.
       some_variant_groups_are_skipped:
