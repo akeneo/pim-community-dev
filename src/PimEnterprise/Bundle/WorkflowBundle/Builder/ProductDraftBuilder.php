@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorRegistry;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
+use PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -137,15 +138,21 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     protected function getOriginalValues(ProductInterface $product)
     {
-        $originalValues = new ArrayCollection();
-        foreach ($product->getValues() as $value) {
-            if (null !== $value->getId()) {
-                $id = $value->getId();
-                $class = ClassUtils::getClass($value);
-                $this->objectManager->detach($value);
+        if (class_exists(PimEnterpriseWorkflowBundle::DOCTRINE_MONGODB)) {
+            $originalProduct = $this->objectManager->find(ClassUtils::getClass($product), $product->getId());
+            $this->objectManager->refresh($originalProduct);
+            $originalValues = $originalProduct->getValues();
+        } else {
+            $originalValues = new ArrayCollection();
+            foreach ($product->getValues() as $value) {
+                if (null !== $value->getId()) {
+                    $id = $value->getId();
+                    $class = ClassUtils::getClass($value);
+                    $this->objectManager->detach($value);
 
-                $value = $this->objectManager->find($class, $id);
-                $originalValues->add($value);
+                    $value = $this->objectManager->find($class, $id);
+                    $originalValues->add($value);
+                }
             }
         }
 
