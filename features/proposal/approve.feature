@@ -9,15 +9,21 @@ Feature: Approve draft
       | sku           | categories |
       | akeneo_tshirt | tshirts    |
       | akeneo_sweat  | tshirts    |
-    And I should get the following products after apply the following updater to it:
-      | product       | actions                                                                               | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
 
   Scenario: Successfully approve a draft
-    Given I approve the proposal of the product "akeneo_tshirt" created by user "Mary"
+    Given I should get the following products after apply the following updater to it:
+      | product       | actions                                                                               | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
+    Then I approve the proposal of the product "akeneo_tshirt" created by user "Mary"
 
   Scenario: Failed to approve a draft with a not found user
-    Given I failed to approve the proposal of the product "akeneo_tshirt" created by user "Julia"
+    Given I should get the following products after apply the following updater to it:
+      | product       | actions                                                                               | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
+    Then I failed to approve the proposal of the product "akeneo_tshirt" created by user "Julia"
 
   Scenario: Failed to approve a draft with a not found product
-    Given I failed to approve the proposal of the product "akeneo_sweat" created by user "Mary"
+    Given I should get the following products after apply the following updater to it:
+      | product       | actions                                                                               | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "handmade", "data": 1, "locale": null, "scope": null}] | {}     | Mary     |
+    Then I failed to approve the proposal of the product "akeneo_sweat" created by user "Mary"
