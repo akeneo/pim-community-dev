@@ -8,7 +8,7 @@ class MediaComparatorSpec extends ObjectBehavior
 {
     function it_is_a_comparator()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\AttributeComparatorInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
     function it_supports_media_type()

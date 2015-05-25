@@ -34,8 +34,9 @@ class MediaComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        $noValue = !isset($originals['value']) && !isset($data['value']) && !isset($originals['value']['filePath']);
-        $noFilepathChange = $data['value']['filePath'] === $originals['value']['filePath'];
+        $noValue = !isset($originals['value']) && !isset($data['value']);
+        $noFilepathChange = isset($originals['value']['filePath'])
+            && $data['value']['filePath'] === $originals['value']['filePath'];
 
         if ($noValue || $noFilepathChange) {
             return null;
