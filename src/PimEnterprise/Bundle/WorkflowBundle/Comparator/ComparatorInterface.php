@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-interface AttributeComparatorInterface
+interface ComparatorInterface
 {
     /**
      * Whether or not the class supports comparison
@@ -28,13 +28,13 @@ interface AttributeComparatorInterface
     public function supportsComparison($attributeType);
 
     /**
-     * Get the changes between a product value instance and the updated data
+     * Get the changes between a normalized product value instance and the updated data
      * If no changes detected, then the method returns null
      *
-     * @param array $changes
+     * @param array $data
      * @param array $originals
      *
      * @return array|null
      */
-    public function getChanges(array $changes, array $originals);
+    public function getChanges(array $data, array $originals);
 }

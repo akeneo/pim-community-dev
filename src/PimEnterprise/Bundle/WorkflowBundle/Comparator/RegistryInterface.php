@@ -30,8 +30,8 @@ interface RegistryInterface
     /**
      * Add a comparator to the chain of comparators
      *
-     * @param AttributeComparatorInterface $comparator
+     * @param ComparatorInterface $comparator
      * @param int                          $priority
      */
-    public function addAttributeComparator(AttributeComparatorInterface $comparator, $priority);
+    public function addAttributeComparator(ComparatorInterface $comparator, $priority);
 }

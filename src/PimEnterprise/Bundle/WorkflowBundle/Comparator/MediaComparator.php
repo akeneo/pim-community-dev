@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class MediaComparator implements AttributeComparatorInterface
+class MediaComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}

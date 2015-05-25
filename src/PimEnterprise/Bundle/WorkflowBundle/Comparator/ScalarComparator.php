@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class ScalarComparator implements AttributeComparatorInterface
+class ScalarComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}

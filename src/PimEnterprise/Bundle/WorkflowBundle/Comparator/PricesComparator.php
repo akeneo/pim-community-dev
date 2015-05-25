@@ -16,7 +16,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
  *
  * @author Gildas Quemener <gildas@akeneo.com>
  */
-class PricesComparator implements AttributeComparatorInterface
+class PricesComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}

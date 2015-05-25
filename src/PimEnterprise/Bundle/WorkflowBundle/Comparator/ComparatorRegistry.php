@@ -46,7 +46,7 @@ class ComparatorRegistry implements RegistryInterface
     /**
      * {@inheritdoc}
      */
-    public function addAttributeComparator(AttributeComparatorInterface $comparator, $priority)
+    public function addAttributeComparator(ComparatorInterface $comparator, $priority)
     {
         $this->comparators[self::COMPARATOR_ATTRIBUTE][$priority][] = $comparator;
     }
