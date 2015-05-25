@@ -2,6 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
@@ -34,25 +35,31 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var FieldSplitter */
     protected $fieldSplitter;
 
+    /** @var ProductFieldConverter */
+    protected $productFieldConverter;
+
     /**
      * @param ProductAttributeFieldExtractor  $fieldExtractor
      * @param OptionsResolverConverter        $optionsResolverConverter
      * @param ValueConverterRegistryInterface $converterRegistry
      * @param ProductAssociationFieldResolver $assocFieldResolver
      * @param FieldSplitter                   $fieldSplitter
+     * @param ProductFieldConverter           $productFieldConverter
      */
     public function __construct(
         ProductAttributeFieldExtractor $fieldExtractor,
         OptionsResolverConverter $optionsResolverConverter,
         ValueConverterRegistryInterface $converterRegistry,
         ProductAssociationFieldResolver $assocFieldResolver,
-        FieldSplitter $fieldSplitter
+        FieldSplitter $fieldSplitter,
+        ProductFieldConverter $productFieldConverter
     ) {
         $this->optionsResolverConverter = $optionsResolverConverter;
         $this->converterRegistry        = $converterRegistry;
         $this->fieldExtractor           = $fieldExtractor;
         $this->assocFieldResolver       = $assocFieldResolver;
         $this->fieldSplitter            = $fieldSplitter;
+        $this->productFieldConverter    = $productFieldConverter;
     }
 
     /**
@@ -140,42 +147,20 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
         $result = [];
         foreach ($resolvedItem as $column => $value) {
-            $value = $this->convertToStructuredField($column, $value);
+            if ($this->productFieldConverter->supportsColumn($column)) {
+                $value = $this->productFieldConverter->convert($column, $value);
+            } else {
+                $value = $this->convertValue($column, $value);
+            }
+
             if (null !== $value) {
                 $result = $this->addFieldToCollection($result, $value);
             }
+
             // TODO: does not work with no groups
         }
 
         return $result;
-    }
-
-    /**
-     * Convert a flat field to a structured one
-     *
-     * @param string $column The column name
-     * @param string $value  The value in the cell
-     *
-     * @return array
-     */
-    protected function convertToStructuredField($column, $value)
-    {
-        $associationFields = $this->assocFieldResolver->resolveAssociationFields();
-
-        if (in_array($column, $associationFields)) {
-            $value = $this->fieldSplitter->splitCollection($value);
-            list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($column);
-
-            return ['associations' => [$associationTypeCode => [$associatedWith => $value]]];
-        } elseif (in_array($column, ['categories', 'groups'])) {
-            return [$column => $this->fieldSplitter->splitCollection($value)];
-        } elseif ('enabled' === $column) {
-            return [$column => (bool) $value];
-        } elseif ('family' === $column) {
-            return [$column => $value];
-        } else {
-            return $this->convertValue($column, $value);
-        }
     }
 
     /**
@@ -193,14 +178,19 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
 
             if (null === $converter) {
                 throw new \LogicException(
-                    sprintf('No converters found for attribute type "%s"', $attributeFieldInfo['attribute']->getCode())
+                    sprintf(
+                        'No converters found for attribute type "%s"',
+                        $attributeFieldInfo['attribute']->getAttributeType()
+                    )
                 );
             }
 
             return $converter->convert($attributeFieldInfo, $value);
         }
 
-        return [];
+        throw new \LogicException(
+            sprintf('Unable to convert the given column "%s"', $column)
+        );
     }
 
     /**
