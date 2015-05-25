@@ -155,11 +155,13 @@ class ProductToStandardConverterSpec extends ObjectBehavior
         $productFieldConverter,
         $converterRegistry,
         $fieldExtractor,
+        $columnsMerger,
         AttributeInterface $attribute
     ) {
         $item = ['sku' => '1069978'];
 
         $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $columnsMerger->merge($item)->willReturn($item);
         $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getAttributeType()->willReturn('sku');
 
@@ -173,11 +175,15 @@ class ProductToStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_no_attributes_found($optionsResolverConverter, $productFieldConverter)
-    {
+    function it_throws_an_exception_if_no_attributes_found(
+        $optionsResolverConverter,
+        $columnsMerger,
+        $productFieldConverter
+    ) {
         $item = ['sku' => '1069978'];
 
         $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $columnsMerger->merge($item)->willReturn($item);
         $productFieldConverter->supportsColumn('sku')->willReturn(false);
 
         $this->shouldThrow(new \LogicException('Unable to convert the given column "sku"'))->during(

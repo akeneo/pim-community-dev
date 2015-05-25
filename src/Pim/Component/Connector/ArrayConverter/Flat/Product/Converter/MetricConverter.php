@@ -29,6 +29,7 @@ class MetricConverter extends AbstractValueConverter
     public function convert($attributeFieldInfo, $value)
     {
         if ($value !== '') {
+            // TODO: useless because handled by merger?
             //Due to the multi column format for metrics
             if (isset($attributeFieldInfo['metric_unit'])) {
                 $unit = $attributeFieldInfo['metric_unit'];
