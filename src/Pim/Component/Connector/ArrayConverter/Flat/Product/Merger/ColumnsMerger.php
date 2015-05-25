@@ -46,7 +46,7 @@ class ColumnsMerger
      */
     public function merge(array $row)
     {
-        $resultRows = [];
+        $resultRow = [];
         $collectedMetrics = [];
         $collectedPrices = [];
         foreach ($row as $fieldName => $fieldValue) {
@@ -58,17 +58,17 @@ class ColumnsMerger
                 } elseif ('prices' === $attribute->getBackendType()) {
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
                 } else {
-                    $resultRows[$fieldName] = $fieldValue;
+                    $resultRow[$fieldName] = $fieldValue;
                 }
             } else {
-                $resultRows[$fieldName] = $fieldValue;
+                $resultRow[$fieldName] = $fieldValue;
             }
         }
 
-        $resultRows = $this->mergeMetricData($resultRows, $collectedMetrics);
-        $resultRows = $this->mergePriceData($resultRows, $collectedPrices);
+        $resultRow = $this->mergeMetricData($resultRow, $collectedMetrics);
+        $resultRow = $this->mergePriceData($resultRow, $collectedPrices);
 
-        return $resultRows;
+        return $resultRow;
     }
 
     /**
@@ -118,15 +118,15 @@ class ColumnsMerger
     /**
      * Merge collected metric in result rows
      *
-     * @param array $resultRows
+     * @param array $resultRow
      * @param array $collectedMetrics
      *
      * @return array
      */
-    protected function mergeMetricData(array $resultRows, array $collectedMetrics)
+    protected function mergeMetricData(array $resultRow, array $collectedMetrics)
     {
         foreach ($collectedMetrics as $fieldName => $metricData) {
-            $resultRows[$fieldName] = trim(
+            $resultRow[$fieldName] = trim(
                 sprintf(
                     '%s%s%s',
                     $metricData['data'],
@@ -136,7 +136,7 @@ class ColumnsMerger
             );
         }
 
-        return $resultRows;
+        return $resultRow;
     }
 
     /**
@@ -151,7 +151,7 @@ class ColumnsMerger
     protected function collectPriceData(array $collectedPrices, array $attributeInfos, $fieldValue)
     {
         $cleanField = $this->getCleanFieldName($attributeInfos);
-        if (NULL !== $attributeInfos['price_currency']) {
+        if (null !== $attributeInfos['price_currency']) {
             if (!in_array($cleanField, array_keys($collectedPrices))) {
                 $collectedMetrics[$cleanField] = [];
             }
@@ -171,17 +171,17 @@ class ColumnsMerger
     /**
      * Merge collected price in result rows
      *
-     * @param array $resultRows
+     * @param array $resultRow
      * @param array $collectedPrices
      *
      * @return array
      */
-    protected function mergePriceData(array $resultRows, array $collectedPrices)
+    protected function mergePriceData(array $resultRow, array $collectedPrices)
     {
         foreach ($collectedPrices as $fieldName => $prices) {
-            $resultRows[$fieldName] = implode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $prices);
+            $resultRow[$fieldName] = implode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $prices);
         }
 
-        return $resultRows;
+        return $resultRow;
     }
 }

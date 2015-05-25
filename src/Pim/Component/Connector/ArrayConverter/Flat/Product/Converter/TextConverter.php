@@ -31,7 +31,7 @@ class TextConverter extends AbstractValueConverter
         if ('' !== $value) {
             $data = (string) $value;
         } else {
-            $data = ''; // TODO: caution with this change
+            $data = null;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

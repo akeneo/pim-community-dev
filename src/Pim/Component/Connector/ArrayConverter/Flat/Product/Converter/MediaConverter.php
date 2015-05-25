@@ -31,7 +31,7 @@ class MediaConverter extends AbstractValueConverter
         if ($value !== '') {
             $data = ['filePath' => $value, 'originalFilename' => basename($value)];
         } else {
-            $data = null;
+            $data = ['filePath' => null, 'originalFilename' => null];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

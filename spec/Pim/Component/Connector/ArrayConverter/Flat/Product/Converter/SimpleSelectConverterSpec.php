@@ -40,13 +40,19 @@ class SimpleSelectConverterSpec extends ObjectBehavior
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 
-    function it_returns_null_if_empty_value_provided(AttributeInterface $attribute)
+    function it_returns_null_data_if_empty_value_provided(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute' => $attribute, 'locale_code' => 'en_US', 'scope_code' => 'mobile'];
 
         $value = '';
 
-        $this->convert($fieldNameInfo, $value)->shouldReturn(null);
+        $expectedResult = ['attribute_code' => [[
+            'locale' => 'en_US',
+            'scope'  => 'mobile',
+            'data'   => null,
+        ]]];
+
+        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 }

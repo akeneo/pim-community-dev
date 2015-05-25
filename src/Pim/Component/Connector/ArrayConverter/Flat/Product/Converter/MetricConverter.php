@@ -35,12 +35,10 @@ class MetricConverter extends AbstractValueConverter
             } else {
                 list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
             }
+            $data = ['data' => (float) $value, 'unit' => $unit];
         } else {
-            $unit = null;
-            $value = null;
+            $data = ['data' => null, 'unit' => null];
         }
-
-        $data = ['data' => (float) $value, 'unit' => $unit];
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

@@ -38,8 +38,8 @@ class ColumnsMergerSpec extends ObjectBehavior
         $attributeInfoData = [
             'attribute' => $name,
             'locale_code' => 'fr_FR',
-            'scope_code' => NULL,
-            'metric_unit' => NULL
+            'scope_code' => null,
+            'metric_unit' => null
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('name-fr_FR')->willReturn($attributeInfoData);
         $name->getBackendType()->willReturn('text');
@@ -57,9 +57,9 @@ class ColumnsMergerSpec extends ObjectBehavior
         ];
         $attributeInfoData = [
             'attribute' => $weight,
-            'locale_code' => NULL,
-            'scope_code' => NULL,
-            'metric_unit' => NULL
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => null
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('weight')->willReturn($attributeInfoData);
         $weight->getCode()->willReturn('weight');
@@ -79,8 +79,8 @@ class ColumnsMergerSpec extends ObjectBehavior
         $attributeInfoData = [
             'attribute' => $weight,
             'locale_code' => 'fr_FR',
-            'scope_code' => NULL,
-            'metric_unit' => NULL
+            'scope_code' => null,
+            'metric_unit' => null
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('weight-fr_FR')->willReturn($attributeInfoData);
 
@@ -101,16 +101,16 @@ class ColumnsMergerSpec extends ObjectBehavior
         ];
         $attributeInfoData = [
             'attribute' => $weight,
-            'locale_code' => NULL,
-            'scope_code' => NULL,
-            'metric_unit' => NULL
+            'locale_code' => null,
+            'scope_code' => null,
+            'metric_unit' => null
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('weight')->willReturn($attributeInfoData);
 
         $attributeInfoUnit = [
             'attribute' => $weight,
-            'locale_code' => NULL,
-            'scope_code' => NULL,
+            'locale_code' => null,
+            'scope_code' => null,
             'metric_unit' => 'unit'
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('weight-unit')->willReturn($attributeInfoUnit);
@@ -133,15 +133,15 @@ class ColumnsMergerSpec extends ObjectBehavior
         $attributeInfoData = [
             'attribute' => $weight,
             'locale_code' => 'fr_FR',
-            'scope_code' => NULL,
-            'metric_unit' => NULL
+            'scope_code' => null,
+            'metric_unit' => null
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('weight-fr_FR')->willReturn($attributeInfoData);
 
         $attributeInfoUnit = [
             'attribute' => $weight,
             'locale_code' => 'fr_FR',
-            'scope_code' => NULL,
+            'scope_code' => null,
             'metric_unit' => 'unit'
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('weight-fr_FR-unit')->willReturn($attributeInfoUnit);
@@ -163,8 +163,8 @@ class ColumnsMergerSpec extends ObjectBehavior
         $attributeInfoData = [
             'attribute' => $price,
             'locale_code' => 'fr_FR',
-            'scope_code' => NULL,
-            'price_currency' => NULL
+            'scope_code' => null,
+            'price_currency' => null
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('price-fr_FR')->willReturn($attributeInfoData);
         $price->getCode()->willReturn('price');
@@ -185,24 +185,24 @@ class ColumnsMergerSpec extends ObjectBehavior
         ];
         $attributeInfoEur = [
             'attribute' => $price,
-            'locale_code' => NULL,
-            'scope_code' => NULL,
+            'locale_code' => null,
+            'scope_code' => null,
             'price_currency' => 'EUR'
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('price-EUR')->willReturn($attributeInfoEur);
 
         $attributeInfoUsd = [
             'attribute' => $price,
-            'locale_code' => NULL,
-            'scope_code' => NULL,
+            'locale_code' => null,
+            'scope_code' => null,
             'price_currency' => 'USD'
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('price-USD')->willReturn($attributeInfoUsd);
 
         $attributeInfoChf = [
             'attribute' => $price,
-            'locale_code' => NULL,
-            'scope_code' => NULL,
+            'locale_code' => null,
+            'scope_code' => null,
             'price_currency' => 'CHF'
         ];
         $fieldExtractor->extractAttributeFieldNameInfos('price-CHF')->willReturn($attributeInfoChf);

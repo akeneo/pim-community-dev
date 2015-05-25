@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
@@ -21,7 +22,8 @@ class ProductToStandardConverterSpec extends ObjectBehavior
         ValueConverterRegistryInterface $converterRegistry,
         ProductAssociationFieldResolver $assocFieldResolver,
         FieldSplitter $fieldSplitter,
-        ProductFieldConverter $productFieldConverter
+        ProductFieldConverter $productFieldConverter,
+        ColumnsMerger $columnsMerger
     ) {
         $this->beConstructedWith(
             $fieldExtractor,
@@ -29,7 +31,8 @@ class ProductToStandardConverterSpec extends ObjectBehavior
             $converterRegistry,
             $assocFieldResolver,
             $fieldSplitter,
-            $productFieldConverter
+            $productFieldConverter,
+            $columnsMerger
         );
     }
 
@@ -38,6 +41,7 @@ class ProductToStandardConverterSpec extends ObjectBehavior
         $fieldExtractor,
         $productFieldConverter,
         $converterRegistry,
+        $columnsMerger,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         AttributeInterface $attribute3,
@@ -54,6 +58,7 @@ class ProductToStandardConverterSpec extends ObjectBehavior
         ];
 
         $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $columnsMerger->merge($item)->willReturn($item);
 
         $productFieldConverter->supportsColumn('sku')->willReturn(false);
         $productFieldConverter->supportsColumn('categories')->willReturn(true);
