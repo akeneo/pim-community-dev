@@ -77,12 +77,12 @@ class UpdateProductCommand extends ContainerAwareCommand
         if (false === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
-            return;
+            return -1;
         }
 
         if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
             if (!$this->createToken($output, $username)) {
-                return;
+                return -1;
             }
         }
 
@@ -96,7 +96,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         if (0 !== $violations->count()) {
             $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $this->save($product);
