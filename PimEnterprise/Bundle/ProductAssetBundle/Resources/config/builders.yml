@@ -1,6 +1,8 @@
 parameters:
     pimee_product_asset.builder.file_metadata.class: PimEnterprise\Component\ProductAsset\Builder\FileMetadataBuilder
     pimee_product_asset.builder.image_metadata.class: PimEnterprise\Component\ProductAsset\Builder\ImageMetadataBuilder
+    pimee_product_asset.builder.reference.class: PimEnterprise\Component\ProductAsset\Builder\ProductAssetReferenceBuilder
+    pimee_product_asset.builder.variation.class: PimEnterprise\Component\ProductAsset\Builder\ProductAssetVariationBuilder
 
 services:
     pimee_product_asset.builder.file_metadata:
@@ -14,3 +16,16 @@ services:
             - '@akeneo_file_metadata.reader_factory'
             - '@pimee_product_asset.builder.file_metadata'
             - %pimee_product_asset.model.image_metadata.class%
+
+    pimee_product_asset.builder.reference:
+        class: %pimee_product_asset.builder.reference.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - %pimee_product_asset.model.asset_reference.class%
+        
+    pimee_product_asset.builder.variation:
+        class: %pimee_product_asset.builder.variation.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - %pimee_product_asset.model.asset_variation.class%
+        

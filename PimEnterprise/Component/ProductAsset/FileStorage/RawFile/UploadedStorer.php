@@ -64,7 +64,7 @@ class UploadedStorer extends AbstractRawFileStorer
         $this->saver->save($file);
 
         if (false === unlink($uploadedFile->getPathname())) {
-            throw new DeletionFileException(sprintf('Unable to delete the file "%s".', $localFile->getPathname()));
+            throw new DeletionFileException(sprintf('Unable to delete the file "%s".', $uploadedFile->getPathname()));
         }
 
         return $file;

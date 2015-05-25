@@ -149,10 +149,6 @@ class ProductAsset implements ProductAssetInterface
             return null;
         }
 
-        if (null === $locale) {
-            return $this->getReferences()->first();
-        }
-
         foreach ($this->getReferences() as $reference) {
             if ($locale === $reference->getLocale()) {
                 return $reference;

@@ -39,7 +39,7 @@ interface ProductAssetVariationBuilderInterface
 
     /**
      * @param ProductAssetReferenceInterface $reference
-     * @param ChannelInterface      $channel
+     * @param ChannelInterface               $channel
      *
      * @throws \LogicException in case it's impossible to build the variation
      *

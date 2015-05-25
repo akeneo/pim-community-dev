@@ -23,8 +23,6 @@ use PimEnterprise\Component\ProductAsset\Model\FileInterface;
  * @author Julien Janvier <jjanvier@akeneo.com>
  *
  * TODO: could be moved in a dedicated FileStorage component
- *
- * TODO: could be renamed LocalFileToVirtualFilesystem
  */
 interface RawFileStorerInterface
 {

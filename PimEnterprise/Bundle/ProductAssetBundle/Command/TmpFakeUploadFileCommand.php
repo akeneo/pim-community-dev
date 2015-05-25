@@ -1,15 +1,29 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use PimEnterprise\Component\ProductAsset\FileStorage\FileHandler\FileHandlerInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\FileHandler\LocalFileHandler;
-use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
+use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
-class TmpFakeUploadFileCommand extends TmpAbstractAssetCommand
+/**
+ * Store a raw file in a storage filesystem
+ *
+ * @author Julien Janvier <jjanvier@akeneo.com>
+ */
+class TmpFakeUploadFileCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -17,8 +31,11 @@ class TmpFakeUploadFileCommand extends TmpAbstractAssetCommand
     protected function configure()
     {
         $this
-            ->setName('pim:product-asset:fake_upload')
-            ->addArgument('file', InputArgument::REQUIRED);
+            //TODO: should be renamed akeneo:file:store if it goes in a dedicated namespace
+            ->setName('pim:product-asset:store-file')
+            ->addArgument('file', InputArgument::REQUIRED)
+            ->addArgument('storage', InputArgument::REQUIRED)
+        ;
     }
 
     /**
@@ -28,29 +45,47 @@ class TmpFakeUploadFileCommand extends TmpAbstractAssetCommand
     {
         $filePath = $input->getArgument('file');
         if (!is_file($filePath)) {
-            throw new \Exception(sprintf('"%s" is not a valid file path.', $filePath));
+            $output->writeln(sprintf('<error>"%s" is not a valid file path.</error>', $filePath));
+
+            return 1;
         }
 
+        $storageFsAlias = $input->getArgument('storage');
+        if (!$this->hasFileSystem($storageFsAlias)) {
+            $output->writeln(sprintf('<error>"%s" is not a valid filesystem.</error>', $storageFsAlias));
+
+            return 1;
+        }
+
+
         $file = new \SplFileInfo($filePath);
-        $fileHandler = $this->getLocalFileHandler();
-        $fileHandler->handle($file);
+        $storer = $this->getRawFileStorer();
+        $storer->store($file, $storageFsAlias);
+
+        return 0;
     }
 
     /**
-     * @return FileHandlerInterface
+     * @return RawFileStorerInterface
      */
-    private function getLocalFileHandler()
+    protected function getRawFileStorer()
     {
-        if (null === $this->localFileHandler) {
-            $this->localFileHandler = new LocalFileHandler(
-                $this->getPathGenerator(),
-                $this->getMountManager(),
-                $this->getFileSaver(),
-                ProductAssetFileSystems::FS_PIM_TMP,
-                ProductAssetFileSystems::FS_STORAGE
-            );
+        return $this->getContainer()->get('pimee_product_asset.file_storage.raw_file.local_storer');
+    }
+
+    /**
+     * @param string $storageFsAlias
+     *
+     * @return bool
+     */
+    protected function hasFileSystem($storageFsAlias)
+    {
+        try {
+            $this->getContainer()->get(sprintf('oneup_flysystem.%s_filesystem', $storageFsAlias));
+        } catch (ServiceNotFoundException $e) {
+            return false;
         }
 
-        return $this->localFileHandler;
+        return true;
     }
 }

@@ -19,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
-use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
@@ -28,15 +27,14 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelVariationsConfigurati
 
 /**
  * Generate the variation files, store them in the filesystem and link them to the reference:
- *      - download the raw reference file from STORAGE to TMP
+ *      - download the raw reference file from STORAGE to /tmp
  *      - generate the variation file
  *      - store the variation file in STORAGE
- *      - set the variation file to the variation
+ *      - set the variation file to the variation and save the variation to the database
  *
- * Where:
- *      - STORAGE is the virtual filesystem where files are stored
- *      - FILE_PROCESSING is the local filesystem where raw files are processed (ie: this code when be executed on
- *        the server that hosts FILE_PROCESSING)
+ * Where STORAGE is the virtual filesystem where files are stored.
+ *
+ * TODO: maybe FS_STORAGE should not be hardcoded
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -100,13 +98,13 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     ) {
         if (null === $reference = $asset->getReference($locale)) {
             if (null === $locale) {
+                $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
+            } else {
                 $msg = sprintf(
                     'The asset "%s" has no reference for the locale "%s".',
                     $asset->getCode(),
                     $locale->getCode()
                 );
-            } else {
-                $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
             }
 
             throw new \LogicException($msg);
@@ -123,31 +121,22 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
-        $configuration = $this->retrieveChannelConfiguration($channel);
-        $variation     = $this->retrieveVariation($reference, $channel);
-        $referenceFile = $this->retrieveReferenceFile($reference);
+        $transformations = $this->retrieveChannelTransformationsConfiguration($channel);
+        $variation       = $this->retrieveVariation($reference, $channel);
+        $referenceFile   = $this->retrieveReferenceFile($reference);
 
         $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
         $referenceFileInfo = $this->rawFileDownloader->download($referenceFile, $storageFilesystem);
 
-        //TODO: maybe we should not store the whole FileTransformer config in the channel configuration
-        //TODO: (but only what's useful for us)
-        //TODO: maybe the channel conf should have only ONE element (as we have only one variation file per reference)
-        foreach ($configuration->getConfiguration() as $pipeline) {
-            $outputFileName    = $this->buildVariationOutputFilename($referenceFileInfo, $channel, $locale);
-            $variationFileInfo = $this->fileTransformer->transform(
-                $referenceFileInfo,
-                $pipeline['pipeline'],
-                $outputFileName
-            );
-            $variationFile     = $this->rawFileStorer->store($variationFileInfo, ProductAssetFileSystems::FS_STORAGE);
+        $outputFileName    = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
+        $variationFileInfo = $this->fileTransformer->transform($referenceFileInfo, $transformations, $outputFileName);
+        $variationFile     = $this->rawFileStorer->store($variationFileInfo, ProductAssetFileSystems::FS_STORAGE);
 
-            //TODO: extract and save variation metadata
+        //TODO: extract and save variation metadata
 
-            $this->fileSaver->save($variationFile);
-            $variation->setFile($variationFile);
-            $this->variationSaver->save($variation);
-        }
+        $this->fileSaver->save($variationFile);
+        $variation->setFile($variationFile);
+        $this->variationSaver->save($variation);
 
         unlink($referenceFileInfo->getPathname());
     }
@@ -156,17 +145,22 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * @param ChannelInterface $channel
      *
-     * @return ChannelVariationsConfigurationInterface
+     * @return array
      */
-    protected function retrieveChannelConfiguration(ChannelInterface $channel)
+    protected function retrieveChannelTransformationsConfiguration(ChannelInterface $channel)
     {
-        if (null === $configuration = $this->configurationRepository->findOneBy(['channel' => $channel->getId()])) {
+        if (null === $channelConfiguration = $this->configurationRepository->findOneBy(
+                ['channel' => $channel->getId()]
+            )
+        ) {
             throw new \LogicException(
                 sprintf('No variations configuration exists for the channel "%s".', $channel->getCode())
             );
         }
 
-        return $configuration;
+        $configuration = $channelConfiguration->getConfiguration();
+
+        return $configuration['pipeline'];
     }
 
     /**
@@ -203,6 +197,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             throw new \LogicException(sprintf('The reference "%s" has no file.', $reference->getId()));
         }
 
+        //TODO: should be deleted if FS_STORAGE is not be hardcoded
         if ($referenceFile->getStorage() !== ProductAssetFileSystems::FS_STORAGE) {
             throw new \LogicException(
                 sprintf(
@@ -228,24 +223,24 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      *      this_is_my_reference_file-en_US-ecommerce.txt or
      *      this_is_my_reference_file-ecommerce.txt
      *
-     * @param \SplFileInfo     $referenceFileInfo
+     * @param FileInterface    $referenceFile
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
      *
      * @return string
      */
     protected function buildVariationOutputFilename(
-        \SplFileInfo $referenceFileInfo,
+        FileInterface $referenceFile,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
-        $extensionPattern = sprintf('/\.%s$/', $referenceFileInfo->getExtension());
-        $outputFileName   = preg_replace($extensionPattern, '', $referenceFileInfo->getFilename());
+        $extensionPattern = sprintf('/\.%s$/', $referenceFile->getExtension());
+        $outputFileName   = preg_replace($extensionPattern, '', $referenceFile->getOriginalFilename());
 
         if (null !== $locale) {
-            $outputFileName = sprintf('%s-%s', $outputFileName = $locale->getCode());
+            $outputFileName = sprintf('%s-%s', $outputFileName, $locale->getCode());
         }
 
-        return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $referenceFileInfo->getExtension());
+        return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $referenceFile->getExtension());
     }
 }

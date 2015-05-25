@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage;
 
+use PimEnterprise\Component\ProductAsset\Exception\TransferFileException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
@@ -25,10 +26,7 @@ interface FileMoverInterface
      * @param string         $srcFsAlias
      * @param string         $destFsAlias
      *
-     * //TODO: should throw a biz exception
-     * @throws
-     *
-     * @return mixed
+     * @throws TransferFileException
      */
     public function move(FileInterface $file, $srcFsAlias, $destFsAlias);
 }

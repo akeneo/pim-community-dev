@@ -5,8 +5,11 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
-require_once '/home/willy/project/akeneo/pim-enterprise-dev/vendor/autoload.php';
-require_once '/home/willy/project/akeneo/pim-enterprise-dev/app/AppKernel.php';
+//require_once '/home/willy/project/akeneo/pim-enterprise-dev/vendor/autoload.php';
+//require_once '/home/willy/project/akeneo/pim-enterprise-dev/app/AppKernel.php';
+
+require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/vendor/autoload.php';
+require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
 $kernel->loadClassCache();
