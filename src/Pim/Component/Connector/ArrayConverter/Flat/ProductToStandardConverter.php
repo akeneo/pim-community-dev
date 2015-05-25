@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -38,6 +39,9 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var ProductFieldConverter */
     protected $productFieldConverter;
 
+    /** @var ColumnsMerger */
+    protected $columnsMerger;
+
     /**
      * @param ProductAttributeFieldExtractor  $fieldExtractor
      * @param OptionsResolverConverter        $optionsResolverConverter
@@ -45,6 +49,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      * @param ProductAssociationFieldResolver $assocFieldResolver
      * @param FieldSplitter                   $fieldSplitter
      * @param ProductFieldConverter           $productFieldConverter
+     * @param ColumnsMerger                   $columnsMerger
      */
     public function __construct(
         ProductAttributeFieldExtractor $fieldExtractor,
@@ -52,7 +57,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         ValueConverterRegistryInterface $converterRegistry,
         ProductAssociationFieldResolver $assocFieldResolver,
         FieldSplitter $fieldSplitter,
-        ProductFieldConverter $productFieldConverter
+        ProductFieldConverter $productFieldConverter,
+        ColumnsMerger $columnsMerger
     ) {
         $this->optionsResolverConverter = $optionsResolverConverter;
         $this->converterRegistry        = $converterRegistry;
@@ -60,6 +66,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         $this->assocFieldResolver       = $assocFieldResolver;
         $this->fieldSplitter            = $fieldSplitter;
         $this->productFieldConverter    = $productFieldConverter;
+        $this->columnsMerger            = $columnsMerger;
     }
 
     /**
@@ -144,11 +151,10 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     public function convert(array $item)
     {
         $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item);
-
-        // TODO : merge multi column
+        $mergedItems = $this->columnsMerger->merge($resolvedItem);
 
         $result = [];
-        foreach ($resolvedItem as $column => $value) {
+        foreach ($mergedItems as $column => $value) {
             if ($this->productFieldConverter->supportsColumn($column)) {
                 $value = $this->productFieldConverter->convert($column, $value);
             } else {
