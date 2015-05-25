@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use PimEnterprise\Component\ProductAsset\Exception\AlreadyRegisteredMetadataBuilderException;
 use PimEnterprise\Component\ProductAsset\Exception\NonRegisteredMetadataBuilderException;
+use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
  * Registry for Metadata builders.
@@ -25,39 +26,32 @@ class MetadataBuilderRegistry
     /** @var MetadataBuilderInterface[] */
     protected $builders = [];
 
+    /** @var array */
+    protected $imageMimeTypes = ['image/jpeg', 'image/tiff', 'image/png'];
+
     /**
      * @return MetadataBuilderInterface[]
      */
     public function all()
     {
-        $builders = [];
-
-        foreach ($this->builders as $builder) {
-            $builders[] = $builder['service'];
-        }
-
-        return $builders;
+        return $this->builders;
     }
 
     /**
      * @param MetadataBuilderInterface $builder
-     * @param array                    $mimeTypes
      * @param string                   $alias
      *
      * @throws AlreadyRegisteredMetadataBuilderException
      *
      * @return MetadataBuilderRegistry
      */
-    public function add(MetadataBuilderInterface $builder, array $mimeTypes, $alias)
+    public function add(MetadataBuilderInterface $builder, $alias)
     {
         if ($this->has($alias)) {
             throw new AlreadyRegisteredMetadataBuilderException(sprintf('Metadata builder "%s" already registered.', $alias));
         }
 
-        $this->builders[$alias] = [
-            'service'   => $builder,
-            'mimeTypes' => $mimeTypes
-        ];
+        $this->builders[$alias] = $builder;
 
         return $this;
     }
@@ -72,28 +66,28 @@ class MetadataBuilderRegistry
     public function get($alias)
     {
         if ($this->has($alias)) {
-            return $this->builders[$alias]['service'];
+            return $this->builders[$alias];
         }
 
         throw new NonRegisteredMetadataBuilderException(sprintf('No "%s" metadata builder found.', $alias));
     }
 
     /**
-     * @param string $mimeType
+     * @param \SplFileInfo $file
      *
-     * @return MetadataBuilderInterface[]
+     * @throws NonRegisteredMetadataBuilderException
+     *
+     * @return MetadataBuilderInterface
      */
-    public function allByMimeType($mimeType)
+    public function getByFile(\SplFileInfo $file)
     {
-        $matchingBuilders= [];
+        $mimeType = MimeTypeGuesser::getInstance()->guess($file->getPathname());
 
-        foreach ($this->builders as $builder) {
-            if (in_array($mimeType, $builder['mimeTypes'])) {
-                $matchingBuilders[] = $builder['service'];
-            }
+        if (in_array($mimeType, $this->imageMimeTypes)) {
+            return $this->get('pimee_product_asset_image_metadata_builder');
         }
 
-        return $matchingBuilders;
+        return $this->get('pimee_product_asset_file_metadata_builder');
     }
 
     /**

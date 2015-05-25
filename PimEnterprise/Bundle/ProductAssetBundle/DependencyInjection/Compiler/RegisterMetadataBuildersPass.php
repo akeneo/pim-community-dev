@@ -37,8 +37,11 @@ class RegisterMetadataBuildersPass implements CompilerPassInterface
         $registry = $container->getDefinition(self::METADATA_BUILDER_REGISTRY);
         $builders = $container->findTaggedServiceIds(self::METADATA_BUILDER_TAG);
 
-        foreach (array_keys($builders) as $builderId) {
-            $registry->addMethodCall('add', [new Reference($builderId)]);
+        foreach ($builders as $builderId => $tags) {
+            $alias = $tags[0]['alias'];
+            $builder = new Reference($builderId);
+
+            $registry->addMethodCall('add', [$builder, $alias]);
         }
     }
 }

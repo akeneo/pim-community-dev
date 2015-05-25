@@ -30,25 +30,19 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
     /** @var string */
     protected $imageMetadataClass;
 
-    /** @var array */
-    protected $mimeTypes;
-
     /**
      * @param FileMetadataReaderFactoryInterface $metaReaderFactory
      * @param MetadataBuilderInterface           $fileMetaBuidler
      * @param string                             $imageMetadataClass
-     * @param array                              $mimeTypes
      */
     public function __construct(
         FileMetadataReaderFactoryInterface $metaReaderFactory,
         MetadataBuilderInterface $fileMetaBuidler,
-        $imageMetadataClass = 'PimEnterprise\Component\ProductAsset\Model\ImageMetadata',
-        array $mimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
+        $imageMetadataClass = 'PimEnterprise\Component\ProductAsset\Model\ImageMetadata'
     ) {
         $this->metaReaderFactory  = $metaReaderFactory;
         $this->fileMetaBuidler    = $fileMetaBuidler;
         $this->imageMetadataClass = $imageMetadataClass;
-        $this->mimeTypes          = $mimeTypes;
     }
 
     /**
