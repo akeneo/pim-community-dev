@@ -11,8 +11,8 @@ Feature: Create a draft with a metric fields
 
   Scenario: Successfully add a draft without add attribute in product
     Given I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                                     | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data": "12.0000", "unit": "CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
+      | product       | actions                                                                                                                   | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data": 12.0000, "unit": "CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
       | product        | username | result                                                                                                      |
       | akeneo_tshirt  | Mary     | {"values": {"length": [{"locale": null, "scope": null, "value": {"data":"12.0000", "unit":"CENTIMETER"}}]}} |
@@ -24,8 +24,8 @@ Feature: Create a draft with a metric fields
       | product       | attribute | value              |
       | akeneo_tshirt | length    | 15.0000 CENTIMETER |
     Then I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                                   | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data":"12.0000", "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
+      | product       | actions                                                                                                                 | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data":12.0000, "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should get the following proposals:
       | product        | username | result                                                                                                      |
       | akeneo_tshirt  | Mary     | {"values": {"length": [{"locale": null, "scope": null, "value": {"data":"12.0000", "unit":"CENTIMETER"}}]}} |
@@ -37,8 +37,8 @@ Feature: Create a draft with a metric fields
       | product       | attribute | value              |
       | akeneo_tshirt | length    | 20.0000 CENTIMETER |
     Then I should get the following products after apply the following updater to it:
-      | product       | actions                                                                                                                   | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data":"20.0000", "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
+      | product       | actions                                                                                                                 | result | username |
+      | akeneo_tshirt | [{"type": "set_data", "field": "length", "data": {"data":20.0000, "unit":"CENTIMETER"}, "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:
       | product       | username |
       | akeneo_tshirt | Mary     |

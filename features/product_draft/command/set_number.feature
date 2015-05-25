@@ -12,9 +12,9 @@ Feature: Create a draft with a number fields
   Scenario: Successfully add a draft without add attribute in product
     Given I should get the following products after apply the following updater to it:
       | product       | actions                                                                                                | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": "12.0000", "locale": null, "scope": "mobile"}] | {}     | Mary     |
+      | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": 12.0000, "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                   |
+      | product        | username | result                                                                                     |
       | akeneo_tshirt  | Mary     | {"values": {"number_in_stock": [{"locale": null, "scope": "mobile", "value": "12.0000"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | number_in_stock-mobile | |
@@ -25,9 +25,9 @@ Feature: Create a draft with a number fields
       | akeneo_tshirt | number_in_stock | 15.0000 | mobile |
     Then I should get the following products after apply the following updater to it:
       | product       | actions                                                                                                | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": "12.0000", "locale": null, "scope": "mobile"}] | {}     | Mary     |
+      | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": 12.0000, "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should get the following proposals:
-      | product        | username | result                                                                                   |
+      | product        | username | result                                                                                     |
       | akeneo_tshirt  | Mary     | {"values": {"number_in_stock": [{"locale": null, "scope": "mobile", "value": "12.0000"}]}} |
     And the product "akeneo_tshirt" should have the following values:
       | number_in_stock-mobile | 15.0000 |
@@ -38,7 +38,7 @@ Feature: Create a draft with a number fields
       | akeneo_tshirt | number_in_stock | 20.0000 | mobile |
     Then I should get the following products after apply the following updater to it:
       | product       | actions                                                                                                | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": "20.0000", "locale": null, "scope": "mobile"}] | {}     | Mary     |
+      | akeneo_tshirt | [{"type": "set_data", "field": "number_in_stock", "data": 20.0000, "locale": null, "scope": "mobile"}] | {}     | Mary     |
     And I should not get the following proposal:
       | product       | username |
       | akeneo_tshirt | Mary     |

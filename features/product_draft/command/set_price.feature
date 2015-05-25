@@ -34,11 +34,11 @@ Feature: Create a draft with a price fields
 
   Scenario: Do not create a draft with same values as product
     Given the following product values:
-      | product       | attribute | value |
-      | akeneo_tshirt | price     | 5 USD |
+      | product       | attribute | value    |
+      | akeneo_tshirt | price     | 5.00 USD |
     Then I should get the following products after apply the following updater to it:
       | product       | actions                                                                                                                | result | username |
-      | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": "5.00", "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
+      | akeneo_tshirt | [{"type": "set_data", "field": "price", "data": [{"data": 5.00, "currency": "USD"}], "locale": null, "scope": null}] | {}     | Mary     |
     And I should not get the following proposal:
       | product       | username |
       | akeneo_tshirt | Mary     |
