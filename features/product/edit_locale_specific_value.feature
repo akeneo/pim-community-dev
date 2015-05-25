@@ -15,7 +15,7 @@ Feature: Edit a locale specific value
   @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Display the custom tax on the available locale
     And I switch the locale to "de_DE"
-    And I visit the "Intern" group
+    And I visit the "Internal" group
     Then I should see "Zollsteuer"
 
   @jira https://akeneo.atlassian.net/browse/PIM-3298

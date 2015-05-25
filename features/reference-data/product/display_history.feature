@@ -23,18 +23,18 @@ Feature: Display the product history
     And I fill in the following information:
       | color | Red |
     Then I save the product
-    And I visit the "History" tab
+    And I open the history
     And I should see history:
       | version | property | value |
-      | 2       | color    | Red   |
+      | 2       | [color]  | Red   |
     When I visit the "Attributes" tab
     And I fill in the following information:
       | color | Green |
     Then I save the product
-    And I visit the "History" tab
+    And I open the history
     And I should see history:
       | version | property | value |
-      | 3       | color    | Green |
+      | 3       | [color]  | Green |
 
   Scenario: Add an available "multi select" reference data to a product
     Given I am on the "sandals" product page
@@ -42,7 +42,7 @@ Feature: Display the product history
     And I fill in the following information:
       | fabrics | Cashmerewool, Neoprene |
     Then I save the product
-    And I visit the "History" tab
+    And I open the history
     And I should see history:
-      | version | property | value                 |
-      | 2       | fabrics  | Cashmerewool,Neoprene |
+      | version | property  | value                 |
+      | 2       | [fabrics] | Cashmerewool,Neoprene |

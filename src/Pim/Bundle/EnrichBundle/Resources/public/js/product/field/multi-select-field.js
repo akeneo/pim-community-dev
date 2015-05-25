@@ -58,13 +58,14 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            var choices = _.map($(element).val().split(','), function (choice) {
-                                return {
-                                    id: choice,
-                                    text: choice
-                                };
+                            $.ajax(choiceUrl).done(function(response){
+                                var results = response.results;
+                                var choices = _.map($(element).val().split(','), function (choice) {
+                                    var selected = _.findWhere(results, {id: choice});
+                                    return selected;
+                                });
+                                callback(choices);
                             });
-                            callback(choices);
                         },
                         multiple: true
                     });
@@ -85,6 +86,9 @@ define(
             },
             updateModel: function (event) {
                 var data = event.currentTarget.value.split(',');
+                if (data.length == 1 && data[0] == "") {
+                    data = [];
+                }
                 this.setCurrentValue(data);
             }
         });

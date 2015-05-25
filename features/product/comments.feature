@@ -41,7 +41,7 @@ Feature: Leave a comment on a product
       | high-heels | 4 | Julia  | Does not belong to the Summer Collection anymore.              |        |
       | high-heels | 5 | Mary   | Should be associated with red heel.                            |        |
 
-  @javascript
+  @javascript @skip-pef
   Scenario: Successfully reply to an existing comment
     Given I am on the "high-heels" product page
     And I open the "Comments" panel

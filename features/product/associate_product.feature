@@ -26,6 +26,7 @@ Feature: Associate a product
     Then I should see "1 products and 0 groups"
     Then the row "shoelaces" should be checked
 
+  @skip-pef
   Scenario: Associate a product to another group
     Given I edit the "charcoal-boots" product
     When I visit the "Associations" tab

@@ -120,7 +120,7 @@ class MediaManager
     {
         try {
             if ($file = $media->getFile()) {
-                if ($media->getFilename() && $this->fileExists($media)) {
+                if ($media->getFilename() && $this->fileExists($media) && '' === $media->getOriginalFilename()) {
                     $this->delete($media);
                 }
                 $filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename();
@@ -197,7 +197,7 @@ class MediaManager
             throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $filePath));
         }
         $media = $this->factory->createMedia();
-        $media->setOriginalFilename($filename);
+        $media->setOriginalFilename(basename($filename));
         $media->setFilename($filename);
 
         if (!$isUploaded) {
@@ -327,12 +327,22 @@ class MediaManager
             $pathname = $file->getPathname();
             $this->write($filename, file_get_contents($pathname), $overwrite);
 
-            $originalFilename = $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename();
+            if ($file instanceof UploadedFile) {
+                $originalFilename = $file->getClientOriginalName();
+                $media->resetFile();
+            } elseif (false !== strpos($file->getFilename(), $media->getOriginalFilename())) {
+                $originalFilename = $media->getOriginalFilename();
+            } elseif (!(null === $media->getOriginalFilename() || '' === $media->getOriginalFilename())) {
+                $originalFilename = $media->getOriginalFilename();
+                $media->resetFile();
+            } else {
+                $originalFilename = $file->getFilename();
+                $media->resetFile();
+            }
 
             $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);
             $media->setMimeType($file->getMimeType());
-            $media->resetFile();
         }
     }
 

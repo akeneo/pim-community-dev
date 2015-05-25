@@ -36,14 +36,14 @@ Feature: Validate textarea attributes of a product
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
-    Given I change the "long_info" to "information"
+    Given I change the Longinfo to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
     And there should be 1 error in the "Other" tab
 
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
     Given I switch the scope to "ecommerce"
-    And I change the "long_description" to "information"
+    And I change the Longdescription to "information"
     And I save the product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
     And there should be 1 error in the "Other" tab
