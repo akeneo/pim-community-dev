@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Command;
 
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,7 +56,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
         if (false === $product) {
             $output->writeln(sprintf('<error>Product with identifier "%s" not found<error>', $identifier));
 
-            return null;
+            return -1;
         }
 
         $proposal = $this->getProductDraftRepository()->findUserProductDraft($product, $username);
@@ -57,12 +67,23 @@ class ApproveProposalCommand extends ContainerAwareCommand
                 $username
             ));
 
-            return null;
+            return -1;
         }
 
-        $this->getProductDraftManager()->approve($proposal);
+        if ($proposal->getStatus() === ProductDraft::READY) {
+            $this->getProductDraftManager()->approve($proposal);
+            $output->writeln(sprintf('<info>Proposal "%s" has been approved<info>', $identifier));
 
-        $output->writeln(sprintf('<info>Proposal "%s" has been approved<info>', $identifier));
+            return null;
+        } else {
+            $output->writeln(sprintf(
+                '<error>Proposal with identifier "%s" and user "%s" not found<error>',
+                $identifier,
+                $username
+            ));
+
+            return -1;
+        }
     }
 
     /**
