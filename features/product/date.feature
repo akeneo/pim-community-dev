@@ -25,7 +25,6 @@ Feature: Check that imported date is properly displayed
     Given I am on the "postit" product page
     Then the field release should contain "2014-05-01"
 
-  @skip-pef
   Scenario: Do not change date in history if the date has not been changed in the product (PIM-3009)
     Given I am on the "postit" product page
     And I fill in the following information:
@@ -34,7 +33,7 @@ Feature: Check that imported date is properly displayed
     When I open the history
     Then I should see history:
       | version | property | before | after       |
-      | 2       | sku      | postit | nice_postit |
-      | 1       | sku      |        | postit      |
+      | 2       | SKU      | postit | nice_postit |
+      | 1       | SKU      |        | postit      |
       | 1       | release  |        | 2014-05-01  |
       | 1       | enabled  |        | 1           |
