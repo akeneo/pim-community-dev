@@ -201,7 +201,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *
      * @return array
      */
-    public function addFieldToCollection(array $collection, array $value)
+    protected function addFieldToCollection(array $collection, array $value)
     {
         $field = key($value);
 
