@@ -31,7 +31,7 @@ class ProductExportController
     protected $gridFilterAdapter;
 
     /** @var JobInstanceRepository */
-    protected $jobInstanceRepository;
+    protected $jobInstanceRepo;
 
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -46,7 +46,7 @@ class ProductExportController
      * @param Request                    $request
      * @param MassActionDispatcher       $massActionDispatcher
      * @param GridFilterAdapterInterface $gridFilterAdapter
-     * @param JobInstanceRepository      $jobInstanceRepository
+     * @param JobInstanceRepository      $jobInstanceRepo
      * @param SecurityContextInterface   $securityContext
      * @param JobLauncherInterface       $jobLauncher
      * @param DataGridManager            $datagridManager
@@ -55,18 +55,18 @@ class ProductExportController
         Request $request,
         MassActionDispatcher $massActionDispatcher,
         GridFilterAdapterInterface $gridFilterAdapter,
-        JobInstanceRepository $jobInstanceRepository,
+        JobInstanceRepository $jobInstanceRepo,
         SecurityContextInterface $securityContext,
         JobLauncherInterface $jobLauncher,
         DataGridManager $datagridManager
     ) {
-        $this->request               = $request;
-        $this->massActionDispatcher  = $massActionDispatcher;
-        $this->gridFilterAdapter     = $gridFilterAdapter;
-        $this->jobInstanceRepository = $jobInstanceRepository;
-        $this->securityContext       = $securityContext;
-        $this->jobLauncher           = $jobLauncher;
-        $this->datagridManager       = $datagridManager;
+        $this->request              = $request;
+        $this->massActionDispatcher = $massActionDispatcher;
+        $this->gridFilterAdapter    = $gridFilterAdapter;
+        $this->jobInstanceRepo      = $jobInstanceRepo;
+        $this->securityContext      = $securityContext;
+        $this->jobLauncher          = $jobLauncher;
+        $this->datagridManager      = $datagridManager;
     }
 
     /**
@@ -76,7 +76,7 @@ class ProductExportController
      */
     public function indexAction()
     {
-        $jobInstance      = $this->jobInstanceRepository->findOneBy(['code' => 'csv_product_quick_export']);
+        $jobInstance      = $this->jobInstanceRepo->findOneBy(['code' => 'csv_product_quick_export']);
         $filters          = $this->gridFilterAdapter->adapt($this->request);
         $rawConfiguration = addslashes(
             json_encode(

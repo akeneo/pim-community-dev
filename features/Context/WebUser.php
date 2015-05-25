@@ -9,6 +9,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 
 /**
  * Context of the website
@@ -1353,18 +1354,39 @@ class WebUser extends RawMinkContext
     /**
      * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
      *
-     * @param string $code
+     * @param string $operationAlias
      */
-    public function iWaitForTheMassEditJobToFinish($code)
+    public function iWaitForTheMassEditJobToFinish($operationAlias)
     {
-        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
-        // Force to retrieve its job executions
-        $jobInstance->getJobExecutions()->setInitialized(false);
-        $jobExecution = $jobInstance->getJobExecutions()->last();
+        $operationRegistry = $this->getMainContext()
+            ->getContainer()
+            ->get('pim_enrich.mass_edit_action.operation.registry');
 
-        $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
+        $operation = $operationRegistry->get($operationAlias);
 
-        $this->iWaitForTheJobToFinish($code);
+        if (null === $operation) {
+            throw $this->createExpectationException(
+                sprintf('Operation with alias "%s" doesn\'t exist', $operationAlias)
+            );
+        }
+
+        if (!$operation instanceof BatchableOperationInterface) {
+            throw $this->createExpectationException(
+                sprintf('Can\'t get the job code from the "%s" operation', $operationAlias)
+            );
+        }
+
+        $code = $operation->getBatchJobCode();
+
+        $this->waitForMassEditJobToFinish($code);
+    }
+
+    /**
+     * @Given /^I wait for the quick export to finish$/
+     */
+    public function iWaitForTheQuickExportToFinish()
+    {
+        $this->waitForMassEditJobToFinish('csv_product_quick_export');
     }
 
     /**
@@ -2214,5 +2236,20 @@ class WebUser extends RawMinkContext
     protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
+    }
+
+    /**
+     * @param $code
+     */
+    protected function waitForMassEditJobToFinish($code)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        // Force to retrieve its job executions
+        $jobInstance->getJobExecutions()->setInitialized(false);
+        $jobExecution = $jobInstance->getJobExecutions()->last();
+
+        $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
+
+        $this->iWaitForTheJobToFinish($code);
     }
 }
