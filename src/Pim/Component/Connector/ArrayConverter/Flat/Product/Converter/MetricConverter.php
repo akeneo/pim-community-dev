@@ -28,15 +28,16 @@ class MetricConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
-        }
-
-        //Due to the multi column format for metrics
-        if (isset($attributeFieldInfo['metric_unit'])) {
-            $unit = $attributeFieldInfo['metric_unit'];
+        if ($value !== '') {
+            //Due to the multi column format for metrics
+            if (isset($attributeFieldInfo['metric_unit'])) {
+                $unit = $attributeFieldInfo['metric_unit'];
+            } else {
+                list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
+            }
         } else {
-            list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
+            $unit = null;
+            $value = null;
         }
 
         $data = ['data' => (float) $value, 'unit' => $unit];

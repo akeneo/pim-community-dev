@@ -28,11 +28,11 @@ class TextConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ('' !== $value) {
+            $data = (string) $value;
+        } else {
+            $data = null;
         }
-
-        $data = (string) $value;
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

@@ -145,6 +145,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     {
         $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item);
 
+        // TODO : merge multi column
+
         $result = [];
         foreach ($resolvedItem as $column => $value) {
             if ($this->productFieldConverter->supportsColumn($column)) {
@@ -156,8 +158,6 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
             if (null !== $value) {
                 $result = $this->addFieldToCollection($result, $value);
             }
-
-            // TODO: does not work with no groups
         }
 
         return $result;
@@ -203,27 +203,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function addFieldToCollection(array $collection, array $value)
     {
-        $field = key($value);
-
-        //Needed for prices collections in multiple columns
-        if (isset($collection[$field]) &&
-            isset($collection[$field][0]['data']) &&
-            is_array($collection[$field][0]['data'])
-        ) {
-            $newFieldValue = reset($value[$field]);
-
-            foreach ($collection[$field] as $key => $fieldValue) {
-                if (array_key_exists('locale', $newFieldValue) &&
-                    array_key_exists('scope', $newFieldValue) &&
-                    $newFieldValue['locale'] === $fieldValue['locale'] &&
-                    $newFieldValue['scope'] === $fieldValue['scope']
-                ) {
-                    $collection[$field][$key]['data'] = array_merge($fieldValue['data'], $newFieldValue['data']);
-                }
-            }
-        } else {
-            $collection = array_merge_recursive($collection, $value);
-        }
+        $collection = array_merge_recursive($collection, $value);
 
         return $collection;
     }

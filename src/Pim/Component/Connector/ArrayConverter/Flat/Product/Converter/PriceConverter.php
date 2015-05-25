@@ -28,11 +28,11 @@ class PriceConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ($value !== '') {
+            $data = $this->fieldSplitter->splitCollection($value);
+        } else {
+            $data = null;
         }
-
-        $data = $this->fieldSplitter->splitCollection($value);
 
         $data = array_map(function ($priceValue) use ($attributeFieldInfo) {
             return $this->convertPrice($attributeFieldInfo, $priceValue);
