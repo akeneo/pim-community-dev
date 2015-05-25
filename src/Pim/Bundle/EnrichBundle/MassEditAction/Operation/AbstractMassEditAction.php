@@ -38,7 +38,7 @@ abstract class AbstractMassEditAction implements MassEditOperationInterface
      */
     public function setObjectsToMassEdit(array $objects)
     {
-        foreach($objects as &$object) {
+        foreach ($objects as &$object) {
             if (is_array($object)) {
                 $object = $object[0];
             }
