@@ -1668,7 +1668,9 @@ class WebUser extends RawMinkContext
             try {
                 $this->getCurrentPage()->checkCompletenessState($channel, $locale, $data['state']);
                 $this->getCurrentPage()->checkCompletenessRatio($channel, $locale, $data['ratio']);
-                $this->getCurrentPage()->checkCompletenessMissingValues($channel, $locale, $data['missing_values']);
+                if (isset($data['missing_values'])) {
+                    $this->getCurrentPage()->checkCompletenessMissingValues($channel, $locale, $data['missing_values']);
+                }
             } catch (\InvalidArgumentException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
