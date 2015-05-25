@@ -10,7 +10,7 @@ services:
     pimee_workflow.saver.product_draft:
         class: %pim_catalog.saver.base.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.object_manager.product'
             - '@pim_catalog.saver.product_options_resolver'
             - '%pimee_workflow.model.product_draft.class%'
 
