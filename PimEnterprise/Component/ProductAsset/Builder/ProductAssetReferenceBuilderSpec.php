@@ -45,10 +45,12 @@ class ProductAssetReferenceBuilderSpec extends ObjectBehavior
     {
         $asset->hasReference($en_US)->willReturn(true);
         $asset->hasReference($fr_FR)->willReturn(false);
+        $asset->addReference(Argument::any())->shouldBeCalledTimes(1);
 
         $all = $this->buildMissingLocalized($asset);
         $all->shouldHaveCount(1);
         $all->shouldBeArrayOfReferences();
+
     }
 
     public function getMatchers()

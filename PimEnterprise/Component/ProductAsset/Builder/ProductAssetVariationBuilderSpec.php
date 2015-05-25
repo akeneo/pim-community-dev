@@ -43,6 +43,8 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         $reference->hasVariation($print)->willReturn(true);
         $reference->hasVariation($mobile)->willReturn(false);
 
+        $reference->addVariation(Argument::any())->shouldBeCalledTimes(2);
+
         $missings = $this->buildMissing($reference);
         $missings->shouldHaveCount(2);
         $missings->shouldBeArrayOfVariations();
@@ -62,6 +64,8 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
 
         $reference->hasVariation($ecommerce)->willReturn(false);
         $reference->hasVariation($mobile)->willReturn(false);
+
+        $reference->addVariation(Argument::any())->shouldBeCalledTimes(2);
 
         $missings = $this->buildMissing($reference);
         $missings->shouldHaveCount(2);
@@ -117,6 +121,8 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
     ) {
         $reference->getLocale()->willReturn(null);
 
+        $reference->addVariation(Argument::any())->shouldBeCalledTimes(3);
+
         $all = $this->buildAll($reference);
         $all->shouldHaveCount(3);
         $all->shouldBeArrayOfVariations();
@@ -133,6 +139,8 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         $ecommerce->hasLocale($en_US)->willReturn(true);
         $print->hasLocale($en_US)->willReturn(false);
         $mobile->hasLocale($en_US)->willReturn(true);
+
+        $reference->addVariation(Argument::any())->shouldBeCalledTimes(2);
 
         $all = $this->buildAll($reference);
         $all->shouldHaveCount(2);
