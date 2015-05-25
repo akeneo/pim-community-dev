@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle;
 
+use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -29,6 +30,7 @@ class PimEnterpriseProductAssetBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
+            ->addCompilerPass(new RegisterMetadataBuildersPass())
             ->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
         $mappings = [
