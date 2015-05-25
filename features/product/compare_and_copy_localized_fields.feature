@@ -11,10 +11,12 @@ Feature: Compare and copy localized fields
       | tshirt | tshirts | Floup      | Front view   | Vue de face  | City shoes                  | Chaussures de ville         |
     And I am logged in as "Mary"
 
+  @skip-pef
   Scenario: Successfully display available comparison languages
     Given I am on the "tshirt" product page
     Then I should see comparison languages "German (Germany), English (United Kingdom) and French (France)"
 
+  @skip-pef
   Scenario: Successfully copy all compared product localized values
     Given I am on the "tshirt" product page
     When I compare values with the "French (France)" translation
@@ -24,6 +26,7 @@ Feature: Compare and copy localized fields
     And the product ecommerce Description should be "Chaussures de ville"
     And the product Legend should be "Vue de face"
 
+  @skip-pef
   Scenario: Successfully copy current tab compared product localized values
     Given I am on the "tshirt" product page
     When I compare values with the "French (France)" translation
@@ -33,6 +36,7 @@ Feature: Compare and copy localized fields
     And the product ecommerce Description should be "Chaussures de ville"
     And the product Legend should be "Front view"
 
+  @skip-pef
   Scenario: Successfully copy manually selected compared product localized values
     Given I am on the "tshirt" product page
     When I compare values with the "French (France)" translation

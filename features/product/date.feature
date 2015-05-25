@@ -33,7 +33,7 @@ Feature: Check that imported date is properly displayed
     When I open the history
     Then I should see history:
       | version | property | before | after       |
-      | 2       | sku      | postit | nice_postit |
-      | 1       | sku      |        | postit      |
+      | 2       | SKU      | postit | nice_postit |
+      | 1       | SKU      |        | postit      |
       | 1       | release  |        | 2014-05-01  |
       | 1       | enabled  |        | 1           |
