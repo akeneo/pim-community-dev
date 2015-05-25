@@ -10,6 +10,7 @@ Feature: Approve draft
       | akeneo_tshirt | tshirts    |
       | akeneo_sweat  | tshirts    |
 
+  @skip-pef
   Scenario: Successfully approve a draft
     Given I should get the following products after apply the following updater to it:
       | product       | actions                                                                               | result | username |

@@ -115,6 +115,7 @@ Feature: Submit a modification on a product draft
     But the field Datasheet should contain "akeneo.txt"
     And I should see that Datasheet is a modified value
 
+  @skip-pef
   Scenario: Successfully propose an image attribute change
     When I visit the "Media" group
     And I attach file "akeneo.jpg" to "Side view"
