@@ -21,12 +21,19 @@ class FileMetadataBuilder implements MetadataBuilderInterface
     /** @var string */
     protected $metadataClass;
 
+    /** @var array */
+    protected $mimeTypes;
+
     /**
      * @param string $metadataClass
+     * @param array  $mimeTypes
      */
-    public function __construct($metadataClass = 'PimEnterprise\Component\ProductAsset\Model\FileMetadata')
-    {
+    public function __construct(
+        $metadataClass = 'PimEnterprise\Component\ProductAsset\Model\FileMetadata',
+        array $mimeTypes = ['image/jpeg', 'image/tiff', 'image/png']
+    ) {
         $this->metadataClass = $metadataClass;
+        $this->mimeTypes     = $mimeTypes;
     }
 
     /**
