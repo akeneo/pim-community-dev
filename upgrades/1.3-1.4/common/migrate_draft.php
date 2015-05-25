@@ -1,9 +1,8 @@
 <?php
 
-use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
-use Sensio\Bundle\GeneratorBundle\Command\Helper\DialogHelper;
+use PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -14,12 +13,14 @@ require_once __DIR__.'/../../../app/AppKernel.php';
 class Migration
 {
     const PIMEE_WORKFLOW_PRODUCT_DRAFT = 'pimee_workflow_product_draft';
+    const PIMEE_WORKFLOW_PRODUCT_DRAFT_CLASS = '\PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft';
 
     protected $output;
     protected $env;
     protected $container;
     protected $kernel;
     protected $errors = ['drafts' => [], 'attributes' => [], 'exceptions' => []];
+    protected $mongo = false;
 
     public function __construct(ConsoleOutput $output, ArgvInput $input)
     {
@@ -27,8 +28,7 @@ class Migration
 
         $env = $input->getParameterOption(['-e', '--env']);
         if (!$env) {
-            echo sprintf("Usage: %s --env=<environment>\nExample: %s --env=dev\n", $argv[0], $argv[0]);
-            exit(1);
+            $env = 'dev';
         }
 
         $this->kernel($env);
@@ -44,7 +44,11 @@ class Migration
         }
 
         $fieldNameBuilder = $this->get('pim_transform.builder.field_name');
-        $newStructure = $this->convert($drafts, $fieldNameBuilder);
+        if ($this->mongo) {
+            $newStructure = $this->convertMongo($drafts, $fieldNameBuilder);
+        } else {
+            $newStructure = $this->convertORM($drafts, $fieldNameBuilder);
+        }
 
         $count = count($newStructure);
         if (0 === $count && 0 === $this->errors) {
@@ -96,12 +100,21 @@ class Migration
      */
     protected function update($id, $changes)
     {
-        $sql = sprintf("UPDATE %s SET changes=:changes WHERE id = :id", self::PIMEE_WORKFLOW_PRODUCT_DRAFT);
+        if ($this->mongo) {
+            $manager = $this->get('pim_catalog.object_manager.product');
+            $draft = $manager->find(self::PIMEE_WORKFLOW_PRODUCT_DRAFT_CLASS, $id);
+            $draft->setChanges(['values' => $changes]);
 
-        $stmt = $this->get('database_connection')->prepare($sql);
-        $stmt->bindValue('changes', json_encode(['values' => $changes]));
-        $stmt->bindValue('id', $id);
-        $stmt->execute();
+            $manager->persist($draft);
+            $manager->flush();
+        } else {
+            $sql = sprintf("UPDATE %s SET changes=:changes WHERE id = :id", self::PIMEE_WORKFLOW_PRODUCT_DRAFT);
+
+            $stmt = $this->get('database_connection')->prepare($sql);
+            $stmt->bindValue('changes', json_encode(['values' => $changes]));
+            $stmt->bindValue('id', $id);
+            $stmt->execute();
+        }
     }
 
     /**
@@ -110,7 +123,46 @@ class Migration
      *
      * @return array
      */
-    protected function convert(array $drafts, FieldNameBuilder $fieldNameBuilder)
+    protected function convertMongo(array $drafts, FieldNameBuilder $fieldNameBuilder)
+    {
+        $newStructure = [];
+        foreach ($drafts as $draft) {
+            $changes = $draft->getChanges();
+            foreach ($changes['values'] as $value) {
+                try {
+                    if (isset($value['__context__'])) {
+                        $nameBuilder = $fieldNameBuilder->extractAttributeFieldNameInfos(
+                            $this->buildName($value['__context__'])
+                        );
+                        if (null !== $nameBuilder) {
+                            unset($value['__context__']);
+                            $newValue = $this->convertValue($value, $nameBuilder['attribute'], $draft->getId());
+
+                            if (null !== $newValue) {
+                                $newStructure[$draft->getId()][$nameBuilder['attribute']->getCode()][] = [
+                                    'locale' => $nameBuilder['locale_code'],
+                                    'scope'  => $nameBuilder['scope_code'],
+                                ] + $newValue;
+                            }
+                        }
+                    }
+                } catch (\Exception $e) {
+                    $this->errors['exceptions'][] = $e->getMessage();
+                    $this->errors['drafts'][$draft->getId()] = 1;
+                }
+            }
+        }
+
+        return $newStructure;
+    }
+
+    /**
+     * @param array            $drafts
+     * @param FieldNameBuilder $fieldNameBuilder
+     *
+     * @return array
+     */
+    protected function convertORM(array $drafts, FieldNameBuilder $fieldNameBuilder)
     {
         $newStructure = [];
         foreach ($drafts as $draft) {
@@ -220,11 +272,19 @@ class Migration
      */
     protected function getDrafts()
     {
-        $sql = sprintf('SELECT id, changes, author FROM %s', self::PIMEE_WORKFLOW_PRODUCT_DRAFT);
-        $stmt = $this->get('database_connection')->prepare($sql);
-        $stmt->execute();
+        $mongoDBClass = PimEnterpriseWorkflowBundle::DOCTRINE_MONGODB;
+        if (class_exists($mongoDBClass)) {
+            $this->mongo = true;
+            $repo = $this->get('pim_catalog.object_manager.product')->getRepository(self::PIMEE_WORKFLOW_PRODUCT_DRAFT_CLASS);
 
-        return $stmt->fetchAll();
+            return $repo->findAll();
+        } else {
+            $sql = sprintf('SELECT id, changes, author FROM %s', self::PIMEE_WORKFLOW_PRODUCT_DRAFT);
+            $stmt = $this->get('database_connection')->prepare($sql);
+            $stmt->execute();
+
+            return $stmt->fetchAll();
+        }
     }
 
     /**
