@@ -21,5 +21,19 @@ use PimEnterprise\Component\ProductAsset\Repository\ProductAssetRepositoryInterf
  */
 class ProductAssetRepository extends EntityRepository implements ProductAssetRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getIdentifierProperties()
+    {
+        return ['code'];
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByIdentifier($identifier)
+    {
+        return $this->findOneBy(['code' => $identifier]);
+    }
 }

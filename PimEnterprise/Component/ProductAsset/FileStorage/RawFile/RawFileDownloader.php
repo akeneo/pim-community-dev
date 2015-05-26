@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use League\Flysystem\FilesystemInterface;
+use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
@@ -22,18 +23,16 @@ use PimEnterprise\Component\ProductAsset\Model\FileInterface;
  */
 class RawFileDownloader implements RawFileDownloaderInterface
 {
-    const TMP_DIRECTORY = 'download/';
-
     /**
      * {@inheritdoc}
      */
-    public function download(FileInterface $file, FilesystemInterface $filesystem)
+    public function download(FileInterface $file, FilesystemInterface $filesystem, $tmpDirectory = 'download/')
     {
         if (!$filesystem->has($file->getPathname())) {
             throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $file->getPathname()));
         }
 
-        $tmpDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . RawFileDownloader::TMP_DIRECTORY;
+        $tmpDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $tmpDirectory;
         if (!is_dir($tmpDirectory)) {
             mkdir($tmpDirectory);
         }
@@ -41,13 +40,13 @@ class RawFileDownloader implements RawFileDownloaderInterface
         $localPathname = $tmpDirectory . uniqid();
 
         if (false === $stream = $filesystem->readStream($file->getPathname())) {
-            throw new \LogicException(
+            throw new FileTransferException(
                 sprintf('Unable to download the file "%s" from the filesystem.', $file->getPathname())
             );
         }
 
         if (false === file_put_contents($localPathname, $stream)) {
-            throw new \LogicException(
+            throw new FileTransferException(
                 sprintf('Unable to download the file "%s" from the filesystem.', $file->getPathname())
             );
         }

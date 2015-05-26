@@ -12,6 +12,7 @@
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use League\Flysystem\FilesystemInterface;
+use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
@@ -27,6 +28,9 @@ interface RawFileDownloaderInterface
      * @param FilesystemInterface $filesystem
      *
      * @return \SplFileInfo
+     *
+     * @throws FileTransferException
+     * @throws \LogicException
      */
     public function download(FileInterface $file, FilesystemInterface $filesystem);
 }

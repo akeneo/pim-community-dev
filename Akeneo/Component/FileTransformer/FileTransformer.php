@@ -13,7 +13,6 @@ namespace Akeneo\Component\FileTransformer;
 
 use Akeneo\Component\FileTransformer\Transformation\TransformationRegistry;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * File transformer implementation

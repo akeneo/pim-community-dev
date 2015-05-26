@@ -16,7 +16,7 @@ namespace PimEnterprise\Component\ProductAsset\Exception;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class TransferFileException extends \Exception
+class FileTransferException extends \Exception
 {
 
 }

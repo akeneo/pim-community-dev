@@ -23,7 +23,7 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class TmpFakeUploadFileCommand extends ContainerAwareCommand
+class StoreFileCommand extends ContainerAwareCommand
 {
     /**
      * {@inheritdoc}
@@ -31,7 +31,6 @@ class TmpFakeUploadFileCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            //TODO: should be renamed akeneo:file:store if it goes in a dedicated namespace
             ->setName('pim:product-asset:store-file')
             ->addArgument('file', InputArgument::REQUIRED)
             ->addArgument('storage', InputArgument::REQUIRED)

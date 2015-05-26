@@ -5,7 +5,7 @@ services:
     pimee_product_asset.variation_file_generator:
         class: %pimee_product_asset.variation_file_generator.class%
         arguments:
-            - '@pimee_product_asset.repository.channel_variations_configuration'
+            - '@pimee_product_asset.repository.channel_configuration'
             - '@oneup_flysystem.mount_manager'
             - '@pimee_product_asset.saver.file'
             - '@pimee_product_asset.saver.variation'

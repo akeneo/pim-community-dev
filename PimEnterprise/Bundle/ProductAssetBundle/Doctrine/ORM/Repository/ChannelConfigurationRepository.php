@@ -12,15 +12,14 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelVariationsConfigurationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 
 /**
  * Channel variations configuration repository
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ChannelVariationsConfigurationRepository extends EntityRepository
- implements ChannelVariationsConfigurationRepositoryInterface
+class ChannelConfigurationRepository extends EntityRepository implements ChannelConfigurationRepositoryInterface
 {
 
 }

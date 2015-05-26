@@ -11,15 +11,12 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Metadata\MetadataFactory;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Builder\ProductAssetReferenceBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\ProductAssetVariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ProductAssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -51,14 +48,14 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $assetCode = $input->getArgument('asset');
-        if (null === $asset = $this->getAssetRepository()->findOneBy(['code' => $assetCode])) {
+        if (null === $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode)) {
             $output->writeln(sprintf('<error>The asset "%s" does not exist.</error>', $assetCode));
 
             return 1;
         }
 
         $channelCode = $input->getArgument('channel');
-        if (null === $channel = $this->getChannelRepository()->findOneBy(['code' => $channelCode])) {
+        if (null === $channel = $this->getChannelRepository()->findOneByIdentifier($channelCode)) {
             $output->writeln(sprintf('<error>The channel "%s" does not exist.</error>', $channelCode));
 
             return 1;
@@ -66,7 +63,7 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
 
         $locale = null;
         if (null !== $localeCode = $input->getArgument('locale')) {
-            if (null === $locale = $this->getLocaleRepository()->findOneBy(['code' => $localeCode])) {
+            if (null === $locale = $this->getLocaleRepository()->findOneByIdentifier($localeCode)) {
                 $output->writeln(sprintf('<error>The locale "%s" does not exist.</error>', $localeCode));
 
                 return 1;
@@ -92,6 +89,8 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
      * @param ProductAssetInterface $asset
      * @param ChannelInterface      $channel
      * @param LocaleInterface       $locale
+     *
+     * @throws \LogicException
      */
     protected function ensureVariationExists(
         ProductAssetInterface $asset,

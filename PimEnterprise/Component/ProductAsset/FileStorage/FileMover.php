@@ -13,7 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\FileStorage;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
-use PimEnterprise\Component\ProductAsset\Exception\TransferFileException;
+use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
@@ -50,7 +50,7 @@ class FileMover implements FileMoverInterface
         );
 
         if (!$isFileMoved) {
-            throw new TransferFileException(
+            throw new FileTransferException(
                 sprintf(
                     'Impossible to move the file "%s" from "%s" to "%s".',
                     $file->getPathname(),

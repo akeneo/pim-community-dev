@@ -16,7 +16,7 @@ namespace PimEnterprise\Component\ProductAsset\Exception;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class DeletionFileException extends \Exception
+class FileRemovalException extends \Exception
 {
 
 }

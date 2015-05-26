@@ -21,6 +21,8 @@ use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
  *
  * Generate the variation files, store them in the filesystem and link them to the reference.
  *
+ * TODO: maybe we'll need some generateMissing() functions
+ *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface VariationFileGeneratorInterface
@@ -31,6 +33,8 @@ interface VariationFileGeneratorInterface
      * @param ProductAssetInterface $asset
      * @param ChannelInterface      $channel
      * @param LocaleInterface       $locale
+     *
+     * @throws \LogicException
      */
     public function generateFromAsset(
         ProductAssetInterface $asset,
@@ -44,6 +48,8 @@ interface VariationFileGeneratorInterface
      * @param ProductAssetReferenceInterface $reference
      * @param ChannelInterface               $channel
      * @param LocaleInterface                $locale
+     *
+     * @throws \LogicException
      */
     public function generateFromReference(
         ProductAssetReferenceInterface $reference,

@@ -23,7 +23,7 @@ use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelVariationsConfigurationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 
 /**
  * Generate the variation files, store them in the filesystem and link them to the reference:
@@ -40,7 +40,7 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelVariationsConfigurati
  */
 class VariationFileGenerator implements VariationFileGeneratorInterface
 {
-    /** @var ChannelVariationsConfigurationRepositoryInterface */
+    /** @var ChannelConfigurationRepositoryInterface */
     protected $configurationRepository;
 
     /** @var MountManager */
@@ -62,16 +62,16 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     protected $rawFileStorer;
 
     /**
-     * @param ChannelVariationsConfigurationRepositoryInterface $repository
-     * @param MountManager                                      $mountManager
-     * @param SaverInterface                                    $fileSaver
-     * @param SaverInterface                                    $variationSaver
-     * @param FileTransformerInterface                          $fileTransformer
-     * @param RawFileStorerInterface                            $rawFileStorer
-     * @param RawFileDownloaderInterface                        $rawFileDownloader
+     * @param ChannelConfigurationRepositoryInterface $configurationRepository
+     * @param MountManager                            $mountManager
+     * @param SaverInterface                          $fileSaver
+     * @param SaverInterface                          $variationSaver
+     * @param FileTransformerInterface                $fileTransformer
+     * @param RawFileStorerInterface                  $rawFileStorer
+     * @param RawFileDownloaderInterface              $rawFileDownloader
      */
     public function __construct(
-        ChannelVariationsConfigurationRepositoryInterface $repository,
+        ChannelConfigurationRepositoryInterface $configurationRepository,
         MountManager $mountManager,
         SaverInterface $fileSaver,
         SaverInterface $variationSaver,
@@ -79,7 +79,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         RawFileStorerInterface $rawFileStorer,
         RawFileDownloaderInterface $rawFileDownloader
     ) {
-        $this->configurationRepository = $repository;
+        $this->configurationRepository = $configurationRepository;
         $this->fileTransformer         = $fileTransformer;
         $this->mountManager            = $mountManager;
         $this->fileSaver               = $fileSaver;
@@ -146,6 +146,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param ChannelInterface $channel
      *
      * @return array
+     *
+     * @throws \LogicException
      */
     protected function retrieveChannelTransformationsConfiguration(ChannelInterface $channel)
     {
@@ -168,6 +170,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param ChannelInterface               $channel
      *
      * @return ProductAssetVariationInterface
+     *
+     * @throws \LogicException
      */
     protected function retrieveVariation(ProductAssetReferenceInterface $reference, ChannelInterface $channel)
     {
@@ -190,6 +194,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param ProductAssetReferenceInterface $reference
      *
      * @return FileInterface
+     *
+     * @throws \LogicException
      */
     protected function retrieveReferenceFile(ProductAssetReferenceInterface $reference)
     {

@@ -11,8 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
-use PimEnterprise\Component\ProductAsset\Exception\DeletionFileException;
-use PimEnterprise\Component\ProductAsset\Exception\TransferFileException;
+use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
+use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -52,7 +52,7 @@ class UploadedStorer extends AbstractRawFileStorer
 
         $resource = fopen($uploadedFile->getPathname(), 'r');
         if (false === $filesystem->writeStream($file->getPathname(), $resource)) {
-            throw new TransferFileException(
+            throw new FileTransferException(
                 sprintf(
                     'Unable to move the file "%s" to the "%s" filesystem.',
                     $uploadedFile->getPathname(),
@@ -64,7 +64,7 @@ class UploadedStorer extends AbstractRawFileStorer
         $this->saver->save($file);
 
         if (false === unlink($uploadedFile->getPathname())) {
-            throw new DeletionFileException(sprintf('Unable to delete the file "%s".', $uploadedFile->getPathname()));
+            throw new FileRemovalException(sprintf('Unable to delete the file "%s".', $uploadedFile->getPathname()));
         }
 
         return $file;

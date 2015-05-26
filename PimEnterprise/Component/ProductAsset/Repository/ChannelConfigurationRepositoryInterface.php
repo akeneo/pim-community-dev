@@ -18,7 +18,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ChannelVariationsConfigurationRepositoryInterface extends ObjectRepository
+interface ChannelConfigurationRepositoryInterface extends ObjectRepository
 {
 
 }
