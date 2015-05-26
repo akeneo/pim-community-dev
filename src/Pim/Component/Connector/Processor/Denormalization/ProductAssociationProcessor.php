@@ -62,7 +62,6 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         $convertedItem = $this->convertItemData($item);
-
         try {
             $this->updateProduct($product, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
@@ -85,8 +84,9 @@ class ProductAssociationProcessor extends AbstractProcessor
     protected function convertItemData(array $item)
     {
         $items = $this->arrayConverter->convert($item);
+        $associations = isset($items['associations']) ? $items['associations'] : [];
 
-        return ['associations' => $items['associations']];
+        return ['associations' => $associations];
     }
 
     /**
