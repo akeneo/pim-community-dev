@@ -16,10 +16,10 @@ define(
             template: _.template(smartAttributeTemplate),
             configure: function () {
                 mediator.on('field:extension:add', _.bind(this.addExtension, this));
-                RuleManager.getRuleRelations('attribute');
 
                 return $.when(
-                    BaseForm.prototype.configure.apply(this, arguments)
+                    BaseForm.prototype.configure.apply(this, arguments),
+                    RuleManager.getRuleRelations('attribute')
                 );
             },
             addExtension: function (event) {
