@@ -51,6 +51,7 @@ services:
             - '@pim_transform.cache.product_cache_clearer'
             - '@pim_catalog.applier.product_template'
 
+    # deprecated will be removed in 1.5
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%
         arguments:
