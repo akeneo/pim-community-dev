@@ -29,10 +29,8 @@ Acme\Bundle\AppBundle\Model\ProductValue:
             nullable: true
             column: value_integer
         decimal:
-            type: decimal
-            scale: 4
+            type: float
             nullable: true
-            precision: 14
             column: value_decimal
         boolean:
             type: boolean
