@@ -562,23 +562,31 @@ class Edit extends Form
      */
     protected function fillMetricField(NodeElement $label, $value)
     {
-        list($text, $select) = explode(' ', $value);
+        if (false !== strpos($value, ' ')) {
+            list($text, $select) = explode(' ', $value);
+        } else {
+            $text   = $value;
+            $select = null;
+        }
+
         $field = $label->getParent()->find('css', 'div.field-input');
         $this->fillTextField($label, $text);
 
-        if (null !== $link = $field->find('css', 'a.select2-choice')) {
-            $link->click();
+        if (null !== $select) {
+            if (null !== $link = $field->find('css', 'a.select2-choice')) {
+                $link->click();
 
-            $this->getSession()->wait(5000, '!$.active');
+                $this->getSession()->wait(5000, '!$.active');
 
-            if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $select))) {
-                return $item->click();
+                if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $select))) {
+                    return $item->click();
+                }
             }
-        }
 
-        throw new \InvalidArgumentException(
-            sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
-        );
+            throw new \InvalidArgumentException(
+                sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
+            );
+        }
     }
 
     /**

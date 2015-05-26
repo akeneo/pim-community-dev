@@ -126,7 +126,8 @@ class Form extends Base
         if (!$groups) {
             $groups = $this->getElement('Form Groups');
             $button = $groups
-                ->find('css', sprintf('li[data-attribute-group="%s"] a', strtolower($group)));
+                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group))
+                ->getParent();
 
             if (!$button) {
                 throw new \Exception(sprintf('Could not find group "%s".', $group));
