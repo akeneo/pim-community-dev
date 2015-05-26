@@ -61,4 +61,3 @@ job_profile_accesses:
         executeJobProfile: [IT support, Manager, Redactor]
     csv_product_quick_export:
         executeJobProfile: [IT support, Manager, Redactor]
-
