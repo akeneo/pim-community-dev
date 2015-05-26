@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -32,8 +32,8 @@ class ProductAssetRepository extends EntityRepository implements ProductAssetRep
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($identifier)
+    public function findOneByIdentifier($reference)
     {
-        return $this->findOneBy(['code' => $identifier]);
+        return $this->findOneBy(['code' => $reference]);
     }
 }

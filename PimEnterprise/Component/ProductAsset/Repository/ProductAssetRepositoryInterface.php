@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Component\ProductAsset\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
@@ -19,7 +19,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductAssetRepositoryInterface extends IdentifiableObjectRepositoryInterface, ObjectRepository
+interface ProductAssetRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
 {
-
 }

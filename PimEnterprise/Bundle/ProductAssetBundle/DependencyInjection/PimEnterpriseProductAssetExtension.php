@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -31,9 +31,11 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
+        $loader->load('controllers.yml');
         $loader->load('file_storage.yml');
         $loader->load('models.yml');
         $loader->load('repositories.yml');
+        $loader->load('twig_extension.yml');
         $loader->load('savers.yml');
         $loader->load('services.yml');
     }
