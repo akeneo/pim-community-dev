@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -411,5 +411,27 @@ class AttributeRepository extends EntityRepository implements
             ->setParameter(1, 'pim_catalog_identifier');
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeTypeByCodes(array $codes)
+    {
+        $results = $this->createQueryBuilder('a')
+            ->select('a.code, a.attributeType')
+            ->where('a.code IN (:codes)')
+            ->setParameter('codes', $codes)
+            ->getQuery()
+            ->getArrayResult();
+
+        $attributes = [];
+        if (!empty($results)) {
+            foreach ($results as $attribute) {
+                $attributes[$attribute['code']] = $attribute['attributeType'];
+            }
+        }
+
+        return $attributes;
     }
 }

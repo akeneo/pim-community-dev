@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 
