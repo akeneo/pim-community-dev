@@ -1,6 +1,7 @@
 parameters:
     pimee_product_asset.saver.file.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
     pimee_product_asset.saver.variation.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
+    pimee_product_asset.saver.file_metadata.class: Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver\BaseSaver
 
 services:
     pimee_product_asset.saver.file:
@@ -16,3 +17,10 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
             - %pimee_product_asset.model.asset_variation.class%
+
+    pimee_product_asset.saver.file_metadata:
+        class: %pimee_product_asset.saver.file_metadata.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.saver.base_options_resolver'
+            - %pimee_product_asset.model.file_metadata.class%

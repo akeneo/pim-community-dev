@@ -16,10 +16,12 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
+use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
@@ -29,6 +31,7 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationReposito
  * Generate the variation files, store them in the filesystem and link them to the reference:
  *      - download the raw reference file from STORAGE to /tmp
  *      - generate the variation file
+ *      - extract the metadata from the variation file
  *      - store the variation file in STORAGE
  *      - set the variation file to the variation and save the variation to the database
  *
@@ -47,7 +50,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     protected $mountManager;
 
     /** @var SaverInterface */
-    protected $fileSaver;
+    protected $metadataSaver;
 
     /** @var SaverInterface */
     protected $variationSaver;
@@ -61,31 +64,37 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
 
+    /** @var MetadataBuilderRegistry */
+    protected $metadaBuilderRegistry;
+
     /**
      * @param ChannelConfigurationRepositoryInterface $configurationRepository
      * @param MountManager                            $mountManager
-     * @param SaverInterface                          $fileSaver
+     * @param SaverInterface                          $metadataSaver
      * @param SaverInterface                          $variationSaver
      * @param FileTransformerInterface                $fileTransformer
      * @param RawFileStorerInterface                  $rawFileStorer
      * @param RawFileDownloaderInterface              $rawFileDownloader
+     * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
      */
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
         MountManager $mountManager,
-        SaverInterface $fileSaver,
+        SaverInterface $metadataSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
         RawFileStorerInterface $rawFileStorer,
-        RawFileDownloaderInterface $rawFileDownloader
+        RawFileDownloaderInterface $rawFileDownloader,
+        MetadataBuilderRegistry $metadaBuilderRegistry
     ) {
         $this->configurationRepository = $configurationRepository;
         $this->fileTransformer         = $fileTransformer;
         $this->mountManager            = $mountManager;
-        $this->fileSaver               = $fileSaver;
+        $this->metadataSaver           = $metadataSaver;
         $this->variationSaver          = $variationSaver;
         $this->rawFileStorer           = $rawFileStorer;
         $this->rawFileDownloader       = $rawFileDownloader;
+        $this->metadaBuilderRegistry   = $metadaBuilderRegistry;
     }
 
     /**
@@ -130,11 +139,12 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
         $outputFileName    = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
         $variationFileInfo = $this->fileTransformer->transform($referenceFileInfo, $transformations, $outputFileName);
+        $variationMetadata = $this->extractMetadata($variationFileInfo);
         $variationFile     = $this->rawFileStorer->store($variationFileInfo, ProductAssetFileSystems::FS_STORAGE);
 
-        //TODO: extract and save variation metadata
+        $variationMetadata->setFile($variationFile);
+        $this->metadataSaver->save($variationMetadata);
 
-        $this->fileSaver->save($variationFile);
         $variation->setFile($variationFile);
         $this->variationSaver->save($variation);
 
@@ -247,5 +257,17 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         }
 
         return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $referenceFile->getExtension());
+    }
+
+    /**
+     * @param \SplFileInfo $file
+     *
+     * @return FileMetadataInterface
+     */
+    protected function extractMetadata(\SplFileInfo $file)
+    {
+        $metadataBuilder = $this->metadaBuilderRegistry->getByFile($file);
+
+        return $metadataBuilder->build($file);
     }
 }
