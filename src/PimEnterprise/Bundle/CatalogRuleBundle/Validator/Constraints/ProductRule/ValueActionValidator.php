@@ -18,6 +18,7 @@ use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Validates if the set action field supports the given data
@@ -32,16 +33,22 @@ class ValueActionValidator extends ConstraintValidator
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
+    /** @var ValidatorInterface */
+    protected $productValidator;
+
     /**
      * @param ProductUpdaterInterface $factory
      * @param ProductBuilderInterface $productBuilder
+     * @param ValidatorInterface      $validator
      */
     public function __construct(
         ProductUpdaterInterface $factory,
-        ProductBuilderInterface $productBuilder
+        ProductBuilderInterface $productBuilder,
+        ValidatorInterface $validator
     ) {
         $this->factory = $factory;
         $this->productBuilder = $productBuilder;
+        $this->productValidator = $validator;
     }
 
     /**
@@ -64,8 +71,9 @@ class ValueActionValidator extends ConstraintValidator
      */
     protected function validateSetValue(ProductSetValueActionInterface $action, Constraint $constraint)
     {
+        $fakeProduct = $this->createProduct();
+
         try {
-            $fakeProduct = $this->createProduct();
             $this->factory->setData(
                 $fakeProduct,
                 $action->getField(),
@@ -75,7 +83,18 @@ class ValueActionValidator extends ConstraintValidator
         } catch (\Exception $e) {
             $this->context->addViolation(
                 $constraint->message,
-                [ '%message%' => $e->getMessage() ]
+                ['%message%' => $e->getMessage()]
+            );
+        }
+
+        $errors = $this->productValidator->validate($fakeProduct);
+
+        foreach ($errors as $error) {
+            $this->context->addViolation(
+                $constraint->message,
+                [
+                    '%message%' => $error->getMessage(),
+                ]
             );
         }
     }
@@ -95,15 +114,15 @@ class ValueActionValidator extends ConstraintValidator
                 $action->getToField(),
                 [
                     'from_locale' => $action->getFromLocale(),
-                    'from_scope' => $action->getFromScope(),
-                    'to_locale' => $action->getToLocale(),
-                    'to_scope' => $action->getToScope()
+                    'from_scope'  => $action->getFromScope(),
+                    'to_locale'   => $action->getToLocale(),
+                    'to_scope'    => $action->getToScope()
                 ]
             );
         } catch (\Exception $e) {
             $this->context->addViolation(
                 $constraint->message,
-                [ '%message%' => $e->getMessage() ]
+                ['%message%' => $e->getMessage()]
             );
         }
     }
