@@ -21,6 +21,7 @@ Feature: Validate price attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
+  @skip-pef
   Scenario: Validate the negative allowed constraint of price attribute
     Given I change the "$ Cost" to "-10"
     And I save the product
@@ -28,6 +29,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the negative allowed constraint of scopable price attribute
     Given I change the "$ Price" to "-10"
     And I save the product
@@ -35,6 +37,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the decimals allowed constraint of price attribute
     Given I change the "$ Cost" to "2.7"
     And I save the product
@@ -42,6 +45,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the decimals allowed constraint of scopable price attribute
     Given I change the "$ Price" to "4.9"
     And I save the product
@@ -49,6 +53,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the number min constraint of price attribute
     Given I change the "$ Tax" to "5.5"
     And I save the product
@@ -56,6 +61,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the number min constraint of scopable price attribute
     Given I change the "$ Customs" to "9.9"
     And I save the product
@@ -63,6 +69,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the number max constraint of price attribute
     Given I change the "$ Tax" to "110"
     And I save the product
@@ -70,6 +77,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the number max constraint of scopable price attribute
     Given I change the "$ Customs" to "222.2"
     And I save the product
@@ -77,6 +85,7 @@ Feature: Validate price attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the type constraint of price attribute
     Given I change the "$ Tax" to "bar"
     And I change the "€ Tax" to "qux"

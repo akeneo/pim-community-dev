@@ -440,6 +440,21 @@ class EnterpriseFeatureContext extends FeatureContext
         }
     }
 
+    /**
+     * @When /^I revert the product version number (\d+)$/
+     */
+    public function iRevertTheProductVersionNumber($version)
+    {
+        $this->getSession()
+            ->getPage()
+            ->find('css', sprintf('tr[data-version="%s"]', $version))
+            ->find('css', 'td.actions .btn.restore')->click();
+        $this->wait();
+        $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
+
+        $this->wait();
+    }
+
     protected function getAttributeIcon($iconSelector, $attributeLabel)
     {
         $icon = $this->getSession()->getPage()
