@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\FileStorage;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Exception\TransferFileException;
+use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use Prophecy\Argument;
 
@@ -36,7 +36,7 @@ class FileMoverSpec extends ObjectBehavior
         $saver->save(Argument::any())->shouldNotBeCalled();
 
         $this->shouldThrow(
-            new TransferFileException('Impossible to move the file "path/to/file.txt" from "source" to "destination".')
+            new FileTransferException('Impossible to move the file "path/to/file.txt" from "source" to "destination".')
         )->during(
             'move',
             [$file, 'source', 'destination']

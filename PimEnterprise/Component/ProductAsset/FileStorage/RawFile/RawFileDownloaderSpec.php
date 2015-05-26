@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use Prophecy\Argument;
 
@@ -46,7 +47,7 @@ class RawFileDownloaderSpec extends ObjectBehavior
         $filesystem->readStream('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new \LogicException('Unable to download the file "path/to/file.txt" from the filesystem.')
+            new FileTransferException('Unable to download the file "path/to/file.txt" from the filesystem.')
         )->during('download', [$file, $filesystem]);
     }
 }

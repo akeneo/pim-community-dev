@@ -17,7 +17,7 @@ use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ChannelVariationsConfigurationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
     const STORAGE_FS = 'storage';
 
     function let(
-        ChannelVariationsConfigurationRepositoryInterface $channelConfigurationRepository,
+        ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
         MountManager $mountManager,
         SaverInterface $fileSaver,
         SaverInterface $variationSaver,
