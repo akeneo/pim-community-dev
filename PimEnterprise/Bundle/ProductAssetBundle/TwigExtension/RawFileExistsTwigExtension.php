@@ -18,7 +18,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class FileExistsTwigExtension extends \Twig_Extension
+class RawFileExistsTwigExtension extends \Twig_Extension
 {
     /** @var string */
     protected $assetFolder;
