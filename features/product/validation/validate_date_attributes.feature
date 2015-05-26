@@ -1,4 +1,4 @@
-@javascript
+@javascript @jira https://akeneo.atlassian.net/browse/PIM-4216
 Feature: Validate date attributes of a product
   In order to keep my data consistent
   As a regular user
@@ -29,12 +29,14 @@ Feature: Validate date attributes of a product
     Then I should see validation tooltip "This value is already set on another product."
     And there should be 1 error in the "Other" tab
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of date attribute
     Given I change the Release to "2011-01-01"
     And I save the product
     Then I should see validation tooltip "This date should be 2013-01-01 or after."
     And there should be 1 error in the "Other" tab
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of scopable date attribute
     Given I switch the scope to "ecommerce"
     And I change the Available to "2012-01-01"
@@ -42,12 +44,14 @@ Feature: Validate date attributes of a product
     Then I should see validation tooltip "This date should be 2013-01-01 or after."
     And there should be 1 error in the "Other" tab
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of date attribute
     Given I change the Release to "2016-01-01"
     And I save the product
     Then I should see validation tooltip "This date should be 2015-12-12 or before."
     And there should be 1 error in the "Other" tab
 
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of scopable date attribute
     Given I switch the scope to "ecommerce"
     And I change the Available to "2017-03-03"

@@ -1535,7 +1535,9 @@ class FixturesContext extends RawMinkContext
         $mediaManager = $this->getMediaManager();
         $allMedia = $product->getMedia();
         foreach ($allMedia as $media) {
-            unlink($mediaManager->getFilePath($media));
+            if ($media) {
+                unlink($mediaManager->getFilePath($media));
+            }
         }
     }
 

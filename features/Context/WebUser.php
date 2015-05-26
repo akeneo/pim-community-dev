@@ -6,6 +6,7 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Model\Product;
@@ -1043,6 +1044,7 @@ class WebUser extends RawMinkContext
         }
 
         $this->getMainContext()->executeScript($script);
+        $this->getMainContext()->wait();
     }
 
     /**
@@ -1052,7 +1054,7 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
-        $script = sprintf("$('label:contains(\"%s\")').parent().find('.remove-upload').click();", $field);
+        $script = sprintf("$('label:contains(\"%s\")').parents('.form-field').find('.clear-field').click();", $field);
         if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
@@ -1071,9 +1073,9 @@ class WebUser extends RawMinkContext
             );
             $this->wait();
             $this->getCurrentPage()
-                ->find('css', sprintf('div.file span:contains("%s")', $link))
+                ->find('css', sprintf('div.preview span:contains("%s")', $link))
                 ->getParent()
-                ->getParent()
+                ->find('css', sprintf('span.open-media', $link))
                 ->click();
         } catch (UnsupportedDriverActionException $e) {
             throw $this->createExpectationException('You must use selenium for this feature.');
@@ -1172,21 +1174,21 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $button
+     * @param string $buttonLabel
      *
      * @Given /^I press the "([^"]*)" button in the popin$/
      */
-    public function iPressTheButtonInThePopin($button)
+    public function iPressTheButtonInThePopin($buttonLabel)
     {
-        $button = $this
+        $buttonElement = $this
             ->getCurrentPage()
-            ->find('css', sprintf('.ui-dialog button:contains("%s")', $button));
-        if (!$button) {
-            $button = $this
+            ->find('css', sprintf('.ui-dialog button:contains("%s")', $buttonLabel));
+        if (!$buttonElement) {
+            $buttonElement = $this
             ->getCurrentPage()
-            ->find('css', sprintf('.modal a:contains("%s")', $button));
+            ->find('css', sprintf('.modal a:contains("%s")', $buttonLabel));
         }
-        $button->press();
+        $buttonElement->press();
         $this->wait();
     }
 
@@ -1666,7 +1668,9 @@ class WebUser extends RawMinkContext
             try {
                 $this->getCurrentPage()->checkCompletenessState($channel, $locale, $data['state']);
                 $this->getCurrentPage()->checkCompletenessRatio($channel, $locale, $data['ratio']);
-                $this->getCurrentPage()->checkCompletenessMissingValues($channel, $locale, $data['missing_values']);
+                if (isset($data['missing_values'])) {
+                    $this->getCurrentPage()->checkCompletenessMissingValues($channel, $locale, $data['missing_values']);
+                }
             } catch (\InvalidArgumentException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
@@ -2258,7 +2262,7 @@ class WebUser extends RawMinkContext
      * @param int    $time
      * @param string $condition
      */
-    protected function wait($time = 10000, $condition = null)
+    protected function wait($time = 30000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

@@ -26,9 +26,9 @@ Feature: Edit a boolean value
 
   Scenario: Successfully update a scopable boolean value
     Given I switch the scope to "ecommerce"
-    When I check the "scopable_boolean" switch
+    When I check the "Scopable boolean" switch
     And I press the "Save" button
     Then the english ecommerce scopable_boolean of "tshirt" should be "true"
-    When I uncheck the "scopable_boolean" switch
+    When I uncheck the "Scopable boolean" switch
     And I press the "Save" button
     Then the english ecommerce scopable_boolean of "tshirt" should be "false"

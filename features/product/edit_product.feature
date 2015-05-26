@@ -51,7 +51,7 @@ Feature: Edit a product
     When I am on the "sandal" product page
     Then the english other_name of "sandal" should be "My awesome sandals"
 
-  @javascript
+  @javascript @skip-pef
   Scenario: Successfully preserve channel filter between datagrid and edit form
     Given I am logged in as "Sandra"
     And I am on the "sandal" product page

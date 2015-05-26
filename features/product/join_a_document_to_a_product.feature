@@ -24,12 +24,6 @@ Feature: Join a document to a product
     And I save the product
     Then I should see "akeneo.txt"
 
-  Scenario: Successfully display the document
-    When I attach file "akeneo.txt" to "Description"
-    And I save the product
-    And I open "akeneo.txt" in the current window
-    Then I should see the "akeneo.txt" content
-
   Scenario: Successfully remove a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
