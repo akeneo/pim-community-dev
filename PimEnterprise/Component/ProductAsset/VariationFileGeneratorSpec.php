@@ -9,11 +9,14 @@ use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
+use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
+use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
@@ -27,11 +30,12 @@ class VariationFileGeneratorSpec extends ObjectBehavior
     function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
         MountManager $mountManager,
-        SaverInterface $fileSaver,
+        SaverInterface $metadataSaver,
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
         RawFileStorerInterface $rawFileStorer,
         RawFileDownloaderInterface $rawFileDownloader,
+        MetadataBuilderRegistry $metadataBuilderRegistry,
         ChannelVariationsConfigurationInterface $channelConfiguration,
         ChannelInterface $ecommerce,
         ProductAssetReferenceInterface $reference,
@@ -57,11 +61,12 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith(
             $channelConfigurationRepository,
             $mountManager,
-            $fileSaver,
+            $metadataSaver,
             $variationSaver,
             $fileTransformer,
             $rawFileStorer,
-            $rawFileDownloader
+            $rawFileDownloader,
+            $metadataBuilderRegistry
         );
     }
 
@@ -74,17 +79,21 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $channelConfiguration,
         $fileTransformer,
         $rawFileStorer,
-        $fileSaver,
+        $metadataSaver,
         $variation,
         $variationSaver,
+        $metadataBuilderRegistry,
         LocaleInterface $fr,
         \SplFileInfo $referenceFileInfo,
         \SplFileInfo $variationFileInfo,
-        FileInterface $variationFile
+        FileInterface $variationFile,
+        FileMetadataInterface $fileMetadata,
+        MetadataBuilderInterface $metadataBuilder
     ) {
         $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
         touch($referencePathname);
 
+        $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
         $referenceFileInfo->getPathname()->willReturn($referencePathname);
 
         $referenceFile->getExtension()->willReturn('txt');
@@ -99,9 +108,11 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             ['t1', 't2'],
             'my originial file-fr_FR-ecommerce.txt'
         )->willReturn($variationFileInfo);
+        $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
         $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
 
-        $fileSaver->save($variationFile)->shouldBeCalled();
+        $fileMetadata->setFile($variationFile)->shouldBeCalled();
+        $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
 
@@ -117,19 +128,23 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $channelConfiguration,
         $fileTransformer,
         $rawFileStorer,
-        $fileSaver,
+        $metadataSaver,
         $variation,
         $variationSaver,
+        $metadataBuilderRegistry,
         LocaleInterface $fr,
         ProductAssetInterface $asset,
         \SplFileInfo $referenceFileInfo,
         \SplFileInfo $variationFileInfo,
-        FileInterface $variationFile
+        FileInterface $variationFile,
+        FileMetadataInterface $fileMetadata,
+        MetadataBuilderInterface $metadataBuilder
     ) {
         $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
         touch($referencePathname);
 
         $asset->getReference($fr)->willReturn($reference);
+        $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
         $referenceFileInfo->getPathname()->willReturn($referencePathname);
 
         $referenceFile->getExtension()->willReturn('txt');
@@ -144,9 +159,11 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             ['t1', 't2'],
             'my originial file-fr_FR-ecommerce.txt'
         )->willReturn($variationFileInfo);
+        $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
         $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
 
-        $fileSaver->save($variationFile)->shouldBeCalled();
+        $fileMetadata->setFile($variationFile)->shouldBeCalled();
+        $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
 
