@@ -11,47 +11,49 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * Comparator which calculate change set for prices
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class PricesComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function supportsComparison($type)
     {
-        return 'pim_catalog_price_collection' === $value->getAttribute()->getAttributeType();
+        return 'pim_catalog_price_collection' === $type;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function getChanges(array $data, array $originals)
     {
-        if (!isset($submittedData['prices'])) {
-            return;
-        }
-
-        $changes = [];
-        $currentPrices = $value->getPrices();
-        foreach ($submittedData['prices'] as $currency => $price) {
-            if (null === $priceObject = $currentPrices[$currency]) {
-                continue;
-            }
-            if ($priceObject->getData() != $price['data']) {
-                $changes['prices'][$currency] = $price;
+        $originalPrices = [];
+        if (array_key_exists('value', $originals)) {
+            foreach ($originals['value'] as $price) {
+                $originalPrices[$price['currency']] = $price['data'];
             }
         }
 
-        if (!empty($changes)) {
-            return $changes;
+        $prices = [];
+        foreach ($data['value'] as $price) {
+            $currency = $price['currency'];
+            if (!array_key_exists($currency, $originalPrices) || $originalPrices[$currency] !== $price['data']) {
+                $prices[] = $price;
+            }
         }
+
+        if (!empty($prices)) {
+            return [
+                'locale' => $data['locale'],
+                'scope'  => $data['scope'],
+                'value'  => $prices
+            ];
+        }
+
+        return null;
     }
 }

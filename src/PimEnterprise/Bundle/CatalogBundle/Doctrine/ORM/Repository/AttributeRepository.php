@@ -23,7 +23,7 @@ class AttributeRepository extends BaseAttributeRepository
     /**
      * {@inheritdoc}
      */
-    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    protected function findWithGroupsQB(array $attributeIds = [], array $criterias = [])
     {
         $qb = parent::findWithGroupsQB($attributeIds, $criterias);
 

@@ -3,70 +3,47 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ScalarComparatorSpec extends ObjectBehavior
 {
-    function let(
-        Model\ProductValueInterface $value,
-        Model\AttributeInterface $attribute,
-        PropertyAccessor $accessor
-    ) {
-        $value->getAttribute()->willReturn($attribute);
-
-        $this->beConstructedWith($accessor);
-    }
-
-    function it_supports_comparison_of_null_value($value)
+    function it_is_a_comparator()
     {
-        $value->getData()->willReturn(null);
-        $this->supportsComparison($value)->shouldBe(true);
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_supports_comparison_of_scalar_value($value)
+    function it_supports_comparison()
     {
-        $value->getData()->willReturn('foo');
-        $this->supportsComparison($value)->shouldBe(true);
+        $this->supportsComparison('pim_catalog_boolean')->shouldBe(true);
+        $this->supportsComparison('pim_catalog_date')->shouldBe(true);
+        $this->supportsComparison('pim_catalog_identifier')->shouldBe(true);
+        $this->supportsComparison('pim_catalog_number')->shouldBe(true);
+        $this->supportsComparison('pim_catalog_text')->shouldBe(true);
+        $this->supportsComparison('pim_catalog_textarea')->shouldBe(true);
+        $this->supportsComparison('pim_catalog_textarea')->shouldBe(true);
+        $this->supportsComparison('other')->shouldBe(false);
     }
 
-    function it_does_not_support_comparison_of_non_scalar_value($value, $object)
+    function it_get_changes_when_adding_value()
     {
-        $value->getData()->willReturn($object);
-        $this->supportsComparison($value)->shouldBe(false);
+        $changes = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = [];
+
+        $this->getChanges($changes, $originals)->shouldReturn($changes);
     }
 
-    function it_detects_changes_on_scalar_value(
-        $accessor,
-        $value
-    ) {
-        $submittedData = [
-            'varchar' => 'foo',
-        ];
-        $accessor->getValue($value, 'varchar')->willReturn('bar');
+    function it_get_changes_when_changing_value()
+    {
+        $changes   = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['value' => 'other scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
-        $this->getChanges($value, $submittedData)->shouldReturn([
-            'varchar' => 'foo',
-        ]);
+        $this->getChanges($changes, $originals)->shouldReturn($changes);
     }
 
-    function it_detects_no_changes_on_scalar_value(
-        $accessor,
-        $value
-    ) {
-        $submittedData = [
-            'varchar' => 'foo',
-        ];
-        $accessor->getValue($value, 'varchar')->willReturn('foo');
+    function it_returns_null_when_values_are_the_same()
+    {
+        $changes   = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
+        $originals = ['value' => 'scalar', 'locale' => 'en_US', 'scope' => 'ecommerce'];
 
-        $this->getChanges($value, $submittedData)->shouldReturn(null);
-    }
-
-    function it_detects_no_change_when_there_nothing_else_than_the_id_in_the_changes(
-        $value
-    ) {
-        $submittedData = [];
-
-        $this->getChanges($value, $submittedData)->shouldReturn(null);
+        $this->getChanges($changes, $originals)->shouldReturn(null);
     }
 }
