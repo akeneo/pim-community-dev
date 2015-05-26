@@ -93,7 +93,8 @@ class UniqueValueValidator extends ConstraintValidator
     }
 
     /**
-     * Checks if the same exact value has already been processed (on a different product)
+     * Checks if the same exact value has already been processed on a different product instance, we use
+     * spl_object_hash to avoid issue with creation of two new products with the same identifier
      *
      * When validates values for a VariantGroup there is not product related to the value
      *
@@ -105,7 +106,7 @@ class UniqueValueValidator extends ConstraintValidator
     {
         $product = $productValue->getProduct();
         if ($product) {
-            $productIdentifier = (string) $product->getIdentifier()->getData();
+            $productIdentifier = spl_object_hash($product);
             $productValueData = $this->formatData($productValue->getData());
             $attributeCode = $productValue->getAttribute()->getCode();
             $uniqueValueCode = $attributeCode;

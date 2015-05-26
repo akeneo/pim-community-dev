@@ -104,7 +104,6 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The unique code \"17727158\" was already read in this file"
     And I am on the products page
     And I filter by "SKU" with value "17727158"
     And I should see products 17727158
