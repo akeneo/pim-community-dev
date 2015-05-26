@@ -6,9 +6,7 @@
 require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/vendor/autoload.php';
 require_once '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/app/AppKernel.php';
 
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 $kernel = new AppKernel('dev', true);

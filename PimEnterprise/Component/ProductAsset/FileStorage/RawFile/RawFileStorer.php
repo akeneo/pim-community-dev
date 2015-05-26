@@ -17,7 +17,6 @@ use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\FileStorage\FileFactoryInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
  * Move a raw file to the storage destination filesystem

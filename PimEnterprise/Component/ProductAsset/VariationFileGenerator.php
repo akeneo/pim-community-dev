@@ -141,7 +141,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         unlink($referenceFileInfo->getPathname());
     }
 
-
     /**
      * @param ChannelInterface $channel
      *

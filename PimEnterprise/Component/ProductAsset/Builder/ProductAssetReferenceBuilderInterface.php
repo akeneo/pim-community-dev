@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**

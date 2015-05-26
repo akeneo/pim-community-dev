@@ -22,10 +22,9 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - %pimee_product_asset.model.asset_reference.class%
-        
+
     pimee_product_asset.builder.variation:
         class: %pimee_product_asset.builder.variation.class%
         arguments:
             - '@pim_catalog.repository.channel'
             - %pimee_product_asset.model.asset_variation.class%
-        

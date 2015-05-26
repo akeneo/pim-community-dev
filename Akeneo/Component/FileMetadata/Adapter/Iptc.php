@@ -111,7 +111,7 @@ class Iptc extends AbstractAdapter
 
         foreach ($data as $key => $row) {
             $field = isset($this->iptcHeaders[$key]) ? $this->iptcHeaders[$key] : $key;
-            
+
             // Directly returns an array for Keywords
             $res[$field] = ('2#025' === $key) ? $row : $row[0];
         }

@@ -32,11 +32,11 @@ class StoragePathGenerator
      * @param \SplFileInfo $file
      *
      * @return array
-     *   [
-     *      'guid' =>  '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12',
-     *      'path' => '2f/d4/2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_is_the_file.txt',
-     *      'file_name' => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_is_the_file.txt'
-     *   ]
+     *               [
+     *               'guid' =>  '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12',
+     *               'path' => '2f/d4/2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_is_the_file.txt',
+     *               'file_name' => '2fd4e1c67a2d28fced849ee1bb76e7391b93eb12_this_is_the_file.txt'
+     *               ]
      */
     public function generate(\SplFileInfo $file)
     {

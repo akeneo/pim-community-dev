@@ -13,7 +13,6 @@ namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use Akeneo\Component\FileMetadata\FileMetadataBagInterface;
 use Akeneo\Component\FileMetadata\FileMetadataReaderFactoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface;
 
 /**
  * Builder for ImageMetadata
@@ -33,7 +32,7 @@ class ImageMetadataBuilder implements MetadataBuilderInterface
 
     /**
      * @param FileMetadataReaderFactoryInterface $metaReaderFactory
-     * @param MetadataBuilderInterface       $fileMetaBuidler
+     * @param MetadataBuilderInterface           $fileMetaBuidler
      * @param string                             $imageMetadataClass
      */
     public function __construct(

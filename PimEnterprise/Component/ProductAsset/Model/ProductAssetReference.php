@@ -150,7 +150,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
      */
     public function getVariation(ChannelInterface $channel)
     {
-        if($this->getVariations()->isEmpty()) {
+        if ($this->getVariations()->isEmpty()) {
             return null;
         }
 

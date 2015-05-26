@@ -56,7 +56,6 @@ class StoreFileCommand extends ContainerAwareCommand
             return 1;
         }
 
-
         $file = new \SplFileInfo($filePath);
         $storer = $this->getRawFileStorer();
         $storer->store($file, $storageFsAlias);

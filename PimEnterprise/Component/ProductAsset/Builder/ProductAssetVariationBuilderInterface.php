@@ -14,7 +14,6 @@ namespace PimEnterprise\Component\ProductAsset\Builder;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 
 /**
  * Builds variations related to an asset reference

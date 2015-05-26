@@ -18,4 +18,3 @@ services:
         arguments: [%pimee_product_asset.model.asset.class%]
         tags:
             - { name: 'pim_repository' }
-

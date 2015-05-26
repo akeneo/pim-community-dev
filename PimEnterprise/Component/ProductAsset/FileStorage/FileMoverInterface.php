@@ -23,8 +23,8 @@ interface FileMoverInterface
 {
     /**
      * @param FileInterface $file
-     * @param string         $srcFsAlias
-     * @param string         $destFsAlias
+     * @param string        $srcFsAlias
+     * @param string        $destFsAlias
      *
      * @throws FileTransferException
      */

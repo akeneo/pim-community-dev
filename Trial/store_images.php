@@ -1,8 +1,6 @@
 <?php
 
-use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
 //require_once '/home/willy/project/akeneo/pim-enterprise-dev/vendor/autoload.php';

@@ -30,7 +30,7 @@ class FileMover implements FileMoverInterface
     protected $saver;
 
     /**
-     * @param MountManager $mountManager
+     * @param MountManager   $mountManager
      * @param SaverInterface $saver
      */
     public function __construct(MountManager $mountManager, SaverInterface $saver)

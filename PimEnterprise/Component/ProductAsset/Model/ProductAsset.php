@@ -177,7 +177,6 @@ class ProductAsset implements ProductAssetInterface
             $variations = array_merge($variations, $reference->getVariations()->toArray());
         }
 
-
         return $variations;
     }
 
