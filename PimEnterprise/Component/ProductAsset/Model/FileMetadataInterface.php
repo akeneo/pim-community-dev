@@ -29,11 +29,11 @@ interface FileMetadataInterface
     public function getFile();
 
     /**
-     * @param File $file
+     * @param FileInterface $file
      *
      * @return FileMetadataInterface
      */
-    public function setFile(File $file);
+    public function setFile(FileInterface $file);
 
     /**
      * @return \DateTime

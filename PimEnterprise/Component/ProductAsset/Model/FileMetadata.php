@@ -46,7 +46,7 @@ class FileMetadata implements FileMetadataInterface
     /**
      * {@inheritdoc}
      */
-    public function setFile(File $file)
+    public function setFile(FileInterface $file)
     {
         $this->file = $file;
 
