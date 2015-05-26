@@ -35,6 +35,11 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                 delete this.productPromises[id];
             }, this)).promise();
         },
+        clear: function(id) {
+            if (id in this.productPromises) {
+                delete this.productPromises[id];
+            }
+        },
         getValues: function (product) {
             return AttributeManager.getAttributesForProduct(product).then(function (attributes) {
                 _.each(attributes, _.bind(function (attributeCode) {
