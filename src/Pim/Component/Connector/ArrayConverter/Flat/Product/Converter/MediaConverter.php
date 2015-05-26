@@ -28,11 +28,11 @@ class MediaConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ($value !== '') {
+            $data = ['filePath' => $value, 'originalFilename' => basename($value)];
+        } else {
+            $data = ['filePath' => null, 'originalFilename' => null];
         }
-
-        $data = ['filePath' => $value, 'originalFilename' => basename($value)];
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

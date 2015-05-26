@@ -28,11 +28,11 @@ class MultiSelectConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ($value !== '') {
+            $value = $this->fieldSplitter->splitCollection($value);
+        } else {
+            $value = [];
         }
-
-        $value = $this->fieldSplitter->splitCollection($value);
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

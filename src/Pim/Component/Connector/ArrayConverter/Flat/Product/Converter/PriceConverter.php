@@ -28,11 +28,11 @@ class PriceConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ($value !== '') {
+            $data = $this->fieldSplitter->splitCollection($value);
+        } else {
+            $data = [];
         }
-
-        $data = $this->fieldSplitter->splitCollection($value);
 
         $data = array_map(function ($priceValue) use ($attributeFieldInfo) {
             return $this->convertPrice($attributeFieldInfo, $priceValue);
@@ -53,6 +53,7 @@ class PriceConverter extends AbstractValueConverter
      */
     protected function convertPrice(array $attributeFieldInfo, $priceValue)
     {
+        // TODO: useless because handled by merger?
         //Due to the multiple column for price collections
         if (isset($attributeFieldInfo['price_currency'])) {
             $currency = $attributeFieldInfo['price_currency'];

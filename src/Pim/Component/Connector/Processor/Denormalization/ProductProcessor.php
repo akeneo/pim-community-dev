@@ -101,6 +101,9 @@ class ProductProcessor extends AbstractProcessor
     protected function getIdentifier(array $convertedItem)
     {
         $identifierProperty = $this->repository->getIdentifierProperties();
+        if (!isset($convertedItem[$identifierProperty[0]])) {
+            throw new \RuntimeException(sprintf('Identifier property "%s" is expected', $identifierProperty[0]));
+        }
 
         return $convertedItem[$identifierProperty[0]][0]['data'];
     }

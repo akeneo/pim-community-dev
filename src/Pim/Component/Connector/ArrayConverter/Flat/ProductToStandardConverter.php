@@ -4,6 +4,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -14,9 +15,6 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: rewrite this class, extract value conversion logic to make it extensible (tagged services) and add support
- * for reference data
  */
 class ProductToStandardConverter implements StandardArrayConverterInterface
 {
@@ -38,6 +36,9 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var ProductFieldConverter */
     protected $productFieldConverter;
 
+    /** @var ColumnsMerger */
+    protected $columnsMerger;
+
     /**
      * @param ProductAttributeFieldExtractor  $fieldExtractor
      * @param OptionsResolverConverter        $optionsResolverConverter
@@ -45,6 +46,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      * @param ProductAssociationFieldResolver $assocFieldResolver
      * @param FieldSplitter                   $fieldSplitter
      * @param ProductFieldConverter           $productFieldConverter
+     * @param ColumnsMerger                   $columnsMerger
      */
     public function __construct(
         ProductAttributeFieldExtractor $fieldExtractor,
@@ -52,7 +54,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         ValueConverterRegistryInterface $converterRegistry,
         ProductAssociationFieldResolver $assocFieldResolver,
         FieldSplitter $fieldSplitter,
-        ProductFieldConverter $productFieldConverter
+        ProductFieldConverter $productFieldConverter,
+        ColumnsMerger $columnsMerger
     ) {
         $this->optionsResolverConverter = $optionsResolverConverter;
         $this->converterRegistry        = $converterRegistry;
@@ -60,6 +63,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         $this->assocFieldResolver       = $assocFieldResolver;
         $this->fieldSplitter            = $fieldSplitter;
         $this->productFieldConverter    = $productFieldConverter;
+        $this->columnsMerger            = $columnsMerger;
     }
 
     /**
@@ -144,9 +148,10 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     public function convert(array $item)
     {
         $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item);
+        $mergedItems = $this->columnsMerger->merge($resolvedItem);
 
         $result = [];
-        foreach ($resolvedItem as $column => $value) {
+        foreach ($mergedItems as $column => $value) {
             if ($this->productFieldConverter->supportsColumn($column)) {
                 $value = $this->productFieldConverter->convert($column, $value);
             } else {
@@ -156,8 +161,6 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
             if (null !== $value) {
                 $result = $this->addFieldToCollection($result, $value);
             }
-
-            // TODO: does not work with no groups
         }
 
         return $result;
@@ -203,27 +206,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function addFieldToCollection(array $collection, array $value)
     {
-        $field = key($value);
-
-        //Needed for prices collections in multiple columns
-        if (isset($collection[$field]) &&
-            isset($collection[$field][0]['data']) &&
-            is_array($collection[$field][0]['data'])
-        ) {
-            $newFieldValue = reset($value[$field]);
-
-            foreach ($collection[$field] as $key => $fieldValue) {
-                if (array_key_exists('locale', $newFieldValue) &&
-                    array_key_exists('scope', $newFieldValue) &&
-                    $newFieldValue['locale'] === $fieldValue['locale'] &&
-                    $newFieldValue['scope'] === $fieldValue['scope']
-                ) {
-                    $collection[$field][$key]['data'] = array_merge($fieldValue['data'], $newFieldValue['data']);
-                }
-            }
-        } else {
-            $collection = array_merge_recursive($collection, $value);
-        }
+        $collection = array_merge_recursive($collection, $value);
 
         return $collection;
     }

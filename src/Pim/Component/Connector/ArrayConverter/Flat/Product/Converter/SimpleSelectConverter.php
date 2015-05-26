@@ -28,8 +28,8 @@ class SimpleSelectConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ($value === '') {
+            $value = null;
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[

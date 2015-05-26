@@ -30,7 +30,7 @@ Feature: Validate number attributes of a product
     When I am on the "bar" product page
     And I change the Reference to "111"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    Then I should see validation tooltip "The value 111 is already set on another product for the unique attribute ref"
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 

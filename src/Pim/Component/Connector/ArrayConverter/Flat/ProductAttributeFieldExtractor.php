@@ -101,6 +101,7 @@ class ProductAttributeFieldExtractor
         if ('prices' === $attribute->getBackendType()) {
             $info['price_currency'] = array_shift($explodedFieldName);
         } elseif ('metric' === $attribute->getBackendType()) {
+            // TODO: has been added
             $info['metric_unit'] = array_shift($explodedFieldName);
         }
 

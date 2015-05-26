@@ -303,6 +303,8 @@ class ProductManager
     /**
      * Check if a product value with a specific value already exists
      *
+     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::valueExists
+     *
      * @param ProductValueInterface $value
      *
      * @return bool

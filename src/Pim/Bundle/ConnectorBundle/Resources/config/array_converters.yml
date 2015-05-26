@@ -15,9 +15,10 @@ parameters:
     pim_base_connector.array_converter.flat.product.boolean.class:                    Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\BooleanConverter
     pim_base_connector.array_converter.flat.product.number.class:                     Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\NumberConverter
     pim_base_connector.array_converter.flat.product.media.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\MediaConverter
-    pim_base_connector.array_converter.splitter.field.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
     pim_base_connector.array_converter.flat.product.identifier.class:                 Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\TextConverter
     pim_base_connector.array_converter.flat.product.field.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter
+    pim_base_connector.array_converter.splitter.field.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
+    pim_base_connector.array_converter.merger.columns.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger
 
 services:
     pim_base_connector.array_converter.flat.attribute_option:
@@ -37,6 +38,7 @@ services:
             - '@pim_base_connector.array_converter.flat.association_field_resolver'
             - '@pim_base_connector.array_converter.splitter.field'
             - '@pim_base_connector.array_converter.flat.product.field'
+            - '@pim_base_connector.array_converter.merger.columns'
 
     pim_base_connector.array_converter.flat.converter_options_resolver:
         class: %pim_base_connector.array_converter.flat.converter_options_resolver.class%
@@ -143,3 +145,8 @@ services:
 
     pim_base_connector.array_converter.splitter.field:
         class: %pim_base_connector.array_converter.splitter.field.class%
+
+    pim_base_connector.array_converter.merger.columns:
+        class: %pim_base_connector.array_converter.merger.columns.class%
+        arguments:
+            - '@pim_base_connector.array_converter.flat.attribute_field_extractor'

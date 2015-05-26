@@ -248,9 +248,9 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The unique code"
+    Then there should be 1 product
     And I should see "was already read in this file"
-    And there should be 1 product
+    And I should see "The unique code"
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
 

@@ -28,11 +28,11 @@ class BooleanConverter extends AbstractValueConverter
      */
     public function convert($attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            return null;
+        if ($value !== '') {
+            $data = (bool) $value;
+        } else {
+            $data = null;
         }
-
-        $data = (bool) $value;
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],

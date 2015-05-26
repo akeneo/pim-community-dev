@@ -63,6 +63,12 @@ class NumberConverterSpec extends ObjectBehavior
 
         $value = '';
 
-        $this->convert($fieldNameInfo, $value)->shouldReturn(null);
+        $expectedResult = ['attribute_code' => [[
+            'locale' => 'en_US',
+            'scope'  => 'mobile',
+            'data'   => null,
+        ]]];
+
+        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
     }
 }
