@@ -7,13 +7,13 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
- * Constraint
+ * BooleanValidator
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class StringValidator extends ConstraintValidator
+class BooleanValidator extends ConstraintValidator
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,12 @@ class StringValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_string($checkedValue)) {
+        if (!is_bool($checkedValue)
+            && $checkedValue !== '0'
+            && $checkedValue !== '1'
+            && $checkedValue !== 0
+            && $checkedValue !== 1
+        ) {
             $this->context->addViolation(
                 $constraint->message,
                 [

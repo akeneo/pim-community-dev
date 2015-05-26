@@ -209,6 +209,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
     }
+
     function it_sets_non_numeric_attribute_data_to_a_product_value(
         AttributeInterface $attribute,
         ProductInterface $product1,
@@ -237,8 +238,7 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setUnit('KILOGRAM')->shouldBeCalled();
         $metric->setData($data['data'])->shouldBeCalled();
 
-        $builder
-            ->addProductValue($product2, $attribute, $locale, $scope)
+        $builder->addProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
         $factory->createMetric('Weight')->shouldBeCalledTimes(3)->willReturn($metric);
