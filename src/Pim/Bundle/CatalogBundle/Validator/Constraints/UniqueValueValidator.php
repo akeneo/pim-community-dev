@@ -105,7 +105,7 @@ class UniqueValueValidator extends ConstraintValidator
     {
         $product = $productValue->getProduct();
         if ($product) {
-            $productIdentifier = (string)$product->getIdentifier()->getData();
+            $productIdentifier = (string) $product->getIdentifier()->getData();
             $productValueData = $this->formatData($productValue->getData());
             $attributeCode = $productValue->getAttribute()->getCode();
             $uniqueValueCode = $attributeCode;

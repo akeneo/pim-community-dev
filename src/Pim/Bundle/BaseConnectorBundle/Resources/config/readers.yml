@@ -7,7 +7,6 @@ parameters:
 
     pim_base_connector.reader.file.csv.class:             Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
     pim_base_connector.reader.file.csv_product.class:     Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
-    pim_base_connector.reader.file.csv_association.class: Pim\Bundle\BaseConnectorBundle\Reader\File\CsvAssociationReader
     pim_base_connector.reader.file.csv_category.class:    Pim\Bundle\BaseConnectorBundle\Reader\File\CsvCategoryReader
 
     pim_base_connector.reader.file.yaml.class:         Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader
@@ -78,9 +77,7 @@ services:
 
     pim_base_connector.reader.file.csv_association:
         parent: pim_base_connector.reader.file.csv
-        class: %pim_base_connector.reader.file.csv_association.class%
-        arguments:
-            - '@pim_base_connector.array_converter.flat.association_field_resolver'
+        class: %pim_base_connector.reader.file.csv.class%
 
     pim_base_connector.reader.file.csv_variant_group:
         alias: pim_base_connector.reader.file.csv_product

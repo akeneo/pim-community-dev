@@ -3,9 +3,10 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -17,40 +18,36 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductAssociationProcessor extends AbstractProcessor
 {
-    /** @var DenormalizerInterface */
-    protected $denormalizer;
+    /** @var StandardArrayConverterInterface */
+    private $arrayConverter;
+
+    /** @var IdentifiableObjectRepositoryInterface */
+    protected $repository;
+
+    /** @var ObjectUpdaterInterface */
+    protected $updater;
 
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var string */
-    protected $format;
-
-    /** @var string */
-    protected $class;
-
     /**
-     * @param IdentifiableObjectRepositoryInterface $repository   repository to search the object in
-     * @param DenormalizerInterface                 $denormalizer denormalizer used to transform array to object
-     * @param ValidatorInterface                    $validator    validator of the object
-     * @param string                                $class        class of the object to instanciate in case if need
-     * @param string                                $format       format use to denormalize
+     * @param StandardArrayConverterInterface       $arrayConverter array converter
+     * @param IdentifiableObjectRepositoryInterface $repository     product repository
+     * @param ObjectUpdaterInterface                $updater        product updater
+     * @param ValidatorInterface                    $validator      validator of the object
      */
     public function __construct(
+        StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
-        DenormalizerInterface $denormalizer,
-        ValidatorInterface $validator,
-        $class,
-        $productClass,
-        $format
+        ObjectUpdaterInterface $updater,
+        ValidatorInterface $validator
     ) {
-        parent::__construct($repository, $class);
+        parent::__construct($repository);
 
-        $this->denormalizer = $denormalizer;
-        $this->validator    = $validator;
-        $this->format       = $format;
-        $this->class        = $class;
-        $this->productClass = $productClass;
+        $this->arrayConverter = $arrayConverter;
+        $this->repository     = $repository;
+        $this->updater        = $updater;
+        $this->validator      = $validator;
     }
 
     /**
@@ -58,49 +55,61 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     public function process($item)
     {
-        $identifier = $item['product'][$this->repository->getIdentifierProperties()[0]];
-        $product    = $this->findProduct($identifier);
+        $identifier = $this->getIdentifier($item);
+        $product = $this->findProduct($identifier);
         if (null === $product) {
             throw new \LogicException(sprintf('No product with identifier "%s" has been found', $identifier));
         }
 
-        foreach ($product->getAssociations() as $association) {
-            foreach ($association->getGroups() as $group) {
-                $association->removeGroup($group);
-            }
-
-            foreach ($association->getProducts() as $prod) {
-                $association->removeProduct($prod);
-            }
+        $convertedItem = $this->convertItemData($item);
+        try {
+            $this->updateProduct($product, $convertedItem);
+        } catch (\InvalidArgumentException $exception) {
+            $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $associations = [];
-        foreach ($item['associations'] as $itemAssociation) {
-            $association = $product->getAssociationForTypeCode($itemAssociation['association_type_code']);
-
-            $association = $this->denormalizer->denormalize(
-                $itemAssociation['associated_items'],
-                $this->class,
-                $this->format,
-                [
-                    'entity'                => $association,
-                    'association_type_code' => $itemAssociation['association_type_code'],
-                    'part'                  => $itemAssociation['item_type']
-                ]
-            );
-
-            if (null !== $association) {
-                $association->setOwner($product);
-
-                $violations = $this->validator->validate($association);
-
-                if (count($violations) === 0) {
-                    $associations[] = $association;
-                }
-            }
+        $violations = $this->validateProduct($product);
+        if ($violations->count() > 0) {
+            $this->skipItemWithConstraintViolations($item, $violations);
         }
 
-        return $associations;
+        return $product;
+    }
+
+    /**
+     * @param array $item
+     *
+     * @return array
+     */
+    protected function convertItemData(array $item)
+    {
+        $items = $this->arrayConverter->convert($item);
+        $associations = isset($items['associations']) ? $items['associations'] : [];
+
+        return ['associations' => $associations];
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param array            $convertItems
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function updateProduct(ProductInterface $product, array $convertItems)
+    {
+        $this->updater->update($product, $convertItems);
+    }
+
+    /**
+     * @param array $convertedItem
+     *
+     * @return string
+     */
+    protected function getIdentifier(array $convertedItem)
+    {
+        $identifierProperty = $this->repository->getIdentifierProperties();
+
+        return $convertedItem[$identifierProperty[0]];
     }
 
     /**
@@ -110,8 +119,18 @@ class ProductAssociationProcessor extends AbstractProcessor
      */
     public function findProduct($identifier)
     {
-        $product = $this->repository->findOneByIdentifier($identifier);
+        return $this->repository->findOneByIdentifier($identifier);
+    }
 
-        return $product;
+    /**
+     * @param ProductInterface $product
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     */
+    protected function validateProduct(ProductInterface $product)
+    {
+        return $this->validator->validate($product);
     }
 }
