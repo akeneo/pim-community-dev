@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\EnrichBundle\Controller\MassEditActionController as BaseMassEditActionController;
