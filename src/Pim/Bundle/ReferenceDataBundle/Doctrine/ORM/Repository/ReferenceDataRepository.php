@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 
