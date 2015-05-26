@@ -31,7 +31,7 @@ class EnabledFieldSetterSpec extends ObjectBehavior
 
     function it_sets_fields_if_data_is_boolean(ProductInterface $product)
     {
-        $product->setEnabled(Argument::any())->shouldBeCalled(6);
+        $product->setEnabled(Argument::any())->shouldBeCalledTimes(6);
 
         $this->setFieldData($product, 'enabled', true);
         $this->setFieldData($product, 'enabled', 1);
@@ -44,7 +44,7 @@ class EnabledFieldSetterSpec extends ObjectBehavior
 
     function it_sets_fields_if_data_is_not_boolean(ProductInterface $product)
     {
-        $product->setEnabled(Argument::any())->shouldBeCalled(6);
+        $product->setEnabled(Argument::any())->shouldBeCalled();
 
         $this->setFieldData($product, 'enabled', 'foo');
     }
