@@ -3,6 +3,7 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * Product import processor, allows to,
  *  - create / update
  *  - validate
- *  - skip invalid ones
+ *  - skip invalid ones and detach it
  *  - return the valid ones
  *
  * @author    Julien Sanchez <julien@akeneo.com>
@@ -35,19 +36,24 @@ class ProductProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /**
      * @param StandardArrayConverterInterface       $arrayConverter array converter
      * @param IdentifiableObjectRepositoryInterface $repository     product repository
      * @param ProductBuilderInterface               $builder        product builder
      * @param ObjectUpdaterInterface                $updater        product updater
      * @param ValidatorInterface                    $validator      product validator
+     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ProductBuilderInterface $builder,
         ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher
     ) {
         parent::__construct($repository);
 
@@ -55,6 +61,7 @@ class ProductProcessor extends AbstractProcessor
         $this->builder = $builder;
         $this->updater = $updater;
         $this->validator = $validator;
+        $this->detacher = $detacher;
     }
 
     /**
@@ -72,11 +79,13 @@ class ProductProcessor extends AbstractProcessor
         try {
             $this->updateProduct($product, $filteredItem);
         } catch (\InvalidArgumentException $exception) {
+            $this->detachProduct($product);
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
         $violations = $this->validateProduct($product);
         if ($violations->count() > 0) {
+            $this->detachProduct($product);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
@@ -171,5 +180,16 @@ class ProductProcessor extends AbstractProcessor
     protected function validateProduct(ProductInterface $product)
     {
         return $this->validator->validate($product);
+    }
+
+    /**
+     * Detaches the product from the unit of work is the responsibility of the writer but in this case we
+     * want ensure that an updated and invalid product will not be used in the association processor
+     *
+     * @param ProductInterface $product
+     */
+    protected function detachProduct(ProductInterface $product)
+    {
+        $this->detacher->detach($product);
     }
 }

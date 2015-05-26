@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValue;
+use Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
@@ -19,12 +20,13 @@ class UniqueValueValidatorSpec extends ObjectBehavior
 
     function let(
         ProductRepositoryInterface $productRepository,
+        UniqueValuesSet $uniqueValuesSet,
         ExecutionContextInterface $context,
         Form $form,
         ProductInterface $product,
         ProductValueInterface $value
     ) {
-        $this->beConstructedWith($productRepository);
+        $this->beConstructedWith($productRepository, $uniqueValuesSet);
 
         $product->getValue('unique_attribute')->willReturn($value);
 
@@ -37,10 +39,10 @@ class UniqueValueValidatorSpec extends ObjectBehavior
     }
 
     function it_validates_unique_value_from_form_data(
+        $uniqueValuesSet,
         ProductRepositoryInterface $productRepository,
         ProductValueInterface $uniqueValue,
         AttributeInterface $uniqueAttribute,
-        ProductValueInterface $identifierValue,
         ExecutionContextInterface $context,
         UniqueValue $constraint,
         Form $form,
@@ -50,26 +52,22 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $form->getData()->willReturn($product);
         $product->getValue('unique_attribute')->willReturn($uniqueValue);
 
-        $uniqueValue->getData()->willReturn('a content');
         $uniqueValue->getAttribute()->willReturn($uniqueAttribute);
-        $uniqueValue->getProduct()->willReturn($product);
-        $uniqueValue->getLocale()->willReturn(null);
-        $uniqueValue->getScope()->willReturn(null);
         $uniqueAttribute->isUnique()->willReturn(true);
-        $uniqueAttribute->getCode()->willReturn('unique_attribute');
-
-        $product->getIdentifier()->willReturn($identifierValue);
+        $uniqueValue->getProduct()->willReturn($product);
 
         $productRepository->valueExists($uniqueValue)->willReturn(false);
+        $uniqueValuesSet->addValue($uniqueValue)->willReturn(true);
+
         $this->validate("my_value", $constraint)->shouldReturn(null);
         $context->addViolation(Argument::any())->shouldNotBeCalled();
     }
 
-    function it_adds_violation_with_non_unique_value_from_form_data(
+    function it_adds_violation_with_non_unique_value_from_form_data_and_value_comes_from_database(
+        $uniqueValuesSet,
         ProductRepositoryInterface $productRepository,
         ProductValueInterface $uniqueValue,
         AttributeInterface $uniqueAttribute,
-        ProductValueInterface $identifierValue,
         ExecutionContextInterface $context,
         UniqueValue $constraint,
         ProductInterface $product,
@@ -79,17 +77,43 @@ class UniqueValueValidatorSpec extends ObjectBehavior
         $form->getData()->willReturn($product);
         $product->getValue('unique_attribute')->willReturn($uniqueValue);
 
-        $uniqueValue->getData()->willReturn('a content');
         $uniqueValue->getAttribute()->willReturn($uniqueAttribute);
         $uniqueValue->getProduct()->willReturn($product);
-        $uniqueValue->getLocale()->willReturn(null);
-        $uniqueValue->getScope()->willReturn(null);
         $uniqueAttribute->isUnique()->willReturn(true);
+        $uniqueValue->getData()->willReturn('a content');
         $uniqueAttribute->getCode()->willReturn('unique_attribute');
 
-        $product->getIdentifier()->willReturn($identifierValue);
-
         $productRepository->valueExists($uniqueValue)->willReturn(true);
+        $uniqueValuesSet->addValue($uniqueValue)->willReturn(true);
+
+        $context->addViolation($constraint->message, Argument::any())->shouldBeCalled();
+
+        $this->validate("my_value", $constraint)->shouldReturn(null);
+    }
+
+    function it_adds_violation_with_non_unique_value_from_form_data_and_value_comes_from_memory(
+        $uniqueValuesSet,
+        ProductRepositoryInterface $productRepository,
+        ProductValueInterface $uniqueValue,
+        AttributeInterface $uniqueAttribute,
+        ExecutionContextInterface $context,
+        UniqueValue $constraint,
+        ProductInterface $product,
+        Form $form
+    ) {
+        $context->getRoot()->willReturn($form);
+        $form->getData()->willReturn($product);
+        $product->getValue('unique_attribute')->willReturn($uniqueValue);
+
+        $uniqueValue->getAttribute()->willReturn($uniqueAttribute);
+        $uniqueValue->getProduct()->willReturn($product);
+        $uniqueAttribute->isUnique()->willReturn(true);
+        $uniqueValue->getData()->willReturn('a content');
+        $uniqueAttribute->getCode()->willReturn('unique_attribute');
+
+        $productRepository->valueExists($uniqueValue)->willReturn(false);
+        $uniqueValuesSet->addValue($uniqueValue)->willReturn(false);
+
         $context->addViolation($constraint->message, Argument::any())->shouldBeCalled();
 
         $this->validate("my_value", $constraint)->shouldReturn(null);

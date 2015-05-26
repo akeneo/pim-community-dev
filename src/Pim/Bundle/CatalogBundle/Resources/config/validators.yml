@@ -25,6 +25,7 @@ parameters:
     pim_catalog.validator.constraint_guesser.metric.class:                 Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\MetricGuesser
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Bundle\CatalogBundle\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Bundle\CatalogBundle\Validator\Mapping\ProductValueMetadataFactory
+    pim_catalog.validator.unique_value_set.class:                          Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet
 
 services:
     # Helpers
@@ -34,6 +35,10 @@ services:
         arguments:
             - @pim_catalog.repository.locale
             - @pim_catalog.repository.channel
+
+    pim_catalog.validator.unique_value_set:
+        class: %pim_catalog.validator.unique_value_set.class%
+        public: false
 
     # Validators
     pim_catalog.validator.constraint.valid_metric:
@@ -67,6 +72,7 @@ services:
         class: %pim_catalog.validator.constraint.unique_value.class%
         arguments:
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 

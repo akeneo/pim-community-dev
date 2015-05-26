@@ -4,7 +4,6 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Merger;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
 
 class ColumnsMergerSpec extends ObjectBehavior
