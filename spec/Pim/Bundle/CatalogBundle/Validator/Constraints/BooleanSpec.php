@@ -4,16 +4,16 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 
-class StringConstraintSpec extends ObjectBehavior
+class BooleanSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\StringConstraint');
+        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Validator\Constraints\Boolean');
     }
 
     function it_has_message()
     {
-        $this->message->shouldBe('Attribute or field "%attribute%" expects a string as data, "%givenType%" given.');
+        $this->message->shouldBe('Attribute or field "%attribute%" expects a boolean as data, "%givenType%" given.');
     }
 
     function it_is_a_validator_constraint()
