@@ -16,6 +16,7 @@ define(
             template: _.template(smartAttributeTemplate),
             configure: function () {
                 mediator.on('field:extension:add', _.bind(this.addExtension, this));
+                RuleManager.getRuleRelations('attribute');
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -31,7 +32,7 @@ define(
                             ruleRelation: ruleRelation
                         });
 
-                        field.addElement('footer', 'updated_by', $element);
+                        field.addElement('footer', 'from_smart', $element);
                     }
                 }, this));
 
