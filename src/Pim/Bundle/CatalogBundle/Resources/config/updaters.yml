@@ -1,52 +1,53 @@
 parameters:
-    pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
-    pim_catalog.updater.product_property_setter.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertySetter
-    pim_catalog.updater.product_property_adder.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertyAdder
-    pim_catalog.updater.product_property_copier.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertyCopier
-    pim_catalog.updater.product_property_remover.class:      Pim\Bundle\CatalogBundle\Updater\ProductPropertyRemover
-    pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
-    pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
+    pim_catalog.updater.product.class:                        Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.product_property_setter.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertySetter
+    pim_catalog.updater.product_property_adder.class:         Pim\Bundle\CatalogBundle\Updater\ProductPropertyAdder
+    pim_catalog.updater.product_property_copier.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertyCopier
+    pim_catalog.updater.product_property_remover.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertyRemover
+    pim_catalog.updater.product_template.class:               Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
+    pim_catalog.updater.attribute_option.class:               Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
+    pim_catalog.updater.attribute.class:                      Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
 
-    pim_catalog.updater.setter.registry.class:               Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
+    pim_catalog.updater.setter.registry.class:                Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
     # TODO useful to use this abstract?
-    pim_catalog.updater.setter.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter
-    pim_catalog.updater.setter.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\TextAttributeSetter
-    pim_catalog.updater.setter.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\MetricAttributeSetter
-    pim_catalog.updater.setter.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Setter\BooleanAttributeSetter
-    pim_catalog.updater.setter.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\DateAttributeSetter
-    pim_catalog.updater.setter.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\NumberAttributeSetter
-    pim_catalog.updater.setter.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Setter\CategoryFieldSetter
-    pim_catalog.updater.setter.group_field.class:            Pim\Bundle\CatalogBundle\Updater\Setter\GroupFieldSetter
-    pim_catalog.updater.setter.variant_group_field.class:    Pim\Bundle\CatalogBundle\Updater\Setter\VariantGroupFieldSetter
-    pim_catalog.updater.setter.family_field.class:           Pim\Bundle\CatalogBundle\Updater\Setter\FamilyFieldSetter
-    pim_catalog.updater.setter.association_field.class:      Pim\Bundle\CatalogBundle\Updater\Setter\AssociationFieldSetter
-    pim_catalog.updater.setter.enabled_field.class:          Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
-    pim_catalog.updater.setter.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectAttributeSetter
-    pim_catalog.updater.setter.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectAttributeSetter
-    pim_catalog.updater.setter.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionAttributeSetter
-    pim_catalog.updater.setter.media_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\MediaAttributeSetter
+    pim_catalog.updater.setter.abstract.class:                Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter
+    pim_catalog.updater.setter.text_value.class:              Pim\Bundle\CatalogBundle\Updater\Setter\TextAttributeSetter
+    pim_catalog.updater.setter.metric_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\MetricAttributeSetter
+    pim_catalog.updater.setter.boolean_value.class:           Pim\Bundle\CatalogBundle\Updater\Setter\BooleanAttributeSetter
+    pim_catalog.updater.setter.date_value.class:              Pim\Bundle\CatalogBundle\Updater\Setter\DateAttributeSetter
+    pim_catalog.updater.setter.number_value.class:            Pim\Bundle\CatalogBundle\Updater\Setter\NumberAttributeSetter
+    pim_catalog.updater.setter.category_field.class:          Pim\Bundle\CatalogBundle\Updater\Setter\CategoryFieldSetter
+    pim_catalog.updater.setter.group_field.class:             Pim\Bundle\CatalogBundle\Updater\Setter\GroupFieldSetter
+    pim_catalog.updater.setter.variant_group_field.class:     Pim\Bundle\CatalogBundle\Updater\Setter\VariantGroupFieldSetter
+    pim_catalog.updater.setter.family_field.class:            Pim\Bundle\CatalogBundle\Updater\Setter\FamilyFieldSetter
+    pim_catalog.updater.setter.association_field.class:       Pim\Bundle\CatalogBundle\Updater\Setter\AssociationFieldSetter
+    pim_catalog.updater.setter.enabled_field.class:           Pim\Bundle\CatalogBundle\Updater\Setter\EnabledFieldSetter
+    pim_catalog.updater.setter.simpleselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Setter\SimpleSelectAttributeSetter
+    pim_catalog.updater.setter.multiselect_value.class:       Pim\Bundle\CatalogBundle\Updater\Setter\MultiSelectAttributeSetter
+    pim_catalog.updater.setter.price_collection_value.class:  Pim\Bundle\CatalogBundle\Updater\Setter\PriceCollectionAttributeSetter
+    pim_catalog.updater.setter.media_value.class:             Pim\Bundle\CatalogBundle\Updater\Setter\MediaAttributeSetter
 
-    pim_catalog.updater.copier.registry.class:               Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
+    pim_catalog.updater.copier.registry.class:                Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistry
     # TODO useful to use this abstract?
-    pim_catalog.updater.copier.abstract.class:               Pim\Bundle\CatalogBundle\Updater\Copier\AbstractAttributeCopier
-    pim_catalog.updater.copier.text_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.textarea_value.class:         Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.boolean_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.number_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.date_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.image_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier
-    pim_catalog.updater.copier.file_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier
-    pim_catalog.updater.copier.metric_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\MetricAttributeCopier
-    pim_catalog.updater.copier.simpleselect_value.class:     Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
-    pim_catalog.updater.copier.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectAttributeCopier
-    pim_catalog.updater.copier.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionAttributeCopier
+    pim_catalog.updater.copier.abstract.class:                Pim\Bundle\CatalogBundle\Updater\Copier\AbstractAttributeCopier
+    pim_catalog.updater.copier.text_value.class:              Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.textarea_value.class:          Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.boolean_value.class:           Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.number_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.date_value.class:              Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.image_value.class:             Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.file_value.class:              Pim\Bundle\CatalogBundle\Updater\Copier\MediaAttributeCopier
+    pim_catalog.updater.copier.metric_value.class:            Pim\Bundle\CatalogBundle\Updater\Copier\MetricAttributeCopier
+    pim_catalog.updater.copier.simpleselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Copier\BaseAttributeCopier
+    pim_catalog.updater.copier.multiselect_value.class:       Pim\Bundle\CatalogBundle\Updater\Copier\MultiSelectAttributeCopier
+    pim_catalog.updater.copier.price_collection_value.class:  Pim\Bundle\CatalogBundle\Updater\Copier\PriceCollectionAttributeCopier
 
-    pim_catalog.updater.adder.registry.class:               Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistry
-    pim_catalog.updater.adder.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Adder\CategoryFieldAdder
-    pim_catalog.updater.adder.association_field.class:      Pim\Bundle\CatalogBundle\Updater\Adder\AssociationFieldAdder
-    pim_catalog.updater.adder.group_field.class:            Pim\Bundle\CatalogBundle\Updater\Adder\GroupFieldAdder
-    pim_catalog.updater.adder.multiselect_value.class:      Pim\Bundle\CatalogBundle\Updater\Adder\MultiSelectAttributeAdder
-    pim_catalog.updater.adder.price_collection_value.class: Pim\Bundle\CatalogBundle\Updater\Adder\PriceCollectionAttributeAdder
+    pim_catalog.updater.adder.registry.class:                 Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistry
+    pim_catalog.updater.adder.category_field.class:           Pim\Bundle\CatalogBundle\Updater\Adder\CategoryFieldAdder
+    pim_catalog.updater.adder.association_field.class:        Pim\Bundle\CatalogBundle\Updater\Adder\AssociationFieldAdder
+    pim_catalog.updater.adder.group_field.class:              Pim\Bundle\CatalogBundle\Updater\Adder\GroupFieldAdder
+    pim_catalog.updater.adder.multiselect_value.class:        Pim\Bundle\CatalogBundle\Updater\Adder\MultiSelectAttributeAdder
+    pim_catalog.updater.adder.price_collection_value.class:   Pim\Bundle\CatalogBundle\Updater\Adder\PriceCollectionAttributeAdder
 
     pim_catalog.updater.remover.registry.class:               Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistry
     pim_catalog.updater.remover.category_field.class:         Pim\Bundle\CatalogBundle\Updater\Remover\CategoryFieldRemover
@@ -95,6 +96,11 @@ services:
         class: %pim_catalog.updater.attribute_option.class%
         arguments:
             - @pim_catalog.repository.attribute
+
+    pim_catalog.updater.attribute:
+        class: %pim_catalog.updater.attribute.class%
+        arguments:
+            - @pim_catalog.repository.attribute_group
 
     # Setters
     pim_catalog.updater.setter.registry:
