@@ -69,7 +69,7 @@ class StoreFileCommand extends ContainerAwareCommand
      */
     protected function getRawFileStorer()
     {
-        return $this->getContainer()->get('pimee_product_asset.file_storage.raw_file.local_storer');
+        return $this->getContainer()->get('pimee_product_asset.file_storage.raw_file.storer');
     }
 
     /**

@@ -11,12 +11,16 @@
 
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use League\Flysystem\MountManager;
 use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
+use PimEnterprise\Component\ProductAsset\FileStorage\FileFactoryInterface;
+use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 /**
- * Move a local file to the storage destination filesystem
+ * Move a raw file to the storage destination filesystem
  * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
  * and save it to the database.
  *
@@ -24,28 +28,45 @@ use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
  *
  * TODO: could be moved in a dedicated FileStorage component
  */
-class LocalStorer extends AbstractRawFileStorer
+class RawFileStorer implements RawFileStorerInterface
 {
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var PathGeneratorInterface */
+    protected $pathGenerator;
+
+    /** @var MountManager */
+    protected $mountManager;
+
+    /** @var FileFactoryInterface */
+    protected $factory;
+
+    /**
+     * @param PathGeneratorInterface $pathGenerator
+     * @param MountManager           $mountManager
+     * @param SaverInterface         $saver
+     */
+    public function __construct(
+        PathGeneratorInterface $pathGenerator,
+        MountManager $mountManager,
+        SaverInterface $saver,
+        FileFactoryInterface $factory
+    ) {
+        $this->pathGenerator = $pathGenerator;
+        $this->mountManager  = $mountManager;
+        $this->saver         = $saver;
+        $this->factory       = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function store(\SplFileInfo $localFile, $destFsAlias)
     {
-        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
+        $filesystem  = $this->mountManager->getFilesystem($destFsAlias);
         $storageData = $this->pathGenerator->generate($localFile);
-
-        $mimeType = MimeTypeGuesser::getInstance()->guess($localFile->getPathname());
-        $size     = filesize($localFile->getPathname());
-
-        $file = $this->createNewFile();
-        $file->setFilename($storageData['file_name']);
-        $file->setGuid($storageData['guid']);
-        $file->setMimeType($mimeType);
-        $file->setOriginalFilename($localFile->getFilename());
-        $file->setPath($storageData['path']);
-        $file->setSize($size);
-        $file->setExtension($localFile->getExtension());
-        $file->setStorage($destFsAlias);
+        $file        = $this->factory->create($localFile, $storageData, $destFsAlias);
 
         $resource = fopen($localFile->getPathname(), 'r');
         if (false === $filesystem->writeStream($file->getPathname(), $resource)) {
