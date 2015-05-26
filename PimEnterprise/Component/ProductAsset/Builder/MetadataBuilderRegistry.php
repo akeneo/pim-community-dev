@@ -45,7 +45,7 @@ class MetadataBuilderRegistry
      *
      * @return MetadataBuilderRegistry
      */
-    public function add(MetadataBuilderInterface $builder, $alias)
+    public function register(MetadataBuilderInterface $builder, $alias)
     {
         if ($this->has($alias)) {
             throw new AlreadyRegisteredMetadataBuilderException(sprintf('Metadata builder "%s" already registered.', $alias));
@@ -74,8 +74,6 @@ class MetadataBuilderRegistry
 
     /**
      * @param \SplFileInfo $file
-     *
-     * @throws NonRegisteredMetadataBuilderException
      *
      * @return MetadataBuilderInterface
      */
