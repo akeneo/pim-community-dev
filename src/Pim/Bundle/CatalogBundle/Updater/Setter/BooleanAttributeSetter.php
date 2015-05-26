@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -42,22 +41,8 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
     ) {
         $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'boolean');
-        $this->checkData($attribute, $data);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
-    }
-
-    /**
-     * Check if data are valid
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1 && null !== $data) {
-            throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean', gettype($data));
-        }
     }
 
     /**
@@ -75,7 +60,6 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
-        $data = (bool) $data;
         $value->setData($data);
     }
 }

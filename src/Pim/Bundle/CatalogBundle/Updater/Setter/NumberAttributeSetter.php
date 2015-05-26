@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -45,7 +43,6 @@ class NumberAttributeSetter extends AbstractAttributeSetter
     ) {
         $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'number');
-        $this->checkData($attribute, $data);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }
@@ -66,18 +63,5 @@ class NumberAttributeSetter extends AbstractAttributeSetter
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
         $value->setData($data);
-    }
-
-    /**
-     * Check data input
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (!is_numeric($data) && null !== $data) {
-            throw InvalidArgumentException::numericExpected($attribute->getCode(), 'setter', 'number', gettype($data));
-        }
     }
 }

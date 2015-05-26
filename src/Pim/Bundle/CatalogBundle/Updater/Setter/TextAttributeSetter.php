@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -44,7 +43,6 @@ class TextAttributeSetter extends AbstractAttributeSetter
     ) {
         $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'text');
-        $this->checkData($attribute, $data);
 
         $this->setData($product, $attribute, $data, $options['locale'], $options['scope']);
     }
@@ -65,23 +63,5 @@ class TextAttributeSetter extends AbstractAttributeSetter
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
         $value->setData($data);
-    }
-
-    /**
-     * Check data input
-     *
-     * @param AttributeInterface $attribute
-     * @param mixed              $data
-     */
-    protected function checkData(AttributeInterface $attribute, $data)
-    {
-        if (null !== $data && !is_string($data)) {
-            throw InvalidArgumentException::stringExpected(
-                $attribute->getCode(),
-                'setter',
-                'text',
-                gettype($data)
-            );
-        }
     }
 }
