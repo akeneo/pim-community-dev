@@ -615,10 +615,9 @@ class Edit extends Form
     public function findFieldIcons($name)
     {
         $field = $this->findField($name);
-
         $controls = $field->getParent()->getParent();
 
-        return $controls->findAll('css', '.field-info i');
+        return $controls->findAll('css', '.footer-elements-container i');
     }
 
     /**
