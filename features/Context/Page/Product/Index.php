@@ -2,6 +2,8 @@
 
 namespace Context\Page\Product;
 
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
 
 /**
@@ -21,18 +23,63 @@ class Index extends Grid
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
             $this->elements,
-            array(
-                'Categories tree'  => array('css' => '#tree'),
-                'Tree select'      => array('css' => '#tree_select'),
-                'Locales dropdown' => array('css' => '#locale-switcher'),
-            )
+            [
+                'Categories tree'  => ['css' => '#tree'],
+                'Tree select'      => ['css' => '#tree_select'],
+                'Locales dropdown' => ['css' => '#locale-switcher'],
+            ]
         );
+    }
+
+    /**
+     * @return int
+     */
+    public function countLocaleLinks()
+    {
+        return count($this->getElement('Locales dropdown')->findAll('css', 'li a'));
+    }
+
+    /**
+     * @param string $locale locale code
+     * @param string $locale locale label
+     * @param string $flag   class of the flag icon
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement|null
+     */
+    public function findLocaleLink($locale, $label, $flag = null)
+    {
+        $link = $this->getElement('Locales dropdown')
+            ->find('css', sprintf('li > a[href="/enrich/product/?dataLocale=%s"]', $locale));
+
+        if (!$link) {
+            throw new ElementNotFoundException(
+                $this->getSession(),
+                sprintf('Locale %s link', $locale)
+            );
+        }
+
+        if ($flag) {
+            $flagElement = $link->find('css', 'span.flag-language i');
+            if (!$flagElement) {
+                throw new ElementNotFoundException(
+                    $this->getSession(),
+                    sprintf('Flag not found for locale %s link', $locale)
+                );
+            }
+            if (strpos($flagElement->getAttribute('class'), $flag) === false) {
+                return null;
+            }
+        }
+
+        return $link;
     }
 
     /**

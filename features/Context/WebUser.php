@@ -341,10 +341,11 @@ class WebUser extends RawMinkContext
      *
      * @Then /^the locale switcher should contain the following items:$/
      */
-    public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
+    public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $productPage = 'edit')
     {
         $this->wait();
-        $linkCount = $this->getPage('Product edit')->countLocaleLinks();
+        $pageName = sprintf('Product %s', $productPage);
+        $linkCount = $this->getPage($pageName)->countLocaleLinks();
         $expectedLinkCount = count($table->getHash());
 
         if ($linkCount !== $expectedLinkCount) {
@@ -354,7 +355,7 @@ class WebUser extends RawMinkContext
         }
 
         foreach ($table->getHash() as $data) {
-            if (!$this->getPage('Product edit')->findLocaleLink($data['locale'], $data['language'], $data['flag'])) {
+            if (!$this->getPage($pageName)->findLocaleLink($data['locale'], $data['language'], $data['flag'])) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Could not find locale "%s %s" in the locale switcher',
