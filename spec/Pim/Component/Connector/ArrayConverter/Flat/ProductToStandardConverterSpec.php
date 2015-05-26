@@ -144,4 +144,40 @@ class ProductToStandardConverterSpec extends ObjectBehavior
 
         $this->convert($item)->shouldReturn($result);
     }
+
+    function it_throws_an_exception_if_no_converters_found(
+        $optionsResolverConverter,
+        $productFieldConverter,
+        $converterRegistry,
+        $fieldExtractor,
+        AttributeInterface $attribute
+    ) {
+        $item = ['sku' => '1069978'];
+
+        $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute]);
+        $attribute->getAttributeType()->willReturn('sku');
+
+        $productFieldConverter->supportsColumn('sku')->willReturn(false);
+
+        $converterRegistry->getConverter(Argument::any())->willReturn(null);
+
+        $this->shouldThrow(new \LogicException('No converters found for attribute type "sku"'))->during(
+            'convert',
+            [$item]
+        );
+    }
+
+    function it_throws_an_exception_if_no_attributes_found($optionsResolverConverter, $productFieldConverter)
+    {
+        $item = ['sku' => '1069978'];
+
+        $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $productFieldConverter->supportsColumn('sku')->willReturn(false);
+
+        $this->shouldThrow(new \LogicException('Unable to convert the given column "sku"'))->during(
+            'convert',
+            [$item]
+        );
+    }
 }
