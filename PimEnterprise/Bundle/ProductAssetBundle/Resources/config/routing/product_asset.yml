@@ -1,3 +1,7 @@
+pimee_product_asset_index:
+    path: /
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:indexAction }
+
 pimee_product_asset_view:
     path: /{id}/view
     defaults: { _controller: pimee_product_asset.controller.produt_asset:viewAction }

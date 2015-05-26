@@ -4,9 +4,10 @@
 
 {% block content %}
     {% set title = 'pimee_product_asset.enrich_asset.view.title'|trans %}
-    {# Copy dataset/stored and dataset/thumbnail folder in web/, and dataset/img_generic.png in web/thumbnail for the demo #}
+    {# Copy dataset/stored and dataset/thumbnail folder in web/ for the demo #}
     {% set storageFolder = 'stored/' %}
     {% set thumbnailFolder = 'thumbnail/' %}
+    {% set publicFolder = 'bundles/pimenterpriseproductasset/images/' %}
 
     {% set subtitle %}
        {{ asset.code }}
@@ -56,7 +57,7 @@
                         <label class="control-label">{{'pimee_product_asset.enrich_asset.view.end_of_use'|trans}}</label>
                         <div class="controls">
                             <div class="value-field">
-                                {{ asset.endOfUseAt|date("Y-m-d H:i:s") }}
+                                {{ asset.endOfUseAt|date("m / d / Y") }}
                             </div>
                             <div class="icons-container"></div>
                         </div>
@@ -88,7 +89,7 @@
                                                 {% if fileExists(asset(thumbnailFolder ~ attachment.reference.file.pathname)) %}
                                                     <img src="{{ asset(thumbnailFolder ~ attachment.reference.file.pathname) }}">
                                                 {% else %}
-                                                    <img src="{{ asset(thumbnailFolder ~ 'img_generic.png') }}">
+                                                    <img src="{{ asset(publicFolder ~ 'img_generic.png') }}">
                                                 {% endif %}
                                             </figure>
 
@@ -120,7 +121,6 @@
                                         <li>
                                             <div class="row-fluid variation">
 
-                                                {#{{ dump(variation.entity) }}#}
                                                 <h4>{{ variation.entity.channel.label }}</h4>
 
                                                 <div class="row-fluid">
@@ -140,12 +140,12 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td>{{ variation.entity.file.originalFilename }}</td>
-                                                                <td>{{ variation.metadata.exifSizeWidth }}</td>
-                                                                <td>{{ variation.metadata.exifSizeHeight }}</td>
+                                                                <td>{{ variation.metadata.exifSizeWidth }} px</td>
+                                                                <td>{{ variation.metadata.exifSizeHeight }} px</td>
                                                                 <td>{{ variation.metadata.exifResolution }}</td>
                                                                 <td>{{ variation.metadata.exifColorSpace }}</td>
                                                                 <td>{{ variation.entity.file.size|number_format(0, '.', ' ') }} ko</td>
-                                                                <td>{{ variation.entity.file.mimeType }} </td>
+                                                                <td>{{ variation.entity.file.mimeType }}</td>
                                                                 <td>
                                                                     <a class="btn btn-info btn-mini no-hash" download="{{ variation.entity.file.originalFilename }}" href="{{ asset(storageFolder ~ variation.entity.file.pathname) }}">
                                                                         {{'pimee_product_asset.enrich_asset.view.download'|trans}}

@@ -2,7 +2,6 @@ parameters:
     pimee_product_asset.repository.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ProductAssetRepository
     pimee_product_asset.repository.channel_configuration.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ChannelConfigurationRepository
     pimee_product_asset.repository.file_metadata.class:         PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\FileMetadataRepository
-    pimee_product_asset.repository.product_asset.class:         PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ProductAssetRepository
 
 services:
     pimee_product_asset.repository.channel_configuration:
@@ -18,15 +17,6 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pimee_product_asset.model.asset.class%]
-        tags:
-            - { name: 'pim_repository' }
-
-    pimee_product_asset.repository.product_asset:
-        class: %pimee_product_asset.repository.product_asset.class%
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
-        arguments:
-            - %pimee_product_asset.model.asset.class%
         tags:
             - { name: 'pim_repository' }
 

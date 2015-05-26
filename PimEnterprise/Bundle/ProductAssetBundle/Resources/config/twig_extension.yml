@@ -1,5 +1,5 @@
 parameters:
-    pimee_produt_asset.twig_extension.file_exists.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\FileExistsTwigExtension
+    pimee_produt_asset.twig_extension.file_exists.class: PimEnterprise\Bundle\ProductAssetBundle\TwigExtension\RawFileExistsTwigExtension
 
 services:
     pimee_produt_asset.twig_extension.file_exists:

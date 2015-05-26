@@ -32,8 +32,8 @@ class ProductAssetRepository extends EntityRepository implements ProductAssetRep
     /**
      * {@inheritdoc}
      */
-    public function findOneByIdentifier($code)
+    public function findOneByIdentifier($reference)
     {
-        return $this->findOneBy(['code' => $code]);
+        return $this->findOneBy(['code' => $reference]);
     }
 }

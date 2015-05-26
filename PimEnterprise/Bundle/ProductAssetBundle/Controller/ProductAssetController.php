@@ -109,7 +109,7 @@ class ProductAssetController extends Controller
      */
     protected function findProductAssetOr404($id)
     {
-        $productAsset = $this->assetRepository->findOneById($id);
+        $productAsset = $this->assetRepository->find($id);
 
         if (null === $productAsset) {
             throw $this->createNotFoundException(

@@ -21,14 +21,14 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class RawFileExistsTwigExtension extends \Twig_Extension
 {
     /** @var string */
-    protected $assetFolder;
+    protected $rootFolder;
 
     /**
-     * @param string $assetFolder
+     * @param string $rootFolder
      */
-    public function __construct($assetFolder)
+    public function __construct($rootFolder)
     {
-        $this->assetFolder = $assetFolder;
+        $this->rootFolder = $rootFolder;
     }
 
     /**
@@ -52,15 +52,19 @@ class RawFileExistsTwigExtension extends \Twig_Extension
      */
     public function fileExists($path)
     {
-        $webRoot = realpath($this->assetFolder);
+        $webRoot = realpath($this->rootFolder);
         $toCheck = realpath($webRoot . $path);
+
+
+        if (false === $webRoot || false === $toCheck) {
+            return false;
+        }
 
         if (!is_file($toCheck)) {
             return false;
         }
 
-        // check if file is well contained in web/ directory (prevents ../ in paths)
-        if (strncmp($webRoot, $toCheck, strlen($webRoot)) !== 0) {
+        if (strpos($toCheck, $webRoot) === false) {
             return false;
         }
 
