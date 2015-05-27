@@ -26,9 +26,9 @@ class NumberConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, $value)
     {
-        if ($value !== '') {
+        if ('' !== $value) {
             $data = (float) $value;
         } else {
             $data = null;

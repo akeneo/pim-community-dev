@@ -26,9 +26,9 @@ class PriceConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, $value)
     {
-        if ($value !== '') {
+        if ('' !== $value) {
             $data = $this->fieldSplitter->splitCollection($value);
         } else {
             $data = [];
@@ -53,8 +53,7 @@ class PriceConverter extends AbstractValueConverter
      */
     protected function convertPrice(array $attributeFieldInfo, $priceValue)
     {
-        // TODO: useless because handled by merger?
-        //Due to the multiple column for price collections
+        // TODO: will be reworked after the merge of PIM-4220, no need of multi format + rely on symfony validation
         if (isset($attributeFieldInfo['price_currency'])) {
             $currency = $attributeFieldInfo['price_currency'];
         } else {

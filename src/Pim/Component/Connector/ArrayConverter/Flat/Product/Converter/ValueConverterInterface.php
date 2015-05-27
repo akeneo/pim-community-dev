@@ -14,12 +14,12 @@ interface ValueConverterInterface
     /**
      * Converts value.
      *
-     * @param string $attributeFieldInfo
+     * @param array  $attributeFieldInfo
      * @param string $value
      *
      * @return array
      */
-    public function convert($attributeFieldInfo, $value);
+    public function convert(array $attributeFieldInfo, $value);
 
     /**
      * Supports the field.

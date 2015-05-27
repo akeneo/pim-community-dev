@@ -16,9 +16,9 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
  */
 class ProductAttributeFieldExtractor
 {
-    const ARRAY_SEPARATOR            = ',';
-    const FIELD_SEPARATOR            = '-';
-    const UNIT_SEPARATOR             = ' ';
+    const ARRAY_SEPARATOR = ',';
+    const FIELD_SEPARATOR = '-';
+    const UNIT_SEPARATOR  = ' ';
 
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;

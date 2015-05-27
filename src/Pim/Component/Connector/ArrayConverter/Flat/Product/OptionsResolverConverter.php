@@ -40,7 +40,7 @@ class OptionsResolverConverter
     public function resolveConverterOptions(array $options)
     {
         $resolver = $this->createOptionsResolver();
-        $resolver->setDefaults(['enabled' => 1]);
+        $resolver->setDefaults(['enabled' => true]);
         $options = $resolver->resolve($options);
 
         return $options;

@@ -172,9 +172,6 @@ class ProductBuilder implements ProductBuilderInterface
                 $product->removeValue($value);
             }
         }
-
-        // TODO deprecated, does not work, never used
-        $this->objectManager->flush($product);
     }
 
     /**

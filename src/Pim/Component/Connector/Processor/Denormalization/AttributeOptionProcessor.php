@@ -124,7 +124,7 @@ class AttributeOptionProcessor extends AbstractProcessor
     {
         // TODO: ugly fix to workaround issue with "attribute.group.code: This value should not be blank."
         // in case of existing option, attribute is a proxy, attribute group too, the validated group code is null
-        ($attributeOption->getAttribute() !== null) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
+        (null !== $attributeOption->getAttribute()) ? $attributeOption->getAttribute()->getGroup()->getCode() : null;
 
         return $this->validator->validate($attributeOption);
     }

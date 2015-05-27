@@ -195,7 +195,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param array            $context
      * @param ProductInterface $product
      *
-     * @throws RevertException
+     * @throws \RuntimeException
      */
     protected function denormalizeAssociations(&$data, $format, array $context, ProductInterface $product)
     {

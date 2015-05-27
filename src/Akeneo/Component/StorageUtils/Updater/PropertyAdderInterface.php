@@ -19,6 +19,8 @@ interface PropertyAdderInterface
      * @param mixed  $data     The data to add
      * @param array  $options  Options to pass to the adder
      *
+     * @throws \InvalidArgumentException
+     *
      * @return PropertyAdderInterface
      */
     public function addData($object, $property, $data, array $options = []);

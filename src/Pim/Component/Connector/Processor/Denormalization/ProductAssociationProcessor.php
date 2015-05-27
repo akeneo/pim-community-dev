@@ -19,7 +19,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 class ProductAssociationProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
-    private $arrayConverter;
+    protected $arrayConverter;
 
     /** @var IdentifiableObjectRepositoryInterface */
     protected $repository;

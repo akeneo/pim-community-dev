@@ -170,6 +170,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      * @param string $column
      * @param string $value
      *
+     * @throws \LogicException
+     *
      * @return array
      */
     protected function convertValue($column, $value)

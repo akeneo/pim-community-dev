@@ -22,7 +22,7 @@ Feature: Validate date attributes of a product
 
   Scenario: Validate the unique constraint of date attribute
     Given I change the Release to "2013-02-02"
-    And I save the productu
+    And I save the product
     When I am on the "bar" product page
     And I change the Release to "2013-02-02"
     And I save the product

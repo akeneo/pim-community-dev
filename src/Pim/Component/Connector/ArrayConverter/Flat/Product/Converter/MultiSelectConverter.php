@@ -26,9 +26,9 @@ class MultiSelectConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, $value)
     {
-        if ($value !== '') {
+        if ('' !== $value) {
             $value = $this->fieldSplitter->splitCollection($value);
         } else {
             $value = [];

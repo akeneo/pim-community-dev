@@ -26,11 +26,10 @@ class MetricConverter extends AbstractValueConverter
     /**
      * {@inheritdoc}
      */
-    public function convert($attributeFieldInfo, $value)
+    public function convert(array $attributeFieldInfo, $value)
     {
-        if ($value !== '') {
-            // TODO: useless because handled by merger?
-            //Due to the multi column format for metrics
+        // TODO: will be reworked after the merge of PIM-4220, no need of multi format + rely on symfony validation
+        if ('' !== $value) {
             if (isset($attributeFieldInfo['metric_unit'])) {
                 $unit = $attributeFieldInfo['metric_unit'];
             } else {

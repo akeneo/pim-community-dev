@@ -7,7 +7,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric
  *
- * These two values supports two different formats we, standardize here to the one column format
+ * These two values supports two different formats, we standardize here to the one column format
  *
  * For Prices
  *   - '10 EUR, 24 USD' or
@@ -82,9 +82,9 @@ class ColumnsMerger
     {
         $attribute = $attributeInfos['attribute'];
         $cleanField = $attribute->getCode();
-        $cleanField .= ($attributeInfos['locale_code'] === null) ?
+        $cleanField .= (null === $attributeInfos['locale_code']) ?
             '' : ProductAttributeFieldExtractor::FIELD_SEPARATOR.$attributeInfos['locale_code'];
-        $cleanField .= ($attributeInfos['scope_code'] === null) ?
+        $cleanField .= (null === $attributeInfos['scope_code']) ?
             '' : ProductAttributeFieldExtractor::FIELD_SEPARATOR.$attributeInfos['scope_code'];
 
         return $cleanField;

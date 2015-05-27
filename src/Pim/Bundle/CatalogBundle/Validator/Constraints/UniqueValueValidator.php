@@ -72,7 +72,7 @@ class UniqueValueValidator extends ConstraintValidator
             if ($valueAlreadyExists || $valueAlreadyProcessed) {
                 $valueData = $this->formatData($productValue->getData());
                 $attributeCode = $productValue->getAttribute()->getCode();
-                if ($valueData !== null && $valueData !== '') {
+                if (null !== $valueData && '' !== $valueData) {
                     $this->context->addViolation(
                         $constraint->message,
                         ['%value%' => $valueData, '%attribute%' => $attributeCode]

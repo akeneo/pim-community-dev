@@ -23,7 +23,7 @@ interface ValueConverterRegistryInterface
     /**
      * @param string $attributeType
      *
-     * @return ValueConverterInterface
+     * @return ValueConverterInterface|null
      */
     public function getConverter($attributeType);
 }
