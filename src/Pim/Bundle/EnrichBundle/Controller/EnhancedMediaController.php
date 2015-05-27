@@ -34,15 +34,16 @@ class EnhancedMediaController extends Controller
      */
     public function showAction(Request $request, $filename)
     {
+        $filter = $request->query->get('filter');
+
         // TODO: Ensure we receive the filepath and not only the filename to create
         // a cache image with the same path
         $filepath = $filename;
 
-        // TODO: Retrieve the filter to apply
         $imageManagerResponse = $this->imagineController->filterAction(
             $request,
             $filepath,
-            'image_preview'
+            $filter
         );
 
         return $imageManagerResponse;
