@@ -57,8 +57,8 @@ class ProductAssociationProcessor extends AbstractProcessor
     {
         $identifier = $this->getIdentifier($item);
         $product = $this->findProduct($identifier);
-        if (null === $product) {
-            throw new \LogicException(sprintf('No product with identifier "%s" has been found', $identifier));
+        if (!$product) {
+            $this->skipItemWithMessage($item, sprintf('No product with identifier "%s" has been found', $identifier));
         }
 
         $convertedItem = $this->convertItemData($item);
@@ -68,8 +68,8 @@ class ProductAssociationProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, $exception->getMessage(), $exception);
         }
 
-        $violations = $this->validateProduct($product);
-        if ($violations->count() > 0) {
+        $violations = $this->validateProductAssociations($product);
+        if ($violations && $violations->count() > 0) {
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
@@ -127,10 +127,18 @@ class ProductAssociationProcessor extends AbstractProcessor
      *
      * @throws \InvalidArgumentException
      *
-     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface|null
      */
-    protected function validateProduct(ProductInterface $product)
+    protected function validateProductAssociations(ProductInterface $product)
     {
-        return $this->validator->validate($product);
+        $associations = $product->getAssociations();
+        foreach ($associations as $association) {
+            $violations = $this->validator->validate($association);
+            if ($violations->count() > 0) {
+                return $violations;
+            }
+        }
+
+        return null;
     }
 }

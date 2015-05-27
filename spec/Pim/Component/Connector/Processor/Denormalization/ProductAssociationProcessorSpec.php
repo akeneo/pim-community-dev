@@ -6,6 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
@@ -50,6 +51,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         ProductInterface $product,
+        AssociationInterface $association,
         ConstraintViolationListInterface $violationList
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -92,8 +94,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)
             ->shouldBeCalled();
 
+        $product->getAssociations()->willReturn([$association]);
         $productValidator
-            ->validate($product)
+            ->validate($association)
             ->willReturn($violationList);
 
         $this
@@ -155,11 +158,12 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             );
     }
 
-    function it_skips_a_product_when_object_is_invalid(
+    function it_skips_a_product_when_association_is_invalid(
         $arrayConverter,
         $productRepository,
         $productUpdater,
         $productValidator,
+        AssociationInterface $association,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -204,8 +208,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $violation = new ConstraintViolation('There is a small problem with option code', 'foo', [], 'bar', 'code', 'mycode');
         $violations = new ConstraintViolationList([$violation]);
+        $product->getAssociations()->willReturn([$association]);
         $productValidator
-            ->validate($product)
+            ->validate($association)
             ->willReturn($violations);
 
         $this

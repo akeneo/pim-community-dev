@@ -125,7 +125,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     {
         foreach ($productsIdentifiers as $productIdentifier) {
             $associatedProduct = $this->productRepository->findOneByIdentifier($productIdentifier);
-            if (null === $associatedProduct) {
+            if (!$associatedProduct) {
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing product identifier',
@@ -146,7 +146,7 @@ class AssociationFieldSetter extends AbstractFieldSetter
     {
         foreach ($groupsCodes as $groupCode) {
             $associatedGroup = $this->groupRepository->findOneByIdentifier($groupCode);
-            if (null === $associatedGroup) {
+            if (!$associatedGroup) {
                 throw InvalidArgumentException::expected(
                     'associations',
                     'existing group code',

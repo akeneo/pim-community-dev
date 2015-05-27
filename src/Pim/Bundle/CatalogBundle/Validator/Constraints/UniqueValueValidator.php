@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -21,18 +22,17 @@ class UniqueValueValidator extends ConstraintValidator
     /** @var ProductRepositoryInterface */
     protected $repository;
 
-    /** @var array allows to keep the state */
-    protected $productUniqueValues;
+    /** @var UniqueValuesSet */
+    protected $uniqueValuesSet;
 
     /**
-     * Constructor
-     *
      * @param ProductRepositoryInterface $repository
+     * @param UniqueValuesSet            $uniqueValueSet
      */
-    public function __construct(ProductRepositoryInterface $repository)
+    public function __construct(ProductRepositoryInterface $repository, UniqueValuesSet $uniqueValueSet)
     {
         $this->repository = $repository;
-        $this->productUniqueValues = [];
+        $this->uniqueValuesSet = $uniqueValueSet;
     }
 
     /**
@@ -93,8 +93,7 @@ class UniqueValueValidator extends ConstraintValidator
     }
 
     /**
-     * Checks if the same exact value has already been processed on a different product instance, we use
-     * spl_object_hash to avoid issue with creation of two new products with the same identifier
+     * Checks if the same exact value has already been processed on a different product instance
      *
      * When validates values for a VariantGroup there is not product related to the value
      *
@@ -104,28 +103,8 @@ class UniqueValueValidator extends ConstraintValidator
      */
     protected function hasAlreadyValidatedTheSameValue(ProductValueInterface $productValue)
     {
-        $product = $productValue->getProduct();
-        if ($product) {
-            $productIdentifier = spl_object_hash($product);
-            $productValueData = $this->formatData($productValue->getData());
-            $attributeCode = $productValue->getAttribute()->getCode();
-            $uniqueValueCode = $attributeCode;
-            $uniqueValueCode .= (null !== $productValue->getLocale()) ? $productValue->getLocale() : '';
-            $uniqueValueCode .= (null !== $productValue->getScope()) ? $productValue->getScope() : '';
-
-            if (isset($this->productUniqueValues[$uniqueValueCode][$productValueData])) {
-                if ($this->productUniqueValues[$uniqueValueCode][$productValueData] !== $productIdentifier) {
-                    return true;
-                }
-            }
-
-            if (!isset($this->productUniqueValues[$uniqueValueCode])) {
-                $this->productUniqueValues[$uniqueValueCode] = [];
-            }
-
-            if (!isset($this->productUniqueValues[$uniqueValueCode][$productValueData])) {
-                $this->productUniqueValues[$uniqueValueCode][$productValueData] = $productIdentifier;
-            }
+        if (null !== $productValue->getProduct()) {
+            return false === $this->uniqueValuesSet->addValue($productValue);
         }
 
         return false;

@@ -4,6 +4,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
@@ -23,14 +24,16 @@ class ProductProcessorSpec extends ObjectBehavior
         ProductBuilderInterface $productBuilder,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        ObjectDetacherInterface $productDetacher
     ) {
         $this->beConstructedWith(
             $arrayConverter,
             $productRepository,
             $productBuilder,
             $productUpdater,
-            $productValidator
+            $productValidator,
+            $productDetacher
         );
         $this->setStepExecution($stepExecution);
     }
@@ -228,6 +231,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productRepository,
         $productBuilder,
         $productUpdater,
+        $productDetacher,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -301,6 +305,8 @@ class ProductProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)
             ->willThrow(new \InvalidArgumentException('family does not exists'));
 
+        $productDetacher->detach($product)->shouldBeCalled();
+
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
             ->during(
@@ -315,6 +321,7 @@ class ProductProcessorSpec extends ObjectBehavior
         $productBuilder,
         $productUpdater,
         $productValidator,
+        $productDetacher,
         ProductInterface $product,
         ConstraintViolationListInterface $violationList
     ) {
@@ -394,6 +401,8 @@ class ProductProcessorSpec extends ObjectBehavior
         $productValidator
             ->validate($product)
             ->willReturn($violations);
+
+        $productDetacher->detach($product);
 
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
