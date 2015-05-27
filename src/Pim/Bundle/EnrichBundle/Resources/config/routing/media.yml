@@ -1,3 +1,5 @@
 pim_enrich_media_show:
     path: /{filename}
     defaults: { _controller: pim_enrich.controller.media:showAction }
+    requirements:
+        filename: .+
