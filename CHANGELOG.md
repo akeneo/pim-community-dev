@@ -1,4 +1,4 @@
-# 1.2.x
+# 1.2.34 (2015-05-27)
 
 ## Bug fixes
 - PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
