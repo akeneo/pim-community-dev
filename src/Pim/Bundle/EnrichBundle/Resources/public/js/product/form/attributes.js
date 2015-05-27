@@ -45,11 +45,6 @@ define(
             },
             visibleFields: {},
             rendering: false,
-            initialize: function () {
-                FieldManager.fields = {};
-
-                BaseForm.prototype.initialize.apply(this, arguments);
-            },
             configure: function () {
                 this.getRoot().addTab('attributes', 'Attributes');
 
@@ -59,6 +54,7 @@ define(
                 mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
                 mediator.on('show_attribute', _.bind(this.showAttribute, this));
                 window.addEventListener('resize', _.bind(this.resize, this));
+                FieldManager.clear();
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)

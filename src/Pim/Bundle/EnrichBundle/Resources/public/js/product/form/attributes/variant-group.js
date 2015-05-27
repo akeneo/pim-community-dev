@@ -13,7 +13,12 @@ define(
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {
-                mediator.on('field:extension:add', _.bind(this.addExtension, this));
+                mediator.off(null, null, 'form:product:attribute:variant-group');
+                mediator.on(
+                    'field:extension:add',
+                    _.bind(this.addExtension, this),
+                    'form:product:attribute:variant-group'
+                );
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

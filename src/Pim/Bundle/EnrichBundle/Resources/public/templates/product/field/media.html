@@ -1,7 +1,9 @@
 <div class="media-uploader <%= value.value && value.value.filePath ? 'has-file' : '' %>" >
     <div>
         <% if (!value.value || value.value.filePath === null) { %>
-            <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>/>
+            <label class="file-uploader">
+                <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'disabled' ? 'disabled' : '' %>/>
+            </label>
             <div class="uploader">
                 <img src="/bundles/pimui/images/upload.png" alt="upload icon"/>
                 <span><%= _.__('pim_enrich.entity.product.media.upload')%></span>

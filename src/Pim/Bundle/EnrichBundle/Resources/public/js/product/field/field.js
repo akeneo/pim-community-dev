@@ -119,8 +119,6 @@ define([
             },
             setContext: function (context) {
                 this.context = context;
-
-                this.render();
             },
             addElement: function (position, code, element) {
                 if (!this.elements[position]) {
