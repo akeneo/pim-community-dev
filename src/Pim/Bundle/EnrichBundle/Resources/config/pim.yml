@@ -48,7 +48,7 @@ oneup_flysystem:
     adapters:
         storage_adapter:
             local:
-                directory: %kernel.root_dir%/../web/storage/
+                directory: %kernel.root_dir%/../web/stored/
 #            awss3v2:
 #                client: acme.s3_client
 #                bucket: akeneotest
