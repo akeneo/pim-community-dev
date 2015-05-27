@@ -29,11 +29,11 @@ Feature: Update product history when rules are executed
     When the product rule "set_description" is executed
     And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
-    And I visit the "History" tab
+    And I open the history
     Then there should be 2 updates
     And I should see history:
-      | version | property                 | value                        |
-      | 2       | description-fr_FR-mobile | Chaussures noires classiques |
+      | version | property              | value                        |
+      | 2       | Description mobile fr | Chaussures noires classiques |
     And I should see:
     """
     Applied rule "set_description"
@@ -56,12 +56,12 @@ Feature: Update product history when rules are executed
     And the product rule "set_name" is executed
     And the history of the product "converse-sneakers" has been built
     And I am on the "converse-sneakers" product page
-    And I visit the "History" tab
+    And I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property                 | value                        |
-      | 2       | description-fr_FR-mobile | Chaussures noires classiques |
-      | 3       | name-fr_FR               | Chaussures noires            |
+      | 2       | Description mobile fr    | Chaussures noires classiques |
+      | 3       | Name fr                  | Chaussures noires            |
     And I should see:
     """
     Applied rule "set_description"
