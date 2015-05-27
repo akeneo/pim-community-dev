@@ -43,3 +43,17 @@ doctrine_migrations:
     dir_name: %doctrine_migrations_dir%
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
+
+oneup_flysystem:
+    adapters:
+        storage_adapter:
+            local:
+                directory: %kernel.root_dir%/../web/storage/
+#            awss3v2:
+#                client: acme.s3_client
+#                bucket: akeneotest
+#                prefix: stored
+    filesystems:
+        storage:
+            adapter: storage_adapter
+            mount: storage

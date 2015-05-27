@@ -1,4 +1,18 @@
 liip_imagine:
+
+#    resolvers:
+#        default:
+#            web_path: ~
+
+#    loaders:
+#        default:
+#            filesystem:
+#                data_root: "%kernel.root_dir%"
+
+#        my_custom:
+#            filesystem:
+#                data_root: "%kernel.root_dir%"
+
     filter_sets:
         avatar_med:
             quality:          95
@@ -6,20 +20,21 @@ liip_imagine:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
         thumbnail_small:
-#            cache: local_dir
+            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [80, 120], mode: inset }
                 strip:        ~
         thumbnail:
-#            cache: local_dir
+            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [320, 240], mode: inset }
                 strip:        ~
         image_preview:
-#            cache: local_dir
             quality:          95
+            data_loader:      flysystem_data_loader
+            format:           jpg
             filters:
                 thumbnail:    { size: [900, 600], mode: inset }
                 strip:        ~
