@@ -6,7 +6,6 @@
     {% set title = 'pimee_product_asset.enrich_asset.view.title'|trans %}
     {# Copy dataset/stored and dataset/thumbnail folder in web/ for the demo #}
     {% set storageFolder = 'stored/' %}
-    {% set thumbnailFolder = 'thumbnail/' %}
     {% set publicFolder = 'bundles/pimenterpriseproductasset/images/' %}
 
     {% set subtitle %}
@@ -86,11 +85,7 @@
                                         <div class="row-fluid">
 
                                             <figure class="thumbnail">
-                                                {% if fileExists(asset(thumbnailFolder ~ attachment.reference.file.pathname)) %}
-                                                    <img src="{{ asset(thumbnailFolder ~ attachment.reference.file.pathname) }}">
-                                                {% else %}
-                                                    <img src="{{ asset(publicFolder ~ 'img_generic.png') }}">
-                                                {% endif %}
+                                                <img src="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.pathname, 'filter': 'thumbnail' }) }}">
                                             </figure>
 
                                             <table class="table">
