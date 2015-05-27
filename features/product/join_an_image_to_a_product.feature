@@ -13,7 +13,9 @@ Feature: Join an image to a product
     And I am logged in as "Mary"
     And I am on the "Car" product page
 
+  # need proposal
   @javascript
+  @skip-pef
   Scenario: Succesfully leave the image empty
     # Flash message is different from CE
     When I save the product

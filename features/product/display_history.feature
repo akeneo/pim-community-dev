@@ -20,7 +20,7 @@ Feature: Display the product history
     And I fill in the following information:
       | SKU | sandals-001-bis |
     And I save the product
-    When I visit the "History" tab
+    When I open the history
     Then there should be 3 update
     And I should see history:
       | version | property   | value           |

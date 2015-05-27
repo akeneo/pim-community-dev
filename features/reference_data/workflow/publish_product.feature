@@ -31,7 +31,8 @@ Feature: Publish a product
     Then the grid should contain 1 elements
     And I should see product red-heels
 
-  @skip-pef #need save working copy to work
+  #need save working copy to work
+  @skip-pef
   Scenario: Successfully edit a published product with reference data
     Given I am on the "red-heels" product page
     When I press the "Publish" button
