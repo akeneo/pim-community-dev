@@ -119,6 +119,7 @@ class FilterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $filtersState    = $data->offsetGetByPath('[state][filters]', []);
+        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
         $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
@@ -138,7 +139,7 @@ class FilterExtension extends AbstractExtension
                 }
             }
 
-            if ('category' !== $filter->getName()) {
+            if (isset($filtersConfig[$filter->getName()])) {
                 $metadata = $filter->getMetadata();
 
                 $filtersMetaData[] = array_merge(
@@ -197,11 +198,13 @@ class FilterExtension extends AbstractExtension
             $filters[] = $this->getFilterObject($column, $filter);
         }
 
-        $categoryConfig = [
-            'type'      => 'product_category',
-            'data_name' => 'category',
-        ];
-        $filters[] = $this->getFilterObject('category', $categoryConfig);
+        if (!isset($filtersConfig['category'])) {
+            $categoryConfig = [
+                'type'      => 'product_category',
+                'data_name' => 'category',
+            ];
+            $filters[] = $this->getFilterObject('category', $categoryConfig);
+        }
 
         return $filters;
     }

@@ -1,5 +1,5 @@
 @javascript
-Feature: Filter products
+Feature: Filter products with multiples text fields filters
   In order to filter products in the catalog
   As a regular user
   I need to be able to filter products with multiples text fields filters

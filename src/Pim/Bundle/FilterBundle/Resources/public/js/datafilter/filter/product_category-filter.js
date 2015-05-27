@@ -47,10 +47,10 @@ define(
 
                 this.value = this.emptyValue;
 
-                if (urlParams[gridName + '[_filter][category][value][treeId]']) {
+                if (urlParams && urlParams[gridName + '[_filter][category][value][treeId]']) {
                     this.value.value.treeId = urlParams[gridName + '[_filter][category][value][treeId]'];
                 }
-                if (urlParams[gridName + '[_filter][category][value][categoryId]']) {
+                if (urlParams && urlParams[gridName + '[_filter][category][value][categoryId]']) {
                     this.value.value.categoryId = urlParams[gridName + '[_filter][category][value][categoryId]'];
                 }
 

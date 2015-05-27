@@ -267,7 +267,9 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
                 if (filter.enabled) {
                     filter.render();
                 }
-                fragment.appendChild(filter.$el.get(0));
+                if (filter.$el.length > 0) {
+                    fragment.appendChild(filter.$el.get(0));
+                }
             }, this);
 
             this.trigger("rendered");
