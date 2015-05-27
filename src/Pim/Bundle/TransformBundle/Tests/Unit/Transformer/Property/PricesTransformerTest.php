@@ -151,6 +151,8 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
                     'getDatetime',
                     'setEntity',
                     'getInteger',
+                    'getProduct',
+                    'setProduct',
                     '__toString'
                 ]
             )
