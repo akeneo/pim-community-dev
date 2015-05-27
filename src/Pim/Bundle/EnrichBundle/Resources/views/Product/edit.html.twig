@@ -70,6 +70,8 @@
                                             document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
                                             form.setData(product, {silent: true});
                                             form.setElement('#product-edit-form').render();
+                                        }).fail(function(xhr, textStatus, errorThrown) {
+                                            alert(_.__('pim_enrich.alert.not_allowed'));
                                         });
                                     })
                                 });

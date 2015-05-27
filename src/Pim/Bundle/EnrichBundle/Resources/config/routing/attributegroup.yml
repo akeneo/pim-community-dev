@@ -41,12 +41,12 @@ pim_enrich_attributegroup_removeattribute:
 
 pim_enrich_attributegroup_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.attribute_group_rest:indexAction }
+    defaults: { _controller: pim_enrich.controller.attribute_group_rest:indexAction, _format: json }
     methods: [GET]
 
 pim_enrich_attributegroup_rest_get:
     path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.attribute_group_rest:getAction }
+    defaults: { _controller: pim_enrich.controller.attribute_group_rest:getAction, _format: json }
     requirements:
         id: \d+
     methods: [GET]

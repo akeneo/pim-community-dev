@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -12,6 +13,8 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -47,6 +50,9 @@ class ProductRestController
     /** @var UserContext */
     protected $userContext;
 
+    /** @var ObjectFilterInterface */
+    protected $objectFilter;
+
     /**
      * @param ProductManager          $productManager
      * @param AttributeManager        $attributeManager
@@ -55,6 +61,7 @@ class ProductRestController
      * @param NormalizerInterface     $normalizer
      * @param ValidatorInterface      $validator
      * @param UserContext             $userContext
+     * @param ObjectFilterInterface   $objectFilter
      */
     public function __construct(
         ProductManager $productManager,
@@ -63,7 +70,8 @@ class ProductRestController
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
-        UserContext $userContext
+        UserContext $userContext,
+        ObjectFilterInterface $objectFilter
     ) {
         $this->productManager   = $productManager;
         $this->attributeManager = $attributeManager;
@@ -72,6 +80,7 @@ class ProductRestController
         $this->normalizer       = $normalizer;
         $this->validator        = $validator;
         $this->userContext      = $userContext;
+        $this->objectFilter     = $objectFilter;
     }
 
     /**
@@ -92,7 +101,9 @@ class ProductRestController
     }
 
     /**
-     * @param string $id
+     * @param string $id Product id
+     *
+     * @throws NotFoundHttpException If product is not found or the user cannot see it
      *
      * @return JsonResponse
      */
@@ -119,11 +130,17 @@ class ProductRestController
      * @param Request $request
      * @param string  $id
      *
+     * @throws NotFoundHttpException     If product is not found or the user cannot see it
+     * @throws AccessDeniedHttpException If the user does not have right to edit the product
+     *
      * @return JsonResponse
      */
     public function postAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
+        if ($this->objectFilter->filterObject($product, 'pim:internal_api:product:edit')) {
+            throw new AccessDeniedHttpException();
+        }
 
         $data = json_decode($request->getContent(), true);
 
@@ -150,17 +167,23 @@ class ProductRestController
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
      *
-     * @throws NotFoundHttpException
+     * @throws NotFoundHttpException     If product is not found or the user cannot see it
+     * @throws AccessDeniedHttpException If the user does not have right to edit the product
+     * @throws BadRequestHttpException   If the attribute is not removable
      *
      * @return JsonResponse
      */
     public function removeAttributeAction($productId, $attributeId)
     {
-        $product   = $this->findProductOr404($productId);
+        $product = $this->findProductOr404($productId);
+        if ($this->objectFilter->filterObject($product, 'pim:internal_api:product:edit')) {
+            throw new AccessDeniedHttpException();
+        }
+
         $attribute = $this->findAttributeOr404($attributeId);
 
         if (!$product->isAttributeRemovable($attribute)) {
-            return new JsonResponse([], 400);
+            throw new BadRequestHttpException();
         }
 
         $this->productManager->removeAttributeFromProduct($product, $attribute);
@@ -180,6 +203,7 @@ class ProductRestController
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
+        $product = $this->objectFilter->filterObject($product, 'pim:internal_api:product:view') ? null : $product;
 
         if (!$product) {
             throw new NotFoundHttpException(

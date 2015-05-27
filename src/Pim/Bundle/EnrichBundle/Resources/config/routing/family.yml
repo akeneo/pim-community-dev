@@ -45,12 +45,12 @@ pim_enrich_family_history:
 
 pim_enrich_family_rest_index:
     path: /rest
-    defaults: { _controller: pim_enrich.controller.family_rest:indexAction }
+    defaults: { _controller: pim_enrich.controller.family_rest:indexAction, _format: json }
     methods: [GET]
 
 pim_enrich_family_rest_get:
     path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.family_rest:getAction }
+    defaults: { _controller: pim_enrich.controller.family_rest:getAction, _format: json }
     requirements:
         id: \d+
     methods: [GET]
