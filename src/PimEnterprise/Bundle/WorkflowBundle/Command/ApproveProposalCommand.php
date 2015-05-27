@@ -54,7 +54,7 @@ class ApproveProposalCommand extends ContainerAwareCommand
 
         $product = $this->getProductRepository()->findOneByIdentifier($identifier);
         if (false === $product) {
-            $output->writeln(sprintf('<error>Product with identifier "%s" not found<error>', $identifier));
+            $output->writeln(sprintf('<error>The product with identifier "%s" not found<error>', $identifier));
 
             return -1;
         }
