@@ -35,22 +35,22 @@ class AttributeProcessor extends AbstractProcessor
     /**
      * @param StandardArrayConverterInterface       $arrayConverter
      * @param IdentifiableObjectRepositoryInterface $repository
+     * @param AttributeFactory                      $attributeFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
-     * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
+        AttributeFactory $attributeFactory,
         ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator,
-        AttributeFactory $attributeFactory
+        ValidatorInterface $validator
     ) {
         parent::__construct($repository);
         $this->arrayConverter   = $arrayConverter;
+        $this->attributeFactory = $attributeFactory;
         $this->updater          = $updater;
         $this->validator        = $validator;
-        $this->attributeFactory = $attributeFactory;
     }
 
     /**
@@ -60,6 +60,7 @@ class AttributeProcessor extends AbstractProcessor
     {
         $convertedItem = $this->convertItemData($item);
         $attribute = $this->findOrCreateAttribute($convertedItem);
+
         try {
             $this->updateAttribute($attribute, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
@@ -87,13 +88,12 @@ class AttributeProcessor extends AbstractProcessor
     /**
      * @param array $convertedItem
      *
-     * @return attributeInterface
+     * @return AttributeInterface
      */
     protected function findOrCreateAttribute(array $convertedItem)
     {
         $attribute = $this->findObject($this->repository, $convertedItem);
-        if ($attribute === null) {
-
+        if (null === $attribute) {
             return $this->attributeFactory->createAttribute($convertedItem['attributeType']);
         }
 
@@ -112,7 +112,7 @@ class AttributeProcessor extends AbstractProcessor
     }
 
     /**
-     * @param attributeInterface $attribute
+     * @param AttributeInterface $attribute
      *
      * @throws \InvalidArgumentException
      *

@@ -8,7 +8,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
-use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -50,12 +49,11 @@ class AttributeProcessorSpec extends ObjectBehavior
 
         $convertedItems =
             [
-                'labels'                 =>
-                    [
-                        'de_DE' => 'SKU',
-                        'en_US' => 'SKU',
-                        'fr_FR' => 'SKU',
-                    ],
+                'labels'                 => [
+                    'de_DE' => 'SKU',
+                    'en_US' => 'SKU',
+                    'fr_FR' => 'SKU',
+                ],
                 'attributeType'          => 'pim_catalog_identifier',
                 'code'                   => 'sku',
                 'unique'                 => true,
@@ -92,12 +90,11 @@ class AttributeProcessorSpec extends ObjectBehavior
 
         $convertedItems =
             [
-                'labels'                 =>
-                    [
-                        'de_DE' => 'SKU',
-                        'en_US' => 'SKU',
-                        'fr_FR' => 'SKU',
-                    ],
+                'labels'                 => [
+                    'de_DE' => 'SKU',
+                    'en_US' => 'SKU',
+                    'fr_FR' => 'SKU',
+                ],
                 'attributeType'          => 'pim_catalog_identifier',
                 'code'                   => 'sku',
                 'unique'                 => true,

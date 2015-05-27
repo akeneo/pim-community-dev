@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
  * Updates and validates an attribute
@@ -21,7 +22,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var AttributeGroupRepositoryInterface */
     protected $attributeGroupRepository;
 
-    /** @var \Symfony\Component\PropertyAccess\PropertyAccessor  */
+    /** @var PropertyAccessor */
     protected $accessor;
 
     /**
@@ -69,22 +70,16 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $translation = $attribute->getTranslation();
                 $translation->setLabel($label);
             }
-
-            return;
-        }
-
-        if ('group' === $field) {
+        } elseif ('group' === $field) {
             $attributeGroup = $this->findAttributeGroup($data);
             if (null !== $attributeGroup) {
                 $attribute->setGroup($attributeGroup);
             } else {
                 throw new \InvalidArgumentException(sprintf('AttributeGroup "%s" does not exist', $data));
             }
-
-            return;
+        } else {
+            $this->accessor->setValue($attribute, $field, $data);
         }
-
-        $this->accessor->setValue($attribute, $field, $data);
     }
 
     /**

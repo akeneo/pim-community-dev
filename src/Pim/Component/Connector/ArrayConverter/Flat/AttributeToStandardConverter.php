@@ -21,7 +21,7 @@ class AttributeToStandardConverter implements StandardArrayConverterInterface
     protected $attributeFieldResolver;
 
     /**
-     * @param LocaleRepositoryInterface     $localeRepository
+     * @param LocaleRepositoryInterface      $localeRepository
      * @param ProductAttributeFieldExtractor $attributeFieldResolver
      */
     public function __construct(

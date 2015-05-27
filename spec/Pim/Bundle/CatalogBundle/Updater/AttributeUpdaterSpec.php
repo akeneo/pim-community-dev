@@ -2,14 +2,12 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
-use Doctrine\Common\Util\ClassUtils;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\AttributeTranslation;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AttributeUpdaterSpec extends ObjectBehavior
@@ -29,11 +27,20 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
-    function it_updates_a_new_attribute($attributeGroupRepository, AttributeInterface $attribute, AttributeTranslation $translation, AttributeGroupInterface $attributeGroup, PropertyAccessor $accessor)
-    {
+    function it_updates_a_new_attribute(
+        $attributeGroupRepository,
+        AttributeInterface $attribute,
+        AttributeTranslation $translation,
+        AttributeGroupInterface $attributeGroup,
+        PropertyAccessor $accessor
+    ) {
         $attribute->getId()->willReturn(null);
 
-        $data = ['labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'], 'group' => 'marketing', 'attributeType' => 'pim_catalog_text'];
+        $data = [
+            'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
+            'group' => 'marketing',
+            'attributeType' => 'pim_catalog_text'
+        ];
 
         $attribute->setLocale('en_US')->shouldBeCalled();
         $attribute->setLocale('fr_FR')->shouldBeCalled();
@@ -51,11 +58,18 @@ class AttributeUpdaterSpec extends ObjectBehavior
         $this->update($attribute, $data);
     }
 
-    function it_throws_an_exception_if_no_groups_found($attributeGroupRepository, AttributeInterface $attribute, AttributeTranslation $translation)
-    {
+    function it_throws_an_exception_if_no_groups_found(
+        $attributeGroupRepository,
+        AttributeInterface $attribute,
+        AttributeTranslation $translation
+    ) {
         $attribute->getId()->willReturn(null);
 
-        $data = ['labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'], 'group' => 'marketing', 'attributeType' => 'pim_catalog_text'];
+        $data = [
+            'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
+            'group' => 'marketing',
+            'attributeType' => 'pim_catalog_text'
+        ];
 
         $attribute->setLocale('en_US')->shouldBeCalled();
         $attribute->setLocale('fr_FR')->shouldBeCalled();
@@ -66,7 +80,10 @@ class AttributeUpdaterSpec extends ObjectBehavior
 
         $attributeGroupRepository->findOneByIdentifier('marketing')->willReturn(null);
 
-        $this->shouldThrow(new \InvalidArgumentException('AttributeGroup "marketing" does not exist'))->during('update', [$attribute, $data]);
+        $this->shouldThrow(new \InvalidArgumentException('AttributeGroup "marketing" does not exist'))->during(
+            'update',
+            [$attribute, $data]
+        );
     }
 
     function it_throws_an_exception_if_it_is_not_an_attribute(GroupInterface $group)

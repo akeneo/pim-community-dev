@@ -55,7 +55,7 @@ class AttributeManager
      *
      * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
      *
-     * @deprecated will be removed in 1.5, please use AttributeFactory
+     * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
      */
     public function createAttribute($type = null)
     {

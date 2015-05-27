@@ -7,8 +7,8 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
 /**
  * Attribute factory
  *
- * @author    Olivier Soulet <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class AttributeFactory
@@ -29,9 +29,9 @@ class AttributeFactory
      */
     public function __construct(AttributeTypeRegistry $registry, $attributeClass, $productClass)
     {
+        $this->registry       = $registry;
         $this->attributeClass = $attributeClass;
         $this->productClass   = $productClass;
-        $this->registry       = $registry;
     }
 
     /**

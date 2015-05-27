@@ -19,9 +19,9 @@ services:
         arguments:
             - '@pim_base_connector.array_converter.flat.attribute'
             - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.factory.attribute'
             - '@pim_catalog.updater.attribute'
             - '@validator'
-            - '@pim_catalog.factory.attribute'
 
     pim_base_connector.processor.denormalization.attribute_option.structured:
         class: %pim_base_connector.processor.denormalization.attribute_option.class%
