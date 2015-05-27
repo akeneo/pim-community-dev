@@ -89,7 +89,7 @@ class EnterpriseCommandContext extends CommandContext
                 );
             }
 
-            $publishedProduct = $this->getPublishedProduct($originalProduct);
+            $publishedProduct           = $this->getPublishedProduct($originalProduct);
             $normalizedPublishedProduct = $this->getContainer()->get('pim_serializer')->normalize(
                 $publishedProduct,
                 'json'
@@ -143,7 +143,8 @@ class EnterpriseCommandContext extends CommandContext
             if (null === $proposal) {
                 throw new \Exception(
                     sprintf(
-                        'An error occurred during the retrieval of the draft "%s"', $expected['product']
+                        'An error occurred during the retrieval of the draft "%s"',
+                        $expected['product']
                     )
                 );
             }
@@ -214,7 +215,7 @@ class EnterpriseCommandContext extends CommandContext
             ]
         );
 
-        $result = trim($proposalTester->getDisplay());
+        $result         = trim($proposalTester->getDisplay());
         $expectedResult = sprintf('Proposal "%s" has been approved', $product);
 
         if ('' === $not && $result !== $expectedResult) {
@@ -255,7 +256,7 @@ class EnterpriseCommandContext extends CommandContext
      */
     protected function getPublishedProduct(ProductInterface $originalProduct)
     {
-        $repository = $this->getContainer()->get('pimee_workflow.repository.published_product');
+        $repository       = $this->getContainer()->get('pimee_workflow.repository.published_product');
         $publishedProduct = $repository->findOneByOriginalProduct($originalProduct);
 
         return $publishedProduct;

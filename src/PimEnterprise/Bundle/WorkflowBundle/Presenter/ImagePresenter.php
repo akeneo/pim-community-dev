@@ -37,7 +37,8 @@ class ImagePresenter implements PresenterInterface
      */
     public function supports($data)
     {
-        return $data instanceof ProductValueInterface && 'pim_catalog_image' === $data->getAttribute()->getAttributeType();
+        return $data instanceof ProductValueInterface
+            && 'pim_catalog_image' === $data->getAttribute()->getAttributeType();
     }
 
     /**

@@ -35,8 +35,8 @@ class OptionsComparator implements ComparatorInterface
         foreach ($data['value'] as $index => $attribute) {
             if (!array_key_exists('value', $originals)
                 || !isset($originals['value'][$index])
-                || $attribute['code'] !== $originals['value'][$index]['code'])
-            {
+                || $attribute['code'] !== $originals['value'][$index]['code']
+            ) {
                 $codes[] = $attribute['code'];
             }
         }

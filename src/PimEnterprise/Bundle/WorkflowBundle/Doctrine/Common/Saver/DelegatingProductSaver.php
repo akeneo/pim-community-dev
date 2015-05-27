@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ProductSavingOptionsResolver;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -72,7 +73,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException if not authenticated
+     * @throws AuthenticationCredentialsNotFoundException if not authenticated
      */
     public function save($product, array $options = [])
     {
