@@ -117,7 +117,7 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
 - ProductTemplateUpdater now takes ProductPropertyUpdaterInterface as argument and not anymore ProductUpdaterInterface
-- Remove fixtures_product_yml from the InstallerBundle, csv format is now mandatory for products
+- Remove fixtures_product_yml and fixtures_association_yml from the InstallerBundle, csv format is now mandatory for products
 - ProductUpdater takes ValidatorInterface as second argument
 - Remove method getAssociationFieldNames() from `Pim\Bundle\TransformBundle\Builder\FieldBuilder`
 - Rename `Pim\Bundle\TransformBundle\Builder\FieldBuilder` to `Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor`

@@ -89,17 +89,6 @@ products:
     csv:
         reader:            pim_base_connector.reader.file.csv_product
         processor:         pim_base_connector.processor.product
-    yml:
-        reader:            pim_base_connector.reader.file.yaml_product
-        processor:         pim_base_connector.processor.product
-
-associations:
-    order: 90
-    csv:
-        processor:         pim_base_connector.processor.association
-    yml:
-        reader:            pim_base_connector.reader.file.yaml_associations
-        processor:         pim_base_connector.processor.association
 
 jobs:
     order: 90
