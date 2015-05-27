@@ -19,7 +19,7 @@ namespace PimEnterprise\Bundle\CatalogBundle;
 class Version
 {
     /** @staticvar string */
-    const VERSION = '1.0.26';
+    const VERSION = '1.0.27';
 
     /** @staticvar string */
     const VERSION_CODENAME = 'Dandelion';
