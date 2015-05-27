@@ -1,7 +1,8 @@
 parameters:
-    pim_enrich.imagine.local_dir_resolver.class: Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver
+#    pim_enrich.imagine.local_dir_resolver.class: Pim\Bundle\EnrichBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_enrich.imagine.loader.flysystem.class: Pim\Bundle\EnrichBundle\Imagine\Loader\FlysystemLoader
 
-#services:
+services:
 #    # Media management
 #    pim_enrich.imagine.local_dir_resolver:
 #        class: %pim_enrich.imagine.local_dir_resolver.class%
@@ -10,3 +11,21 @@ parameters:
 #            - %kernel.cache_dir%/media
 #        tags:
 #            - { name: liip_imagine.cache.resolver, resolver: local_dir }
+
+    pim_enrich.imagine.loader.flysystem:
+        class: %pim_enrich.imagine.loader.flysystem.class%
+        arguments:
+            - '@oneup_flysystem.mount_manager'
+            - 'storage'
+        tags:
+            - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
+
+#    acme.s3_client:
+#        class: Aws\S3\S3Client
+#        factory_class: Aws\S3\S3Client
+#        factory_method: factory
+#        arguments:
+#            -
+#                key: 'key'
+#                secret: 'secret'
+#                region: 'region'

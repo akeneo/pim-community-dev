@@ -205,14 +205,22 @@ services:
             - '@pim_enrich.form.association_type'
             - '@pim_catalog.remover.association_type'
 
+#    pim_enrich.controller.media:
+#        scope: request
+#        class: %pim_enrich.controller.media.class%
+#        arguments:
+#            - '@liip_imagine'
+#            - '@liip_imagine.filter.manager'
+#            - '@liip_imagine.cache.manager'
+#            - '@pim_filesystem'
+
+    # TODO: Parameter for class
     pim_enrich.controller.media:
         scope: request
-        class: %pim_enrich.controller.media.class%
+        class: 'Pim\Bundle\EnrichBundle\Controller\EnhancedMediaController'
         arguments:
-            - '@liip_imagine'
-            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.controller'
             - '@liip_imagine.cache.manager'
-            - '@pim_filesystem'
 
     pim_enrich.controller.variant_group:
         scope: request
