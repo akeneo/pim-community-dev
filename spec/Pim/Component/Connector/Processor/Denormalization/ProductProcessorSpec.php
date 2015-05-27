@@ -45,9 +45,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_no_extra_configuration()
+    function it_has_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldHaveCount(4);
     }
 
     function it_updates_an_existing_product(

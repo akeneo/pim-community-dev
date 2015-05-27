@@ -1,17 +1,19 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver;
 
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
 /**
- * Extracts attribute field information
+ * Resolve attribute field information
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: missing spec!
  */
 class ProductOptionalAttributeFieldResolver
 {

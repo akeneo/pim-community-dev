@@ -9,9 +9,9 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverter
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Prophecy\Argument;
 
 class ProductToStandardConverterSpec extends ObjectBehavior

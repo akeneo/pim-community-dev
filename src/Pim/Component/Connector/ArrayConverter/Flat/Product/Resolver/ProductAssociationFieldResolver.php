@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver;
 
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 

@@ -2244,7 +2244,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor
+     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
      */
     protected function getFieldExtractor()
     {

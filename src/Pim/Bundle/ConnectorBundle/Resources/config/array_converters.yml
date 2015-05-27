@@ -3,9 +3,9 @@ parameters:
     pim_base_connector.array_converter.flat.attribute.class:                          Pim\Component\Connector\ArrayConverter\Flat\AttributeToStandardConverter
     pim_base_connector.array_converter.structured.attribute_option.class:             Pim\Component\Connector\ArrayConverter\Structured\AttributeOptionToStandardConverter
     pim_base_connector.array_converter.flat.product.class:                            Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter
-    pim_base_connector.array_converter.flat.attribute_field_extractor.class:          Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor
-    pim_base_connector.array_converter.flat.optional_attribute_field_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldResolver
-    pim_base_connector.array_converter.flat.association_field_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver
+    pim_base_connector.array_converter.flat.attribute_field_extractor.class:          Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
+    pim_base_connector.array_converter.flat.optional_attribute_field_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductOptionalAttributeFieldResolver
+    pim_base_connector.array_converter.flat.association_field_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver
     pim_base_connector.array_converter.flat.converter_options_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter
     pim_base_connector.array_converter.flat.product.registry.class:                   Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistry
     pim_base_connector.array_converter.flat.product.abstract.class:                   Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\AbstractValueConverter

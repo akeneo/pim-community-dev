@@ -4,8 +4,10 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
@@ -67,6 +69,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Convert flat array to structured array:
      *
      * Before:
@@ -140,14 +144,11 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *          }
      *      }
      * }
-     *
-     * @param array $item Representing a flat product
-     *
-     * @return array structured $item
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
-        $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item);
+
+        $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item/*, $options*/);
         $mergedItems = $this->columnsMerger->merge($resolvedItem);
 
         $result = [];

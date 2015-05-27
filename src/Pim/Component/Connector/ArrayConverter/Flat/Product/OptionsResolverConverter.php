@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductOptionalAttributeFieldResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductOptionalAttributeFieldResolver;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -13,6 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: missing specs
  */
 class OptionsResolverConverter
 {
@@ -35,15 +37,19 @@ class OptionsResolverConverter
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $item
+     * @param array $options
+     *
+     * @return array
      */
-    public function resolveConverterOptions(array $options)
+    public function resolveConverterOptions(array $item, array $options = [])
     {
+        // TODO $options
         $resolver = $this->createOptionsResolver();
         $resolver->setDefaults(['enabled' => true]);
-        $options = $resolver->resolve($options);
+        $resolvedItem = $resolver->resolve($item);
 
-        return $options;
+        return $resolvedItem;
     }
 
     /**

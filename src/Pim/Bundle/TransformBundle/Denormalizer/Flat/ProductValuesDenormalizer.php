@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**

@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
 
 /**
  * Converts a flat field to a structured one
