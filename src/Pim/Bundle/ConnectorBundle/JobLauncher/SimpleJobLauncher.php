@@ -5,7 +5,6 @@ namespace Pim\Bundle\ConnectorBundle\JobLauncher;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Launcher\SimpleJobLauncher as BaseSimpleJobLauncher;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Component\Connector\Factory\JobConfigurationFactory;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -21,9 +20,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class SimpleJobLauncher extends BaseSimpleJobLauncher
 {
-    /** @var SaverInterface */
-    protected $jobConfigSaver;
-
     /** @var JobConfigurationFactory */
     protected $jobConfigFactory;
 
@@ -68,7 +64,6 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
 
         $jobConfiguration = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
 
-        // TODO: please use saver (done in coming PR)!
         $this->objectManager->persist($jobConfiguration);
         $this->objectManager->flush($jobConfiguration);
 

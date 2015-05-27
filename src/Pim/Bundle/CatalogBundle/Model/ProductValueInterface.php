@@ -180,9 +180,18 @@ interface ProductValueInterface
     /**
      * Get entity
      *
-     * @return ProductValueInterface $entity
+     * @return ProductInterface
+     *
+     * @deprecated please use getProduct()
      */
     public function getEntity();
+
+    /**
+     * Get product
+     *
+     * @return ProductInterface
+     */
+    public function getProduct();
 
     /**
      * Set media
@@ -355,8 +364,19 @@ interface ProductValueInterface
      * @param ProductInterface $entity
      *
      * @return ProductValueInterface
+     *
+     * @deprecated please use setProduct()
      */
     public function setEntity(ProductInterface $entity = null);
+
+    /**
+     * Set product
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductValueInterface
+     */
+    public function setProduct(ProductInterface $product = null);
 
     /**
      * Get integer data

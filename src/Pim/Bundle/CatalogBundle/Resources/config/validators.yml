@@ -1,30 +1,31 @@
 parameters:
-    pim_catalog.validator.helper.attribute.class:                    Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper
-    pim_catalog.validator.constraint.valid_metric.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
-    pim_catalog.validator.constraint.single_identifier.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
-    pim_catalog.validator.constraint.unique_variant_axis.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
-    pim_catalog.validator.constraint.unique_variant_group.class:     Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantGroupValidator
-    pim_catalog.validator.constraint.unique_value.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
-    pim_catalog.validator.constraint.immutable.class:                Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
-    pim_catalog.validator.constraint.variant_group_values.class:     Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
-    pim_catalog.validator.constraint.variant_group_axis.class:       Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxisValidator
-    pim_catalog.validator.constraint.has_variant_axes.class:         Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxesValidator
-    pim_catalog.validator.constraint_guesser.chained.class:          Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
-    pim_catalog.validator.constraint_guesser.email.class:            Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
-    pim_catalog.validator.constraint_guesser.file.class:             Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
-    pim_catalog.validator.constraint_guesser.length.class:           Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\LengthGuesser
-    pim_catalog.validator.constraint_guesser.not_blank.class:        Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotBlankGuesser
-    pim_catalog.validator.constraint_guesser.date.class:             Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\DateGuesser
-    pim_catalog.validator.constraint_guesser.numeric.class:          Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NumericGuesser
-    pim_catalog.validator.constraint_guesser.range.class:            Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RangeGuesser
-    pim_catalog.validator.constraint_guesser.regex.class:            Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RegexGuesser
-    pim_catalog.validator.constraint_guesser.not_decimal.class:      Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotDecimalGuesser
-    pim_catalog.validator.constraint_guesser.url.class:              Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UrlGuesser
-    pim_catalog.validator.constraint_guesser.unique_value.class:     Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
-    pim_catalog.validator.constraint_guesser.price_collection.class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\PriceCollectionGuesser
-    pim_catalog.validator.constraint_guesser.metric.class:           Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\MetricGuesser
+    pim_catalog.validator.helper.attribute.class:                          Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper
+    pim_catalog.validator.constraint.valid_metric.class:                   Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
+    pim_catalog.validator.constraint.single_identifier.class:              Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
+    pim_catalog.validator.constraint.unique_variant_axis.class:            Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
+    pim_catalog.validator.constraint.unique_variant_group.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantGroupValidator
+    pim_catalog.validator.constraint.unique_value.class:                   Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
+    pim_catalog.validator.constraint.immutable.class:                      Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
+    pim_catalog.validator.constraint.variant_group_values.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValuesValidator
+    pim_catalog.validator.constraint.variant_group_axis.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxisValidator
+    pim_catalog.validator.constraint.has_variant_axes.class:               Pim\Bundle\CatalogBundle\Validator\Constraints\HasVariantAxesValidator
+    pim_catalog.validator.constraint_guesser.chained.class:                Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
+    pim_catalog.validator.constraint_guesser.email.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser
+    pim_catalog.validator.constraint_guesser.file.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\FileGuesser
+    pim_catalog.validator.constraint_guesser.length.class:                 Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\LengthGuesser
+    pim_catalog.validator.constraint_guesser.not_blank.class:              Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotBlankGuesser
+    pim_catalog.validator.constraint_guesser.date.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\DateGuesser
+    pim_catalog.validator.constraint_guesser.numeric.class:                Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NumericGuesser
+    pim_catalog.validator.constraint_guesser.range.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RangeGuesser
+    pim_catalog.validator.constraint_guesser.regex.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RegexGuesser
+    pim_catalog.validator.constraint_guesser.not_decimal.class:            Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotDecimalGuesser
+    pim_catalog.validator.constraint_guesser.url.class:                    Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UrlGuesser
+    pim_catalog.validator.constraint_guesser.unique_value.class:           Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
+    pim_catalog.validator.constraint_guesser.price_collection.class:       Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\PriceCollectionGuesser
+    pim_catalog.validator.constraint_guesser.metric.class:                 Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\MetricGuesser
     pim_catalog.validator.mapping.delegating_class_metadata_factory.class: Pim\Bundle\CatalogBundle\Validator\Mapping\DelegatingClassMetadataFactory
     pim_catalog.validator.mapping.product_value_metadata_factory.class:    Pim\Bundle\CatalogBundle\Validator\Mapping\ProductValueMetadataFactory
+    pim_catalog.validator.unique_value_set.class:                          Pim\Bundle\CatalogBundle\Validator\UniqueValuesSet
 
 services:
     # Helpers
@@ -34,6 +35,10 @@ services:
         arguments:
             - @pim_catalog.repository.locale
             - @pim_catalog.repository.channel
+
+    pim_catalog.validator.unique_value_set:
+        class: %pim_catalog.validator.unique_value_set.class%
+        public: false
 
     # Validators
     pim_catalog.validator.constraint.valid_metric:
@@ -66,7 +71,8 @@ services:
     pim_catalog.validator.constraint.unique_value:
         class: %pim_catalog.validator.constraint.unique_value.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.validator.unique_value_set'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
@@ -191,7 +197,7 @@ services:
             - [ 'addMetadataFactory', [ '@pim_catalog.validator.mapping.product_value_metadata_factory' ] ]
             - [ 'addMetadataFactory', [ '@validator.mapping.class_metadata_factory' ] ]
 
-    pim_validator:
+    pim_catalog.validator.product:
         class: %validator.class%
         arguments:
             - '@pim_catalog.validator.mapping.delegating_class_metadata_factory'
@@ -199,3 +205,7 @@ services:
             - '@translator.default'
             - %validator.translation_domain%
             - []
+
+    # deprecated will be removed in 1.5, please use pim_catalog.validator.product
+    pim_validator:
+        alias: pim_catalog.validator.product

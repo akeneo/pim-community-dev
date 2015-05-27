@@ -194,22 +194,6 @@ connector:
                         processor: pim_base_connector.processor.product
                         writer:    pim_base_connector.writer.doctrine.product
 
-        fixtures_association_yml:
-            title: pim_installer.jobs.fixtures_association_yml.title
-            type:  fixtures
-            steps:
-                validation:
-                    title: pim_base_connector.jobs.fixtures_association_yml.validation.title
-                    class: %pim_base_connector.step.validator.class%
-                    services:
-                        charsetValidator: pim_base_connector.validator.step.charset_validator
-                import:
-                    title:     pim_installer.jobs.fixtures_association_yml.import.title
-                    services:
-                        reader:    pim_base_connector.reader.file.yaml_associations
-                        processor: pim_base_connector.processor.association
-                        writer:    pim_base_connector.writer.doctrine.association
-
         fixtures_job_yml:
             title: pim_installer.jobs.fixtures_job_yml.title
             type:  fixtures

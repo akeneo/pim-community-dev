@@ -4,6 +4,7 @@ namespace Pim\Bundle\ConnectorBundle;
 
 use Akeneo\Bundle\BatchBundle\Connector\Connector;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\RegisterConverterPass;
 use Pim\Bundle\ConnectorBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -22,7 +23,8 @@ class PimConnectorBundle extends Connector
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new ResolveDoctrineTargetModelPass());
+            ->addCompilerPass(new ResolveDoctrineTargetModelPass())
+            ->addCompilerPass(new RegisterConverterPass());
 
         $mappings = [realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Component\Connector\Model'];
 

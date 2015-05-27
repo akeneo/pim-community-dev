@@ -1,12 +1,4 @@
-parameters:
-    pim_transform.builder.field_name.class: Pim\Bundle\TransformBundle\Builder\FieldNameBuilder
-
 services:
+    # deprecated will be dropped in 1.5
     pim_transform.builder.field_name:
-        class: %pim_transform.builder.field_name.class%
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pim_catalog.entity.association_type.class%
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.channel.class%
-            - %pim_catalog.entity.locale.class%
+        alias: pim_base_connector.array_converter.flat.attribute_field_extractor

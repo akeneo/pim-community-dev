@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 
 /**
@@ -13,15 +14,15 @@ use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
  */
 class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
 {
-    /** @var ProductUpdaterInterface */
-    protected $productUpdater;
+    /** @var PropertySetterInterface */
+    protected $propertySetter;
 
     /**
-     * @param ProductUpdaterInterface $productUpdater
+     * @param PropertySetterInterface $propertySetter
      */
-    public function __construct(ProductUpdaterInterface $productUpdater)
+    public function __construct(PropertySetterInterface $propertySetter)
     {
-        $this->productUpdater = $productUpdater;
+        $this->propertySetter = $propertySetter;
     }
 
     /**
@@ -45,7 +46,7 @@ class ProductTemplateUpdater implements ProductTemplateUpdaterInterface
     protected function updateProducts(array $products, $attributeCode, $data)
     {
         foreach ($products as $product) {
-            $this->productUpdater->setData(
+            $this->propertySetter->setData(
                 $product,
                 $attributeCode,
                 $data['value'],

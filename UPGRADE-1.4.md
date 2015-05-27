@@ -4,6 +4,14 @@
 
 > Please perform a backup of your codebase if you don't use any VCS.
 
+## ENHANCED UPDATER API
+
+The 1.4 enhances the Updater API (introduced in 1.3).
+
+In 1.3, the API covers only update of values of a product (set and copy), with the 1.4 we:
+ - provide updaters for other objects
+ - provide a way to update fields and attribute values of product (we add addData and removeData methods)
+
 ## UPGRADE IMPORT/EXPORT
 
 The Import/Export system has been reworked.

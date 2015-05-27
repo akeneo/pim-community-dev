@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
 class UniqueValue extends Constraint
 {
     /** @var string */
-    public $message = 'This value is already set on another product.';
+    public $message = 'The value %value% is already set on another product for the unique attribute %attribute%';
 
     /**
      * {@inheritdoc}

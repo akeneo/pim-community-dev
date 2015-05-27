@@ -26,7 +26,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
-    Then I should see "The value \"2014-01-01T00:00:00+0100\" for unique attribute \"date\" was already read in this file"
+    Then I should see "The value 2014-01-01 is already set on another product for the unique attribute date"
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique number values
@@ -41,7 +41,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
-    Then I should see "The value \"123\" for unique attribute \"number\" was already read in this file"
+    Then I should see "The value 123 is already set on another product for the unique attribute number"
     And there should be 1 product
 
   Scenario: Successfully ignore duplicate unique text values
@@ -56,7 +56,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "product_import" job to finish
-    Then I should see "The value \"foo\" for unique attribute \"text\" was already read in this file"
+    Then I should see "The value foo is already set on another product for the unique attribute text"
     And there should be 1 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3309
@@ -78,7 +78,7 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The value \"1200000011a\" for unique attribute \"test_unique_attribute\" was already read in this file"
+    Then I should see "The value 1200000011a is already set on another product for the unique attribute test_unique_attribute"
     And I am on the products page
     When I show the filter "test_unique_attribute"
     And I filter by "test_unique_attribute" with value "1200000011a"
@@ -104,7 +104,6 @@ Feature: Validate values for unique attributes when importing products
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "The unique code \"17727158\" was already read in this file"
     And I am on the products page
     And I filter by "SKU" with value "17727158"
     And I should see products 17727158

@@ -31,7 +31,7 @@ Feature: Validate text attributes of a product
     When I am on the "bar" product page
     And I change the Email to "bar@foo.com"
     And I save the product
-    Then I should see validation tooltip "This value is already set on another product."
+    Then I should see validation tooltip "The value bar@foo.com is already set on another product for the unique attribute email"
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 

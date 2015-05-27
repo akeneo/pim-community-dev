@@ -65,9 +65,16 @@ interface FamilyInterface extends TranslatableInterface, ReferableInterface, Ver
     /**
      * @param AttributeInterface $attribute
      *
-     * @return FamilyInterface
+     * @return bool
      */
     public function hasAttribute(AttributeInterface $attribute);
+
+    /**
+     * @param string $attributeCode
+     *
+     * @return bool
+     */
+    public function hasAttributeCode($attributeCode);
 
     /**
      * @param AttributeInterface $attributeAsLabel
