@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\attributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -29,28 +29,28 @@ class AttributeProcessor extends AbstractProcessor
     /** @var ValidatorInterface */
     protected $validator;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
+    /** @var AttributeFactory */
+    protected $attributeFactory;
 
     /**
      * @param StandardArrayConverterInterface       $arrayConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
-     * @param AttributeManager                      $attributeManager
+     * @param AttributeFactory                      $attributeFactory
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        AttributeManager $attributeManager
+        AttributeFactory $attributeFactory
     ) {
         parent::__construct($repository);
-        $this->arrayConverter = $arrayConverter;
-        $this->updater = $updater;
-        $this->validator = $validator;
-        $this->attributeManager = $attributeManager;
+        $this->arrayConverter   = $arrayConverter;
+        $this->updater          = $updater;
+        $this->validator        = $validator;
+        $this->attributeFactory = $attributeFactory;
     }
 
     /**
@@ -94,7 +94,7 @@ class AttributeProcessor extends AbstractProcessor
         $attribute = $this->findObject($this->repository, $convertedItem);
         if ($attribute === null) {
 
-            return $this->attributeManager->createAttribute($convertedItem['attributeType']);
+            return $this->attributeFactory->createAttribute($convertedItem['attributeType']);
         }
 
         return $attribute;

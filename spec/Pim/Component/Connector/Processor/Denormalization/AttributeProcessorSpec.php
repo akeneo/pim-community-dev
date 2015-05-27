@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\Processor\Denormalization;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
@@ -19,20 +19,20 @@ class AttributeProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        AttributeManager $attributeManager
+        AttributeFactory $attributeFactory
     ) {
         $this->beConstructedWith(
             $arrayConverter,
             $repository,
             $updater,
             $validator,
-            $attributeManager
+            $attributeFactory
         );
     }
 
     function it_processes_items(
         $arrayConverter,
-        $attributeManager,
+        $attributeFactory,
         $updater,
         $repository,
         $validator,
@@ -66,7 +66,7 @@ class AttributeProcessorSpec extends ObjectBehavior
 
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier('sku')->willReturn(null);
-        $attributeManager->createAttribute('pim_catalog_identifier')->willReturn($attribute);
+        $attributeFactory->createAttribute('pim_catalog_identifier')->willReturn($attribute);
         $updater->update($attribute, $convertedItems)->shouldBeCalled();
         $validator->validate($attribute)->willReturn(new ConstraintViolationList());
 
@@ -75,7 +75,7 @@ class AttributeProcessorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_attribute_is_invalid(
         $arrayConverter,
-        $attributeManager,
+        $attributeFactory,
         $updater,
         $repository,
         AttributeInterface $attribute
@@ -108,7 +108,7 @@ class AttributeProcessorSpec extends ObjectBehavior
 
         $repository->getIdentifierProperties()->willReturn(['code']);
         $repository->findOneByIdentifier('sku')->willReturn(null);
-        $attributeManager->createAttribute('pim_catalog_identifier')->willReturn($attribute);
+        $attributeFactory->createAttribute('pim_catalog_identifier')->willReturn($attribute);
         $updater->update($attribute, $convertedItems)->willThrow('\InvalidArgumentException');
 
         $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$item]);
