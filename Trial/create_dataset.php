@@ -74,6 +74,7 @@ function createPimFile(\SplFileInfo $splFile, $imageName)
         ->setGuid($storage['guid'])
         ->setMimeType($mimeType)
         ->setOriginalFilename($imageName)
+        ->setExtension(explode('.', $imageName)[1])
         ->setPath($storage['path'])
         ->setSize(filesize($imagePath));
 }
@@ -101,52 +102,42 @@ function getVariationPipeline($image)
     $imageName = $exploded[0];
     $ext       = '.' . $exploded[1];
 
+    $output = $imageName . '-%s' . $ext;
+
     return [
-        getThumbnailVariation($imageName, $ext),
-        getEcommerceVariation($imageName, $ext),
-        getMobileVariation($imageName, $ext),
-        getPrintVariation($imageName, $ext)
+        sprintf($output, 'thumbnail') => getThumbnailVariation(),
+        sprintf($output, 'ecommerce') => getEcommerceVariation(),
+        sprintf($output, 'mobile')    => getMobileVariation(),
+        sprintf($output, 'print')     => getPrintVariation()
     ];
 }
 
-function getThumbnailVariation($imageName, $ext)
+function getThumbnailVariation()
 {
     return [
-        'outputFile' => $imageName . '-thumbnail' . $ext,
-        'pipeline'   => [
-            'thumbnail' => ['width' => 150, 'height' => 150],
-            'colorspace' => ['colorspace' => 'gray']
-        ]
+        'thumbnail' => ['width' => 150, 'height' => 150],
+        'colorspace' => ['colorspace' => 'gray']
     ];
 }
 
-function getEcommerceVariation($imageName, $ext)
+function getEcommerceVariation()
 {
     return [
-        'outputFile' => $imageName . '-ecommerce' . $ext,
-        'pipeline'   => [
-            'scale' => ['width' => 500],
-        ]
+        'scale' => ['width' => 500],
     ];
 }
 
-function getMobileVariation($imageName, $ext)
+function getMobileVariation()
 {
     return [
-        'outputFile' => $imageName . '-mobile' . $ext,
-        'pipeline'   => [
-            'scale' => ['width' => 250],
-        ]
+        'scale' => ['width' => 250],
     ];
 }
 
-function getPrintVariation($imageName, $ext)
+function getPrintVariation()
 {
     return [
-        'outputFile' => $imageName . '-print' . $ext,
-        'pipeline'   => [
-            'colorspace' => ['colorspace' => 'gray'],
-        ]
+        'colorspace' => ['colorspace' => 'gray'],
     ];
 }
 
@@ -242,11 +233,10 @@ foreach ($images as $key => $references) {
         $filesystem->copy($imageName, STORED . $pimFile->getPathname());
 
         try {
-            $pipeline = getVariationPipeline($imageName);
-            $transformer->transform($splFileRef, $pipeline);
-
-            foreach ($pipeline as $transformation) {
-                $outputName = $transformation['outputFile'];
+            $pipelines = getVariationPipeline($imageName);
+            
+            foreach($pipelines as $outputName => $pipeline) {
+                $transformer->transform($splFileRef, $pipeline, $outputName);
                 $channel    = $channelRepo->findOneByIdentifier(getChannelCode($outputName));
                 $varSplFile = createSplFile($outputName);
                 $varPimFile = createPimFile($varSplFile, $outputName);
