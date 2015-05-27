@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
     type: entity
     table: pimee_workflow_published_product_value_price
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         value_currency_idx:
             columns:

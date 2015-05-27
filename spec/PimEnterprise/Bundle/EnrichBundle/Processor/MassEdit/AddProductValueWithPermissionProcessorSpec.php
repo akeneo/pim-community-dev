@@ -4,10 +4,10 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\Processor\MassEdit;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Component\Connector\Model\JobConfigurationInterface;
 use Pim\Component\Connector\Repository\JobConfigurationRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -20,14 +20,14 @@ use Symfony\Component\Validator\ValidatorInterface;
 class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
 {
     function let(
-        ProductUpdaterInterface $productUpdater,
+        PropertyAdderInterface $productFieldUpdater,
         ValidatorInterface $validator,
         JobConfigurationRepositoryInterface $jobConfigurationRepo,
         UserManager $userManager,
         SecurityContextInterface $securityContext
     ) {
         $this->beConstructedWith(
-            $productUpdater,
+            $productFieldUpdater,
             $validator,
             $jobConfigurationRepo,
             $userManager,
@@ -101,7 +101,7 @@ class AddProductValueWithPermissionProcessorSpec extends ObjectBehavior
             [],
             $product
         )->shouldBeCalled();
-        $stepExecution->incrementSummaryInfo("skipped_products")->shouldBeCalledTimes(1);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
