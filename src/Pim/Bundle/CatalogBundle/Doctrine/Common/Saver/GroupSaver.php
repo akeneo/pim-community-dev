@@ -91,6 +91,14 @@ class GroupSaver implements SaverInterface
             sprintf('Comes from variant group %s', $group->getCode()),
             $this->productClassName
         );
+
+        if ($group->getType()->isVariant()) {
+            $template = $group->getProductTemplate();
+            if (null !== $template) {
+                $this->templateMediaManager->handleProductTemplateMedia($template);
+            }
+        }
+
         $this->objectManager->persist($group);
         if (true === $options['flush']) {
             $this->objectManager->flush();
@@ -102,13 +110,6 @@ class GroupSaver implements SaverInterface
 
         if (count($options['remove_products']) > 0) {
             $this->removeProducts($options['remove_products']);
-        }
-
-        if ($group->getType()->isVariant()) {
-            $template = $group->getProductTemplate();
-            if (null !== $template) {
-                $this->templateMediaManager->handleProductTemplateMedia($template);
-            }
         }
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
