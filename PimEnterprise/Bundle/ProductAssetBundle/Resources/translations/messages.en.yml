@@ -19,10 +19,14 @@ pimee_product_asset:
             filetype: File type
             actions: Actions
             download: Download
+            upload: Upload
+            not_localized: Not localized
+            browse: Browse
     menu: Assets
     page_tab:
         title:
             view: Product asset %asset.code% | View
+            edit: Product asset %asset.code% | Edit
 
 Global settings.title: Global settings
 Variations.title: Variations

@@ -10,14 +10,14 @@
     {% set publicFolder = 'bundles/pimenterpriseproductasset/images/' %}
 
     {% set subtitle %}
-       {{ asset.code }}
+    {{ asset.code }}
     {% endset %}
 
     {% set left %}
-        <ul class="inline">
-            <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
-            <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
-        </ul>
+    <ul class="inline" xmlns="http://www.w3.org/1999/html">
+        <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
+        <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
+    </ul>
     {% endset %}
 
     {{ elements.page_header(title, [], subtitle, left) }}
@@ -84,23 +84,23 @@
                                         <h4>{{'pimee_product_asset.enrich_asset.view.reference'|trans}}</h4>
 
                                         <div class="row-fluid">
+                                            <div class="data">
+                                                <figure class="thumbnail">
+                                                    {% if fileExists(asset(thumbnailFolder ~ attachment.reference.file.pathname)) %}
+                                                        <img src="{{ asset(thumbnailFolder ~ attachment.reference.file.pathname) }}">
+                                                    {% else %}
+                                                        <img src="{{ asset(publicFolder ~ 'img_generic.png') }}">
+                                                    {% endif %}
+                                                </figure>
 
-                                            <figure class="thumbnail">
-                                                {% if fileExists(asset(thumbnailFolder ~ attachment.reference.file.pathname)) %}
-                                                    <img src="{{ asset(thumbnailFolder ~ attachment.reference.file.pathname) }}">
-                                                {% else %}
-                                                    <img src="{{ asset(publicFolder ~ 'img_generic.png') }}">
-                                                {% endif %}
-                                            </figure>
-
-                                            <table class="table">
-                                                <thead>
+                                                <table class="table">
+                                                    <thead>
                                                     <tr>
                                                         <th>{{'pimee_product_asset.enrich_asset.view.filename'|trans}}</th>
                                                         <th>{{'pimee_product_asset.enrich_asset.view.actions'|trans}}</th>
                                                     </tr>
-                                                </thead>
-                                                <tbody>
+                                                    </thead>
+                                                    <tbody>
                                                     <tr>
                                                         <td>{{ attachment.reference.file.originalFilename }}</td>
                                                         <td>
@@ -109,8 +109,25 @@
                                                             </a>
                                                         </td>
                                                     </tr>
-                                                </tbody>
-                                            </table>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="upload">
+                                                {% if attachment.uploadForm is defined and attachment.uploadForm is not empty %}
+                                                    {{ form_start(attachment.uploadForm, {
+                                                        'action': path('pimee_product_asset_upload_reference', {'assetId': asset.id, 'id': attachment.reference.id}),
+                                                        'attr': {
+                                                            'class': 'form-upload'
+                                                        }
+                                                    }) }}
+                                                    {{ elements.form_errors(attachment.uploadForm) }}
+                                                    <div class="row-fluid">
+                                                        {{ form_row(attachment.uploadForm.file) }}
+                                                        {{ elements.submitBtn('Upload') }}
+                                                    </div>
+                                                    {{ form_end(attachment.uploadForm) }}
+                                                {% endif %}
+                                            </div>
                                         </div>
 
                                     </div>
@@ -124,8 +141,9 @@
                                                 <h4>{{ variation.entity.channel.label }}</h4>
 
                                                 <div class="row-fluid">
-                                                    <table class="table">
-                                                        <thead>
+                                                    <div class="data">
+                                                        <table class="table">
+                                                            <thead>
                                                             <tr>
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.filename'|trans}}</th>
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.width'|trans}}</th>
@@ -136,8 +154,8 @@
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.filetype'|trans}}</th>
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.actions'|trans}}</th>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                            </thead>
+                                                            <tbody>
                                                             <tr>
                                                                 <td>{{ variation.entity.file.originalFilename }}</td>
                                                                 <td>{% if variation.metadata %}{{ variation.metadata.exifSizeWidth }} px{% endif %}</td>
@@ -152,8 +170,27 @@
                                                                     </a>
                                                                 </td>
                                                             </tr>
-                                                        </tbody>
-                                                    </table>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
+                                                    <div class="upload">
+                                                        {% if variation.uploadForm is defined and variation.uploadForm is not empty %}
+                                                            {{ form_start(variation.uploadForm, {
+                                                                'id': 'pimee_product_asset_upload_variation' ~ variation.entity.id,
+                                                                'action': path('pimee_product_asset_upload_variation', {'assetId': asset.id, 'id': variation.entity.id}),
+                                                                'attr': {
+                                                                    'class': 'form-upload'
+                                                                }
+                                                            }) }}
+                                                            {{ elements.form_errors(variation.uploadForm) }}
+                                                            <div class="row-fluid">
+                                                                {{ form_row(variation.uploadForm.file) }}
+                                                                {{ elements.submitBtn('Upload') }}
+                                                            </div>
+                                                            {{ form_end(variation.uploadForm) }}
+                                                        {% endif %}
+                                                    </div>
                                                 </div>
 
                                             </div>
