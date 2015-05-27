@@ -20,6 +20,7 @@ parameters:
     pim_base_connector.array_converter.flat.product.field.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter
     pim_base_connector.array_converter.splitter.field.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
     pim_base_connector.array_converter.merger.columns.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger
+    pim_base_connector.array_converter.flat.variant_group.class:                      Pim\Component\Connector\ArrayConverter\Flat\VariantGroupToStandardConverter
 
 services:
     pim_base_connector.array_converter.flat.attribute_option:
@@ -154,3 +155,9 @@ services:
         class: %pim_base_connector.array_converter.merger.columns.class%
         arguments:
             - '@pim_base_connector.array_converter.flat.attribute_field_extractor'
+
+    pim_base_connector.array_converter.flat.variant_group:
+        class: %pim_base_connector.array_converter.flat.variant_group.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.attribute'
