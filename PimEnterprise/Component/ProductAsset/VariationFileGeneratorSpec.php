@@ -70,6 +70,50 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         );
     }
 
+    function it_generates_the_variation_file_from_a_file(
+        $ecommerce,
+        $rawFileDownloader,
+        $filesystem,
+        $channelConfiguration,
+        $fileTransformer,
+        $rawFileStorer,
+        $metadataSaver,
+        $variation,
+        $variationSaver,
+        $metadataBuilderRegistry,
+        FileInterface $inputFile,
+        \SplFileInfo $inputFileInfo,
+        \SplFileInfo $variationFileInfo,
+        FileInterface $variationFile,
+        FileMetadataInterface $fileMetadata,
+        MetadataBuilderInterface $metadataBuilder
+    ) {
+        $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
+        touch($referencePathname);
+
+        $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
+        $inputFileInfo->getPathname()->willReturn($referencePathname);
+
+        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
+
+        $rawFileDownloader->download($inputFile, $filesystem)->willReturn($inputFileInfo);
+        $fileTransformer->transform(
+            $inputFileInfo,
+            ['t1', 't2'],
+            'my.file.txt'
+        )->willReturn($variationFileInfo);
+        $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
+        $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
+
+        $fileMetadata->setFile($variationFile)->shouldBeCalled();
+        $metadataSaver->save($fileMetadata)->shouldBeCalled();
+        $variationSaver->save($variation)->shouldBeCalled();
+        $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setLocked(false)->shouldBeCalled();
+
+        $this->generateFromFile($inputFile, $variation, $ecommerce, 'my.file.txt');
+    }
+
     function it_generates_the_variation_file_from_a_reference(
         $reference,
         $referenceFile,
@@ -115,6 +159,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setLocked(false)->shouldBeCalled();
 
         $this->generateFromReference($reference, $ecommerce, $fr);
     }
@@ -166,6 +211,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setLocked(false)->shouldBeCalled();
 
         $this->generateFromAsset($asset, $ecommerce, $fr);
     }
