@@ -12,11 +12,11 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 /**
- * Comparator which calculate change set for scalars
+ * Comparator which calculate change set for booleans
  *
- * @author Gildas Quemener <gildas@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class ScalarComparator implements ComparatorInterface
+class BooleanComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -24,11 +24,7 @@ class ScalarComparator implements ComparatorInterface
     public function supportsComparison($type)
     {
         return in_array($type, [
-            'pim_catalog_date',
-            'pim_catalog_identifier',
-            'pim_catalog_number',
-            'pim_catalog_text',
-            'pim_catalog_textarea'
+            'pim_catalog_boolean',
         ]);
     }
 
@@ -37,6 +33,11 @@ class ScalarComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        return !array_key_exists('value', $originals) || $data['value'] !== $originals['value'] ? $data : null;
+        if (!array_key_exists('value', $originals)) {
+            return null;
+        }
+        $castedNewValue = (bool)$data['value'];
+
+        return $castedNewValue !== $originals['value'] ? $data : null;
     }
 }

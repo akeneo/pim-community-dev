@@ -6,6 +6,7 @@ parameters:
     pimee_workflow.comparator.option.class:   PimEnterprise\Bundle\WorkflowBundle\Comparator\OptionComparator
     pimee_workflow.comparator.options.class:  PimEnterprise\Bundle\WorkflowBundle\Comparator\OptionsComparator
     pimee_workflow.comparator.scalar.class:   PimEnterprise\Bundle\WorkflowBundle\Comparator\ScalarComparator
+    pimee_workflow.comparator.boolean.class:  PimEnterprise\Bundle\WorkflowBundle\Comparator\BooleanComparator
 
 services:
     pimee_workflow.comparator.registry:
@@ -39,6 +40,11 @@ services:
         class: %pimee_workflow.comparator.options.class%
         tags:
             - { name: pimee_workflow.attribute.comparator }
+
+    pimee_workflow.comparator.boolean:
+        class: %pimee_workflow.comparator.boolean.class%
+        tags:
+            - { name: pimee_workflow.attribute.comparator, priority: -100 }
 
     pimee_workflow.comparator.scalar:
         class: %pimee_workflow.comparator.scalar.class%
