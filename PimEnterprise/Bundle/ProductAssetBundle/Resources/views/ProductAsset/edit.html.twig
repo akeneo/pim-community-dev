@@ -98,7 +98,7 @@
                                                         <tr>
                                                             <td>{{ attachment.reference.file.originalFilename }}</td>
                                                             <td>
-                                                                <a class="btn btn-info btn-mini no-hash" download="{{ attachment.reference.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.pathname, 'filter': 'thumbnail' }) }}">
+                                                                <a class="btn btn-info btn-mini no-hash" download="{{ attachment.reference.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.pathname }) }}">
                                                                     {{'pimee_product_asset.enrich_asset.view.download'|trans}}
                                                                 </a>
                                                             </td>
