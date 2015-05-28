@@ -19,9 +19,6 @@ pimee_product_asset:
             filetype: File type
             actions: Actions
             download: Download
-            upload: Upload
-            not_localized: Not localized
-            browse: Browse
     menu: Assets
     page_tab:
         title:
