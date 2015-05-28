@@ -14,8 +14,7 @@ Feature: Join a document to a product
     And I am on the "Car" product page
 
   # need proposal
-  @javascript
-  @skip-pef
+  @skip-pef @javascript
   Scenario: Succesfully leave the document empty
     # Flash message is different from CE
     When I save the product

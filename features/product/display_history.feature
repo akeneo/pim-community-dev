@@ -25,7 +25,7 @@ Feature: Display the product history
     And I should see history:
       | version | property   | value           |
       | 1       | sku        | sandals-001     |
-      | 2       | name-en_US | BG sandals      |
+      | 2       | name en    | BG sandals      |
       | 3       | sku        | sandals-001-bis |
     Then the row "BG sandals" should contain:
       | column    | value     |
