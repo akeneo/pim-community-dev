@@ -122,6 +122,7 @@
 - ProductUpdater takes ValidatorInterface as second argument
 - Remove method getAssociationFieldNames() from `Pim\Bundle\TransformBundle\Builder\FieldBuilder`
 - Rename `Pim\Bundle\TransformBundle\Builder\FieldBuilder` to `Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor`
+- Method `createAttribute` of Pim/Bundle/CatalogBundle/Manager/AttributeManager.php is now deprecated use `AttributeFactory::createAttribute` instead
 
 # 1.3.x
 

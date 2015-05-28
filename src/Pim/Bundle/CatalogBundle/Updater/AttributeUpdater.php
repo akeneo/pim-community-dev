@@ -7,11 +7,12 @@ use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * Updates and validates an attribute
+ * Updates an attribute.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -25,13 +26,26 @@ class AttributeUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
+    /** @var ConfigurationRegistryInterface */
+    protected $registry;
+
+    /** @var array */
+    protected $referenceDataType;
+
     /**
      * @param AttributeGroupRepositoryInterface $attributeGroupRepository
+     * @param ConfigurationRegistryInterface    $registry
+     * @param array                             $referenceDataType
      */
-    public function __construct(AttributeGroupRepositoryInterface $attributeGroupRepository)
-    {
+    public function __construct(
+        AttributeGroupRepositoryInterface $attributeGroupRepository,
+        ConfigurationRegistryInterface $registry = null,
+        array $referenceDataType
+    ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->accessor                 = PropertyAccess::createPropertyAccessor();
+        $this->registry                 = $registry;
+        $this->referenceDataType        = $referenceDataType;
     }
 
     /**
@@ -47,6 +61,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 )
             );
         }
+
+        $this->checkIfReferenceDataExists($data);
 
         foreach ($data as $field => $value) {
             $this->setData($attribute, $field, $value);
@@ -92,5 +108,28 @@ class AttributeUpdater implements ObjectUpdaterInterface
         $attributeGroup = $this->attributeGroupRepository->findOneByIdentifier($code);
 
         return $attributeGroup;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function checkIfReferenceDataExists($value)
+    {
+        if (in_array($value['attributeType'], $this->referenceDataType)) {
+            if (!$this->registry->has($value['reference_data_name'])) {
+                $references = array_keys($this->registry->all());
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Reference data "%s" does not exist. Values allowed are: %s',
+                        $value['reference_data_name'],
+                        implode(', ', $references)
+                    )
+                );
+            }
+        }
+
+        return null;
     }
 }

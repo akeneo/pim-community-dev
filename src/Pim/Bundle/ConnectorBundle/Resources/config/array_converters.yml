@@ -29,9 +29,6 @@ services:
 
     pim_base_connector.array_converter.flat.attribute:
         class: %pim_base_connector.array_converter.flat.attribute.class%
-        arguments:
-            - '@pim_catalog.repository.locale'
-            - '@pim_base_connector.array_converter.flat.attribute_field_extractor'
 
     pim_base_connector.array_converter.structured.attribute_option:
         class: %pim_base_connector.array_converter.structured.attribute_option.class%

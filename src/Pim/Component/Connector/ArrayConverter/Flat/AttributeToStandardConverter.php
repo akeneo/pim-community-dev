@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
@@ -14,24 +13,6 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  */
 class AttributeToStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /**  @var ProductAttributeFieldExtractor */
-    protected $attributeFieldResolver;
-
-    /**
-     * @param LocaleRepositoryInterface      $localeRepository
-     * @param ProductAttributeFieldExtractor $attributeFieldResolver
-     */
-    public function __construct(
-        LocaleRepositoryInterface $localeRepository,
-        ProductAttributeFieldExtractor $attributeFieldResolver
-    ) {
-        $this->localeRepository       = $localeRepository;
-        $this->attributeFieldResolver = $attributeFieldResolver;
-    }
-
     /**
      * {@inheritdoc}
      *

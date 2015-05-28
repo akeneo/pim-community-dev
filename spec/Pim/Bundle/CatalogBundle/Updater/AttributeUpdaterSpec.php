@@ -8,13 +8,18 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class AttributeUpdaterSpec extends ObjectBehavior
 {
-    function let(AttributeGroupRepositoryInterface $attributeGroupRepository)
+    function let(AttributeGroupRepositoryInterface $attributeGroupRepository, ConfigurationRegistryInterface $registry)
     {
-        $this->beConstructedWith($attributeGroupRepository);
+        $this->beConstructedWith(
+            $attributeGroupRepository,
+            $registry,
+            ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+        );
     }
 
     function it_is_initializable()
@@ -35,6 +40,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         PropertyAccessor $accessor
     ) {
         $attribute->getId()->willReturn(null);
+        $attribute->getAttributeType()->willReturn('pim_reference_data_multiselect');
 
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
@@ -64,6 +70,7 @@ class AttributeUpdaterSpec extends ObjectBehavior
         AttributeTranslation $translation
     ) {
         $attribute->getId()->willReturn(null);
+        $attribute->getAttributeType()->willReturn('pim_reference_data_simpleselect');
 
         $data = [
             'labels' => ['en_US' => 'Test1', 'fr_FR' => 'Test2'],
