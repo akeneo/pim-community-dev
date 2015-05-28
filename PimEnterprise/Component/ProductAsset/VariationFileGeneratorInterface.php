@@ -13,8 +13,10 @@ namespace PimEnterprise\Component\ProductAsset;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
 
 /**
  * Variation file generator interface.
@@ -55,5 +57,20 @@ interface VariationFileGeneratorInterface
         ProductAssetReferenceInterface $reference,
         ChannelInterface $channel,
         LocaleInterface $locale = null
+    );
+
+    /**
+     * @param FileInterface                  $file
+     * @param ProductAssetVariationInterface $variation
+     * @param ChannelInterface               $channel
+     * @param string                         $outputFilename
+     * @param bool                           $setVariationToLocked
+     */
+    public function generateFromFile(
+        FileInterface $file,
+        ProductAssetVariationInterface $variation,
+        ChannelInterface $channel,
+        $outputFilename,
+        $setVariationToLocked = false
     );
 }

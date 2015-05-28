@@ -67,6 +67,9 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var MetadataBuilderRegistry */
     protected $metadaBuilderRegistry;
 
+    /** @var array */
+    protected $rawTransformations;
+
     /**
      * @param ChannelConfigurationRepositoryInterface $configurationRepository
      * @param MountManager                            $mountManager
@@ -130,15 +133,37 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
-        $transformations = $this->retrieveChannelTransformationsConfiguration($channel);
-        $variation       = $this->retrieveVariation($reference, $channel);
-        $referenceFile   = $this->retrieveReferenceFile($reference);
+        //TODO: check couple reference/locale
+
+        $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+        $variation                = $this->retrieveVariation($reference, $channel);
+        $referenceFile            = $this->retrieveReferenceFile($reference);
+        $outputFileName           = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
+
+        $this->generateFromFile($referenceFile, $variation, $channel, $outputFileName);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateFromFile(
+        FileInterface $inputFile,
+        ProductAssetVariationInterface $variation,
+        ChannelInterface $channel,
+        $outputFilename,
+        $setVariationToLocked = false
+    ) {
+        if (null === $this->rawTransformations) {
+            $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+        }
 
         $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
-        $referenceFileInfo = $this->rawFileDownloader->download($referenceFile, $storageFilesystem);
-
-        $outputFileName    = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
-        $variationFileInfo = $this->fileTransformer->transform($referenceFileInfo, $transformations, $outputFileName);
+        $inputFileInfo     = $this->rawFileDownloader->download($inputFile, $storageFilesystem);
+        $variationFileInfo = $this->fileTransformer->transform(
+            $inputFileInfo,
+            $this->rawTransformations,
+            $outputFilename
+        );
         $variationMetadata = $this->extractMetadata($variationFileInfo);
         $variationFile     = $this->rawFileStorer->store($variationFileInfo, ProductAssetFileSystems::FS_STORAGE);
 
@@ -146,9 +171,11 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->metadataSaver->save($variationMetadata);
 
         $variation->setFile($variationFile);
+        $variation->setLocked($setVariationToLocked);
         $this->variationSaver->save($variation);
 
-        unlink($referenceFileInfo->getPathname());
+        //TODO: use symfony SF component
+        unlink($inputFileInfo->getPathname());
     }
 
     /**
