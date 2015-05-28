@@ -9,6 +9,7 @@ Feature: Enable and disable a product
     And I am logged in as "Julia"
 
   @skip-pef @javascript
+  @skip-pef
   Scenario: Successfully disable a product
     Given an enabled "boat" product
     When I am on the "boat" product page
