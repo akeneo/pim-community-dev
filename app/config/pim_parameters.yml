@@ -16,6 +16,7 @@ parameters:
 
     upload_dir:           %kernel.root_dir%/uploads/product
     archive_dir:          %kernel.root_dir%/archive
+    storage_dir:          %kernel.root_dir%/file_storage
 
     installed:            ~
 

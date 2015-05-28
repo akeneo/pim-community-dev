@@ -33,6 +33,7 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         uservoice_key: %uservoice_key%
+        file_storage:  %storage_dir%
 
 # Assetic Configuration
 assetic:
