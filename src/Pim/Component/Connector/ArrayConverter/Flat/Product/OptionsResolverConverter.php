@@ -44,9 +44,9 @@ class OptionsResolverConverter
      */
     public function resolveConverterOptions(array $item, array $options = [])
     {
-        // TODO $options
+        $enabled = (isset($options['default_values']['enabled'])) ? $options['default_values']['enabled'] : true;
         $resolver = $this->createOptionsResolver();
-        $resolver->setDefaults(['enabled' => true]);
+        $resolver->setDefaults(['enabled' => $enabled]);
         $resolvedItem = $resolver->resolve($item);
 
         return $resolvedItem;

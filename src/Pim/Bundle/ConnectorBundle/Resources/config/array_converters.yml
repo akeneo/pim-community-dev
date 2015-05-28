@@ -21,6 +21,7 @@ parameters:
     pim_base_connector.array_converter.splitter.field.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
     pim_base_connector.array_converter.merger.columns.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger
     pim_base_connector.array_converter.flat.variant_group.class:                      Pim\Component\Connector\ArrayConverter\Flat\VariantGroupToStandardConverter
+    pim_base_connector.array_converter.mapper.columns.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper
 
 services:
     pim_base_connector.array_converter.flat.attribute_option:
@@ -44,6 +45,7 @@ services:
             - '@pim_base_connector.array_converter.splitter.field'
             - '@pim_base_connector.array_converter.flat.product.field'
             - '@pim_base_connector.array_converter.merger.columns'
+            - '@pim_base_connector.array_converter.mapper.columns'
 
     pim_base_connector.array_converter.flat.converter_options_resolver:
         class: %pim_base_connector.array_converter.flat.converter_options_resolver.class%
@@ -162,3 +164,6 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
             - '@pim_base_connector.array_converter.flat.product'
+
+    pim_base_connector.array_converter.mapper.columns:
+        class: %pim_base_connector.array_converter.mapper.columns.class%

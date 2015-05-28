@@ -5,6 +5,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
@@ -41,6 +42,9 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var ColumnsMerger */
     protected $columnsMerger;
 
+    /** @var ColumnsMapper */
+    protected $columnsMapper;
+
     /**
      * @param ProductAttributeFieldExtractor  $fieldExtractor
      * @param OptionsResolverConverter        $optionsResolverConverter
@@ -49,6 +53,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      * @param FieldSplitter                   $fieldSplitter
      * @param ProductFieldConverter           $productFieldConverter
      * @param ColumnsMerger                   $columnsMerger
+     * @param ColumnsMapper                   $columnsMapper
      */
     public function __construct(
         ProductAttributeFieldExtractor $fieldExtractor,
@@ -57,7 +62,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         ProductAssociationFieldResolver $assocFieldResolver,
         FieldSplitter $fieldSplitter,
         ProductFieldConverter $productFieldConverter,
-        ColumnsMerger $columnsMerger
+        ColumnsMerger $columnsMerger,
+        ColumnsMapper $columnsMapper
     ) {
         $this->optionsResolverConverter = $optionsResolverConverter;
         $this->converterRegistry        = $converterRegistry;
@@ -66,6 +72,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         $this->fieldSplitter            = $fieldSplitter;
         $this->productFieldConverter    = $productFieldConverter;
         $this->columnsMerger            = $columnsMerger;
+        $this->columnsMapper            = $columnsMapper;
     }
 
     /**
@@ -147,8 +154,13 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     public function convert(array $item, array $options = [])
     {
+        $mappedItem = $item;
+        if (isset($options['mapping'])) {
+            $mappedItem = $this->columnsMapper->map($item, $options['mapping']);
+        }
 
-        $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item/*, $options*/);
+        // TODO a different resolver for associations
+        $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($mappedItem, $options);
         $mergedItems = $this->columnsMerger->merge($resolvedItem);
 
         $result = [];

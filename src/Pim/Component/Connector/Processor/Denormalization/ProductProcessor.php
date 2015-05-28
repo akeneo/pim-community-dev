@@ -226,7 +226,7 @@ class ProductProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        return $this->arrayConverter->convert($item/*, $this->getArrayConverterOptions()*/);
+        return $this->arrayConverter->convert($item, $this->getArrayConverterOptions());
     }
 
     /**
