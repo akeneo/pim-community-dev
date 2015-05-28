@@ -8,6 +8,7 @@ Feature: Update multiple product by applying rules
     And I add the "french" locale to the "mobile" channel
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully execute a rule with a setter action on multiple products
     Given the following products:
     | sku         | family  |

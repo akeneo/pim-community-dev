@@ -11,6 +11,7 @@ Feature: Ensure that a published product is safe
       | my-jacket | jackets    | jackets | similar_jackets | yes      | Volcom       | dry                |
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Fail to remove a product that has been published
     Given I am on the "my-jacket" product page
     And I press the "Delete" button
