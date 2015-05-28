@@ -23,6 +23,7 @@ pimee_product_asset:
     page_tab:
         title:
             view: Product asset %asset.code% | View
+            edit: Product asset %asset.code% | Edit
 
 Global settings.title: Global settings
 Variations.title: Variations
