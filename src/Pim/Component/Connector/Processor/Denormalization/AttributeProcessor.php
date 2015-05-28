@@ -3,11 +3,13 @@
 namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\attributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -32,25 +34,43 @@ class AttributeProcessor extends AbstractProcessor
     /** @var AttributeFactory */
     protected $attributeFactory;
 
+    /**  @var ObjectDetacherInterface  */
+    protected $detacher;
+
+    /** @var ConfigurationRegistryInterface */
+    protected $registry;
+
+    /** @var array */
+    protected $referenceDataType;
+
     /**
      * @param StandardArrayConverterInterface       $arrayConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param AttributeFactory                      $attributeFactory
      * @param ObjectUpdaterInterface                $updater
      * @param ValidatorInterface                    $validator
+     * @param ObjectDetacherInterface               $detacher
+     * @param ConfigurationRegistryInterface        $registry
+     * @param array                                 $referenceDataType
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         AttributeFactory $attributeFactory,
         ObjectUpdaterInterface $updater,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        ObjectDetacherInterface $detacher,
+        ConfigurationRegistryInterface $registry,
+        array $referenceDataType
     ) {
         parent::__construct($repository);
-        $this->arrayConverter   = $arrayConverter;
-        $this->attributeFactory = $attributeFactory;
-        $this->updater          = $updater;
-        $this->validator        = $validator;
+        $this->arrayConverter    = $arrayConverter;
+        $this->attributeFactory  = $attributeFactory;
+        $this->updater           = $updater;
+        $this->validator         = $validator;
+        $this->detacher          = $detacher;
+        $this->registry          = $registry;
+        $this->referenceDataType = $referenceDataType;
     }
 
     /**
@@ -59,6 +79,7 @@ class AttributeProcessor extends AbstractProcessor
     public function process($item)
     {
         $convertedItem = $this->convertItemData($item);
+        $this->checkIfReferenceDataExists($convertedItem);
         $attribute = $this->findOrCreateAttribute($convertedItem);
 
         try {
@@ -69,6 +90,7 @@ class AttributeProcessor extends AbstractProcessor
 
         $violations = $this->validateAttribute($attribute);
         if ($violations->count() > 0) {
+            $this->detacher->detach($attribute);
             $this->skipItemWithConstraintViolations($item, $violations);
         }
 
@@ -121,5 +143,29 @@ class AttributeProcessor extends AbstractProcessor
     protected function validateAttribute(AttributeInterface $attribute)
     {
         return $this->validator->validate($attribute);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return null
+     */
+    protected function checkIfReferenceDataExists($value)
+    {
+        if (isset($value['reference_data_name'])
+            && (in_array($value['attributeType'], $this->referenceDataType))) {
+            if (!$this->registry->has($value['reference_data_name'])) {
+                $references = array_keys($this->registry->all());
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Reference data "%s" does not exist. Values allowed are: %s',
+                        $value['reference_data_name'],
+                        implode(', ', $references)
+                    )
+                );
+            }
+        }
+
+        return null;
     }
 }

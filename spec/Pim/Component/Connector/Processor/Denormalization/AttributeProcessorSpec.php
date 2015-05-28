@@ -3,10 +3,12 @@
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Component\ReferenceData\ConfigurationRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -16,16 +18,21 @@ class AttributeProcessorSpec extends ObjectBehavior
     function let(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
+        AttributeFactory $attributeFactory,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        AttributeFactory $attributeFactory
+        ObjectDetacherInterface $detacher,
+        ConfigurationRegistryInterface $registry
     ) {
         $this->beConstructedWith(
             $arrayConverter,
             $repository,
+            $attributeFactory,
             $updater,
             $validator,
-            $attributeFactory
+            $detacher,
+            $registry,
+            ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
         );
     }
 
