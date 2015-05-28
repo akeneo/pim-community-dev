@@ -241,6 +241,7 @@ class ProductAssetController extends Controller
                     // TODO: Generate Metadata
                     $uploadedFile = $this->rawFileStorer->store($clientFile, ProductAssetFileSystems::FS_STORAGE);
                     $variation->setFile($uploadedFile);
+                    $variation->setLocked(true);
 
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($variation);

@@ -71,4 +71,16 @@ interface ProductAssetVariationInterface
      * @return ProductAssetVariationInterface
      */
     public function setFile(FileInterface $file);
+
+    /**
+     * @return bool
+     */
+    public function isLocked();
+
+    /**
+     * @param bool $locked
+     *
+     * @return ProductAssetVariationInterface
+     */
+    public function setLocked($locked);
 }

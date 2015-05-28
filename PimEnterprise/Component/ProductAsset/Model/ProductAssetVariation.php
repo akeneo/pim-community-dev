@@ -32,6 +32,17 @@ class ProductAssetVariation implements ProductAssetVariationInterface
     /** @var FileInterface */
     protected $file;
 
+    /** @var bool */
+    protected $locked;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->locked = false;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -115,6 +126,24 @@ class ProductAssetVariation implements ProductAssetVariationInterface
     public function setFile(FileInterface $file)
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isLocked()
+    {
+        return $this->locked;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLocked($locked)
+    {
+        $this->locked = (bool)$locked;
 
         return $this;
     }
