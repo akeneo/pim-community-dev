@@ -1,6 +1,5 @@
 web/bundles/*
 web/media/*
-web/stored/*
 web/css/*
 web/js/*
 web/app_local.php
