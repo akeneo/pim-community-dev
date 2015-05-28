@@ -51,6 +51,7 @@ class CheckRequirementsCommand extends ContainerAwareCommand
         if ($this->getContainer()->getParameter('kernel.environment') !== 'behat') {
             $directories[] = $this->getContainer()->getParameter('upload_dir');
             $directories[] = $this->getContainer()->getParameter('archive_dir');
+            $directories[] = $this->getContainer()->getParameter('storage_dir');
         }
 
         return new \PimRequirements($directories);

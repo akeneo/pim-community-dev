@@ -43,3 +43,13 @@ doctrine_migrations:
     dir_name: %doctrine_migrations_dir%
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
+
+oneup_flysystem:
+    adapters:
+        storage_adapter:
+            local:
+                directory: %storage_dir%
+    filesystems:
+        storage:
+            adapter: storage_adapter
+            mount: storage

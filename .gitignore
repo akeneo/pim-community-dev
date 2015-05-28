@@ -13,6 +13,7 @@ app/import/*
 app/export/*
 app/emails/*
 app/uploads/*
+app/file_storage/*
 app/uploads/product/*
 app/bootstrap.php.cache
 app/phpunit.xml
