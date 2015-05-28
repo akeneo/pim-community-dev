@@ -20,7 +20,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupSaver implements SaverInterface
+class GroupSaver implements SaverInterface, BulkSaverInterface
 {
     /** @var ObjectManager */
     protected $objectManager;
@@ -114,6 +114,28 @@ class GroupSaver implements SaverInterface
 
         if ($group->getType()->isVariant() && true === $options['copy_values_to_products']) {
             $this->copyVariantGroupValues($group);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function saveAll(array $groups, array $options = [])
+    {
+        if (empty($groups)) {
+            return;
+        }
+
+        $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
+        foreach ($groups as $group) {
+            $this->save($group, $itemOptions);
+        }
+
+        if (true === $allOptions['flush']) {
+            $this->objectManager->flush();
         }
     }
 
