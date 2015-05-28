@@ -46,7 +46,7 @@ class FlysystemLoader implements LoaderInterface
             // TODO: Return null of throw an exception?
         }
 
-        $mimeType = $filesystem->getMimeType($path);
+        $mimeType = $filesystem->getMimetype($path);
 
         if (false === $mimeType) {
             return $contents;
