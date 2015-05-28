@@ -41,10 +41,12 @@ class FileFactory implements FileFactoryInterface
             $size             = $rawFile->getClientSize();
             $mimeType         = $rawFile->getMimeType();
             $originalFilename = $rawFile->getClientOriginalName();
+            $extension        = $rawFile->getClientOriginalExtension();
         } else {
             $size             = filesize($rawFile->getPathname());
             $mimeType         = MimeTypeGuesser::getInstance()->guess($rawFile->getPathname());
             $originalFilename = $rawFile->getFilename();
+            $extension        = $rawFile->getExtension();
         }
 
         $file = new $this->fileClass();
@@ -54,7 +56,7 @@ class FileFactory implements FileFactoryInterface
         $file->setOriginalFilename($originalFilename);
         $file->setPath($pathInfo['path']);
         $file->setSize($size);
-        $file->setExtension($rawFile->getExtension());
+        $file->setExtension($extension);
         $file->setStorage($destFsAlias);
 
         return $file;
