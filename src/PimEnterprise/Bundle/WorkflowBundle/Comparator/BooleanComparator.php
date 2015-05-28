@@ -34,7 +34,7 @@ class BooleanComparator implements ComparatorInterface
     public function getChanges(array $data, array $originals)
     {
         if (!array_key_exists('value', $originals)) {
-            return null;
+            return $data;
         }
         $castedNewValue = (bool)$data['value'];
 
