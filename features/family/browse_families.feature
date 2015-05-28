@@ -18,3 +18,22 @@ Feature: Browse families
       | Code               | a     | sandals and sneakers        |
       | Label              | Boo   | boots                       |
       | Attribute as label | Name  | boots, sandals and sneakers |
+
+  Scenario: Successfully keep descending sorting order after refreshing the page
+    Given a "footwear" catalog configuration
+    And I am logged in as "Peter"
+    And I am on the families page
+    And I sort by "code" value descending
+    When I refresh current page
+    And I wait 3 seconds
+    Then the rows should be sorted descending by code
+
+  Scenario: Successfully keep ascending sorting order after refreshing the page
+    Given a "footwear" catalog configuration
+    And I am logged in as "Peter"
+    And I am on the families page
+    And I sort by "code" value descending
+    And I sort by "code" value ascending
+    When I refresh current page
+    And I wait 3 seconds
+    Then the rows should be sorted ascending by code
