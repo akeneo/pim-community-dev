@@ -24,7 +24,10 @@ Feature: Execute an import
     And I launch the import job
     And I wait for the "footwear_variant_group_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "No identifier column"
+    And I should see:
+    """
+    Field "code" is expected, provided fields are "name-en_US, axis, description-en_US-tablet, color"
+    """
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
     Given the following CSV file to import:
