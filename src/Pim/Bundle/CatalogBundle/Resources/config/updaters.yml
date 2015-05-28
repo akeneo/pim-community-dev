@@ -1,14 +1,16 @@
 parameters:
-    pim_catalog.updater.product.class:                        Pim\Bundle\CatalogBundle\Updater\ProductUpdater
-    pim_catalog.updater.product_property_setter.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertySetter
-    pim_catalog.updater.product_property_adder.class:         Pim\Bundle\CatalogBundle\Updater\ProductPropertyAdder
-    pim_catalog.updater.product_property_copier.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertyCopier
-    pim_catalog.updater.product_property_remover.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertyRemover
-    pim_catalog.updater.product_template.class:               Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
-    pim_catalog.updater.attribute_option.class:               Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
-    pim_catalog.updater.attribute.class:                      Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
+    pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.product_property_setter.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertySetter
+    pim_catalog.updater.product_property_adder.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertyAdder
+    pim_catalog.updater.product_property_copier.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertyCopier
+    pim_catalog.updater.product_property_remover.class:      Pim\Bundle\CatalogBundle\Updater\ProductPropertyRemover
+    pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
+    pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
+    pim_catalog.updater.attribute.class:                     Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
+    pim_catalog.updater.variant_group.class:                 Pim\Bundle\CatalogBundle\Updater\VariantGroupUpdater
 
     pim_catalog.updater.setter.registry.class:                Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
+
     # TODO useful to use this abstract?
     pim_catalog.updater.setter.abstract.class:                Pim\Bundle\CatalogBundle\Updater\Setter\AbstractAttributeSetter
     pim_catalog.updater.setter.text_value.class:              Pim\Bundle\CatalogBundle\Updater\Setter\TextAttributeSetter
@@ -103,6 +105,12 @@ services:
             - @pim_catalog.repository.attribute_group
             - '@?pim_reference_data.registry'
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+
+    pim_catalog.updater.variant_group:
+        class: %pim_catalog.updater.variant_group.class%
+        arguments:
+            - @pim_catalog.repository.attribute
+            - @pim_catalog.repository.group_type
 
     # Setters
     pim_catalog.updater.setter.registry:
