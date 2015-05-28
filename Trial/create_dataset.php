@@ -76,7 +76,8 @@ function createPimFile(\SplFileInfo $splFile, $imageName)
         ->setOriginalFilename($imageName)
         ->setExtension(explode('.', $imageName)[1])
         ->setPath($storage['path'])
-        ->setSize(filesize($imagePath));
+        ->setSize(filesize($imagePath))
+        ->setStorage('storage');
 }
 
 function createNewAsset($key)
@@ -90,7 +91,13 @@ function createNewAsset($key)
 
     return $asset
         ->setCode(sprintf('%s_%s', $key, $uniquid))
-        ->setDescription(sprintf('Picture of the product sku_%s', $uniquid))
+        ->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non quam ex. Duis semper'.
+            ' convallis risus at lobortis. Phasellus hendrerit auctor lectus in ullamcorper. Mauris non magna et'.
+            ' tellus tempor hendrerit. Donec at lacus fringilla, rutrum enim porttitor, consectetur erat. Donec'.
+            ' volutpat, nibh in hendrerit aliquet, sem massa vehicula eros, sed dictum augue tellus id nisi. Vivamus'.
+            ' tempus scelerisque enim, sit amet vehicula enim scelerisque eu. Integer nec ultrices magna, sit amet'.
+            ' volutpat.'
+        )
         ->setCreatedAt(new \DateTime())
         ->setUpdatedAt(new \DateTime())
         ->setEnabled(true);
