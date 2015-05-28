@@ -115,6 +115,16 @@
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
 
+# 1.0.x
+
+## Bug fixes
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.0.27 (2015-05-27)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
+
 # 1.0.26 (2015-03-16)
 
 ## Bug fixes
