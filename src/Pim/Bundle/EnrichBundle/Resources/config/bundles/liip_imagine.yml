@@ -39,10 +39,6 @@ liip_imagine:
 #                thumbnail:    { size: [900, 600], mode: inset }
 #                strip:        ~
 
-        original:
-            quality:          100
-            data_loader:      flysystem_data_loader
-            format:           jpg
         preview:
             quality:          95
             data_loader:      flysystem_data_loader
