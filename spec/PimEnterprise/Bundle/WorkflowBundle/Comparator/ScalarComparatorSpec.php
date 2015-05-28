@@ -13,7 +13,6 @@ class ScalarComparatorSpec extends ObjectBehavior
 
     function it_supports_comparison()
     {
-        $this->supportsComparison('pim_catalog_boolean')->shouldBe(true);
         $this->supportsComparison('pim_catalog_date')->shouldBe(true);
         $this->supportsComparison('pim_catalog_identifier')->shouldBe(true);
         $this->supportsComparison('pim_catalog_number')->shouldBe(true);
