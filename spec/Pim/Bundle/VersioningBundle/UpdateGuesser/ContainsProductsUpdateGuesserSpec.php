@@ -36,14 +36,23 @@ class ContainsProductsUpdateGuesserSpec extends ObjectBehavior
         $this->guessUpdates($em, $group, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$foo, $bar]);
     }
 
-    function it_marks_products_as_updated_when_a_category_is_removed_or_updated(
+    function it_marks_products_as_updated_when_a_category_is_removed(
         EntityManager $em,
         ProductInterface $foo,
         ProductInterface $bar,
         CategoryInterface $category
     ) {
         $category->getProducts()->willReturn([$foo, $bar]);
-        $this->guessUpdates($em, $category, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$foo, $bar]);
         $this->guessUpdates($em, $category, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$foo, $bar]);
+    }
+
+    function it_does_not_mark_products_as_updated_when_a_category_is_updated(
+        EntityManager $em,
+        ProductInterface $foo,
+        ProductInterface $bar,
+        CategoryInterface $category
+    ) {
+        $category->getProducts()->willReturn([$foo, $bar]);
+        $this->guessUpdates($em, $category, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([]);
     }
 }

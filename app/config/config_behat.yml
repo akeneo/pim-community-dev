@@ -34,3 +34,6 @@ assetic:
 
 pim_enrich:
     record_mails: true
+
+parameters:
+    max_products_category_removal: 20
