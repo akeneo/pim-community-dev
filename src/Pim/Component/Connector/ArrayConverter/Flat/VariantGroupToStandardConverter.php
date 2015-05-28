@@ -22,16 +22,22 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
     /** @var LocaleRepositoryInterface */
     protected $attributeRepository;
 
+    /** @var ProductToStandardConverter */
+    protected $productConverter;
+
     /**
      * @param LocaleRepositoryInterface    $localeRepository
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductToStandardConverter   $productConverter
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        AttributeRepositoryInterface $attributeRepository
+        AttributeRepositoryInterface $attributeRepository,
+        ProductToStandardConverter $productConverter
     ) {
         $this->localeRepository    = $localeRepository;
         $this->attributeRepository = $attributeRepository;
+        $this->productConverter    = $productConverter;
     }
 
     /**
@@ -86,14 +92,14 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
         $this->validate($item);
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {
-            $isLabel = false !== strpos($field, 'label-', 0);
-            if ($isLabel) {
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
-            } else {
-                $convertedItem+= $this->convertField($field, $data);
+            if ('' !== $data) {
+                $convertedItem = $this->convertField($convertedItem, $field, $data);
             }
+        }
+
+        if (isset($convertedItem['values'])) {
+            $convertedItem['values'] = $this->productConverter->convert($convertedItem['values']);
+            unset($convertedItem['values']['enabled']);
         }
 
         if (!isset($convertedItem['type'])) {
@@ -109,26 +115,26 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
      *
      * @return array
      */
-    protected function convertField($field, $data)
+    protected function convertField($convertedItem, $field, $data)
     {
-        $convertedItem = [];
-
         switch ($field) {
+            case false !== strpos($field, 'label-', 0):
+                $labelTokens = explode('-', $field);
+                $labelLocale = $labelTokens[1];
+                $convertedItem['labels'][$labelLocale] = $data;
+                break;
+
             case 'code':
             case 'type':
                 $convertedItem[$field] = $data;
                 break;
 
             case 'axis':
-                if ('' !== $data) {
-                    $convertedItem[$field] = explode(',', $data);
-                }
+                $convertedItem[$field] = explode(',', $data);
                 break;
 
             default:
-                if ('' !== $data) {
-                    $convertedItem['values'][$field] = $data;
-                }
+                $convertedItem['values'][$field] = $data;
         }
 
         return $convertedItem;
@@ -156,6 +162,16 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
                 throw new ArrayConversionException(
                     sprintf(
                         'Field "%s" is expected, provided fields are "%s"',
+                        $requiredField,
+                        implode(', ', array_keys($item))
+                    )
+                );
+            }
+
+            if ('' === $item[$requiredField]) {
+                throw new ArrayConversionException(
+                    sprintf(
+                        'Field "%s" must be filled',
                         $requiredField,
                         implode(', ', array_keys($item))
                     )

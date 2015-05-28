@@ -161,3 +161,4 @@ services:
         arguments:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
+            - '@pim_base_connector.array_converter.flat.product'

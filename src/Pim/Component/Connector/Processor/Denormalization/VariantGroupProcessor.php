@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
-use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -24,10 +23,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 class VariantGroupProcessor extends AbstractProcessor
 {
     /** @var StandardArrayConverterInterface */
-    private $variantConverter;
-
-    /** @var StandardArrayConverterInterface */
-    private $productConverter;
+    protected $variantConverter;
 
     /** @var ObjectUpdaterInterface */
     protected $variantUpdater;
@@ -40,7 +36,6 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /**
      * @param StandardArrayConverterInterface       $variantConverter
-     * @param StandardArrayConverterInterface       $productConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $variantUpdater
      * @param ValidatorInterface                    $validator
@@ -48,7 +43,6 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     public function __construct(
         StandardArrayConverterInterface $variantConverter,
-        StandardArrayConverterInterface $productConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $variantUpdater,
         ValidatorInterface $validator,
@@ -56,9 +50,6 @@ class VariantGroupProcessor extends AbstractProcessor
     ) {
         parent::__construct($repository);
 
-        $this->productUpdater       = $productUpdater;
-        $this->productBuilder       = $productBuilder;
-        $this->productTemplateClass = $productTemplateClass;
         $this->variantConverter = $variantConverter;
         $this->variantUpdater   = $variantUpdater;
         $this->validator        = $validator;
@@ -94,14 +85,7 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function convertItemData(array $item)
     {
-        $convertedItem = $this->variantConverter->convert($item);
-
-        if (isset($convertedItem['values'])) {
-            $convertedItem['values'] = $this->productConverter->convert($convertedItem['values']);
-            unset($convertedItem['values']['enabled']);
-        }
-
-        return $convertedItem;
+        return $this->variantConverter->convert($item);
     }
 
     /**
