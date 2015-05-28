@@ -10,7 +10,6 @@ services:
             - '@pimee_product_asset.repository.asset_variation'
             - '@pimee_product_asset.repository.file_metadata'
             - '@pim_catalog.repository.channel'
-            - '@pim_catalog.repository.locale'
             - '@pimee_product_asset.file_storage.raw_file.storer'
         calls:
             - [ setContainer, [ @service_container ] ]

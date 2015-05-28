@@ -13,7 +13,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
@@ -41,9 +40,6 @@ class ProductAssetController extends Controller
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
     /** @var ProductAssetReferenceRepositoryInterface */
     protected $referenceRepository;
 
@@ -59,7 +55,6 @@ class ProductAssetController extends Controller
      * @param ProductAssetVariationRepositoryInterface $variationRepository
      * @param FileMetadataRepositoryInterface          $metadataRepository
      * @param ChannelRepositoryInterface               $channelRepository
-     * @param LocaleRepositoryInterface                $localeRepository
      * @param RawFileStorerInterface                   $rawFileStorer
      */
     public function __construct(
@@ -68,7 +63,6 @@ class ProductAssetController extends Controller
         ProductAssetVariationRepositoryInterface $variationRepository,
         FileMetadataRepositoryInterface $metadataRepository,
         ChannelRepositoryInterface $channelRepository,
-        LocaleRepositoryInterface $localeRepository,
         RawFileStorerInterface $rawFileStorer
     ) {
         $this->assetRepository     = $assetRepository;
@@ -76,7 +70,6 @@ class ProductAssetController extends Controller
         $this->variationRepository = $variationRepository;
         $this->metadataRepository  = $metadataRepository;
         $this->channelRepository   = $channelRepository;
-        $this->localeRepository    = $localeRepository;
         $this->rawFileStorer       = $rawFileStorer;
     }
 
@@ -151,7 +144,6 @@ class ProductAssetController extends Controller
         $productAsset = $this->findProductAssetOr404($id);
         $channels     = $this->channelRepository->getFullChannels();
         $references   = $productAsset->getReferences();
-        $locales      = $this->localeRepository->getActivatedLocales();
 
         $attachments = [];
         foreach ($references as $refKey => $reference) {
@@ -170,7 +162,7 @@ class ProductAssetController extends Controller
                 $channelCode = $channel->getCode();
 
                 $metadata = null;
-                if (null !== $variation) {
+                if (null !== $variation->getFile()) {
                     $metadata = $this->metadataRepository->findOneBy(
                         [
                             'file' => $variation->getFile()->getId()
@@ -194,7 +186,6 @@ class ProductAssetController extends Controller
 
         return [
             'asset'       => $productAsset,
-            'locales'     => $locales,
             'attachments' => $attachments
         ];
     }
