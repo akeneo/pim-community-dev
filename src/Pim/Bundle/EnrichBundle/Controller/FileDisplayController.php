@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class FileDisplayController extends Controller
 {
+    /** @staticvar string */
+    const FALLBACK_IMAGE_PATH = 'Resources/public/img/img_generic.png';
+
     /** @var ImagineController */
     protected $imagineController;
 
@@ -54,8 +57,14 @@ class FileDisplayController extends Controller
         $filter = $request->query->get('filter');
 
         if (null !== $filter) {
-            $imageResponse = $this->imagineController->filterAction($request, $filepath, $filter);
-        } else {
+            try {
+                $imageResponse = $this->imagineController->filterAction($request, $filepath, $filter);
+            } catch (\Exception $e) {
+                $imageResponse = $this->getFallbackImageResponse();
+            }
+        }
+
+        if (!isset($imageResponse)) {
             $filesystem = $this->getFilesystem();
             $content = $filesystem->read($filename);
             $mimeType = $filesystem->getMimetype($filename);
@@ -76,5 +85,19 @@ class FileDisplayController extends Controller
     protected function getFilesystem()
     {
         return $this->mountManager->getFilesystem($this->filesystemName);
+    }
+
+    /**
+     * @return Response
+     */
+    protected function getFallbackImageResponse()
+    {
+        $path = realpath(__DIR__ . '/../' . self::FALLBACK_IMAGE_PATH);
+        $content = file_get_contents($path);
+
+        $imageResponse = new Response($content);
+        $imageResponse->headers->set('Content-Type', 'image/png');
+
+        return $imageResponse;
     }
 }
