@@ -24,7 +24,7 @@ class ColumnsMapper
         }
 
         foreach ($mapping as $originFieldName => $destFieldName) {
-            if (isset($row[$originFieldName])) {
+            if (isset($row[$originFieldName]) && $originFieldName !== $destFieldName) {
                 $row[$destFieldName] = $row[$originFieldName];
                 unset($row[$originFieldName]);
             }

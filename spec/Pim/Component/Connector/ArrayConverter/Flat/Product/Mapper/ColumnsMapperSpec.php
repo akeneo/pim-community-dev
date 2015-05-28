@@ -3,8 +3,6 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 
 class ColumnsMapperSpec extends ObjectBehavior
 {
@@ -36,6 +34,23 @@ class ColumnsMapperSpec extends ObjectBehavior
             'categories' => 'mycatcode1,mycatcode2'
         ];
         $mapping = [];
+        $resultRow = [
+            'sku' => 'mysku',
+            'family' => 'myfamilycode',
+            'categories' => 'mycatcode1,mycatcode2'
+        ];
+
+        $this->map($row, $mapping)->shouldReturn($resultRow);
+    }
+
+    function it_does_not_map_when_source_and_destination_are_the_same()
+    {
+        $row = [
+            'sku' => 'mysku',
+            'family' => 'myfamilycode',
+            'categories' => 'mycatcode1,mycatcode2'
+        ];
+        $mapping = ['family' => 'family'];
         $resultRow = [
             'sku' => 'mysku',
             'family' => 'myfamilycode',

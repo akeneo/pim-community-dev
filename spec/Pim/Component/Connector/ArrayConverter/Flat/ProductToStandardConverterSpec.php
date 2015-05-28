@@ -7,41 +7,43 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
 use Prophecy\Argument;
 
 class ProductToStandardConverterSpec extends ObjectBehavior
 {
     function let(
         ProductAttributeFieldExtractor $fieldExtractor,
-        OptionsResolverConverter $optionsResolverConverter,
         ValueConverterRegistryInterface $converterRegistry,
-        ProductAssociationFieldResolver $assocFieldResolver,
-        FieldSplitter $fieldSplitter,
+        AssociationFieldsResolver $assocFieldsResolver,
+        AttributeFieldsResolver $attrFieldsResolver,
         ProductFieldConverter $productFieldConverter,
-        ColumnsMerger $columnsMerger
+        ColumnsMerger $columnsMerger,
+        ColumnsMapper $columnsMapper
     ) {
         $this->beConstructedWith(
             $fieldExtractor,
-            $optionsResolverConverter,
             $converterRegistry,
-            $assocFieldResolver,
-            $fieldSplitter,
+            $assocFieldsResolver,
+            $attrFieldsResolver,
             $productFieldConverter,
-            $columnsMerger
+            $columnsMerger,
+            $columnsMapper
         );
     }
 
     function it_converts(
-        $optionsResolverConverter,
         $fieldExtractor,
         $productFieldConverter,
         $converterRegistry,
         $columnsMerger,
+        $columnsMapper,
+        $attrFieldsResolver,
+        $assocFieldsResolver,
         AttributeInterface $attribute1,
         AttributeInterface $attribute2,
         AttributeInterface $attribute3,
@@ -57,7 +59,11 @@ class ProductToStandardConverterSpec extends ObjectBehavior
             'release_date-ecommerce' => '2011-08-21',
         ];
 
-        $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $columnsMapper->map($item)->willReturn($item);
+
+        $attrFieldsResolver->resolveAttributesFields()->willReturn(['sku', 'name', 'release_date-ecommerce']);
+        $assocFieldsResolver->resolveAssociationFields()->willReturn([]);
+
         $columnsMerger->merge($item)->willReturn($item);
 
         $productFieldConverter->supportsColumn('sku')->willReturn(false);
@@ -147,20 +153,25 @@ class ProductToStandardConverterSpec extends ObjectBehavior
             ]
         ];
 
-        $this->convert($item)->shouldReturn($result);
+        $this
+            ->convert($item, [])
+            ->shouldReturn($result);
     }
 
     function it_throws_an_exception_if_no_converters_found(
-        $optionsResolverConverter,
+        $attrFieldsResolver,
+        $assocFieldsResolver,
         $productFieldConverter,
         $converterRegistry,
         $fieldExtractor,
         $columnsMerger,
         AttributeInterface $attribute
     ) {
-        $item = ['sku' => '1069978'];
+        $item = ['sku' => '1069978', 'enabled' => 1];
 
-        $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $attrFieldsResolver->resolveAttributesFields()->willReturn(['sku']);
+        $assocFieldsResolver->resolveAssociationFields()->willReturn([]);
+
         $columnsMerger->merge($item)->willReturn($item);
         $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getAttributeType()->willReturn('sku');
@@ -176,13 +187,16 @@ class ProductToStandardConverterSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_no_attributes_found(
-        $optionsResolverConverter,
+        $attrFieldsResolver,
+        $assocFieldsResolver,
         $columnsMerger,
         $productFieldConverter
     ) {
-        $item = ['sku' => '1069978'];
+        $item = ['sku' => '1069978', 'enabled' => 1];
 
-        $optionsResolverConverter->resolveConverterOptions($item)->willReturn($item);
+        $attrFieldsResolver->resolveAttributesFields()->willReturn(['sku']);
+        $assocFieldsResolver->resolveAssociationFields()->willReturn([]);
+
         $columnsMerger->merge($item)->willReturn($item);
         $productFieldConverter->supportsColumn('sku')->willReturn(false);
 

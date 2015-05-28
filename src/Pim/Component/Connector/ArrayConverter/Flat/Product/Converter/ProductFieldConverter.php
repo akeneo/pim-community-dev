@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\ProductAssociationFieldResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
@@ -14,17 +14,17 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
  */
 class ProductFieldConverter
 {
-    /** @var ProductAssociationFieldResolver */
+    /** @var AssociationFieldsResolver */
     protected $assocFieldResolver;
 
     /** @var FieldSplitter */
     protected $fieldSplitter;
 
     /**
-     * @param FieldSplitter                   $fieldSplitter
-     * @param ProductAssociationFieldResolver $assocFieldResolver
+     * @param FieldSplitter             $fieldSplitter
+     * @param AssociationFieldsResolver $assocFieldResolver
      */
-    public function __construct(FieldSplitter $fieldSplitter, ProductAssociationFieldResolver $assocFieldResolver)
+    public function __construct(FieldSplitter $fieldSplitter, AssociationFieldsResolver $assocFieldResolver)
     {
         $this->assocFieldResolver = $assocFieldResolver;
         $this->fieldSplitter      = $fieldSplitter;

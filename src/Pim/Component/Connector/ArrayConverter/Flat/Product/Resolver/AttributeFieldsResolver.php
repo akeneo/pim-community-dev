@@ -13,15 +13,12 @@ use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * TODO: missing spec!
+ * TODO: naming Fields vs Columns ?
  */
-class ProductOptionalAttributeFieldResolver
+class AttributeFieldsResolver
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
-
-    /** @var array */
-    protected $optionalAttributeFields;
 
     /** @var CurrencyRepositoryInterface */
     protected $currencyRepository;
@@ -29,14 +26,20 @@ class ProductOptionalAttributeFieldResolver
     /** @var AttributeValuesResolver */
     protected $valuesResolver;
 
+    /** @var array */
+    protected $attributesFields;
+
+    /** @var string */
+    protected $identifierField;
+
     /**
-     * @param CurrencyRepositoryInterface  $currencyRepository
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param CurrencyRepositoryInterface  $currencyRepository
      * @param AttributeValuesResolver      $valuesResolver
      */
     public function __construct(
-        CurrencyRepositoryInterface $currencyRepository,
         AttributeRepositoryInterface $attributeRepository,
+        CurrencyRepositoryInterface $currencyRepository,
         AttributeValuesResolver $valuesResolver
     ) {
         $this->currencyRepository  = $currencyRepository;
@@ -45,11 +48,24 @@ class ProductOptionalAttributeFieldResolver
     }
 
     /**
+     * @return string
+     */
+    public function resolveIdentifierField()
+    {
+        if (empty($this->identifierField)) {
+            $attribute = $this->attributeRepository->getIdentifier();
+            $this->identifierField = $attribute->getCode();
+        }
+
+        return $this->identifierField;
+    }
+
+    /**
      * @return array
      */
-    public function resolveOptionalAttributeFields()
+    public function resolveAttributesFields()
     {
-        if (empty($this->optionalAttributeFields)) {
+        if (empty($this->attributesFields)) {
             $attributes = $this->attributeRepository->findAll();
             $currencyCodes = $this->currencyRepository->getActivatedCurrencyCodes();
             $values = $this->valuesResolver->resolveEligibleValues($attributes);
@@ -78,21 +94,21 @@ class ProductOptionalAttributeFieldResolver
                 }
 
                 if ('pim_catalog_price_collection' === $value['type']) {
-                    $this->optionalAttributeFields[] = $field;
+                    $this->attributesFields[] = $field;
                     foreach ($currencyCodes as $currencyCode) {
                         $currencyField = sprintf('%s-%s', $field, $currencyCode);
-                        $this->optionalAttributeFields[] = $currencyField;
+                        $this->attributesFields[] = $currencyField;
                     }
                 } elseif ('pim_catalog_metric' === $value['type']) {
-                    $this->optionalAttributeFields[] = $field;
+                    $this->attributesFields[] = $field;
                     $metricField = sprintf('%s-%s', $field, 'unit');
-                    $this->optionalAttributeFields[] = $metricField;
+                    $this->attributesFields[] = $metricField;
                 } else {
-                    $this->optionalAttributeFields[] = $field;
+                    $this->attributesFields[] = $field;
                 }
             }
         }
 
-        return $this->optionalAttributeFields;
+        return $this->attributesFields;
     }
 }

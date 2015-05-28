@@ -41,6 +41,8 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Convert flat array to structured array:
      *
      * Before:
@@ -82,12 +84,8 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
      *          ]
      *     }
      * }
-     *
-     * @param array $item Representing a flat variant group
-     *
-     * @return array structured $item
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
         $this->validate($item);
         $convertedItem = ['labels' => []];

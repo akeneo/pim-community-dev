@@ -98,8 +98,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -187,8 +191,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -275,8 +283,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -366,8 +378,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [

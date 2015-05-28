@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 
-class ProductAssociationFieldResolverSpec extends ObjectBehavior
+class AssociationFieldsResolverSpec extends ObjectBehavior
 {
     function let(AssociationTypeRepositoryInterface $assocTypeRepo)
     {

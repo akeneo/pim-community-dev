@@ -18,7 +18,7 @@ class AttributeToStandardConverter implements StandardArrayConverterInterface
      *
      * Converts flat csv array to standard structured array:
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
         $convertedItem = ['labels' => []];
         foreach ($item as $field => $data) {

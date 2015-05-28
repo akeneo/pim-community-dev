@@ -104,7 +104,6 @@ class ProductProcessor extends AbstractProcessor
         return $product;
     }
 
-
     /**
      * Set whether or not the created product should be activated or not
      *
@@ -190,33 +189,33 @@ class ProductProcessor extends AbstractProcessor
      */
     public function getConfigurationFields()
     {
-        return array(
-            'enabled' => array(
+        return [
+            'enabled' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_base_connector.import.enabled.label',
                     'help'  => 'pim_base_connector.import.enabled.help'
-                )
-            ),
-            'categoriesColumn' => array(
-                'options' => array(
+                ]
+            ],
+            'categoriesColumn' => [
+                'options' => [
                     'label' => 'pim_base_connector.import.categoriesColumn.label',
                     'help'  => 'pim_base_connector.import.categoriesColumn.help'
-                )
-            ),
-            'familyColumn' => array(
-                'options' => array(
+                ]
+            ],
+            'familyColumn' => [
+                'options' => [
                     'label' => 'pim_base_connector.import.familyColumn.label',
                     'help'  => 'pim_base_connector.import.familyColumn.help'
-                )
-            ),
-            'groupsColumn' => array(
-                'options' => array(
+                ]
+            ],
+            'groupsColumn' => [
+                'options' => [
                     'label' => 'pim_base_connector.import.groupsColumn.label',
                     'help'  => 'pim_base_connector.import.groupsColumn.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
