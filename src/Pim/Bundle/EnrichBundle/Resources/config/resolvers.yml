@@ -9,13 +9,3 @@ services:
             - 'storage'
         tags:
             - { name: liip_imagine.binary.loader, loader: flysystem_data_loader }
-
-#    acme.s3_client:
-#        class: Aws\S3\S3Client
-#        factory_class: Aws\S3\S3Client
-#        factory_method: factory
-#        arguments:
-#            -
-#                key: 'key'
-#                secret: 'secret'
-#                region: 'region'
