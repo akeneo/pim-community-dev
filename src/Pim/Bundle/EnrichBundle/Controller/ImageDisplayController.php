@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
@@ -20,10 +22,22 @@ class ImageDisplayController extends Controller
     /** @var CacheManager */
     protected $cacheManager;
 
-    public function __construct(ImagineController $imagineController, CacheManager $cacheManager)
-    {
+    /** @var MountManager */
+    protected $mountManager;
+
+    /** @var string */
+    protected $filesystemName;
+
+    public function __construct(
+        ImagineController $imagineController,
+        CacheManager $cacheManager,
+        MountManager $mountManager,
+        $filesystemName
+    ) {
         $this->imagineController = $imagineController;
-        $this->cacheManager = $cacheManager;
+        $this->cacheManager      = $cacheManager;
+        $this->mountManager      = $mountManager;
+        $this->filesystemName    = $filesystemName;
     }
 
     /**
@@ -34,18 +48,33 @@ class ImageDisplayController extends Controller
      */
     public function showAction(Request $request, $filename)
     {
-        $filter = $request->query->get('filter');
-
         // TODO: Ensure we receive the filepath and not only the filename to create
         // a cache image with the same path
         $filepath = $filename;
+        $filter = $request->query->get('filter');
 
-        $imageManagerResponse = $this->imagineController->filterAction(
-            $request,
-            $filepath,
-            $filter
-        );
+        if (null !== $filter) {
+            $imageResponse = $this->imagineController->filterAction($request, $filepath, $filter);
+        } else {
+            $filesystem = $this->getFilesystem();
+            $content = $filesystem->read($filename);
+            $mimeType = $filesystem->getMimetype($filename);
 
-        return $imageManagerResponse;
+            $imageResponse = new Response($content);
+
+            if (null !== $mimeType) {
+                $imageResponse->headers->set('Content-Type', $mimeType);
+            }
+        }
+
+        return $imageResponse;
+    }
+
+    /**
+     * @return \League\Flysystem\FilesystemInterface
+     */
+    protected function getFilesystem()
+    {
+        return $this->mountManager->getFilesystem($this->filesystemName);
     }
 }

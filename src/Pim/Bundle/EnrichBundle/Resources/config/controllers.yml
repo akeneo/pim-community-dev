@@ -221,6 +221,8 @@ services:
         arguments:
             - '@liip_imagine.controller'
             - '@liip_imagine.cache.manager'
+            - '@oneup_flysystem.mount_manager'
+            - 'storage'
 
     pim_enrich.controller.variant_group:
         scope: request
