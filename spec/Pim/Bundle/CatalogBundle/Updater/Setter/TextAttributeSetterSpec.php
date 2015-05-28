@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -53,19 +52,6 @@ class TextAttributeSetterSpec extends ObjectBehavior
         $textValue->setData('data');
 
         $this->setAttributeData($product, $attribute, 'data', ['locale' => 'fr_FR', 'scope' => 'mobile']);
-    }
-
-    function it_throws_an_error_if_attribute_data_is_not_a_string(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 42;
-
-        $this->shouldThrow(
-            InvalidArgumentException::stringExpected('attributeCode', 'setter', 'text', gettype($data))
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
     function it_sets_attribute_data_text_value_to_a_product_value(

@@ -102,16 +102,6 @@ class MetricAttributeSetter extends AbstractAttributeSetter
             );
         }
 
-        if (!is_numeric($data['data']) && null !== $data['data']) {
-            throw InvalidArgumentException::arrayNumericKeyExpected(
-                $attribute->getCode(),
-                'data',
-                'setter',
-                'metric',
-                gettype($data['data'])
-            );
-        }
-
         if (!is_string($data['unit'])) {
             throw InvalidArgumentException::arrayStringValueExpected(
                 $attribute->getCode(),

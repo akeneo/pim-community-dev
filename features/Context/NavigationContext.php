@@ -150,7 +150,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->openPage($page);
-        $this->wait();
+        $this->wait(1000, false);
     }
 
     /**
@@ -657,7 +657,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
         $page = $this->getCurrentPage()->open($options);
         $this->loginIfRequired();
-        $this->wait();
+        $this->wait(500, false);
 
         return $page;
     }
