@@ -32,53 +32,37 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @var ObjectUpdaterInterface */
     protected $variantUpdater;
 
-    /** @var ObjectUpdaterInterface */
-    protected $productUpdater;
-
-    /** @var ProductBuilderInterface */
-    protected $productBuilder;
-
     /** @var ValidatorInterface */
     protected $validator;
 
     /** @var string */
     protected $groupClass;
 
-    /** @var string */
-    protected $productTemplateClass;
-
     /**
      * @param StandardArrayConverterInterface       $variantConverter
      * @param StandardArrayConverterInterface       $productConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $variantUpdater
-     * @param ObjectUpdaterInterface                $productUpdater
-     * @param ProductBuilderInterface               $productBuilder
      * @param ValidatorInterface                    $validator
      * @param string                                $groupClass
-     * @param string                                $productTemplateClass
      */
     public function __construct(
         StandardArrayConverterInterface $variantConverter,
         StandardArrayConverterInterface $productConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $variantUpdater,
-        ObjectUpdaterInterface $productUpdater,
-        ProductBuilderInterface $productBuilder,
         ValidatorInterface $validator,
-        $groupClass,
-        $productTemplateClass
+        $groupClass
     ) {
         parent::__construct($repository);
 
-        $this->variantConverter     = $variantConverter;
-        $this->productConverter     = $productConverter;
-        $this->variantUpdater       = $variantUpdater;
         $this->productUpdater       = $productUpdater;
         $this->productBuilder       = $productBuilder;
-        $this->validator            = $validator;
-        $this->groupClass           = $groupClass;
         $this->productTemplateClass = $productTemplateClass;
+        $this->variantConverter = $variantConverter;
+        $this->variantUpdater   = $variantUpdater;
+        $this->validator        = $validator;
+        $this->groupClass       = $groupClass;
     }
 
     /**
@@ -153,49 +137,6 @@ class VariantGroupProcessor extends AbstractProcessor
     protected function updateVariantGroup(GroupInterface $variantGroup, array $convertedItem)
     {
         $this->variantUpdater->update($variantGroup, $convertedItem);
-
-        if (isset($convertedItem['values'])) {
-            $this->updateProductValues($variantGroup, $convertedItem['values']);
-        }
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     * @param array          $convertedValues
-     */
-    protected function updateProductValues(GroupInterface $variantGroup, array $convertedValues)
-    {
-        $values = $this->transformArrayToValues($convertedValues);
-
-        // TODO: remove it when normalizers & setters will be uniformized (PIM-4246)
-        foreach ($convertedValues as $code => $arrayValues) {
-            foreach ($arrayValues as $index => $value) {
-                $convertedValues[$code][$index]['value'] = $value['data'];
-                unset($convertedValues[$code][$index]['data']);
-            }
-        }
-
-        $template = $this->getProductTemplate($variantGroup);
-        $template->setValues($values)
-            ->setValuesData($convertedValues);
-
-        $variantGroup->setProductTemplate($template);
-    }
-
-    /**
-     * @param array $convertedValues
-     *
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    protected function transformArrayToValues(array $convertedValues)
-    {
-        $product = $this->productBuilder->createProduct();
-        $this->productUpdater->update($product, $convertedValues);
-
-        $values = $product->getValues();
-        $values->removeElement($product->getIdentifier());
-
-        return $values;
     }
 
     /**
@@ -219,21 +160,5 @@ class VariantGroupProcessor extends AbstractProcessor
         }
 
         return $violations;
-    }
-
-    /**
-     * @param GroupInterface $variantGroup
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
-     */
-    protected function getProductTemplate(GroupInterface $variantGroup)
-    {
-        if ($variantGroup->getProductTemplate()) {
-            $template = $variantGroup->getProductTemplate();
-        } else {
-            $template = new $this->productTemplateClass();
-        }
-
-        return $template;
     }
 }

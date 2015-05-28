@@ -111,6 +111,9 @@ services:
         arguments:
             - @pim_catalog.repository.attribute
             - @pim_catalog.repository.group_type
+            - @pim_catalog.builder.product
+            - @pim_catalog.updater.product
+            - %pim_catalog.entity.product_template.class%
 
     # Setters
     pim_catalog.updater.setter.registry:

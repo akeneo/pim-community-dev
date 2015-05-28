@@ -58,8 +58,5 @@ services:
             - '@pim_base_connector.array_converter.flat.product'
             - '@pim_catalog.repository.group'
             - '@pim_catalog.updater.variant_group'
-            - '@pim_catalog.updater.product'
-            - '@pim_catalog.builder.product'
             - '@pim_catalog.validator.product'
             - %pim_catalog.entity.group.class%
-            - %pim_catalog.entity.product_template.class%

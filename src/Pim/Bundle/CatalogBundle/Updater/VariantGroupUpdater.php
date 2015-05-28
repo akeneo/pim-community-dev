@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Updater;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
@@ -24,16 +25,34 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
     /** @var GroupTypeRepositoryInterface */
     protected $groupTypeRepository;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var ObjectUpdaterInterface */
+    protected $productUpdater;
+
+    /** @var string */
+    protected $productTemplateClass;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param GroupTypeRepositoryInterface $groupTypeRepository
+     * @param ProductBuilderInterface      $productBuilder
+     * @param ObjectUpdaterInterface       $productUpdater
+     * @param string                       $productTemplateClass
      */
     public function __construct(
         AttributeRepositoryInterface $attributeRepository,
-        GroupTypeRepositoryInterface $groupTypeRepository
+        GroupTypeRepositoryInterface $groupTypeRepository,
+        ProductBuilderInterface $productBuilder,
+        ObjectUpdaterInterface $productUpdater,
+        $productTemplateClass
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->groupTypeRepository = $groupTypeRepository;
+        $this->attributeRepository  = $attributeRepository;
+        $this->groupTypeRepository  = $groupTypeRepository;
+        $this->productBuilder       = $productBuilder;
+        $this->productUpdater       = $productUpdater;
+        $this->productTemplateClass = $productTemplateClass;
     }
 
     /**
@@ -47,7 +66,23 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      *         "fr_FR": "T-shirt super beau"
      *     }
      *     "axis": ["main_color", "secondary_color"],
-     *     "type": "VARIANT"
+     *     "type": "VARIANT",
+     *     "values": {
+     *         "main_color": "white",
+     *         "tshirt_style": ["turtleneck","sportwear"],
+     *         "description": [
+     *              {
+     *                  "locale": "fr_FR",
+     *                  "scope": "ecommerce",
+     *                  "data": "<p>description</p>",
+     *              },
+     *              {
+     *                  "locale": "en_US",
+     *                  "scope": "ecommerce",
+     *                  "data": "<p>description</p>",
+     *              }
+     *          ]
+     *     }
      * }
      */
     public function update($variantGroup, array $data, array $options = [])
@@ -61,8 +96,8 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
             );
         }
 
-        foreach ($data as $field => $data) {
-            $this->setData($variantGroup, $field, $data);
+        foreach ($data as $field => $item) {
+            $this->setData($variantGroup, $field, $item);
         }
 
         return $this;
@@ -92,6 +127,10 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
             case 'axis':
                 $this->setAxes($variantGroup, $data);
+                break;
+
+            case 'values':
+                $this->setValues($variantGroup, $data);
                 break;
         }
     }
@@ -158,6 +197,61 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
                 throw new \InvalidArgumentException(sprintf('Attribute "%s" does not exist', $axis));
             }
         }
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     * @param array          $arrayValues
+     */
+    public function setValues(GroupInterface $variantGroup, array $arrayValues)
+    {
+        $values = $this->transformArrayToValues($arrayValues);
+
+        // TODO: remove it when normalizers & setters will be uniformized (PIM-4246)
+        foreach ($arrayValues as $code => $data) {
+            foreach ($data as $index => $value) {
+                $arrayValues[$code][$index]['value'] = $value['data'];
+                unset($arrayValues[$code][$index]['data']);
+            }
+        }
+
+        $template = $this->getProductTemplate($variantGroup);
+        $template->setValues($values)
+            ->setValuesData($arrayValues);
+
+        $variantGroup->setProductTemplate($template);
+    }
+
+    /**
+     * @param array $arrayValues
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    protected function transformArrayToValues(array $arrayValues)
+    {
+        $product = $this->productBuilder->createProduct();
+        $this->productUpdater->update($product, $arrayValues);
+
+        $values = $product->getValues();
+        $values->removeElement($product->getIdentifier());
+
+        return $values;
+    }
+
+    /**
+     * @param GroupInterface $variantGroup
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface
+     */
+    protected function getProductTemplate(GroupInterface $variantGroup)
+    {
+        if ($variantGroup->getProductTemplate()) {
+            $template = $variantGroup->getProductTemplate();
+        } else {
+            $template = new $this->productTemplateClass();
+        }
+
+        return $template;
     }
 
     /**
