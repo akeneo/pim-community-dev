@@ -42,6 +42,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
             mappedBy: family
