@@ -48,7 +48,7 @@ define([
                     scope
                 );
 
-                this.setMediaUrl(context);
+                context.mediaUrl = this.getMediaUrl(context.value.value);
 
                 return Field.prototype.renderCopyInput.apply(this, arguments);
             },
