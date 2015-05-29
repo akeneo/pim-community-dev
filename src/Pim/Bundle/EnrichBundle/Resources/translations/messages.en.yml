@@ -483,8 +483,9 @@ flash:
 info:
     updated: There are unsaved changes.
     category:
-        remove children: All sub-categories will be deleted.
-        keep products:   Products in these categories will not be deleted.
+        remove children:          All sub-categories will be deleted.
+        keep products:            Products in these categories will not be deleted.
+        products limit exceeded:  This category contains more products than allowed for this operation (%limit% products maximum)
     product:
         no available attributes: There are no more attributes to add
         no family defined:       No family defined
