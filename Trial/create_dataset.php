@@ -6,13 +6,12 @@ use PimEnterprise\Component\ProductAsset\Builder\ProductAssetVariationBuilder;
 use PimEnterprise\Component\ProductAsset\Model\ProductAsset;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
-define('PIM_PATH', '/home/willy/project/akeneo/pim-enterprise-dev/');
+define('PIM_PATH', '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/');
 define('DATASET', realpath(__DIR__ . '/../../dataset/') . '/');
 define('STORED', 'stored/');
 define('THUMBNAIL', 'thumbnail/');
 
 require_once PIM_PATH . 'vendor/autoload.php';
-require_once __DIR__ . '/../../vendor/autoload.php';
 require_once PIM_PATH . 'app/AppKernel.php';
 
 $kernel = new AppKernel('dev', true);
@@ -112,7 +111,7 @@ function getVariationPipeline($image)
     $output = $imageName . '-%s' . $ext;
 
     return [
-        sprintf($output, 'thumbnail') => getThumbnailVariation(),
+        //sprintf($output, 'thumbnail') => getThumbnailVariation(),
         sprintf($output, 'ecommerce') => getEcommerceVariation(),
         sprintf($output, 'mobile')    => getMobileVariation(),
         sprintf($output, 'print')     => getPrintVariation()
@@ -130,21 +129,22 @@ function getThumbnailVariation()
 function getEcommerceVariation()
 {
     return [
-        'scale' => ['width' => 500],
+        'scale' => ['ratio' => 0.5],
     ];
 }
 
 function getMobileVariation()
 {
     return [
-        'scale' => ['width' => 250],
+        'scale' => ['width' => 200],
+        'colorspace' => ['colorspace' => 'gray'],
     ];
 }
 
 function getPrintVariation()
 {
     return [
-        'colorspace' => ['colorspace' => 'gray'],
+        'resize' => ['width' => 400, 'height' => 200],
     ];
 }
 
@@ -213,7 +213,9 @@ $images = [
         'paint.jpg',
     ],
     'chicagoskyline' => [
-        'chicagoskyline.jpg',
+        'en_US' => 'chicagoskyline-en.jpg',
+        'fr_FR' => 'chicagoskyline-fr.jpg',
+        'de_DE' => 'chicagoskyline-de.jpg',
     ]
 ];
 
@@ -244,13 +246,15 @@ foreach ($images as $key => $references) {
             
             foreach($pipelines as $outputName => $pipeline) {
                 $transformer->transform($splFileRef, $pipeline, $outputName);
+                /** @var \Pim\Bundle\CatalogBundle\Model\ChannelInterface $channel */
                 $channel    = $channelRepo->findOneByIdentifier(getChannelCode($outputName));
                 $varSplFile = createSplFile($outputName);
                 $varPimFile = createPimFile($varSplFile, $outputName);
 
                 $filesystem->copy($outputName, STORED . $varPimFile->getPathname());
 
-                if (null !== $channel) {
+                $variationBuildable = ((null === $locale) || ($channel->hasLocale($reference->getLocale())));
+                if (null !== $channel && $variationBuildable) {
                     $variation = $productVarBuilder->buildOne($reference, $channel);
                     $variation->setFile($varPimFile);
 
@@ -260,7 +264,7 @@ foreach ($images as $key => $references) {
                     $em->persist($varPimFile);
                     $em->persist($varMeta);
                 } else {
-                    $filesystem->copy($outputName, THUMBNAIL . $pimFile->getPathname());
+                    //$filesystem->copy($outputName, THUMBNAIL . $pimFile->getPathname());
                 }
 
                 $filesystem->delete($outputName);

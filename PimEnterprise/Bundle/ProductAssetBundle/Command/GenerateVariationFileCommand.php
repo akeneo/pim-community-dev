@@ -36,7 +36,7 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
      */
     protected function configure()
     {
-        $this->setName('pim:product-asset:generate-variation');
+        $this->setName('pim:asset:generate-variation');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('channel', InputArgument::REQUIRED);
         $this->addArgument('locale', InputArgument::OPTIONAL);

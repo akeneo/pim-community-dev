@@ -12,17 +12,27 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ProductAssetReferenceRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ProductAssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ProductAssetVariationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Asset controller
@@ -49,6 +59,9 @@ class ProductAssetController extends Controller
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
 
+    /** @var VariationFileGeneratorInterface */
+    protected $variationFileGenerator;
+
     /**
      * @param ProductAssetRepositoryInterface          $assetRepository
      * @param ProductAssetReferenceRepositoryInterface $referenceRepository
@@ -56,6 +69,7 @@ class ProductAssetController extends Controller
      * @param FileMetadataRepositoryInterface          $metadataRepository
      * @param ChannelRepositoryInterface               $channelRepository
      * @param RawFileStorerInterface                   $rawFileStorer
+     * @param VariationFileGeneratorInterface          $variationFileGenerator
      */
     public function __construct(
         ProductAssetRepositoryInterface $assetRepository,
@@ -63,14 +77,16 @@ class ProductAssetController extends Controller
         ProductAssetVariationRepositoryInterface $variationRepository,
         FileMetadataRepositoryInterface $metadataRepository,
         ChannelRepositoryInterface $channelRepository,
-        RawFileStorerInterface $rawFileStorer
+        RawFileStorerInterface $rawFileStorer,
+        VariationFileGeneratorInterface $variationFileGenerator
     ) {
-        $this->assetRepository     = $assetRepository;
-        $this->referenceRepository = $referenceRepository;
-        $this->variationRepository = $variationRepository;
-        $this->metadataRepository  = $metadataRepository;
-        $this->channelRepository   = $channelRepository;
-        $this->rawFileStorer       = $rawFileStorer;
+        $this->assetRepository        = $assetRepository;
+        $this->referenceRepository    = $referenceRepository;
+        $this->variationRepository    = $variationRepository;
+        $this->metadataRepository     = $metadataRepository;
+        $this->channelRepository      = $channelRepository;
+        $this->rawFileStorer          = $rawFileStorer;
+        $this->variationFileGenerator = $variationFileGenerator;
     }
 
     /**
@@ -158,29 +174,32 @@ class ProductAssetController extends Controller
             $attachments[$refKey]['uploadForm'] = $refFormView;
 
             foreach ($channels as $channel) {
-                $variation   = $reference->getVariation($channel);
-                $channelCode = $channel->getCode();
+                $variation = $reference->getVariation($channel);
+                if (null !== $variation) {
+                    $channelCode = $channel->getCode();
 
-                $metadata = null;
-                if (null !== $variation->getFile()) {
-                    $metadata = $this->metadataRepository->findOneBy(
-                        [
-                            'file' => $variation->getFile()->getId()
-                        ]
+                    $metadata = null;
+                    if (null !== $variation->getFile()) {
+                        $metadata = $this->metadataRepository->findOneBy(
+                            [
+                                'file' => $variation->getFile()->getId()
+                            ]
+                        );
+                    }
+                    $varFormView                                                               = $this->createUploadForm(
+                    )->createView();
+                    $varFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
+                        'ref_%s_var_%s',
+                        $reference->getId(),
+                        $variation->getId()
                     );
-                }
-                $varFormView = $this->createUploadForm()->createView();
-                $varFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
-                    'ref_%s_var_%s',
-                    $reference->getId(),
-                    $variation->getId()
-                );
 
-                $attachments[$refKey]['variations'][$channelCode] = [
-                    'entity'        => $variation,
-                    'metadata'      => $metadata,
-                    'uploadForm'    => $varFormView
-                ];
+                    $attachments[$refKey]['variations'][$channelCode] = [
+                        'entity'     => $variation,
+                        'metadata'   => $metadata,
+                        'uploadForm' => $varFormView
+                    ];
+                }
             }
         }
 
@@ -230,6 +249,7 @@ class ProductAssetController extends Controller
      */
     public function uploadVariationAction(Request $request, $assetId, $id)
     {
+        /** @var ProductAssetVariationInterface $variation */
         $variation = $this->variationRepository->find($id);
 
         if ($request->isMethod('POST')) {
@@ -238,7 +258,6 @@ class ProductAssetController extends Controller
             if ($form->isValid()) {
                 $data = $form->get('file')->getData();
                 if (null !== $clientFile = $data->getFile()) {
-                    // TODO: Generate Metadata
                     $uploadedFile = $this->rawFileStorer->store($clientFile, ProductAssetFileSystems::FS_STORAGE);
                     $variation->setFile($uploadedFile);
                     $variation->setLocked(true);
@@ -246,6 +265,17 @@ class ProductAssetController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($variation);
                     $em->flush();
+
+                    // TODO: problem with this method is that 2 files are stored in
+                    // the VFS but only the previous one is used
+                    // maybe when we change the file of the variation, the other one should be softdeleted
+                    /*
+                    $this->launchVariationFileGeneration(
+                        $variation->getReference()->getAsset(),
+                        $variation->getChannel(),
+                        $variation->getReference()->getLocale()
+                    );
+                    */
                 }
             }
         }
@@ -281,5 +311,31 @@ class ProductAssetController extends Controller
     protected function createUploadForm()
     {
         return $this->createForm(new UploadType());
+    }
+
+    /**
+     * @param ProductAssetInterface $asset
+     * @param ChannelInterface      $channel
+     * @param LocaleInterface       $locale
+     *
+     * @throws \Exception
+     */
+    protected function launchVariationFileGeneration(
+        ProductAssetInterface $asset,
+        ChannelInterface $channel,
+        LocaleInterface $locale = null
+    ) {
+        $rootDir = $this->container->getParameter('kernel.root_dir');
+        $pathFinder = new PhpExecutableFinder();
+        $cmd = sprintf(
+            '%s %s/console pim:asset:generate-variation %s %s %s',
+            $pathFinder->find(),
+            $rootDir,
+            $asset->getCode(),
+            $channel->getCode(),
+            null !== $locale ? $locale->getCode() : ''
+        );
+
+        exec($cmd . ' &');
     }
 }
