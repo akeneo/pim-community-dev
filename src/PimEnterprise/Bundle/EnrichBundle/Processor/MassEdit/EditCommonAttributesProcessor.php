@@ -33,7 +33,7 @@ class EditCommonAttributesProcessor extends BaseProcessor
      * @param ValidatorInterface                   $validator
      * @param ProductMassActionRepositoryInterface $massActionRepository
      * @param AttributeRepositoryInterface         $attributeRepository
-     * @param MassEditRepositoryInterface          $jobConfigurationRepo
+     * @param JobConfigurationRepositoryInterface  $jobConfigurationRepo
      * @param UserManager                          $userManager
      * @param SecurityContextInterface             $securityContext
      */
