@@ -1,3 +1,9 @@
+# 1.3.13 (2015-05-29)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
 # 1.3.12 (2015-05-22)
 
 ## Bug fixes
