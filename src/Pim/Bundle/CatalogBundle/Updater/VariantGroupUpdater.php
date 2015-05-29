@@ -152,9 +152,9 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
      */
     protected function setType(GroupInterface $variantGroup, $type)
     {
-        $type = $this->groupTypeRepository->findOneByIdentifier($type);
-        if (null !== $type) {
-            $variantGroup->setType($type);
+        $groupType = $this->groupTypeRepository->findOneByIdentifier($type);
+        if (null !== $groupType) {
+            $variantGroup->setType($groupType);
         } else {
             throw new \InvalidArgumentException(sprintf('Type "%s" does not exist', $type));
         }
