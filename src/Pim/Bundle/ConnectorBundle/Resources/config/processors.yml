@@ -3,7 +3,7 @@ parameters:
     pim_base_connector.processor.denormalization.attribute.class:           Pim\Component\Connector\Processor\Denormalization\AttributeProcessor
     pim_base_connector.processor.denormalization.product.class:             Pim\Component\Connector\Processor\Denormalization\ProductProcessor
     pim_base_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
-    pim_base_connector.processor.denormalization.csv_variant_group.class:   Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
+    pim_base_connector.processor.denormalization.variant_group.class:       Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
 
 services:
     pim_base_connector.processor.denormalization.attribute_option.flat:
@@ -51,8 +51,8 @@ services:
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
 
-    pim_base_connector.processor.denormalization.csv_variant_group.flat:
-        class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
+    pim_base_connector.processor.denormalization.variant_group.flat:
+        class: %pim_base_connector.processor.denormalization.variant_group.class%
         arguments:
             - '@pim_base_connector.array_converter.flat.variant_group'
             - '@pim_catalog.repository.group'
