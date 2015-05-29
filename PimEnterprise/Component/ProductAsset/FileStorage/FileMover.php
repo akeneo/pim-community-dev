@@ -63,5 +63,4 @@ class FileMover implements FileMoverInterface
         $file->setStorage($destFsAlias);
         $this->saver->save($file);
     }
-
 }

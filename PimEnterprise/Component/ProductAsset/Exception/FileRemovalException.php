@@ -18,5 +18,4 @@ namespace PimEnterprise\Component\ProductAsset\Exception;
  */
 class FileRemovalException extends \Exception
 {
-
 }

@@ -20,5 +20,4 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface ChannelConfigurationRepositoryInterface extends ObjectRepository
 {
-
 }

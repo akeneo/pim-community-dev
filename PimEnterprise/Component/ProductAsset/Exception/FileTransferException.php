@@ -18,5 +18,4 @@ namespace PimEnterprise\Component\ProductAsset\Exception;
  */
 class FileTransferException extends \Exception
 {
-
 }

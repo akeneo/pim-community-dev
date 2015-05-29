@@ -143,7 +143,7 @@ class ProductAssetVariation implements ProductAssetVariationInterface
      */
     public function setLocked($locked)
     {
-        $this->locked = (bool)$locked;
+        $this->locked = (bool) $locked;
 
         return $this;
     }

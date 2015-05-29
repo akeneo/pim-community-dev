@@ -25,7 +25,7 @@ services:
             - %pimee_product_asset.model.image_metadata.class%
         tags:
             - { name: metadata.builder, alias: pimee_product_asset_image_metadata_builder }
-            
+
     pimee_product_asset.builder.reference:
         class: %pimee_product_asset.builder.reference.class%
         arguments:

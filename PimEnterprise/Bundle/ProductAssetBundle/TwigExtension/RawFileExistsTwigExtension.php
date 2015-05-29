@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\TwigExtension;
 
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Verify if file exists in web/
@@ -54,7 +53,6 @@ class RawFileExistsTwigExtension extends \Twig_Extension
     {
         $webRoot = realpath($this->rootFolder);
         $toCheck = realpath($webRoot . $path);
-
 
         if (false === $webRoot || false === $toCheck) {
             return false;

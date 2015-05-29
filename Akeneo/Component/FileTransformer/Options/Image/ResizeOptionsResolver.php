@@ -31,7 +31,6 @@ class ResizeOptionsResolver implements TransformationOptionsResolverInterface
         $this->resolver = new OptionsResolver();
         $this->resolver->setRequired(['width', 'height']);
         $this->resolver->setAllowedTypes(['width' => 'int', 'height' => 'int']);
-
     }
 
     /**

@@ -21,5 +21,4 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationReposito
  */
 class ChannelConfigurationRepository extends EntityRepository implements ChannelConfigurationRepositoryInterface
 {
-
 }
