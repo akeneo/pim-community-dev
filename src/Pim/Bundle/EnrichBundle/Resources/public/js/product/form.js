@@ -37,12 +37,13 @@ define(
 
                 return deferred.promise();
             },
-            addExtension: function (code, extension, zone, insertAction) {
+            addExtension: function (code, extension, zone, insertAction, position) {
                 extension.setParent(this);
 
                 extension.code         = code;
                 extension.targetZone   = zone;
                 extension.insertAction = insertAction;
+                extension.position     = position;
 
                 this.extensions[code] = extension;
             },
@@ -84,12 +85,15 @@ define(
                 return this.renderExtensions();
             },
             renderExtensions: function () {
-                _.each(this.extensions, function (extension) {
+                var sortedExtensions = _.sortBy(this.extensions, 'position');
+                _.each(sortedExtensions, function (extension) {
                     extension.getTargetElement()[extension.insertAction](extension.el);
                     /* global console */
                     console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                     extension.render();
                 });
+
+                sortedExtensions = undefined;
 
                 return this;
             }
