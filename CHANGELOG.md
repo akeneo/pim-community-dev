@@ -1,4 +1,4 @@
-# 1.0.x
+# 1.0.28 (2015-05-29)
 
 ## Bug fixes
 - PIM-4227: Disable product versionning on category update (never used and very slow)
