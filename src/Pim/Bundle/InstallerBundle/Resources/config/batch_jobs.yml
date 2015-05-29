@@ -98,21 +98,21 @@ connector:
                         processor: pim_base_connector.processor.association_type
                         writer:    pim_base_connector.writer.doctrine
 
-        fixtures_attribute_yml:
-            title: pim_installer.jobs.fixtures_attribute_yml.title
+        fixtures_attribute_csv:
+            title: pim_installer.jobs.fixtures_attribute_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_base_connector.jobs.fixtures_attribute_yml.validation.title
+                    title: pim_base_connector.jobs.fixtures_attribute_csv.validation.title
                     class: %pim_base_connector.step.validator.class%
                     services:
                         charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_attribute_yml.import.title
+                    title:     pim_base_connector.jobs.csv_attribute_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.attribute
-                        writer:    pim_base_connector.writer.doctrine
+                        reader:    pim_base_connector.reader.file.csv_attribute
+                        processor: pim_base_connector.processor.denormalization.attribute.flat
+                        writer:    pim_base_connector.writer.doctrine.attribute
 
         fixtures_attribute_options_yml:
             title: pim_installer.jobs.fixtures_attribute_options_yml.title
