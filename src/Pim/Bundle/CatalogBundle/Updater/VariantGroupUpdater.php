@@ -216,13 +216,15 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         $template = $this->getProductTemplate($variantGroup);
-        $template->setValues($values)
-            ->setValuesData($arrayValues);
+        $template->setValues($values);
+        $template->setValuesData($arrayValues);
 
         $variantGroup->setProductTemplate($template);
     }
 
     /**
+     * Transform an array of values to ProductValues
+     *
      * @param array $arrayValues
      *
      * @return \Doctrine\Common\Collections\ArrayCollection

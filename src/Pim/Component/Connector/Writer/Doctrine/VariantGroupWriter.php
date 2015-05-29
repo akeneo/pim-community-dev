@@ -10,8 +10,8 @@ use Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplierInterface;
  * Variant group writer, also copy variant group values to belonging products, receive group one per one (cf job
  * configuration) to avoid to hydrate all products related to all groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class VariantGroupWriter extends BaseWriter
