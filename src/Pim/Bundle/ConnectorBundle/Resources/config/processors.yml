@@ -1,7 +1,9 @@
 parameters:
     pim_base_connector.processor.denormalization.attribute_option.class:    Pim\Component\Connector\Processor\Denormalization\AttributeOptionProcessor
+    pim_base_connector.processor.denormalization.attribute.class:           Pim\Component\Connector\Processor\Denormalization\AttributeProcessor
     pim_base_connector.processor.denormalization.product.class:             Pim\Component\Connector\Processor\Denormalization\ProductProcessor
     pim_base_connector.processor.denormalization.product_association.class: Pim\Component\Connector\Processor\Denormalization\ProductAssociationProcessor
+    pim_base_connector.processor.denormalization.variant_group.class:       Pim\Component\Connector\Processor\Denormalization\VariantGroupProcessor
 
 services:
     pim_base_connector.processor.denormalization.attribute_option.flat:
@@ -12,6 +14,15 @@ services:
             - '@pim_catalog.updater.attribute_option'
             - '@validator'
             - %pim_catalog.entity.attribute_option.class%
+
+    pim_base_connector.processor.denormalization.attribute.flat:
+        class: %pim_base_connector.processor.denormalization.attribute.class%
+        arguments:
+            - '@pim_base_connector.array_converter.flat.attribute'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.factory.attribute'
+            - '@pim_catalog.updater.attribute'
+            - '@validator'
 
     pim_base_connector.processor.denormalization.attribute_option.structured:
         class: %pim_base_connector.processor.denormalization.attribute_option.class%
@@ -39,3 +50,12 @@ services:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.updater.product'
             - '@pim_catalog.validator.product'
+
+    pim_base_connector.processor.denormalization.variant_group.flat:
+        class: %pim_base_connector.processor.denormalization.variant_group.class%
+        arguments:
+            - '@pim_base_connector.array_converter.flat.variant_group'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.updater.variant_group'
+            - '@pim_catalog.validator.product'
+            - %pim_catalog.entity.group.class%

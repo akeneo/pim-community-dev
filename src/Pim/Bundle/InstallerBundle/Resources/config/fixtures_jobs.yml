@@ -64,14 +64,14 @@ jobs:
             filePath: association_types.yml
             multiple: false
 
-    fixtures_attribute_yml:
+    fixtures_attribute_csv:
         order: 40
         connector: Data fixtures
-        alias:     fixtures_attribute_yml
+        alias:     fixtures_attribute_csv
         label:     Attributes data fixtures
         type:      fixtures
         configuration:
-            filePath: attributes.yml
+            filePath: attributes.csv
             multiple: false
 
     fixtures_attribute_options_yml:

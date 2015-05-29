@@ -70,10 +70,10 @@ class ProductAttributeFieldExtractor
 
         if (null !== $attribute) {
             $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
-            $attributeInfos = $this->extractAttributeInfos($attribute, $explodedFieldName);
-            $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfos);
+            $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldName);
+            $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfo);
 
-            return $attributeInfos;
+            return $attributeInfo;
         }
 
         return null;
@@ -88,7 +88,7 @@ class ProductAttributeFieldExtractor
      *
      * @return array
      */
-    protected function extractAttributeInfos(AttributeInterface $attribute, array $explodedFieldName)
+    protected function extractAttributeInfo(AttributeInterface $attribute, array $explodedFieldName)
     {
         array_shift($explodedFieldName);
 
@@ -168,27 +168,27 @@ class ProductAttributeFieldExtractor
      *
      * @param AttributeInterface $attribute
      * @param string             $fieldName
-     * @param array              $attributeInfos
+     * @param array              $attributeInfo
      *
      * @throws \InvalidArgumentException
      */
-    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, $fieldName, array $attributeInfos)
+    protected function checkFieldNameLocaleByChannel(AttributeInterface $attribute, $fieldName, array $attributeInfo)
     {
         if ($attribute->isScopable() &&
             $attribute->isLocalizable() &&
-            isset($attributeInfos['scope_code']) &&
-            isset($attributeInfos['locale_code'])
+            isset($attributeInfo['scope_code']) &&
+            isset($attributeInfo['locale_code'])
         ) {
-            $channel = $this->channelRepository->findOneByIdentifier($attributeInfos['scope_code']);
-            $locale = $this->localeRepository->findOneByIdentifier($attributeInfos['locale_code']);
+            $channel = $this->channelRepository->findOneByIdentifier($attributeInfo['scope_code']);
+            $locale = $this->localeRepository->findOneByIdentifier($attributeInfo['locale_code']);
 
             if ($channel !== null && $locale !== null && !$channel->hasLocale($locale)) {
                 throw new \InvalidArgumentException(
                     sprintf(
                         'The locale "%s" of the field "%s" is not available in scope "%s"',
-                        $attributeInfos['locale_code'],
+                        $attributeInfo['locale_code'],
                         $fieldName,
-                        $attributeInfos['scope_code']
+                        $attributeInfo['scope_code']
                     )
                 );
             }
@@ -204,7 +204,7 @@ class ProductAttributeFieldExtractor
     protected function checkForLocaleSpecificValue(AttributeInterface $attribute, array $explodedFieldNames)
     {
         if ($attribute->isLocaleSpecific()) {
-            $attributeInfo = $this->extractAttributeInfos($attribute, $explodedFieldNames);
+            $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldNames);
             $availableLocales = $attribute->getLocaleSpecificCodes();
             if (!in_array($explodedFieldNames[1], $availableLocales)) {
                 throw new \LogicException(

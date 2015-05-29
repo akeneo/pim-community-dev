@@ -4,6 +4,7 @@ parameters:
     pim_catalog.factory.media.class:                 Pim\Bundle\CatalogBundle\Factory\MediaFactory
     pim_catalog.factory.metric.class:                Pim\Bundle\CatalogBundle\Factory\MetricFactory
     pim_catalog.factory.group.class:                 Pim\Bundle\CatalogBundle\Factory\GroupFactory
+    pim_catalog.factory.attribute.class:             Pim\Bundle\CatalogBundle\Factory\AttributeFactory
 
 services:
     pim_catalog.factory.family:
@@ -24,6 +25,13 @@ services:
         class: %pim_catalog.factory.media.class%
         arguments:
             - %pim_catalog.entity.product_media.class%
+
+    pim_catalog.factory.attribute:
+        class: %pim_catalog.factory.attribute.class%
+        arguments:
+            - '@pim_catalog.registry.attribute_type'
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.factory.metric:
         class: %pim_catalog.factory.metric.class%

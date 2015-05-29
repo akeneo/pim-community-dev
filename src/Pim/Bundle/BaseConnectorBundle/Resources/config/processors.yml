@@ -3,9 +3,9 @@ parameters:
     pim_base_connector.processor.csv_serializer.heterogeneous.class: Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_base_connector.processor.csv_serializer.product.class:       Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer\ProductProcessor
 
-    pim_base_connector.processor.transformer.class:                   Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
-    pim_base_connector.processor.product.class:                       Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
-    pim_base_connector.processor.category.class:                      Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
+    pim_base_connector.processor.transformer.class:                       Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor
+    pim_base_connector.processor.product.class:                           Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
+    pim_base_connector.processor.category.class:                          Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
     pim_base_connector.processor.denormalization.csv_group.class:         Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\GroupProcessor
     pim_base_connector.processor.denormalization.csv_variant_group.class: Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor
 
@@ -142,6 +142,7 @@ services:
             - %pim_catalog.entity.group.class%
             - 'csv'
 
+    # @deprecated will be dropped in 1.5
     pim_base_connector.processor.denormalization.csv_variant_group:
         class: %pim_base_connector.processor.denormalization.csv_variant_group.class%
         arguments:
