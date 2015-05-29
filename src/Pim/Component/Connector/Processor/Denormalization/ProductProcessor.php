@@ -152,7 +152,7 @@ class ProductProcessor extends AbstractProcessor
     protected function findOrCreateProduct($identifier, $familyCode)
     {
         $product = $this->repository->findOneByIdentifier($identifier);
-        if (false === $product) {
+        if (!$product) {
             $product = $this->builder->createProduct($identifier, $familyCode);
         }
 
