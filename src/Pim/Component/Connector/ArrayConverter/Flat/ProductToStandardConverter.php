@@ -4,34 +4,37 @@ namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\OptionsResolverConverter;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Product Flat Converter
+ * Product Converter
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: rename!
  */
 class ProductToStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var OptionsResolverConverter */
-    protected $optionsResolverConverter;
-
     /** @var ValueConverterRegistryInterface */
     protected $converterRegistry;
 
     /** @var ProductAttributeFieldExtractor */
-    protected $fieldExtractor;
+    protected $attrFieldExtractor;
 
-    /** @var ProductAssociationFieldResolver */
-    protected $assocFieldResolver;
+    /** @var AttributeFieldsResolver */
+    protected $attrFieldsResolver;
 
-    /** @var FieldSplitter */
-    protected $fieldSplitter;
+    /** @var AssociationFieldsResolver */
+    protected $assocFieldsResolver;
 
     /** @var ProductFieldConverter */
     protected $productFieldConverter;
@@ -39,40 +42,50 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var ColumnsMerger */
     protected $columnsMerger;
 
+    /** @var ColumnsMapper */
+    protected $columnsMapper;
+
+    /** @var array */
+    protected $optionalAssociationFields;
+
     /**
-     * @param ProductAttributeFieldExtractor  $fieldExtractor
-     * @param OptionsResolverConverter        $optionsResolverConverter
+     * @param ProductAttributeFieldExtractor  $attrFieldExtractor
      * @param ValueConverterRegistryInterface $converterRegistry
-     * @param ProductAssociationFieldResolver $assocFieldResolver
-     * @param FieldSplitter                   $fieldSplitter
+     * @param AssociationFieldsResolver       $assocFieldsResolver
+     * @param AttributeFieldsResolver         $attrFieldsResolver
      * @param ProductFieldConverter           $productFieldConverter
      * @param ColumnsMerger                   $columnsMerger
+     * @param ColumnsMapper                   $columnsMapper
      */
     public function __construct(
-        ProductAttributeFieldExtractor $fieldExtractor,
-        OptionsResolverConverter $optionsResolverConverter,
+        ProductAttributeFieldExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
-        ProductAssociationFieldResolver $assocFieldResolver,
-        FieldSplitter $fieldSplitter,
+        AssociationFieldsResolver $assocFieldsResolver,
+        AttributeFieldsResolver $attrFieldsResolver,
         ProductFieldConverter $productFieldConverter,
-        ColumnsMerger $columnsMerger
+        ColumnsMerger $columnsMerger,
+        ColumnsMapper $columnsMapper
     ) {
-        $this->optionsResolverConverter = $optionsResolverConverter;
-        $this->converterRegistry        = $converterRegistry;
-        $this->fieldExtractor           = $fieldExtractor;
-        $this->assocFieldResolver       = $assocFieldResolver;
-        $this->fieldSplitter            = $fieldSplitter;
-        $this->productFieldConverter    = $productFieldConverter;
-        $this->columnsMerger            = $columnsMerger;
+        $this->attrFieldExtractor = $attrFieldExtractor;
+        $this->converterRegistry = $converterRegistry;
+        $this->assocFieldsResolver = $assocFieldsResolver;
+        $this->attrFieldsResolver = $attrFieldsResolver;
+        $this->productFieldConverter = $productFieldConverter;
+        $this->columnsMerger = $columnsMerger;
+        $this->columnsMapper = $columnsMapper;
+        $this->optionalAssociationFields = [];
     }
 
     /**
+     * {@inheritdoc}
+     *
      * Convert flat array to structured array:
      *
      * Before:
      * [
-     *     'description-en_US-mobile': 'My description',
+     *     'sku': 'MySku',
      *     'name-fr_FR': 'T-shirt super beau',
+     *     'description-en_US-mobile': 'My description',
      *     'price': '10 EUR, 24 USD',
      *     'price-CHF': '20',
      *     'length': '10 CENTIMETER',
@@ -84,6 +97,11 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *
      * After:
      * {
+     *      "sku": [{
+     *          "locale": null,
+     *          "scope":  null,
+     *          "data":  "MySku",
+     *      }],
      *      "name": [{
      *          "locale": "fr_FR",
      *          "scope":  null,
@@ -136,18 +154,19 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *      "associations": {
      *          "XSELL": {
      *              "groups": ["akeneo_tshirt", "oro_tshirt"],
-     *              "product": ["AKN_TS", "ORO_TSH"]
+     *              "products": ["AKN_TS", "ORO_TSH"]
      *          }
      *      }
      * }
-     *
-     * @param array $item Representing a flat product
-     *
-     * @return array structured $item
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
-        $resolvedItem = $this->optionsResolverConverter->resolveConverterOptions($item);
+        $mappedItem = $item;
+        if (isset($options['mapping'])) {
+            $mappedItem = $this->columnsMapper->map($item, $options['mapping']);
+        }
+
+        $resolvedItem = $this->resolveConverterOptions($mappedItem, $options);
         $mergedItems = $this->columnsMerger->merge($resolvedItem);
 
         $result = [];
@@ -159,7 +178,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
             }
 
             if (null !== $value) {
-                $result = $this->addFieldToCollection($result, $value);
+                $result = $this->mergeValueToResult($result, $value);
             }
         }
 
@@ -176,7 +195,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertValue($column, $value)
     {
-        $attributeFieldInfo = $this->fieldExtractor->extractAttributeFieldNameInfos($column);
+        $attributeFieldInfo = $this->attrFieldExtractor->extractAttributeFieldNameInfos($column);
 
         if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
             $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());
@@ -206,10 +225,71 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
      *
      * @return array
      */
-    protected function addFieldToCollection(array $collection, array $value)
+    protected function mergeValueToResult(array $collection, array $value)
     {
         $collection = array_merge_recursive($collection, $value);
 
         return $collection;
+    }
+
+    /**
+     * @param array $item
+     * @param array $options
+     *
+     * @return array
+     */
+    protected function resolveConverterOptions(array $item, array $options = [])
+    {
+        $enabled = (isset($options['default_values']['enabled'])) ? $options['default_values']['enabled'] : true;
+        $resolver = $this->createOptionsResolver();
+        $resolver->setDefaults(['enabled' => $enabled]);
+        $resolvedItem = $resolver->resolve($item);
+
+        return $resolvedItem;
+    }
+
+    /**
+     * @return OptionsResolverInterface
+     */
+    protected function createOptionsResolver()
+    {
+        $resolver = new OptionsResolver();
+
+        $required = [];
+        $allowedTypes = [
+            'family'     => 'string',
+            'enabled'    => 'bool',
+            'categories' => 'string',
+            'groups'     => 'string'
+        ];
+        $optional = array_merge(
+            ['family', 'enabled', 'categories', 'groups'],
+            $this->attrFieldsResolver->resolveAttributesFields(),
+            $this->getOptionalAssociationFields()
+        );
+
+        $resolver->setRequired($required);
+        $resolver->setOptional($optional);
+        $resolver->setAllowedTypes($allowedTypes);
+        $booleanNormalizer = function ($options, $value) {
+            return (bool) $value;
+        };
+        $resolver->setNormalizers(['enabled' => $booleanNormalizer]);
+
+        return $resolver;
+    }
+
+    /**
+     * Returns associations fields (resolves once)
+     *
+     * @return array
+     */
+    protected function getOptionalAssociationFields()
+    {
+        if (empty($this->optionalAssociationFields)) {
+            $this->optionalAssociationFields = $this->assocFieldsResolver->resolveAssociationFields();
+        }
+
+        return $this->optionalAssociationFields;
     }
 }

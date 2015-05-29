@@ -3,12 +3,12 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
 
 class ProductFieldConverterSpec extends ObjectBehavior
 {
-    function let(FieldSplitter $fieldSplitter, ProductAssociationFieldResolver $assocFieldResolver)
+    function let(FieldSplitter $fieldSplitter, AssociationFieldsResolver $assocFieldResolver)
     {
         $this->beConstructedWith($fieldSplitter, $assocFieldResolver);
     }

@@ -43,7 +43,7 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
      *     }
      * }
      */
-    public function convert(array $item)
+    public function convert(array $item, array $options = [])
     {
         $this->validate($item);
         $item['sort_order'] = $item['sortOrder'];

@@ -5,8 +5,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationFieldResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
 
 /**
  * Product flat denormalizer
@@ -32,7 +32,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var ProductAttributeFieldExtractor */
     protected $attrFieldExtractor;
 
-    /** @var ProductAssociationFieldResolver */
+    /** @var AssociationFieldsResolver */
     protected $assocFieldResolver;
 
     /** @var ProductBuilder */
@@ -54,23 +54,23 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected $productValueClass;
 
     /**
-     * @param ManagerRegistry                 $managerRegistry
-     * @param string                          $entityClass
-     * @param ProductBuilder                  $productBuilder
-     * @param ProductAttributeFieldExtractor  $attFieldExtractor
-     * @param ProductAssociationFieldResolver $assocFieldResolver
-     * @param string                          $associationClass
-     * @param string                          $categoryClass
-     * @param string                          $familyClass
-     * @param string                          $groupClass
-     * @param string                          $productValueClass
+     * @param ManagerRegistry                $managerRegistry
+     * @param string                         $entityClass
+     * @param ProductBuilder                 $productBuilder
+     * @param ProductAttributeFieldExtractor $attFieldExtractor
+     * @param AssociationFieldsResolver      $assocFieldResolver
+     * @param string                         $associationClass
+     * @param string                         $categoryClass
+     * @param string                         $familyClass
+     * @param string                         $groupClass
+     * @param string                         $productValueClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
         ProductBuilder $productBuilder,
         ProductAttributeFieldExtractor $attFieldExtractor,
-        ProductAssociationFieldResolver $assocFieldResolver,
+        AssociationFieldsResolver $assocFieldResolver,
         $associationClass,
         $categoryClass,
         $familyClass,

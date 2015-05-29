@@ -45,9 +45,9 @@ class ProductProcessorSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
     }
 
-    function it_has_no_extra_configuration()
+    function it_has_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldHaveCount(4);
     }
 
     function it_updates_an_existing_product(
@@ -98,8 +98,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -187,8 +191,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -275,8 +283,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
@@ -366,8 +378,12 @@ class ProductProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
         $arrayConverter
-            ->convert($originalData)
+            ->convert($originalData, $converterOptions)
             ->willReturn($convertedData);
 
         $filteredData = [
