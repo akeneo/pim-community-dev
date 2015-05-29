@@ -28,3 +28,4 @@ Pim\Bundle\CatalogBundle\Entity\AssociationType:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach

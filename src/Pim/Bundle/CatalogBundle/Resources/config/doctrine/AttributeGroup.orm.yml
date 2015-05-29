@@ -37,3 +37,4 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             mappedBy: foreignKey
             cascade:
                 - persist
+                - detach
