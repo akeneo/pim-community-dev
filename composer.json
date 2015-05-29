@@ -22,7 +22,7 @@
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
         "symfony/console": "~2.5.0",
-        "akeneo/poc-pam": "dev-master"
+        "akeneo/poc-pam": "dev-PIM-4164"
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*",
