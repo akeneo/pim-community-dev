@@ -117,6 +117,7 @@
                                                 <h4>{{ variation.entity.channel.label }}</h4>
 
                                                 <div class="row-fluid">
+                                                    {% if variation.entity.file %}
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -124,8 +125,8 @@
                                                                 {% if 'image' in variation.entity.file.mimeType %}
                                                                     <th>{{'pimee_product_asset.enrich_asset.view.width'|trans}}</th>
                                                                     <th>{{'pimee_product_asset.enrich_asset.view.height'|trans}}</th>
-                                                                    <th>{{'pimee_product_asset.enrich_asset.view.resolution'|trans}}</th>
-                                                                    <th>{{'pimee_product_asset.enrich_asset.view.colors'|trans}}</th>
+                                                                    {#<th>{{'pimee_product_asset.enrich_asset.view.resolution'|trans}}</th>#}
+                                                                    {#<th>{{'pimee_product_asset.enrich_asset.view.colors'|trans}}</th>#}
                                                                 {% endif %}
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.filesize'|trans}}</th>
                                                                 <th>{{'pimee_product_asset.enrich_asset.view.filetype'|trans}}</th>
@@ -138,8 +139,8 @@
                                                                 {% if 'image' in variation.entity.file.mimeType %}
                                                                     <td>{% if variation.metadata %}{{ variation.metadata.exifSizeWidth }} px{% endif %}</td>
                                                                     <td>{% if variation.metadata %}{{ variation.metadata.exifSizeHeight }} px{% endif %}</td>
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifResolution }}{% endif %}</td>
-                                                                    <td>{% if variation.metadata %}{{ variation.metadata.exifColorSpace }}{% endif %}</td>
+                                                                    {#<td>{% if variation.metadata %}{{ variation.metadata.exifResolution }}{% endif %}</td>#}
+                                                                    {#<td>{% if variation.metadata %}{{ variation.metadata.exifColorSpace }}{% endif %}</td>#}
                                                                 {% endif %}
                                                                 <td>{{ variation.entity.file.size|number_format(0, '.', ' ') }} ko</td>
                                                                 <td>{{ variation.entity.file.mimeType }}</td>
@@ -151,6 +152,9 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
+                                                    {% else %}
+                                                        No variation file for the channel {{ variation.entity.channel.label }}.
+                                                    {% endif %}
                                                 </div>
 
                                             </div>

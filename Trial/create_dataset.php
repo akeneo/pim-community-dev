@@ -81,15 +81,14 @@ function createPimFile(\SplFileInfo $splFile, $imageName)
 
 function createNewAsset($key)
 {
-    $asset   = new ProductAsset();
-    $uniquid = uniqid();
+    $asset = new ProductAsset();
 
     if (1 === rand(0, 1)) {
         $asset->setEndOfUseAt(new \DateTime('2050-05-25 12:12:12'));
     }
 
     return $asset
-        ->setCode(sprintf('%s_%s', $key, $uniquid))
+        ->setCode($key)
         ->setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non quam ex. Duis semper'.
             ' convallis risus at lobortis. Phasellus hendrerit auctor lectus in ullamcorper. Mauris non magna et'.
             ' tellus tempor hendrerit. Donec at lacus fringilla, rutrum enim porttitor, consectetur erat. Donec'.
@@ -193,22 +192,22 @@ cleanImageDirectory();
 cleanThumbnailDirectory();
 
 $images = [
-    'hammer' => [
-        'en_US' => 'hammer-en.jpg',
-        'fr_FR' => 'hammer-fr.jpg'
-    ],
-    'round-sofa' => [
-        'en_US' => 'round-sofa-en.jpg',
-        'fr_FR' => 'round-sofa-fr.jpg',
-    ],
-    'square-sofa' => [
-        'en_US' => 'square-sofa-en.jpg',
-        'fr_FR' => 'square-sofa-fr.jpg',
-    ],
-    'wrench' => [
-        'en_US' => 'wrench-en.jpg',
-        'fr_FR' => 'wrench-fr.jpg',
-    ],
+//    'hammer' => [
+//        'en_US' => 'hammer-en.jpg',
+//        'fr_FR' => 'hammer-fr.jpg'
+//    ],
+//    'round-sofa' => [
+//        'en_US' => 'round-sofa-en.jpg',
+//        'fr_FR' => 'round-sofa-fr.jpg',
+//    ],
+//    'square-sofa' => [
+//        'en_US' => 'square-sofa-en.jpg',
+//        'fr_FR' => 'square-sofa-fr.jpg',
+//    ],
+//    'wrench' => [
+//        'en_US' => 'wrench-en.jpg',
+//        'fr_FR' => 'wrench-fr.jpg',
+//    ],
     'paint' => [
         'paint.jpg',
     ],
@@ -216,7 +215,10 @@ $images = [
         'en_US' => 'chicagoskyline-en.jpg',
         'fr_FR' => 'chicagoskyline-fr.jpg',
         'de_DE' => 'chicagoskyline-de.jpg',
-    ]
+    ],
+    'akene' => [
+        'akene.jpg',
+    ],
 ];
 
 foreach ($images as $key => $references) {

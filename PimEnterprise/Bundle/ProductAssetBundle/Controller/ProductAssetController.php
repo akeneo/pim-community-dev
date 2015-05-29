@@ -125,11 +125,14 @@ class ProductAssetController extends Controller
             $attachments[$refKey]['reference'] = $reference;
 
             foreach ($reference->getVariations() as $variation) {
-                $metadata = $this->metadataRepository->findOneBy(
-                    [
-                        'file' => $variation->getFile()->getId()
-                    ]
-                );
+                $metadata = null;
+                if (null !== $variation->getFile()) {
+                    $metadata = $this->metadataRepository->findOneBy(
+                        [
+                            'file' => $variation->getFile()->getId()
+                        ]
+                    );
+                }
 
                 $attachments[$refKey]['variations'][] = [
                     'entity'   => $variation,
