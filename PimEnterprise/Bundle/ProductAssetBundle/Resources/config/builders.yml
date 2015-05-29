@@ -6,6 +6,7 @@ parameters:
     pimee_product_asset.builder.variation.class: PimEnterprise\Component\ProductAsset\Builder\ProductAssetVariationBuilder
 
 services:
+    #TODO: rename this service to be compliant with our best practices
     pimee_product_asset.registry.metadata_builder:
         class: %pimee_product_asset.registry.metadata_builder.class%
 

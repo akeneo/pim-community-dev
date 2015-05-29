@@ -31,7 +31,7 @@ interface RawFileStorerInterface
      * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
      * and save it to the database.
      *
-     * @param \SplFileInfo $file        file to store
+     * @param \SplFileInfo $rawFile     file to store
      * @param string       $destFsAlias alias of the destination filesystem
      *
      * @throws FileTransferException
@@ -40,5 +40,5 @@ interface RawFileStorerInterface
      *
      * @return FileInterface
      */
-    public function store(\SplFileInfo $file, $destFsAlias);
+    public function store(\SplFileInfo $rawFile, $destFsAlias);
 }
