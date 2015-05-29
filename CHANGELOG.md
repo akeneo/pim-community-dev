@@ -4,7 +4,7 @@
 
 ## Technical improvements
 - In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
-- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option, Attribute Group, Product Group)
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option, Group, Attribute Group, Product Group)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 - Category filter is separated from other datagrid filters for performance concerns
 - Attribute imports does not support yaml files anymore, only csv files are allowed
@@ -18,6 +18,7 @@
 - PIM-4024: Fix for metric and price denormalizer
 
 ## BC breaks
+- `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
 - Rename method `onKernelRequest` to `findUsername` on `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`
 - Change the constructor of `Pim\Bundle\VersioningBundle\Manager\VersionManager`, added `Symfony\Component\EventDispatcher\EventDispatcherInterface` as the last argument
