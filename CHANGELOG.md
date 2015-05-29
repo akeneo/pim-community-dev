@@ -4,7 +4,7 @@
 
 ## Technical improvements
 - In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
-- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option)
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option, Attribute Group, Product Group)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 - Category filter is separated from other datagrid filters for performance concerns
 - Attribute imports does not support yaml files anymore, only csv files are allowed
