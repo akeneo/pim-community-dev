@@ -21,6 +21,9 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
     /** @var AttributeOptionRepositoryInterface */
     protected $attrOptionRepository;
 
+    /** array */
+    protected $attrOptionsCache;
+
     /**
      * @param ProductBuilderInterface            $productBuilder
      * @param AttributeValidatorHelper           $attrValidatorHelper
@@ -36,6 +39,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
         $this->supportedTypes       = $supportedTypes;
+        $this->attrOptionsCache = [];
     }
 
     /**
@@ -54,8 +58,7 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
 
         $attributeOptions = [];
         foreach ($data as $optionCode) {
-            $option = $this->attrOptionRepository
-                ->findOneBy(['code' => $optionCode, 'attribute' => $attribute]);
+            $option = $this->getOption($attribute, $optionCode);
             if (null === $option) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
@@ -131,5 +134,22 @@ class MultiSelectAttributeSetter extends AbstractAttributeSetter
         foreach ($attributeOptions as $attributeOption) {
             $value->addOption($attributeOption);
         }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $optionCode
+     *
+     * @return AttributeOptionInterface|null
+     */
+    protected function getOption(AttributeInterface $attribute, $optionCode)
+    {
+        $key = $attribute->getCode().'-'.$optionCode;
+        if (!isset($this->attrOptionsCache[$key])) {
+            $option = $this->attrOptionRepository->findOneBy(['code' => $optionCode, 'attribute' => $attribute]);
+            $this->attrOptionsCache[$key]= $option;
+        }
+
+        return isset($this->attrOptionsCache[$key]) ? $this->attrOptionsCache[$key] : null;
     }
 }

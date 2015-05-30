@@ -134,7 +134,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
 
         $attrOptionRepository
             ->findOneBy(['code' => 'attributeOptionCode', 'attribute' => $attribute])
-            ->shouldBeCalledTimes(3)
+            ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
         $productValue->getOptions()->willReturn([$oldOption]);

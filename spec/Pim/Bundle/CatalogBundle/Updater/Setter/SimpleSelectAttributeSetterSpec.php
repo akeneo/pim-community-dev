@@ -125,7 +125,7 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 
         $attrOptionRepository
             ->findOneBy(['code' => 'red', 'attribute' => $attribute])
-            ->shouldBeCalledTimes(3)
+            ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
         $productValue->setOption($attributeOption)->shouldBeCalled();

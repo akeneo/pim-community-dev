@@ -22,6 +22,9 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
     /** @var AttributeOptionRepositoryInterface */
     protected $attrOptionRepository;
 
+    /** array */
+    protected $attrOptionsCache;
+
     /**
      * @param ProductBuilderInterface            $productBuilder
      * @param AttributeValidatorHelper           $attrValidatorHelper
@@ -37,6 +40,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
         $this->supportedTypes       = $supportedTypes;
+        $this->attrOptionsCache = [];
     }
 
     /**
@@ -57,9 +61,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         if (null === $data) {
             $option = null;
         } else {
-            $option = $this->attrOptionRepository
-                ->findOneBy(['code' => $data, 'attribute' => $attribute]);
-
+            $option = $this->getOption($attribute, $data);
             if (null === $option) {
                 throw InvalidArgumentException::validEntityCodeExpected(
                     $attribute->getCode(),
@@ -118,5 +120,22 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
         $value->setOption($option);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $optionCode
+     *
+     * @return AttributeOptionInterface|null
+     */
+    protected function getOption(AttributeInterface $attribute, $optionCode)
+    {
+        $key = $attribute->getCode().'-'.$optionCode;
+        if (!isset($this->attrOptionsCache[$key])) {
+            $option = $this->attrOptionRepository->findOneBy(['code' => $optionCode, 'attribute' => $attribute]);
+            $this->attrOptionsCache[$key]= $option;
+        }
+
+        return isset($this->attrOptionsCache[$key]) ? $this->attrOptionsCache[$key] : null;
     }
 }
