@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 /**
  * Updates a product
@@ -61,6 +62,11 @@ class UpdateProductCommand extends ContainerAwareCommand
                 'json_updates',
                 InputArgument::REQUIRED,
                 sprintf("The product updates in json, for instance, '%s'", json_encode($updatesExample))
+            )
+            ->addArgument(
+                'username',
+                InputArgument::OPTIONAL,
+                sprintf('The author of updated product')
             );
     }
 
@@ -74,7 +80,13 @@ class UpdateProductCommand extends ContainerAwareCommand
         if (false === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
-            return;
+            return -1;
+        }
+
+        if ($input->hasArgument('username') && '' != $username = $input->getArgument('username')) {
+            if (!$this->createToken($output, $username)) {
+                return -1;
+            }
         }
 
         $updates = json_decode($input->getArgument('json_updates'), true);
@@ -87,7 +99,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         if (0 !== $violations->count()) {
             $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $this->save($product);
@@ -262,6 +274,14 @@ class UpdateProductCommand extends ContainerAwareCommand
     }
 
     /**
+     * @return \Symfony\Component\Security\Core\SecurityContextInterface;
+     */
+    protected function getSecurityContext()
+    {
+        return $this->getContainer()->get('security.context');
+    }
+
+    /**
      * @param ProductInterface $product
      *
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
@@ -281,5 +301,30 @@ class UpdateProductCommand extends ContainerAwareCommand
     {
         $saver = $this->getContainer()->get('pim_catalog.saver.product');
         $saver->save($product);
+    }
+
+    /**
+     * Create a security token from the given username
+     *
+     * @param OutputInterface $output
+     * @param string          $username
+     *
+     * @return bool
+     */
+    protected function createToken(OutputInterface $output, $username)
+    {
+        $userManager = $this->getContainer()->get('oro_user.manager');
+        $user = $userManager->findUserByUsername($username);
+
+        if (null === $user) {
+            $output->writeln(sprintf('<error>Username "%s" is unknown<error>', $username));
+
+            return false;
+        }
+
+        $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
+        $this->getSecurityContext()->setToken($token);
+
+        return true;
     }
 }

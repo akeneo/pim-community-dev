@@ -56,7 +56,7 @@ Feature: Export products with media
     And I display the Picture attribute
     And I attach file "akeneo.jpg" to "Picture"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the file "picture" of products FLIPFLOP-1R and FLIPFLOP-1C should be "akeneo.jpg"
     And I am on the products page
     And I mass-edit products FLIPFLOP-1C
@@ -64,7 +64,7 @@ Feature: Export products with media
     And I display the Picture attribute
     And I attach file "" to "Picture"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     And I launched the completeness calculator
     And I am on the "footwear_product_export" export job page
     When I launch the export job

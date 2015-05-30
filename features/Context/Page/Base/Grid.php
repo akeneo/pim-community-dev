@@ -622,10 +622,19 @@ class Grid extends Index
     protected function clickOnFilterToManage($filterName)
     {
         try {
-            $this
+            $filterElement = $this
                 ->getElement('Manage filters')
-                ->find('css', sprintf('label:contains("%s")', $filterName))
-                ->click();
+                ->find('css', sprintf('label:contains("%s")', $filterName));
+
+            if (!$filterElement) {
+                throw new \InvalidArgumentException('Impossible to find filter "%s"', $filterName);
+            }
+
+            $filterElement->click();
+        } catch (\InvalidArgumentException $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Impossible to find filter "%s"', $filterName)
+            );
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Impossible to activate filter "%s"', $filterName)
@@ -638,10 +647,15 @@ class Grid extends Index
      */
     protected function clickFiltersList()
     {
-        $this
+        $filterList = $this
             ->getElement('Filters')
-            ->find('css', 'a#add-filter-button')
-            ->click();
+            ->find('css', 'a#add-filter-button');
+
+        if (!$filterList) {
+            throw new \InvalidArgumentException('Impossible to find filter list');
+        }
+
+        $filterList->click();
     }
 
     /**

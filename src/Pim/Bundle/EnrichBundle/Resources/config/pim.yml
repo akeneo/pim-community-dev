@@ -33,12 +33,11 @@ services:
         factory_method:       getWrappedConnection
         class:                PDO
     session.handler.pdo:
-        class:                Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        class:     Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:
-            - "@doctrine.dbal.default.wrapped_connection"
+            - '@doctrine.dbal.default.wrapped_connection'
             -
-              db_table:       oro_session
-              db_id_col:      id
+                db_table: pim_session
 
 doctrine_migrations:
     dir_name: %doctrine_migrations_dir%
