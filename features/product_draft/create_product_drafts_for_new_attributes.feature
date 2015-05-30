@@ -4,6 +4,7 @@ Feature: Create product drafts for new attributes added to the product
   As a redactor
   I need to be able to propose changes to a newly added attribute to the product's family
 
+  @skip-pef
   Scenario: Create product draft for a new attribute of the family
     Given a "clothing" catalog configuration
     And the following product:
@@ -19,6 +20,7 @@ Feature: Create product drafts for new attributes added to the product
     And I save the product
     Then I should see "Send for approval"
 
+  @skip-pef
   Scenario: Save a product draft with empty custom attribute values
     Given a "clothing" catalog configuration
     And the following family:

@@ -18,41 +18,14 @@ class ImagePresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_value_which_stores_data_in_the_media_property_and_have_an_old_image_and_a_new_one(
-        Model\ProductValueInterface $value,
-        Model\AttributeInterface $attribute,
-        Model\ProductMedia $media
-    ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('media');
-        $value->getMedia()->willReturn($media);
-        $media->getMimeType()->willReturn('image/png');
-
-        $this->supports($value, ['media' => ['mimeType' => 'image/jpeg']])->shouldBe(true);
-    }
-
-    function it_supports_value_which_stores_data_in_the_media_property_and_have_only_an_old_image(
-        Model\ProductValueInterface $value,
-        Model\AttributeInterface $attribute,
-        Model\ProductMedia $media
-    ) {
-        $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('media');
-        $value->getMedia()->willReturn($media);
-        $media->getMimeType()->willReturn('image/png');
-
-        $this->supports($value, ['media' => []])->shouldBe(true);
-    }
-
-    function it_supports_value_which_stores_data_in_the_media_property_and_have_only_a_new_image(
+    function it_supports_media(
         Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute
     ) {
+        $attribute->getAttributeType()->willReturn('pim_catalog_image');
         $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('media');
-        $value->getMedia()->willReturn(null);
 
-        $this->supports($value, ['media' => ['mimeType' => 'image/jpeg']])->shouldBe(true);
+        $this->supports($value)->shouldBe(true);
     }
 
     function it_presents_old_and_new_images_side_by_side(
@@ -72,7 +45,7 @@ class ImagePresenterSpec extends ObjectBehavior
             ->willReturn('/media/bar.jpg');
 
         $this
-            ->present($value, ['media' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
+            ->present($value, ['value' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
             ->shouldReturn(
                 '<ul class="diff">' .
                     '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
@@ -94,7 +67,7 @@ class ImagePresenterSpec extends ObjectBehavior
             ->generate('pim_enrich_media_show', ['filename' => 'foo.jpg', 'filter' => 'thumbnail'])
             ->willReturn('/media/foo.jpg');
 
-        $this->present($value, ['media' => []])->shouldReturn(
+        $this->present($value, ['value' => []])->shouldReturn(
             '<ul class="diff">' .
                 '<li class="base file"><img src="/media/foo.jpg" title="original_foo.jpg" /></li>' .
             '</ul>'
@@ -112,7 +85,7 @@ class ImagePresenterSpec extends ObjectBehavior
             ->willReturn('/media/bar.jpg');
 
         $this
-            ->present($value, ['media' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
+            ->present($value, ['value' => ['filename' => 'bar.jpg', 'originalFilename' => 'original_bar.jpg']])
             ->shouldReturn(
                 '<ul class="diff">' .
                     '<li class="changed file"><img src="/media/bar.jpg" title="original_bar.jpg" /></li>' .

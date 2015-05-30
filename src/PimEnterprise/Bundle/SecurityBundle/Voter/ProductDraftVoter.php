@@ -130,12 +130,7 @@ class ProductDraftVoter implements VoterInterface
             return [];
         }
 
-        $changes = $changes['values'];
-        $attributeCodes = [];
-
-        foreach ($changes as $change) {
-            $attributeCodes[] = $change['__context__']['attribute'];
-        }
+        $attributeCodes = array_keys($changes['values']);
 
         return $this->attrGroupRepository->getAttributeGroupsFromAttributeCodes($attributeCodes);
     }

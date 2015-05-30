@@ -146,7 +146,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
     {
         $changes = [];
         foreach ($attributeCodes as $code) {
-            $changes[] = $this->getSingleChange($code);
+            $changes[$code] = ['value' => ''];
         }
 
         return [
@@ -156,8 +156,6 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     private function getSingleChange($attributeCode)
     {
-        return [
-            '__context__' => ['attribute' => $attributeCode]
-        ];
+        return $attributeCode;
     }
 }

@@ -4,7 +4,6 @@ namespace spec\PimEnterprise\Bundle\ReferenceDataBundle\Workflow\Presenter;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\ReferenceDataBundle\Doctrine\ReferenceDataRepositoryResolver;
@@ -25,30 +24,14 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_a_simple_reference_data($attributeRepository)
+    function it_supports_a_simple_reference_data()
     {
-        $code = 'color';
-        $attribute = new Attribute();
-        $attribute->setAttributeType('pim_reference_data_simpleselect');
-        $attributeRepository->findOneBy(['code' => $code])->willReturn($attribute);
-
-        $change = ['__context__' => ['attribute' => $code]];
-        $this->supportsChange($change)->shouldBe(true);
+        $this->supportsChange('pim_reference_data_simpleselect')->shouldBe(true);
     }
 
-    function it_does_not_support_a_non_simple_reference_data($attributeRepository)
+    function it_does_not_support_a_multi_reference_data()
     {
-        $code = 'color';
-        $attribute = new Attribute();
-        $attribute->setAttributeType('pim_reference_data_multiselect');
-        $attributeRepository->findOneBy(['code' => $code])->willReturn($attribute);
-
-        $change = ['__context__' => ['attribute' => $code]];
-        $this->supportsChange($change)->shouldBe(false);
-
-        $attribute->setAttributeType('other');
-        $attributeRepository->findOneBy(['code' => $code])->willReturn($attribute);
-        $this->supportsChange($change)->shouldBe(false);
+        $this->supportsChange('pim_reference_data_multiselect')->shouldBe(false);
     }
 
     function it_presents_reference_data_change_using_the_injected_renderer(
@@ -66,15 +49,15 @@ class ReferenceDataPresenterSpec extends ObjectBehavior
         $blue->__toString()->willReturn('Blue');
 
         $configuration->getClass()->willReturn('Acme\Bundle\AppBundle\Entity\Color');
-        $repositoryResolver->resolve('color')->willReturn($repository);
-        $repository->find(1)->willReturn($blue);
+        $repositoryResolver->resolve(null)->willReturn($repository);
+        $repository->findOneBy(['code' => 'red'])->willReturn($blue);
         $attributeRepository->findOneBy(['code' => 'red'])->willReturn($red);
 
         $renderer->renderDiff('[Red]', 'Blue')->willReturn('diff between two reference data');
         $this->setRenderer($renderer);
 
         $value->getData()->willReturn($red);
-        $this->present($value, ['__context__' => ['attribute' => 'red'], 'color' => 1])->shouldReturn('diff between two reference data');
+        $this->present($value, ['value' => 'red'])->shouldReturn('diff between two reference data');
     }
 }
 

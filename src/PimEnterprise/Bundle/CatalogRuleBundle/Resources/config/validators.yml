@@ -32,5 +32,6 @@ services:
             - '@pim_catalog.updater.product_property_setter'
             - '@pim_catalog.updater.product_property_copier'
             - '@pim_catalog.builder.product'
+            - '@pim_validator'
         tags:
             - { name: validator.constraint_validator, alias: pimee_constraint_value_action_validator }

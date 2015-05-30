@@ -80,7 +80,7 @@ Feature: Display proposal widget
     Then I should see "No proposals to review"
 
   Scenario: Successfully hide the widget if the current user is not the owner of any categories
-    Given the "clothing" catalog configuration
+    Given the "default" catalog configuration
     And I am logged in as "Sandra"
     When I am on the dashboard page
     Then I should not see "Proposals to review"
