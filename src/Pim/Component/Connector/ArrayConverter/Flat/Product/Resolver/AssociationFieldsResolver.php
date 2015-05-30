@@ -22,12 +22,16 @@ class AssociationFieldsResolver
     /** @var AssociationTypeRepositoryInterface */
     protected $associationTypeRepo;
 
+    /** @var array */
+    protected $associationFieldsCache;
+
     /**
      * @param AssociationTypeRepositoryInterface $repository
      */
     public function __construct(AssociationTypeRepositoryInterface $repository)
     {
         $this->associationTypeRepo = $repository;
+        $this->associationFieldsCache = [];
     }
 
     /**
@@ -37,13 +41,16 @@ class AssociationFieldsResolver
      */
     public function resolveAssociationFields()
     {
-        $fieldNames = [];
-        $assocTypes = $this->associationTypeRepo->findAll();
-        foreach ($assocTypes as $assocType) {
-            $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
-            $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
+        if (empty($this->associationFieldsCache)) {
+            $fieldNames = [];
+            $assocTypes = $this->associationTypeRepo->findAll();
+            foreach ($assocTypes as $assocType) {
+                $fieldNames[] = $assocType->getCode() . self::GROUP_ASSOCIATION_SUFFIX;
+                $fieldNames[] = $assocType->getCode() . self::PRODUCT_ASSOCIATION_SUFFIX;
+            }
+            $this->associationFieldsCache = $fieldNames;
         }
 
-        return $fieldNames;
+        return $this->associationFieldsCache;
     }
 }
