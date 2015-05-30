@@ -179,17 +179,29 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
     }
 
     /**
-     * Sets the product values
+     * Sets the product values,
+     *  - always set values related to family's attributes
+     *  - sets optional values (not related to family's attributes) when a data is provided
+     *  - sets optional values (not related to family's attributes) with empty data if value already exists
      *
      * @param ProductInterface $product
-     * @param string           $field
+     * @param string           $attributeCode
      * @param array            $values
      */
-    protected function updateProductValues(ProductInterface $product, $field, array $values)
+    protected function updateProductValues(ProductInterface $product, $attributeCode, array $values)
     {
+        $family = $product->getFamily();
+        $authorizedCodes = (null !== $family) ? $family->getAttributeCodes() : [];
+        $isFamilyAttribute = in_array($attributeCode, $authorizedCodes);
+
         foreach ($values as $value) {
-            $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
-            $this->propertySetter->setData($product, $field, $value['data'], $options);
+            $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
+            $providedData = ($value['data'] === '' || $value['data'] === [] || $value['data'] === null) ? false : true;
+
+            if ($isFamilyAttribute || $providedData || $hasValue) {
+                $options = ['locale' => $value['locale'], 'scope' => $value['scope']];
+                $this->propertySetter->setData($product, $attributeCode, $value['data'], $options);
+            }
         }
     }
 
