@@ -102,20 +102,6 @@ class MetricAttributeSetter extends AbstractAttributeSetter
             );
         }
 
-        if (null === $data['data'] && null === $data['unit']) {
-            return;
-        }
-
-        if (!is_numeric($data['data']) && null !== $data['data']) {
-            throw InvalidArgumentException::arrayNumericKeyExpected(
-                $attribute->getCode(),
-                'data',
-                'setter',
-                'metric',
-                gettype($data['data'])
-            );
-        }
-
         if (!is_string($data['unit'])) {
             throw InvalidArgumentException::arrayStringValueExpected(
                 $attribute->getCode(),
@@ -167,10 +153,6 @@ class MetricAttributeSetter extends AbstractAttributeSetter
 
         if (null === $metric = $value->getMetric()) {
             $metric = $this->metricFactory->createMetric($attribute->getMetricFamily());
-        }
-
-        if (null === $unit) {
-            $unit = $attribute->getDefaultMetricUnit();
         }
 
         $value->setMetric($metric);

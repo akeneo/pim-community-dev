@@ -65,9 +65,7 @@ class CommandContext extends RawMinkContext
      */
     public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
     {
-        $application = new Application();
-        $application->add(new UpdateProductCommand());
-        $application->add(new GetProductCommand());
+        $application = $this->getApplicationsForUpdaterProduct();
 
         $updateCommand = $application->find('pim:product:update');
         $updateCommand->setContainer($this->getMainContext()->getContainer());
@@ -78,11 +76,14 @@ class CommandContext extends RawMinkContext
         $getCommandTester = new CommandTester($getCommand);
 
         foreach ($updates->getHash() as $update) {
+            $username = isset($update['username']) ? $update['username'] : null;
+
             $updateCommandTester->execute(
                 [
                     'command'      => $updateCommand->getName(),
                     'identifier'   => $update['product'],
-                    'json_updates' => $update['actions']
+                    'json_updates' => $update['actions'],
+                    'username'     => $username
                 ]
             );
 
@@ -126,6 +127,18 @@ class CommandContext extends RawMinkContext
                 $diff
             );
         }
+    }
+
+    /**
+     * @return Application
+     */
+    protected function getApplicationsForUpdaterProduct()
+    {
+        $application = new Application();
+        $application->add(new UpdateProductCommand());
+        $application->add(new GetProductCommand());
+
+        return $application;
     }
 
     /**

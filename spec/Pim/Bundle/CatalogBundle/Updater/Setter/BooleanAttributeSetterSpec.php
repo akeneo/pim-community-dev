@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -51,19 +50,6 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, true, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_attribute_data_is_not_a_boolean(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 'not a boolean';
-
-        $this->shouldThrow(
-            InvalidArgumentException::booleanExpected('attributeCode', 'setter', 'boolean', gettype($data))
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_sets_attribute_data_boolean_value_to_a_product_value(
         AttributeInterface $attribute,
         ProductInterface $product1,
@@ -83,7 +69,7 @@ class BooleanAttributeSetterSpec extends ObjectBehavior
             ->addProductValue($product2, $attribute, $locale, $scope)
             ->willReturn($productValue);
 
-        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product1->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
 

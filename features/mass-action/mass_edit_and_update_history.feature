@@ -21,7 +21,7 @@ Feature: Update product history when mass editing products
     And I display the Name attribute
     And I change the "Name" to "cool boots"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     When I edit the "boots" product
     And I visit the "History" tab
     Then there should be 2 updates
@@ -45,7 +45,7 @@ Feature: Update product history when mass editing products
   Scenario: Display history when changing product status
     Given I choose the "Change status (enable / disable)" operation
     And I disable the products
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "change-status" mass-edit job to finish
     When I edit the "boots" product
     And I visit the "History" tab
     Then there should be 2 updates
@@ -70,7 +70,7 @@ Feature: Update product history when mass editing products
     Given I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     When I edit the "boots" product
     And I visit the "History" tab
     Then there should be 2 updates
@@ -92,7 +92,7 @@ Feature: Update product history when mass editing products
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     When I edit the "boots" product
     And I visit the "History" tab
     Then there should be 2 updates

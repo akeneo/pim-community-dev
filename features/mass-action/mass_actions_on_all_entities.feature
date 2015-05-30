@@ -22,7 +22,7 @@ Feature: Apply a mass action on all entities
     And I display the Name attribute
     And I change the "Name" to "Same product"
     And I move on to the next step
-    And I wait for the "edit_common_attributes" mass-edit job to finish
+    And I wait for the "edit-common-attributes" mass-edit job to finish
     Then the product "super_boots" should have the following values:
       | name-en_US | Same product |
     And the product "ultra_boots" should have the following values:
@@ -42,7 +42,7 @@ Feature: Apply a mass action on all entities
     And I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
     And I move on to the next step
-    And I wait for the "update_product_value" mass-edit job to finish
+    And I wait for the "change-family" mass-edit job to finish
     Then the family of product "super_boots" should be "sandals"
     Then the family of product "mega_boots" should be "sandals"
     And the family of product "ultra_boots" should be "boots"
@@ -61,6 +61,6 @@ Feature: Apply a mass action on all entities
     And I display the Length attribute
     And I switch the attribute "Length" requirement in channel "Mobile"
     And I move on to the next step
-    And I wait for the "set_attribute_requirements" mass-edit job to finish
+    And I wait for the "set-attribute-requirements" mass-edit job to finish
     Then attribute "Length" should be required in family "4_blocks" for channel "Mobile"
     And attribute "Length" should be required in family "2_blocks" for channel "Mobile"
