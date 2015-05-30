@@ -26,8 +26,7 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface'
-                => 'pimee_catalog_rule.model.rule_relation.class',
+            'PimEnterprise\Bundle\CatalogRuleBundle\Model\RuleRelationInterface' => 'pimee_catalog_rule.model.rule_relation.class',
         ];
     }
 }

@@ -13,9 +13,9 @@ class DefaultPresenterSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter');
     }
 
-    function it_supports_all_the_product_values(ProductValueInterface $value)
+    function it_supports_all_the_product_values()
     {
-        $this->supports($value, [])->shouldBe(true);
+        $this->supportsChange(null)->shouldBe(true);
     }
 
     function it_presents_change_using_the_injected_renderer(RendererInterface $renderer, ProductValueInterface $value)

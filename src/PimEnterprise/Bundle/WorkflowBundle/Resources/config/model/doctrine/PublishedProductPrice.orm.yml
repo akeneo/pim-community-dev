@@ -14,8 +14,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
             generator:
                 strategy: AUTO
         data:
-            type: decimal
-            scale: 2
+            type: float
             nullable: true
         currency:
             type: string

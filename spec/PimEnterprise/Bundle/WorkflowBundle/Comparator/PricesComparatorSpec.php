@@ -2,125 +2,71 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model;
 
 class PricesComparatorSpec extends ObjectBehavior
 {
-    function let(
-        Model\ProductValueInterface $value,
-        Model\AttributeInterface $attribute
-    ) {
-        $value->getAttribute()->willReturn($attribute);
-    }
-
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_supports_prices_collection_type($value, $attribute)
+    function it_supports_price_type()
     {
-        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
-
-        $this->supportsComparison($value)->shouldBe(true);
+        $this->supportsComparison('pim_catalog_price_collection')->shouldBe(true);
+        $this->supportsComparison('other')->shouldBe(false);
     }
 
-    function it_detects_changes_when_changing_prices_data(
-        $value,
-        Collection $prices,
-        Model\ProductPrice $eur,
-        Model\ProductPrice $usd
-    ) {
-        $submittedData = [
-            'prices' => [
-                'EUR' => [
-                    'data' => '10',
-                    'currency' => 'EUR',
-                ],
-                'USD' => [
-                    'data' => '20',
-                    'currency' => 'USD',
-                ],
-            ],
-        ];
+    function it_get_changes_when_adding_price()
+    {
+        $changes = ['value' => [
+            ['data' => '100', 'currency' => 'EUR'],
+            ['data' => '120', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+        $originals = [];
 
-        $value->getPrices()->willReturn($prices);
-        $prices->offsetGet('EUR')->willReturn($eur);
-        $prices->offsetGet('USD')->willReturn($usd);
-        $eur->getData()->willReturn(10);
-        $usd->getData()->willReturn(30);
-
-        $this->getChanges($value, $submittedData)->shouldReturn([
-            'prices' => [
-                'USD' => [
-                    'data' => '20',
-                    'currency' => 'USD',
-                ],
+        $this->getChanges($changes, $originals)->shouldReturn([
+            'locale' => null,
+            'scope'  => null,
+            'value' => [
+                ['data' => '100', 'currency' => 'EUR'],
+                ['data' => '120', 'currency' => 'USD']
             ],
         ]);
     }
 
-    function it_ignores_changes_brought_on_unavailable_currencies(
-        $value,
-        Collection $prices,
-        Model\ProductPrice $eur
-    ) {
-        $submittedData = [
-            'prices' => [
-                'EUR' => [
-                    'data' => '10',
-                    'currency' => 'EUR',
-                ],
-                'USD' => [
-                    'data' => '20',
-                    'currency' => 'USD',
-                ],
-            ],
-        ];
+    function it_get_changes_when_changing_price()
+    {
+        $changes = ['value' => [
+            ['data' => '100', 'currency' => 'EUR'],
+            ['data' => '120', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+        $originals = ['value' => [
+            ['data' => '90', 'currency' => 'EUR'],
+            ['data' => '110', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
 
-        $value->getPrices()->willReturn($prices);
-        $prices->offsetGet('EUR')->willReturn($eur);
-        $prices->offsetGet('USD')->willReturn(null);
-        $eur->getData()->willReturn(20);
-
-        $this->getChanges($value, $submittedData)->shouldReturn([
-            'prices' => [
-                'EUR' => [
-                    'data' => '10',
-                    'currency' => 'EUR',
-                ],
+        $this->getChanges($changes, $originals)->shouldReturn([
+            'locale' => null,
+            'scope'  => null,
+            'value' => [
+                ['data' => '100', 'currency' => 'EUR'],
+                ['data' => '120', 'currency' => 'USD']
             ],
         ]);
     }
 
-    function it_detects_no_changes(
-        $value,
-        Collection $prices,
-        Model\ProductPrice $eur
-    ) {
-        $submittedData = [
-            'prices' => [
-                'EUR' => [
-                    'data' => '10',
-                    'currency' => 'EUR',
-                ],
-            ],
-        ];
+    function it_returns_null_when_prices_are_the_same()
+    {
+        $changes = ['value' => [
+            ['data' => '100', 'currency' => 'EUR'],
+            ['data' => '120', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
+        $originals = ['value' => [
+            ['data' => '100', 'currency' => 'EUR'],
+            ['data' => '120', 'currency' => 'USD'],
+        ], 'locale' => null, 'scope' => null];
 
-        $value->getPrices()->willReturn($prices);
-        $prices->offsetGet('EUR')->willReturn($eur);
-        $eur->getData()->willReturn(10);
-
-        $this->getChanges($value, $submittedData)->shouldReturn(null);
-    }
-
-    function it_detects_no_change_when_the_new_prices_are_not_defined(
-        $value
-    ) {
-        $submittedData = [];
-
-        $this->getChanges($value, $submittedData)->shouldReturn(null);
+        $this->getChanges($changes, $originals)->shouldReturn(null);
     }
 }

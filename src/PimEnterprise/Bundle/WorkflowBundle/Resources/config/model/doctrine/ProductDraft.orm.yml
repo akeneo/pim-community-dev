@@ -12,7 +12,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft:
             column: created_at
             nullalble: false
         changes:
-            type: array
+            type: json_array
             nullalble: false
         author:
             type: string

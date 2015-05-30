@@ -102,4 +102,12 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             'current_locale' => $this->getLocale()->getCode()
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getBatchJobCode()
+    {
+        return 'edit_common_attributes_with_permission';
+    }
 }

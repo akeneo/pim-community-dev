@@ -26,20 +26,13 @@ class ResolveDoctrineTargetModelsPass extends AbstractResolveDoctrineTargetModel
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface'
-                => 'pimee_workflow.entity.published_product.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface'
-                => 'pimee_workflow.entity.published_product_value.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface'
-                => 'pimee_workflow.entity.published_product_media.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface'
-                => 'pimee_workflow.entity.published_product_metric.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface'
-                => 'pimee_workflow.entity.published_product_price.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface'
-                => 'pimee_workflow.entity.published_product_completeness.class',
-            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface'
-                => 'pimee_workflow.entity.published_product_association.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface' => 'pimee_workflow.entity.published_product.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface' => 'pimee_workflow.entity.published_product_value.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface' => 'pimee_workflow.entity.published_product_media.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface' => 'pimee_workflow.entity.published_product_metric.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface' => 'pimee_workflow.entity.published_product_price.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface' => 'pimee_workflow.entity.published_product_completeness.class',
+            'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface' => 'pimee_workflow.entity.published_product_association.class',
         ];
     }
 }
