@@ -31,6 +31,9 @@ class ProductAttributeFieldExtractor
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var array */
+    protected $fieldNameInfoCache;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ChannelRepositoryInterface   $channelRepository
@@ -44,6 +47,7 @@ class ProductAttributeFieldExtractor
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
         $this->localeRepository    = $localeRepository;
+        $this->fieldNameInfoCache  = [];
     }
 
     /**
@@ -66,19 +70,21 @@ class ProductAttributeFieldExtractor
      */
     public function extractAttributeFieldNameInfos($fieldName)
     {
-        $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
-        $attributeCode = $explodedFieldName[0];
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (!isset($this->fieldNameInfoCache[$fieldName])) {
+            $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
+            $attributeCode = $explodedFieldName[0];
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-        if (null !== $attribute) {
-            $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
-            $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldName);
-            $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfo);
+            if (null !== $attribute) {
+                $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
+                $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldName);
+                $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfo);
 
-            return $attributeInfo;
+                $this->fieldNameInfoCache[$fieldName] = $attributeInfo;
+            }
         }
 
-        return null;
+        return isset($this->fieldNameInfoCache[$fieldName]) ? $this->fieldNameInfoCache[$fieldName] : null;
     }
 
     /**
