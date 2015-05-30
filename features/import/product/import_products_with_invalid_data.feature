@@ -169,8 +169,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     And there should be 1 product
-    And I should see "frontView: File not found"
-    And I should see "userManual: File not found"
+    And I should see "Attribute or field \"frontView\" expects a valid file path as data"
     And the product "fanatic-freewave-76" should have the following values:
       | name-en_US | Fanatic Freewave 76     |
       | frontView  | fanatic-freewave-76.gif |
@@ -203,8 +202,7 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "skipped 1"
     And there should be 2 products
-    And I should see "frontView: File not found"
-    And I should see "userManual: File not found"
+    And I should see "Attribute or field \"frontView\" expects a valid file path as data"
     And the product "fanatic-freewave-76" should have the following values:
       | frontView  | fanatic-freewave-76.gif |
       | userManual | fanatic-freewave-76.txt |
@@ -215,7 +213,7 @@ Feature: Execute a job
       | name-en_US | Bic Core 148 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
-  Scenario: Skip products with empty SKU
+  Scenario: Products with empty SKU makes the import fails
     Given the following CSV file to import:
       """
       sku;name-en_US
@@ -229,11 +227,9 @@ Feature: Execute a job
     When I am on the "footwear_product_import" import job page
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 3"
-    And I should see "identifier: This value should not be blank"
-    And there should be 1 product
-    And the product "SKU-002" should have the following value:
-      | name-en_US | product 002 |
+    Then I should see "Status: FAILED"
+    And I should see "Attribute or field \"sku\" expects a string as data, \"NULL\" given"
+    And there should be 0 product
 
   @jira https://akeneo.atlassian.net/browse/PIM-3311
   Scenario: Skip products with a SKU that has just been created
@@ -249,8 +245,7 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 product
-    And I should see "was already read in this file"
-    And I should see "The unique code"
+    And I should see "The value SKU-001 is already set on another product for the unique attribute sku"
     And the product "SKU-001" should have the following value:
       | name-en_US | high heels |
 
