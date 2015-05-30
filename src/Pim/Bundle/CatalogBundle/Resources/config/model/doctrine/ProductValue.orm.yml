@@ -72,7 +72,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         option:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
             cascade:
-                - persist
                 - refresh
             joinColumns:
                 option_id:
