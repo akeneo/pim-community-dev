@@ -2,7 +2,6 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -20,14 +19,12 @@ class MetricAttributeSetterSpec extends ObjectBehavior
     function let(
         ProductBuilderInterface $builder,
         MetricFactory $factory,
-        MeasureManager $measureManager,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
             $builder,
             $attrValidatorHelper,
             $factory,
-            $measureManager,
             ['pim_catalog_metric']
         );
     }
@@ -51,7 +48,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
 
     function it_checks_locale_and_scope_when_setting_an_attribute_data(
         $attrValidatorHelper,
-        $measureManager,
         AttributeInterface $attribute,
         ProductInterface $product,
         ProductValueInterface $metricValue,
@@ -67,10 +63,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         $metric->setUnit('KILOGRAM')->shouldBeCalled();
         $metric->setData('107')->shouldBeCalled();
         $metricValue->setMetric($metric)->shouldBeCalled();
-
-        $measureManager->getUnitSymbolsForFamily('Weight')
-            ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $data = ['data' => 107, 'unit' => 'KILOGRAM'];
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);
@@ -122,58 +114,12 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
     }
 
-    function it_throws_an_error_if_unit_from_attribute_data_is_not_a_string(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = ['data' => 42, 'unit' => 123];
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayStringValueExpected(
-                'attributeCode',
-                'unit',
-                'setter',
-                'metric',
-                123
-            )
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
-    function it_throws_an_error_if_attribute_data_unit_does_not_exist(
-        AttributeInterface $attribute,
-        ProductInterface $product,
-        $measureManager
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-        $attribute->getMetricFamily()->willReturn('Weight');
-
-        $data = ['data' => 42, 'unit' => 'incorrect unit'];
-
-        $measureManager->getUnitSymbolsForFamily('Weight')
-            ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
-
-        $this->shouldThrow(
-            InvalidArgumentException::arrayInvalidKey(
-                'attributeCode',
-                'unit',
-                'The unit does not exist',
-                'setter',
-                'metric',
-                'incorrect unit'
-            )
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_sets_numeric_attribute_data_to_a_product_value(
         AttributeInterface $attribute,
         ProductInterface $product1,
         ProductInterface $product2,
         ProductInterface $product3,
         $builder,
-        $measureManager,
         $factory,
         MetricInterface $metric,
         ProductValue $productValue
@@ -184,10 +130,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
-
-        $measureManager->getUnitSymbolsForFamily('Weight')
-            ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();
@@ -216,7 +158,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product3,
         $builder,
-        $measureManager,
         $factory,
         MetricInterface $metric,
         ProductValue $productValue
@@ -227,10 +168,6 @@ class MetricAttributeSetterSpec extends ObjectBehavior
 
         $attribute->getCode()->willReturn('attributeCode');
         $attribute->getMetricFamily()->willReturn('Weight');
-
-        $measureManager->getUnitSymbolsForFamily('Weight')
-            ->shouldBeCalled()
-            ->willReturn(['KILOGRAM' => 'kg', 'GRAM' => 'g']);
 
         $productValue->getMetric()->willReturn(null);
         $productValue->setMetric($metric)->shouldBeCalled();

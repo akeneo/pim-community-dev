@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
-use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
@@ -22,26 +21,20 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     /** @var MetricFactory */
     protected $metricFactory;
 
-    /** @var MeasureManager */
-    protected $measureManager;
-
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
      * @param MetricFactory            $metricFactory
-     * @param MeasureManager           $measureManager
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
         MetricFactory $metricFactory,
-        MeasureManager $measureManager,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->metricFactory = $metricFactory;
-        $this->measureManager = $measureManager;
         $this->supportedTypes = $supportedTypes;
     }
 

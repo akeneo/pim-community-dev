@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
@@ -18,23 +17,17 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class PriceCollectionAttributeSetter extends AbstractAttributeSetter
 {
-    /** @var CurrencyManager */
-    protected $currencyManager;
-
     /**
      * @param ProductBuilderInterface  $productBuilder
      * @param AttributeValidatorHelper $attrValidatorHelper
-     * @param CurrencyManager          $currencyManager
      * @param array                    $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        CurrencyManager $currencyManager,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
-        $this->currencyManager = $currencyManager;
         $this->supportedTypes  = $supportedTypes;
     }
 
@@ -112,18 +105,6 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
                     'setter',
                     'prices collection',
                     print_r($data, true)
-                );
-            }
-
-            // TODO : this should be in validator
-            if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
-                throw InvalidArgumentException::arrayInvalidKey(
-                    $attribute->getCode(),
-                    'currency',
-                    'The currency does not exist',
-                    'setter',
-                    'prices collection',
-                    $price['currency']
                 );
             }
         }
