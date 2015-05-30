@@ -47,19 +47,21 @@ class PriceConverter extends AbstractValueConverter
 
     /**
      * @param array  $attributeFieldInfo
-     * @param string $priceValue
+     * @param string $value
      *
      * @return array
      */
-    protected function convertPrice(array $attributeFieldInfo, $priceValue)
+    protected function convertPrice(array $attributeFieldInfo, $value)
     {
-        // TODO: will be reworked after the merge of PIM-4220, no need of multi format + rely on symfony validation
-        if (isset($attributeFieldInfo['price_currency'])) {
-            $currency = $attributeFieldInfo['price_currency'];
+        if ('' === $value) {
+            $priceValue = null;
+            $currency = null;
         } else {
-            list($priceValue, $currency) = $this->fieldSplitter->splitUnitValue($priceValue);
+            $tokens = $this->fieldSplitter->splitUnitValue($value);
+            $priceValue = isset($tokens[0]) ? $tokens[0] : null;
+            $currency = isset($tokens[1]) ? $tokens[1] : null;
         }
 
-        return ['data' => (float) $priceValue, 'currency' => $currency];
+        return ['data' => $priceValue, 'currency' => $currency];
     }
 }

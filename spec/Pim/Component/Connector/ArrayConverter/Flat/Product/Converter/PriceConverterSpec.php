@@ -24,7 +24,7 @@ class PriceConverterSpec extends ObjectBehavior
         $this->supportsField('pim_catalog_number')->shouldReturn(false);
     }
 
-    function it_converts($fieldSplitter, AttributeInterface $attribute)
+    function it_does_not_convert_when_only_data_is_provided($fieldSplitter, AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute'      => $attribute,
@@ -36,11 +36,12 @@ class PriceConverterSpec extends ObjectBehavior
         $value = '10.00';
 
         $fieldSplitter->splitCollection($value)->willReturn(['10']);
+        $fieldSplitter->splitUnitValue('10')->willReturn(['data' => null, 'currency' => null]);
 
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => [['data' => 10.00, 'currency' => 'EUR']],
+            'data'   => [['data' => null, 'currency' => null]],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

@@ -23,7 +23,7 @@ class MetricConverterSpec extends ObjectBehavior
         $this->supportsField('pim_catalog_metric')->shouldReturn(true);
     }
 
-    function it_converts(AttributeInterface $attribute)
+    function it_does_not_convert_when_only_data_is_provided(AttributeInterface $attribute)
     {
         $attribute->getCode()->willReturn('attribute_code');
         $fieldNameInfo = ['attribute'   => $attribute,
@@ -37,7 +37,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['data' => 4.1125, 'unit' => 'EUR'],
+            'data'   => ['data' => null, 'unit' => null],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -58,27 +58,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['data' => 4.1125, 'unit' => 'EUR'],
-        ]]];
-
-        $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
-    }
-
-    function it_converts_and_cast_to_float(AttributeInterface $attribute)
-    {
-        $attribute->getCode()->willReturn('attribute_code');
-        $fieldNameInfo = ['attribute'   => $attribute,
-                          'locale_code' => 'en_US',
-                          'scope_code'  => 'mobile',
-                          'metric_unit' => 'EUR'
-        ];
-
-        $value = '4.1125';
-
-        $expectedResult = ['attribute_code' => [[
-            'locale' => 'en_US',
-            'scope'  => 'mobile',
-            'data'   => ['data' => 4.1125, 'unit' => 'EUR'],
+            'data'   => ['data' => '4.1125', 'unit' => 'EUR'],
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);
@@ -94,7 +74,7 @@ class MetricConverterSpec extends ObjectBehavior
         $expectedResult = ['attribute_code' => [[
             'locale' => 'en_US',
             'scope'  => 'mobile',
-            'data'   => ['data' => null, 'unit' => null],
+            'data'   => null,
         ]]];
 
         $this->convert($fieldNameInfo, $value)->shouldReturn($expectedResult);

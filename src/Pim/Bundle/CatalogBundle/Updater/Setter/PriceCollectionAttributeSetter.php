@@ -115,6 +115,7 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
                 );
             }
 
+            // TODO : this should be in validator
             if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
