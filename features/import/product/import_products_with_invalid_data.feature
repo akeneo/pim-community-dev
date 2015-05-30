@@ -356,6 +356,7 @@ Feature: Execute a job
       honda-civic;2 METER
       seat-ibiza;4 TON
       fiat-panda;
+      fiat-uno;12
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -363,11 +364,13 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "skipped 2"
-    And there should be 2 products
+    And there should be 3 products
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
     And the product "honda-civic" should have the following value:
       | length | 2.0000 METER |
+    And the product "fiat-panda" should have the following value:
+      | length | |
 
   Scenario: Skip new products with invalid metric (two columns) during an import
     Given the following CSV file to import:

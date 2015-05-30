@@ -101,33 +101,6 @@ class MetricAttributeSetter extends AbstractAttributeSetter
                 print_r($data, true)
             );
         }
-
-        // TODO : this should be in validator
-        if (!is_string($data['unit'])) {
-            throw InvalidArgumentException::arrayStringValueExpected(
-                $attribute->getCode(),
-                'unit',
-                'setter',
-                'metric',
-                $data['unit']
-            );
-        }
-
-        // TODO : this should be in validator
-        if (!array_key_exists(
-            $data['unit'],
-            $this->measureManager->getUnitSymbolsForFamily($attribute->getMetricFamily())
-        )
-        ) {
-            throw InvalidArgumentException::arrayInvalidKey(
-                $attribute->getCode(),
-                'unit',
-                'The unit does not exist',
-                'setter',
-                'metric',
-                $data['unit']
-            );
-        }
     }
 
     /**
