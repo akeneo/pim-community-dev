@@ -24,6 +24,9 @@ class ProductPropertySetter implements PropertySetterInterface
     /** @var SetterRegistryInterface */
     protected $setterRegistry;
 
+    /** array */
+    protected $attributesCache;
+
     /**
      * @param AttributeRepositoryInterface $repository
      * @param SetterRegistryInterface      $setterRegistry
@@ -34,6 +37,7 @@ class ProductPropertySetter implements PropertySetterInterface
     ) {
         $this->attributeRepository = $repository;
         $this->setterRegistry      = $setterRegistry;
+        $this->attributesCache     = [];
     }
 
     /**
@@ -77,8 +81,11 @@ class ProductPropertySetter implements PropertySetterInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        if (!isset($this->attributesCache[$code])) {
+            $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+            $this->attributesCache[$code]= $attribute;
+        }
 
-        return $attribute;
+        return isset($this->attributesCache[$code]) ? $this->attributesCache[$code] : null;
     }
 }
