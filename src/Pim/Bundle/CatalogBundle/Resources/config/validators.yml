@@ -16,8 +16,8 @@ parameters:
     pim_catalog.validator.constraint_guesser.not_blank.class:              Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotBlankGuesser
     pim_catalog.validator.constraint_guesser.date.class:                   Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\DateGuesser
     pim_catalog.validator.constraint_guesser.numeric.class:                Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NumericGuesser
-    pim_catalog.validator.constraint_guesser.string.class:           Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\StringGuesser
-    pim_catalog.validator.constraint_guesser.boolean.class:          Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\BooleanGuesser
+    pim_catalog.validator.constraint_guesser.string.class:                 Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\StringGuesser
+    pim_catalog.validator.constraint_guesser.boolean.class:                Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\BooleanGuesser
     pim_catalog.validator.constraint_guesser.range.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RangeGuesser
     pim_catalog.validator.constraint_guesser.regex.class:                  Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RegexGuesser
     pim_catalog.validator.constraint_guesser.not_decimal.class:            Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NotDecimalGuesser

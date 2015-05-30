@@ -37,6 +37,27 @@ class ProductUpdaterSpec extends ObjectBehavior
         );
     }
 
+    function it_updates_a_product($propertySetter, ProductInterface $product)
+    {
+        $propertySetter
+            ->setData($product, 'groups', ['related1', 'related2'])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product, 'name', 'newname', ['locale' => null, 'scope' => null])
+            ->shouldBeCalled();
+        $propertySetter
+            ->setData($product, 'desc', 'newdescUS', ['locale' => 'en_US', 'scope' => null])
+            ->shouldBeCalled();
+
+        $updates = [
+            'groups' => ['related1', 'related2'],
+            'name' => [['data' => 'newname', 'locale' => null, 'scope' => null]],
+            'desc' => [['data' => 'newdescUS', 'locale' => 'en_US', 'scope' => null]],
+        ];
+
+        $this->update($product, $updates, []);
+    }
+
     function it_sets_a_value($propertySetter, ProductInterface $product1, ProductInterface $product2)
     {
         $products = [$product1, $product2];

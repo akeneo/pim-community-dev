@@ -199,6 +199,21 @@ class Family implements FamilyInterface
     /**
      * {@inheritdoc}
      */
+    public function getAttributeCodes()
+    {
+        $codes = [];
+        if ($this->attributes) {
+            foreach ($this->attributes as $attribute) {
+                $codes[] = $attribute->getCode();
+            }
+        }
+
+        return $codes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getGroupedAttributes()
     {
         $result = array();
