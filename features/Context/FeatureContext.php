@@ -10,6 +10,8 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
+use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
 
@@ -22,8 +24,10 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    /** @var KernelInterface */
     protected $kernel;
 
+    /** @var string[] */
     protected static $errorMessages = [];
 
     /**
@@ -63,7 +67,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
             $excludedTables = $excludedTables['excluded_tables'];
         } else {
-            $excludedTables = array();
+            $excludedTables = [];
         }
 
         if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
@@ -226,7 +230,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return Doctrine\Common\Persistence\ManagerRegistry
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
      */
     public function getSmartRegistry()
     {
@@ -251,7 +255,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function listToArray($list)
     {
         if (empty($list)) {
-            return array();
+            return [];
         }
 
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -369,7 +373,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Get the mail recorder
      *
-     * @return MailRecorder
+     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
      */
     public function getMailRecorder()
     {
