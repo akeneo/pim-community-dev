@@ -1,6 +1,6 @@
 <?php
 
-$branch = exec('git rev-parse --abbrev-ref HEAD');
+$branch = getenv('TRAVIS_BRANCH');
 
 var_dump($branch);
 
