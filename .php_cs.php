@@ -21,6 +21,7 @@ if (in_array($branch, ['master', 'HEAD'])) {
     }
     $finder->name('*.php');
     foreach($parsedDirectories[$phpVersion] as $directory) {
+        printf('Directory %s parsed' . PHP_EOL, $directory);
         $finder->in($directory);
     }
 } else {
