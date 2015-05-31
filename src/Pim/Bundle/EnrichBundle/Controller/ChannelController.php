@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -39,6 +40,9 @@ class ChannelController extends AbstractDoctrineController
     /** @var RemoverInterface */
     protected $channelRemover;
 
+    /** @var BulkSaverInterface */
+    protected $localeSaver;
+
     /**
      * Constructor
      *
@@ -54,6 +58,7 @@ class ChannelController extends AbstractDoctrineController
      * @param HandlerInterface         $channelHandler
      * @param Form                     $channelForm
      * @param RemoverInterface         $channelRemover
+     * @param BulkSaverInterface       $localeSaver
      */
     public function __construct(
         Request $request,
@@ -67,7 +72,8 @@ class ChannelController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         HandlerInterface $channelHandler,
         Form $channelForm,
-        RemoverInterface $channelRemover
+        RemoverInterface $channelRemover,
+        BulkSaverInterface $localeSaver
     ) {
         parent::__construct(
             $request,
@@ -84,6 +90,7 @@ class ChannelController extends AbstractDoctrineController
         $this->channelForm    = $channelForm;
         $this->channelHandler = $channelHandler;
         $this->channelRemover = $channelRemover;
+        $this->localeSaver    = $localeSaver;
     }
 
     /**
@@ -161,6 +168,8 @@ class ChannelController extends AbstractDoctrineController
         foreach ($channel->getLocales() as $locale) {
             $locale->removeChannel($channel);
         }
+        $locales = ($channel->getLocales()) ? $channel->getLocales()->toArray() : [];
+        $this->localeSaver->saveAll($locales);
 
         $this->channelRemover->remove($channel);
 
