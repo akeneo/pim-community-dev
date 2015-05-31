@@ -28,7 +28,7 @@ before_script:
 script:
     - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.5" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs_spec; fi;'
+    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.5" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs_tests; fi;'
     - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs; fi;'
     - ./app/Resources/jenkins/interface_check.sh src/
 

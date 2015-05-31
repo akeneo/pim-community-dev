@@ -7,8 +7,7 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()->files();
 if (in_array($branch, ['master', 'HEAD'])) {
     $finder
         ->name('*.php')
-        ->in(__DIR__ . '/src')
-        ->in(__DIR__ . '/features');
+        ->in(__DIR__ . '/src');
 } else {
     if (is_int(getenv('TRAVIS_PULL_REQUEST'))) {
         exec('git diff ' . getenv('TRAVIS_COMMIT_RANGE') . ' --name-only --diff-filter=AMR | grep -v ^spec/', $diff);
