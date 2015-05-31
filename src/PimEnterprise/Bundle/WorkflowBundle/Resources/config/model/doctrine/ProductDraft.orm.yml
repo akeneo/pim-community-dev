@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft:
     type: entity
     table: pimee_workflow_product_draft
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\ProductDraftRepository
     id:
         id:
