@@ -1,6 +1,7 @@
 Acme\Bundle\AppBundle\Model\ProductValue:
     type: entity
     table: acme_catalog_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         value_idx:
             columns:

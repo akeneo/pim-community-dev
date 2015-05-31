@@ -1,6 +1,7 @@
 Pim\Bundle\VersioningBundle\Model\Version:
     type: entity
     table: pim_versioning_version
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
         resource_name_resource_id_idx:
