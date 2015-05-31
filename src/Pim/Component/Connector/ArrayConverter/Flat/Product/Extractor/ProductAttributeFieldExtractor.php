@@ -34,6 +34,9 @@ class ProductAttributeFieldExtractor
     /** @var array */
     protected $fieldNameInfoCache;
 
+    /** @var array */
+    protected $excludedFieldNames;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ChannelRepositoryInterface   $channelRepository
@@ -48,6 +51,7 @@ class ProductAttributeFieldExtractor
         $this->channelRepository   = $channelRepository;
         $this->localeRepository    = $localeRepository;
         $this->fieldNameInfoCache  = [];
+        $this->excludedFieldNames  = [];
     }
 
     /**
@@ -70,7 +74,7 @@ class ProductAttributeFieldExtractor
      */
     public function extractAttributeFieldNameInfos($fieldName)
     {
-        if (!isset($this->fieldNameInfoCache[$fieldName])) {
+        if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
             $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
             $attributeCode = $explodedFieldName[0];
             $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
@@ -79,8 +83,9 @@ class ProductAttributeFieldExtractor
                 $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
                 $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldName);
                 $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfo);
-
                 $this->fieldNameInfoCache[$fieldName] = $attributeInfo;
+            } else {
+                $this->excludedFieldNames[] = $fieldName;
             }
         }
 
@@ -109,7 +114,7 @@ class ProductAttributeFieldExtractor
         if ('prices' === $attribute->getBackendType()) {
             $info['price_currency'] = array_shift($explodedFieldName);
         } elseif ('metric' === $attribute->getBackendType()) {
-            // TODO: has been added
+            // TODO: has been added, useful?
             $info['metric_unit'] = array_shift($explodedFieldName);
         }
 
