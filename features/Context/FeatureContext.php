@@ -10,8 +10,6 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
 
@@ -204,7 +202,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Returns Container instance.
      *
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {
@@ -214,7 +212,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Return doctrine manager instance
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getEntityManager()
     {
@@ -222,7 +220,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getDocumentManager()
     {
@@ -373,7 +371,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Get the mail recorder
      *
-     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
+     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
      */
     public function getMailRecorder()
     {
