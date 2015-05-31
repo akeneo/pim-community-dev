@@ -5,12 +5,22 @@ $phpVersion = getenv('TRAVIS_PHP_VERSION');
 
 printf('Current branch inspected : %s' . PHP_EOL, $branch);
 
-$parsedDirectories = [
+$versionsConfig = [
     '5.5' => [
-        __DIR__ . '/spec',
-        __DIR__ . '/features',
+        'directories' => [
+            __DIR__ . '/spec',
+            __DIR__ . '/features',
+        ],
+        'fixers'      => [
+            '-visibility',
+        ]
     ],
-    '5.6' => [__DIR__ . '/src'],
+    '5.6' => [
+        'directories' => [
+            __DIR__ . '/src'
+        ],
+        'fixers'      => [],
+    ],
 ];
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()->files();
@@ -36,9 +46,12 @@ if (in_array($branch, ['master', 'HEAD'])) {
         return null;
     }
     $finder->name('*.php');
-    foreach ($parsedDirectories[$phpVersion] as $directory) {
+    foreach ($parsedDirectories[$phpVersion]['directories'] as $directory) {
         printf('Directory %s parsed' . PHP_EOL, $directory);
         $finder->in($directory);
+    }
+    foreach ($parsedDirectories[$phpVersion]['fixers'] as $fixer) {
+        $fixers[] = $fixer;
     }
 } else {
     if (is_int(getenv('TRAVIS_PULL_REQUEST'))) {
