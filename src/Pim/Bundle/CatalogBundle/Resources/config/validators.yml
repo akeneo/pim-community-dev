@@ -1,7 +1,7 @@
 parameters:
     pim_catalog.validator.helper.attribute.class:                          Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper
     pim_catalog.validator.constraint.valid_metric.class:                   Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
-    pim_catalog.validator.constraint.valid_currency.class:                 Pim\Bundle\CatalogBundle\Validator\Constraints\ValidCurrencyValidator
+    pim_catalog.validator.constraint.currency.class:                       Pim\Bundle\CatalogBundle\Validator\Constraints\CurrencyValidator
     pim_catalog.validator.constraint.single_identifier.class:              Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
     pim_catalog.validator.constraint.unique_variant_axis.class:            Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
     pim_catalog.validator.constraint.unique_variant_group.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantGroupValidator
@@ -53,8 +53,8 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 
-    pim_catalog.validator.constraint.valid_currency:
-        class: %pim_catalog.validator.constraint.valid_currency.class%
+    pim_catalog.validator.constraint.currency:
+        class: %pim_catalog.validator.constraint.currency.class%
         arguments:
             - '@pim_catalog.manager.currency'
         tags:

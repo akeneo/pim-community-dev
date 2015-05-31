@@ -17,10 +17,13 @@ use Symfony\Component\Validator\ConstraintValidator;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidCurrencyValidator extends ConstraintValidator
+class CurrencyValidator extends ConstraintValidator
 {
     /** @var CurrencyManager */
     protected $currencyManager;
+
+    /** @var array */
+    protected $currencyCodes;
 
     /**
      * @param CurrencyManager $currencyManager
@@ -28,6 +31,7 @@ class ValidCurrencyValidator extends ConstraintValidator
     public function __construct(CurrencyManager $currencyManager)
     {
         $this->currencyManager = $currencyManager;
+        $this->currencyCodes = [];
     }
 
     /**
@@ -39,9 +43,21 @@ class ValidCurrencyValidator extends ConstraintValidator
     public function validate($object, Constraint $constraint)
     {
         if ($object instanceof ProductPriceInterface) {
-            if (!in_array($object->getCurrency(), $this->currencyManager->getActiveCodes())) {
+            if (!in_array($object->getCurrency(), $this->getCurrencyCodes())) {
                 $this->context->addViolationAt('currency', $constraint->unitMessage);
             }
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function getCurrencyCodes()
+    {
+        if (empty($this->currencyCodes)) {
+            $this->currencyCodes = $this->currencyManager->getActiveCodes();
+        }
+
+        return $this->currencyCodes;
     }
 }

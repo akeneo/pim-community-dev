@@ -63,7 +63,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[2]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal');
         $constraintsAll->constraints[3]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\ValidCurrency');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Currency');
     }
 
     function it_guesses_aggregated_guessers_without_notDecimal(AttributeInterface $attribute)
@@ -85,7 +85,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[1]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric');
         $constraintsAll->constraints[2]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\ValidCurrency');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Currency');
     }
 
     function it_guesses_aggregated_guessers_with_range(AttributeInterface $attribute)
@@ -113,7 +113,7 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[3]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Range');
         $constraintsAll->constraints[4]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\ValidCurrency');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Currency');
     }
 
     function it_guesses_aggregated_guessers_with_range_without_notDecimal(AttributeInterface $attribute)
@@ -144,6 +144,6 @@ class PriceCollectionGuesserSpec extends ObjectBehavior
         $constraintsAll->constraints[2]
             ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Range');
         $constraintsAll->constraints[3]
-            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\ValidCurrency');
+            ->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\Currency');
     }
 }

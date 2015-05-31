@@ -327,27 +327,6 @@ Feature: Execute a job
     And the product "SKU-004" should have the following value:
       | handmade | |
 
-  Scenario: Skip new products with invalid price during an import
-    Given the following attributes:
-      | label        | type   |
-      | Public Price | prices |
-    And the following CSV file to import:
-      """
-      sku;publicPrice
-      renault-kangoo;20000 EUR
-      honda-civic;15EUR
-      seat-ibiza;111
-      """
-    And the following job "footwear_product_import" configuration:
-      | filePath | %file to import% |
-    When I am on the "footwear_product_import" import job page
-    And I launch the import job
-    And I wait for the "footwear_product_import" job to finish
-    Then I should see "skipped 2"
-    And there should be 1 products
-    And the product "renault-kangoo" should have the following value:
-      | publicPrice | 20000.00 EUR |
-
   Scenario: Skip new products with invalid metric during an import
     Given the following CSV file to import:
       """
@@ -390,6 +369,27 @@ Feature: Execute a job
     And there should be 2 products
     And the product "renault-kangoo" should have the following value:
       | length | 2500.0000 CENTIMETER |
+
+  Scenario: Skip new products with invalid price during an import
+    Given the following attributes:
+      | label        | type   |
+      | Public Price | prices |
+    And the following CSV file to import:
+      """
+      sku;publicPrice
+      renault-kangoo;20000 EUR
+      honda-civic;15EUR
+      seat-ibiza;111
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then I should see "skipped 2"
+    And there should be 1 products
+    And the product "renault-kangoo" should have the following value:
+      | publicPrice | 20000.00 EUR |
 
   Scenario: Skip new products with invalid price (many columns) during an import
     Given the following attributes:

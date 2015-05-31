@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraint;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidCurrency extends Constraint
+class Currency extends Constraint
 {
     /**
      * Violation message for invalid currency
