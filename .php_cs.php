@@ -42,15 +42,15 @@ $fixers = [
 ];
 
 if (in_array($branch, ['master', 'HEAD'])) {
-    if (!array_key_exists($phpVersion, $parsedDirectories)) {
+    if (!array_key_exists($phpVersion, $versionsConfig)) {
         return null;
     }
     $finder->name('*.php');
-    foreach ($parsedDirectories[$phpVersion]['directories'] as $directory) {
+    foreach ($versionsConfig[$phpVersion]['directories'] as $directory) {
         printf('Directory %s parsed' . PHP_EOL, $directory);
         $finder->in($directory);
     }
-    foreach ($parsedDirectories[$phpVersion]['fixers'] as $fixer) {
+    foreach ($versionsConfig[$phpVersion]['fixers'] as $fixer) {
         $fixers[] = $fixer;
     }
 } else {
