@@ -2,7 +2,7 @@
 
 $branch = getenv('TRAVIS_BRANCH');
 
-var_dump($branch);
+printf('Current branch inspected : %s' . PHP_EOL, $branch);
 
 $finder = Symfony\CS\Finder\DefaultFinder::create()->files();
 
@@ -17,9 +17,6 @@ if (in_array($branch, ['master', 'HEAD'])) {
         exec('git show --name-only --oneline --pretty="format:" --diff-filter=AMR | grep -v ^spec/', $diff);
         $diff = array_filter($diff);
     }
-
-    var_dump($diff);
-
     $finder->append($diff);
 }
 
