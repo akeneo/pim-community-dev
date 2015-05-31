@@ -569,6 +569,7 @@ class FixturesContext extends RawMinkContext
         $family    = $this->getFamily($family);
 
         $family->setAttributeAsLabel($attribute);
+        $this->persist($family);
 
         $this->flush();
     }
@@ -1749,13 +1750,19 @@ class FixturesContext extends RawMinkContext
 
         $attribute = $this->loadFixture('attributes', $data);
 
+        $familiesToPersist = [];
         if ($families) {
             foreach ($this->listToArray($families) as $familyCode) {
-                $this->getFamily($familyCode)->addAttribute($attribute);
+                $family = $this->getFamily($familyCode);
+                $family->addAttribute($attribute);
+                $familiesToPersist[] = $family;
             }
         }
 
         $this->persist($attribute);
+        foreach ($familiesToPersist as $family) {
+            $this->persist($family);
+        }
 
         return $attribute;
     }
