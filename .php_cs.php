@@ -19,9 +19,10 @@ if (in_array($branch, ['master', 'HEAD'])) {
     if (!array_key_exists($phpVersion, $parsedDirectories)) {
         return null;
     }
-    $finder
-        ->name('*.php')
-        ->in(__DIR__ . '/src');
+    $finder->name('*.php');
+    foreach($parsedDirectories[$phpVersion] as $directory) {
+        $finder->in($directory);
+    }
 } else {
     if (is_int(getenv('TRAVIS_PULL_REQUEST'))) {
         exec('git diff ' . getenv('TRAVIS_COMMIT_RANGE') . ' --name-only --diff-filter=AMR | grep -v ^spec/', $diff);
