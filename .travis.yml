@@ -1,9 +1,6 @@
 language: php
 php:
-    - "5.4"
     - "5.5"
-    - "5.6"
-    - "hhvm"
 
 # Allow to use container infrastructure
 sudo: false
@@ -19,18 +16,8 @@ cache:
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then echo "extension = mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm v1.0.0-beta12@dev; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then composer require --no-update doctrine/mongodb-odm-bundle v3.0.0-BETA6@dev; fi;'
     - composer update --prefer-dist --no-scripts --no-interaction
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.5" ] || [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer; fi;'
+    - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
 
 script:
-    - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
-    - ./phpspec-fix
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.5" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs_spec; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.6" ]; then php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs; fi;'
-    - ./app/Resources/jenkins/interface_check.sh src/
-
-notifications:
-  slack: akeneo:fDZaQeRRj1gVtXCW3f2kQAxo
+    - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
