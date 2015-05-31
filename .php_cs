@@ -2,6 +2,8 @@
 
 $branch = exec('git rev-parse --abbrev-ref HEAD');
 
+var_dump($branch);
+
 $finder = Symfony\CS\Finder\DefaultFinder::create()->files();
 
 if (in_array($branch, ['master', 'HEAD'])) {
@@ -15,6 +17,9 @@ if (in_array($branch, ['master', 'HEAD'])) {
         exec('git show --name-only --oneline --pretty="format:" --diff-filter=AMR | grep -v ^spec/', $diff);
         $diff = array_filter($diff);
     }
+
+    var_dump($diff);
+
     $finder->append($diff);
 }
 
