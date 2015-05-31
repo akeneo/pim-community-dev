@@ -37,6 +37,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
         $notDecimalGuesser = new NotDecimalGuesser();
         $rangeGuesser = new RangeGuesser();
         $numericGuesser = new NumericGuesser();
+        $currencyGuesser = new CurrencyGuesser();
 
         return array(
             new All(
@@ -49,7 +50,8 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
                         ),
                         $numericGuesser->guessConstraints($attribute),
                         $notDecimalGuesser->guessConstraints($attribute),
-                        $rangeGuesser->guessConstraints($attribute)
+                        $rangeGuesser->guessConstraints($attribute),
+                        $currencyGuesser->guessConstraints($attribute)
                     )
                 )
             )

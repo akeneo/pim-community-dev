@@ -139,7 +139,6 @@ services:
         parent: pim_catalog.updater.setter.abstract
         arguments:
             - @pim_catalog.factory.metric
-            - @akeneo_measure.manager
             - ['pim_catalog_metric']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -230,7 +229,6 @@ services:
         class: %pim_catalog.updater.setter.price_collection_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.manager.currency
             - ['pim_catalog_price_collection']
         tags:
             - { name: 'pim_catalog.updater.setter' }

@@ -5,13 +5,13 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
- * Converts flat numbers value into structured one.
+ * Converts scalar value into structured one.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NumberConverter extends AbstractValueConverter
+class ScalarConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -29,7 +29,7 @@ class NumberConverter extends AbstractValueConverter
     public function convert(array $attributeFieldInfo, $value)
     {
         if ('' !== $value) {
-            $data = (float) $value;
+            $data = $value;
         } else {
             $data = null;
         }

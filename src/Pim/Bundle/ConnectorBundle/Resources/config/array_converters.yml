@@ -11,10 +11,8 @@ parameters:
     pim_base_connector.array_converter.flat.product.metric.class:                     Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\MetricConverter
     pim_base_connector.array_converter.flat.product.multiselect.class:                Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\MultiSelectConverter
     pim_base_connector.array_converter.flat.product.simpleselect.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\SimpleSelectConverter
-    pim_base_connector.array_converter.flat.product.boolean.class:                    Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\BooleanConverter
-    pim_base_connector.array_converter.flat.product.number.class:                     Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\NumberConverter
     pim_base_connector.array_converter.flat.product.media.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\MediaConverter
-    pim_base_connector.array_converter.flat.product.identifier.class:                 Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\TextConverter
+    pim_base_connector.array_converter.flat.product.scalar.class:                     Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ScalarConverter
     pim_base_connector.array_converter.flat.product.field.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter
 
     # TODO: rename following services
@@ -113,27 +111,11 @@ services:
         tags:
             - { name: 'pim_base_connector.array_converter.flat.product_value' }
 
-    pim_base_connector.array_converter.flat.product.boolean:
-        class: %pim_base_connector.array_converter.flat.product.boolean.class%
+    pim_base_connector.array_converter.flat.product.scalar:
+        class: %pim_base_connector.array_converter.flat.product.scalar.class%
         parent: pim_base_connector.array_converter.flat.product.abstract
         arguments:
-            - ['pim_catalog_boolean']
-        tags:
-            - { name: 'pim_base_connector.array_converter.flat.product_value' }
-
-    pim_base_connector.array_converter.flat.product.text:
-        class: %pim_base_connector.array_converter.flat.product.identifier.class%
-        parent: pim_base_connector.array_converter.flat.product.abstract
-        arguments:
-            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_date']
-        tags:
-            - { name: 'pim_base_connector.array_converter.flat.product_value' }
-
-    pim_base_connector.array_converter.flat.product.number:
-        class: %pim_base_connector.array_converter.flat.product.number.class%
-        parent: pim_base_connector.array_converter.flat.product.abstract
-        arguments:
-            - ['pim_catalog_number']
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_date', 'pim_catalog_boolean', 'pim_catalog_number']
         tags:
             - { name: 'pim_base_connector.array_converter.flat.product_value' }
 

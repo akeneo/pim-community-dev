@@ -28,22 +28,19 @@ class MetricConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        // TODO: will be reworked after the merge of PIM-4220, no need of multi format + rely on symfony validation
-        if ('' !== $value) {
-            if (isset($attributeFieldInfo['metric_unit'])) {
-                $unit = $attributeFieldInfo['metric_unit'];
-            } else {
-                list($value, $unit) = $this->fieldSplitter->splitUnitValue($value);
-            }
-            $data = ['data' => (float) $value, 'unit' => $unit];
+        if ('' === $value) {
+            $value = null;
         } else {
-            $data = ['data' => null, 'unit' => null];
+            $tokens = $this->fieldSplitter->splitUnitValue($value);
+            $data = isset($tokens[0]) ? $tokens[0] : null;
+            $unit = isset($tokens[1]) ? $tokens[1] : null;
+            $value = ['data' => $data, 'unit' => $unit];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],
             'scope'  => $attributeFieldInfo['scope_code'],
-            'data'   => $data,
+            'data'   => $value
         ]]];
     }
 }
