@@ -24,9 +24,9 @@ interface VersionRepositoryInterface
     /**
      * Returns oldest (first) version for a resource
      *
-     * @param string  $resourceName
-     * @param string  $resourceId
-     * @param boolean $pending
+     * @param string $resourceName
+     * @param string $resourceId
+     * @param bool   $pending
      *
      * @return Version|null
      */
@@ -35,13 +35,13 @@ interface VersionRepositoryInterface
     /**
      * Returns newest (last) version for a resource
      *
-     * @param string  $resourceName
-     * @param string  $resourceId
-     * @param boolean $pending
+     * @param string $resourceName
+     * @param string $resourceId
+     * @param bool   $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($resourceName, $resourceId, $pending);
+    public function getNewestLogEntry($resourceName, $resourceId, $pending = false);
 
     /**
      * Returns pending versions
@@ -62,10 +62,10 @@ interface VersionRepositoryInterface
     /**
      * Find Version entities by a set of criteria
      *
-     * @param array        $criteria
-     * @param array|null   $orderBy
-     * @param integer|null $limit
-     * @param integer|null $offset
+     * @param array      $criteria
+     * @param array|null $orderBy
+     * @param int|null   $limit
+     * @param int|null   $offset
      *
      * @return array
      */

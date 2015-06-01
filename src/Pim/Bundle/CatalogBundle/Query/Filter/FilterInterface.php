@@ -23,7 +23,7 @@ interface FilterInterface
      *
      * @param string $operator
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsOperator($operator);
 

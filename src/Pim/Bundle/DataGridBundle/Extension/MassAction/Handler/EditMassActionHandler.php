@@ -19,12 +19,12 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class EditMassActionHandler implements MassActionHandlerInterface
 {
     /**
-     * @var HydratorInterface $hydrator
+     * @var HydratorInterface
      */
     protected $hydrator;
 
     /**
-     * @var EventDispatcher $eventDispatcher
+     * @var EventDispatcher
      */
     protected $eventDispatcher;
 

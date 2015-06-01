@@ -28,7 +28,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      * @Assert\NotBlank(groups={"Execution"})
      * @Channel
      *
-     * @var string $channel Channel code
+     * @var string Channel code
      */
     protected $channel;
 
@@ -74,7 +74,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
                 throw new InvalidItemException(
                     $e->getMessage(),
                     [
-                        'item'            => $product->getOriginalProduct()->getIdentifier()->getData(),
+                        'item'            => $product->getIdentifier()->getData(),
                         'uploadDirectory' => $this->uploadDirectory,
                     ]
                 );

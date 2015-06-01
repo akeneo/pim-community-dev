@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -24,6 +24,7 @@ interface CategoryRepositoryInterface extends
 {
     /**
      * Get query builder for all existing category trees
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function getTreesQB();
@@ -34,7 +35,7 @@ interface CategoryRepositoryInterface extends
      * @param CategoryInterface $category   the requested node
      * @param bool              $onlyDirect true to count only direct children
      *
-     * @return integer
+     * @return int
      */
     public function countChildren(CategoryInterface $category, $onlyDirect = false);
 
@@ -60,7 +61,7 @@ interface CategoryRepositoryInterface extends
      * Shortcut to get all children query builder
      *
      * @param CategoryInterface $category    the requested node
-     * @param boolean           $includeNode true to include actual node in query result
+     * @param bool              $includeNode true to include actual node in query result
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
@@ -88,7 +89,7 @@ interface CategoryRepositoryInterface extends
     /**
      * Get children from a parent id
      *
-     * @param integer $parentId
+     * @param int $parentId
      *
      * @return ArrayCollection
      */
@@ -100,8 +101,8 @@ interface CategoryRepositoryInterface extends
      * down to the node specified by select node id. Otherwise, the
      * whole tree will be returned
      *
-     * @param integer $parentId
-     * @param integer $selectNodeId
+     * @param int $parentId
+     * @param int $selectNodeId
      *
      * @return ArrayCollection
      */
@@ -124,8 +125,8 @@ interface CategoryRepositoryInterface extends
      * Search is done on a "%value%" LIKE expression.
      * Criterias are joined with a AND operator
      *
-     * @param integer $treeRootId Tree segment root id
-     * @param array   $criterias  Criterias to apply
+     * @param int   $treeRootId Tree segment root id
+     * @param array $criterias  Criterias to apply
      *
      * @return ArrayCollection
      */

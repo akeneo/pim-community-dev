@@ -1,7 +1,8 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Repository;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
@@ -65,6 +66,7 @@ interface AttributeRepositoryInterface extends
 
     /**
      * Find all axis
+     *
      * @see findAllAxisQB
      *
      * @return array
@@ -81,9 +83,9 @@ interface AttributeRepositoryInterface extends
     /**
      * Get attribute as array indexed by code
      *
-     * @param boolean $withLabel translated label should be joined
-     * @param string  $locale    the locale code of the label
-     * @param array   $ids       the attribute ids
+     * @param bool   $withLabel translated label should be joined
+     * @param string $locale    the locale code of the label
+     * @param array  $ids       the attribute ids
      *
      * @return array
      */
@@ -134,4 +136,13 @@ interface AttributeRepositoryInterface extends
      * @return AttributeInterface[]
      */
     public function getNonIdentifierAttributes();
+
+    /**
+     * Get attribute type by code attributes
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getAttributeTypeByCodes(array $codes);
 }

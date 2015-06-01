@@ -69,8 +69,6 @@ class AttributeType extends AbstractType
 
         $this->addFieldRequired($builder);
 
-        $this->addFieldUnique($builder);
-
         $this->addFieldLabel($builder);
 
         $this->addFieldUseableAsGridFilter($builder);
@@ -82,6 +80,7 @@ class AttributeType extends AbstractType
 
     /**
      * Add subscriber
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addSubscriber(FormBuilderInterface $builder)
@@ -93,6 +92,7 @@ class AttributeType extends AbstractType
 
     /**
      * Add field id to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldId(FormBuilderInterface $builder)
@@ -102,20 +102,12 @@ class AttributeType extends AbstractType
 
     /**
      * Add field code to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldCode(FormBuilderInterface $builder)
     {
         $builder->add('code', 'text', ['required' => true]);
-    }
-
-    /**
-     * Add field unique to form builder
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldUnique(FormBuilderInterface $builder)
-    {
-        $builder->add('unique', 'choice', ['choices' => ['No', 'Yes']]);
     }
 
     /**
@@ -137,6 +129,7 @@ class AttributeType extends AbstractType
 
     /**
      * Add a field for label
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldLabel(FormBuilderInterface $builder)
@@ -155,6 +148,7 @@ class AttributeType extends AbstractType
 
     /**
      * Add a field for attribute group
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldAttributeGroup(FormBuilderInterface $builder)
@@ -174,6 +168,7 @@ class AttributeType extends AbstractType
 
     /**
      * Add a field for useableAsGridFilter
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
@@ -183,6 +178,7 @@ class AttributeType extends AbstractType
 
     /**
      * Add field required to form builder
+     *
      * @param FormBuilderInterface $builder
      */
     protected function addFieldRequired(FormBuilderInterface $builder)

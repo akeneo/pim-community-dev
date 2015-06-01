@@ -24,4 +24,19 @@ class ObjectDetacherSpec extends ObjectBehavior
 
         $this->detach($object);
     }
+
+    function it_detaches_many_objects_from_object_manager($registry, ObjectManager $manager)
+    {
+        $object1 = new \stdClass();
+        $object2 = new \stdClass();
+        $objects = [$object1, $object2];
+        $registry->getManagerForClass('stdClass')
+            ->shouldBeCalled()
+            ->willReturn($manager);
+
+        $manager->detach($object1)->shouldBeCalled();
+        $manager->detach($object2)->shouldBeCalled();
+
+        $this->detachAll($objects);
+    }
 }

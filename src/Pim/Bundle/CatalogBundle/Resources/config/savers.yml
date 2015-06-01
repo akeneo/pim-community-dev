@@ -8,6 +8,7 @@ parameters:
     pim_catalog.saver.group.class:                         Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\GroupSaver
     pim_catalog.saver.family.class:                        Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\FamilySaver
     pim_catalog.saver.channel.class:                       Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\ChannelSaver
+    pim_catalog.saver.attribute.class:                     Pim\Bundle\CatalogBundle\Doctrine\Common\Saver\AttributeSaver
 
 services:
     pim_catalog.saver.group_type:
@@ -64,11 +65,11 @@ services:
             - %pim_catalog.model.attribute_group.interface%
 
     pim_catalog.saver.attribute:
-        class: %pim_catalog.saver.base.class%
+        class: %pim_catalog.saver.attribute.class%
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
-            - %pim_catalog.model.attribute.interface%
+            - '@event_dispatcher'
 
     pim_catalog.saver.attribute_option:
         class: %pim_catalog.saver.base.class%

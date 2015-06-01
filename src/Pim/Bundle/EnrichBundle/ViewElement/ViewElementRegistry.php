@@ -19,7 +19,7 @@ class ViewElementRegistry
      *
      * @param ViewElementInterface $element
      * @param string               $type
-     * @param integer              $position
+     * @param int                  $position
      */
     public function add(ViewElementInterface $element, $type, $position)
     {

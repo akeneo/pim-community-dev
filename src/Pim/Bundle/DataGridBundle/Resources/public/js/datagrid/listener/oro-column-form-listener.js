@@ -43,13 +43,6 @@ function($, _, __, mediator, Modal, AbstractListener) {
 
             this._clearState();
             this._restoreState();
-
-            /**
-             * Restore include/exclude state from pagestate
-             */
-            mediator.bind("pagestate_restored", function () {
-                this._restoreState();
-            }, this);
         },
 
         /**

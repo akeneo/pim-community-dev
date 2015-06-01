@@ -2,10 +2,12 @@
 
 namespace spec\Pim\Bundle\TransformBundle\Denormalizer\Flat\ProductValue;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Prophecy\Argument;
 
 class PricesDenormalizerSpec extends ObjectBehavior
 {
@@ -99,9 +101,18 @@ class PricesDenormalizerSpec extends ObjectBehavior
         $this->denormalize('120.00 EUR, 145.40 USD, 100 CHF', 'className', null, $context);
     }
 
-    function it_returns_null_if_the_data_is_empty(ProductValueInterface $productValueInterface)
-    {
-        $this->denormalize('', 'className', null, [])->shouldReturn(null);
-        $this->denormalize(null, 'className', null, [])->shouldReturn(null);
+    function it_returns_a_price_collection_even_if_the_data_is_empty(
+        $productBuilder,
+        ProductValueInterface $priceValue,
+        ProductPriceInterface $price,
+        ArrayCollection $priceCollection
+    ) {
+        $productBuilder->addPriceForCurrency(Argument::cetera())->willReturn($price);
+        $priceValue->addPrice($price)->shouldBeCalled();
+        $priceValue->getPrices()->willReturn($priceCollection);
+
+        $context = ['value' => $priceValue, 'price_currency' => 'WillNotBeUsed'];
+        $this->denormalize('', 'className', null, $context)->shouldReturn($priceCollection);
+        $this->denormalize(null, 'className', null, $context)->shouldReturn($priceCollection);
     }
 }

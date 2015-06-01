@@ -61,8 +61,8 @@ class MetricNormalizer extends AbstractProductValueDataNormalizer
      * Get the data stored in the metric
      *
      * @param MetricInterface $metric
-     * @param boolean         $withUnit
-     * @param boolean         $decimalsAllowed
+     * @param bool            $withUnit
+     * @param bool            $decimalsAllowed
      *
      * @return string
      */

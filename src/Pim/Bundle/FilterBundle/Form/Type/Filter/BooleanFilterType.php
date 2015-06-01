@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;

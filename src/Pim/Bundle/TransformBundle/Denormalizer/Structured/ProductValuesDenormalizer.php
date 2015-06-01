@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Structured;
 
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -30,19 +31,30 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     /** @var string[] */
     protected $supportedFormats = ['json'];
 
+    /** @var SmartManagerRegistry */
+    protected $registry;
+
+    /** @var string */
+    protected $attributeClass;
+
     /**
-     * @param DenormalizerInterface        $denormalizer
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param string                       $valueClass
+     * Constructor
+     *
+     * @param DenormalizerInterface $denormalizer
+     * @param SmartManagerRegistry  $registry
+     * @param string                $valueClass
+     * @param string                $attributeClass
      */
     public function __construct(
         DenormalizerInterface $denormalizer,
-        AttributeRepositoryInterface $attributeRepository,
-        $valueClass
+        SmartManagerRegistry $registry,
+        $valueClass,
+        $attributeClass
     ) {
-        $this->denormalizer        = $denormalizer;
-        $this->attributeRepository = $attributeRepository;
-        $this->valueClass          = $valueClass;
+        $this->denormalizer   = $denormalizer;
+        $this->registry       = $registry;
+        $this->valueClass     = $valueClass;
+        $this->attributeClass = $attributeClass;
     }
 
     /**
@@ -51,9 +63,11 @@ class ProductValuesDenormalizer implements DenormalizerInterface
     public function denormalize($data, $class, $format = null, array $context = [])
     {
         $values = new ArrayCollection();
+        $attributeRepo = $this->registry->getRepository($this->attributeClass);
 
         foreach ($data as $attributeCode => $valuesData) {
-            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+            $attribute = $attributeRepo->findOneByIdentifier($attributeCode);
+
             foreach ($valuesData as $valueData) {
                 $value = $this->denormalizer->denormalize(
                     $valueData,

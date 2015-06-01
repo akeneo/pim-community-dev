@@ -19,7 +19,7 @@ class RegisterRendererPass implements CompilerPassInterface
     const REGISTRY_ID      = 'pim_pdf_generator.renderer.registry';
     /** @var string */
     const RENDERER_TAG     = 'pim_pdf_generator.renderer';
-    /** @var integer */
+    /** @var int */
     const DEFAULT_PRIORITY = 100;
 
     /**

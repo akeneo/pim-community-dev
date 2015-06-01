@@ -2,7 +2,7 @@ datagrid:
     pim-role-user-grid:
         extend: pim-user-relation-grid
         source:
-            acl_resource: oro_user_role_update
+            acl_resource: pim_user_role_edit
             query:
                 select:
                     - >

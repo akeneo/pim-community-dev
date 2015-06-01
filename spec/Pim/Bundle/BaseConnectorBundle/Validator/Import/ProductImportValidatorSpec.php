@@ -3,15 +3,15 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Validator\Import;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 
 class ProductImportValidatorSpec extends ObjectBehavior
 {
@@ -23,7 +23,17 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $this->beConstructedWith($validator, $constraintGuesser, $productManager);
     }
 
-    function it_check_unicity_of_product_value(
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Import\ProductImportValidator');
+    }
+
+    function it_is_an_import_validator()
+    {
+        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface');
+    }
+
+    function it_checks_unicity_of_product_value(
         Product $product1,
         Product $product2,
         ColumnInfo $columnInfo1,
@@ -105,8 +115,9 @@ class ProductImportValidatorSpec extends ObjectBehavior
         $constraint->count()->willReturn(0);
 
         $errors = [
-            '17727158' =>
-                [["The value \"1200000011a\" for unique attribute \"test_unique_attribute\" was already read in this file"]]
+            '17727158' => [
+                ['The value "1200000011a" for unique attribute "test_unique_attribute" was already read in this file']
+            ]
         ];
 
         $this->validate($product1, $columnsInfo, $values[0])->shouldReturn([]);

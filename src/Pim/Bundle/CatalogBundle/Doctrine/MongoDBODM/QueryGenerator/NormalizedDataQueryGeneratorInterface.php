@@ -13,6 +13,7 @@ interface NormalizedDataQueryGeneratorInterface
 {
     /**
      * Generate the query to update concerned products
+     *
      * @param object $entity
      * @param string $field
      * @param string $oldValue
@@ -24,10 +25,11 @@ interface NormalizedDataQueryGeneratorInterface
 
     /**
      * Test if the query generator support the given modification on the given entity
+     *
      * @param object $entity
      * @param string $field
      *
-     * @return boolean
+     * @return bool
      */
     public function supports($entity, $field);
 }

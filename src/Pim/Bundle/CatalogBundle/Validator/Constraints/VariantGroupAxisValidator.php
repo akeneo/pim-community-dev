@@ -23,7 +23,7 @@ class VariantGroupAxisValidator extends ConstraintValidator
      */
     public function validate($variantGroup, Constraint $constraint)
     {
-        /** @var GroupInterface */
+        /* @var GroupInterface */
         if ($variantGroup instanceof GroupInterface) {
             $isNew = $variantGroup->getId() === null;
             $isVariantGroup = $variantGroup->getType()->isVariant();

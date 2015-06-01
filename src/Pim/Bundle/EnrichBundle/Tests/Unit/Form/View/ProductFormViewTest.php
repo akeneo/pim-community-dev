@@ -582,9 +582,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param array $options
-
      *
-*@return AttributeGroupInterface
+     * @return AttributeGroupInterface
      */
     private function getGroupMock(array $options)
     {

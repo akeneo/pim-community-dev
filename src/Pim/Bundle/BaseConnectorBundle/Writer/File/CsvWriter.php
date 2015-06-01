@@ -17,6 +17,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
+     *
      * @var string
      */
     protected $delimiter = ';';
@@ -24,12 +25,13 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
+     *
      * @var string
      */
     protected $enclosure = '"';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $withHeader = true;
 
@@ -86,7 +88,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * Set whether or not to print a header row into the csv
      *
-     * @param boolean $withHeader
+     * @param bool $withHeader
      */
     public function setWithHeader($withHeader)
     {
@@ -96,7 +98,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * Get whether or not to print a header row into the csv
      *
-     * @return boolean
+     * @return bool
      */
     public function isWithHeader()
     {

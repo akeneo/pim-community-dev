@@ -34,7 +34,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $stepExecution->getWarnings()->willReturn($warnings);
         $jobExecution->getId()->willReturn(5);
         $jobInstance->getType()->willReturn('export');
-        $jobInstance->getLabel()->willReturn('Foo export');
+        $jobInstance->getLabel()->willReturn('Product export');
         $event->getJobExecution()->willReturn($jobExecution);
     }
 
@@ -72,10 +72,32 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_importexport_export_execution_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo export']
+                    'messageParams' => ['%label%' => 'Product export']
                 ]
             )
             ->shouldBeCalled();
+
+        $this->afterJobExecution($event);
+    }
+
+    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution($event, $user, $manager, $jobInstance, $jobExecution)
+    {
+        $manager
+            ->notify(
+                [$user],
+                'pim_mass_edit.notification.mass_edit.success',
+                'success',
+                [
+                    'route' => 'pim_enrich_job_tracker_show',
+                    'routeParams' => ['id' => 5],
+                    'messageParams' => ['%label%' => 'Product mass edit']
+                ]
+            )
+            ->shouldBeCalled();
+
+        $jobInstance->getType()->willReturn('mass_edit');
+        $jobInstance->getLabel()->willReturn('Product mass edit');
+        $event->getJobExecution()->willReturn($jobExecution);
 
         $this->afterJobExecution($event);
     }
@@ -96,7 +118,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_importexport_export_execution_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo export']
+                    'messageParams' => ['%label%' => 'Product export']
                 ]
             )
             ->shouldBeCalled();
@@ -120,7 +142,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
                 [
                     'route' => 'pim_importexport_export_execution_show',
                     'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Foo export']
+                    'messageParams' => ['%label%' => 'Product export']
                 ]
             )
             ->shouldBeCalled();

@@ -19,6 +19,7 @@ class Wizard extends Form
 
     /**
      * Go to the next step
+     *
      * @return string
      */
     public function next()
@@ -30,6 +31,7 @@ class Wizard extends Form
 
     /**
      * Press the confirm button
+     *
      * @return string
      */
     public function confirm()

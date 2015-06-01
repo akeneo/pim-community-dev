@@ -21,17 +21,17 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class Family implements FamilyInterface
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      */
     protected $code;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $attributes
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $attributes;
 
@@ -39,32 +39,32 @@ class Family implements FamilyInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $translations
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $translations;
 
     /**
-     * @var AttributeInterface $attributeAsLabel
+     * @var AttributeInterface
      */
     protected $attributeAsLabel;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $requirements
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $requirements;
 
     /**
-     * @var \DateTime $created
+     * @var \DateTime
      */
     protected $created;
 
     /**
-     * @var \DateTime $updated
+     * @var \DateTime
      */
     protected $updated;
 

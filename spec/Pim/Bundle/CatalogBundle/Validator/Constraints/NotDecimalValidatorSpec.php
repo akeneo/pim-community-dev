@@ -6,9 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\MetricInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimalValidator;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class NotDecimalValidatorSpec extends ObjectBehavior
 {

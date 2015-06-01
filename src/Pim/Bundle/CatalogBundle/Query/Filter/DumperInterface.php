@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Query\Filter;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Dump data in console output

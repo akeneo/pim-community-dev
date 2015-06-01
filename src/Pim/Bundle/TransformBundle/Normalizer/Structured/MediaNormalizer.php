@@ -28,7 +28,7 @@ class MediaNormalizer implements NormalizerInterface
     }
 
     /**
-     * @var string[] $supportedFormats
+     * @var string[]
      */
     protected $supportedFormats = ['json', 'xml'];
 

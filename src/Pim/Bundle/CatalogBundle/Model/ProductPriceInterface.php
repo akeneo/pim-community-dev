@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
@@ -43,7 +44,7 @@ interface ProductPriceInterface
     /**
      * Get data
      *
-     * @return double
+     * @return float
      */
     public function getData();
 
@@ -68,7 +69,7 @@ interface ProductPriceInterface
     /**
      * Set data
      *
-     * @param double $data
+     * @param float $data
      *
      * @return ProductPriceInterface
      */

@@ -39,7 +39,7 @@ interface AttributeFilterInterface extends FilterInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsAttribute(AttributeInterface $attribute);
 }

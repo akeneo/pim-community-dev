@@ -13,10 +13,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserNotification
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
-    /** @var boolean */
+    /** @var bool */
     protected $viewed = false;
 
     /** @var Notification */
@@ -28,7 +28,7 @@ class UserNotification
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -86,7 +86,7 @@ class UserNotification
     /**
      * Set viewed
      *
-     * @param boolean $viewed
+     * @param bool $viewed
      *
      * @return UserNotification
      */
@@ -100,7 +100,7 @@ class UserNotification
     /**
      * Get viewed
      *
-     * @return boolean
+     * @return bool
      */
     public function isViewed()
     {

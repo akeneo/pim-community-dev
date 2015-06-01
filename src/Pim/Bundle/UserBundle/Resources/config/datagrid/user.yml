@@ -4,7 +4,7 @@ datagrid:
         options:
             entityHint: user
         source:
-            acl_resource: oro_user_user_view
+            acl_resource: pim_user_user_index
             type: orm
             query:
                 select:
@@ -54,7 +54,7 @@ datagrid:
                     - id
             delete_link:
                 type: url
-                route: oro_api_delete_user
+                route: oro_user_user_delete
                 params:
                     - id
         sorters:
@@ -111,17 +111,17 @@ datagrid:
                 label:         View
                 link:          view_link
                 icon:          user
-                acl_resource:  oro_user_user_view
+                acl_resource:  pim_user_user_index
                 rowAction:     true
             update:
                 type:          navigate
                 label:         Update
                 link:          update_link
                 icon:          edit
-                acl_resource:  oro_user_user_update
+                acl_resource:  pim_user_user_edit
             delete:
                 type:          delete
                 label:         Delete
                 link:          delete_link
                 icon:          trash
-                acl_resource:  oro_user_user_delete
+                acl_resource:  pim_user_user_remove

@@ -38,5 +38,3 @@ Feature: Navigate the application in hash navigation mode
       | oro_user_profile_view                   |
       | oro_user_role_create                    |
       | oro_user_role_index                     |
-      | oro_user_status_create                  |
-      | oro_user_status_list                    |

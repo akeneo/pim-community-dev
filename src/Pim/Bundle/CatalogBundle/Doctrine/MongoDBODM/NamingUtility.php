@@ -50,6 +50,7 @@ class NamingUtility
 
     /**
      * Append given suffixes to codes
+     *
      * @param string[] $codes
      * @param string[] $suffixes
      * @param string   $separator
@@ -75,6 +76,7 @@ class NamingUtility
 
     /**
      * Get all locale codes
+     *
      * @param AttributeInterface $attribute
      *
      * @return array
@@ -94,6 +96,7 @@ class NamingUtility
 
     /**
      * Get all channel codes
+     *
      * @param AttributeInterface $attribute
      *
      * @return array
@@ -195,6 +198,7 @@ class NamingUtility
 
     /**
      * Get filterable prices backend type attribute
+     *
      * @param bool $onlyInGrid
      *
      * @return AttributeInterface[]
@@ -217,6 +221,7 @@ class NamingUtility
 
     /**
      * Get filterable scopable attributes
+     *
      * @param bool $onlyInGrid
      *
      * @return AttributeInterface[]
@@ -239,6 +244,7 @@ class NamingUtility
 
     /**
      * Get filterable localizable attributes
+     *
      * @param bool $onlyInGrid
      *
      * @return AttributeInterface[]

@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -77,6 +77,7 @@ class CurrencyController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_currency_index")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request)
@@ -90,6 +91,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param Currency $currency
      *
      * @AclAncestor("pim_enrich_currency_toggle")
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function toggleAction(Currency $currency)

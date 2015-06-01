@@ -48,8 +48,8 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param boolean $hasFile
-     * @param boolean $mediaExists
+     * @param bool $hasFile
+     * @param bool $mediaExists
      *
      * @dataProvider getUpdateProductValueData
      */

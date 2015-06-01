@@ -5,9 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\FileValidator;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class FileValidatorSpec extends ObjectBehavior
 {
@@ -41,7 +40,7 @@ class FileValidatorSpec extends ObjectBehavior
         $constraint->allowedExtensions = array('pdf', 'docx');
 
         $context
-            ->addViolation($constraint->extensionsMessage, ['{{ extensions }}' => join(', ', $constraint->allowedExtensions)])
+            ->addViolation($constraint->extensionsMessage, ['{{ extensions }}' => implode(', ', $constraint->allowedExtensions)])
             ->shouldBeCalled();
 
         $this->validate(new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'), $constraint);

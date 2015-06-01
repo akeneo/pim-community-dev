@@ -2,14 +2,14 @@
 
 namespace Context;
 
-use Behat\Mink\Element\NodeElement;
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
-use Behat\Gherkin\Node\TableNode;
-use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
-use Pim\Bundle\CatalogBundle\Model\Product;
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
 
 /**
  * Context of the website
@@ -27,8 +27,8 @@ class WebUser extends RawMinkContext
     /**
      * Constructor
      *
-     * @param integer $windowWidth
-     * @param integer $windowHeight
+     * @param int $windowWidth
+     * @param int $windowHeight
      */
     public function __construct($windowWidth, $windowHeight)
     {
@@ -312,8 +312,17 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string  $attribute
-     * @param integer $position
+     * @Given /^I save and close$/
+     */
+    public function iSaveAndClose()
+    {
+        $this->getCurrentPage()->saveAndClose();
+        $this->wait();
+    }
+
+    /**
+     * @param string $attribute
+     * @param int    $position
      *
      * @Given /^I change the attribute "([^"]*)" position to (\d+)$/
      */
@@ -324,8 +333,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string  $attribute
-     * @param integer $position
+     * @param string $attribute
+     * @param int    $position
      *
      * @Then /^the attribute "([^"]*)" should be in position (\d+)$/
      */
@@ -348,7 +357,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $expectedCount
+     * @param int $expectedCount
      *
      * @Given /^the Options section should contain ([^"]*) options?$/
      */
@@ -375,7 +384,6 @@ class WebUser extends RawMinkContext
      * @param string $group
      * @param string $attributes
      *
-     * @return void
      * @Given /^attributes? in group "([^"]*)" should be (.*)$/
      */
     public function attributesInGroupShouldBe($group, $attributes)
@@ -408,9 +416,9 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see attributes "%s" in group "%s", but saw "%s".',
-                    join('", "', $attributes),
+                    implode('", "', $attributes),
                     $group,
-                    join('", "', $labels)
+                    implode('", "', $labels)
                 )
             );
         }
@@ -507,7 +515,6 @@ class WebUser extends RawMinkContext
      * @param string $value
      * @param string $language
      *
-     * @return void
      *
      * @When /^I change the (?P<field>\w+) to "([^"]*)"$/
      * @When /^I change the "(?P<field>[^"]*)" to "([^"]*)"$/
@@ -887,6 +894,9 @@ class WebUser extends RawMinkContext
             $steps[] = new Step\Then('I save the role');
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
             $steps[] = new Step\Then(sprintf('I should not see "%s"', $data['button']));
+            if ($forbiddenPage = $data['forbiddenPage']) {
+                $steps[] = new Step\Then(sprintf('I should not be able to access the %s page', $forbiddenPage));
+            }
         }
         $steps[] = new Step\Then('I reset the "Administrator" rights');
 
@@ -1183,8 +1193,8 @@ class WebUser extends RawMinkContext
      */
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
+        $this->clearUOW();
         $product = $this->getFixturesContext()->getProduct($sku);
-        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
         assertEquals(
@@ -1195,7 +1205,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $count
+     * @param int $count
      *
      * @Then /^there should be (\d+) updates?$/
      */
@@ -1232,6 +1242,15 @@ class WebUser extends RawMinkContext
     public function iClickOnInTheRightClickMenu($action)
     {
         $this->getCurrentPage()->rightClickAction($action);
+        $this->wait();
+    }
+
+    /**
+     * @Given /^I click on the job tracker button on the job widget$/
+     */
+    public function iClickOnTheJobTrackerButtonOnTheJobWidget()
+    {
+        $this->getCurrentPage()->find('css', 'a#btn-show-list')->click();
         $this->wait();
     }
 
@@ -1333,6 +1352,44 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
+     *
+     * @param string $operationAlias
+     */
+    public function iWaitForTheMassEditJobToFinish($operationAlias)
+    {
+        $operationRegistry = $this->getMainContext()
+            ->getContainer()
+            ->get('pim_enrich.mass_edit_action.operation.registry');
+
+        $operation = $operationRegistry->get($operationAlias);
+
+        if (null === $operation) {
+            throw $this->createExpectationException(
+                sprintf('Operation with alias "%s" doesn\'t exist', $operationAlias)
+            );
+        }
+
+        if (!$operation instanceof BatchableOperationInterface) {
+            throw $this->createExpectationException(
+                sprintf('Can\'t get the job code from the "%s" operation', $operationAlias)
+            );
+        }
+
+        $code = $operation->getBatchJobCode();
+
+        $this->waitForMassEditJobToFinish($code);
+    }
+
+    /**
+     * @Given /^I wait for the quick export to finish$/
+     */
+    public function iWaitForTheQuickExportToFinish()
+    {
+        $this->waitForMassEditJobToFinish('csv_product_quick_export');
+    }
+
+    /**
      * @Given /^I wait for (the )?widgets to load$/
      */
     public function iWaitForTheWidgetsToLoad()
@@ -1431,7 +1488,7 @@ class WebUser extends RawMinkContext
         $maxTime = 10000;
 
         while ($maxTime > 0) {
-            $this->wait(1000, false);
+            $this->wait(2000, false);
             $maxTime -= 1000;
             if ($this->getPage('Product edit')->getImagePreview()) {
                 return;
@@ -1587,7 +1644,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $seconds
+     * @param int $seconds
      *
      * @Then /^I wait (\d+) seconds$/
      */
@@ -1646,7 +1703,6 @@ class WebUser extends RawMinkContext
      * @param string       $code
      * @param PyStringNode $csv
      *
-     * @return null
      * @Then /^exported file of "([^"]*)" should contain:$/
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
@@ -1881,7 +1937,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $y
+     * @param int $y
      *
      * @Given /^I scroll down$/
      */
@@ -1893,8 +1949,10 @@ class WebUser extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @return array
      * @throws ExpectationException
+     *
+     * @return array
+     *
      *
      * @Given /^I should see the following product comments:$/
      */
@@ -1906,7 +1964,6 @@ class WebUser extends RawMinkContext
             try {
                 $author = $this->getFixturesContext()->getUser($data['author']);
                 $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-                /** @var NodeElement $comment */
                 $comment = $this->getCurrentPage()->findComment($data['message'], $authorName);
                 $comments[$data['#']] = $comment;
 
@@ -1918,7 +1975,6 @@ class WebUser extends RawMinkContext
                         );
                     }
                 }
-
             } catch (\LogicException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
@@ -1948,8 +2004,10 @@ class WebUser extends RawMinkContext
      * @param string $message
      * @param string $author
      *
-     * @return bool
      * @throws ExpectationException
+     *
+     * @return bool
+     *
      *
      * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
      */
@@ -2020,6 +2078,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * Clear the Unit of Work
+     */
+    public function clearUOW()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+            $manager->clear();
+        }
+    }
+
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
+    protected function getSmartRegistry()
+    {
+        return $this->getMainContext()->getSmartRegistry();
+    }
+
+    /**
      * @param string $page
      * @param array  $options
      *
@@ -2068,7 +2144,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $length
+     * @param int $length
      *
      * @return string
      */
@@ -2088,10 +2164,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $time
-     * @param string  $condition
-     *
-     * @return void
+     * @param int    $time
+     * @param string $condition
      */
     protected function wait($time = 10000, $condition = null)
     {
@@ -2162,5 +2236,20 @@ class WebUser extends RawMinkContext
     protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
+    }
+
+    /**
+     * @param $code
+     */
+    protected function waitForMassEditJobToFinish($code)
+    {
+        $jobInstance = $this->getFixturesContext()->getJobInstance($code);
+        // Force to retrieve its job executions
+        $jobInstance->getJobExecutions()->setInitialized(false);
+        $jobExecution = $jobInstance->getJobExecutions()->last();
+
+        $this->openPage('massEditJob show', ['id' => $jobExecution->getId()]);
+
+        $this->iWaitForTheJobToFinish($code);
     }
 }

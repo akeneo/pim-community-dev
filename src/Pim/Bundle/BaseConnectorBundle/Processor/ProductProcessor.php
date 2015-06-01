@@ -14,7 +14,7 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 class ProductProcessor extends TransformerProcessor
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $enabled = true;
 
@@ -41,7 +41,7 @@ class ProductProcessor extends TransformerProcessor
     /**
      * Set whether or not the created product should be activated or not
      *
-     * @param boolean $enabled
+     * @param bool $enabled
      */
     public function setEnabled($enabled)
     {

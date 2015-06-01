@@ -1,6 +1,5 @@
 <?php
 
-
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;

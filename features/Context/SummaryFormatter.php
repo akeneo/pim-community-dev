@@ -2,8 +2,8 @@
 
 namespace Context;
 
-use Behat\Behat\Formatter\ProgressFormatter;
 use Behat\Behat\Event\FeatureEvent;
+use Behat\Behat\Formatter\ProgressFormatter;
 
 /**
  * A behat formatter that only prints summary at the end of each feature

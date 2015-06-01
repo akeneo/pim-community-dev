@@ -32,50 +32,50 @@ interface CategoryInterface extends TranslatableInterface, ReferableInterface, V
     public function getCode();
 
     /**
-     * @param integer $left
+     * @param int $left
      *
      * @return CategoryInterface
      */
     public function setLeft($left);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLeft();
 
     /**
-     * @param integer $level
+     * @param int $level
      *
      * @return CategoryInterface
      */
     public function setLevel($level);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getLevel();
 
     /**
-     * @param integer $right
+     * @param int $right
      *
      * @return CategoryInterface
      */
     public function setRight($right);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getRight();
 
     /**
-     * @param integer $root
+     * @param int $root
      *
      * @return CategoryInterface
      */
     public function setRoot($root);
 
     /**
-     * @return integer
+     * @return int
      */
     public function getRoot();
 
@@ -95,7 +95,7 @@ interface CategoryInterface extends TranslatableInterface, ReferableInterface, V
      * If a node is a tree root, it's the tree starting point and therefore
      * defines the tree itself.
      *
-     * @return boolean
+     * @return bool
      */
     public function isRoot();
 
@@ -120,7 +120,7 @@ interface CategoryInterface extends TranslatableInterface, ReferableInterface, V
     /**
      * Predicate to know if this category has children
      *
-     * @return boolean
+     * @return bool
      */
     public function hasChildren();
 
@@ -134,7 +134,7 @@ interface CategoryInterface extends TranslatableInterface, ReferableInterface, V
     /**
      * Predicate to know if this category has product(s) linked
      *
-     * @return boolean
+     * @return bool
      */
     public function hasProducts();
 

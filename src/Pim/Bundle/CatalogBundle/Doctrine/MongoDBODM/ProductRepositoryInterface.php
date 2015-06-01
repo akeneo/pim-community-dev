@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;

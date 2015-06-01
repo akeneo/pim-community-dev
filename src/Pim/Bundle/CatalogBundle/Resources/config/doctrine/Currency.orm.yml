@@ -1,7 +1,7 @@
 Pim\Bundle\CatalogBundle\Entity\Currency:
     type: entity
     table: pim_catalog_currency
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CurrencyRepository
     fields:
         id:
             type: integer

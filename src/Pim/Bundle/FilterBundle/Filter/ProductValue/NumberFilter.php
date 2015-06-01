@@ -6,7 +6,9 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Number filter
@@ -17,6 +19,26 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  */
 class NumberFilter extends OroNumberFilter
 {
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
+
+    /**
+     * Constructor
+     *
+     * @param FormFactoryInterface         $factory
+     * @param ProductFilterUtility         $util
+     * @param AttributeRepositoryInterface $attributeRepository
+     */
+    public function __construct(
+        FormFactoryInterface $factory,
+        ProductFilterUtility $util,
+        AttributeRepositoryInterface $attributeRepository
+    ) {
+        parent::__construct($factory, $util);
+
+        $this->attributeRepository = $attributeRepository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -71,5 +93,38 @@ class NumberFilter extends OroNumberFilter
         $data['type'] = isset($data['type']) ? $data['type'] : null;
 
         return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        $attribute = $this->getAttribute();
+        $metadata = parent::getMetadata();
+
+        if (true === $attribute->isDecimalsAllowed()) {
+            $metadata['formatterOptions']['decimals'] = 2;
+            $metadata['formatterOptions']['grouping'] = true;
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * Load the attribute for this filter
+     *
+     * @throws \LogicException
+     */
+    protected function getAttribute()
+    {
+        $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
+        $attribute = $this->attributeRepository->findOneByCode($fieldName);
+
+        if (!$attribute) {
+            throw new \LogicException(sprintf('There is no attribute with code %s.', $fieldName));
+        }
+
+        return $attribute;
     }
 }

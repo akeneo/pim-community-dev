@@ -4,7 +4,9 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Command\QueryProductCommand;
+use Pim\Bundle\CatalogBundle\Command\UpdateProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -52,6 +54,121 @@ class CommandContext extends RawMinkContext
             sort($actual);
             assertEquals($expected, $actual);
         }
+    }
+
+    /**
+     * @Then /^I should get the following products after apply the following updater to it:$/
+     *
+     * @param TableNode $updates
+     *
+     * @throws \Exception
+     */
+    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
+    {
+        $application = $this->getApplicationsForUpdaterProduct();
+
+        $updateCommand = $application->find('pim:product:update');
+        $updateCommand->setContainer($this->getMainContext()->getContainer());
+        $updateCommandTester = new CommandTester($updateCommand);
+
+        $getCommand = $application->find('pim:product:get');
+        $getCommand->setContainer($this->getMainContext()->getContainer());
+        $getCommandTester = new CommandTester($getCommand);
+
+        foreach ($updates->getHash() as $update) {
+            $username = isset($update['username']) ? $update['username'] : null;
+
+            $updateCommandTester->execute(
+                [
+                    'command'      => $updateCommand->getName(),
+                    'identifier'   => $update['product'],
+                    'json_updates' => $update['actions'],
+                    'username'     => $username
+                ]
+            );
+
+            $expected = json_decode($update['result'], true);
+            if (isset($expected['product'])) {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $expected['product']
+                    ]
+                );
+                unset($expected['product']);
+            } else {
+                $getCommandTester->execute(
+                    [
+                        'command'    => $getCommand->getName(),
+                        'identifier' => $update['product']
+                    ]
+                );
+            }
+
+            $actual = json_decode($getCommandTester->getDisplay(), true);
+
+            if (null === $actual) {
+                throw new \Exception(sprintf(
+                    'An error occured during the execution of the update command : %s',
+                    $getCommandTester->getDisplay()
+                ));
+            }
+
+            if (null === $expected) {
+                throw new \Exception(sprintf(
+                    'Looks like the expected result is not valid json : %s',
+                    $update['result']
+                ));
+            }
+            $diff = $this->arrayIntersect($actual, $expected);
+
+            assertEquals(
+                $expected,
+                $diff
+            );
+        }
+    }
+
+    /**
+     * @return Application
+     */
+    protected function getApplicationsForUpdaterProduct()
+    {
+        $application = new Application();
+        $application->add(new UpdateProductCommand());
+        $application->add(new GetProductCommand());
+
+        return $application;
+    }
+
+    /**
+     * Recursive intersect for nested associative array
+     *
+     * @param array $array1
+     * @param array $array2
+     *
+     * @return array
+     */
+    protected function arrayIntersect($array1, $array2)
+    {
+        $isAssoc = array_keys($array1) !== range(0, count($array1) - 1);
+        foreach ($array1 as $key => $value) {
+            if ($isAssoc) {
+                if (!array_key_exists($key, $array2)) {
+                    unset($array1[$key]);
+                } else {
+                    if (is_array($value)) {
+                        $array1[$key] = $this->arrayIntersect($value, $array2[$key]);
+                    }
+                }
+            } else {
+                if (is_array($value)) {
+                    $array1[$key] = $this->arrayIntersect($value, $array2[$key]);
+                }
+            }
+        }
+
+        return $array1;
     }
 
     /**

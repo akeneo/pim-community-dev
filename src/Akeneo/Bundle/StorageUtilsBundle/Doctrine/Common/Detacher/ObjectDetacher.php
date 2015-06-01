@@ -2,6 +2,7 @@
 
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Detacher;
 
+use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,7 +15,7 @@ use Doctrine\Common\Util\ClassUtils;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ObjectDetacher implements ObjectDetacherInterface
+class ObjectDetacher implements ObjectDetacherInterface, BulkObjectDetacherInterface
 {
     /** @var ManagerRegistry */
     protected $managerRegistry;
@@ -34,6 +35,20 @@ class ObjectDetacher implements ObjectDetacherInterface
     {
         $objectManager = $this->getObjectManager($object);
         $objectManager->detach($object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function detachAll(array $objects)
+    {
+        if (count($objects) > 0) {
+            $firstObject = current($objects);
+            $objectManager = $this->getObjectManager($firstObject);
+            foreach ($objects as $object) {
+                $objectManager->detach($object);
+            }
+        }
     }
 
     /**

@@ -4,10 +4,10 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupValues;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -15,7 +15,7 @@ use Symfony\Component\Validator\ExecutionContextInterface;
 
 class VariantGroupValuesValidatorSpec extends ObjectBehavior
 {
-    function let(AttributeRepository $attributeRepository, ExecutionContextInterface $context)
+    function let(AttributeRepositoryInterface $attributeRepository, ExecutionContextInterface $context)
     {
         $this->beConstructedWith($attributeRepository);
         $this->initialize($context);

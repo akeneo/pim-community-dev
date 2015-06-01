@@ -27,7 +27,7 @@ interface UpdateGuesserInterface
      *
      * @param string $action
      *
-     * @return boolean
+     * @return bool
      */
     public function supportAction($action);
 
