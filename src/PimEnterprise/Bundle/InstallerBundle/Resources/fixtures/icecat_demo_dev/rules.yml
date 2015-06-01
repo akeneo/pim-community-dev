@@ -111,8 +111,8 @@ rules:
             - type:  set_value
               field: weight
               value:
-                   data: 0.5
-                   unit: KILOGRAM
+                   data: 500
+                   unit: GRAM
     set_tshirt_style:
         conditions:
             - field:    sku
