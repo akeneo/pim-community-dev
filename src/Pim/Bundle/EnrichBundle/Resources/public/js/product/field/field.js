@@ -175,9 +175,6 @@ define([
                     this.context.scope
                 );
             },
-            getEmptyData: function () {
-                return null;
-            },
             setCurrentValue: function (value) {
                 var productValue = this.getCurrentValue();
 

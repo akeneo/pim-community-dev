@@ -20,8 +20,6 @@ define(
         updateModel: function (event) {
             var data = event.currentTarget.checked;
             this.setCurrentValue(data);
-
-            Field.prototype.updateModel.apply(this, arguments);
         }
     });
 });

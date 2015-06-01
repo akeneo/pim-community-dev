@@ -142,6 +142,7 @@ define(
                 var pending = objectSet[currentIndex + 2];
                 if (pending) {
                     setTimeout(function () {
+                        ProductManager.clear(pending);
                         ProductManager.get(pending);
                     }, 2000);
                 }
