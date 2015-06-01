@@ -501,7 +501,7 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
-# 1.2.x
+# 1.2.35
 
 ## Bug fixes
 - PIM-4227: Disable product versionning on category update (never used and very slow)
