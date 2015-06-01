@@ -24,6 +24,8 @@ function(_, messenger, __, Modal, AbstractAction) {
         initialize: function(options) {
             AbstractAction.prototype.initialize.apply(this, arguments);
             this.route_parameters = _.extend(this.route_parameters, {gridName: this.datagrid.name, actionName: this.name});
+
+            _.defaults(this.messages, this.defaultMessages);
         },
 
         /**
