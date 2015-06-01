@@ -49,7 +49,8 @@ class UniqueValuesSet
         $uniqueValueCode = $this->getUniqueValueCode($productValue);
 
         if (isset($this->uniqueValues[$uniqueValueCode][$productValueData])) {
-            if ($this->uniqueValues[$uniqueValueCode][$productValueData] !== $productIdentifier) {
+            $storedIdentifier = $this->uniqueValues[$uniqueValueCode][$productValueData];
+            if ($storedIdentifier !== $productIdentifier) {
                 return false;
             }
         }
@@ -74,13 +75,17 @@ class UniqueValuesSet
     }
 
     /**
+     * spl_object_hash for new product and id when product exists
+     *
      * @param ProductInterface $product
      *
      * @return string
      */
     protected function getProductIdentifier(ProductInterface $product)
     {
-        return spl_object_hash($product);
+        $identifier = $product->getId() ? $product->getId() : spl_object_hash($product);
+
+        return $identifier;
     }
 
     /**
