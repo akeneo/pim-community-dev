@@ -7,6 +7,7 @@ extensions:
             buttons: header .actions
             meta: header .meta
             state: header .state
+            content: >div>.content
         position: 100
 
     sequential-edit:
@@ -20,8 +21,8 @@ extensions:
     form-tabs:
         module: pim/product-edit-form/form-tabs
         parent: product-edit-form
-        targetZone: header
-        insertAction: after
+        targetZone: content
+        insertAction: append
         zones:
             container: .tab-container
         position: 100
