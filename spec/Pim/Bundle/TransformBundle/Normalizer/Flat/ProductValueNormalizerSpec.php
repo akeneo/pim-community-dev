@@ -93,7 +93,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
         $simpleAttribute->getBackendType()->willReturn('boolean');
-        
+
         $value->getData()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '0']);
 
