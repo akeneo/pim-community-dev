@@ -29,8 +29,8 @@ class CategoryExtension extends \Twig_Extension
      */
     public function __construct(ProductCategoryManager $manager, $productsLimitForRemoval = null)
     {
-        $this->manager                  = $manager;
-        $this->productsLimitForRemoval  = $productsLimitForRemoval;
+        $this->manager                 = $manager;
+        $this->productsLimitForRemoval = $productsLimitForRemoval;
     }
 
     /**

@@ -161,9 +161,9 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";186;10.90;9.00;15.00;;size_M;;;
-    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";;;"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";;;"T-shirt noir";98;10.90;9.00;15.00;;size_L;;;
+    sku;categories;color;country_of_manufacture;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;manufacturer;material;name-de_DE;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;size
+    tshirt-white;men_2013,men_2014,men_2015;white;usa;"Ein elegantes weißes T-Shirt";"Un T-shirt blanc élégant";1;tshirts;;american_apparel;cotton;"Weißes T-Shirt";"T-shirt blanc";186;10.90;9.00;15.00;size_M
+    tshirt-black;men_2013,men_2014,men_2015;black;usa;"Ein elegantes schwarzes T-Shirt";"Un T-shirt noir élégant";1;tshirts;;american_apparel;cotton;"Schwarzes T-Shirt";"T-shirt noir";98;10.90;9.00;15.00;size_L
     """
 
   @jira https://akeneo.atlassian.net/browse/PIM-4182
@@ -195,7 +195,7 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;additional_colors;categories;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight
-    tshirt-white;;men_2013,men_2014,men_2015;white;;;;usa;;;;;;"Ein elegantes weißes T-Shirt";;;"Un T-shirt blanc élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Weißes T-Shirt";;;"T-shirt blanc";;10.90;9.00;15.00;;size_M;;40;CELSIUS;
-    tshirt-black;;men_2013,men_2014,men_2015;black;;;;usa;;;;;;"Ein elegantes schwarzes T-Shirt";;;"Un T-shirt noir élégant";1;tshirts;;;;;;;;american_apparel;cotton;"Schwarzes T-Shirt";;;"T-shirt noir";;10.90;9.00;15.00;;size_L;;40;CELSIUS;
+    sku;categories;color;country_of_manufacture;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;manufacturer;material;name-de_DE;name-fr_FR;price-EUR;price-GBP;price-USD;size;washing_temperature;washing_temperature-unit
+    tshirt-white;men_2013,men_2014,men_2015;white;usa;"Ein elegantes weißes T-Shirt";"Un T-shirt blanc élégant";1;tshirts;;american_apparel;cotton;"Weißes T-Shirt";"T-shirt blanc";10.90;9.00;15.00;size_M;40;CELSIUS
+    tshirt-black;men_2013,men_2014,men_2015;black;usa;"Ein elegantes schwarzes T-Shirt";"Un T-shirt noir élégant";1;tshirts;;american_apparel;cotton;"Schwarzes T-Shirt";"T-shirt noir";10.90;9.00;15.00;size_L;40;CELSIUS
     """
