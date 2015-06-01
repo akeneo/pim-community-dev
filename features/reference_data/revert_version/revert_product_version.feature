@@ -32,7 +32,7 @@ Feature: Revert a product to a previous version
     Then I save the product
     And I open the history
     And I should see history:
-      | version | property | value       |
+      | version | property   | value |
       | 2       | Main color | green |
     When I visit the "Attributes" tab
     And I visit the "Other" group
@@ -41,8 +41,8 @@ Feature: Revert a product to a previous version
     Then I save the product
     And I open the history
     And I should see history:
-      | version | property | value       |
-      | 3       | Main color |  blue |
+      | version | property   | value |
+      | 3       | Main color | blue  |
     When I revert the product version number 1
     Then the product "red-heels" should have the following values:
       | main_color | [red] |

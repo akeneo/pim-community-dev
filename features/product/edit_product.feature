@@ -23,8 +23,8 @@ Feature: Edit a product I have access
       | boots           | Manager    | view   |
     And the following products:
       | sku     | categories      | name-en_US |
-      | rangers | vintage, classy | rangers |
-      | boots   | boots           | boots   |
+      | rangers | vintage, classy | rangers    |
+      | boots   | boots           | boots      |
 
   @javascript
   Scenario: Successfully create, edit and save a product I have access
