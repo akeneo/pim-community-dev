@@ -46,6 +46,8 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('savers.yml');
         $loader->load('twig.yml');
+        $loader->load('connector/readers.yml');
+        $loader->load('connector/writers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

@@ -180,6 +180,19 @@ jobs:
         type:      export
         configuration:
             filePath:      /tmp/rules.yml
+    csv_product_draft_import:
+        connector: Akeneo CSV Connector
+        alias:     csv_product_draft_import
+        label:     Demo product draft import
+        type:      import
+        configuration:
+            filePath:           /tmp/product_draft.csv
+            uploadAllowed:      true
+            multiple:           false
+            delimiter:          ;
+            enclosure:          '"'
+            escape:             '\'
+            enabled:            true
     update_product_value:
         connector: Akeneo Mass Edit Connector
         alias:     update_product_value
