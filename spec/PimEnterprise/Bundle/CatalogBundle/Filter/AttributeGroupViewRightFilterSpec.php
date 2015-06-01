@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class AttributeGroupRightFilterSpec extends ObjectBehavior
+class AttributeGroupViewRightFilterSpec extends ObjectBehavior
 {
     public function let(SecurityContextInterface $securityContext)
     {
