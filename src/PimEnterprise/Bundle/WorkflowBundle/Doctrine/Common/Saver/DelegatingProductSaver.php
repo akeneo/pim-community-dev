@@ -83,7 +83,7 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         if ($hasPermissions) {
             $this->workingCopySaver->save($product, $options);
         } else {
-            $productDraft = $this->productDraftBuilder->build($product);
+            $productDraft = $this->productDraftBuilder->build($product, $this->getUsername());
             if (null !== $productDraft) {
                 $this->draftSaver->save($productDraft, $options);
             }
@@ -128,5 +128,13 @@ class DelegatingProductSaver implements SaverInterface, BulkSaverInterface
         }
 
         return $isOwner;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getUsername()
+    {
+        return $this->securityContext->getToken()->getUser()->getUsername();
     }
 }

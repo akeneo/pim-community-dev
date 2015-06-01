@@ -164,7 +164,8 @@ class ProductDraftProcessor extends AbstractProcessor
      */
     protected function buildDraft(ProductInterface $product, array $item)
     {
-        $productDraft = $this->productDraftBuilder->build($product);
+        $code = $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
+        $productDraft = $this->productDraftBuilder->build($product, $code);
 
         if (null === $productDraft) {
             $this->skipItemWithMessage($item, 'No diff between current product and this proposal');
