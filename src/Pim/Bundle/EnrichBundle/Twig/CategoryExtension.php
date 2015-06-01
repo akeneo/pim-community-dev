@@ -358,11 +358,11 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format categories
      *
-     * @param array   $categories
-     * @param array   $selectedIds
-     * @param bool    $withProductCount
-     * @param bool    $includeSub
-     * @param string  $relatedEntity
+     * @param array  $categories
+     * @param array  $selectedIds
+     * @param bool   $withProductCount
+     * @param bool   $includeSub
+     * @param string $relatedEntity
      *
      * @return array
      */
