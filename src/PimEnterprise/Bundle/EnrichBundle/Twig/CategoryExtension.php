@@ -32,11 +32,16 @@ class CategoryExtension extends BaseCategoryExtension
      *
      * @param ProductCategoryManager $manager
      * @param ProductCategoryManager $publishedManager
+     * @param int|null               $productsLimitForRemoval
      */
-    public function __construct(ProductCategoryManager $manager, ProductCategoryManager $publishedManager, $productsLimitForRemoval = null)
-    {
+    public function __construct(
+        ProductCategoryManager $manager,
+        ProductCategoryManager $publishedManager,
+        $productsLimitForRemoval = null
+    ) {
         parent::__construct($manager, $productsLimitForRemoval);
-        $this->publishedManager = $publishedManager;
+        $this->publishedManager        = $publishedManager;
+        $this->productsLimitForRemoval = $productsLimitForRemoval;
     }
 
     /**
