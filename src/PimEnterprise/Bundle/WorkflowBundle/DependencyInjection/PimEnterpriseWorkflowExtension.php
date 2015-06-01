@@ -47,6 +47,7 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('savers.yml');
         $loader->load('twig.yml');
         $loader->load('connector/array_converters.yml');
+        $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
         $loader->load('connector/writers.yml');
 
