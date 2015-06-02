@@ -100,7 +100,7 @@ class ProductDraftToStandardConverter implements StandardArrayConverterInterface
 
             if (null === $attributeInfo) {
                 throw new ArrayConversionException(
-                    sprintf( 'Field "%s" is not allowed. Only attributes are allowed in a product draft', $key)
+                    sprintf('Field "%s" is not allowed. Only attributes are allowed in a product draft', $key)
                 );
             }
         }
