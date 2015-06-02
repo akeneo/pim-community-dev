@@ -301,6 +301,9 @@ services:
             - '@pim_validator'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
+            - '@oro_security.security_facade'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.attribute'
 
     pim_enrich.controller.product_category_rest:
         class: %pim_enrich.controller.product_category_rest.class%
