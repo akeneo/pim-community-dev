@@ -32,6 +32,17 @@
 
 # 1.3.x
 
+## Bug fixes
+- PIM-4227: fix BC break introduced in 1.3.13
+
+# 1.3.13 (2015-05-29)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.3.12 (2015-05-22)
+
 # 1.3.9 (2015-04-21)
 
 # 1.3.7 (2015-04-03)
@@ -156,6 +167,16 @@
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
+
+# 1.0.x
+
+## Bug fixes
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.0.27 (2015-05-27)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
 
 # 1.0.26 (2015-03-16)
 
