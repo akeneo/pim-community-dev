@@ -38,7 +38,7 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_index
-        position: 100
+        position: 80
 
     download-pdf:
         module: pim/product-edit-form/download-pdf
@@ -71,13 +71,13 @@ extensions:
         module: pim/product-edit-form/save
         parent: product-edit-form
         targetZone: buttons
-        position: 90
+        position: 0
 
     save-and-back:
         module: pim/product-edit-form/save-and-back
         parent: product-edit-form
         targetZone: buttons
-        position: 80
+        position: 0
 
     state:
         module: pim/product-edit-form/state
