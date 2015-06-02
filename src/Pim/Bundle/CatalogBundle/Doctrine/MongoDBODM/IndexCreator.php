@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -19,7 +20,7 @@ use Psr\Log\LoggerInterface;
  */
 class IndexCreator
 {
-    /** @const int */
+    /** @staticvar int */
     const MONGODB_INDEXES_LIMIT = 64;
 
     /** @var ManagerRegistry */
@@ -181,7 +182,7 @@ class IndexCreator
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface
+     * @return AttributeRepositoryInterface
      */
     protected function getAttributeRepository()
     {
