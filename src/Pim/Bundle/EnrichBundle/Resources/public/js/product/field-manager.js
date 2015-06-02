@@ -63,7 +63,7 @@ define(
             getFields: function () {
                 return fields;
             },
-            clear: function() {
+            clear: function () {
                 fields = {};
             }
         };

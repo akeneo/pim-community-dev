@@ -36,7 +36,7 @@ define(
                                 variantGroup: variantGroup
                             });
 
-                            field.setEnabled(false);
+                            field.setEditable(false);
                             field.addElement('footer', 'updated_by', $element);
                         }
                     }, this));

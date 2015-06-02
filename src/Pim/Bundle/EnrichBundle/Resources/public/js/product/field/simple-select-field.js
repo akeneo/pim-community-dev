@@ -58,7 +58,7 @@ define(
                         initSelection: function (element, callback) {
                             var id = $(element).val();
                             if (id !== '') {
-                                $.ajax(choiceUrl).done(function(response){
+                                $.ajax(choiceUrl).done(function (response) {
                                     var selected = _.findWhere(response.results, {id: id});
                                     callback(selected);
                                 });

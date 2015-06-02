@@ -30,24 +30,24 @@ define([
             template: _.template(fieldTemplate),
             elements: {},
             editable: true,
-            enabled: true,
+            ready: true,
             valid: true,
             initialize: function (attribute) {
-                this.attribute    = attribute;
-                this.model        = new FieldModel({values: []});
-                this.elements     = {};
-                this.context      = {};
+                this.attribute = attribute;
+                this.model     = new FieldModel({values: []});
+                this.elements  = {};
+                this.context   = {};
 
                 return this;
             },
             render: function () {
+                this.setEditable(true);
                 mediator.trigger('field:extension:add', {'field': this});
 
                 this.getTemplateContext().done(_.bind(function (templateContext) {
                     this.$el.empty();
-                    this.setEnabled(true);
                     this.$el.html(this.template(templateContext));
-                    this.$('.form-field:not(".view") .field-input').append(this.renderInput(templateContext));
+                    this.$('.form-field .field-input').append(this.renderInput(templateContext));
 
                     _.each(this.elements, _.bind(function (elements, position) {
                         var $container = this.$('.' + position + '-elements-container');
@@ -62,6 +62,7 @@ define([
                     }, this));
                     this.delegateEvents();
                 }, this));
+
                 return this;
             },
             renderInput: function () {
@@ -98,13 +99,6 @@ define([
             },
             updateModel: function () {
                 this.valid = true;
-            },
-            getData: function () {
-                if (this.editable && this.enabled) {
-                    return this.model.get('values');
-                } else {
-                    return [];
-                }
             },
             setValues: function (values) {
                 if (values.length === 0) {
@@ -158,11 +152,7 @@ define([
             },
             getEditMode: function () {
                 if (this.editable) {
-                    if (this.enabled) {
-                        return 'edit';
-                    } else {
-                        return 'disabled';
-                    }
+                    return 'edit';
                 } else {
                     return 'view';
                 }
