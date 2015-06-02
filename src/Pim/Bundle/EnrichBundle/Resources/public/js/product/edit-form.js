@@ -25,8 +25,8 @@ define(
                 this.model = new Backbone.Model();
 
 
-                mediator.off(null, null, 'product:form:edit:init');
-                mediator.on('entity:error:save', _.bind(this.clearCache, this), 'product:form:edit:init');
+                mediator.off(null, null, 'context:product:form:init');
+                mediator.on('entity:error:save', _.bind(this.clearCache, this), 'context:product:form:init');
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
