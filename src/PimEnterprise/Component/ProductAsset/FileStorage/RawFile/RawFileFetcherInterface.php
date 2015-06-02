@@ -16,12 +16,12 @@ use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
- * Download the raw file of a file stored in a virtual filesystem
+ * Fetch the raw file of a file stored in a virtual filesystem
  * into the temporary directory of the local filesystem.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface RawFileDownloaderInterface
+interface RawFileFetcherInterface
 {
     /**
      * @param FileInterface       $file
@@ -32,5 +32,5 @@ interface RawFileDownloaderInterface
      * @throws FileTransferException
      * @throws \LogicException
      */
-    public function download(FileInterface $file, FilesystemInterface $filesystem);
+    public function fetch(FileInterface $file, FilesystemInterface $filesystem);
 }

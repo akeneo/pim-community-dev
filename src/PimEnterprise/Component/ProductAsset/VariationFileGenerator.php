@@ -17,7 +17,7 @@ use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
+use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileFetcherInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
@@ -58,8 +58,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var FileTransformerInterface */
     protected $fileTransformer;
 
-    /** @var RawFileDownloaderInterface */
-    protected $rawFileDownloader;
+    /** @var RawFileFetcherInterface */
+    protected $rawFileFetcher;
 
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
@@ -77,7 +77,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param SaverInterface                          $variationSaver
      * @param FileTransformerInterface                $fileTransformer
      * @param RawFileStorerInterface                  $rawFileStorer
-     * @param RawFileDownloaderInterface              $rawFileDownloader
+     * @param RawFileFetcherInterface                 $rawFileFetcher
      * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
      */
     public function __construct(
@@ -87,7 +87,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
         RawFileStorerInterface $rawFileStorer,
-        RawFileDownloaderInterface $rawFileDownloader,
+        RawFileFetcherInterface $rawFileFetcher,
         MetadataBuilderRegistry $metadaBuilderRegistry
     ) {
         $this->configurationRepository = $configurationRepository;
@@ -96,7 +96,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->metadataSaver           = $metadataSaver;
         $this->variationSaver          = $variationSaver;
         $this->rawFileStorer           = $rawFileStorer;
-        $this->rawFileDownloader       = $rawFileDownloader;
+        $this->rawFileFetcher          = $rawFileFetcher;
         $this->metadaBuilderRegistry   = $metadaBuilderRegistry;
     }
 
@@ -158,7 +158,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         }
 
         $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
-        $inputFileInfo     = $this->rawFileDownloader->download($inputFile, $storageFilesystem);
+        $inputFileInfo     = $this->rawFileFetcher->fetch($inputFile, $storageFilesystem);
         $variationFileInfo = $this->fileTransformer->transform(
             $inputFileInfo,
             $this->rawTransformations,

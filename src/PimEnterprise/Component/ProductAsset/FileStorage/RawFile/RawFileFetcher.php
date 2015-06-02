@@ -16,38 +16,33 @@ use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
- * Download the raw file of a file stored in a virtual filesystem
+ * Fetch the raw file of a file stored in a virtual filesystem
  * into the temporary directory of the local filesystem.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class RawFileDownloader implements RawFileDownloaderInterface
+class RawFileFetcher implements RawFileFetcherInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function download(FileInterface $file, FilesystemInterface $filesystem, $tmpDirectory = 'download/')
+    public function fetch(FileInterface $file, FilesystemInterface $filesystem)
     {
         if (!$filesystem->has($file->getKey())) {
             throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $file->getKey()));
         }
 
-        $tmpDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $tmpDirectory;
-        if (!is_dir($tmpDirectory)) {
-            mkdir($tmpDirectory);
-        }
-
-        $localPathname = $tmpDirectory . uniqid();
+        $localPathname = tempnam(sys_get_temp_dir(), 'raw_file_fetcher_');
 
         if (false === $stream = $filesystem->readStream($file->getKey())) {
             throw new FileTransferException(
-                sprintf('Unable to download the file "%s" from the filesystem.', $file->getKey())
+                sprintf('Unable to fetch the file "%s" from the filesystem.', $file->getKey())
             );
         }
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
-                sprintf('Unable to download the file "%s" from the filesystem.', $file->getKey())
+                sprintf('Unable to fetch the file "%s" from the filesystem.', $file->getKey())
             );
         }
 

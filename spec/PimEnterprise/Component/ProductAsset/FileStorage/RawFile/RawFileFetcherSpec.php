@@ -8,16 +8,16 @@ use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use Prophecy\Argument;
 
-class RawFileDownloaderSpec extends ObjectBehavior
+class RawFileFetcherSpec extends ObjectBehavior
 {
-    function it_downloads_a_file(FileInterface $file, FilesystemInterface $filesystem)
+    function it_fetches_a_file(FileInterface $file, FilesystemInterface $filesystem)
     {
         $file->getKey()->willReturn('path/to/file.txt');
 
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
 
-        $rawFile = $this->download($file, $filesystem);
+        $rawFile = $this->fetch($file, $filesystem);
         $rawFile->shouldBeAnInstanceOf('\SplFileInfo');
         $rawPathname = $rawFile->getWrappedObject()->getPathname();
 
@@ -34,7 +34,7 @@ class RawFileDownloaderSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('The file "path/to/file.txt" is not present on the filesystem.')
-        )->during('download', [$file, $filesystem]);
+        )->during('fetch', [$file, $filesystem]);
     }
 
     function it_throws_an_exception_when_the_file_can_not_be_read_on_the_filesystem(
@@ -47,7 +47,7 @@ class RawFileDownloaderSpec extends ObjectBehavior
         $filesystem->readStream('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new FileTransferException('Unable to download the file "path/to/file.txt" from the filesystem.')
-        )->during('download', [$file, $filesystem]);
+            new FileTransferException('Unable to fetch the file "path/to/file.txt" from the filesystem.')
+        )->during('fetch', [$file, $filesystem]);
     }
 }
