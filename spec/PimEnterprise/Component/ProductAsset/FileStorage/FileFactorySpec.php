@@ -41,9 +41,7 @@ class FileFactorySpec extends ObjectBehavior
             'beValidFile' => function ($subject) {
                 return
                     $subject->getGuid() === '12345' &&
-                    $subject->getFilename() === '12345_my_file.php' &&
-                    $subject->getPathname() === '1/2/3/4/12345_my_file.php' &&
-                    $subject->getPath() ===  '1/2/3/4/' &&
+                    $subject->getKey() === '1/2/3/4/12345_my_file.php' &&
                     $subject->getOriginalFilename() === 'FileFactorySpec.php' &&
                     $subject->getMimeType() === 'text/x-php' &&
                     $subject->getSize() === filesize(__FILE__) &&

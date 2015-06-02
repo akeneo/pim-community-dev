@@ -12,7 +12,7 @@ class RawFileDownloaderSpec extends ObjectBehavior
 {
     function it_downloads_a_file(FileInterface $file, FilesystemInterface $filesystem)
     {
-        $file->getPathname()->willReturn('path/to/file.txt');
+        $file->getKey()->willReturn('path/to/file.txt');
 
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->shouldBeCalled();
@@ -28,7 +28,7 @@ class RawFileDownloaderSpec extends ObjectBehavior
         FileInterface $file,
         FilesystemInterface $filesystem
     ) {
-        $file->getPathname()->willReturn('path/to/file.txt');
+        $file->getKey()->willReturn('path/to/file.txt');
 
         $filesystem->has('path/to/file.txt')->willReturn(false);
 
@@ -41,7 +41,7 @@ class RawFileDownloaderSpec extends ObjectBehavior
         FileInterface $file,
         FilesystemInterface $filesystem
     ) {
-        $file->getPathname()->willReturn('path/to/file.txt');
+        $file->getKey()->willReturn('path/to/file.txt');
 
         $filesystem->has('path/to/file.txt')->willReturn(true);
         $filesystem->readStream('path/to/file.txt')->willReturn(false);

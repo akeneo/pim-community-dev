@@ -26,13 +26,10 @@ class File implements FileInterface
     protected $id;
 
     /** @var string */
-    protected $path;
+    protected $key;
 
     /** @var string */
     protected $guid;
-
-    /** @var string */
-    protected $filename;
 
     /** @var string */
     protected $originalFilename;
@@ -64,24 +61,6 @@ class File implements FileInterface
     /**
      * {@inheritdoc}
      */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPath($path)
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getGuid()
     {
         return $this->guid;
@@ -93,24 +72,6 @@ class File implements FileInterface
     public function setGuid($guid)
     {
         $this->guid = $guid;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFilename()
-    {
-        return $this->filename;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setFilename($filename)
-    {
-        $this->filename = $filename;
 
         return $this;
     }
@@ -208,14 +169,19 @@ class File implements FileInterface
     /**
      * {@inheritdoc}
      */
-    public function getPathname()
+    public function getKey()
     {
-        $path = $this->getPath();
-        if (DIRECTORY_SEPARATOR === $path[strlen($path) - 1]) {
-            return $path . $this->getFilename();
-        }
+        return $this->key;
+    }
 
-        return $path . DIRECTORY_SEPARATOR  . $this->getFilename();
+    /**
+     * {@inheritdoc}
+     */
+    public function setKey($key)
+    {
+        $this->key = $key;
+
+        return $this;
     }
 
     /**

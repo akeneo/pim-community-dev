@@ -251,9 +251,9 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
         $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
 
-        if (!$storageFilesystem->has($referenceFile->getPathname())) {
+        if (!$storageFilesystem->has($referenceFile->getKey())) {
             throw new \LogicException(
-                sprintf('The reference file "%s" is not present on the filesystem.', $referenceFile->getPathname())
+                sprintf('The reference file "%s" is not present on the filesystem.', $referenceFile->getKey())
             );
         }
 

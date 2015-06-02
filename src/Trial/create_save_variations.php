@@ -131,7 +131,7 @@ foreach ($images as $image) {
             $file->setSize(filesize($imagePath));
 
             $em->persist($file);
-            $filesystem->copy($imageName, 'stored/' . $file->getPathname());
+            $filesystem->copy($imageName, 'stored/' . $file->getKey());
         }
 
         echo "Image $image transformed.\n";

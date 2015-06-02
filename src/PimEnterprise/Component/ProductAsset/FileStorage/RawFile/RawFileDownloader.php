@@ -28,8 +28,8 @@ class RawFileDownloader implements RawFileDownloaderInterface
      */
     public function download(FileInterface $file, FilesystemInterface $filesystem, $tmpDirectory = 'download/')
     {
-        if (!$filesystem->has($file->getPathname())) {
-            throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $file->getPathname()));
+        if (!$filesystem->has($file->getKey())) {
+            throw new \LogicException(sprintf('The file "%s" is not present on the filesystem.', $file->getKey()));
         }
 
         $tmpDirectory = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $tmpDirectory;
@@ -39,15 +39,15 @@ class RawFileDownloader implements RawFileDownloaderInterface
 
         $localPathname = $tmpDirectory . uniqid();
 
-        if (false === $stream = $filesystem->readStream($file->getPathname())) {
+        if (false === $stream = $filesystem->readStream($file->getKey())) {
             throw new FileTransferException(
-                sprintf('Unable to download the file "%s" from the filesystem.', $file->getPathname())
+                sprintf('Unable to download the file "%s" from the filesystem.', $file->getKey())
             );
         }
 
         if (false === file_put_contents($localPathname, $stream)) {
             throw new FileTransferException(
-                sprintf('Unable to download the file "%s" from the filesystem.', $file->getPathname())
+                sprintf('Unable to download the file "%s" from the filesystem.', $file->getKey())
             );
         }
 

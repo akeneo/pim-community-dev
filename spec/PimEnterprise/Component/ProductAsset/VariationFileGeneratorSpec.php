@@ -51,7 +51,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $reference->getVariation($ecommerce)->willReturn($variation);
         $reference->getFile()->willReturn($referenceFile);
 
-        $referenceFile->getPathname()->willReturn('path/to/my_original_file.txt');
+        $referenceFile->getKey()->willReturn('path/to/my_original_file.txt');
         $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
 
         $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
@@ -284,7 +284,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         FileInterface $referenceFile,
         Filesystem $filesystem
     ) {
-        $referenceFile->getPathname()->willReturn('path/to/file.txt');
+        $referenceFile->getKey()->willReturn('path/to/file.txt');
         $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
 
         $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);

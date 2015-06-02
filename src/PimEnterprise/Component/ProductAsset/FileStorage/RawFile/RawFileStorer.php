@@ -68,7 +68,7 @@ class RawFileStorer implements RawFileStorerInterface
         $file        = $this->factory->create($localFile, $storageData, $destFsAlias);
 
         $resource = fopen($localFile->getPathname(), 'r');
-        if (false === $filesystem->writeStream($file->getPathname(), $resource)) {
+        if (false === $filesystem->writeStream($file->getKey(), $resource)) {
             throw new FileTransferException(
                 sprintf('Unable to move the file "%s" to the "%s" filesystem.', $localFile->getPathname(), $destFsAlias)
             );

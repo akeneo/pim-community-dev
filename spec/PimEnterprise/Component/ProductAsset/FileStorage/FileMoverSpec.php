@@ -18,7 +18,7 @@ class FileMoverSpec extends ObjectBehavior
 
     public function it_moves_a_file_from_a_vfs_to_another($mountManager, $saver, FileInterface $file)
     {
-        $file->getPathname()->willReturn('path/to/file.txt');
+        $file->getKey()->willReturn('path/to/file.txt');
 
         $mountManager->move('source://path/to/file.txt', 'destination://path/to/file.txt')->willReturn(true);
         $file->setStorage('destination')->shouldBeCalled();
@@ -29,7 +29,7 @@ class FileMoverSpec extends ObjectBehavior
 
     public function it_throws_an_exception_if_the_file_can_not_be_moved($mountManager, $saver, FileInterface $file)
     {
-        $file->getPathname()->willReturn('path/to/file.txt');
+        $file->getKey()->willReturn('path/to/file.txt');
 
         $mountManager->move('source://path/to/file.txt', 'destination://path/to/file.txt')->willReturn(false);
         $file->setStorage(Argument::any())->shouldNotBeCalled();
