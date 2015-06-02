@@ -16,5 +16,4 @@ namespace Akeneo\Bundle\RuleEngineBundle\Model;
  */
 interface ActionInterface
 {
-
 }

@@ -89,7 +89,7 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
      *
      * @param string $id
      *
-     * @return boolean
+     * @return bool
      */
     protected function isOwner($id)
     {

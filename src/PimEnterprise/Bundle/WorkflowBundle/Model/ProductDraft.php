@@ -26,7 +26,7 @@ class ProductDraft
     /** @staticvar integer */
     const READY = 1;
 
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var ProductInterface */
@@ -41,7 +41,7 @@ class ProductDraft
     /** @var array */
     protected $changes = [];
 
-    /** @var integer */
+    /** @var int */
     protected $status;
 
     /** @var array */
@@ -59,7 +59,7 @@ class ProductDraft
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -149,7 +149,7 @@ class ProductDraft
     /**
      * Set status
      *
-     * @param integer $status
+     * @param int $status
      */
     public function setStatus($status)
     {
@@ -159,7 +159,7 @@ class ProductDraft
     /**
      * Get status
      *
-     * @return integer
+     * @return int
      */
     public function getStatus()
     {
@@ -169,7 +169,7 @@ class ProductDraft
     /**
      * Wether or not product draft is in progress
      *
-     * @return boolean
+     * @return bool
      */
     public function isInProgress()
     {
@@ -201,7 +201,7 @@ class ProductDraft
     /**
      * Removes a category id
      *
-     * @param integer $categoryId
+     * @param int $categoryId
      */
     public function removeCategoryId($categoryId)
     {

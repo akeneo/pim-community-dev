@@ -30,6 +30,7 @@ class LocaleController extends BaseLocaleController
      *
      * @Template
      * @AclAncestor("pimee_enrich_locale_edit")
+     *
      * @return array
      */
     public function editAction(Locale $locale)

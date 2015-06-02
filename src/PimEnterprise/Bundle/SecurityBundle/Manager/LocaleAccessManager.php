@@ -121,7 +121,7 @@ class LocaleAccessManager
      * @param LocaleInterface $locale
      * @param Group[]         $excludedUserGroups
      *
-     * @return integer
+     * @return int
      */
     protected function revokeAccess(LocaleInterface $locale, array $excludedUserGroups = [])
     {

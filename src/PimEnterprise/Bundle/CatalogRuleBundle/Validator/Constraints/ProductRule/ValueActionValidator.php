@@ -11,11 +11,14 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Validator\Constraints\ProductRule;
 
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductCopyValueActionInterface;
 use PimEnterprise\Bundle\CatalogRuleBundle\Model\ProductSetValueActionInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Validates if the set action field supports the given data
@@ -27,13 +30,25 @@ class ValueActionValidator extends ConstraintValidator
     /** @var ProductUpdaterInterface */
     protected $factory;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
+    /** @var ValidatorInterface */
+    protected $productValidator;
+
     /**
      * @param ProductUpdaterInterface $factory
+     * @param ProductBuilderInterface $productBuilder
+     * @param ValidatorInterface      $validator
      */
     public function __construct(
-        ProductUpdaterInterface $factory
+        ProductUpdaterInterface $factory,
+        ProductBuilderInterface $productBuilder,
+        ValidatorInterface $validator
     ) {
         $this->factory = $factory;
+        $this->productBuilder = $productBuilder;
+        $this->productValidator = $validator;
     }
 
     /**
@@ -56,18 +71,30 @@ class ValueActionValidator extends ConstraintValidator
      */
     protected function validateSetValue(ProductSetValueActionInterface $action, Constraint $constraint)
     {
+        $fakeProduct = $this->createProduct();
+
         try {
-            $this->factory->setValue(
-                [],
+            $this->factory->setData(
+                $fakeProduct,
                 $action->getField(),
                 $action->getValue(),
-                $action->getLocale(),
-                $action->getScope()
+                ['locale' => $action->getLocale(), 'scope' => $action->getScope()]
             );
         } catch (\Exception $e) {
             $this->context->addViolation(
                 $constraint->message,
-                [ '%message%' => $e->getMessage() ]
+                ['%message%' => $e->getMessage()]
+            );
+        }
+
+        $errors = $this->productValidator->validate($fakeProduct);
+
+        foreach ($errors as $error) {
+            $this->context->addViolation(
+                $constraint->message,
+                [
+                    '%message%' => $error->getMessage(),
+                ]
             );
         }
     }
@@ -79,20 +106,36 @@ class ValueActionValidator extends ConstraintValidator
     protected function validateCopyValue(ProductCopyValueActionInterface $action, Constraint $constraint)
     {
         try {
-            $this->factory->copyValue(
-                [],
+            $fakeProduct = $this->createProduct();
+            $this->factory->copyData(
+                $fakeProduct,
+                $fakeProduct,
                 $action->getFromField(),
                 $action->getToField(),
-                $action->getFromLocale(),
-                $action->getToLocale(),
-                $action->getFromScope(),
-                $action->getToScope()
+                [
+                    'from_locale' => $action->getFromLocale(),
+                    'from_scope'  => $action->getFromScope(),
+                    'to_locale'   => $action->getToLocale(),
+                    'to_scope'    => $action->getToScope()
+                ]
             );
         } catch (\Exception $e) {
             $this->context->addViolation(
                 $constraint->message,
-                [ '%message%' => $e->getMessage() ]
+                ['%message%' => $e->getMessage()]
             );
         }
+    }
+
+    /**
+     * Create a fake product to allow validation
+     *
+     * @return ProductInterface
+     */
+    protected function createProduct()
+    {
+        $product = $this->productBuilder->createProduct('FAKE_SKU_FOR_RULE_VALIDATION');
+
+        return $product;
     }
 }

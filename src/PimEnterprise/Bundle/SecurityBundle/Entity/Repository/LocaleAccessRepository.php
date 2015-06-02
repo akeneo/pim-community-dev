@@ -77,6 +77,7 @@ class LocaleAccessRepository extends EntityRepository
      * @param string $accessLevel
      *
      * @throws \LogicException
+     *
      * @return string
      */
     protected function getAccessField($accessLevel)

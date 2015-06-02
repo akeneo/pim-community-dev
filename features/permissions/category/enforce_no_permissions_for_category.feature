@@ -75,6 +75,7 @@ Feature: Enforce no permissions for a category
     Given I am logged in as "Julia"
     And I edit the "grantedOne" product
     When I visit the "Associations" tab
+    And I wait 3 seconds
     Then the grid should contain 2 elements
 
   @javascript
@@ -89,6 +90,7 @@ Feature: Enforce no permissions for a category
     And I save the category
     And I edit the "grantedOne" product
     When I visit the "Associations" tab
+    And I wait 3 seconds
     Then the grid should contain 1 elements
 
   @javascript

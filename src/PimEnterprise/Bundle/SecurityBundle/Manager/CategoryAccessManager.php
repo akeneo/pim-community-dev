@@ -99,9 +99,9 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param string            $attribute
      *
-     * @return bool
-     *
      * @throws \LogicException
+     *
+     * @return bool
      */
     public function isUserGranted(UserInterface $user, CategoryInterface $category, $attribute)
     {
@@ -129,7 +129,7 @@ class CategoryAccessManager
      * @param Group[]           $viewGroups the view user groups
      * @param Group[]           $editGroups the edit user groups
      * @param Group[]           $ownGroups  the own user groups
-     * @param boolean           $flush      whether to flush the object manager
+     * @param bool              $flush      whether to flush the object manager
      */
     public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups, $flush = false)
     {
@@ -350,11 +350,11 @@ class CategoryAccessManager
     /**
      * Add accesses on categories, a null permission will be resolved as false
      *
-     * @param integer[]    $categoryIds
-     * @param Group        $group
-     * @param boolean|null $view
-     * @param boolean|null $edit
-     * @param boolean|null $own
+     * @param integer[] $categoryIds
+     * @param Group     $group
+     * @param bool|null $view
+     * @param bool|null $edit
+     * @param bool|null $own
      */
     protected function addAccesses($categoryIds, Group $group, $view = false, $edit = false, $own = false)
     {
@@ -381,11 +381,11 @@ class CategoryAccessManager
     /**
      * Update accesses on categories, if a permission is null we don't update
      *
-     * @param integer[]    $categoryIds
-     * @param Group        $group
-     * @param boolean|null $view
-     * @param boolean|null $edit
-     * @param boolean|null $own
+     * @param integer[] $categoryIds
+     * @param Group     $group
+     * @param bool|null $view
+     * @param bool|null $edit
+     * @param bool|null $own
      */
     protected function updateAccesses($categoryIds, Group $group, $view = false, $edit = false, $own = false)
     {
@@ -413,7 +413,7 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param Group             $group
      * @param string            $accessLevel
-     * @param boolean           $flush
+     * @param bool              $flush
      */
     public function grantAccess(CategoryInterface $category, Group $group, $accessLevel, $flush = false)
     {
@@ -465,7 +465,7 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param Group[]           $excludedGroups
      *
-     * @return integer
+     * @return int
      */
     protected function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
     {

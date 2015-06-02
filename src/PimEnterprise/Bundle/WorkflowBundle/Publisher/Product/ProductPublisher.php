@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
@@ -36,22 +37,28 @@ class ProductPublisher implements PublisherInterface
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var CompletenessManager */
+    protected $completenessManager;
+
     /**
      * @param string                      $publishClassName
      * @param PublisherInterface          $publisher
      * @param RelatedAssociationPublisher $associationPublisher
      * @param VersionManager              $versionManager
+     * @param CompletenessManager         $completenessManager
      */
     public function __construct(
         $publishClassName,
         PublisherInterface $publisher,
         RelatedAssociationPublisher $associationPublisher,
-        VersionManager $versionManager
+        VersionManager $versionManager,
+        CompletenessManager $completenessManager
     ) {
         $this->publishClassName = $publishClassName;
         $this->publisher = $publisher;
         $this->associationPublisher = $associationPublisher;
         $this->versionManager = $versionManager;
+        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -60,6 +67,7 @@ class ProductPublisher implements PublisherInterface
     public function publish($object, array $options = [])
     {
         $options = array_merge(['with_associations' => true], $options);
+        $this->completenessManager->generateMissingForProduct($object);
         $published = $this->createNewPublishedProduct();
         $published->setOriginalProduct($object);
         $published->setEnabled($object->isEnabled());

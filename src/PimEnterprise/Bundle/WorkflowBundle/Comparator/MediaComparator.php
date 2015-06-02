@@ -11,54 +11,40 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * Comparator which calculate change set for medias
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class MediaComparator implements ComparatorInterface
 {
+    /** @staticvar string */
+    const SEPATATOR_FILE = '/';
+
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function supportsComparison($type)
     {
-        return in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_file', 'pim_catalog_image']);
+        return in_array($type, ['pim_catalog_file', 'pim_catalog_image']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function getChanges(array $data, array $originals)
     {
-        if ($this->hasNewMedia($submittedData) || isset($submittedData['media']['removed'])) {
-            return $submittedData;
-        }
-    }
+        $noValue = !isset($originals['value']) && !isset($data['value']);
+        $noFilepathChange = isset($originals['value']['filePath'])
+            && $data['value']['filePath'] === $originals['value']['filePath'];
 
-    /**
-     * Whether or not data contain a new media
-     *
-     * @param array $data
-     *
-     * @return boolean
-     */
-    protected function hasNewMedia(array $data)
-    {
-        if (!isset($data['media'])) {
-            return false;
+        if ($noValue || $noFilepathChange) {
+            return null;
         }
 
-        foreach (['filename', 'originalFilename', 'filePath', 'mimeType', 'size'] as $key) {
-            if (!array_key_exists($key, $data['media'])) {
-                return false;
-            }
-        }
+        $filename = strrchr($data['value']['filePath'], self::SEPATATOR_FILE);
+        $data['value']['filename'] = str_replace(self::SEPATATOR_FILE, '', $filename);
 
-        return true;
+        return $data;
     }
 }

@@ -12,9 +12,9 @@
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
@@ -102,7 +102,7 @@ class ProposalWidget implements WidgetInterface
     /**
      * Indicates if the widget should be displayed to the current user
      *
-     * @return boolean
+     * @return bool
      */
     protected function isDisplayable()
     {

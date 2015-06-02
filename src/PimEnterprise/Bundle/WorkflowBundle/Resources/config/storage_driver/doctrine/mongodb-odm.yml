@@ -1,6 +1,6 @@
 parameters:
-    pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\ProductDraftRepository
-    pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
+    pimee_workflow.repository.product_draft.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\ProductDraftRepository
+    pimee_workflow.repository.published_product.class:   PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\Repository\PublishedProductRepository
     pimee_workflow.subscriber.synchronize_product_draft_categories.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\SynchronizeProductDraftCategoriesSubscriber
 
 services:

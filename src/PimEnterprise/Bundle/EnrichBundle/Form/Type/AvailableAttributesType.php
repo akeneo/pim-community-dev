@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use Symfony\Component\Form\FormBuilderInterface;

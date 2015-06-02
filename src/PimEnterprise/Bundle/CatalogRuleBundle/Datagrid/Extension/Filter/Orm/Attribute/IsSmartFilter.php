@@ -69,11 +69,11 @@ class IsSmartFilter extends BooleanFilter
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
-                $expr = $qb->expr()->isNotNull('rlr');
+                $expr = $qb->expr()->isNotNull('rlr.resourceId');
                 break;
             case BooleanFilterType::TYPE_NO:
             default:
-                $expr = $qb->expr()->isNull('rlr');
+                $expr = $qb->expr()->isNull('rlr.resourceId');
                 break;
         }
 
