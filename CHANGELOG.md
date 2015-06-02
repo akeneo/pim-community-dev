@@ -1,6 +1,7 @@
 # 1.4.x
 
 ## Features
+- Create command to index fields in MongoDB
 
 ## Technical improvements
 - In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
@@ -117,6 +118,7 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
+- Change constructor of `Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator`, added Attribute class name
 
 # 1.3.x
 
