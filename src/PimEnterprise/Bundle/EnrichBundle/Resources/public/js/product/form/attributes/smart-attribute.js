@@ -15,11 +15,11 @@ define(
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                mediator.off(null, null, 'form:product:attribute:smart-attribute');
+                mediator.off(null, null, 'context:product:form:attribute:smart-attribute');
                 mediator.on(
                     'field:extension:add',
                     _.bind(this.addExtension, this),
-                    'form:product:attribute:smart-attribute'
+                    'context:product:form:attribute:smart-attribute'
                 );
 
                 return $.when(
