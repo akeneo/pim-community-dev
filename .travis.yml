@@ -26,8 +26,8 @@ before_script:
     - curl http://get.sensiolabs.org/php-cs-fixer.phar -o php-cs-fixer
 
 script:
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test; fi;'
-    - sh -c 'if [ "$TRAVIS_PHP_VERSION" = "5.4" ]; then ./phpspec-fix; fi;'
+    - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
+    - ./phpspec-fix
     - php php-cs-fixer fix --dry-run -v --diff --config-file=.php_cs.php
     - ./app/Resources/jenkins/interface_check.sh src/
 
