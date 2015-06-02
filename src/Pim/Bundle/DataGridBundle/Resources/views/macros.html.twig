@@ -47,9 +47,9 @@
 
                         for (var column in filters.sorters) {
                             urlParams['{{ name }}[_sort_by][' + column + ']'] =
-                                filters.sorters[column] === 1 ?
-                                    'ASC' :
-                                    'DESC';
+                                parseInt(filters.sorters[column]) === 1 ?
+                                    'DESC' :
+                                    'ASC';
                         }
 
                         if (undefined != filters.pageSize) {

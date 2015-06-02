@@ -50,7 +50,7 @@ Feature: Export variant groups
     And exported file of "footwear_variant_group_export" should contain:
     """
     code;attachment;axis;comment;description-en_US-mobile;destocking_date;handmade;label-en_US;length;length-unit;manufacturer;number_in_stock;price-EUR;price-USD;side_view;type;weather_conditions
-    caterpillar_boots;files/caterpillar_boots/attachment/akeneo.txt;color,size;"Best worn in winter";"Nice boots";2015-03-05;1;"Caterpillar boots";30.0000;CENTIMETER;Caterpillar;50;100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;VARIANT;dry
+    caterpillar_boots;files/caterpillar_boots/attachment/akeneo.txt;color,size;"Best worn in winter";"Nice boots";2015-03-05;1;"Caterpillar boots";30;CENTIMETER;Caterpillar;50;100.00;150.00;files/caterpillar_boots/side_view/akeneo.jpg;VARIANT;dry
     """
     And export directory of "footwear_variant_group_export" should contain the following media:
       | files/caterpillar_boots/side_view/akeneo.jpg  |
