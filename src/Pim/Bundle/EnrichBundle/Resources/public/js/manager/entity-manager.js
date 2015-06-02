@@ -34,6 +34,11 @@ define(['module', 'jquery', 'underscore'], function (module, $, _) {
         },
         clear: function (entityType, entity) {
             return this.getRepository(entityType).clear(entity);
+        },
+        clearAll: function () {
+            _.each(this.repositories, function (repository) {
+                repository.loadedModule.clear();
+            });
         }
     };
 });
