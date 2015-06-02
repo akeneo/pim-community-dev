@@ -1,0 +1,30 @@
+parameters:
+    pimee_product_asset.file_storage.raw_file.storer.class: PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorer
+    pimee_product_asset.file_storage.raw_file.downloader.class: PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloader
+    pimee_product_asset.file_storage.file_factory.class: PimEnterprise\Component\ProductAsset\FileStorage\FileFactory
+    pimee_product_asset.file_storage.file_mover.class: PimEnterprise\Component\ProductAsset\FileStorage\FileMover
+    pimee_product_asset.file_storage.path_generator.class: PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator
+
+services:
+    pimee_product_asset.file_storage.raw_file.storer:
+        class: %pimee_product_asset.file_storage.raw_file.storer.class%
+        arguments:
+            - '@pimee_product_asset.file_storage.path_generator'
+            - '@oneup_flysystem.mount_manager'
+            - '@pimee_product_asset.saver.file'
+            - '@pimee_product_asset.file_storage.file_factory'
+
+    pimee_product_asset.file_storage.raw_file.downloader:
+        class: %pimee_product_asset.file_storage.raw_file.downloader.class%
+
+    pimee_product_asset.file_storage.file_factory:
+        class: %pimee_product_asset.file_storage.file_factory.class%
+
+    pimee_product_asset.file_storage.file_mover:
+        class: %pimee_product_asset.file_storage.file_mover.class%
+        arguments:
+            - '@oneup_flysystem.mount_manager'
+            - '@pimee_product_asset.saver.file'
+
+    pimee_product_asset.file_storage.path_generator:
+        class: %pimee_product_asset.file_storage.path_generator.class%
