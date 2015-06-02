@@ -104,7 +104,7 @@ class ProductDraftManager
         $this->applier->apply($product, $productDraft);
         $this->mediaManager->handleProductMedias($product);
 
-        $this->productDraftRemover->remove($productDraft);
+        $this->productDraftRemover->remove($productDraft, ['flush' => false]);
         $this->workingCopySaver->save($product);
 
         $this->dispatcher->dispatch(ProductDraftEvents::POST_APPROVE, new GenericEvent($productDraft));

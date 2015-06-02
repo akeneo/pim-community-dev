@@ -65,7 +65,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $applier->apply($product, $productDraft)->shouldBeCalled();
         $mediaManager->handleProductMedias($product)->shouldBeCalled();
         $workingCopySaver->save($product)->shouldBeCalled();
-        $remover->remove($productDraft)->shouldBeCalled();
+        $remover->remove($productDraft, ['flush' => false])->shouldBeCalled();
 
         $dispatcher
             ->dispatch(
