@@ -51,4 +51,6 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\MultiSelectValueCopier/CatalogBundle\\Updater\\Copier\\MultiSelectAttributeCopier/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\PriceCollectionValueCopier/CatalogBundle\\Updater\\Copier\\PriceCollectionAttributeCopier/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\Updater\\Copier\\SimpleSelectValueCopier/CatalogBundle\\Updater\\Copier\\SimpleSelectAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/Pim\\Bundle\\ClassificationBundle\\Doctrine\\ORM\\Repository\\CategoryRepository/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Repository\\CategoryRepositoryInterface/Pim\\Component\\Classification\\Repository\\CategoryRepositoryInterface/g'
 ```
