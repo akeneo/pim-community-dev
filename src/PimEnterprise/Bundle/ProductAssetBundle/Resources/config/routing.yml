@@ -1,3 +1,3 @@
 product_asset:
     resource: '@PimEnterpriseProductAssetBundle/Resources/config/routing/product_asset.yml'
-    prefix: /enrich/assets
+    prefix: /enrich/asset

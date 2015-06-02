@@ -90,8 +90,8 @@ class ProductAssetController extends Controller
      *
      * @param Request $request
      *
-     * TODO : AclAncestor("pimee_product_asset_index")
      * @Template
+     * @AclAncestor("pimee_product_asset_index")
      *
      * @return array
      */
@@ -107,7 +107,7 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @Template
-     * TODO: AclAncestor("pimee_product_asset_index")
+     * @AclAncestor("pimee_product_asset_index")
      *
      * @return array
      */
@@ -150,7 +150,7 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @Template
-     * TODO: AclAncestor("pimee_product_asset_index")
+     * @AclAncestor("pimee_product_asset_index")
      *
      * @return array
      */
