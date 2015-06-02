@@ -90,9 +90,10 @@ extensions:
         module: pim/product-edit-form/meta/family
         parent: product-edit-form
         targetZone: meta
+        insertAction: append
         zones:
             family: self
-        position: 100
+        position: 80
 
     change-family:
         module: pim/product-edit-form/meta/change-family
@@ -107,14 +108,14 @@ extensions:
         parent: product-edit-form
         insertAction: append
         targetZone: meta
-        position: 100
+        position: 110
 
     created:
         module: pim/product-edit-form/meta/created
         parent: product-edit-form
         insertAction: append
         targetZone: meta
-        position: 100
+        position: 90
 
     updated:
         module: pim/product-edit-form/meta/updated
