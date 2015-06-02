@@ -1,12 +1,12 @@
 Pim\Bundle\CatalogBundle\Entity\Attribute:
     type: entity
     table: pim_catalog_attribute
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         searchcode_idx:
             columns:
                 - code
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository
-    changeTrackingPolicy: DEFERRED_EXPLICIT
     uniqueConstraints:
         searchunique_idx:
             columns:

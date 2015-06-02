@@ -73,6 +73,7 @@ services:
             - '@pim_enrich.form.handler.channel'
             - '@pim_enrich.form.channel'
             - '@pim_catalog.remover.channel'
+            - '@pim_catalog.saver.locale'
 
     pim_enrich.controller.currency:
         scope: request

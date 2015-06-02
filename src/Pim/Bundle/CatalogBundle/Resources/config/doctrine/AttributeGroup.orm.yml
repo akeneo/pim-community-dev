@@ -1,8 +1,8 @@
 Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
     type: entity
     table: pim_catalog_attribute_group
-    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository
     changeTrackingPolicy: DEFERRED_EXPLICIT
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeGroupRepository
     fields:
         id:
             type: integer

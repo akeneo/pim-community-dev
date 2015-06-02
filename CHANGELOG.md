@@ -3,8 +3,8 @@
 ## Features
 
 ## Technical improvements
-- In BaseConnector, revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
-- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for Product, Attribute, Attribute Option, Group, Attribute Group, Product Group)
+- Revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for all models)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 - Category filter is separated from other datagrid filters for performance concerns
 - Use MySQL as a non blocking session storage
@@ -125,6 +125,7 @@
 - Remove method getAssociationFieldNames() from `Pim\Bundle\TransformBundle\Builder\FieldBuilder`
 - Rename `Pim\Bundle\TransformBundle\Builder\FieldBuilder` to `Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor`
 - Method `createAttribute` of Pim/Bundle/CatalogBundle/Manager/AttributeManager.php is now deprecated use `AttributeFactory::createAttribute` instead
+- Constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` now takes a BulkSaver as last argument (to save locales)
 
 # 1.3.x
 
