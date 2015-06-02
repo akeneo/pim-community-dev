@@ -150,11 +150,11 @@ define([
             getEditable: function () {
                 return this.editable;
             },
-            setEnabled: function (enabled) {
-                this.enabled = enabled;
+            setReady: function (ready) {
+                this.ready = ready;
             },
-            getEnabled: function () {
-                return this.enabled;
+            getReady: function () {
+                return this.ready;
             },
             getEditMode: function () {
                 if (this.editable) {

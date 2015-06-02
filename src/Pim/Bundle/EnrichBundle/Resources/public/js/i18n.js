@@ -23,6 +23,9 @@ define(
                 } else {
                     return '';
                 }
+            },
+            getLabel: function (labels, locale, fallback) {
+                return labels[locale] ? labels[locale] : '[' + fallback + ']';
             }
         };
     }

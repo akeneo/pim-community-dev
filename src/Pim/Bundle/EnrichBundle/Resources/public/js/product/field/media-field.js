@@ -25,7 +25,7 @@ define([
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
                         templateContext.mediaUrl = this.getMediaUrl(templateContext.value.value);
-
+                        templateContext.inUpload = !this.getReady();
                         return templateContext;
                     }, this));
             },
@@ -58,7 +58,7 @@ define([
                 var formData = new FormData();
                 formData.append('file', input.files[0]);
 
-                this.$('.progress').css({opacity: 1});
+                this.setReady(false);
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -77,7 +77,9 @@ define([
                 }).done(_.bind(function (data) {
                     this.setCurrentValue(data);
                     this.render();
-                    this.$('.progress').css({opacity: 0});
+                }, this)).then(_.bind(function () {
+                    this.$('> .media-field .progress').css({opacity: 0});
+                    this.setReady(true);
                 }, this));
             },
             clearField: function () {
@@ -86,7 +88,8 @@ define([
                 this.render();
             },
             handleProcess: function (e) {
-                this.$('.progress .bar').css({
+                this.$('> .media-field .progress').css({opacity: 1});
+                this.$('> .media-field .progress .bar').css({
                     width: ((e.loaded / e.total) * 100) + '%'
                 });
             },

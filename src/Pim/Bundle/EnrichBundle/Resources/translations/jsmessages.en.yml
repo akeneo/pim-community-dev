@@ -144,6 +144,7 @@ pim_enrich:
                 deletion_failed: The product could not be deleted.
                 update_successful: Product successfully updated.
                 update_failed: The product could not be updated.
+                field_not_ready: The product cannot be saved right now. The following fields are not ready: {{ fields }}
             meta:
                 created: Created
                 created_by: By
