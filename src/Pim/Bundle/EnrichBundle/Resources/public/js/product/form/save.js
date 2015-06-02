@@ -73,6 +73,8 @@ define(
                             default:
                         }
 
+                        mediator.trigger('entity:error:save', response.responseJSON);
+
                         messenger.notificationFlashMessage(
                             'error',
                             _.__('pim_enrich.entity.product.info.update_failed')

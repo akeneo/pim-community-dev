@@ -68,7 +68,7 @@ define(
             },
             update: function () {
                 if (this.getRoot().model.get('meta')) {
-                    EntityManager.getRepository('completeness').invalidateCache(this.getRoot().model.get('meta').id);
+                    EntityManager.getRepository('completeness').clear(this.getRoot().model.get('meta').id);
                 }
 
                 this.render();

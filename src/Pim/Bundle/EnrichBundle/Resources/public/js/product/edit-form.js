@@ -5,18 +5,28 @@ define(
         'underscore',
         'backbone',
         'text!pim/template/product/form',
-        'pim/form'
+        'pim/form',
+        'oro/mediator',
+        'pim/entity-manager',
+        'pim/field-manager'
     ],
     function (
         _,
         Backbone,
         template,
-        BaseForm
+        BaseForm,
+        mediator,
+        EntityManager,
+        FieldManager
     ) {
         var FormView = BaseForm.extend({
             template: _.template(template),
             initialize: function () {
                 this.model = new Backbone.Model();
+
+
+                mediator.off(null, null, 'product:form:edit:init');
+                mediator.on('entity:error:save', _.bind(this.clearCache, this), 'product:form:edit:init');
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -32,6 +42,11 @@ define(
                 );
 
                 return this.renderExtensions();
+            },
+            clearCache: function () {
+                EntityManager.clearAll();
+                FieldManager.clear();
+                this.render();
             }
         });
 
