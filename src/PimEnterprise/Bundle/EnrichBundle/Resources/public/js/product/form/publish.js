@@ -74,8 +74,9 @@ define(
                 var method = publish ? PublishedProductManager.publish : PublishedProductManager.unpublish;
                 method(productId)
                     .done(_.bind(function () {
+                        ProductManager.clear(this.getData().meta.id);
                         ProductManager.get(this.getData().meta.id).done(_.bind(function (product) {
-                            this.getRoot().setData(product);
+                            this.setData(product);
                             navigation.addFlashMessage(
                                 'success',
                                 _.__(
