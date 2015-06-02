@@ -1,0 +1,13 @@
+parameters:
+    pimee_product_asset.attribute_type.asset_collection.class: PimEnterprise\Bundle\ProductAssetBundle\AttributeType\AssetCollectionType
+
+services:
+    pimee_product_asset.attribute_type.asset_collection:
+        class: %pimee_product_asset.attribute_type.asset_collection.class%
+        arguments:
+            - reference_data_options
+            - pim_ajax_reference_data
+            - '@pim_catalog.validator.constraint_guesser.chained_attribute'
+            - '@pim_reference_data.registry'
+        tags:
+            - { name: pim_catalog.attribute_type, alias: pim_assets_collection }
