@@ -19,6 +19,9 @@ use Psr\Log\LoggerInterface;
  */
 class IndexCreator
 {
+    /** @const int */
+    const MONGODB_INDEXES_LIMIT = 64;
+
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
@@ -28,6 +31,9 @@ class IndexCreator
     /** @var string */
     protected $productClass;
 
+    /** @var string */
+    protected $attributeClass;
+
     /** @var LoggerInterface */
     protected $logger;
 
@@ -36,17 +42,20 @@ class IndexCreator
      * @param NamingUtility   $namingUtility
      * @param string          $productClass
      * @param LoggerInterface $logger
+     * @param string          $attributeClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         NamingUtility $namingUtility,
         $productClass,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        $attributeClass
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;
         $this->productClass    = $productClass;
         $this->logger          = $logger;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -131,6 +140,55 @@ class IndexCreator
     }
 
     /**
+     * Ensure indexes for completeness
+     */
+    public function ensureCompletenessesIndexes()
+    {
+        $completenessFields = $this->getCompletenessNormFields();
+        $this->ensureIndexes($completenessFields);
+    }
+
+    /**
+     * Ensure indexes for unique attributes
+     */
+    public function ensureUniqueAttributesIndexes()
+    {
+        $attributes = $this->getAttributeRepository()->findBy(
+            ['unique' => true],
+            ['created' => 'ASC'],
+            self::MONGODB_INDEXES_LIMIT
+        );
+
+        foreach ($attributes as $attribute) {
+            $this->ensureIndexesFromAttribute($attribute);
+        }
+    }
+
+    /**
+     * Ensure indexes for attributes
+     */
+    public function ensureAttributesIndexes()
+    {
+        $attributes = $this->getAttributeRepository()->findBy(
+            ['useableAsGridFilter' => true],
+            ['created' => 'ASC'],
+            self::MONGODB_INDEXES_LIMIT
+        );
+
+        foreach ($attributes as $attribute) {
+            $this->ensureIndexesFromAttribute($attribute);
+        }
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface
+     */
+    protected function getAttributeRepository()
+    {
+        return $this->managerRegistry->getRepository($this->attributeClass);
+    }
+
+    /**
      * Get the completeness fields for the channel
      *
      * @param ChannelInterface $channel
@@ -204,7 +262,7 @@ class IndexCreator
         $collection = $this->getCollection();
         $preNbIndexes = count($collection->getIndexInfo());
         $postNbIndexes = $preNbIndexes + count($fields);
-        if ($postNbIndexes > 64) {
+        if ($postNbIndexes > self::MONGODB_INDEXES_LIMIT) {
             $msg = sprintf('Too many MongoDB indexes (%d), no way to add %s', $preNbIndexes, print_r($fields, true));
             $this->logger->error($msg);
 
