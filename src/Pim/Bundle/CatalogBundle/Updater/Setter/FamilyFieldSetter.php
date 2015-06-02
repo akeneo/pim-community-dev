@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -18,6 +19,9 @@ class FamilyFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $familyRepository;
 
+    /** array */
+    protected $familyCache;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param array                                 $supportedFields
@@ -28,6 +32,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
     ) {
         $this->familyRepository = $familyRepository;
         $this->supportedFields  = $supportedFields;
+        $this->familyCache = [];
     }
 
     /**
@@ -40,7 +45,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
         $this->checkData($field, $data);
 
         if (null !== $data) {
-            $family = $this->familyRepository->findOneByIdentifier($data);
+            $family = $this->getFamily($data);
             if (null === $family) {
                 throw InvalidArgumentException::expected(
                     $field,
@@ -72,5 +77,20 @@ class FamilyFieldSetter extends AbstractFieldSetter
                 gettype($data)
             );
         }
+    }
+
+    /**
+     * @param string $familyCode
+     *
+     * @return FamilyInterface
+     */
+    protected function getFamily($familyCode)
+    {
+        if (!isset($this->familyCache[$familyCode])) {
+            $family = $this->familyRepository->findOneByIdentifier($familyCode);
+            $this->familyCache[$familyCode]= $family;
+        }
+
+        return isset($this->familyCache[$familyCode]) ? $this->familyCache[$familyCode] : null;
     }
 }

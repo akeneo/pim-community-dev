@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -18,6 +19,9 @@ class CategoryFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $categoryRepository;
 
+    /** array */
+    protected $categoryCache;
+
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param array                                 $supportedFields
@@ -28,6 +32,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->supportedFields    = $supportedFields;
+        $this->categoryCache = [];
     }
 
     /**
@@ -41,7 +46,7 @@ class CategoryFieldSetter extends AbstractFieldSetter
 
         $categories = [];
         foreach ($data as $categoryCode) {
-            $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+            $category = $this->getCategory($categoryCode);
 
             if (null === $category) {
                 throw InvalidArgumentException::expected(
@@ -94,5 +99,20 @@ class CategoryFieldSetter extends AbstractFieldSetter
                 );
             }
         }
+    }
+
+    /**
+     * @param string $categoryCode
+     *
+     * @return CategoryInterface
+     */
+    protected function getCategory($categoryCode)
+    {
+        if (!isset($this->categoryCache[$categoryCode])) {
+            $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
+            $this->categoryCache[$categoryCode]= $category;
+        }
+
+        return isset($this->categoryCache[$categoryCode]) ? $this->categoryCache[$categoryCode] : null;
     }
 }
