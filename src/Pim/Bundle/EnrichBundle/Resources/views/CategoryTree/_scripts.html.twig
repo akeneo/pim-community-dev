@@ -5,7 +5,7 @@
             'use strict';
             $(function() {
                 var buttons = [];
-                {% if resource_granted('pim_enrich_category_create') %}
+                {% if resource_granted('pim_enrich_product_category_create') %}
                     buttons.push($('<a>', {
                         'class': 'no-hash',
                         'data-toggle': 'tooltip',

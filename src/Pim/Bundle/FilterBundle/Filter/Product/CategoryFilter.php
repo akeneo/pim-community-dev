@@ -11,6 +11,8 @@ use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
+ * TODO: Put this class in the root of Filter namespace
+ *
  * Category filter
  *
  * @author    Filips Alpe <filips@akeneo.com>

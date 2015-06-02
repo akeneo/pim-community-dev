@@ -27,7 +27,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Category Tree Controller
+ * Product category Tree Controller
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -113,7 +113,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @return array
      *
      * @Template
-     * @AclAncestor("pim_enrich_category_list")
+     * @AclAncestor("pim_enrich_product_category_list")
      */
     public function listTreeAction(Request $request)
     {
@@ -138,7 +138,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @AclAncestor("pim_enrich_category_edit")
+     * @AclAncestor("pim_enrich_product_category_edit")
      *
      * @return Response
      */
@@ -164,7 +164,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @AclAncestor("pim_enrich_category_list")
+     * @AclAncestor("pim_enrich_product_category_list")
      *
      * @return array
      */
@@ -216,7 +216,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
     /**
      * @Template()
-     * @AclAncestor("pim_enrich_category_list")
+     * @AclAncestor("pim_enrich_product_category_list")
      *
      * @return array
      */
@@ -231,7 +231,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      * @param int     $parent
      *
-     * @AclAncestor("pim_enrich_category_create")
+     * @AclAncestor("pim_enrich_product_category_create")
      *
      * @return Response|RedirectResponse
      */
@@ -275,7 +275,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param Request $request
      * @param int     $id
      *
-     * @AclAncestor("pim_enrich_category_edit")
+     * @AclAncestor("pim_enrich_product_category_edit")
      *
      * @return Response
      */
@@ -308,7 +308,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param int $id
      *
-     * @AclAncestor("pim_enrich_category_remove")
+     * @AclAncestor("pim_enrich_product_category_remove")
      *
      * @return Response|RedirectResponse
      */

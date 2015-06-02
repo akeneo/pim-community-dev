@@ -28,7 +28,7 @@ attribute_option:
 
 categorytree:
     resource: '@PimEnrichBundle/Resources/config/routing/categorytree.yml'
-    prefix: /enrich/category-tree
+    prefix: /enrich/product-category-tree
 
 product:
     resource: '@PimEnrichBundle/Resources/config/routing/product.yml'
