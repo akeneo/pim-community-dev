@@ -1,0 +1,37 @@
+PimEnterprise\Component\ProductAsset\Model\File:
+    type: entity
+    table: pimee_product_asset_file
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        path:
+            type: string
+            length: 255
+            unique: true
+        guid:
+            type: string
+            length: 255
+            unique: true
+        filename:
+            type: string
+            length: 255
+        originalFilename:
+            type: string
+            column: original_filename
+        mimeType:
+            type: string
+            length: 255
+            column: mime_type
+        size:
+            type: integer
+            nullable: true
+        extension:
+            type: string
+            length: 20
+        storage:
+            type: string
+            length: 255
+            nullable: true
