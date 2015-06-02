@@ -103,3 +103,36 @@ families:
                 - price
                 - size
                 - main_color
+    hoodies:
+        labels:
+            en_US: Hoodies
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - price
+            - side_view
+            - top_view
+            - size
+            - lace_color
+            - sleeve_color
+            - sleeve_fabric
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - sku
+                - name
+                - description
+                - price
+                - side_view
+                - size
+                - lace_color
+                - sleeve_color
+            mobile:
+                - sku
+                - name
+                - price
+                - size
+                - lace_color
+                - sleeve_color

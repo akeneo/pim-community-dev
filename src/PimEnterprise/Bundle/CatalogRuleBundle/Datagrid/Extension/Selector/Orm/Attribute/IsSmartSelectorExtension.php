@@ -66,6 +66,6 @@ class IsSmartSelectorExtension extends AbstractExtension
                 sprintf('r.resourceId = %s.id AND r.resourceName = :attributeClass', $rootAlias)
             )
             ->setParameter('attributeClass', $this->attributeClass)
-            ->addSelect('CASE WHEN r IS NULL THEN false ELSE true END AS is_smart');
+            ->addSelect('CASE WHEN r.resourceId IS NULL THEN false ELSE true END AS is_smart');
     }
 }

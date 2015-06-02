@@ -11,12 +11,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify as BaseClassify;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to classify products
@@ -25,77 +20,14 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class Classify extends BaseClassify
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
-
-    /**
-     * @param CategoryManager          $categoryManager
-     * @param BulkSaverInterface       $productSaver
-     * @param SecurityContextInterface $securityContext
-     */
-    public function __construct(
-        CategoryManager $categoryManager,
-        BulkSaverInterface $productSaver,
-        SecurityContextInterface $securityContext
-    ) {
-        parent::__construct($categoryManager, $productSaver);
-        $this->securityContext = $securityContext;
-        $this->trees           = $categoryManager->getAccessibleTrees($securityContext->getToken()->getUser());
-        $this->categories      = [];
-    }
-
     /**
      * {@inheritdoc}
-     */
-    public function getFormType()
-    {
-        return 'pimee_enrich_mass_classify';
-    }
-
-    /**
-     * The list of not granted product identifiers
      *
-     * @return string
+     * We override the parent job, because the job we'll use checks if the user
+     * has own right on edited products
      */
-    public function getNotGrantedIdentifiers()
+    public function getBatchJobCode()
     {
-        $products   = $this->getObjectsToMassEdit();
-        $notGranted = [];
-        foreach ($products as $product) {
-            if ($this->securityContext->isGranted(Attributes::OWN, $product) === false) {
-                $notGranted[] = (string) $product->getIdentifier();
-            }
-        }
-
-        return implode(', ', $notGranted);
-    }
-
-    /**
-     * Allows to set the form but we don't use not granted data from it
-     *
-     * @param string $notGranted
-     *
-     * @return Classify
-     */
-    public function setNotGrantedIdentifiers($notGranted)
-    {
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function doPerform(ProductInterface $product)
-    {
-        if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot classify product "%s" because current user does not own it',
-                    (string) $product
-                )
-            );
-        }
-
-        return parent::doPerform($product);
+        return 'add_product_value_with_permission';
     }
 }

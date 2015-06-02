@@ -21,9 +21,9 @@ class RegisterComparatorsPassSpec extends ObjectBehavior
         Definition $fooDefinition,
         Definition $bazDefinition
     ) {
-        $container->hasDefinition('pimee_workflow.comparator.chained')->willReturn(true);
-        $container->getDefinition('pimee_workflow.comparator.chained')->willReturn($comparator);
-        $container->findTaggedServiceIds('pimee_workflow.comparator')->willReturn([
+        $container->hasDefinition('pimee_workflow.comparator.registry')->willReturn(true);
+        $container->getDefinition('pimee_workflow.comparator.registry')->willReturn($comparator);
+        $container->findTaggedServiceIds('pimee_workflow.attribute.comparator')->willReturn([
             'comparator.bar' => [['priority' => -10]],
             'comparator.foo' => [['priority' => 10]],
             'comparator.baz' => [[]],
@@ -36,13 +36,13 @@ class RegisterComparatorsPassSpec extends ObjectBehavior
         $fooDefinition->setPublic(false)->shouldBeCalled();
         $bazDefinition->setPublic(false)->shouldBeCalled();
         $comparator
-            ->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.bar', -10))
+            ->addMethodCall('addAttributeComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.bar', -10))
             ->shouldBeCalled();
         $comparator
-            ->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.foo', 10))
+            ->addMethodCall('addAttributeComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.foo', 10))
             ->shouldBeCalled();
         $comparator
-            ->addMethodCall('addComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.baz', 0))
+            ->addMethodCall('addAttributeComparator', $this->isAnArrayContainingAReferenceAndAPriority('comparator.baz', 0))
             ->shouldBeCalled();
 
         $this->process($container);

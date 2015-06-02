@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**

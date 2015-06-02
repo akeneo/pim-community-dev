@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
-use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
@@ -100,7 +100,6 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         AttributeGroupInterface $group,
         CategoryInterface $category
     ) {
-
         $attribute->getGroup()->willReturn($group);
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
         $attributeRepository->findOneBy(['code' => 'filter1'])->willReturn($attribute);

@@ -11,9 +11,9 @@
 
 namespace Akeneo\Bundle\RuleEngineBundle;
 
-use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\RegisterRunnerPass;
 use Akeneo\Bundle\RuleEngineBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

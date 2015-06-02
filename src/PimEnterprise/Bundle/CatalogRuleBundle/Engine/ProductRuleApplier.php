@@ -11,16 +11,16 @@
 
 namespace PimEnterprise\Bundle\CatalogRuleBundle\Engine;
 
-use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
-use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater;
-use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator;
 use Akeneo\Bundle\RuleEngineBundle\Engine\ApplierInterface;
 use Akeneo\Bundle\RuleEngineBundle\Event\RuleEvents;
 use Akeneo\Bundle\RuleEngineBundle\Event\SelectedRuleEvent;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Bundle\RuleEngineBundle\Model\RuleSubjectSetInterface;
+use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
+use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsSaver;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsUpdater;
+use PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier\ProductsValidator;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

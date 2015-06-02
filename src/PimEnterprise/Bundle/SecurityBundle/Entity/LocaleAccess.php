@@ -23,12 +23,12 @@ use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
 class LocaleAccess implements LocaleAccessInterface
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var LocaleInterface $locale
+     * @var LocaleInterface
      */
     protected $locale;
 
@@ -36,12 +36,12 @@ class LocaleAccess implements LocaleAccessInterface
     protected $userGroup;
 
     /**
-     * @var boolean $viewProducts
+     * @var bool
      */
     protected $viewProducts;
 
     /**
-     * @var boolean $editProducts
+     * @var bool
      */
     protected $editProducts;
 

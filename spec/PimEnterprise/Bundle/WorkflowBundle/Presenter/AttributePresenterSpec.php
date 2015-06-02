@@ -46,7 +46,7 @@ class AttributePresenterSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->getLabel()->willReturn('Name');
 
-        $this->present($attribute, ['__context__' => ['locale' => 'en_US']])->shouldReturn('[en_US] - Name');
+        $this->present($attribute, ['locale' => 'en_US'])->shouldReturn('[en_US] - Name');
     }
 
     function it_presents_unlocalizable_but_scopable_attribute(AttributeInterface $attribute)
@@ -55,7 +55,7 @@ class AttributePresenterSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->getLabel()->willReturn('Name');
 
-        $this->present($attribute, ['__context__' => ['scope' => 'ecommerce']])->shouldReturn('ecommerce - Name');
+        $this->present($attribute, ['scope' => 'ecommerce'])->shouldReturn('ecommerce - Name');
     }
 
     function it_presents_localizable_and_scopable_attribute(AttributeInterface $attribute)
@@ -66,10 +66,8 @@ class AttributePresenterSpec extends ObjectBehavior
 
         $this
             ->present($attribute, [
-                '__context__' => [
-                    'scope' => 'ecommerce',
-                    'locale' => 'fr_FR',
-                ]
+                'scope'  => 'ecommerce',
+                'locale' => 'fr_FR',
             ])
             ->shouldReturn('[fr_FR] - ecommerce - Name');
     }

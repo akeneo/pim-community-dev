@@ -42,7 +42,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * Return product drafts that can be approved by the given user
      *
      * @param UserInterface $user
-     * @param integer       $limit
+     * @param int           $limit
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]
      */
@@ -52,7 +52,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * Apply the context of the datagrid to the query
      *
      * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
-     * @param integer|string                                                 $productId
+     * @param int|string                                                     $productId
      *
      * @return ProductDraftRepositoryInterface
      */

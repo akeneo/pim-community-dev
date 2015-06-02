@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -38,22 +39,28 @@ class ProductReverter
     /** @var ValidatorInterface */
     protected $validator;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /**
      * @param ManagerRegistry       $registry
      * @param DenormalizerInterface $denormalizer
      * @param SaverInterface        $productSaver
      * @param ValidatorInterface    $validator
+     * @param TranslatorInterface   $translator
      */
     public function __construct(
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
         SaverInterface $productSaver,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        TranslatorInterface $translator
     ) {
         $this->registry     = $registry;
         $this->denormalizer = $denormalizer;
         $this->productSaver = $productSaver;
         $this->validator    = $validator;
+        $this->translator   = $translator;
     }
 
     /**
@@ -73,7 +80,7 @@ class ProductReverter
 
         if ($this->isImpactedByVariantGroup($currentObject)) {
             throw new RevertException(
-                'Product can not be reverted because it belongs to a variant group'
+                $this->translator->trans('flash.error.revert.product_has_variant')
             );
         }
 
@@ -89,7 +96,11 @@ class ProductReverter
 
         $violationsList = $this->validator->validate($revertedObject);
         if ($violationsList->count() > 0) {
-            throw new RevertException('This version can not be restored. Some errors occurred during the validation.');
+            throw new RevertException(
+                $this->translator->trans(
+                    'flash.error.revert.product'
+                )
+            );
         }
 
         $this->productSaver->save($revertedObject);
@@ -98,7 +109,7 @@ class ProductReverter
     /**
      * @param mixed $object
      *
-     * @return boolean
+     * @return bool
      */
     protected function isImpactedByVariantGroup($object)
     {

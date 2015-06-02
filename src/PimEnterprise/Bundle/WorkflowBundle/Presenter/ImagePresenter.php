@@ -12,7 +12,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -36,13 +35,10 @@ class ImagePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($data, array $change)
+    public function supports($data)
     {
         return $data instanceof ProductValueInterface
-            && array_key_exists('media', $change)
-            && (
-                $this->isImageMimeType($data->getMedia()) || $this->isImageMimeType($change['media'])
-            );
+            && 'pim_catalog_image' === $data->getAttribute()->getAttributeType();
     }
 
     /**
@@ -61,10 +57,10 @@ class ImagePresenter implements PresenterInterface
         }
 
         $after = '';
-        if (isset($change['media']['filename']) && isset($change['media']['originalFilename'])) {
+        if (isset($change['value']['filename']) && isset($change['value']['originalFilename'])) {
             $after = sprintf(
                 '<li class="changed file">%s</li>',
-                $this->createImageElement($change['media']['filename'], $change['media']['originalFilename'])
+                $this->createImageElement($change['value']['filename'], $change['value']['originalFilename'])
             );
         }
 
@@ -92,33 +88,5 @@ class ImagePresenter implements PresenterInterface
             ),
             $title
         );
-    }
-
-    /**
-     * Check wether or not the given data represents an image
-     *
-     * @param array|ProductMedia $data
-     *
-     * @return boolean
-     */
-    protected function isImageMimeType($data)
-    {
-        switch (true) {
-            case $data instanceof ProductMedia:
-                $mimeType = $data->getMimeType();
-                break;
-            case is_array($data) && isset($data['mimeType']):
-                $mimeType = $data['mimeType'];
-                break;
-            default:
-                $mimeType = null;
-                break;
-        }
-
-        if (null === $mimeType) {
-            return false;
-        }
-
-        return 0 === strpos($mimeType, 'image');
     }
 }

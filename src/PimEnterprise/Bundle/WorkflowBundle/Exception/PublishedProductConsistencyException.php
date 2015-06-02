@@ -26,7 +26,7 @@ class PublishedProductConsistencyException extends \Exception
 
     /**
      * @param string     $message
-     * @param integer    $code
+     * @param int        $code
      * @param \Exception $previous
      * @param string     $route
      * @param array      $routeParams

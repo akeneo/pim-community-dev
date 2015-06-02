@@ -5,7 +5,6 @@ users:
         email: 'admin@example.com'
         firstname: John
         lastname: Doe
-        owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
@@ -20,7 +19,6 @@ users:
         email: 'julia@example.com'
         firstname: Julia
         lastname: Stark
-        owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
@@ -35,7 +33,6 @@ users:
         email: 'mary@example.com'
         firstname: Mary
         lastname: Smith
-        owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
@@ -50,7 +47,6 @@ users:
         email: 'sandra@example.com'
         firstname: Sandra
         lastname: Harvey
-        owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
@@ -65,7 +61,6 @@ users:
         email: 'peter@example.com'
         firstname: Peter
         lastname: Williams
-        owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master

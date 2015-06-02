@@ -11,49 +11,44 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * Comparator which calculate change set for collections of options
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class OptionsComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function supportsComparison($type)
     {
-        return 'pim_catalog_multiselect' === $value->getAttribute()->getAttributeType();
+        return in_array($type, ['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function getChanges(array $data, array $originals)
     {
-        if (!isset($submittedData['options'])) {
-            return;
+        $codes = [];
+        foreach ($data['value'] as $index => $attribute) {
+            if (!array_key_exists('value', $originals)
+                || !isset($originals['value'][$index])
+                || $attribute['code'] !== $originals['value'][$index]['code']
+            ) {
+                $codes[] = $attribute['code'];
+            }
         }
 
-        $options = $value->getOptions();
-        $getIds = function ($option) {
-            return $option->getId();
-        };
-
-        $options = $options->map($getIds)->toArray();
-        sort($options);
-
-        $submittedOptions = explode(',', $submittedData['options']);
-        sort($submittedOptions);
-
-        if ($options != $submittedOptions) {
-            return [
-                'options' => join(',', $submittedOptions),
-            ];
+        if (empty($codes)) {
+            return null;
         }
+
+        return [
+            'locale' => $data['locale'],
+            'scope'  => $data['scope'],
+            'value'  => $codes,
+        ];
     }
 }

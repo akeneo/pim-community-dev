@@ -3,24 +3,9 @@ imports:
 
 assetic:
     bundles:
-        - OroAsseticBundle
-        - OroUIBundle
-        - OroUserBundle
-        - OroFilterBundle
-        - OroNavigationBundle
-        - OroWindowsBundle
-        - OroEntityExtendBundle
-        - OroSecurityBundle
-        - PimUIBundle
-        - PimCatalogBundle
-        - PimEnrichBundle
         - PimEnterpriseEnrichBundle
 
 twig:
-    globals:
-        bap:
-            layout: PimEnterpriseEnrichBundle::base.html.twig
-            start_route: oro_default
     form:
         resources:
             - 'PimEnterpriseUIBundle:Form:pimee-fields.html.twig'
