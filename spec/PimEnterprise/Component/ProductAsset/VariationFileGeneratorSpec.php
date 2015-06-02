@@ -11,15 +11,14 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 use Prophecy\Argument;
 
@@ -38,8 +37,8 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         MetadataBuilderRegistry $metadataBuilderRegistry,
         ChannelVariationsConfigurationInterface $channelConfiguration,
         ChannelInterface $ecommerce,
-        ProductAssetReferenceInterface $reference,
-        ProductAssetVariationInterface $variation,
+        ReferenceInterface $reference,
+        VariationInterface $variation,
         FileInterface $referenceFile,
         Filesystem $filesystem
     ) {
@@ -178,7 +177,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $variationSaver,
         $metadataBuilderRegistry,
         LocaleInterface $fr,
-        ProductAssetInterface $asset,
+        AssetInterface $asset,
         \SplFileInfo $referenceFileInfo,
         \SplFileInfo $variationFileInfo,
         FileInterface $variationFile,
@@ -218,7 +217,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_asset_has_no_reference_for_a_locale(
         $ecommerce,
-        ProductAssetInterface $asset,
+        AssetInterface $asset,
         LocaleInterface $fr
     ) {
         $fr->getCode()->willReturn('fr_FR');
@@ -232,7 +231,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_the_asset_has_no_unlocalized_reference(
         $ecommerce,
-        ProductAssetInterface $asset
+        AssetInterface $asset
     ) {
         $asset->getCode()->willReturn('asset1');
         $asset->getReference(null)->willReturn(null);
@@ -245,7 +244,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_channel_variation_configuration_can_not_be_retrieved(
         ChannelInterface $channel,
         $channelConfigurationRepository,
-        ProductAssetReferenceInterface $reference
+        ReferenceInterface $reference
     ) {
         $channel->getId()->willReturn(12);
         $channel->getCode()->willReturn('ecommerce');
@@ -259,7 +258,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_there_is_no_variation(
         $ecommerce,
-        ProductAssetReferenceInterface $reference
+        ReferenceInterface $reference
     ) {
         $reference->getId()->willReturn(45);
         $reference->getVariation($ecommerce)->willReturn(null);

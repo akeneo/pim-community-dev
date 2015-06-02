@@ -14,7 +14,7 @@ namespace AcmeEnterprise\Bundle\AppBundle\Model;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue as PimProductValue;
 
 /**
@@ -71,17 +71,17 @@ class ProductValue extends PimProductValue
     }
 
     /**
-     * @param ProductAssetInterface $asset
+     * @param AssetInterface $asset
      */
-    public function addAsset(ProductAssetInterface $asset)
+    public function addAsset(AssetInterface $asset)
     {
         $this->assets->add($asset);
     }
 
     /**
-     * @param ProductAssetInterface $asset
+     * @param AssetInterface $asset
      */
-    public function removeAsset(ProductAssetInterface $asset)
+    public function removeAsset(AssetInterface $asset)
     {
         $this->assets->removeElement($asset);
     }

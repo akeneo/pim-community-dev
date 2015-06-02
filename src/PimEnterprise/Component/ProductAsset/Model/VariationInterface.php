@@ -19,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductAssetVariationInterface
+interface VariationInterface
 {
     /**
      * @return int
@@ -27,7 +27,7 @@ interface ProductAssetVariationInterface
     public function getId();
 
     /**
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function getAsset();
 
@@ -37,16 +37,16 @@ interface ProductAssetVariationInterface
     public function getLocale();
 
     /**
-     * @return ProductAssetReferenceInterface
+     * @return ReferenceInterface
      */
     public function getReference();
 
     /**
-     * @param ProductAssetReferenceInterface $reference
+     * @param ReferenceInterface $reference
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
-    public function setReference(ProductAssetReferenceInterface $reference);
+    public function setReference(ReferenceInterface $reference);
 
     /**
      * @return ChannelInterface
@@ -56,7 +56,7 @@ interface ProductAssetVariationInterface
     /**
      * @param ChannelInterface $channel
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
     public function setChannel(ChannelInterface $channel);
 
@@ -68,7 +68,7 @@ interface ProductAssetVariationInterface
     /**
      * @param FileInterface $file
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
     public function setFile(FileInterface $file);
 
@@ -80,7 +80,7 @@ interface ProductAssetVariationInterface
     /**
      * @param bool $locked
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
     public function setLocked($locked);
 }

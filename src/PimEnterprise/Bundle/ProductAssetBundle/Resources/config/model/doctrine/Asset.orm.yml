@@ -1,4 +1,4 @@
-PimEnterprise\Component\ProductAsset\Model\ProductAsset:
+PimEnterprise\Component\ProductAsset\Model\Asset:
     type: entity
     repositoryClass: Pim\Bundle\ReferenceDataBundle\Doctrine\ORM\Repository\ReferenceDataRepository
     table: pimee_product_asset_asset
@@ -30,7 +30,7 @@ PimEnterprise\Component\ProductAsset\Model\ProductAsset:
             column: updated_at
     oneToMany:
         references:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\ReferenceInterface
             mappedBy: asset
             cascade:
                 - persist

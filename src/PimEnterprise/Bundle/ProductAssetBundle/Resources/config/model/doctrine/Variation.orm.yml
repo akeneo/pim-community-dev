@@ -1,4 +1,4 @@
-PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
+PimEnterprise\Component\ProductAsset\Model\Variation:
     type: entity
     table: pimee_product_asset_variation
     fields:
@@ -22,7 +22,7 @@ PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation:
                 name: channel_id
                 referencedColumnName: id
         reference:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\ReferenceInterface
             inversedBy: variations
             join_column:
                 name: reference_id

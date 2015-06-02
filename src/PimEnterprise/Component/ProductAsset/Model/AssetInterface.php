@@ -21,7 +21,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductAssetInterface extends ReferenceDataInterface
+interface AssetInterface extends ReferenceDataInterface
 {
     /**
      * @return int
@@ -36,7 +36,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
     /**
      * @param string $code
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setCode($code);
 
@@ -48,7 +48,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
     /**
      * @param string $description
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setDescription($description);
 
@@ -60,28 +60,28 @@ interface ProductAssetInterface extends ReferenceDataInterface
     /**
      * @param ArrayCollection $references
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setReferences(ArrayCollection $references);
 
     /**
-     * @param ProductAssetReferenceInterface $reference
+     * @param ReferenceInterface $reference
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
-    public function addReference(ProductAssetReferenceInterface $reference);
+    public function addReference(ReferenceInterface $reference);
 
     /**
-     * @param ProductAssetReferenceInterface $reference
+     * @param ReferenceInterface $reference
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
-    public function removeReference(ProductAssetReferenceInterface $reference);
+    public function removeReference(ReferenceInterface $reference);
 
     /**
      * @param LocaleInterface|null $locale
      *
-     * @return ProductAssetReferenceInterface|null
+     * @return ReferenceInterface|null
      */
     public function getReference(LocaleInterface $locale = null);
 
@@ -93,7 +93,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
     public function hasReference(LocaleInterface $locale = null);
 
     /**
-     * @return ProductAssetVariationInterface[]
+     * @return VariationInterface[]
      */
     public function getVariations();
 
@@ -101,7 +101,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
      * @param ChannelInterface     $channel
      * @param LocaleInterface|null $locale
      *
-     * @return ProductAssetVariationInterface|null
+     * @return VariationInterface|null
      */
     public function getVariation(ChannelInterface $channel, LocaleInterface $locale = null);
 
@@ -131,7 +131,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
     /**
      * @param \Datetime $endOfUseAt
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setEndOfUseAt(\Datetime $endOfUseAt);
 
@@ -143,7 +143,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
     /**
      * @param \Datetime $createdAt
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setCreatedAt(\Datetime $createdAt);
 
@@ -155,7 +155,7 @@ interface ProductAssetInterface extends ReferenceDataInterface
     /**
      * @param \Datetime $updatedAt
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setUpdatedAt(\Datetime $updatedAt);
 }

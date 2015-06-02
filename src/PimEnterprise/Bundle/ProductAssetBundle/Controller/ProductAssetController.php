@@ -18,12 +18,12 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetReferenceRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetVariationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -37,7 +37,7 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class ProductAssetController extends Controller
 {
-    /** @var ProductAssetRepositoryInterface */
+    /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
     /** @var FileMetadataRepositoryInterface */
@@ -46,10 +46,10 @@ class ProductAssetController extends Controller
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
 
-    /** @var ProductAssetReferenceRepositoryInterface */
+    /** @var ReferenceRepositoryInterface */
     protected $referenceRepository;
 
-    /** @var ProductAssetVariationRepositoryInterface */
+    /** @var VariationRepositoryInterface */
     protected $variationRepository;
 
     /** @var RawFileStorerInterface */
@@ -59,18 +59,18 @@ class ProductAssetController extends Controller
     protected $variationFileGenerator;
 
     /**
-     * @param ProductAssetRepositoryInterface          $assetRepository
-     * @param ProductAssetReferenceRepositoryInterface $referenceRepository
-     * @param ProductAssetVariationRepositoryInterface $variationRepository
-     * @param FileMetadataRepositoryInterface          $metadataRepository
-     * @param ChannelRepositoryInterface               $channelRepository
-     * @param RawFileStorerInterface                   $rawFileStorer
-     * @param VariationFileGeneratorInterface          $variationFileGenerator
+     * @param AssetRepositoryInterface          $assetRepository
+     * @param ReferenceRepositoryInterface      $referenceRepository
+     * @param VariationRepositoryInterface      $variationRepository
+     * @param FileMetadataRepositoryInterface   $metadataRepository
+     * @param ChannelRepositoryInterface        $channelRepository
+     * @param RawFileStorerInterface            $rawFileStorer
+     * @param VariationFileGeneratorInterface   $variationFileGenerator
      */
     public function __construct(
-        ProductAssetRepositoryInterface $assetRepository,
-        ProductAssetReferenceRepositoryInterface $referenceRepository,
-        ProductAssetVariationRepositoryInterface $variationRepository,
+        AssetRepositoryInterface $assetRepository,
+        ReferenceRepositoryInterface $referenceRepository,
+        VariationRepositoryInterface $variationRepository,
         FileMetadataRepositoryInterface $metadataRepository,
         ChannelRepositoryInterface $channelRepository,
         RawFileStorerInterface $rawFileStorer,
@@ -248,7 +248,7 @@ class ProductAssetController extends Controller
      */
     public function uploadVariationAction(Request $request, $assetId, $id)
     {
-        /** @var ProductAssetVariationInterface $variation */
+        /** @var VariationInterface $variation */
         $variation = $this->variationRepository->find($id);
 
         if ($request->isMethod('POST')) {
@@ -283,13 +283,13 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Find a ProductAsset by its id or return a 404 response
+     * Find a Asset by its id or return a 404 response
      *
      * @param int|string $id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return \PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+     * @return \PimEnterprise\Component\ProductAsset\Model\AssetInterface
      */
     protected function findProductAssetOr404($id)
     {
@@ -313,14 +313,14 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * @param ProductAssetInterface $asset
-     * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
+     * @param AssetInterface    $asset
+     * @param ChannelInterface  $channel
+     * @param LocaleInterface   $locale
      *
      * @throws \Exception
      */
     protected function launchVariationFileGeneration(
-        ProductAssetInterface $asset,
+        AssetInterface $asset,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {

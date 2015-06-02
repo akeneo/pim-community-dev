@@ -20,12 +20,12 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductAssetReference implements ProductAssetReferenceInterface
+class Reference implements ReferenceInterface
 {
     /** @var int */
     protected $id;
 
-    /** @var ProductAssetInterface */
+    /** @var AssetInterface */
     protected $asset;
 
     /** @var LocaleInterface */
@@ -34,7 +34,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
     /** @var FileInterface */
     protected $file;
 
-    /** @var ArrayCollection of ProductAssetVariationInterface */
+    /** @var ArrayCollection of VariationInterface */
     protected $variations;
 
     public function __construct()
@@ -61,7 +61,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function setAsset(ProductAssetInterface $asset)
+    public function setAsset(AssetInterface $asset)
     {
         $this->asset = $asset;
         $asset->addReference($this);
@@ -124,7 +124,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function addVariation(ProductAssetVariationInterface $variation)
+    public function addVariation(VariationInterface $variation)
     {
         if (!$this->variations->contains($variation)) {
             $this->variations->add($variation);
@@ -136,7 +136,7 @@ class ProductAssetReference implements ProductAssetReferenceInterface
     /**
      * {@inheritdoc}
      */
-    public function removeVariation(ProductAssetVariationInterface $variation)
+    public function removeVariation(VariationInterface $variation)
     {
         if ($this->variations->contains($variation)) {
             $this->variations->removeElement($variation);

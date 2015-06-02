@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetReferenceRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
 
 /**
- * Implementation of ProductAssetReferenceRepositoryInterface
+ * Implementation of ReferenceRepositoryInterface
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProductAssetReferenceRepository extends EntityRepository implements ProductAssetReferenceRepositoryInterface
+class ReferenceRepository extends EntityRepository implements ReferenceRepositoryInterface
 {
 }

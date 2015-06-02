@@ -12,13 +12,13 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetVariationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 
 /**
- * Implementation of ProductAssetVariationRepositoryInterface
+ * Implementation of VariationRepositoryInterface
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-class ProductAssetVariationRepository extends EntityRepository implements ProductAssetVariationRepositoryInterface
+class VariationRepository extends EntityRepository implements VariationRepositoryInterface
 {
 }

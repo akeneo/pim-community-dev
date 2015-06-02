@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductAssetReferenceInterface
+interface ReferenceInterface
 {
     /**
      * @return int
@@ -28,16 +28,16 @@ interface ProductAssetReferenceInterface
     public function getId();
 
     /**
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function getAsset();
 
     /**
-     * @param ProductAssetInterface $asset
+     * @param AssetInterface $asset
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
-    public function setAsset(ProductAssetInterface $asset);
+    public function setAsset(AssetInterface $asset);
 
     /**
      * @return LocaleInterface
@@ -47,7 +47,7 @@ interface ProductAssetReferenceInterface
     /**
      * @param LocaleInterface $locale
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
     public function setLocale(LocaleInterface $locale);
 
@@ -59,7 +59,7 @@ interface ProductAssetReferenceInterface
     /**
      * @param FileInterface $file
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      */
     public function setFile(FileInterface $file);
 
@@ -71,28 +71,28 @@ interface ProductAssetReferenceInterface
     /**
      * @param ArrayCollection $variations
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
     public function setVariations(ArrayCollection $variations);
 
     /**
-     * @param ProductAssetVariationInterface $variation
+     * @param VariationInterface $variation
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
-    public function addVariation(ProductAssetVariationInterface $variation);
+    public function addVariation(VariationInterface $variation);
 
     /**
-     * @param ProductAssetVariationInterface $variation
+     * @param VariationInterface $variation
      *
-     * @return ProductAssetInterface
+     * @return AssetInterface
      */
-    public function removeVariation(ProductAssetVariationInterface $variation);
+    public function removeVariation(VariationInterface $variation);
 
     /**
      * @param ChannelInterface $channel
      *
-     * @return ProductAssetVariationInterface|null
+     * @return VariationInterface|null
      */
     public function getVariation(ChannelInterface $channel);
 

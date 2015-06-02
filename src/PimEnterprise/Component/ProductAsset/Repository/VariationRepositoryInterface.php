@@ -18,6 +18,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  *
  * @author Willy Mesnage <willy.mesnage@akeneo.com>
  */
-interface ProductAssetVariationRepositoryInterface extends ObjectRepository
+interface VariationRepositoryInterface extends ObjectRepository
 {
 }

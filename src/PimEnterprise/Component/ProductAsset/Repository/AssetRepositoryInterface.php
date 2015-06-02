@@ -19,6 +19,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface ProductAssetRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
+interface AssetRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
 {
 }

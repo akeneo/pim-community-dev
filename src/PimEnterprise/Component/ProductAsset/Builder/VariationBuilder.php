@@ -13,14 +13,14 @@ namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 
 /**
  * Builds variations related to an asset reference
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterface
+class VariationBuilder implements VariationBuilderInterface
 {
     /** @var ChannelRepositoryInterface */
     protected $channelRepository;
@@ -34,7 +34,7 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
      */
     public function __construct(
         ChannelRepositoryInterface $channelRepository,
-        $variationClass = 'PimEnterprise\Component\ProductAsset\Model\ProductAssetVariation'
+        $variationClass = 'PimEnterprise\Component\ProductAsset\Model\Variation'
     ) {
         $this->channelRepository = $channelRepository;
         $this->variationClass    = $variationClass;
@@ -43,7 +43,7 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildMissing(ProductAssetReferenceInterface $reference)
+    public function buildMissing(ReferenceInterface $reference)
     {
         $variations = [];
         $channels   = $this->channelRepository->getFullChannels();
@@ -60,7 +60,7 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildOne(ProductAssetReferenceInterface $reference, ChannelInterface $channel)
+    public function buildOne(ReferenceInterface $reference, ChannelInterface $channel)
     {
         if (!$this->canBuildOne($reference, $channel)) {
             throw new \LogicException(
@@ -82,7 +82,7 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildAll(ProductAssetReferenceInterface $reference)
+    public function buildAll(ReferenceInterface $reference)
     {
         $variations = [];
         $channels   = $this->channelRepository->getFullChannels();
@@ -101,12 +101,12 @@ class ProductAssetVariationBuilder implements ProductAssetVariationBuilderInterf
      *    - either the reference has no locale
      *    - either the reference has a locale, this locale is activated and belongs to the channel
      *
-     * @param ProductAssetReferenceInterface $reference
-     * @param ChannelInterface               $channel
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
      *
      * @return bool
      */
-    protected function canBuildOne(ProductAssetReferenceInterface $reference, ChannelInterface $channel)
+    protected function canBuildOne(ReferenceInterface $reference, ChannelInterface $channel)
     {
         $referenceLocale = $reference->getLocale();
 

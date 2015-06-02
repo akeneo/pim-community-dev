@@ -13,14 +13,14 @@ namespace PimEnterprise\Component\ProductAsset\Builder;
 
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
  * Builds references related to an asset
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductAssetReferenceBuilder implements ProductAssetReferenceBuilderInterface
+class ReferenceBuilder implements ReferenceBuilderInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -34,7 +34,7 @@ class ProductAssetReferenceBuilder implements ProductAssetReferenceBuilderInterf
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
-        $referenceClass = 'PimEnterprise\Component\ProductAsset\Model\ProductAssetReference'
+        $referenceClass = 'PimEnterprise\Component\ProductAsset\Model\Reference'
     ) {
         $this->localeRepository = $localeRepository;
         $this->referenceClass   = $referenceClass;
@@ -43,7 +43,7 @@ class ProductAssetReferenceBuilder implements ProductAssetReferenceBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildAllLocalized(ProductAssetInterface $asset)
+    public function buildAllLocalized(AssetInterface $asset)
     {
         $references = [];
         $locales    = $this->localeRepository->getActivatedLocales();
@@ -58,7 +58,7 @@ class ProductAssetReferenceBuilder implements ProductAssetReferenceBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildMissingLocalized(ProductAssetInterface $asset)
+    public function buildMissingLocalized(AssetInterface $asset)
     {
         $references = [];
         $locales    = $this->localeRepository->getActivatedLocales();
@@ -75,7 +75,7 @@ class ProductAssetReferenceBuilder implements ProductAssetReferenceBuilderInterf
     /**
      * {@inheritdoc}
      */
-    public function buildOne(ProductAssetInterface $asset, LocaleInterface $locale = null)
+    public function buildOne(AssetInterface $asset, LocaleInterface $locale = null)
     {
         $reference = new $this->referenceClass();
         $reference->setAsset($asset);

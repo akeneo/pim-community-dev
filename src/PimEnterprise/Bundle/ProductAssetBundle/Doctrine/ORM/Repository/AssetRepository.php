@@ -12,14 +12,14 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * Product asset repository
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductAssetRepository extends EntityRepository implements ProductAssetRepositoryInterface
+class AssetRepository extends EntityRepository implements AssetRepositoryInterface
 {
     /**
      * {@inheritdoc}

@@ -6,11 +6,11 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Prophecy\Argument;
 
-class ProductAssetVariationBuilderSpec extends ObjectBehavior
+class VariationBuilderSpec extends ObjectBehavior
 {
     function let(
         ChannelRepositoryInterface $repository,
@@ -35,7 +35,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         $ecommerce,
         $print,
         $mobile,
-        ProductAssetReferenceInterface $reference
+        ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn(null);
 
@@ -55,7 +55,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         $ecommerce,
         $print,
         $mobile,
-        ProductAssetReferenceInterface $reference
+        ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn($en_US);
         $ecommerce->hasLocale($en_US)->willReturn(true);
@@ -72,7 +72,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         $missings->shouldBeArrayOfVariations();
     }
 
-    function it_builds_a_variation($ecommerce, ProductAssetReferenceInterface $reference)
+    function it_builds_a_variation($ecommerce, ReferenceInterface $reference)
     {
         $variation = $this->buildOne($reference, $ecommerce);
 
@@ -81,7 +81,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_build_a_variation_if_the_channel_has_not_the_locale_of_the_reference(
-        ProductAssetReferenceInterface $reference,
+        ReferenceInterface $reference,
         ChannelInterface $tablet,
         LocaleInterface $it_IT
     ) {
@@ -99,7 +99,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
     }
 
     function it_does_not_build_a_variation_if_the_channel_of_the_reference_is_not_activated(
-        ProductAssetReferenceInterface $reference,
+        ReferenceInterface $reference,
         ChannelInterface $tablet,
         LocaleInterface $it_IT
     ) {
@@ -117,7 +117,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
     }
 
     function it_builds_all_variations_on_a_non_localized_reference(
-        ProductAssetReferenceInterface $reference
+        ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn(null);
 
@@ -133,7 +133,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         $ecommerce,
         $print,
         $mobile,
-        ProductAssetReferenceInterface $reference
+        ReferenceInterface $reference
     ) {
         $reference->getLocale()->willReturn($en_US);
         $ecommerce->hasLocale($en_US)->willReturn(true);
@@ -152,7 +152,7 @@ class ProductAssetVariationBuilderSpec extends ObjectBehavior
         return [
             'beArrayOfVariations' => function ($subject) {
                 foreach ($subject as $row) {
-                    if (!$row instanceof ProductAssetVariationInterface) {
+                    if (!$row instanceof VariationInterface) {
                         return false;
                     }
                 }

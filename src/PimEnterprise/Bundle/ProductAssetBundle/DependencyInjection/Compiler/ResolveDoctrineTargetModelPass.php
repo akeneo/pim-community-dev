@@ -26,9 +26,9 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
     protected function getParametersMapping()
     {
         return [
-            'PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface' => 'pimee_product_asset.model.asset.class',
-            'PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface' => 'pimee_product_asset.model.asset_variation.class',
-            'PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface' => 'pimee_product_asset.model.asset_reference.class',
+            'PimEnterprise\Component\ProductAsset\Model\AssetInterface' => 'pimee_product_asset.model.asset.class',
+            'PimEnterprise\Component\ProductAsset\Model\VariationInterface' => 'pimee_product_asset.model.variation.class',
+            'PimEnterprise\Component\ProductAsset\Model\ReferenceInterface' => 'pimee_product_asset.model.reference.class',
             'PimEnterprise\Component\ProductAsset\Model\FileInterface' => 'pimee_product_asset.model.file.class',
             'PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface' => 'pimee_product_asset.model.file_metadata.interface',
             'PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface' => 'pimee_product_asset.model.image_metadata.interface'

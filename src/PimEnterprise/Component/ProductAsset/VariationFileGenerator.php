@@ -22,9 +22,9 @@ use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterf
 use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 
 /**
@@ -104,7 +104,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * {@inheritdoc}
      */
     public function generateFromAsset(
-        ProductAssetInterface $asset,
+        AssetInterface $asset,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
@@ -129,7 +129,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * {@inheritdoc}
      */
     public function generateFromReference(
-        ProductAssetReferenceInterface $reference,
+        ReferenceInterface $reference,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
@@ -148,7 +148,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      */
     public function generateFromFile(
         FileInterface $inputFile,
-        ProductAssetVariationInterface $variation,
+        VariationInterface $variation,
         ChannelInterface $channel,
         $outputFilename,
         $setVariationToLocked = false
@@ -202,14 +202,14 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * @param ProductAssetReferenceInterface $reference
-     * @param ChannelInterface               $channel
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
      *
-     * @return ProductAssetVariationInterface
+     * @return VariationInterface
      *
      * @throws \LogicException
      */
-    protected function retrieveVariation(ProductAssetReferenceInterface $reference, ChannelInterface $channel)
+    protected function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel)
     {
         if (null === $variation = $reference->getVariation($channel)) {
             throw new \LogicException(
@@ -227,13 +227,13 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * Retrieve the reference file and checks it's really present on the STORAGE virtual filesystem
      *
-     * @param ProductAssetReferenceInterface $reference
+     * @param ReferenceInterface $reference
      *
      * @return FileInterface
      *
      * @throws \LogicException
      */
-    protected function retrieveReferenceFile(ProductAssetReferenceInterface $reference)
+    protected function retrieveReferenceFile(ReferenceInterface $reference)
     {
         if (null === $referenceFile = $reference->getFile()) {
             throw new \LogicException(sprintf('The reference "%s" has no file.', $reference->getId()));

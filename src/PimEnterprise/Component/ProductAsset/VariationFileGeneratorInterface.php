@@ -14,9 +14,9 @@ namespace PimEnterprise\Component\ProductAsset;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetVariationInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
  * Variation file generator interface.
@@ -32,14 +32,14 @@ interface VariationFileGeneratorInterface
     /**
      * Generate the variation files from an asset.
      *
-     * @param ProductAssetInterface $asset
+     * @param AssetInterface $asset
      * @param ChannelInterface      $channel
      * @param LocaleInterface       $locale
      *
      * @throws \LogicException
      */
     public function generateFromAsset(
-        ProductAssetInterface $asset,
+        AssetInterface $asset,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     );
@@ -47,28 +47,28 @@ interface VariationFileGeneratorInterface
     /**
      * Generate the variation files from a reference.
      *
-     * @param ProductAssetReferenceInterface $reference
-     * @param ChannelInterface               $channel
-     * @param LocaleInterface                $locale
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
+     * @param LocaleInterface    $locale
      *
      * @throws \LogicException
      */
     public function generateFromReference(
-        ProductAssetReferenceInterface $reference,
+        ReferenceInterface $reference,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     );
 
     /**
-     * @param FileInterface                  $file
-     * @param ProductAssetVariationInterface $variation
-     * @param ChannelInterface               $channel
-     * @param string                         $outputFilename
-     * @param bool                           $setVariationToLocked
+     * @param FileInterface      $file
+     * @param VariationInterface $variation
+     * @param ChannelInterface   $channel
+     * @param string             $outputFilename
+     * @param bool               $setVariationToLocked
      */
     public function generateFromFile(
         FileInterface $file,
-        ProductAssetVariationInterface $variation,
+        VariationInterface $variation,
         ChannelInterface $channel,
         $outputFilename,
         $setVariationToLocked = false

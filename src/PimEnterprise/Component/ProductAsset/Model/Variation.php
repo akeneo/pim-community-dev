@@ -18,12 +18,12 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductAssetVariation implements ProductAssetVariationInterface
+class Variation implements VariationInterface
 {
     /** @var int */
     protected $id;
 
-    /** @var ProductAssetReferenceInterface */
+    /** @var ReferenceInterface */
     protected $reference;
 
     /** @var ChannelInterface */
@@ -86,7 +86,7 @@ class ProductAssetVariation implements ProductAssetVariationInterface
     /**
      * {@inheritdoc}
      */
-    public function setReference(ProductAssetReferenceInterface $reference)
+    public function setReference(ReferenceInterface $reference)
     {
         $this->reference = $reference;
         $reference->addVariation($this);

@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class ProductAsset implements ProductAssetInterface
+class Asset implements AssetInterface
 {
     /** @var int */
     protected $id;
@@ -31,7 +31,7 @@ class ProductAsset implements ProductAssetInterface
     /** @var string */
     protected $description;
 
-    /** @var ArrayCollection of ProductAssetReferenceInterface */
+    /** @var ArrayCollection of ReferenceInterface */
     protected $references;
 
     /** @var bool */
@@ -119,7 +119,7 @@ class ProductAsset implements ProductAssetInterface
     /**
      * {@inheritdoc}
      */
-    public function addReference(ProductAssetReferenceInterface $reference)
+    public function addReference(ReferenceInterface $reference)
     {
         if (!$this->references->contains($reference)) {
             $this->references->add($reference);
@@ -131,7 +131,7 @@ class ProductAsset implements ProductAssetInterface
     /**
      * {@inheritdoc}
      */
-    public function removeReference(ProductAssetReferenceInterface $reference)
+    public function removeReference(ReferenceInterface $reference)
     {
         if ($this->references->contains($reference)) {
             $this->references->removeElement($reference);
