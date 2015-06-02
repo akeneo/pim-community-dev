@@ -13,11 +13,11 @@ define(
     function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
             configure: function () {
-                mediator.off(null, null, 'form:product:attribute:read-only-locale');
+                mediator.off(null, null, 'context:product:form:attribute:read-only-locale');
                 mediator.on(
                     'field:extension:add',
                     _.bind(this.addExtension, this),
-                    'form:product:attribute:read-only-locale'
+                    'context:product:form:attribute:read-only-locale'
                 );
 
                 return $.when(

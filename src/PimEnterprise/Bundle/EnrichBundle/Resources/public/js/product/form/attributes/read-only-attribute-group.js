@@ -13,11 +13,11 @@ define(
     function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
             configure: function () {
-                mediator.off(null, null, 'form:product:attribute:read-only-attribute-group');
+                mediator.off(null, null, 'context:product:form:attribute:read-only-attribute-group');
                 mediator.on(
                     'field:extension:add',
                     _.bind(this.addExtension, this),
-                    'form:product:attribute:read-only-attribute-group'
+                    'context:product:form:attribute:read-only-attribute-group'
                 );
 
                 return $.when(
