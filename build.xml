@@ -91,12 +91,12 @@
         <apply executable="php" failonerror="true">
             <arg value="-l" />
 
-            <fileset dir="${basedir}/src/Pim">
+            <fileset dir="${basedir}/src">
                 <include name="**/*.php" />
                 <modified />
             </fileset>
 
-            <fileset dir="${basedir}/src/Pim">
+            <fileset dir="${basedir}/src">
                 <include name="**/*Test.php" />
                 <modified />
             </fileset>
@@ -116,7 +116,7 @@
         <exec executable="phploc">
             <arg value="--log-csv" />
             <arg value="${basedir}/app/build/logs/phploc.csv" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
@@ -126,20 +126,20 @@
             <arg value="--jdepend-chart=${basedir}/app/build/pdepend/dependencies.svg" />
             <arg value="--overview-pyramid=${basedir}/app/build/pdepend/overview-pyramid.svg" />
             <arg value="--ignore=Tests" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
     <target name="phpmd" description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim,${basedir}/features" />
+            <arg path="${basedir}/src,${basedir}/features" />
             <arg value="text" />
         </exec>
     </target>
 
     <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
         <exec executable="${basedir}/app/Resources/jenkins/phpmd_akeneo">
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg value="xml" />
             <arg value="--reportfile" />
             <arg value="${basedir}/app/build/logs/pmd.xml" />
@@ -150,7 +150,7 @@
         <exec executable="${basedir}/bin/phpcs">
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
         </exec>
     </target>
@@ -169,7 +169,7 @@
             <arg value="--report-file=${basedir}/app/build/logs/checkstyle.xml" />
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg path="${basedir}/features" />
         </exec>
     </target>
@@ -180,7 +180,7 @@
             <arg value="Tests" />
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
         </exec>
     </target>
 
@@ -294,7 +294,7 @@
             <arg value="--log" />
             <arg path="${basedir}/app/build/logs" />
             <arg value="--source" />
-            <arg path="${basedir}/src/Pim" />
+            <arg path="${basedir}/src" />
             <arg value="--output" />
             <arg path="${basedir}/app/build/code-browser" />
         </exec>
