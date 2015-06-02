@@ -98,6 +98,11 @@ define(
                 return false;
             },
             hasModelChanged: function () {
+                if (this.state !== JSON.stringify(this.getRoot().model.toJSON())) {
+                    console.log(this.state);
+                    console.log(JSON.stringify(this.getRoot().model.toJSON()));
+                }
+
                 return this.state !== JSON.stringify(this.getRoot().model.toJSON());
             }
         });
