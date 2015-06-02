@@ -26,7 +26,7 @@ class GroupTranslation extends AbstractTranslation
     protected $foreignKey;
 
     /**
-     * @var string $label
+     * @var string
      */
     protected $label;
 

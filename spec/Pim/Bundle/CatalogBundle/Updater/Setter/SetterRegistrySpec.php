@@ -4,36 +4,54 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Updater\Setter\SetterInterface;
+use Pim\Bundle\CatalogBundle\Updater\Setter\AttributeSetterInterface;
+use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 
 class SetterRegistrySpec extends ObjectBehavior
 {
-    function it_gets_setter(
-        AttributeInterface $attribute1,
-        AttributeInterface $attribute2,
-        AttributeInterface $attribute3,
-        SetterInterface $setter1,
-        SetterInterface $setter2
+    function it_gets_attribute_setter(
+        AttributeInterface $color,
+        AttributeInterface $description,
+        AttributeInterface $price,
+        AttributeSetterInterface $optionSetter,
+        AttributeSetterInterface $textSetter
     ) {
-        $attribute1->getCode()->willReturn('attribute1Code');
-        $attribute2->getCode()->willReturn('attribute2Code');
-        $attribute3->getCode()->willReturn('attribute3Code');
+        $color->getCode()->willReturn('color');
+        $description->getCode()->willReturn('description');
+        $price->getCode()->willReturn('price');
 
-        $setter1->supports($attribute1)->willReturn(true);
-        $setter1->supports($attribute2)->willReturn(false);
-        $setter1->supports($attribute3)->willReturn(false);
-        $setter2->supports($attribute2)->willReturn(true);
-        $setter2->supports($attribute3)->willReturn(false);
+        $this->register($optionSetter);
+        $this->register($textSetter);
 
-        $this->register($setter1);
-        $this->register($setter2);
+        $optionSetter->supportsAttribute($color)->willReturn(true);
+        $optionSetter->supportsAttribute($description)->willReturn(false);
+        $optionSetter->supportsAttribute($price)->willReturn(false);
 
-        $this->get($attribute1)->shouldReturn($setter1);
-        $this->get($attribute2)->shouldReturn($setter2);
-        $this->shouldThrow(
-            new \LogicException(
-                'Attribute "attribute3Code" is not supported by any setter'
-            )
-        )->during('get', [$attribute3]);
+        $textSetter->supportsAttribute($description)->willReturn(true);
+        $textSetter->supportsAttribute($price)->willReturn(false);
+
+        $this->getAttributeSetter($color)->shouldReturn($optionSetter);
+        $this->getAttributeSetter($description)->shouldReturn($textSetter);
+        $this->getAttributeSetter($price)->shouldReturn(null);
+    }
+
+    function it_gets_field_setter(
+        FieldSetterInterface $categorySetter,
+        FieldSetterInterface $familySetter
+    ) {
+        $this->register($categorySetter);
+        $this->register($familySetter);
+
+        $categorySetter->supportsField('category')->willReturn(true);
+        $categorySetter->supportsField('family')->willReturn(false);
+        $categorySetter->supportsField('enabled')->willReturn(false);
+
+        $familySetter->supportsField('category')->willReturn(false);
+        $familySetter->supportsField('family')->willReturn(true);
+        $familySetter->supportsField('enabled')->willReturn(false);
+
+        $this->getFieldSetter('category')->shouldReturn($categorySetter);
+        $this->getFieldSetter('family')->shouldReturn($familySetter);
+        $this->getFieldSetter('enabled')->shouldReturn(null);
     }
 }

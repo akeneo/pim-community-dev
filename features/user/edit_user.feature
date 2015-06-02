@@ -13,7 +13,6 @@ Feature: Edit a user
     When I fill in the following information:
       | First name | John  |
       | Last name  | Smith |
-      | Owner      | Main  |
     And I save the user
     Then I should see "User saved"
     And I should see "John Smith"

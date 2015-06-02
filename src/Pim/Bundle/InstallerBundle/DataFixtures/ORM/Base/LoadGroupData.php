@@ -62,24 +62,7 @@ class LoadGroupData extends AbstractInstallerFixture
     {
         $name = $data['name'];
         $group = new Group($name);
-        $owner = isset($data['owner']) ? $data['owner'] : 'Main';
-        $owner = $this->getOwner($owner);
-        $group->setOwner($owner);
 
         return $group;
-    }
-
-    /**
-     * Get the owner (business unit) from code
-     *
-     * @param string $owner
-     *
-     * @return \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-     */
-    protected function getOwner($owner)
-    {
-        return $this->om
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => $owner));
     }
 }

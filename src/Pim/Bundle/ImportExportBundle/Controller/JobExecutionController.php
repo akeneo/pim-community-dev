@@ -50,6 +50,7 @@ class JobExecutionController extends AbstractDoctrineController
 
     /**
      * Constructor
+     *
      * @param Request                  $request
      * @param EngineInterface          $templating
      * @param RouterInterface          $router
@@ -116,7 +117,7 @@ class JobExecutionController extends AbstractDoctrineController
      * Show a report
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return \Symfony\Component\HttpFoundation\Response|JsonResponse
      */
@@ -165,7 +166,7 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * Download the log file of the job execution
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
@@ -184,9 +185,9 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * Download an archived file
      *
-     * @param integer $id
-     * @param string  $archiver
-     * @param string  $key
+     * @param int    $id
+     * @param string $archiver
+     * @param string $key
      *
      * @return StreamedResponse
      */

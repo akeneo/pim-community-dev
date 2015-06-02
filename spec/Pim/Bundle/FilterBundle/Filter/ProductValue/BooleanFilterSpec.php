@@ -30,7 +30,7 @@ class BooleanFilterSpec extends ObjectBehavior
         $this->getName()->shouldReturn('foo');
     }
 
-    function it_should_parse_data()
+    function it_parses_data()
     {
         $this->parseData(['value' => 0])->shouldReturn(['value' => false]);
         $this->parseData(['value' => 1])->shouldReturn(['value' => true]);
@@ -117,6 +117,5 @@ class BooleanFilterSpec extends ObjectBehavior
                 'type'                 => 'multichoice',
             ]
         );
-
     }
 }

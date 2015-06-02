@@ -3,13 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
-use Pim\Bundle\EnrichBundle\Provider\ColorsProvider;
-use Prophecy\Argument;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class GroupTypeTypeSpec extends ObjectBehavior

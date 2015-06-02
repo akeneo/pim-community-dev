@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CommentBundle\Manager;
 
-use Doctrine\Common\Util\ClassUtils;
-use Doctrine\Common\Persistence\ObjectManager;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
-use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CommentBundle\Model\CommentInterface;
+use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 
 /**

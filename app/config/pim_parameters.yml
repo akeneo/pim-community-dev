@@ -14,8 +14,6 @@ parameters:
     websocket_host:       "127.0.0.1"
     websocket_port:       8080
 
-    session_handler:      ~
-
     upload_dir:           %kernel.root_dir%/uploads/product
     archive_dir:          %kernel.root_dir%/archive
 
@@ -35,4 +33,3 @@ parameters:
     # mongodb_database: akeneo_pim
 
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
-

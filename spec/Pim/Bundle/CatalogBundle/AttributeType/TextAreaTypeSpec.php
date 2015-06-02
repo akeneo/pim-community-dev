@@ -10,8 +10,8 @@ use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 
-class TextAreaTypeSpec extends ObjectBehavior {
-
+class TextAreaTypeSpec extends ObjectBehavior
+{
     function let(ConstraintGuesserInterface $guesser, AttributeInterface $attribute, ProductValueInterface $value)
     {
         $value->getAttribute()->willReturn($attribute);

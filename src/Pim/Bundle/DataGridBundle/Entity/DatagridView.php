@@ -16,7 +16,7 @@ class DatagridView
     /** @staticvar string */
     const TYPE_PUBLIC = 'public';
 
-    /** @var integer */
+    /** @var int */
     protected $id;
 
     /** @var string */
@@ -42,7 +42,7 @@ class DatagridView
     /**
      * Indicates whether a view can be seen by users who don't own it
      *
-     * @return boolean
+     * @return bool
      */
     public function isPublic()
     {
@@ -52,7 +52,7 @@ class DatagridView
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -200,7 +200,7 @@ class DatagridView
      */
     public function getOrder()
     {
-        return join(',', $this->columns);
+        return implode(',', $this->columns);
     }
 
     /**

@@ -28,6 +28,7 @@ class RequestListener implements EventSubscriberInterface
 
     /**
      * Add the csv format
+     *
      * @param GetResponseEvent $event
      */
     public function onKernelRequest(GetResponseEvent $event)

@@ -37,9 +37,9 @@ class DatasourceSupportResolver
     /**
      * @param string $datasourceType
      *
-     * @return string
-     *
      * @throws InvalidConfigurationException
+     *
+     * @return string
      */
     public function getSupport($datasourceType)
     {

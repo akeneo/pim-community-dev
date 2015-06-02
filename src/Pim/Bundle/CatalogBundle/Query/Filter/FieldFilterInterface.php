@@ -30,7 +30,7 @@ interface FieldFilterInterface extends FilterInterface
      *
      * @param string $field
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsField($field);
 }

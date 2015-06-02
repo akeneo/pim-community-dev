@@ -101,8 +101,8 @@ class CategoryManager
      * If the $selectNodeId is provided, all the children
      * level needed to provides the selectNode are returned
      *
-     * @param integer $parentId
-     * @param integer $selectNodeId
+     * @param int $parentId
+     * @param int $selectNodeId
      *
      * @return ArrayCollection
      */
@@ -206,29 +206,13 @@ class CategoryManager
     }
 
     /**
-     * Remove a category
-     *
-     * @param CategoryInterface $category
-     *
-     * @deprecated will be removed in 1.4, replaced by CategoryRemover::remove
-     */
-    public function remove(CategoryInterface $category)
-    {
-        foreach ($category->getProducts() as $product) {
-            $product->removeCategory($category);
-        }
-
-        $this->getObjectManager()->remove($category);
-    }
-
-    /**
      * Move a category to another parent
      * If $prevSiblingId is provided, the category will be positioned after this
      * category, otherwise it will be the first child of the parent category
      *
-     * @param integer $categoryId
-     * @param integer $parentId
-     * @param integer $prevSiblingId
+     * @param int $categoryId
+     * @param int $parentId
+     * @param int $prevSiblingId
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
@@ -258,7 +242,7 @@ class CategoryManager
      * @param CategoryInterface $parentNode
      * @param CategoryInterface $childNode
      *
-     * @return boolean
+     * @return bool
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {

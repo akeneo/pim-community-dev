@@ -2,16 +2,16 @@
 
 namespace Context;
 
+use Behat\Behat\Event\StepEvent;
+use Behat\Behat\Exception\BehaviorException;
+use Behat\Gherkin\Node\PyStringNode;
+use Behat\Mink\Driver\Selenium2Driver;
+use Behat\Mink\Exception\ExpectationException;
+use Behat\MinkExtension\Context\MinkContext;
+use Behat\Symfony2Extension\Context\KernelAwareInterface;
+use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
-use Behat\Symfony2Extension\Context\KernelAwareInterface;
-use Behat\MinkExtension\Context\MinkContext;
-use Behat\Behat\Exception\BehaviorException;
-use Behat\Behat\Event\StepEvent;
-use Behat\Mink\Exception\ExpectationException;
-use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Gherkin\Node\PyStringNode;
-use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 
 /**
  * Main feature context
@@ -22,18 +22,22 @@ use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    /** @var KernelInterface */
     protected $kernel;
 
+    /** @var string[] */
     protected static $errorMessages = [];
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
+     *
      * @var string
      */
     protected $excludedTablesFile = 'excluded_tables.yml';
 
     /**
      * Register contexts
+     *
      * @param array $parameters
      */
     public function __construct(array $parameters)
@@ -61,7 +65,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
             $excludedTables = $excludedTables['excluded_tables'];
         } else {
-            $excludedTables = array();
+            $excludedTables = [];
         }
 
         if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
@@ -101,9 +105,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $driver = $this->getSession()->getDriver();
             if ($driver instanceof Selenium2Driver) {
                 $dir = getenv('WORKSPACE');
-                $id  = getenv('BUILD_ID');
-                if (false !== $dir && false !== $id) {
-                    $dir = sprintf('%s/../builds/%s/screenshots', $dir, $id);
+                $buildUrl = getenv('BUILD_URL');
+                if (false !== $dir) {
+                    $dir = sprintf('%s/app/build/screenshots', $dir);
                 } else {
                     $dir = '/tmp/behat/screenshots';
                 }
@@ -116,11 +120,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($path, $driver->getScreenshot());
 
-                if ($id) {
+                if (false !== $dir) {
                     $path = sprintf(
-                        '/screenshots/%s/%s/screenshots/%s',
-                        getenv('JOB_NAME'),
-                        $id,
+                        '%s/artifact/app/build/screenshots/%s',
+                        $buildUrl,
                         $filename
                     );
                 }
@@ -199,7 +202,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Returns Container instance.
      *
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {
@@ -209,7 +212,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Return doctrine manager instance
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getEntityManager()
     {
@@ -217,7 +220,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getDocumentManager()
     {
@@ -225,7 +228,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return Doctrine\Common\Persistence\ManagerRegistry
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
      */
     public function getSmartRegistry()
     {
@@ -250,7 +253,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function listToArray($list)
     {
         if (empty($list)) {
-            return array();
+            return [];
         }
 
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -271,8 +274,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Wait
      *
-     * @param integer $time
-     * @param string  $condition
+     * @param int    $time
+     * @param string $condition
      *
      * @throws BehaviorException If timeout is reached
      */
@@ -352,7 +355,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @param string $script
      *
-     * @return boolean Success or failure
+     * @return bool Success or failure
      */
     public function executeScript($script)
     {
@@ -368,7 +371,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Get the mail recorder
      *
-     * @return MailRecorder
+     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
      */
     public function getMailRecorder()
     {

@@ -41,6 +41,7 @@ class DompdfBuilder implements PdfBuilderInterface
 
     /**
      * Render a pdf document
+     *
      * @param string $html The html to be rendered
      *
      * @throws \LogicException

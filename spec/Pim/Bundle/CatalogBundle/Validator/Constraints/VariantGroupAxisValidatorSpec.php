@@ -2,14 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxisValidator;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\VariantGroupAxis;
 use Prophecy\Argument;
 use Symfony\Component\Validator\Constraint;
@@ -32,7 +28,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $group->getType()->willReturn($type);
         $type->isVariant()->willReturn(false);
         $group->getAxisAttributes()->willReturn([]);
-        $context->addViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($group, $constraint);
     }
@@ -47,7 +43,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([]);
-        $context->addViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
     }
@@ -63,7 +59,7 @@ class VariantGroupAxisValidatorSpec extends ObjectBehavior
         $variantGroup->getType()->willReturn($type);
         $type->isVariant()->willReturn(true);
         $variantGroup->getAxisAttributes()->willReturn([$axisAttribute]);
-        $context->addViolation(Argument::any(), Argument::any())->shouldNotBeCalled();
+        $context->addViolation(Argument::cetera())->shouldNotBeCalled();
 
         $this->validate($variantGroup, $constraint);
     }

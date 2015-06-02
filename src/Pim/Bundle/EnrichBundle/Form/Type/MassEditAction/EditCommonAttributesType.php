@@ -90,7 +90,7 @@ class EditCommonAttributesType extends AbstractType
                 'entity',
                 [
                     'class'    => $this->attributeClass,
-                    'choices'  => $options['common_attributes'],
+                    'choices'  => $options['all_attributes'],
                     'required' => false,
                     'multiple' => true,
                     'expanded' => false,
@@ -118,10 +118,10 @@ class EditCommonAttributesType extends AbstractType
     {
         $resolver->setDefaults(
             [
-                'data_class' => $this->dataClass,
-                'locales' => [],
-                'common_attributes' => [],
-                'current_locale'    => null
+                'data_class'     => $this->dataClass,
+                'locales'        => [],
+                'all_attributes' => [],
+                'current_locale' => null
             ]
         );
     }

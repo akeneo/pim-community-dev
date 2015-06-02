@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 class AttributeOptionManagerSpec extends ObjectBehavior
 {

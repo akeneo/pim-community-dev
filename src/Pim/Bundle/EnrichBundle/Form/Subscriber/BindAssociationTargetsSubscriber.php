@@ -30,8 +30,6 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
      * Add/remove target entities to/from the Association
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function submit(FormEvent $event)
     {

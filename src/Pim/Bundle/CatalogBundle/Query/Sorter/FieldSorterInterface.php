@@ -28,7 +28,7 @@ interface FieldSorterInterface extends SorterInterface
      *
      * @param string $field
      *
-     * @return boolean
+     * @return bool
      */
     public function supportsField($field);
 }

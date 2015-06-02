@@ -14,6 +14,7 @@ Feature: Mass Edit Families
     And I display the Length attribute
     And I switch the attribute "Length" requirement in channel "Mobile"
     And I move on to the next step
+    And I wait for the "set-attribute-requirements" mass-edit job to finish
     Then attribute "Length" should be required in family "boots" for channel "Mobile"
     And attribute "Length" should be required in family "sneakers" for channel "Mobile"
     And attribute "Length" should be required in family "sandals" for channel "Mobile"
@@ -31,6 +32,7 @@ Feature: Mass Edit Families
     And I display the Name attribute
     And I switch the attribute "Name" requirement in channel "Mobile"
     And I move on to the next step
+    And I wait for the "set-attribute-requirements" mass-edit job to finish
     Then attribute "Name" should be required in family "boots" for channel "Mobile"
     And attribute "Name" should be required in family "sneakers" for channel "Mobile"
     And attribute "Name" should be required in family "sandals" for channel "Mobile"

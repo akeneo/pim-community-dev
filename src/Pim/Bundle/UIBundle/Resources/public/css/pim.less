@@ -1,11 +1,15 @@
-@import 'mixins';
+@import "less/bootstrap_variables";
+@import 'less/bootstrap_mixins';
+@import 'less/variables';
 @import 'variables';
 @import 'icons';
-@import 'header';
+@import 'select2';
 @import 'form';
 @import 'wizard';
 @import 'tree';
 @import 'tinymce';
+@import 'akeneo-header';
+@import 'akeneo-tab-nav';
 
 /* General **********************************************************************************************************/
 
@@ -36,9 +40,6 @@ a:focus {
 }
 table.grid {
   margin-bottom: 20px;
-}
-.grid-container {
-  overflow: visible;
 }
 .filter-box {
   select.filter-select-oro {
@@ -188,12 +189,6 @@ a.back-link i {
   }
 }
 
-#sequentialEdit {
-    font-weight: bold;
-    .progress .bar {
-        #gradient .horizontal(@color-purple_light, @color-purple_dark);
-    }
-}
 hr.small {
     margin: 4px 0;
 }
@@ -277,16 +272,6 @@ a[data-toggle-channel] {
   }
 }
 
-.error-widget {
-  [class^="icon-"] {
-    font-size: 6em;
-    color: darken(@color-grey_tab, 25%);
-  }
-  p {
-    text-align: center;
-  }
-}
-
 .configuration {
   width: 100%;
   margin-bottom: 20px;
@@ -332,10 +317,6 @@ span.link-label {
   opacity: 0;
 }
 
-.btn-mini {
-  padding: 0 6px;
-}
-
 .diff {
   list-style-type: none;
   .file {
@@ -361,10 +342,13 @@ span.link-label {
 }
 
 #sequentialEdit {
+  font-weight: bold;
   margin:6px;
-
   .progress {
     margin-bottom: 0px;
+    .bar {
+        #gradient .horizontal(@color-purple_light, @color-purple_dark);
+    }
   }
 
   [class*="span"] {
@@ -402,17 +386,16 @@ span.link-label {
     width: 100%;
     margin: 0;
   }
-}
-
-#oroplatform-header .nav #header-notification-widget {
   .dropdown-toggle {
     width: 40px;
     height: 40px;
   }
+}
 
+#oroplatform-header .nav #header-notification-widget {
   ul.dropdown-menu {
     width: auto;
-    margin: -3px -1px 0 0 !important;
+    margin: -3px -1px 0 0;
     padding-top: 1px;
     padding-bottom: 0;
     ol.scroll-menu {
@@ -575,49 +558,5 @@ span.link-label {
 
   .action {
     width: 94px;
-  }
-}
-
-/** Loading ***********************************************************************************************************/
-.loading-frame {
-  .box.well {
-    background: none;
-    border: none;
-    box-shadow: none;
-    -webkit-box-shadow: none;
-    margin: 10px 0px;
-  }
-
-  .loading-content {
-    width: 40px;
-    height: 40px;
-    margin: auto auto;
-    background-image: none !important;
-    background-color: #fff;
-    color: transparent;
-
-    border-radius: 4px;
-    -webkit-animation: scaleout 0.7s infinite ease-in-out;
-    animation: scaleout 0.7s infinite ease-in-out;
-  }
-
-}
-
-@-webkit-keyframes scaleout {
-  0% { -webkit-transform: scale(0.0) }
-  100% {
-    -webkit-transform: scale(1.0);
-    opacity: 0;
-  }
-}
-
-@keyframes scaleout {
-  0% {
-    transform: scale(0.0);
-    -webkit-transform: scale(0.0);
-  } 100% {
-    transform: scale(1.0);
-    -webkit-transform: scale(1.0);
-    opacity: 0;
   }
 }

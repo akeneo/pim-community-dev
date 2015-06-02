@@ -65,7 +65,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
      * to return inline client-side form validation javascript
      *
      * @param FormView $formView
-     * @param boolean  $overwrite
+     * @param bool     $overwrite
      *
      * @return string
      */
@@ -373,7 +373,7 @@ class FormValidationScriptGenerator extends BaseFormValidationScriptGenerator
             $formType->vars['id'],
             array(
                 'name'       => $constraintName,
-                'parameters' => '{' . join(', ', $constraintParameters) . '}'
+                'parameters' => '{' . implode(', ', $constraintParameters) . '}'
             )
         );
     }

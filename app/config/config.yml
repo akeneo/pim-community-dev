@@ -19,8 +19,7 @@ framework:
     trusted_proxies:          ~
     session:
         name:                 BAPID
-        handler_id:           %session_handler%
-        save_path:            %kernel.root_dir%/cache/sessions
+        handler_id:           session.handler.pdo
         gc_maxlifetime:       3600
     fragments:
         enabled:              true
@@ -79,7 +78,6 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping:                true
-        class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
 
 # Swiftmailer Configuration
 swiftmailer:
@@ -88,3 +86,11 @@ swiftmailer:
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
     spool:                    { type: memory }
+
+pim_reference_data:
+    fabrics:
+        class: Acme\Bundle\AppBundle\Entity\Fabric
+        type: multi
+    color:
+        class: Acme\Bundle\AppBundle\Entity\Color
+        type: simple

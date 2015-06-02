@@ -32,6 +32,5 @@ class ProductHydratorSpec extends ObjectBehavior
         $query->execute()->willReturn([]);
 
         $this->hydrate($builder, $options);
-
     }
 }

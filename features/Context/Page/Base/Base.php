@@ -2,9 +2,9 @@
 
 namespace Context\Page\Base;
 
-use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Base page
@@ -59,8 +59,8 @@ class Base extends Page
     /**
      * Toggle the bootstrapSwitch on or off
      *
-     * @param string  $locator
-     * @param boolean $on
+     * @param string $locator
+     * @param bool   $on
      */
     public function toggleSwitch($locator, $on = true)
     {
@@ -96,6 +96,7 @@ class Base extends Page
 
     /**
      * Get page title
+     *
      * @return string
      */
     public function getTitle()
@@ -188,7 +189,9 @@ class Base extends Page
 
     /**
      * Get the confirm dialog element
+     *
      * @throws \Exception
+     *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Element
      */
     protected function getConfirmDialog()
@@ -204,6 +207,7 @@ class Base extends Page
 
     /**
      * Get the confirm dialog title
+     *
      * @return string
      */
     public function getConfirmDialogTitle()
@@ -217,6 +221,7 @@ class Base extends Page
 
     /**
      * Get confirm dialog content
+     *
      * @return string
      */
     public function getConfirmDialogContent()
@@ -279,6 +284,7 @@ class Base extends Page
      * @param string $text
      *
      * @throws \Exception
+     *
      * @return null|Element
      */
     public function findFlashMessage($text)

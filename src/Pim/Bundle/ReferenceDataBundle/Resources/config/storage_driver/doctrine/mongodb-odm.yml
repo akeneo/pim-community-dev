@@ -1,0 +1,13 @@
+parameters:
+    pim_reference_data.doctrine.query.filter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Filter\ReferenceDataFilter
+    pim_reference_data.doctrine.query.sorter.reference_data.class: Pim\Bundle\ReferenceDataBundle\Doctrine\MongoDB\Sorter\ReferenceDataSorter
+    pim_reference_data.mongodb.normalizer.reference_data.class:    Pim\Bundle\ReferenceDataBundle\MongoDB\Normalizer\ReferenceDataNormalizer
+
+services:
+    pim_reference_data.mongodb.normalizer.reference_data:
+        class: %pim_reference_data.mongodb.normalizer.reference_data.class%
+        public: false
+        arguments:
+            - '@pim_reference_data.label_renderer'
+        tags:
+            - { name: pim_serializer.normalizer }

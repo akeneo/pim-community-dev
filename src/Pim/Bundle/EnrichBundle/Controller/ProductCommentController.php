@@ -8,8 +8,8 @@ use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Manage comments on a product
@@ -67,8 +67,8 @@ class ProductCommentController
     /**
      * List comments made on a product
      *
-     * @param Request        $request
-     * @param integer|string $id
+     * @param Request    $request
+     * @param int|string $id
      *
      * @AclAncestor("pim_enrich_product_comment")
      *
@@ -102,11 +102,11 @@ class ProductCommentController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @param int $id the product id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {

@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap-tooltip'],
+    ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
     function ($, Navigation, LoadingMask, initSelect2) {
         'use strict';
 

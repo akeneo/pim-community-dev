@@ -43,6 +43,7 @@ class ObjectIdResolver implements ObjectIdResolverInterface
 
         $ids = [];
         foreach ($codes as $code) {
+            //TODO: do not hydrate them, use a scalar result
             $entity = $repository->findOneBy(['code' => $code]);
 
             if (!$entity) {

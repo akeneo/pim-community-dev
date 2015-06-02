@@ -14,7 +14,7 @@ use Context\Page\Job\Creation as JobCreation;
 class Creation extends JobCreation
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/collect/import/create';
 }

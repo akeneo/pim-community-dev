@@ -155,6 +155,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 
     /**
      * Assert field name and type
+     *
      * @param string $name Field name
      * @param string $type Field type alias
      */

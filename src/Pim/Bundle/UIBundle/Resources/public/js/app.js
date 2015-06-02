@@ -58,7 +58,7 @@ define(['jquery', 'underscore'],
                     var first = path[1];
                     if (path[2]) {
                         //case of 'array[level1]' || 'array[level1][level2]'
-                        path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][')
+                        path = path[2].match(/(?=\[(.*)\]$)/)[1].split('][');
                     } else {
                         //case of 'name'
                         path = [];
@@ -103,7 +103,7 @@ define(['jquery', 'underscore'],
                     mirrorKey = keys[key];
 
                     if (baseKey in result) {
-                        result[mirrorKey] = result[baseKey]
+                        result[mirrorKey] = result[baseKey];
                         delete result[baseKey];
                     }
                 }

@@ -16,12 +16,12 @@ use Symfony\Component\EventDispatcher\Event;
 class MassActionEvent extends Event
 {
     /**
-     * @var DatagridInterface $datagrid
+     * @var DatagridInterface
      */
     protected $datagrid;
 
     /**
-     * @var MassActionInterface $massAction
+     * @var MassActionInterface
      */
     protected $massAction;
 
@@ -29,7 +29,7 @@ class MassActionEvent extends Event
      * Entities or documents which are impacted by mass action
      * Can be just ids if needed
      *
-     * @var array $objects
+     * @var array
      */
     protected $objects;
 

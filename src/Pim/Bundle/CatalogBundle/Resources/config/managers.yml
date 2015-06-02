@@ -18,6 +18,7 @@ parameters:
     pim_catalog.manager.product_template_media.class:    Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager
     pim_catalog.applier.product_template.class:          Pim\Bundle\CatalogBundle\Manager\ProductTemplateApplier
     pim_catalog.resolver.variant_group_attributes.class: Pim\Bundle\CatalogBundle\Manager\VariantGroupAttributesResolver
+    pim_catalog.resolver.attribute_values.class:         Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver
 
 services:
     # Managers
@@ -32,7 +33,6 @@ services:
             - '@pim_catalog.saver.product'
             - '@pim_catalog.saver.product'
             - '@event_dispatcher'
-            - '@pim_catalog.manager.media'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.association_type'
@@ -154,3 +154,9 @@ services:
         class: %pim_catalog.resolver.variant_group_attributes.class%
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    pim_catalog.resolver.attribute_values:
+        class: %pim_catalog.resolver.attribute_values.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'

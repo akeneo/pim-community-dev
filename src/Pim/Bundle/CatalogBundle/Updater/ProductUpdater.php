@@ -3,12 +3,15 @@
 namespace Pim\Bundle\CatalogBundle\Updater;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
+use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
 /**
- * Update many products at a time
+ * Provides basic operations to update a product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -25,19 +28,136 @@ class ProductUpdater implements ProductUpdaterInterface
     /** @var CopierRegistryInterface */
     protected $copierRegistry;
 
+    /** @var AdderRegistryInterface */
+    protected $adderRegistry;
+
+    /** @var RemoverRegistryInterface */
+    protected $removerRegistry;
+
     /**
      * @param AttributeRepositoryInterface $repository
      * @param SetterRegistryInterface      $setterRegistry
      * @param CopierRegistryInterface      $copierRegistry
+     * @param AdderRegistryInterface       $adderRegistry
      */
     public function __construct(
         AttributeRepositoryInterface $repository,
         SetterRegistryInterface $setterRegistry,
-        CopierRegistryInterface $copierRegistry
+        CopierRegistryInterface $copierRegistry,
+        AdderRegistryInterface $adderRegistry,
+        RemoverRegistryInterface $removerRegistry
     ) {
         $this->attributeRepository = $repository;
-        $this->setterRegistry = $setterRegistry;
-        $this->copierRegistry = $copierRegistry;
+        $this->setterRegistry      = $setterRegistry;
+        $this->copierRegistry      = $copierRegistry;
+        $this->adderRegistry       = $adderRegistry;
+        $this->removerRegistry     = $removerRegistry;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setData(ProductInterface $product, $field, $data, array $options = [])
+    {
+        $attribute = $this->getAttribute($field);
+        if (null !== $attribute) {
+            $setter = $this->setterRegistry->getAttributeSetter($attribute);
+        } else {
+            $setter = $this->setterRegistry->getFieldSetter($field);
+        }
+
+        if (null === $setter) {
+            throw new \LogicException(sprintf('No setter found for field "%s"', $field));
+        }
+
+        if (null !== $attribute) {
+            $setter->setAttributeData($product, $attribute, $data, $options);
+        } else {
+            $setter->setFieldData($product, $field, $data, $options);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addData(ProductInterface $product, $field, $data, array $options = [])
+    {
+        $attribute = $this->getAttribute($field);
+        if (null !== $attribute) {
+            $adder = $this->adderRegistry->getAttributeAdder($attribute);
+        } else {
+            $adder = $this->adderRegistry->getFieldAdder($field);
+        }
+
+        if (null === $adder) {
+            throw new \LogicException(sprintf('No adder found for field "%s"', $field));
+        }
+
+        if (null !== $attribute) {
+            $adder->addAttributeData($product, $attribute, $data, $options);
+        } else {
+            $adder->addFieldData($product, $field, $data, $options);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function copyData(
+        ProductInterface $fromProduct,
+        ProductInterface $toProduct,
+        $fromField,
+        $toField,
+        array $options = []
+    ) {
+        $fromAttribute = $this->getAttribute($fromField);
+        $toAttribute = $this->getAttribute($toField);
+        if (null !== $fromAttribute && null !== $toAttribute) {
+            $copier = $this->copierRegistry->getAttributeCopier($fromAttribute, $toAttribute);
+        } else {
+            $copier = $this->copierRegistry->getFieldCopier($fromField, $toField);
+        }
+
+        if (null === $copier) {
+            throw new \LogicException(sprintf('No copier found for fields "%s" and "%s"', $fromField, $toField));
+        }
+
+        if (null !== $fromAttribute && null !== $toAttribute) {
+            $copier->copyAttributeData($fromProduct, $toProduct, $fromAttribute, $toAttribute, $options);
+        } else {
+            $copier->copyFieldData($fromProduct, $toProduct, $fromField, $toField, $options);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeData(ProductInterface $product, $field, $data, array $options = [])
+    {
+        $attribute = $this->getAttribute($field);
+        if (null !== $attribute) {
+            $remover = $this->removerRegistry->getAttributeRemover($attribute);
+        } else {
+            $remover = $this->removerRegistry->getFieldRemover($field);
+        }
+
+        if (null === $remover) {
+            throw new \LogicException(sprintf('No remover found for field "%s"', $field));
+        }
+
+        if (null !== $attribute) {
+            $remover->removeAttributeData($product, $attribute, $data, $options);
+        } else {
+            $remover->removeFieldData($product, $field, $data, $options);
+        }
+
+        return $this;
     }
 
     /**
@@ -45,9 +165,9 @@ class ProductUpdater implements ProductUpdaterInterface
      */
     public function setValue(array $products, $field, $data, $locale = null, $scope = null)
     {
-        $attribute = $this->getAttribute($field);
-        $setter = $this->setterRegistry->get($attribute);
-        $setter->setValue($products, $attribute, $data, $locale, $scope);
+        foreach ($products as $product) {
+            $this->setData($product, $field, $data, ['locale' => $locale, 'scope' => $scope]);
+        }
 
         return $this;
     }
@@ -64,10 +184,15 @@ class ProductUpdater implements ProductUpdaterInterface
         $fromScope = null,
         $toScope = null
     ) {
-        $fromAttribute = $this->getAttribute($fromField);
-        $toAttribute = $this->getAttribute($toField);
-        $copier = $this->copierRegistry->get($fromAttribute, $toAttribute);
-        $copier->copyValue($products, $fromAttribute, $toAttribute, $fromLocale, $toLocale, $fromScope, $toScope);
+        $options = [
+            'from_locale' => $fromLocale,
+            'to_locale' => $toLocale,
+            'from_scope' => $fromScope,
+            'to_scope' => $toScope,
+        ];
+        foreach ($products as $product) {
+            $this->copyData($product, $product, $fromField, $toField, $options);
+        }
 
         return $this;
     }
@@ -79,14 +204,11 @@ class ProductUpdater implements ProductUpdaterInterface
      *
      * @throws \LogicException
      *
-     * @return AttributeInterface
+     * @return AttributeInterface|null
      */
     protected function getAttribute($code)
     {
         $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
-        if ($attribute === null) {
-            throw new \LogicException(sprintf('Unknown attribute "%s".', $code));
-        }
 
         return $attribute;
     }

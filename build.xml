@@ -281,8 +281,11 @@
             <arg value="${symfony.database.name}_" />
             <arg value="${behat.profile.prefix}-" />
             <arg value="${basedir}/bin/behat ${behat.options}" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+            <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+            <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+            <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
     </target>
 
@@ -315,7 +318,7 @@
             <arg value="require" />
             <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm" />
-            <arg value="v1.0.0-beta10@dev" />
+            <arg value="v1.0.0-beta12@dev" />
         </exec>
     </target>
 
@@ -416,30 +419,6 @@
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
           <arg value="--no-interaction" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:create-index" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:index" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-        <exec executable="app/console">
-          <arg value="oro:search:reindex" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,12 +32,13 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      * @return ProductInterface
      */
     public function setId($id);
+
     /**
      * Get the identifier of the product
      *
-     * @return ProductValueInterface the identifier of the product
-     *
      * @throws MissingIdentifierException if no identifier could be found
+     *
+     * @return ProductValueInterface the identifier of the product
      */
     public function getIdentifier();
 
@@ -175,9 +177,9 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      *
      * @param AssociationInterface $association
      *
-     * @return ProductInterface
-     *
      * @throws \LogicException
+     *
+     * @return ProductInterface
      */
     public function addAssociation(AssociationInterface $association);
 

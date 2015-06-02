@@ -62,9 +62,9 @@ class Classify extends Wizard
     /**
      * @param string $category
      *
-     * @return NodeElement
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
      */
     public function findCategoryInTree($category)
     {
