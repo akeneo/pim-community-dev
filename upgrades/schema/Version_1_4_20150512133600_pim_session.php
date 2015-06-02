@@ -25,12 +25,12 @@ class Version_1_3_20150503133600_pim_session extends AbstractMigration implement
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $sessionTableSql = 'CREATE TABLE pim_session (
-+                sess_id VARBINARY(128) NOT NULL PRIMARY KEY,
-+                sess_data BLOB NOT NULL,
-+                sess_time INTEGER UNSIGNED NOT NULL,
-+                sess_lifetime MEDIUMINT NOT NULL
-+            ) COLLATE utf8_bin, ENGINE = InnoDB';
+        $sessionTableSql = "CREATE TABLE pim_session (
+                `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
+                `sess_data` BLOB NOT NULL,
+                `sess_time` INTEGER UNSIGNED NOT NULL,
+                `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
+            ) COLLATE utf8_bin, ENGINE = InnoDB";
 
         $this->addSql($sessionTableSql);
     }
