@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation:
     type: entity
     table: pimee_workflow_published_product_association
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
     fields:
         id:

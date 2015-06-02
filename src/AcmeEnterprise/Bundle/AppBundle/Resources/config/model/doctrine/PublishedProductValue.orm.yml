@@ -1,6 +1,7 @@
 AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue:
     type: entity
     table: acme_workflow_published_product_value
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     indexes:
         value_idx:
             columns:

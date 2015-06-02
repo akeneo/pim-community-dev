@@ -1,5 +1,9 @@
 # 1.4.x
 
+## Technical improvements
+- Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for all models)
+- Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
+
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
 - PIM-3296: Better display of options changes in Proposals

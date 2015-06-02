@@ -12,9 +12,9 @@ Feature: Export published products
     Given the following job "clothing_mobile_published_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/clothing_mobile_published_product_export.csv |
     And the following products:
-      | sku          | family  | categories                 | price                 | size | main_color | manufacturer |
-      | jacket-white | jackets | jackets, winter_collection | 10 EUR, 15 USD, 9 GBP | XL   | white      | Volcom       |
-      | jacket-black | jackets | jackets, winter_collection | 10 EUR, 15 USD, 9 GBP | XL   | black      | Volcom       |
+      | sku          | family  | categories                 | price          | size | main_color | manufacturer |
+      | jacket-white | jackets | jackets, winter_collection | 10 EUR, 15 USD | XL   | white      | Volcom       |
+      | jacket-black | jackets | jackets, winter_collection | 10 EUR, 15 USD | XL   | black      | Volcom       |
     And the following product values:
       | product      | attribute   | value                            | locale | scope  |
       | jacket-white | name        | White jacket                     | en_US  |        |
