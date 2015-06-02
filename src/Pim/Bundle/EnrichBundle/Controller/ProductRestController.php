@@ -315,7 +315,7 @@ class ProductRestController
                         $acl = null;
                 }
 
-                if (null !== $acl && $this->securityFacade->isGranted($acl)) {
+                if (null === $acl || $this->securityFacade->isGranted($acl)) {
                     $filteredProductData[$type] = $data;
                 }
             }
