@@ -67,8 +67,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $result = [$fieldName => ''];
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
-        } elseif (is_float($data)) {
-            $result = [$fieldName => sprintf(sprintf('%%.%sF', $this->precision), $data)];
+        } elseif (is_float($data) || 'decimal' === $entity->getAttribute()->getBackendType()) {
+            $pattern = $entity->getAttribute()->isDecimalsAllowed() ? sprintf('%%.%sF', $this->precision) : '%d';
+            $result = [$fieldName => sprintf($pattern, $data)];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
         } elseif (is_bool($data)) {
@@ -85,6 +86,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
                 $result = $this->serializer->normalize($data, $format, $context);
             } else {
                 $context['field_name'] = $fieldName;
+                if ('metric' === $entity->getAttribute()->getBackendType()) {
+                    $context['decimals_allowed'] = $entity->getAttribute()->isDecimalsAllowed();
+                }
+
                 $result = $this->serializer->normalize($data, $format, $context);
             }
         }
