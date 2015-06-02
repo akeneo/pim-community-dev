@@ -109,8 +109,6 @@ define([
                     this.$('> .media-field .progress .bar').css({
                         width: ((e.loaded / e.total) * 100) + '%'
                     });
-                } else {
-                    this.$('> .media-field .progress').css({opacity: 0});
                 }
             },
             previewImage: function () {
