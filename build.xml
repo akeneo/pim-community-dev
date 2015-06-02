@@ -93,12 +93,6 @@
 
             <fileset dir="${basedir}/src">
                 <include name="**/*.php" />
-                <modified />
-            </fileset>
-
-            <fileset dir="${basedir}/src">
-                <include name="**/*Test.php" />
-                <modified />
             </fileset>
         </apply>
     </target>
