@@ -15,10 +15,16 @@ define(
         return BaseForm.extend({
             template: _.template(smartAttributeTemplate),
             configure: function () {
-                mediator.on('field:extension:add', _.bind(this.addExtension, this));
+                mediator.off(null, null, 'context:product:form:attribute:smart-attribute');
+                mediator.on(
+                    'field:extension:add',
+                    _.bind(this.addExtension, this),
+                    'context:product:form:attribute:smart-attribute'
+                );
 
                 return $.when(
-                    BaseForm.prototype.configure.apply(this, arguments)
+                    BaseForm.prototype.configure.apply(this, arguments),
+                    RuleManager.getRuleRelations('attribute')
                 );
             },
             addExtension: function (event) {
@@ -26,12 +32,12 @@ define(
                     var field = event.field;
                     var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
 
-                    if (ruleRelation && 'edit' === field.getEditMode()) {
+                    if (ruleRelation && field.getEditable()) {
                         var $element = this.template({
                             ruleRelation: ruleRelation
                         });
 
-                        field.addElement('footer', 'updated_by', $element);
+                        field.addElement('footer', 'from_smart', $element);
                     }
                 }, this));
 

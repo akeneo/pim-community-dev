@@ -3,7 +3,10 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
+use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\CatalogBundle\Command\UpdateProductCommand;
+use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -86,7 +89,7 @@ class EnterpriseCommandContext extends CommandContext
                 );
             }
 
-            $publishedProduct = $this->getPublishedProduct($originalProduct);
+            $publishedProduct           = $this->getPublishedProduct($originalProduct);
             $normalizedPublishedProduct = $this->getContainer()->get('pim_serializer')->normalize(
                 $publishedProduct,
                 'json'
@@ -102,6 +105,149 @@ class EnterpriseCommandContext extends CommandContext
     }
 
     /**
+     * @param TableNode $tableProducts
+     *
+     * @throws \Exception
+     *
+     * @Then /^I should get the following proposals?:$/
+     */
+    public function iShouldGetTheFollowingProposals(TableNode $tableProducts)
+    {
+        foreach ($tableProducts->getHash() as $expected) {
+            $expectedResult = json_decode($expected['result'], true);
+
+            $product =
+                $this
+                    ->getMainContext()
+                    ->getSubContext('fixtures')
+                    ->getProduct($expected['product']);
+
+            if (null === $product) {
+                throw new \Exception(
+                    sprintf(
+                        'An error occurred during the retrieval of the original product'
+                    )
+                );
+            }
+
+            if (null === $expectedResult) {
+                throw new \Exception(
+                    sprintf(
+                        'Looks like the expected result is not valid json : %s',
+                        $expected['result']
+                    )
+                );
+            }
+
+            $proposal = $this->getProposal($product, $expected['username']);
+            if (null === $proposal) {
+                throw new \Exception(
+                    sprintf(
+                        'An error occurred during the retrieval of the draft "%s"',
+                        $expected['product']
+                    )
+                );
+            }
+            assertEquals($proposal->getChanges(), $expectedResult);
+        }
+    }
+
+    /**
+     * @param TableNode $tableProducts
+     *
+     * @throws \Exception
+     *
+     * @Then /^I should not get the following proposals?:$/
+     */
+    public function iShouldNotGetTheFollowingProposals(TableNode $tableProducts)
+    {
+        foreach ($tableProducts->getHash() as $expected) {
+            $product =
+                $this
+                    ->getMainContext()
+                    ->getSubContext('fixtures')
+                    ->getProduct($expected['product']);
+
+            if (null === $product) {
+                throw new \Exception(
+                    sprintf(
+                        'An error occurred during the retrieval of the original product'
+                    )
+                );
+            }
+
+            $proposal = $this->getProposal($product, $expected['username']);
+            if (null !== $proposal) {
+                throw new \Exception(
+                    sprintf(
+                        'Draft for the product "%s" and the user "%s" should not exists',
+                        $expected['product'],
+                        $expected['username']
+                    )
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $not
+     * @param string $product
+     * @param string $username
+     *
+     * @throws \Exception
+     *
+     * @Given /^I( failed to)? approve the proposal of the product "([^"]*)" created by user "([^"]*)"$/
+     */
+    public function iApproveTheProposal($not, $product, $username)
+    {
+        $application = new Application();
+        $application->add(new ApproveProposalCommand());
+
+        $proposal = $application->find('pim:proposal:approve');
+        $proposal->setContainer($this->getContainer());
+        $proposalTester = new CommandTester($proposal);
+
+        $proposalTester->execute(
+            [
+                'command'    => $proposal->getName(),
+                'identifier' => $product,
+                'username'   => $username,
+            ]
+        );
+
+        $result         = trim($proposalTester->getDisplay());
+        $expectedResult = sprintf('Proposal "%s" has been approved', $product);
+
+        if ('' === $not && $result !== $expectedResult) {
+            throw new \Exception($result);
+        } elseif ('' !== $not && $result === $expectedResult) {
+            throw new \Exception($result);
+        }
+    }
+
+    /**
+     * @param TableNode $updates
+     *
+     * @throws \Exception
+     */
+    public function iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt(TableNode $updates)
+    {
+        parent::iShouldGetTheFollowingProductsAfterApplyTheFollowingUpdaterToIt($updates);
+    }
+
+    /**
+     * @return Application
+     */
+    protected function getApplicationsForUpdaterProduct()
+    {
+        $application = new Application();
+        $application->add(new UpdateProductCommand());
+        $application->add(new GetProductCommand());
+
+        return $application;
+    }
+
+    /**
      * Retrieve published product from original one
      *
      * @param ProductInterface $originalProduct
@@ -110,9 +256,24 @@ class EnterpriseCommandContext extends CommandContext
      */
     protected function getPublishedProduct(ProductInterface $originalProduct)
     {
-        $repository = $this->getContainer()->get('pimee_workflow.repository.published_product');
+        $repository       = $this->getContainer()->get('pimee_workflow.repository.published_product');
         $publishedProduct = $repository->findOneByOriginalProduct($originalProduct);
 
         return $publishedProduct;
+    }
+
+    /**
+     * Retrieve proposal
+     *
+     * @param ProductInterface $product
+     * @param string           $username
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
+     */
+    protected function getProposal(ProductInterface $product, $username)
+    {
+        $repository = $this->getContainer()->get('pimee_workflow.repository.product_draft');
+
+        return $repository->findUserProductDraft($product, $username);
     }
 }

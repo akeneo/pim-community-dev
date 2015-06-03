@@ -13,7 +13,12 @@ define(
     function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
             configure: function () {
-                mediator.on('field:extension:add', _.bind(this.addExtension, this));
+                mediator.off(null, null, 'context:product:form:attribute:read-only-attribute-group');
+                mediator.on(
+                    'field:extension:add',
+                    _.bind(this.addExtension, this),
+                    'context:product:form:attribute:read-only-attribute-group'
+                );
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -30,7 +35,7 @@ define(
                     );
 
                     if (!attributeGroupPermission.edit) {
-                        field.setEnabled(false);
+                        field.setEditable(false);
                     }
                 }, this));
 

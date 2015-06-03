@@ -5,6 +5,21 @@
 - PIM-3296: Better display of options changes in Proposals
 
 ## BC Breaks
+- Remove `PimEnterprise\Bundle\WorkflowBundle\Comparator\DateComparator`
+- Rename `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface` to `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface`. First argument of method `supportsComparison` is replaced by a string $type
+- `PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator` is replaced by `PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorRegistry`
+- Replace tag `pimee_workflow.comparator` by `pimee_workflow.attribute.comparator`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\Doctrine\Common\Saver\ProductDraftSaver`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet\MetadataSubscriber`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\MarkInProgressSubscriber`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\PrepareProductDraftChangesSubscriber`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\PrepareUploadingMediaSubscriber`
+- Remove `PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft\UpdateProductDraftStatusSubscriber`
+- Change the constructor of `PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager`, removed the first argument $registry, added `Akeneo\Component\StorageUtils\Saver\SaverInterface` and `Akeneo\Component\StorageUtils\Remover\RemoverInterface` as the latest arguments
+- Remove second argument of `supports` method of `PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface`
 - Move PimEnterprise/Bundle/CatalogBundle/Doctrine/MongoDBODM/{ → Repository}/ProductMassActionRepository
 - Move PimEnterprise/Bundle/CatalogBundle/Doctrine/ORM/{ → Repository}/ProductMassActionRepository
 - Move PimEnterprise/Bundle/CatalogBundle/{Entity → Doctrine/ORM}/Repository/AttributeRepository
@@ -16,6 +31,17 @@
 - Add ProductBuilderInterface argument of the constructor of PimEnterprise/Bundle/CatalogRuleBundle/Validator/Constraints/ProductRule/ValueActionValidator
 
 # 1.3.x
+
+## Bug fixes
+- PIM-4227: fix BC break introduced in 1.3.13
+
+# 1.3.13 (2015-05-29)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.3.12 (2015-05-22)
 
 # 1.3.9 (2015-04-21)
 
@@ -141,6 +167,16 @@
 - PIM-3300: Fixed bug on revert of a multiselect attribute options
 - Remove the `is_default` from fixtures for attribute options
 - PIM-3548: Do not rely on the absolute file path of a media
+
+# 1.0.x
+
+## Bug fixes
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.0.27 (2015-05-27)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
 
 # 1.0.26 (2015-03-16)
 

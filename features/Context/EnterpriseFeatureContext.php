@@ -71,9 +71,11 @@ class EnterpriseFeatureContext extends FeatureContext
      */
     public function iShouldSeeThatAttributeIsASmart($attribute)
     {
+        $this->wait();
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($attribute);
+
         foreach ($icons as $icon) {
-            if ($icon->hasClass('icon-code-fork')) {
+            if ($icon->getParent()->hasClass('from-smart')) {
                 return true;
             }
         }
@@ -438,6 +440,21 @@ class EnterpriseFeatureContext extends FeatureContext
         if (!$popoverContent) {
             throw $this->createExpectationException(sprintf('The popover does not contain %s', $search));
         }
+    }
+
+    /**
+     * @When /^I revert the product version number (\d+)$/
+     */
+    public function iRevertTheProductVersionNumber($version)
+    {
+        $this->getSession()
+            ->getPage()
+            ->find('css', sprintf('tr[data-version="%s"]', $version))
+            ->find('css', 'td.actions .btn.restore')->click();
+        $this->wait();
+        $this->getSubcontext('navigation')->getCurrentPage()->confirmDialog();
+
+        $this->wait();
     }
 
     protected function getAttributeIcon($iconSelector, $attributeLabel)

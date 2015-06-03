@@ -13,7 +13,12 @@ define(
     function ($, _, Backbone, BaseForm, FieldManager, PermissionManager, mediator) {
         return BaseForm.extend({
             configure: function () {
-                mediator.on('field:extension:add', _.bind(this.addExtension, this));
+                mediator.off(null, null, 'context:product:form:attribute:read-only-locale');
+                mediator.on(
+                    'field:extension:add',
+                    _.bind(this.addExtension, this),
+                    'context:product:form:attribute:read-only-locale'
+                );
 
                 return $.when(
                     BaseForm.prototype.configure.apply(this, arguments)
@@ -27,7 +32,7 @@ define(
                         var localePermission = _.findWhere(permissions.locales, {code: field.context.locale});
 
                         if (!localePermission.edit) {
-                            field.setEnabled(false);
+                            field.setEditable(false);
                         }
                     }
                 }, this));

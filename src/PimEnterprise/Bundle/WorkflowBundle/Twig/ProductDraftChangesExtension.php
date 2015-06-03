@@ -117,50 +117,35 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * Present an attribute (showing its label, scope and localizability)
      *
      * @param array  $change
-     * @param string $default
+     * @param string $code
      *
      * @return string
      */
-    public function presentAttribute(array $change, $default)
+    public function presentAttribute(array $change, $code)
     {
-        if (isset($change['__context__']['attribute'])) {
-            $attributeCode = $change['__context__']['attribute'];
-            if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode)) {
-                return $this->present($attribute, $change);
-            }
+        if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($code)) {
+            return $this->present($attribute, $change);
         }
 
-        return $default;
+        return $code;
     }
 
     /**
      * Present an attribute change
      *
-     * @param array        $change
      * @param ProductDraft $productDraft
+     * @param array        $change
+     * @param string       $code
      *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      *
      * @return string
      */
-    public function presentChange(array $change, ProductDraft $productDraft)
+    public function presentChange(ProductDraft $productDraft, array $change, $code)
     {
-        $change['__context__'] = array_merge(
-            [
-                'attribute' => null,
-                'locale' => null,
-                'scope' => null,
-            ],
-            $change['__context__']
-        );
-
-        $attribute = $change['__context__']['attribute'];
-        $locale = $change['__context__']['locale'];
-        $scope = $change['__context__']['scope'];
-
-        if (null === $value = $productDraft->getProduct()->getValue($attribute, $locale, $scope)) {
-            $value = $this->createFakeValue();
+        if (null === $value = $productDraft->getProduct()->getValue($code, $change['locale'], $change['scope'])) {
+            $value = $this->createFakeValue($code);
         }
 
         if (null !== $result = $this->present($value, $change)) {
@@ -214,7 +199,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     protected function present($object, array $change = [])
     {
         foreach ($this->getPresenters() as $presenter) {
-            if ($presenter->supports($object, $change)) {
+            if ($presenter->supports($object)) {
                 if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
                 }
@@ -235,13 +220,21 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * Create a fake value
      *
+     * @param string $code
+     *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
-    protected function createFakeValue()
+    protected function createFakeValue($code)
     {
-        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
-        $value = $this->productManager->createProductValue($attribute);
-        $value->setAttribute($attribute);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
+        $newAttribute = $this->attributeManager->createAttribute($attribute->getAttributeType());
+        $value = $this->productManager->createProductValue($newAttribute);
+
+        if (null !== $attribute->getReferenceDataName()) {
+            $newAttribute->setReferenceDataName($attribute->getReferenceDataName());
+        }
+
+        $value->setAttribute($newAttribute);
 
         return $value;
     }

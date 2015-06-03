@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 class MediaComparatorSpec extends ObjectBehavior
 {
@@ -12,42 +11,28 @@ class MediaComparatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_get_changes_when_add_file(
-        ProductValueInterface $value
-    ) {
-        $submittedData = [
-            'id' => 1,
-            'media' => [
-                'filename' => 'foo.jpg',
-                'originalFilename' => 'foo',
-                'filePath' => '/tmp/foo.jpg',
-                'mimeType' => 'image/jpeg',
-                'size' => 1001,
-            ],
-        ];
-
-        $this->getChanges($value, $submittedData)->shouldReturn($submittedData);
+    function it_supports_media_type()
+    {
+        $this->supportsComparison('pim_catalog_file')->shouldReturn(true);
+        $this->supportsComparison('pim_catalog_image')->shouldReturn(true);
+        $this->supportsComparison('other')->shouldBe(false);
     }
 
-    function it_get_changes_when_removing_file(
-        ProductValueInterface $value
-    ) {
-        $submittedData = [
-            'id' => 1,
-            'media' => [
-                'removed' => true,
-            ],
-        ];
-        $this->getChanges($value, $submittedData)->shouldReturn($submittedData);
+    function it_get_changes_when_add_file()
+    {
+        $changes   = ['value' => ['filePath' => '/tmp/foo.jpg']];
+        $originals = ['value' => ['filePath' => null]];
+
+        $return = $changes;
+        $return['value']['filename'] = 'foo.jpg';
+        $this->getChanges($changes, $originals)->shouldReturn($return);
     }
 
-    function it_does_get_changes_when_no_info_is_available(
-        ProductValueInterface $value
-    ) {
-        $submittedData = [
-            'id' => 1,
-            'media' => [],
-        ];
-        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    function it_does_not_change_not_updated_file()
+    {
+        $changes   = ['value' => ['filePath' => '/tmp/foo.jpg']];
+        $originals = ['value' => ['filePath' => '/tmp/foo.jpg']];
+
+        $this->getChanges($changes, $originals)->shouldReturn(null);
     }
 }
