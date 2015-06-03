@@ -18,14 +18,14 @@ class FilePresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_presentation_of_value_which_stores_data_in_the_media_property_with_a_media_change(
+    function it_supports_file(
         Model\ProductValueInterface $value,
         Model\AttributeInterface $attribute
     ) {
+        $attribute->getAttributeType()->willReturn('pim_catalog_file');
         $value->getAttribute()->willReturn($attribute);
-        $attribute->getBackendType()->willReturn('media');
 
-        $this->supports($value, ['media' => 'foo'])->shouldBe(true);
+        $this->supports($value)->shouldBe(true);
     }
 
     function it_presents_files_in_a_list(
@@ -45,7 +45,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn('/media/uploaded_foo.pdf');
 
         $change = [
-            'media' => [
+            'value' => [
                 'filename' => 'uploaded_foo.pdf',
                 'originalFilename' => 'foo.pdf',
             ]
@@ -55,11 +55,11 @@ class FilePresenterSpec extends ObjectBehavior
             '<ul class="diff">' .
                 '<li class="base file">' .
                     '<i class="icon-file"></i>' .
-                    '<a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
+                    '<a target="_blank" class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
                 '</li>' .
                 '<li class="changed file">' .
                     '<i class="icon-file"></i>' .
-                    '<a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
+                    '<a target="_blank" class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
                 '</li>' .
             '</ul>'
         );
@@ -76,7 +76,7 @@ class FilePresenterSpec extends ObjectBehavior
             ->willReturn('/media/uploaded_foo.pdf');
 
         $change = [
-            'media' => [
+            'value' => [
                 'filename' => 'uploaded_foo.pdf',
                 'originalFilename' => 'foo.pdf',
             ]
@@ -86,7 +86,7 @@ class FilePresenterSpec extends ObjectBehavior
             '<ul class="diff">' .
                 '<li class="changed file">' .
                     '<i class="icon-file"></i>' .
-                    '<a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
+                    '<a target="_blank" class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a>' .
                 '</li>' .
             '</ul>'
         );
@@ -105,11 +105,11 @@ class FilePresenterSpec extends ObjectBehavior
             ->generate('pim_enrich_media_show', ['filename' => 'uploaded_bar.pdf'])
             ->willReturn('/media/uploaded_bar.pdf');
 
-        $this->present($value, ['media' => []])->shouldReturn(
+        $this->present($value, ['value' => []])->shouldReturn(
             '<ul class="diff">' .
                 '<li class="base file">' .
                     '<i class="icon-file"></i>' .
-                    '<a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
+                    '<a target="_blank" class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a>' .
                 '</li>' .
             '</ul>'
         );

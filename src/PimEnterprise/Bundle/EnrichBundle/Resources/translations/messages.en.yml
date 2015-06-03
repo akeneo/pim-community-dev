@@ -122,6 +122,7 @@ pimee_enrich:
 job_execution.summary:
     mass_published: Product published
     mass_unpublished: Product unpublished
+    proposal: Proposal created
 
 add_product_value_with_permission.steps.add_product_value_with_permission_processor.title: Add product value with permission
 
