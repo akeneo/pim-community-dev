@@ -91,11 +91,13 @@ class CategoryExtensionSpec extends ObjectBehavior
         $manager->getProductsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $root->getId()->willReturn(1);
+        $root->getCode()->willReturn('root');
         $root->getLabel()->willReturn('Root');
         $root->hasChildren()->willReturn(true);
         $root->isRoot()->willReturn(true);
 
         $category1->getId()->willReturn(2);
+        $category1->getCode()->willReturn('selected_category');
         $category1->getLabel()->willReturn('Selected category');
         $category1->hasChildren()->willReturn(false);
         $category1->isRoot()->willReturn(false);
@@ -105,6 +107,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         ];
 
         $category2->getId()->willReturn(3);
+        $category2->getCode()->willReturn('some_category');
         $category2->getLabel()->willReturn('Some category');
         $category2->hasChildren()->willReturn(false);
         $category2->isRoot()->willReturn(false);
@@ -114,18 +117,18 @@ class CategoryExtensionSpec extends ObjectBehavior
         ];
 
         $expected = [
-            'attr'     => ['id' => 'node_1'],
+            'attr'     => ['id' => 'node_1', 'data-code' => 'root'],
             'data'     => 'Root (5)',
             'state'    => 'closed jstree-root',
             'children' => [
                 [
-                    'attr'     => ['id' => 'node_2'],
+                    'attr'     => ['id' => 'node_2', 'data-code' => 'selected_category'],
                     'data'     => 'Selected category (5)',
                     'state'    => 'leaf toselect jstree-checked',
                     'children' => []
                 ],
                 [
-                    'attr'     => ['id' => 'node_3'],
+                    'attr'     => ['id' => 'node_3', 'data-code' => 'some_category'],
                     'data'     => 'Some category (5)',
                     'state'    => 'leaf',
                     'children' => []
@@ -145,11 +148,13 @@ class CategoryExtensionSpec extends ObjectBehavior
         $manager->getProductsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $root->getId()->willReturn(1);
+        $root->getCode()->willReturn('root');
         $root->getLabel()->willReturn('Root');
         $root->hasChildren()->willReturn(true);
         $root->isRoot()->willReturn(true);
 
         $category1->getId()->willReturn(2);
+        $category1->getCode()->willReturn('selected_category');
         $category1->getLabel()->willReturn('Selected category');
         $category1->hasChildren()->willReturn(false);
         $category1->isRoot()->willReturn(false);
@@ -159,6 +164,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         ];
 
         $category2->getId()->willReturn(3);
+        $category2->getCode()->willReturn('some_category');
         $category2->getLabel()->willReturn('Some category');
         $category2->hasChildren()->willReturn(false);
         $category2->isRoot()->willReturn(false);
@@ -168,18 +174,18 @@ class CategoryExtensionSpec extends ObjectBehavior
         ];
 
         $expected = [
-            'attr'     => ['id' => 'node_1'],
+            'attr'     => ['id' => 'node_1', 'data-code' => 'root'],
             'data'     => 'Root',
             'state'    => 'closed jstree-root',
             'children' => [
                 [
-                    'attr'     => ['id' => 'node_2'],
+                    'attr'     => ['id' => 'node_2', 'data-code' => 'selected_category'],
                     'data'     => 'Selected category',
                     'state'    => 'leaf toselect jstree-checked',
                     'children' => []
                 ],
                 [
-                    'attr'     => ['id' => 'node_3'],
+                    'attr'     => ['id' => 'node_3', 'data-code' => 'some_category'],
                     'data'     => 'Some category',
                     'state'    => 'leaf',
                     'children' => []
@@ -199,32 +205,35 @@ class CategoryExtensionSpec extends ObjectBehavior
         $manager->getProductsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $category0->getId()->willReturn(1);
+        $category0->getCode()->willReturn('selected_category');
         $category0->getLabel()->willReturn('Selected category');
         $category0->hasChildren()->willReturn(true);
         $category0->isRoot()->willReturn(false);
 
         $category1->getId()->willReturn(2);
+        $category1->getCode()->willReturn('sub_category1');
         $category1->getLabel()->willReturn('Sub-category 1');
         $category1->hasChildren()->willReturn(false);
         $category1->isRoot()->willReturn(false);
 
         $category2->getId()->willReturn(3);
+        $category2->getCode()->willReturn('sub_category2');
         $category2->getLabel()->willReturn('Sub-category 2');
         $category2->hasChildren()->willReturn(false);
         $category2->isRoot()->willReturn(false);
 
         $expected = [
-            'attr'     => ['id' => 'node_1'],
+            'attr'     => ['id' => 'node_1', 'data-code' => 'selected_category'],
             'data'     => 'Selected category (5)',
             'state'    => 'closed',
             'children' => [
                 [
-                    'attr'  => ['id' => 'node_2'],
+                    'attr'  => ['id' => 'node_2', 'data-code' => 'sub_category1'],
                     'data'  => 'Sub-category 1 (5)',
                     'state' => 'leaf'
                 ],
                 [
-                    'attr'  => ['id' => 'node_3'],
+                    'attr'  => ['id' => 'node_3', 'data-code' => 'sub_category2'],
                     'data'  => 'Sub-category 2 (5)',
                     'state' => 'leaf'
                 ]
@@ -243,32 +252,35 @@ class CategoryExtensionSpec extends ObjectBehavior
         $manager->getProductsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $category0->getId()->willReturn(1);
+        $category0->getCode()->willReturn('selected_category');
         $category0->getLabel()->willReturn('Selected category');
         $category0->hasChildren()->willReturn(true);
         $category0->isRoot()->willReturn(false);
 
         $category1->getId()->willReturn(2);
+        $category1->getCode()->willReturn('sub_category1');
         $category1->getLabel()->willReturn('Sub-category 1');
         $category1->hasChildren()->willReturn(false);
         $category1->isRoot()->willReturn(false);
 
         $category2->getId()->willReturn(3);
+        $category2->getCode()->willReturn('sub_category2');
         $category2->getLabel()->willReturn('Sub-category 2');
         $category2->hasChildren()->willReturn(false);
         $category2->isRoot()->willReturn(false);
 
         $expected = [
-            'attr'     => ['id' => 'node_1'],
+            'attr'     => ['id' => 'node_1', 'data-code' => 'selected_category'],
             'data'     => 'Selected category',
             'state'    => 'closed',
             'children' => [
                 [
-                    'attr'  => ['id' => 'node_2'],
+                    'attr'  => ['id' => 'node_2', 'data-code' => 'sub_category1'],
                     'data'  => 'Sub-category 1',
                     'state' => 'leaf'
                 ],
                 [
-                    'attr'  => ['id' => 'node_3'],
+                    'attr'  => ['id' => 'node_3', 'data-code' => 'sub_category2'],
                     'data'  => 'Sub-category 2',
                     'state' => 'leaf'
                 ]
@@ -287,6 +299,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         $manager->getProductsCountInCategory(Argument::any(), false)->willReturn(5);
 
         $category1->getId()->willReturn(2);
+        $category1->getCode()->willReturn('some_category1');
         $category1->getLabel()->willReturn('Some category 1');
         $category1->hasChildren()->willReturn(false);
         $category1->isRoot()->willReturn(false);
@@ -296,6 +309,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         ];
 
         $category2->getId()->willReturn(3);
+        $category2->getCode()->willReturn('some_category2');
         $category2->getLabel()->willReturn('Some category 2');
         $category2->hasChildren()->willReturn(false);
         $category2->isRoot()->willReturn(false);
@@ -305,6 +319,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         ];
 
         $category0->getId()->willReturn(1);
+        $category0->getCode()->willReturn('parent_category');
         $category0->getLabel()->willReturn('Parent category');
         $category0->hasChildren()->willReturn(true);
         $category0->isRoot()->willReturn(false);
@@ -315,19 +330,19 @@ class CategoryExtensionSpec extends ObjectBehavior
 
         $expected = [
             [
-                'attr'     => ['id' => 'node_1'],
+                'attr'     => ['id' => 'node_1', 'data-code' => 'parent_category'],
                 'data'     => 'Parent category',
                 'state'    => 'open',
                 'children' => [
                     [
-                        'attr'                  => ['id' => 'node_2'],
+                        'attr'                  => ['id' => 'node_2', 'data-code' => 'some_category1'],
                         'data'                  => 'Some category 1',
                         'state'                 => 'leaf',
                         'children'              => [],
                         'selectedChildrenCount' => 0
                     ],
                     [
-                        'attr'                  => ['id' => 'node_3'],
+                        'attr'                  => ['id' => 'node_3', 'data-code' => 'some_category2'],
                         'data'                  => 'Some category 2',
                         'state'                 => 'leaf',
                         'children'              => [],
