@@ -1,5 +1,5 @@
 parameters:
-    pimee_base_connector.processor.denormalization.product_draft.class: PimEnterprise\Component\Connector\Processor\Denormalization\ProductDraftProcessor
+    pimee_base_connector.processor.denormalization.product_draft.class: PimEnterprise\Component\Workflow\Connector\Processor\Denormalization\ProductDraftProcessor
 
 services:
     pimee_base_connector.processor.denormalization.product_draft.flat:

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\Connector\ArrayConverter\Flat;
+namespace PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;

@@ -1,5 +1,5 @@
 parameters:
-    pimee_base_connector.array_converter.flat.product_draft.class: PimEnterprise\Component\Connector\ArrayConverter\Flat\ProductDraftToStandardConverter
+    pimee_base_connector.array_converter.flat.product_draft.class: PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat\ProductDraftToStandardConverter
 
 services:
     pimee_base_connector.array_converter.flat.product_draft:

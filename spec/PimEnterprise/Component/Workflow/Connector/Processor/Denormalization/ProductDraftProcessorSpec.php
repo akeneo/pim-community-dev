@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Connector\Processor\Denormalization;
+namespace spec\PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;

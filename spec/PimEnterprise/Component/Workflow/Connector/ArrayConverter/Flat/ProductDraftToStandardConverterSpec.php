@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\Connector\ArrayConverter\Flat;
+namespace spec\PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
