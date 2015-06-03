@@ -2,10 +2,10 @@
 
 namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Cursor;
 
-use PhpSpec\ObjectBehavior;
-use Doctrine\ODM\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Query;
 use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\Query\Builder;
+use PhpSpec\ObjectBehavior;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -53,6 +53,7 @@ class CursorSpec extends ObjectBehavior
         $cursor->getNext()->will(function () use ($cursor, &$data) {
             $stepData = array_shift($data);
             $cursor->current()->willReturn($stepData);
+
             return $stepData;
         });
         $cursor->reset()->will(function () use ($cursor, &$data, $initialData) {
@@ -104,4 +105,3 @@ class Entity
         $this->id = $id;
     }
 }
-

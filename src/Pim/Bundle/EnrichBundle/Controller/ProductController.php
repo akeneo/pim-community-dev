@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
@@ -76,26 +77,33 @@ class ProductController extends AbstractDoctrineController
     /** @var RemoverInterface */
     protected $productRemover;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * Constant used to redirect to the datagrid when save edit form
+     *
      * @staticvar string
      */
     const BACK_TO_GRID = 'BackGrid';
 
     /**
      * Constant used to redirect to create popin when save edit form
+     *
      * @staticvar string
      */
     const CREATE = 'Create';
 
     /**
      * Constant used to redirect to next product in a sequential edition
+     *
      * @staticvar string
      */
     const SAVE_AND_NEXT = 'SaveAndNext';
 
     /**
      * Constant used to redirect to the grid once all products are edited in a sequential edition
+     *
      * @staticvar string
      */
     const SAVE_AND_FINISH = 'SaveAndFinish';
@@ -122,6 +130,7 @@ class ProductController extends AbstractDoctrineController
      * @param MediaManager             $mediaManager
      * @param SequentialEditManager    $seqEditManager
      * @param RemoverInterface         $productRemover
+     * @param ProductBuilderInterface  $productBuilder
      */
     public function __construct(
         Request $request,
@@ -142,7 +151,8 @@ class ProductController extends AbstractDoctrineController
         SaverInterface $productSaver,
         MediaManager $mediaManager,
         SequentialEditManager $seqEditManager,
-        RemoverInterface $productRemover
+        RemoverInterface $productRemover,
+        ProductBuilderInterface $productBuilder
     ) {
         parent::__construct(
             $request,
@@ -166,6 +176,7 @@ class ProductController extends AbstractDoctrineController
         $this->mediaManager      = $mediaManager;
         $this->seqEditManager    = $seqEditManager;
         $this->productRemover    = $productRemover;
+        $this->productBuilder    = $productBuilder;
     }
 
     /**
@@ -175,6 +186,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @AclAncestor("pim_enrich_product_index")
      * @Template
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -195,6 +207,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_product_create")
+     *
      * @return array
      */
     public function createAction(Request $request, $dataLocale)
@@ -203,7 +216,7 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $product = $this->productManager->createProduct();
+        $product = $this->productBuilder->createProduct();
         $form = $this->createForm('pim_product_create', $product, $this->getCreateFormOptions($product));
         if ($request->isMethod('POST')) {
             $form->submit($request);
@@ -234,10 +247,11 @@ class ProductController extends AbstractDoctrineController
      * Edit product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -245,8 +259,6 @@ class ProductController extends AbstractDoctrineController
         $product = $this->findProductOr404($id);
 
         $this->dispatch(ProductEvents::PRE_EDIT, new GenericEvent($product));
-
-        $this->productManager->ensureAllAssociationTypes($product);
 
         $form = $this->createForm(
             'pim_product_edit',
@@ -266,7 +278,7 @@ class ProductController extends AbstractDoctrineController
      * Toggle product status (enabled/disabled)
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @return Response|RedirectResponse
      *
@@ -295,17 +307,16 @@ class ProductController extends AbstractDoctrineController
      * Update product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template("PimEnrichBundle:Product:edit.html.twig")
      * @AclAncestor("pim_enrich_product_index")
+     *
      * @return RedirectResponse
      */
     public function updateAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-
-        $this->productManager->ensureAllAssociationTypes($product);
 
         $form = $this->createForm(
             'pim_product_edit',
@@ -386,9 +397,10 @@ class ProductController extends AbstractDoctrineController
      * History of a product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_product_history")
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
@@ -405,9 +417,10 @@ class ProductController extends AbstractDoctrineController
      * Remove product
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_product_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
@@ -425,14 +438,15 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request        $request    The request object
-     * @param integer|string $id         Product id
-     * @param integer        $categoryId The parent category id
+     * @param Request    $request    The request object
+     * @param int|string $id         Product id
+     * @param int        $categoryId The parent category id
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
      * @Template
      * @AclAncestor("pim_enrich_product_categories_view")
+     *
      * @return array
      */
     public function listCategoriesAction(Request $request, $id, $categoryId)
@@ -536,21 +550,23 @@ class ProductController extends AbstractDoctrineController
     /**
      * Find a product by its id or return a 404 response
      *
-     * @param integer $id the product id
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @param int $id the product id
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
-
         if (!$product) {
             throw $this->createNotFoundException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
+        // With this version of the form we need to add missing values from family
+        $this->productBuilder->addMissingProductValues($product);
+        $this->productBuilder->addMissingAssociations($product);
 
         return $product;
     }

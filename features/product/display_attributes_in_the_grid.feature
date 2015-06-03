@@ -15,7 +15,7 @@ Feature: Display product attributes in the grid
     And the following products:
       | sku      | manufacturer | weather_conditions  |
       | sneakers | Converse     | dry, cloudy, stormy |
-      | sandals  | adidas       | hot, dry            |
+      | sandals  | adidas       | dry, hot            |
       | boots    | lacoste      | cloudy              |
     And I am logged in as "Mary"
     And I am on the products page

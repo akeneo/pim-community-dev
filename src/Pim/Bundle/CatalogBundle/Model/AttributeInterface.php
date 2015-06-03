@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,8 +14,12 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AttributeInterface extends TimestampableInterface, TranslatableInterface,
- GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
+interface AttributeInterface extends
+    TimestampableInterface,
+    TranslatableInterface,
+    GroupSequenceProviderInterface,
+    ReferableInterface,
+    VersionableInterface
 {
     /**
      * Set code
@@ -28,7 +33,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set required
      *
-     * @param boolean $required
+     * @param bool $required
      *
      * @return AttributeInterface
      */
@@ -36,7 +41,8 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Is unique
-     * @return boolean $unique
+     *
+     * @return bool $unique
      */
     public function isUnique();
 
@@ -51,12 +57,14 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get properties
+     *
      * @return array
      */
     public function getProperties();
 
     /**
      * Get backend type
+     *
      * @return string
      */
     public function getBackendType();
@@ -72,14 +80,15 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Is scopable
-     * @return boolean $scopable
+     *
+     * @return bool $scopable
      */
     public function isScopable();
 
     /**
      * Set localizable
      *
-     * @param boolean $localizable
+     * @param bool $localizable
      *
      * @return AttributeInterface
      */
@@ -87,6 +96,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get entity type
+     *
      * @return string
      */
     public function getEntityType();
@@ -127,14 +137,15 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get maxFileSize
-     * @return double $maxFileSize
+     *
+     * @return float $maxFileSize
      */
     public function getMaxFileSize();
 
     /**
      * Set wysiwygEnabled
      *
-     * @param boolean $wysiwygEnabled
+     * @param bool $wysiwygEnabled
      *
      * @return AttributeInterface
      */
@@ -142,6 +153,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get metricFamily
+     *
      * @return string $metricFamily
      */
     public function getMetricFamily();
@@ -157,42 +169,49 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get defaultMetricUnit
+     *
      * @return string $defaultMetricUnit
      */
     public function getDefaultMetricUnit();
 
     /**
      * Get numberMax
+     *
      * @return mixed $numberMax
      */
     public function getNumberMax();
 
     /**
      * Get families
+     *
      * @return ArrayCollection|null
      */
     public function getFamilies();
 
     /**
      * Get label
+     *
      * @return string
      */
     public function getLabel();
 
     /**
      * Get options
+     *
      * @return \ArrayAccess
      */
     public function getOptions();
 
     /**
      * Predicate for negativeAllowed property
-     * @return boolean $negativeAllowed
+     *
+     * @return bool $negativeAllowed
      */
     public function isNegativeAllowed();
 
     /**
      * Returns the minimum input length for singlechoice and multichoice types
+     *
      * @return int
      */
     public function getMinimumInputLength();
@@ -218,6 +237,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get allowedExtensions
+     *
      * @return array $allowedExtensions
      */
     public function getAllowedExtensions();
@@ -243,7 +263,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set negativeAllowed
      *
-     * @param boolean $negativeAllowed
+     * @param bool $negativeAllowed
      *
      * @return AttributeInterface
      */
@@ -251,7 +271,8 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Is localizable
-     * @return boolean $localizable
+     *
+     * @return bool $localizable
      */
     public function isLocalizable();
 
@@ -274,7 +295,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Predicate for useableAsGridFilter property
      *
-     * @return boolean $useableAsGridFilter
+     * @return bool $useableAsGridFilter
      */
     public function isUseableAsGridFilter();
 
@@ -347,7 +368,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set maxFileSize
      *
-     * @param double $maxFileSize
+     * @param float $maxFileSize
      *
      * @return AttributeInterface
      */
@@ -355,6 +376,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get group
+     *
      * @return AttributeGroupInterface
      */
     public function getGroup();
@@ -378,12 +400,13 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Predicate for wysiwygEnabled property
      *
-     * @return boolean $wysiwygEnabled
+     * @return bool $wysiwygEnabled
      */
     public function isWysiwygEnabled();
 
     /**
      * Get id
+     *
      * @return int|string
      */
     public function getId();
@@ -407,7 +430,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Is required
      *
-     * @return boolean $required
+     * @return bool $required
      */
     public function isRequired();
 
@@ -416,15 +439,16 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
      *
      * @param array $parameters
      *
-     * @return AttributeInterface
      * @throws \Exception
+     *
+     * @return AttributeInterface
      */
     public function setParameters($parameters);
 
     /**
      * Set Max characters
      *
-     * @param integer $maxCharacters
+     * @param int $maxCharacters
      *
      * @return AttributeInterface
      */
@@ -433,7 +457,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set unique
      *
-     * @param boolean $unique
+     * @param bool $unique
      *
      * @return AttributeInterface
      */
@@ -441,6 +465,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get dateMin
+     *
      * @return \Datetime $dateMin
      */
     public function getDateMin();
@@ -466,7 +491,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set useableAsGridFilter
      *
-     * @param boolean $useableAsGridFilter
+     * @param bool $useableAsGridFilter
      *
      * @return AttributeInterface
      */
@@ -482,7 +507,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Sets the minimum input length for singlechoice and multichoice types
      *
-     * @param integer $minimumInputLength
+     * @param int $minimumInputLength
      *
      * @return AttributeInterface
      */
@@ -500,7 +525,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Predicate for decimalsAllowed property
      *
-     * @return boolean $decimalsAllowed
+     * @return bool $decimalsAllowed
      */
     public function isDecimalsAllowed();
 
@@ -524,7 +549,8 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get Max characters
-     * @return integer $maxCharacters
+     *
+     * @return int $maxCharacters
      */
     public function getMaxCharacters();
 
@@ -540,7 +566,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set scopable
      *
-     * @param boolean $scopable
+     * @param bool $scopable
      *
      * @return AttributeInterface
      */
@@ -548,12 +574,14 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
 
     /**
      * Get sortOrder
-     * @return integer
+     *
+     * @return int
      */
     public function getSortOrder();
 
     /**
      * Get Validation regexp
+     *
      * @return string $validationRegexp
      */
     public function getValidationRegexp();
@@ -570,7 +598,7 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
     /**
      * Set decimalsAllowed
      *
-     * @param boolean $decimalsAllowed
+     * @param bool $decimalsAllowed
      *
      * @return AttributeInterface
      */
@@ -591,4 +619,14 @@ interface AttributeInterface extends TimestampableInterface, TranslatableInterfa
      * @return bool
      */
     public function isLocaleSpecific();
+
+    /**
+     * @return string
+     */
+    public function getReferenceDataName();
+
+    /**
+     * @param string $name
+     */
+    public function setReferenceDataName($name);
 }

@@ -56,9 +56,11 @@ class SequentialEditController
 
     /**
      * Action for product sequential edition
+     *
      * @param Request $request
      *
      * @AclAncestor("pim_enrich_product_edit_attributes")
+     *
      * @return RedirectResponse
      */
     public function sequentialEditAction(Request $request)
@@ -91,6 +93,7 @@ class SequentialEditController
 
     /**
      * Get products to mass edit
+     *
      * @param Request $request
      *
      * @return array

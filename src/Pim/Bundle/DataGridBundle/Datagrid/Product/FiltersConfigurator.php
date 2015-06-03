@@ -91,8 +91,6 @@ class FiltersConfigurator implements ConfiguratorInterface
      * Sort filters by group and attribute sort order
      *
      * @param array &$filters
-     *
-     * @return null
      */
     protected function sortFilters(&$filters)
     {

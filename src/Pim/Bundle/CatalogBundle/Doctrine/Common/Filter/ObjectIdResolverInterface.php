@@ -13,6 +13,7 @@ interface ObjectIdResolverInterface
 {
     /**
      * Get ids for the given codes
+     *
      * @param string $field
      * @param array  $codes
      *
@@ -22,6 +23,7 @@ interface ObjectIdResolverInterface
 
     /**
      * Add a mapping to the field mapping
+     *
      * @param string $field
      * @param string $className
      */

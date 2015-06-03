@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
-use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -161,6 +161,7 @@ class StringFilter extends AbstractAttributeFilter implements AttributeFilterInt
 
     /**
      * Configure the option resolver
+     *
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)

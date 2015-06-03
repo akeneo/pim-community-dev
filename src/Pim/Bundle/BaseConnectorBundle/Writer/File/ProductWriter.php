@@ -59,8 +59,6 @@ class ProductWriter extends FileWriter implements ArchivableWriterInterface
 
     /**
      * @param ProductMediaInterface $media
-     *
-     * @return null
      */
     protected function copyMedia(ProductMediaInterface $media)
     {

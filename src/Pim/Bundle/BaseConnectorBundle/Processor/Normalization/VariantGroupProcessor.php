@@ -86,6 +86,7 @@ class VariantGroupProcessor extends AbstractConfigurableStepElement implements I
      * @param GroupInterface $group
      *
      * @throws InvalidItemException If a media file is not found
+     *
      * @return array
      */
     protected function prepareVariantGroupMedia(GroupInterface $group)

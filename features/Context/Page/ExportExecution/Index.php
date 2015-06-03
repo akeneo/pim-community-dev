@@ -14,7 +14,7 @@ use Context\Page\JobExecution\Index as JobIndex;
 class Index extends JobIndex
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/spread/export_execution/';
 }

@@ -10,7 +10,18 @@ Practically, it means the Akeneo PIM bundles are present in the src/ directory.
 If you want to contribute to the Akeneo PIM (and we will be pleased if you do!), you can fork
 this repository and submit a pull request.
 
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/) [![Build Status](https://travis-ci.org/akeneo/pim-community-dev.png?branch=master)](https://travis-ci.org/akeneo/pim-community-dev)
+| [Master][Master] | [1.3][1.3] | [1.2][1.2] |
+|:----------------:|:----------:|:----------:|
+| [![Build status][Master image]][Master] | [![Build status][1.3 image]][1.3] | [![Build status][1.2 image]][1.2] |
+
+  [Master image]: https://travis-ci.org/akeneo/pim-community-dev.svg
+  [Master]: https://travis-ci.org/akeneo/pim-community-dev/tree/master
+  [1.3 image]: https://travis-ci.org/akeneo/pim-community-dev.svg?branch=1.3
+  [1.3]: https://github.com/akeneo/pim-community-dev/tree/1.3
+  [1.2 image]: https://travis-ci.org/akeneo/pim-community-dev.svg?branch=1.2
+  [1.2]: https://github.com/akeneo/pim-community-dev/tree/1.2
+
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/badges/quality-score.png?s=05ef3d5d2bbfae2f9a659060b21711d275f0c1ff)](https://scrutinizer-ci.com/g/akeneo/pim-community-dev/)
 
 Requirements
 ------------
@@ -36,7 +47,7 @@ Requirements
 Installation instructions
 -------------------------
 To install Akeneo PIM for a PIM project or for evaluation, please follow:
-http://docs.akeneo.com/latest/installation/installation_workstation.html
+http://docs.akeneo.com/latest/developer_guide/installation/installation_workstation.html
 
 The following installation overview is for contributing to Akeneo PIM, not for project purpose.
 

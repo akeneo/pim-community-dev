@@ -9,13 +9,11 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductMedia;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPriceInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueCompleteValidator;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class ProductValueCompleteValidatorSpec extends ObjectBehavior
 {

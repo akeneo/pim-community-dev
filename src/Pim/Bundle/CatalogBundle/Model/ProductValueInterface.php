@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -33,7 +34,7 @@ interface ProductValueInterface
     /**
      * Set integer data
      *
-     * @param integer $integer
+     * @param int $integer
      *
      * @return ProductValueInterface
      */
@@ -65,14 +66,14 @@ interface ProductValueInterface
     /**
      * Get decimal data
      *
-     * @return double
+     * @return float
      */
     public function getDecimal();
 
     /**
      * Set decimal data
      *
-     * @param double $decimal
+     * @param float $decimal
      *
      * @return ProductValueInterface
      */
@@ -83,9 +84,9 @@ interface ProductValueInterface
      *
      * @param AttributeInterface $attribute
      *
-     * @return ProductValueInterface
-     *
      * @throws \LogicException
+     *
+     * @return ProductValueInterface
      */
     public function setAttribute(AttributeInterface $attribute = null);
 
@@ -101,7 +102,7 @@ interface ProductValueInterface
     /**
      * Get boolean data
      *
-     * @return boolean
+     * @return bool
      */
     public function getBoolean();
 
@@ -142,7 +143,7 @@ interface ProductValueInterface
     /**
      * Set boolean data
      *
-     * @param boolean $boolean
+     * @param bool $boolean
      *
      * @return ProductValueInterface
      */
@@ -330,7 +331,7 @@ interface ProductValueInterface
     public function setLocale($locale);
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function isRemovable();
 
@@ -360,7 +361,7 @@ interface ProductValueInterface
     /**
      * Get integer data
      *
-     * @return integer
+     * @return int
      */
     public function getInteger();
 

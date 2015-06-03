@@ -83,8 +83,9 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
      *
      * @param string[] $paths
      *
-     * @return array
      * @throws \InvalidArgumentException
+     *
+     * @return array
      */
     protected function getFixtures(array $paths)
     {
@@ -109,8 +110,8 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
      *
      * @param OutputInterface $output
      * @param array           $fixtures
-     * @param boolean         $purgeWithTruncate
-     * @param boolean         $appendFixtures
+     * @param bool            $purgeWithTruncate
+     * @param bool            $appendFixtures
      */
     protected function purgeAndExecute(OutputInterface $output, array $fixtures, $purgeWithTruncate, $appendFixtures)
     {

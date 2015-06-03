@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\Denormalization;
 
 use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
@@ -40,6 +40,15 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @staticvar string */
     const LABEL_PATTERN = 'label-';
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
+
+    /** @var ObjectDetacherInterface */
+    protected $detacher;
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -54,6 +63,9 @@ class VariantGroupProcessor extends AbstractProcessor
 
     /** @var FieldNameBuilder */
     protected $fieldNameBuilder;
+
+    /** @var string */
+    protected $class;
 
     /**
      * @param IdentifiableObjectRepositoryInterface $groupRepository
@@ -79,12 +91,16 @@ class VariantGroupProcessor extends AbstractProcessor
         $templateClass,
         $format
     ) {
-        parent::__construct($groupRepository, $denormalizer, $validator, $detacher, $groupClass);
+        parent::__construct($groupRepository);
+        $this->denormalizer         = $denormalizer;
+        $this->detacher             = $detacher;
         $this->normalizer           = $normalizer;
         $this->templateMediaManager = $templateMediaManager;
         $this->fieldNameBuilder     = $fieldNameBuilder;
         $this->templateClass        = $templateClass;
         $this->format               = $format;
+        $this->class                = $groupClass;
+        $this->validator            = $validator;
     }
 
     /**
@@ -110,7 +126,10 @@ class VariantGroupProcessor extends AbstractProcessor
      */
     protected function findOrCreateVariantGroup(array $groupData)
     {
-        $variantGroup = $this->findOrCreateObject($this->repository, $groupData, $this->class);
+        if (null === $variantGroup = $this->findObject($this->repository, $groupData)) {
+            $variantGroup = new $this->class();
+        }
+
         $isExistingGroup = (null !== $variantGroup->getType() && false === $variantGroup->getType()->isVariant());
         if ($isExistingGroup) {
             $this->skipItemWithMessage(
@@ -269,5 +288,18 @@ class VariantGroupProcessor extends AbstractProcessor
         }
 
         return $template;
+    }
+
+    /**
+     * Detaches the object from the unit of work
+     *
+     * Detach an object from the UOW is the responsibility of the writer, but to do so, it should know the
+     * skipped items or we should use an explicit persist strategy
+     *
+     * @param mixed $object
+     */
+    protected function detachObject($object)
+    {
+        $this->detacher->detach($object);
     }
 }

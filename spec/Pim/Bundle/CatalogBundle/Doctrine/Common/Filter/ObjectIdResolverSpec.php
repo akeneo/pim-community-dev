@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\Common\Filter;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 
 class ObjectIdResolverSpec extends ObjectBehavior
 {

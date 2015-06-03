@@ -25,7 +25,7 @@ class Reader extends AbstractConfigurableStepElement implements
     /** @var StepExecution */
     protected $stepExecution;
 
-    /** @var boolean */
+    /** @var bool */
     private $executed = false;
 
     /** @var array */
@@ -55,9 +55,9 @@ class Reader extends AbstractConfigurableStepElement implements
     /**
      * Get query to execute
      *
-     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
-     *
      * @throws ORMReaderException
+     *
+     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
      */
     public function getQuery()
     {

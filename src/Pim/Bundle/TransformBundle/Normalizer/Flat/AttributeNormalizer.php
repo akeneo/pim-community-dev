@@ -22,7 +22,7 @@ class AttributeNormalizer extends Structured\AttributeNormalizer
     const ALL_LOCALES         = 'All';
 
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 

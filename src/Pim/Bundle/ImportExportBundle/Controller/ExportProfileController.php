@@ -18,10 +18,12 @@ class ExportProfileController extends JobProfileController
 {
     /**
      * List the export profiles
+     *
      * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_importexport_export_profile_index")
+     *
      * @return array
      */
     public function indexAction(Request $request)

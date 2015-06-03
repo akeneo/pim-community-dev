@@ -24,7 +24,7 @@ class UniqueVariantGroupSpec extends ObjectBehavior
 
     function it_is_a_class_constraint()
     {
-        $this-> getTargets()->shouldReturn(Constraint::CLASS_CONSTRAINT);
+        $this->getTargets()->shouldReturn(Constraint::CLASS_CONSTRAINT);
     }
 
     function it_is_validated_by_the_unique_variant_group_validator()

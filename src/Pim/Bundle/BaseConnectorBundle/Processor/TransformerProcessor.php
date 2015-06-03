@@ -48,7 +48,7 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
     protected $class;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $skipEmpty;
 

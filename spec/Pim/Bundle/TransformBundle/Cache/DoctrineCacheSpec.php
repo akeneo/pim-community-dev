@@ -25,7 +25,7 @@ class DoctrineCacheSpec extends ObjectBehavior
         ObjectRepository $repository,
         \stdClass $object
     ) {
-        $repository->implement('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
+        $repository->implement('Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface');
         $manager->getRepository('Object\\Class')->willReturn($repository);
         $repository->findOneByIdentifier('foo')->willReturn($object);
 
@@ -37,7 +37,7 @@ class DoctrineCacheSpec extends ObjectBehavior
         ObjectRepository $repository,
         \stdClass $object
     ) {
-        $repository->implement('Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface');
+        $repository->implement('Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface');
         $manager->getRepository('Object\\Class')->willReturn($repository);
         $repository->findOneByIdentifier('foo')->shouldBeCalledTimes(1)->willReturn($object);
 

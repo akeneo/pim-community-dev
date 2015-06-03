@@ -3,11 +3,11 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\TransformBundle\Cache\CacheClearer;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\TransformBundle\Cache\CacheClearer;
 use Prophecy\Argument;
 
 class WriterSpec extends ObjectBehavior

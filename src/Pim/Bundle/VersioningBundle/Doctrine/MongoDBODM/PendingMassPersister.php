@@ -6,8 +6,8 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**

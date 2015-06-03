@@ -4,9 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
@@ -43,7 +43,7 @@ class ValidateProductCommand extends ContainerAwareCommand
         if (!$product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $violations = $this->validate($product);
@@ -53,6 +53,8 @@ class ValidateProductCommand extends ContainerAwareCommand
             foreach ($violations as $violation) {
                 $output->writeln(sprintf("<error>%s</error>", $violation->getMessage()));
             }
+
+            return -1;
         }
     }
 

@@ -54,8 +54,9 @@ class FileGuesser implements ConstraintGuesserInterface
                 $maxSize = intval($maxSize * self::KILOBYTE_MULTIPLIER);
                 $unit    = self::KILOBYTE_UNIT;
             }
-
-            $options['maxSize'] = sprintf('%d%s', $maxSize, $unit);
+            if ($maxSize >  0) {
+                $options['maxSize'] = sprintf('%d%s', $maxSize, $unit);
+            }
         }
 
         if ($allowedExtensions = $attribute->getAllowedExtensions()) {

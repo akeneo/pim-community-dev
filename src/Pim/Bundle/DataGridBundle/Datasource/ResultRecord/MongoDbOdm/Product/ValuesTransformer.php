@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
+use Pim\Bundle\ReferenceDataBundle\DataGrid\Datasource\ResultRecord\MongoDbOdm\Product\ReferenceDataTransformer;
+
 /**
  * Transform sub-part or product
  *
@@ -22,6 +24,7 @@ class ValuesTransformer
     public function transform(array $result, array $attributes, $locale, $scope)
     {
         $optionsTransformer = new OptionsTransformer();
+        $refDataTransformer = new ReferenceDataTransformer();
 
         if (isset($result['values'])) {
             foreach ($result['values'] as $value) {
@@ -35,6 +38,7 @@ class ValuesTransformer
                     $value['attribute'] = $attribute;
                     $result[$attributeCode] = $value;
                     $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
+                    $result[$attributeCode] = $refDataTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $this->prepareDateData($result, $attribute);
                     $result[$attributeCode] = $this->prepareMediaData($result, $attribute);
                 }

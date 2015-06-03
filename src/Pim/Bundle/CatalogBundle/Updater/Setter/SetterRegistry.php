@@ -13,28 +13,52 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class SetterRegistry implements SetterRegistryInterface
 {
-    /** @var SetterInterface[] */
-    protected $setters = [];
+    /** @var AttributeSetterInterface[] priorized attribute setters */
+    protected $attributeSetters = [];
+
+    /** @var FieldSetterInterface[] priorized field setters */
+    protected $fieldSetters = [];
 
     /**
      * {@inheritdoc}
      */
     public function register(SetterInterface $setter)
     {
-        $this->setters[] = $setter;
+        if ($setter instanceof FieldSetterInterface) {
+            $this->fieldSetters[] = $setter;
+        }
+        if ($setter instanceof AttributeSetterInterface) {
+            $this->attributeSetters[] = $setter;
+        }
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get(AttributeInterface $attribute)
+    public function getFieldSetter($field)
     {
-        foreach ($this->setters as $setter) {
-            if ($setter->supports($attribute)) {
+        foreach ($this->fieldSetters as $setter) {
+            if ($setter->supportsField($field)) {
                 return $setter;
             }
         }
 
-        throw new \LogicException(sprintf('Attribute "%s" is not supported by any setter', $attribute->getCode()));
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeSetter(AttributeInterface $attribute)
+    {
+        foreach ($this->attributeSetters as $setter) {
+            if ($setter->supportsAttribute($attribute)) {
+                return $setter;
+            }
+        }
+
+        return null;
     }
 }

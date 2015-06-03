@@ -48,6 +48,7 @@ class ProductProcessor extends HeterogeneousProcessor
 
     /**
      * Set channel
+     *
      * @param string $channel
      */
     public function setChannel($channel)
@@ -57,6 +58,7 @@ class ProductProcessor extends HeterogeneousProcessor
 
     /**
      * Get channel
+     *
      * @return string
      */
     public function getChannel()

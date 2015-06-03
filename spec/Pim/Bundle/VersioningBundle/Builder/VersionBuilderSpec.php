@@ -14,7 +14,7 @@ class VersionBuilderSpec extends ObjectBehavior
         $this->beConstructedWith($normalizer);
     }
 
-    function it_builds_versions_for_versionable_entities($normalizer,ProductInterface $product)
+    function it_builds_versions_for_versionable_entities($normalizer, ProductInterface $product)
     {
         $product->getId()->willReturn(1);
         $normalizer->normalize($product, 'csv', ['versioning' => true])->willReturn(['bar' => 'baz']);

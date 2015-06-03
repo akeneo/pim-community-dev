@@ -29,13 +29,15 @@ abstract class AbstractProduct implements ProductInterface
 
     /**
      * Not persisted but allow to force locale for values
-     * @var string $locale
+     *
+     * @var string
      */
     protected $locale;
 
     /**
      * Not persisted but allow to force scope for values
-     * @var string $scope
+     *
+     * @var string
      */
     protected $scope;
 
@@ -329,7 +331,7 @@ abstract class AbstractProduct implements ProductInterface
      *
      * @param string $attributeCode
      *
-     * @return boolean
+     * @return bool
      */
     public function __isset($attributeCode)
     {
@@ -513,6 +515,7 @@ abstract class AbstractProduct implements ProductInterface
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
+        sort($codes);
 
         return implode(',', $codes);
     }

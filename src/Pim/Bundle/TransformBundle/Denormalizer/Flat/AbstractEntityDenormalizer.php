@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 
-use Akeneo\Bundle\StorageUtilsBundle\Repository\IdentifiableObjectRepositoryInterface;
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -99,9 +98,9 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      * @param array $data
      * @param array $context
      *
-     * @return object
-     *
      * @throws InvalidArgumentException
+     *
+     * @return object
      */
     protected function getEntity(array $data, array $context)
     {
@@ -136,13 +135,23 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      *
      * @param string $identifier
      *
-     * @return object|false
-     *
      * @throws \LogicException
+     *
+     * @return object|false
      */
     protected function findEntity($identifier)
     {
-        $entity = $this->findOneByIdentifier($this->getRepository(), $identifier);
+        if (!$this->getRepository() instanceof IdentifiableObjectRepositoryInterface) {
+            throw new \LogicException(
+                sprintf(
+                    'Repository "%s" does not implement ' .
+                    '"Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface".',
+                    get_class($this->getRepository())
+                )
+            );
+        }
+
+        $entity = $this->getRepository()->findOneByIdentifier($identifier);
 
         if (null === $entity) {
             throw new \LogicException(
@@ -151,28 +160,5 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
         }
 
         return $entity;
-    }
-
-    /**
-     * Transitional method that will be removed in 1.4
-     *
-     * @param mixed  $repository
-     * @param string $identifier
-     *
-     * @return mixed|null
-     *
-     * @deprecated will be removed in 1.4
-     */
-    private function findOneByIdentifier($repository, $identifier)
-    {
-        if ($repository instanceof IdentifiableObjectRepositoryInterface) {
-            return $repository->findOneByIdentifier($identifier);
-        }
-
-        if ($repository instanceof ReferableEntityRepositoryInterface) {
-            return $repository->findByReference($identifier);
-        }
-
-        return null;
     }
 }

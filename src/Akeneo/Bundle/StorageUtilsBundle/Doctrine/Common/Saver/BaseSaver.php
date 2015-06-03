@@ -3,10 +3,10 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\Common\Saver;
 
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SavingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 
 /**
  * Base saver, declared as different services for different classes

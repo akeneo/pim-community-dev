@@ -27,6 +27,7 @@ class LocaleHelper
 
     /**
      * Constructor
+     *
      * @param UserContext   $userContext
      * @param LocaleManager $localeManager
      */
@@ -123,9 +124,9 @@ class LocaleHelper
     /**
      * Returns the flag icon for a locale
      *
-     * @param string  $code
-     * @param boolean $fullLabel
-     * @param string  $translateIn
+     * @param string $code
+     * @param bool   $fullLabel
+     * @param string $translateIn
      *
      * @return string
      *

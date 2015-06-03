@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -124,7 +125,7 @@ interface AttributeGroupInterface extends TranslatableInterface, ReferableInterf
      *
      * @param AttributeInterface $attribute
      *
-     * @return boolean
+     * @return bool
      */
     public function hasAttribute(AttributeInterface $attribute);
 

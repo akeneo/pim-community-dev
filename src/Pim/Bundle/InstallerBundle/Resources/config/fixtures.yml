@@ -59,9 +59,9 @@ attributes:
 attribute_options:
     order: 50
     csv:
-        processor:         pim_base_connector.processor.attribute_option
+        processor:         pim_base_connector.processor.denormalization.attribute_option.flat
     yml:
-        processor:         pim_base_connector.processor.attribute_option
+        processor:         pim_base_connector.processor.denormalization.attribute_option.structured
 
 families:
     order: 60

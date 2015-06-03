@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;

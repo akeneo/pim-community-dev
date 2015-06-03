@@ -111,7 +111,7 @@ class LocaleExtension extends \Twig_Extension
      *
      * @param Twig_Environment $environment
      * @param string           $code
-     * @param boolean          $short
+     * @param bool             $short
      * @param string           $translateIn
      *
      * @return string

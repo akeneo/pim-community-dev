@@ -18,7 +18,7 @@ Feature: Import attributes
     pim_catalog_simpleselect;grade;Grade;marketing;0;1;0;0;;;
     pim_catalog_simpleselect;width;Width;sizes;0;1;0;0;;;
     pim_catalog_simpleselect;hue;Hue;colors;0;1;0;0;;;
-    pim_catalog_simpleselect;sole_color;"Sole color";colors;0;1;0;0;;;
+    pim_catalog_simpleselect;buckle_color;"Buckle color";colors;0;1;0;0;;;
     pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;gif,png;;
     pim_catalog_date;release;"Release date";info;0;1;0;0;;;
     pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER
@@ -39,7 +39,7 @@ Feature: Import attributes
       | simpleselect | grade        | Grade        | marketing | 0      | 1                      | 0           | 0        |                    |               |                     |
       | simpleselect | width        | Width        | sizes     | 0      | 1                      | 0           | 0        |                    |               |                     |
       | simpleselect | hue          | Hue          | colors    | 0      | 1                      | 0           | 0        |                    |               |                     |
-      | simpleselect | sole_color   | Sole color   | colors    | 0      | 1                      | 0           | 0        |                    |               |                     |
+      | simpleselect | buckle_color | Buckle color | colors    | 0      | 1                      | 0           | 0        |                    |               |                     |
       | image        | image_upload | Image upload | media     | 0      | 0                      | 0           | 0        | gif,png            |               |                     |
       | date         | release      | Release date | info      | 0      | 1                      | 0           | 0        |                    |               |                     |
       | metric       | lace_length  | Lace length  | info      | 0      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |
@@ -84,7 +84,7 @@ Feature: Import attributes
     And there should be the following attributes:
       | type         | code       | label-en_US    | group  | unique | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
       | simpleselect | lace_color | New lace color | colors | 0      | 1                      | 0           | 0        |                    |               |                     |
-    And there should be 17 attribute
+    And there should be 22 attributes
 
   @jira https://akeneo.atlassian.net/browse/PIM-3266
   Scenario: Skip existing attributes with invalid data during an import

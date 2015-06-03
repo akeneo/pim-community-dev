@@ -11,6 +11,7 @@ parameters:
     pim_datagrid.extension.formatter.property.product_value.twig_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\TwigProperty
     pim_datagrid.extension.formatter.property.product.groups_property.class:                  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Product\GroupsProperty
     pim_datagrid.extension.formatter.property.job.name_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\NameProperty
+    pim_datagrid.extension.formatter.property.job.type_property.class:                        Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Job\TypeProperty
 
 services:
     pim_datagrid.extension.formatter.property.product_value.field_property:
@@ -98,3 +99,9 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: job_name }
 
+    pim_datagrid.extension.formatter.property.job.type_property:
+        class: %pim_datagrid.extension.formatter.property.job.type_property.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: job_type }

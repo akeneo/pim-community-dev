@@ -29,8 +29,8 @@ class Edit extends Creation
     }
 
     /**
-     * @param string  $attribute
-     * @param integer $position
+     * @param string $attribute
+     * @param int    $position
      *
      * @return Edit
      */
@@ -60,7 +60,7 @@ class Edit extends Creation
     /**
      * @param string $attribute
      *
-     * @return integer
+     * @return int
      */
     public function getAttributePosition($attribute)
     {

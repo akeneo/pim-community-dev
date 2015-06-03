@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
-use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -177,8 +177,8 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     /**
      * Get the literal expression of the date
      *
-     * @param string  $data
-     * @param boolean $endOfDay
+     * @param string $data
+     * @param bool   $endOfDay
      *
      * @return \Doctrine\ORM\Query\Expr\Literal
      */
@@ -191,7 +191,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
      * Get the date formatted from data
      *
      * @param \DateTime|string $data
-     * @param boolean          $endOfDay
+     * @param bool             $endOfDay
      *
      * @return string
      */
@@ -274,8 +274,7 @@ class DateFilter extends AbstractAttributeFilter implements FieldFilterInterface
     {
         $dateValues = explode('-', $value);
 
-        if (
-            count($dateValues) !== 3
+        if (count($dateValues) !== 3
             || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
             || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
         ) {

@@ -135,9 +135,11 @@ class CategoryTreeController extends AbstractDoctrineController
 
     /**
      * Move a node
+     *
      * @param Request $request
      *
      * @AclAncestor("pim_enrich_category_edit")
+     *
      * @return Response
      */
     public function moveNodeAction(Request $request)
@@ -158,10 +160,12 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * If the node to select is not a direct child of the parent category, the tree
      * is expanded until the selected node is found amongs the children
+     *
      * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_category_list")
+     *
      * @return array
      */
     public function childrenAction(Request $request)
@@ -213,6 +217,7 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * @Template()
      * @AclAncestor("pim_enrich_category_list")
+     *
      * @return array
      */
     public function indexAction()
@@ -224,9 +229,10 @@ class CategoryTreeController extends AbstractDoctrineController
      * Create a tree or category
      *
      * @param Request $request
-     * @param integer $parent
+     * @param int     $parent
      *
      * @AclAncestor("pim_enrich_category_create")
+     *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request, $parent = null)
@@ -267,9 +273,10 @@ class CategoryTreeController extends AbstractDoctrineController
      * Edit tree action
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_category_edit")
+     *
      * @return Response
      */
     public function editAction(Request $request, $id)
@@ -299,9 +306,10 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Remove category tree
      *
-     * @param integer $id
+     * @param int $id
      *
      * @AclAncestor("pim_enrich_category_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction($id)
@@ -327,10 +335,11 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Find a category from its id
      *
-     * @param integer $categoryId
+     * @param int $categoryId
+     *
+     * @throws NotFoundHttpException
      *
      * @return CategoryInterface
-     * @throws NotFoundHttpException
      */
     protected function findCategory($categoryId)
     {
@@ -356,8 +365,8 @@ class CategoryTreeController extends AbstractDoctrineController
     }
 
     /**
-     * @param integer $parentId
-     * @param mixed   $selectNodeId
+     * @param int   $parentId
+     * @param mixed $selectNodeId
      *
      * @return CategoryInterface[]
      */

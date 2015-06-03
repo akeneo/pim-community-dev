@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class EditCommonAttributesTypeSpec extends ObjectBehavior
@@ -39,7 +38,7 @@ class EditCommonAttributesTypeSpec extends ObjectBehavior
             [
                 'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
                 'locales' => [],
-                'common_attributes' => [],
+                'all_attributes' => [],
                 'current_locale'    => null
             ]
         )->shouldHaveBeenCalled();

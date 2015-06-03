@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Overriden AclAccessLevelSelectorType
+ * AclAccessLevelSelector form type
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

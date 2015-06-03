@@ -149,8 +149,6 @@ class EntitiesTypeSubscriber implements EventSubscriber
      *
      * @param object        $document
      * @param ClassMetadata $metadata
-     *
-     * @return null
      */
     private function synchronizeReferencedCollectionIds($document, ClassMetadata $metadata)
     {

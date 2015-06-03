@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Form\Form;
 
 /**
  * Validator for unique value constraint

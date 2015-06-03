@@ -172,9 +172,9 @@ abstract class AbstractController
     /**
      * Generates a URL from the given parameters.
      *
-     * @param string         $route         The name of the route
-     * @param mixed          $parameters    An array of parameters
-     * @param boolean|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
+     * @param string      $route         The name of the route
+     * @param mixed       $parameters    An array of parameters
+     * @param bool|string $referenceType The type of reference (one of the constants in UrlGeneratorInterface)
      *
      * @return string The generated URL
      *
@@ -188,8 +188,8 @@ abstract class AbstractController
     /**
      * Returns a RedirectResponse to the given URL.
      *
-     * @param string  $url    The URL to redirect to
-     * @param integer $status The status code to use for the Response
+     * @param string $url    The URL to redirect to
+     * @param int    $status The status code to use for the Response
      *
      * @return RedirectResponse
      */
@@ -251,8 +251,6 @@ abstract class AbstractController
      * @param string $type       the flash type
      * @param string $message    the flash message
      * @param array  $parameters the flash message parameters
-     *
-     * @return null
      */
     protected function addFlash($type, $message, array $parameters = array())
     {
@@ -262,9 +260,9 @@ abstract class AbstractController
     /**
      * Create a redirection to a given route
      *
-     * @param string  $route
-     * @param mixed   $parameters
-     * @param integer $status
+     * @param string $route
+     * @param mixed  $parameters
+     * @param int    $status
      *
      * @return RedirectResponse
      */

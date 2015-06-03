@@ -183,6 +183,7 @@ class ProductFormView implements ProductFormViewInterface
 
     /**
      * Update the current view with all view updaters
+     *
      * @param array $view
      */
     protected function updateView(array $view)

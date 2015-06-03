@@ -40,10 +40,11 @@ class ValidNumberRangeValidator extends ConstraintValidator
 
     /**
      * Check if the number is valid based on the rules defined in the entity
-     * @param mixed   $entity
-     * @param integer $number
      *
-     * @return boolean
+     * @param mixed $entity
+     * @param int   $number
+     *
+     * @return bool
      */
     protected function isNumberValid($entity, $number)
     {

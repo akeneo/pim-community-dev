@@ -19,7 +19,7 @@ class UserNotificationRepository extends EntityRepository
      *
      * @param UserInterface $user
      *
-     * @return integer
+     * @return int
      */
     public function countUnreadForUser(UserInterface $user)
     {
@@ -40,7 +40,7 @@ class UserNotificationRepository extends EntityRepository
      * Marks user notifications as viewed
      *
      * @param UserInterface $user The user
-     * @param integer|null  $id   If null all notifications will be marked as viewed
+     * @param int|null      $id   If null all notifications will be marked as viewed
      */
     public function markAsViewed(UserInterface $user, $id)
     {

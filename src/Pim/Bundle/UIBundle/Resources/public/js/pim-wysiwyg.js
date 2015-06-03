@@ -43,7 +43,7 @@ define(
             }
 
             return false;
-        }
+        };
 
         Backbone.Router.prototype.on('route', function () {
             for (var i = tinymce.editors.length - 1; i >= 0; i--) {

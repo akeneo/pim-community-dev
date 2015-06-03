@@ -94,6 +94,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
                     'command'     => 'akeneo:batch:job',
                     'code'        => $job->getCode(),
                     '--no-debug'  => true,
+                    '--no-log'    => true,
                     '-v'          => true
                 ]
             ),
@@ -111,7 +112,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
      *
      * @param JobExecution $jobExecution
      *
-     * @return boolean
+     * @return bool
      */
     protected function executionComplete(JobExecution $jobExecution)
     {

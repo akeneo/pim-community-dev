@@ -3,9 +3,6 @@
 namespace spec\Pim\Bundle\EnrichBundle\Form\Type\MassEditAction;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
-use Prophecy\Argument;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SetAttributeRequirementsTypeSpec extends ObjectBehavior
