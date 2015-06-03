@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -19,28 +19,24 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class SimpleSelectAttributeSetter extends AbstractAttributeSetter
 {
-    /** @var AttributeOptionRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
 
-    /** array */
-    protected $attrOptionsCache;
-
     /**
-     * @param ProductBuilderInterface            $productBuilder
-     * @param AttributeValidatorHelper           $attrValidatorHelper
-     * @param AttributeOptionRepositoryInterface $attrOptionRepository
-     * @param array                              $supportedTypes
+     * @param ProductBuilderInterface               $productBuilder
+     * @param AttributeValidatorHelper              $attrValidatorHelper
+     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
+     * @param array                                 $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        AttributeOptionRepositoryInterface $attrOptionRepository,
+        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
         $this->attrOptionRepository = $attrOptionRepository;
         $this->supportedTypes       = $supportedTypes;
-        $this->attrOptionsCache = [];
     }
 
     /**
@@ -130,12 +126,9 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
     {
-        $key = $attribute->getCode().'-'.$optionCode;
-        if (!isset($this->attrOptionsCache[$key])) {
-            $option = $this->attrOptionRepository->findOneBy(['code' => $optionCode, 'attribute' => $attribute]);
-            $this->attrOptionsCache[$key]= $option;
-        }
+        $identifier = $attribute->getCode().'.'.$optionCode;
+        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
-        return isset($this->attrOptionsCache[$key]) ? $this->attrOptionsCache[$key] : null;
+        return $option;
     }
 }

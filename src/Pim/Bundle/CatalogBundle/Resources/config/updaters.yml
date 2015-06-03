@@ -220,7 +220,7 @@ services:
         class: %pim_catalog.updater.setter.multiselect_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.repository.attribute_option
+            - '@pim_catalog.repository.cached_attribute_option'
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -237,7 +237,7 @@ services:
         class: %pim_catalog.updater.setter.simpleselect_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.repository.attribute_option
+            - '@pim_catalog.repository.cached_attribute_option'
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -391,9 +391,9 @@ services:
     pim_catalog.updater.adder.multiselect_value:
         class: %pim_catalog.updater.adder.multiselect_value.class%
         arguments:
-            - @pim_catalog.builder.product
-            - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.repository.attribute_option
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.cached_attribute_option'
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.adder' }

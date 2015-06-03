@@ -130,3 +130,8 @@ services:
         class: %akeneo_storage_utils.repository.base_cached_object.class%
         arguments:
             - '@pim_catalog.repository.attribute'
+
+    pim_catalog.repository.cached_attribute_option:
+        class: %akeneo_storage_utils.repository.base_cached_object.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
