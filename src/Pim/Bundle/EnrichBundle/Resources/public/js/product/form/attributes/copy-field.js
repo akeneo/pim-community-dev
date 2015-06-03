@@ -50,13 +50,6 @@ define([
 
                 return this;
             },
-            getData: function () {
-                if (this.editable && this.enabled) {
-                    return this.model.get('values');
-                } else {
-                    return [];
-                }
-            },
             setData: function (data) {
                 this.data = data;
             },

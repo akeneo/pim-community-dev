@@ -54,7 +54,7 @@ define(
                 if (this.copying) {
                     _.each(this.copyFields, _.bind(function (copyField, code) {
                         var field = this.getParent().visibleFields[code];
-                        if (field && 'edit' === field.getEditMode()) {
+                        if (field) {
                             copyField.setField(field);
                             copyField.field.addElement('comparision', 'copy', copyField);
                             copyField.field.render();
@@ -105,7 +105,7 @@ define(
             },
             copy: function () {
                 _.each(this.copyFields, function (copyField) {
-                    if (copyField.selected && copyField.field && 'edit' === copyField.field.getEditMode()) {
+                    if (copyField.selected && copyField.field && copyField.field.getEditable()) {
                         copyField.field.setCurrentValue(copyField.data);
                         copyField.selected = false;
                     }

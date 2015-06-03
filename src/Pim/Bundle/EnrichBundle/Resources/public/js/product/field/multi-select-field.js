@@ -58,7 +58,7 @@ define(
                             }
                         },
                         initSelection: function (element, callback) {
-                            $.ajax(choiceUrl).done(function(response){
+                            $.ajax(choiceUrl).done(function (response) {
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
                                     var selected = _.findWhere(results, {id: choice});
@@ -86,7 +86,7 @@ define(
             },
             updateModel: function (event) {
                 var data = event.currentTarget.value.split(',');
-                if (data.length == 1 && data[0] == "") {
+                if (1 === data.length && '' === data[0]) {
                     data = [];
                 }
                 this.setCurrentValue(data);

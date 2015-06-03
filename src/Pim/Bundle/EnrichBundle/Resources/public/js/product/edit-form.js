@@ -24,7 +24,6 @@ define(
             initialize: function () {
                 this.model = new Backbone.Model();
 
-
                 mediator.off(null, null, 'context:product:form:init');
                 mediator.on('entity:error:save', _.bind(this.clearCache, this), 'context:product:form:init');
 

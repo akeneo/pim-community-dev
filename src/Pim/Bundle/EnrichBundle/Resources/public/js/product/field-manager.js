@@ -1,8 +1,8 @@
 'use strict';
 
 define(
-    ['jquery', 'pim/entity-manager', 'pim/form-config-provider'],
-    function ($, EntityManager, ConfigProvider) {
+    ['jquery', 'underscore', 'pim/entity-manager', 'pim/form-config-provider'],
+    function ($, _, EntityManager, ConfigProvider) {
         var fields = {};
         var loadedModules = {};
         var getFieldForAttribute = function (attribute) {
@@ -49,10 +49,21 @@ define(
 
                 return deferred.promise();
             },
+            getNotReadyFields: function () {
+                var notReadyFields = [];
+
+                _.each(fields, function (field) {
+                    if (!field.isReady()) {
+                        notReadyFields.push(field);
+                    }
+                });
+
+                return notReadyFields;
+            },
             getFields: function () {
                 return fields;
             },
-            clear: function() {
+            clear: function () {
                 fields = {};
             }
         };
