@@ -73,8 +73,7 @@ define([
                     this.model.get('values'),
                     this.attribute,
                     locale,
-                    scope,
-                    false
+                    scope
                 );
                 context.editMode = 'disabled';
 

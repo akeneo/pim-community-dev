@@ -84,8 +84,7 @@ define(
                                 values,
                                 attribute,
                                 this.locale,
-                                this.scope,
-                                false
+                                this.scope
                             );
 
                             var copyField;
