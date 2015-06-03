@@ -32,6 +32,10 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('appliers.yml');
         $loader->load('builder.yml');
         $loader->load('comparators.yml');
+        $loader->load('connector/array_converters.yml');
+        $loader->load('connector/processors.yml');
+        $loader->load('connector/readers.yml');
+        $loader->load('connector/writers.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
@@ -46,10 +50,6 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('removers.yml');
         $loader->load('savers.yml');
         $loader->load('twig.yml');
-        $loader->load('connector/array_converters.yml');
-        $loader->load('connector/processors.yml');
-        $loader->load('connector/readers.yml');
-        $loader->load('connector/writers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog_product_storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
