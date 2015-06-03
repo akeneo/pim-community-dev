@@ -81,7 +81,7 @@ class AssetCollectionType extends AbstractAttributeType
                 'name'      => 'reference_data_name',
                 'fieldType' => 'hidden',
                 'options'   => [
-                    'data'     => 'assets',
+                    'data' => 'assets',
                 ],
             ]
         ];

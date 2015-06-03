@@ -17,10 +17,7 @@ class AssetRepositorySpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface');
     }
 
-    function let(
-        EntityManager $em,
-        Connection $connection
-    ) {
+    function let(EntityManager $em, Connection $connection) {
         $classMetadata = new ClassMetadata('PimEnterprise\Component\ProductAsset\Model\Asset');
         $classMetadata->mapField([
             'fieldName' => 'sortOrder',
