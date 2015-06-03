@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\AttributeSetterInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\FieldSetterInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 class ProductPropertySetterSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         SetterRegistryInterface $setterRegistry
     ) {
         $this->beConstructedWith(
@@ -35,7 +35,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeSetterInterface $setter
     ) {
-        $attributeRepository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
         $setterRegistry->getAttributeSetter($attribute)->willReturn($setter);
         $setter
             ->setAttributeData($product, $attribute, 'my name', [])
@@ -50,7 +50,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
         ProductInterface $product,
         FieldSetterInterface $setter
     ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
         $setterRegistry->getFieldSetter('category')->willReturn($setter);
         $setter
             ->setFieldData($product, 'category', ['tshirt'], [])
@@ -61,7 +61,7 @@ class ProductPropertySetterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_it_sets_an_unknown_field($attributeRepository, ProductInterface $product)
     {
-        $attributeRepository->findOneBy(Argument::any())->willReturn(null);
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
         $this->shouldThrow(new \LogicException('No setter found for field "unknown_field"'))->during(
             'setData', [$product, 'unknown_field', 'data', ['locale' => 'fr_FR', 'scope' => 'ecommerce']]
         );

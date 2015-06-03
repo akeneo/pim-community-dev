@@ -61,33 +61,33 @@ services:
     pim_catalog.updater.product:
         class: %pim_catalog.updater.product.class%
         arguments:
-            - @pim_catalog.updater.product_property_setter
-            - @pim_catalog.updater.product_property_copier
-            - @pim_catalog.updater.product_template
+            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.product_property_copier'
+            - '@pim_catalog.updater.product_template'
 
     pim_catalog.updater.product_property_setter:
         class: %pim_catalog.updater.product_property_setter.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.setter.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.setter.registry'
 
     pim_catalog.updater.product_property_adder:
         class: %pim_catalog.updater.product_property_adder.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.adder.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.adder.registry'
 
     pim_catalog.updater.product_property_remover:
         class: %pim_catalog.updater.product_property_remover.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.remover.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.remover.registry'
 
     pim_catalog.updater.product_property_copier:
         class: %pim_catalog.updater.product_property_copier.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.copier.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.copier.registry'
 
     pim_catalog.updater.product_template:
         class: %pim_catalog.updater.product_template.class%

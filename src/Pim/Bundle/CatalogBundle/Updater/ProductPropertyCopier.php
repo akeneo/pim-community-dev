@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyCopierInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 
 /**
@@ -18,18 +18,18 @@ use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
  */
 class ProductPropertyCopier implements PropertyCopierInterface
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var CopierRegistryInterface */
     protected $copierRegistry;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param CopierRegistryInterface      $copierRegistry
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param CopierRegistryInterface               $copierRegistry
      */
     public function __construct(
-        AttributeRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         CopierRegistryInterface $copierRegistry
     ) {
         $this->attributeRepository = $repository;
@@ -84,7 +84,7 @@ class ProductPropertyCopier implements PropertyCopierInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
 
         return $attribute;
     }

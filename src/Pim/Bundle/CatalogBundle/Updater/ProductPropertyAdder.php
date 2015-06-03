@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyAdderInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
 
 /**
@@ -18,18 +18,18 @@ use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
  */
 class ProductPropertyAdder implements PropertyAdderInterface
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var AdderRegistryInterface */
     protected $adderRegistry;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param AdderRegistryInterface       $adderRegistry
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param AdderRegistryInterface                $adderRegistry
      */
     public function __construct(
-        AttributeRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         AdderRegistryInterface $adderRegistry
     ) {
         $this->attributeRepository = $repository;
@@ -77,7 +77,7 @@ class ProductPropertyAdder implements PropertyAdderInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
 
         return $attribute;
     }

@@ -40,6 +40,7 @@ class AkeneoStorageUtilsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('doctrine.yml');
         $loader->load('factories.yml');
+        $loader->load('repositories.yml');
 
         $this->loadStorageDriver($container, __DIR__);
     }

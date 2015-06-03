@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Remover\AttributeRemoverInterface;
 use Pim\Bundle\CatalogBundle\Updater\Remover\FieldRemoverInterface;
 use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 class ProductPropertyRemoverSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         RemoverRegistryInterface $removerRegistry
     ) {
         $this->beConstructedWith(
@@ -35,7 +35,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeRemoverInterface $remover
     ) {
-        $attributeRepository->findOneBy(['code' => 'name'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
         $removerRegistry->getAttributeRemover($attribute)->willReturn($remover);
         $remover
             ->removeAttributeData($product, $attribute, 'my name', [])
@@ -50,7 +50,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         ProductInterface $product,
         FieldRemoverInterface $remover
     ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
         $removerRegistry->getFieldRemover('category')->willReturn($remover);
         $remover
             ->removeFieldData($product, 'category', ['tshirt'], [])
@@ -64,7 +64,7 @@ class ProductPropertyRemoverSpec extends ObjectBehavior
         $removerRegistry,
         ProductInterface $product
     ) {
-        $attributeRepository->findOneBy(Argument::any())->willReturn(null);
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
 
         $removerRegistry->getFieldRemover(Argument::any())->willReturn(null);
 
