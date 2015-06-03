@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
-use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
@@ -51,19 +50,6 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         $this->setAttributeData($product, $attribute, 42, ['locale' => 'fr_FR', 'scope' => 'mobile']);
     }
 
-    function it_throws_an_error_if_attribute_data_is_not_a_number_or_null(
-        AttributeInterface $attribute,
-        ProductInterface $product
-    ) {
-        $attribute->getCode()->willReturn('attributeCode');
-
-        $data = 'not a number';
-
-        $this->shouldThrow(
-            InvalidArgumentException::numericExpected('attributeCode', 'setter', 'number', gettype($data))
-        )->during('setAttributeData', [$product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']]);
-    }
-
     function it_sets_number_value_to_a_product_attribute_data_value(
         AttributeInterface $attribute,
         ProductInterface $product1,
@@ -87,7 +73,33 @@ class NumberAttributeSetterSpec extends ObjectBehavior
         $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
         $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
 
-        $products = [$product1, $product2, $product3];
+        $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+        $this->setAttributeData($product3, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
+    }
+
+    function it_sets_non_number_value_to_a_product_attribute_data_value(
+        AttributeInterface $attribute,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ProductInterface $product3,
+        $builder,
+        ProductValue $productValue
+    ) {
+        $locale = 'fr_FR';
+        $scope = 'mobile';
+        $data = 'foo';
+
+        $attribute->getCode()->willReturn('attributeCode');
+        $productValue->setData($data)->shouldBeCalled();
+
+        $builder
+            ->addProductValue($product2, $attribute, $locale, $scope)
+            ->willReturn($productValue);
+
+        $product1->getValue('attributeCode', $locale, $scope)->shouldBeCalled()->willReturn($productValue);
+        $product2->getValue('attributeCode', $locale, $scope)->willReturn(null);
+        $product3->getValue('attributeCode', $locale, $scope)->willReturn($productValue);
 
         $this->setAttributeData($product1, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);
         $this->setAttributeData($product2, $attribute, $data, ['locale' => $locale, 'scope' => $scope]);

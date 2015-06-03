@@ -108,8 +108,7 @@ class DateAttributeSetter extends AbstractAttributeSetter
     {
         $dateValues = explode('-', $data);
 
-        if (
-            count($dateValues) !== 3
+        if (count($dateValues) !== 3
             || (!is_numeric($dateValues[0]) || !is_numeric($dateValues[1]) || !is_numeric($dateValues[2]))
             || !checkdate($dateValues[1], $dateValues[2], $dateValues[0])
         ) {

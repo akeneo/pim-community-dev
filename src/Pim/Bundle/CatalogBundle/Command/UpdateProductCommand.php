@@ -75,7 +75,7 @@ class UpdateProductCommand extends ContainerAwareCommand
         $identifier = $input->getArgument('identifier');
         $product = $this->getProduct($identifier);
         if (false === $product) {
-            $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
+            $output->writeln(sprintf('<error>product with identifier "%s" not found</error>', $identifier));
 
             return -1;
         }
@@ -91,16 +91,16 @@ class UpdateProductCommand extends ContainerAwareCommand
 
         $violations = $this->validate($product);
         foreach ($violations as $violation) {
-            $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
+            $output->writeln(sprintf("<error>%s</error>", $violation->getMessage()));
         }
         if (0 !== $violations->count()) {
-            $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
+            $output->writeln(sprintf('<error>product "%s" is not valid</error>', $identifier));
 
             return -1;
         }
 
         $this->save($product);
-        $output->writeln(sprintf('<info>product "%s" has been updated<info>', $identifier));
+        $output->writeln(sprintf('<info>product "%s" has been updated</info>', $identifier));
     }
 
     /**

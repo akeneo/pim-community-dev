@@ -26,7 +26,7 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.context.version'
-            - '@pim_serializer'
+            - '@pim_versioning.serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
