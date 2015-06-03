@@ -1,0 +1,14 @@
+parameters:
+    pim_datagrid.product.attribute_type.pim_assets_collection:
+        column:
+            type:     pim_assets_collection
+            selector: pim_assets_collection
+        filter:
+            type:     pim_assets_collection
+            ftype:    ajax_choice
+            options:
+                field_options:
+                    multiple: true
+                    attr:
+                        empty_choice: true
+        sorter:       ~
