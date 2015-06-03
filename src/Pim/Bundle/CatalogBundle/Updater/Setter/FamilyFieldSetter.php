@@ -19,9 +19,6 @@ class FamilyFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $familyRepository;
 
-    /** array */
-    protected $familyCache;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
      * @param array                                 $supportedFields
@@ -32,7 +29,6 @@ class FamilyFieldSetter extends AbstractFieldSetter
     ) {
         $this->familyRepository = $familyRepository;
         $this->supportedFields  = $supportedFields;
-        $this->familyCache = [];
     }
 
     /**
@@ -86,11 +82,8 @@ class FamilyFieldSetter extends AbstractFieldSetter
      */
     protected function getFamily($familyCode)
     {
-        if (!isset($this->familyCache[$familyCode])) {
-            $family = $this->familyRepository->findOneByIdentifier($familyCode);
-            $this->familyCache[$familyCode]= $family;
-        }
+        $family = $this->familyRepository->findOneByIdentifier($familyCode);
 
-        return isset($this->familyCache[$familyCode]) ? $this->familyCache[$familyCode] : null;
+        return $family;
     }
 }

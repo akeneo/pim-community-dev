@@ -204,7 +204,7 @@ services:
     pim_catalog.updater.setter.family_field:
         class: %pim_catalog.updater.setter.family_field.class%
         arguments:
-            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.cached_family'
             - ['family']
         tags:
             - { name: 'pim_catalog.updater.setter' }
