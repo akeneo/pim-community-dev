@@ -101,8 +101,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
      * @param array $valuesData
      *
      * @return array
-     *
-     * @throws ObjectNotFoundException
      */
     protected function filterValuesData($valuesData)
     {
@@ -131,7 +129,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
         return array_filter($filteredValuesData);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -143,9 +140,9 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * @param string $code
      *
-     * @return AttributeInterface
-     *
      * @throws ObjectNotFoundException
+     *
+     * @return AttributeInterface
      */
     protected function getAttribute($code)
     {
@@ -165,9 +162,9 @@ class ProductEditDataFilter implements CollectionFilterInterface
      * @param string $code
      * @param bool   $activeOnly
      *
-     * @return LocaleInterface
-     *
      * @throws ObjectNotFoundException
+     *
+     * @return LocaleInterface
      */
     protected function getLocale($code, $activeOnly = true)
     {
