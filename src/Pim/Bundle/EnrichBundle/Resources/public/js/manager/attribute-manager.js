@@ -39,12 +39,12 @@ define([
             getEmptyValue: function (attribute) {
                 switch (attribute.type) {
                     case 'pim_catalog_date':
-                    case 'pim_catalog_number':
                     case 'pim_catalog_file':
                     case 'pim_catalog_image':
                     case 'pim_catalog_simpleselect':
                     case 'pim_reference_data_simpleselect':
                     case 'pim_catalog_identifier':
+                    case 'pim_catalog_number':
                         return null;
                     case 'pim_catalog_metric':
                         return {
@@ -81,13 +81,12 @@ define([
 
                 return result;
             },
-            generateValues: function(attribute, locales, channels)
+            generateValues: function(values, attribute, locales, channels)
             {
-                var values = [];
                 _.each(locales, _.bind(function (locale) {
                    _.each(channels, _.bind(function (channel) {
                         var newValue = this.getValue(
-                            values[attribute.code],
+                            values,
                             attribute,
                             locale.code,
                             channel.code

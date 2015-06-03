@@ -19,7 +19,9 @@ define([
             get: function (id) {
                 if (!(id in this.productPromises)) {
                     this.productPromises[id] = $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                        .then(_.identity)
+                        .then(_.bind(function (product) {
+                            return this.generateMissing(product);
+                        }, this))
                         .promise();
                 }
 
@@ -62,6 +64,36 @@ define([
 
                     return product.values;
                 });
+            },
+            generateMissing: function (product) {
+                return $.when(
+                    EntityManager.getRepository('attribute').findAll(),
+                    EntityManager.getRepository('locale').findAll(),
+                    EntityManager.getRepository('channel').findAll(),
+                    AttributeManager.getAttributesForProduct(product)
+                ).then(function (attributes, locales, channels, productAttributes) {
+                    var deferred = new $.Deferred();
+                    var values = {};
+
+                    _.each(productAttributes, function (attributeCode) {
+                        var attribute = _.findWhere(attributes, {code: attributeCode});
+
+                        if (attribute.code in product.values) {
+                            values[attribute.code] = AttributeManager.generateValues(
+                                product.values[attribute.code],
+                                attribute,
+                                locales,
+                                channels
+                            );
+                        }
+                    });
+
+                    product.values = values;
+
+                    deferred.resolve(product);
+
+                    return deferred.promise();
+                }).promise();
             }
         };
     }

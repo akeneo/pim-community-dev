@@ -117,7 +117,6 @@ class ProductRestController
     public function getAction($id)
     {
         $product  = $this->findProductOr404($id);
-        $this->productBuilder->addMissingProductValues($product);
         $this->productBuilder->addMissingAssociations($product);
         $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
         $locales  = $this->userContext->getUserLocaleCodes();

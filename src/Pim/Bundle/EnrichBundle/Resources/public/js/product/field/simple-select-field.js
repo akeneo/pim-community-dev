@@ -84,6 +84,8 @@ define(
             },
             updateModel: function (event) {
                 var data = event.currentTarget.value;
+                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+
                 this.setCurrentValue(data);
             }
         });
