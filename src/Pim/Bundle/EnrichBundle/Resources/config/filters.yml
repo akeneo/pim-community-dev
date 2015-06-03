@@ -8,4 +8,4 @@ services:
             - '@oro_security.security_facade'
             - '@pim_catalog.filter.chained'
             - '@pim_catalog.repository.attribute'
-            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.repository.locale'

@@ -6,10 +6,10 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
 /**
  * Product edit data filter
@@ -29,31 +29,30 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var LocaleManager */
-    protected $localeManager;
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
 
-    /** @var array */
+    /** @var AttributeInterface[] */
     protected $attributes = [];
 
-    /** @var array */
+    /** @var LocaleInterface[] */
     protected $locales = [];
 
     /**
      * @param SecurityFacade               $securityFacade
      * @param ObjectFilterInterface        $objectFilter
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param LocaleManager                $localeManager
      */
     public function __construct(
         SecurityFacade $securityFacade,
         ObjectFilterInterface $objectFilter,
         AttributeRepositoryInterface $attributeRepository,
-        LocaleManager $localeManager
+        LocaleRepositoryInterface $localeRepository
     ) {
         $this->securityFacade      = $securityFacade;
         $this->objectFilter        = $objectFilter;
         $this->attributeRepository = $attributeRepository;
-        $this->localeManager       = $localeManager;
+        $this->localeRepository    = $localeRepository;
     }
 
     /**
@@ -63,9 +62,6 @@ class ProductEditDataFilter implements CollectionFilterInterface
      */
     public function filterCollection($collection, $type, array $options = [])
     {
-        $this->attributes = $this->attributeRepository->getAttributesAsArray();
-        $this->locales    = $this->localeManager->getActiveLocales();
-
         $filteredProductData = [];
 
         foreach ($collection as $type => $data) {
@@ -154,7 +150,12 @@ class ProductEditDataFilter implements CollectionFilterInterface
     protected function getAttribute($code)
     {
         if (!array_key_exists($code, $this->attributes)) {
-            throw new ObjectNotFoundException(sprintf('Attribute with code "%s" was not found.', $code));
+            $attribute = $this->attributeRepository->findOneByIdentifier($code);
+            if (!$attribute) {
+                throw new ObjectNotFoundException(sprintf('Attribute with code "%s" was not found.', $code));
+            }
+
+            $this->attributes[$code] = $attribute;
         }
 
         return $this->attributes[$code];
@@ -162,15 +163,24 @@ class ProductEditDataFilter implements CollectionFilterInterface
 
     /**
      * @param string $code
+     * @param bool   $activeOnly
      *
      * @return LocaleInterface
      *
      * @throws ObjectNotFoundException
      */
-    protected function getLocale($code)
+    protected function getLocale($code, $activeOnly = true)
     {
         if (!array_key_exists($code, $this->locales)) {
-            throw new ObjectNotFoundException(sprintf('Locale with code "%s" was not found.', $code));
+            $locale = $this->localeRepository->findOneByIdentifier($code);
+            if (!$locale) {
+                throw new ObjectNotFoundException(sprintf('Locale with code "%s" was not found.', $code));
+            }
+            if ($activeOnly && !$locale->isActivated()) {
+                throw new ObjectNotFoundException(sprintf('Active locale with code "%s" was not found.', $code));
+            }
+
+            $this->locales[$code] = $locale;
         }
 
         return $this->locales[$code];
