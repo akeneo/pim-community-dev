@@ -1,0 +1,29 @@
+PimEnterprise\Component\ProductAsset\Model\CategoryTranslation:
+    type: entity
+    table: pimee_product_asset_category_translation
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - locale
+                - foreign_key
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type: string
+            length: 100
+            nullable: true
+        locale:
+            type: string
+            length: 20
+    manyToOne:
+        foreignKey:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
+            inversedBy: translations
+            joinColumns:
+                foreign_key:
+                    referencedColumnName: id
+                    onDelete: CASCADE
