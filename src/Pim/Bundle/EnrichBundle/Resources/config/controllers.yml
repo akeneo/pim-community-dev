@@ -301,6 +301,7 @@ services:
             - '@pim_validator'
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
+            - '@pim_catalog.builder.product'
 
     pim_enrich.controller.product_category_rest:
         class: %pim_enrich.controller.product_category_rest.class%

@@ -19,9 +19,8 @@ define([
             get: function (id) {
                 if (!(id in this.productPromises)) {
                     this.productPromises[id] = $.getJSON(Routing.generate('pim_enrich_product_rest_get', { id: id }))
-                        .then(_.bind(function (product) {
-                            return this.generateMissing(product);
-                        }, this));
+                        .then(_.identity)
+                        .promise();
                 }
 
                 return this.productPromises[id];
@@ -63,49 +62,6 @@ define([
 
                     return product.values;
                 });
-            },
-            generateMissing: function (product) {
-                return $.when(
-                    EntityManager.getRepository('attribute').findAll(),
-                    EntityManager.getRepository('locale').findAll(),
-                    EntityManager.getRepository('channel').findAll(),
-                    AttributeManager.getAttributesForProduct(product)
-                ).then(function (attributes, locales, channels, productAttributes) {
-                    var deferred = new $.Deferred();
-                    var values = {};
-
-                    _.each(productAttributes, function (attributeCode) {
-                        var attribute = _.findWhere(attributes, {code: attributeCode});
-                        var attributeValues = [];
-                        _.each(locales, function (locale) {
-                           _.each(channels, function (channel) {
-                                if (attribute.code in product.values) {
-                                    var newValue = AttributeManager.getValue(
-                                        product.values[attribute.code],
-                                        attribute,
-                                        locale.code,
-                                        channel.code
-                                    )
-
-                                    if (!_.findWhere(
-                                        attributeValues,
-                                        {scope: newValue.scope, locale: newValue.locale}
-                                    )) {
-                                        attributeValues.push(newValue);
-                                    }
-                                }
-                            });
-                        });
-
-                        values[attribute.code] = attributeValues;
-                    });
-
-                    product.values = values;
-
-                    deferred.resolve(product);
-
-                    return deferred.promise();
-                }).promise();
             }
         };
     }

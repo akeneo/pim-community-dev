@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -53,6 +54,9 @@ class ProductRestController
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
+
     /**
      * @param ProductManager          $productManager
      * @param AttributeManager        $attributeManager
@@ -62,6 +66,7 @@ class ProductRestController
      * @param ValidatorInterface      $validator
      * @param UserContext             $userContext
      * @param ObjectFilterInterface   $objectFilter
+     * @param ProductBuilderInterface $productBuilder
      */
     public function __construct(
         ProductManager $productManager,
@@ -71,7 +76,8 @@ class ProductRestController
         NormalizerInterface $normalizer,
         ValidatorInterface $validator,
         UserContext $userContext,
-        ObjectFilterInterface $objectFilter
+        ObjectFilterInterface $objectFilter,
+        ProductBuilderInterface $productBuilder
     ) {
         $this->productManager   = $productManager;
         $this->attributeManager = $attributeManager;
@@ -81,6 +87,7 @@ class ProductRestController
         $this->validator        = $validator;
         $this->userContext      = $userContext;
         $this->objectFilter     = $objectFilter;
+        $this->productBuilder   = $productBuilder;
     }
 
     /**
@@ -110,6 +117,7 @@ class ProductRestController
     public function getAction($id)
     {
         $product  = $this->findProductOr404($id);
+        $this->productBuilder->addMissingProductValues($product);
         $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
         $locales  = $this->userContext->getUserLocaleCodes();
 
