@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-4308: MongoDB indexes are removed on schema update
+
 # 1.3.14 (2015-06-03)
 
 ## Bug fixes
