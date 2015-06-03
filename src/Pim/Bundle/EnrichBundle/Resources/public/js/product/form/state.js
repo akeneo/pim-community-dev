@@ -39,6 +39,7 @@ define(
 
                 this.listenTo(this.getRoot().model, 'all', this.collectState);
                 this.listenTo(this.getRoot().model, 'all', this.render);
+                this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
 
                 mediator.on('product:action:post_update', _.bind(function (data) {
                     this.state = JSON.stringify(data);
