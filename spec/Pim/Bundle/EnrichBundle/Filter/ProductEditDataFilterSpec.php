@@ -200,6 +200,80 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         ]);
     }
 
+    function it_does_not_filter_non_localizable_attributes($objectFilter)
+    {
+        $data = [
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'en_US',
+                        'scope'  => 'mobile',
+                        'value'  => 'My awesome product'
+                    ],
+                    [
+                        'locale' => 'sv_SE',
+                        'scope'  => 'mobile',
+                        'value'  => 'Min juste produkt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => null,
+                        'scope'  => 'mobile',
+                        'value'  => 'This product is really awesome !'
+                    ]
+                ]
+            ]
+        ];
+
+        $objectFilter->filterObject(
+            Argument::is('fake_name_attribute'),
+            Argument::is('pim:internal_api:attribute:edit')
+        )
+            ->shouldBeCalled()
+            ->willReturn(false);
+
+        $objectFilter->filterObject(
+            Argument::is('fake_description_attribute'),
+            Argument::is('pim:internal_api:attribute:edit')
+        )
+            ->shouldBeCalled()
+            ->willReturn(false);
+
+        $objectFilter->filterObject(
+            Argument::is('fake_en_us_locale'),
+            Argument::is('pim:internal_api:locale:edit')
+        )
+            ->shouldBeCalled()
+            ->willReturn(true);
+
+        $objectFilter->filterObject(
+            Argument::is('fake_sv_se_locale'),
+            Argument::is('pim:internal_api:locale:edit')
+        )
+            ->shouldBeCalled()
+            ->willReturn(false);
+
+        $this->filterCollection($data, null)->shouldReturn([
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => 'sv_SE',
+                        'scope'  => 'mobile',
+                        'value'  => 'Min juste produkt'
+                    ]
+                ],
+                'description' => [
+                    [
+                        'locale' => null,
+                        'scope'  => 'mobile',
+                        'value'  => 'This product is really awesome !'
+                    ]
+                ]
+            ]
+        ]);
+    }
+
     function it_throws_an_exception_when_values_data_contains_a_non_existant_attribute()
     {
         $data = [
