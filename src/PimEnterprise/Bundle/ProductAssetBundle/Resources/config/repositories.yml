@@ -1,9 +1,9 @@
 parameters:
-    pimee_product_asset.repository.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ProductAssetRepository
+    pimee_product_asset.repository.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetRepository
     pimee_product_asset.repository.channel_configuration.class: PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ChannelConfigurationRepository
     pimee_product_asset.repository.file_metadata.class:         PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\FileMetadataRepository
-    pimee_product_asset.repository.asset_reference.class:       PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ProductAssetReferenceRepository
-    pimee_product_asset.repository.asset_variation.class:       PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ProductAssetVariationRepository
+    pimee_product_asset.repository.reference.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ReferenceRepository
+    pimee_product_asset.repository.variation.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\VariationRepository
 
 services:
     pimee_product_asset.repository.channel_configuration:
@@ -31,20 +31,20 @@ services:
         tags:
             - { name: 'pim_repository' }
 
-    pimee_product_asset.repository.asset_reference:
-        class: %pimee_product_asset.repository.asset_reference.class%
+    pimee_product_asset.repository.reference:
+        class: %pimee_product_asset.repository.reference.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.asset_reference.class%
+            - %pimee_product_asset.model.reference.class%
         tags:
             - { name: 'pim_repository' }
 
-    pimee_product_asset.repository.asset_variation:
-        class: %pimee_product_asset.repository.asset_variation.class%
+    pimee_product_asset.repository.variation:
+        class: %pimee_product_asset.repository.variation.class%
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments:
-            - %pimee_product_asset.model.asset_variation.class%
+            - %pimee_product_asset.model.variation.class%
         tags:
             - { name: 'pim_repository' }

@@ -122,7 +122,7 @@ AcmeEnterprise\Bundle\AppBundle\Model\ProductValue:
                         referencedColumnName: id
                         nullable: false
         assets:
-            targetEntity: PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\AssetInterface
             cascade:
                 - refresh
             joinTable:

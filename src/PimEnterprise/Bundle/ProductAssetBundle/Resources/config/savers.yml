@@ -16,7 +16,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.saver.base_options_resolver'
-            - %pimee_product_asset.model.asset_variation.class%
+            - %pimee_product_asset.model.variation.class%
 
     pimee_product_asset.saver.file_metadata:
         class: %pimee_product_asset.saver.file_metadata.class%

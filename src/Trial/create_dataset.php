@@ -2,8 +2,8 @@
 
 use Akeneo\Component\FileTransformer\Exception\NotApplicableTransformationException;
 use Doctrine\ORM\EntityManager;
-use PimEnterprise\Component\ProductAsset\Builder\ProductAssetVariationBuilder;
-use PimEnterprise\Component\ProductAsset\Model\ProductAsset;
+use PimEnterprise\Component\ProductAsset\Builder\VariationBuilder;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 
 define('PIM_PATH', '/home/jjanvier/workspaces/phpstorm/akeneo/pim_master/ped/');
@@ -46,8 +46,8 @@ $em = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
 $metadataBuilder = $kernel->getContainer()->get('pimee_product_asset.builder.image_metadata');
 $localeRepo  = $kernel->getContainer()->get('pim_catalog.repository.locale');
 $channelRepo = $kernel->getContainer()->get('pim_catalog.repository.channel');
-$productVarBuilder = new ProductAssetVariationBuilder($channelRepo);
-$referenceBuilder  = new \PimEnterprise\Component\ProductAsset\Builder\ProductAssetReferenceBuilder($localeRepo);
+$productVarBuilder = new VariationBuilder($channelRepo);
+$referenceBuilder  = new \PimEnterprise\Component\ProductAsset\Builder\ReferenceBuilder($localeRepo);
 
 
 function createSplFile($imageName)
@@ -81,7 +81,7 @@ function createPimFile(\SplFileInfo $splFile, $imageName)
 
 function createNewAsset($key)
 {
-    $asset = new ProductAsset();
+    $asset = new Asset();
 
     if (1 === rand(0, 1)) {
         $asset->setEndOfUseAt(new \DateTime('2050-05-25 12:12:12'));

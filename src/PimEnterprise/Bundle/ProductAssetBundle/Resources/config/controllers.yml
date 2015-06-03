@@ -6,8 +6,8 @@ services:
         class: %pimee_product_asset.controller.produt_asset.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
-            - '@pimee_product_asset.repository.asset_reference'
-            - '@pimee_product_asset.repository.asset_variation'
+            - '@pimee_product_asset.repository.reference'
+            - '@pimee_product_asset.repository.variation'
             - '@pimee_product_asset.repository.file_metadata'
             - '@pim_catalog.repository.channel'
             - '@pimee_product_asset.file_storage.raw_file.storer'

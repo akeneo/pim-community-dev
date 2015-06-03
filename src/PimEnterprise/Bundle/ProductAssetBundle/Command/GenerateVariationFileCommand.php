@@ -15,9 +15,9 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Builder\ProductAssetVariationBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Model\ProductAssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\ProductAssetRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -86,19 +86,21 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param ProductAssetInterface $asset
-     * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
+     * @param AssetInterface    $asset
+     * @param ChannelInterface  $channel
+     * @param LocaleInterface   $locale
      *
      * @throws \LogicException
      */
     protected function ensureVariationExists(
-        ProductAssetInterface $asset,
+        AssetInterface $asset,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
         if (null === $reference = $asset->getReference($locale)) {
-            throw new \LogicException(sprintf('No reference for the asset "%s" with the expected locale', $asset->getCode()));
+            throw new \LogicException(
+                sprintf('No reference for the asset "%s" with the expected locale', $asset->getCode())
+            );
         }
 
         if (!$reference->hasVariation($channel)) {
@@ -132,7 +134,7 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProductAssetRepositoryInterface
+     * @return AssetRepositoryInterface
      */
     protected function getAssetRepository()
     {
@@ -140,7 +142,7 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return ProductAssetVariationBuilderInterface
+     * @return VariationBuilderInterface
      */
     protected function getVariationBuilder()
     {

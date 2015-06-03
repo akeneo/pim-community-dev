@@ -1,4 +1,0 @@
-pimee_product_asset_index:
-    type: action
-    label: pimee_product_asset.acl.asset.index
-    group_name: pimee_product_asset.acl_group.asset
