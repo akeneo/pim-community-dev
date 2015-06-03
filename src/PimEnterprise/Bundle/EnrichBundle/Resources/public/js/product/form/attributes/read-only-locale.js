@@ -32,7 +32,7 @@ define(
                         var localePermission = _.findWhere(permissions.locales, {code: field.context.locale});
 
                         if (!localePermission.edit) {
-                            field.setEnabled(false);
+                            field.setEditable(false);
                         }
                     }
                 }, this));

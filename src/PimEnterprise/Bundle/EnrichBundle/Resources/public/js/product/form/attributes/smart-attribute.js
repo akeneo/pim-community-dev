@@ -32,7 +32,7 @@ define(
                     var field = event.field;
                     var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
 
-                    if (ruleRelation && 'edit' === field.getEditMode()) {
+                    if (ruleRelation && field.getEditable()) {
                         var $element = this.template({
                             ruleRelation: ruleRelation
                         });
