@@ -7,9 +7,10 @@ define([
         'routing',
         'pim/attribute-manager',
         'text!pim/template/product/field/media',
+        'pim/dialog',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
@@ -18,6 +19,7 @@ define([
                 'click  .clear-field': 'clearField',
                 'click  .open-media': 'previewImage'
             },
+            uploadContext: {},
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
@@ -25,7 +27,7 @@ define([
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
                         templateContext.mediaUrl = this.getMediaUrl(templateContext.value.value);
-
+                        templateContext.inUpload = !this.isReady();
                         return templateContext;
                     }, this));
             },
@@ -53,12 +55,24 @@ define([
                 return Field.prototype.renderCopyInput.apply(this, arguments);
             },
             updateModel: function (event) {
+                if (!this.isReady()) {
+                    Dialog.alert(_.__(
+                        'pim_enrich.entity.product.info.already_in_upload',
+                        {'locale': this.context.locale, 'scope': this.context.scope}
+                    ));
+                }
+
                 var input = event.currentTarget;
 
                 var formData = new FormData();
                 formData.append('file', input.files[0]);
 
-                this.$('.progress').css({opacity: 1});
+                this.setReady(false);
+                this.uploadContext = {
+                    'locale': this.context.locale,
+                    'scope':  this.context.scope
+                };
+
                 $.ajax({
                     url: Routing.generate('pim_enrich_media_rest_post'),
                     type: 'POST',
@@ -75,9 +89,12 @@ define([
                         return myXhr;
                     }, this)
                 }).done(_.bind(function (data) {
-                    this.setCurrentValue(data);
+                    this.setUploadContextValue(data);
                     this.render();
-                    this.$('.progress').css({opacity: 0});
+                }, this)).then(_.bind(function () {
+                    this.$('> .media-field .progress').css({opacity: 0});
+                    this.setReady(true);
+                    this.uploadContext = {};
                 }, this));
             },
             clearField: function () {
@@ -86,15 +103,30 @@ define([
                 this.render();
             },
             handleProcess: function (e) {
-                this.$('.progress .bar').css({
-                    width: ((e.loaded / e.total) * 100) + '%'
-                });
+                if (this.uploadContext.locale === this.context.locale &&
+                    this.uploadContext.scope === this.context.scope
+                ) {
+                    this.$('> .media-field .progress').css({opacity: 1});
+                    this.$('> .media-field .progress .bar').css({
+                        width: ((e.loaded / e.total) * 100) + '%'
+                    });
+                }
             },
             previewImage: function () {
                 var mediaUrl = this.getMediaUrl(this.getCurrentValue().value);
                 if (mediaUrl) {
                     $.slimbox(mediaUrl, '', {overlayOpacity: 0.3});
                 }
+            },
+            setUploadContextValue: function (value) {
+                var productValue = AttributeManager.getValue(
+                    this.model.get('values'),
+                    this.attribute,
+                    this.uploadContext.locale,
+                    this.uploadContext.scope
+                );
+
+                productValue.value = value;
             }
         });
     }

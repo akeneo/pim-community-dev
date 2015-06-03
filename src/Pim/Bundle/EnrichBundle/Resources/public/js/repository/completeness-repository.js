@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'routing', 'pim/entity-repository'], function ($
 
             return completenessPromises[productId];
         },
-        invalidateCache: function (productId) {
+        clear: function (productId) {
             if (productId) {
                 delete completenessPromises[productId];
             } else {

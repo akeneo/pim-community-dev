@@ -104,7 +104,7 @@ define(
             },
             getAttributeLabel: function (attribute, key) {
                 var uiLocale = UserContext.get('catalogLocale');
-                var label = attribute.label[uiLocale] ? attribute.label[uiLocale] : '[' + attribute.code + ']';
+                var label    = i18n.getLabel(attribute.label, uiLocale, attribute.code);
 
                 key = key.split('-');
                 key.shift();

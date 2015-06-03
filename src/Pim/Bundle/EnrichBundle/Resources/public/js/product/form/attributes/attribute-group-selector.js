@@ -8,9 +8,10 @@ define(
         'pim/form',
         'pim/attribute-group-manager',
         'text!pim/template/product/tab/attribute/attribute-group-selector',
-        'pim/user-context'
+        'pim/user-context',
+        'pim/i18n'
     ],
-    function ($, Backbone, _, BaseForm, AttributeGroupManager, template, UserContext) {
+    function ($, Backbone, _, BaseForm, AttributeGroupManager, template, UserContext, i18n) {
         return BaseForm.extend({
             tagName: 'ul',
             className: 'nav nav-tabs attribute-group-selector',
@@ -33,7 +34,8 @@ define(
                     current: this.state.get('current'),
                     attributeGroups: this.state.get('attributeGroups'),
                     badges: this.badges,
-                    locale: UserContext.get('catalogLocale')
+                    locale: UserContext.get('catalogLocale'),
+                    i18n: i18n
                 }));
 
                 this.delegateEvents();

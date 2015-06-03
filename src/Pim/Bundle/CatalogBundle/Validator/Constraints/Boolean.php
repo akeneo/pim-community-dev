@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
 
 /**
- * Constraint
+ * Boolean constraint
  *
  * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

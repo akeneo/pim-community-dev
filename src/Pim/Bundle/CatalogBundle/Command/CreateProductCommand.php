@@ -42,7 +42,7 @@ class CreateProductCommand extends ContainerAwareCommand
         if (false !== $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" already exists<error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $product = $this->createProduct($identifier);
@@ -53,7 +53,7 @@ class CreateProductCommand extends ContainerAwareCommand
         if (0 !== $violations->count()) {
             $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $this->saveProduct($product);

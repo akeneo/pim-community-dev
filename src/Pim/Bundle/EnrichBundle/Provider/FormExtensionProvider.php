@@ -48,6 +48,10 @@ class FormExtensionProvider
     {
         $config = $config + $this->defaults + ['code' => $code];
 
+        if (!isset($config['position'])) {
+            $config['position'] = 100;
+        }
+
         $this->extensions[] = $config;
     }
 
@@ -57,6 +61,10 @@ class FormExtensionProvider
     public function getExtensions()
     {
         $securityFacade = $this->securityFacade;
+
+        usort($this->extensions, function ($extension1, $extension2) {
+            return (int) $extension1['position'] - (int) $extension2['position'];
+        });
 
         return array_filter(
             $this->extensions,
