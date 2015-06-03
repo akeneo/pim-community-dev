@@ -27,15 +27,31 @@
 
     {% set buttons %}
         {% if form.vars.value.id %}
-            {{ elements.deleteLink(
-                path('pim_enrich_categorytree_remove', { id: form.vars.value.id }),
-                'pim_enrich_category_remove',
-                form.vars.value.parent ? path('pim_enrich_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_enrich_categorytree_create'),
-                'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
-                ~ 'info.category.remove children'|trans ~ '<br />'
-                ~ 'info.category.keep products'|trans,
-                (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans
-            ) }}
+            {% if category_exceeds_products_limit_for_removal(form.vars.value, true) %}
+                {{ elements.link(
+                    'btn.delete',
+                    null,
+                    {
+                        'icon':  'trash',
+                        'title': 'btn.delete',
+                        'attr': {
+                            'data-title':   'confirmation.delete'|trans,
+                            'data-dialog':  'alert',
+                            'data-message': 'info.category.products limit exceeded'|trans({ '%limit%': get_products_limit_for_removal()|default('0') })
+                        }
+                    }
+                ) }}
+            {% else %}
+                {{ elements.deleteLink(
+                    path('pim_enrich_categorytree_remove', { id: form.vars.value.id }),
+                    'pim_enrich_category_remove',
+                    form.vars.value.parent ? path('pim_enrich_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_enrich_categorytree_create'),
+                    'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
+                    ~ 'info.category.remove children'|trans ~ '<br />'
+                    ~ 'info.category.keep products'|trans,
+                    (form.vars.value.parent ? 'flash.category.removed' : 'flash.tree.removed')|trans
+                ) }}
+            {% endif %}
         {% elseif parentId %}
             {{ elements.backLink(path('pim_enrich_categorytree_edit', { id: parentId }), 'btn.to parent') }}
         {% endif %}

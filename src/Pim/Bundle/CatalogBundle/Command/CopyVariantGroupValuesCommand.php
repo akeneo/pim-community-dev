@@ -42,9 +42,9 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
         $code = $input->getArgument('code');
         $variantGroup = $this->getVariantGroup($code);
         if (!$variantGroup || $variantGroup->getType()->isVariant() === false) {
-            $output->writeln(sprintf('<error>The variant group "%s" does not exist.<error>', $code));
+            $output->writeln(sprintf('<error>The variant group "%s" does not exist.</error>', $code));
 
-            return;
+            return -1;
         }
 
         $template = $variantGroup->getProductTemplate();
@@ -54,7 +54,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
 
         $output->writeln(
             sprintf(
-                '<info>Following %s products have been updated<error>',
+                '<info>Following %s products have been updated</info>',
                 count($products) - $nbSkipped
             )
         );
@@ -62,23 +62,23 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
         foreach ($products as $product) {
             $productIdentifier = (string) $product->getIdentifier();
             if (in_array($productIdentifier, array_keys($skipped)) === false) {
-                $output->writeln(sprintf('<info> - "%s" has been updated<info>', $productIdentifier));
+                $output->writeln(sprintf('<info> - "%s" has been updated</info>', $productIdentifier));
             }
         }
 
         if ($nbSkipped > 0) {
             $output->writeln(
                 sprintf(
-                    '<info>Following %s products have been skipped<error>',
+                    '<info>Following %s products have been skipped</info>',
                     $nbSkipped
                 )
             );
         }
 
         foreach ($skipped as $productIdentifier => $messages) {
-            $output->writeln(sprintf('<error> - "%s" is not valid<error>', $productIdentifier));
+            $output->writeln(sprintf('<error> - "%s" is not valid</error>', $productIdentifier));
             foreach ($messages as $message) {
-                $output->writeln(sprintf("<error>   - %s<error>", $message));
+                $output->writeln(sprintf("<error>   - %s</error>", $message));
             }
         }
     }

@@ -38,7 +38,7 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
             foreach ($products as $product) {
                 $pendings[] = $product;
             }
-        } elseif ($entity instanceof CategoryInterface) {
+        } elseif ($entity instanceof CategoryInterface && UpdateGuesserInterface::ACTION_DELETE === $action) {
             $products = $entity->getProducts();
             foreach ($products as $product) {
                 $pendings[] = $product;
