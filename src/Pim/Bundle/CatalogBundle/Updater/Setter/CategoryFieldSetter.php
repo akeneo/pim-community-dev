@@ -19,9 +19,6 @@ class CategoryFieldSetter extends AbstractFieldSetter
     /** @var IdentifiableObjectRepositoryInterface */
     protected $categoryRepository;
 
-    /** array */
-    protected $categoryCache;
-
     /**
      * @param IdentifiableObjectRepositoryInterface $categoryRepository
      * @param array                                 $supportedFields
@@ -32,7 +29,6 @@ class CategoryFieldSetter extends AbstractFieldSetter
     ) {
         $this->categoryRepository = $categoryRepository;
         $this->supportedFields    = $supportedFields;
-        $this->categoryCache = [];
     }
 
     /**
@@ -108,11 +104,8 @@ class CategoryFieldSetter extends AbstractFieldSetter
      */
     protected function getCategory($categoryCode)
     {
-        if (!isset($this->categoryCache[$categoryCode])) {
-            $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
-            $this->categoryCache[$categoryCode]= $category;
-        }
+        $category = $this->categoryRepository->findOneByIdentifier($categoryCode);
 
-        return isset($this->categoryCache[$categoryCode]) ? $this->categoryCache[$categoryCode] : null;
+        return $category;
     }
 }

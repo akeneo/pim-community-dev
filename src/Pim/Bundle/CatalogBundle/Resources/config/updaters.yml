@@ -180,7 +180,7 @@ services:
     pim_catalog.updater.setter.category_field:
         class: %pim_catalog.updater.setter.category_field.class%
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -375,7 +375,7 @@ services:
     pim_catalog.updater.adder.category_field:
         class: %pim_catalog.updater.adder.category_field.class%
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -425,7 +425,7 @@ services:
     pim_catalog.updater.remover.category_field:
         class: %pim_catalog.updater.remover.category_field.class%
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.remover' }
