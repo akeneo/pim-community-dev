@@ -37,6 +37,7 @@ Feature: List proposals
       | Author | Julia       | jacket          |
       | Author | Sandra,Mary | sweater, tshirt |
 
+  @skip-pef
   Scenario: Successfully approve or refuse a proposal
     Given I am logged in as "admin"
     And I am on the proposals page

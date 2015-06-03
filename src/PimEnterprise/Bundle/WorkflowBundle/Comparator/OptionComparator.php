@@ -11,43 +11,34 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-
 /**
  * Comparator which calculate change set for options
  *
  * @author Gildas Quemener <gildas@akeneo.com>
- *
- * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class OptionComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function supportsComparison(ProductValueInterface $value)
+    public function supportsComparison($type)
     {
-        return 'pim_catalog_simpleselect' === $value->getAttribute()->getAttributeType();
+        return in_array($type, ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(ProductValueInterface $value, $submittedData)
+    public function getChanges(array $data, array $originals)
     {
-        if (!isset($submittedData['option'])) {
-            return;
-        }
-
-        $option = $value->getOption();
-        if (null === $option && empty($submittedData['option'])) {
-            return;
-        }
-
-        if (!$option || $option->getId() != $submittedData['option']) {
+        if (!array_key_exists('value', $originals) || $data['value']['code'] !== $originals['value']['code']) {
             return [
-                'option' => $submittedData['option'],
+                'locale' => $data['locale'],
+                'scope'  => $data['scope'],
+                'value'  => $data['value']['code'],
             ];
         }
+
+        return null;
     }
 }

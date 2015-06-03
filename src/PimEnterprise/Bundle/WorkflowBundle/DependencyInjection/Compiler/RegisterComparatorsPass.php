@@ -27,15 +27,15 @@ class RegisterComparatorsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pimee_workflow.comparator.chained')) {
+        if (!$container->hasDefinition('pimee_workflow.comparator.registry')) {
             return;
         }
 
-        $definition = $container->getDefinition('pimee_workflow.comparator.chained');
-        foreach ($container->findTaggedServiceIds('pimee_workflow.comparator') as $id => $attribute) {
+        $definition = $container->getDefinition('pimee_workflow.comparator.registry');
+        foreach ($container->findTaggedServiceIds('pimee_workflow.attribute.comparator') as $id => $attribute) {
             $container->getDefinition($id)->setPublic(false);
             $definition->addMethodCall(
-                'addComparator',
+                'addAttributeComparator',
                 [
                     new Reference($id),
                     isset($attribute[0]['priority']) ? $attribute[0]['priority'] : 0

@@ -23,6 +23,7 @@ Feature: Review a product draft with reference data
       | sole_color  | cyan            |
       | sole_fabric | kevlar,neoprene |
 
+  @skip-pef
   Scenario: Successfully accept from a product draft with a simple select reference data
     Given Mary proposed the following change to "my-vans":
       | tab   | field      | value |
@@ -35,6 +36,7 @@ Feature: Review a product draft with reference data
     When I visit the "Attributes" tab
     But the field Sole color should contain "[black]"
 
+  @skip-pef
   Scenario: Successfully refuse a waiting for approval product draft with a simple select reference data
     Given Mary proposed the following change to "my-vans":
       | tab   | field      | value |
@@ -50,6 +52,7 @@ Feature: Review a product draft with reference data
     When I visit the "Attributes" tab
     Then the product Sole color should be "[cyan]"
 
+  @skip-pef
   Scenario: Successfully remove an in progress product draft with a simple select reference data
     Given Mary started to propose the following change to "my-vans":
       | tab   | field      | value |
@@ -62,6 +65,7 @@ Feature: Review a product draft with reference data
     When I visit the "Attributes" tab
     Then the product Sole color should be "[cyan]"
 
+  @skip-pef
   Scenario: Successfully accept from a product draft with a multi select reference data
     Given Mary proposed the following change to "my-vans":
       | tab   | field       | value      |
@@ -74,6 +78,7 @@ Feature: Review a product draft with reference data
     When I visit the "Attributes" tab
     But the field Sole fabric should contain "[wool], [jute]"
 
+  @skip-pef
   Scenario: Successfully refuse a waiting for approval product draft with a multi select reference data
     Given Mary proposed the following change to "my-vans":
       | tab   | field       | value      |
@@ -89,6 +94,7 @@ Feature: Review a product draft with reference data
     When I visit the "Attributes" tab
     Then the product Sole fabric should be "[kevlar], [neoprene]"
 
+  @skip-pef
   Scenario: Successfully remove an in progress product draft with a multi select reference data
     Given Mary started to propose the following change to "my-vans":
       | tab   | field       | value      |
