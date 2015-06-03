@@ -76,7 +76,15 @@ class AssetCollectionType extends AbstractAttributeType
 
         unset($attributes['availableLocales'], $attributes['unique']);
 
-        return $attributes;
+        return $attributes + [
+            'reference_data_name' => [
+                'name'      => 'reference_data_name',
+                'fieldType' => 'hidden',
+                'options'   => [
+                    'data'     => 'assets',
+                ],
+            ]
+        ];
     }
 
     /**
