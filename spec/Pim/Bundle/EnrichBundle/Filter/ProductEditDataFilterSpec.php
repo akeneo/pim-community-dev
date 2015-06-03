@@ -174,13 +174,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ->willReturn(true);
 
         $objectFilter->filterObject(
-            Argument::is('fake_en_us_locale'),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        $objectFilter->filterObject(
             Argument::is('fake_sv_se_locale'),
             Argument::is('pim:internal_api:locale:edit')
         )
