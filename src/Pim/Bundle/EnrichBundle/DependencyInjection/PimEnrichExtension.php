@@ -33,6 +33,7 @@ class PimEnrichExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');
         $loader->load('factories.yml');
+        $loader->load('filters.yml');
         $loader->load('form_subscribers.yml');
         $loader->load('form_types.yml');
         $loader->load('form_factories.yml');

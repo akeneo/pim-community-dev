@@ -4,14 +4,13 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -57,27 +56,19 @@ class ProductRestController
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var LocaleManager */
-    protected $localeManager;
-
-    /** @var AttributeRepositoryInterface */
-    protected $attributeRepository;
+    /** @var CollectionFilterInterface */
+    private $productEditDataFilter;
 
     /**
-     * @param ProductManager               $productManager
-     * @param AttributeManager             $attributeManager
-     * @param ProductUpdaterInterface      $productUpdater
-     * @param SaverInterface               $productSaver
-     * @param NormalizerInterface          $normalizer
-     * @param ValidatorInterface           $validator
-     * @param UserContext                  $userContext
-     * @param ObjectFilterInterface        $objectFilter
-     * @param SecurityFacade               $securityFacade
-     * @param LocaleManager                $localeManager
-     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductManager            $productManager
+     * @param AttributeManager          $attributeManager
+     * @param ProductUpdaterInterface   $productUpdater
+     * @param SaverInterface            $productSaver
+     * @param NormalizerInterface       $normalizer
+     * @param ValidatorInterface        $validator
+     * @param UserContext               $userContext
+     * @param ObjectFilterInterface     $objectFilter
+     * @param CollectionFilterInterface $productEditDataFilter
      */
     public function __construct(
         ProductManager $productManager,
@@ -88,21 +79,17 @@ class ProductRestController
         ValidatorInterface $validator,
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
-        SecurityFacade $securityFacade,
-        LocaleManager $localeManager,
-        AttributeRepositoryInterface $attributeRepository
+        CollectionFilterInterface $productEditDataFilter
     ) {
-        $this->productManager      = $productManager;
-        $this->attributeManager    = $attributeManager;
-        $this->productUpdater      = $productUpdater;
-        $this->productSaver        = $productSaver;
-        $this->normalizer          = $normalizer;
-        $this->validator           = $validator;
-        $this->userContext         = $userContext;
-        $this->objectFilter        = $objectFilter;
-        $this->securityFacade      = $securityFacade;
-        $this->localeManager       = $localeManager;
-        $this->attributeRepository = $attributeRepository;
+        $this->productManager        = $productManager;
+        $this->attributeManager      = $attributeManager;
+        $this->productUpdater        = $productUpdater;
+        $this->productSaver          = $productSaver;
+        $this->normalizer            = $normalizer;
+        $this->validator             = $validator;
+        $this->userContext           = $userContext;
+        $this->objectFilter          = $objectFilter;
+        $this->productEditDataFilter = $productEditDataFilter;
     }
 
     /**
@@ -165,7 +152,11 @@ class ProductRestController
         }
 
         $data = json_decode($request->getContent(), true);
-        $data = $this->filterProductDataForEdit($data);
+        try {
+            $data = $this->productEditDataFilter->filterCollection($data, null);
+        } catch (ObjectNotFoundException $e) {
+            throw new BadRequestHttpException();
+        }
 
         $this->updateProduct($product, $data);
 
@@ -257,71 +248,6 @@ class ProductRestController
         }
 
         return $attribute;
-    }
-
-    /**
-     * TODO: Registries for locales and attribute groups
-     * TODO: OptionsResolver to ensure values shape ?
-     *
-     * Filter product data that cannot be edited
-     *
-     * @param array $productData
-     *
-     * @return array
-     */
-    protected function filterProductDataForEdit(array $productData)
-    {
-        $filteredProductData = [];
-
-        foreach ($productData as $type => $data) {
-            if ('values' === $type) {
-                $filteredValues = [];
-
-                foreach ($data as $attributeCode => $contextValues) {
-                    $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
-                    if (!$this->objectFilter->filterObject($attribute, 'pim:internal_api:attribute:edit')) {
-                        $filteredContextValues = [];
-
-                        foreach ($contextValues as $contextValue) {
-                            $locale = $this->localeManager->getLocaleByCode($contextValue['locale']);
-                            if (!$this->objectFilter->filterObject($locale, 'pim:internal_api:locale:edit')) {
-                                $filteredContextValues[] = $contextValue;
-                            }
-                        }
-
-                        $filteredValues[$attributeCode] = $filteredContextValues;
-                    }
-                }
-
-                $filteredProductData['values'] = array_filter($filteredValues);
-            } else {
-                switch ($type) {
-                    case 'family':
-                        $acl = 'pim_enrich_product_change_family';
-                        break;
-                    case 'groups':
-                        $acl = 'pim_enrich_product_add_to_groups';
-                        break;
-                    case 'categories':
-                        $acl = 'pim_enrich_product_categories_view';
-                        break;
-                    case 'enabled':
-                        $acl = 'pim_enrich_product_change_state';
-                        break;
-                    case 'associations':
-                        $acl = 'pim_enrich_associations_view';
-                        break;
-                    default:
-                        $acl = null;
-                }
-
-                if (null === $acl || $this->securityFacade->isGranted($acl)) {
-                    $filteredProductData[$type] = $data;
-                }
-            }
-        }
-
-        return $filteredProductData;
     }
 
     /**
