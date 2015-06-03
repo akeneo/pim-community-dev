@@ -152,8 +152,9 @@ class IndexCreatorSpec extends ObjectBehavior
             ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')
             ->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
         $namingUtility
-            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')
+            ->appendSuffixes(['normalizedData.price.EUR', 'normalizedData.price.USD'], ['data'], '.')
             ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
+
         $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
 
         $indexes = array_fill(0, 10, 'fake_index');
@@ -259,7 +260,7 @@ class IndexCreatorSpec extends ObjectBehavior
             ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')
             ->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
         $namingUtility
-            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')
+            ->appendSuffixes(['normalizedData.price.EUR', 'normalizedData.price.USD'], ['data'], '.')
             ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
 
         $price->getCode()->willReturn('price');
