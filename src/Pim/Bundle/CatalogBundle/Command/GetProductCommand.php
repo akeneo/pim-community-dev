@@ -48,7 +48,7 @@ class GetProductCommand extends ContainerAwareCommand
         if (false === $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
-            return;
+            return -1;
         }
 
         $username = $input->getArgument('username');

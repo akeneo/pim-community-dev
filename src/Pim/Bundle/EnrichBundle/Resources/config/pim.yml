@@ -43,3 +43,6 @@ doctrine_migrations:
     dir_name: %doctrine_migrations_dir%
     namespace: Pim\Upgrade\Schema
     name: PIM Migrations
+
+pim_enrich:
+    max_products_category_removal: %max_products_category_removal%

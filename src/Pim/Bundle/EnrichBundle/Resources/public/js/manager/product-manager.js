@@ -35,7 +35,7 @@ define(['jquery', 'underscore', 'routing', 'pim/attribute-manager'], function ($
                 delete this.productPromises[id];
             }, this)).promise();
         },
-        clear: function(id) {
+        clear: function (id) {
             if (id in this.productPromises) {
                 delete this.productPromises[id];
             }

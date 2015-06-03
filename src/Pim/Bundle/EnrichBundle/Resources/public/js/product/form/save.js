@@ -9,16 +9,21 @@ define(
         'oro/messenger',
         'oro/loading-mask',
         'pim/product-manager',
-        'pim/field-manager'
+        'pim/field-manager',
+        'pim/i18n',
+        'pim/user-context'
     ],
     function ($,
-              _,
-              mediator,
-              BaseForm,
-              messenger,
-              LoadingMask,
-              ProductManager,
-              FieldManager) {
+            _,
+            mediator,
+            BaseForm,
+            messenger,
+            LoadingMask,
+            ProductManager,
+            FieldManager,
+            i18n,
+            UserContext
+    ) {
         return BaseForm.extend({
             className: 'btn-group',
             configure: function () {
@@ -42,7 +47,24 @@ define(
                 delete product.variant_group;
                 delete product.meta;
 
-                this.removeEmptyAttributes(product);
+                var notReadyFields = FieldManager.getNotReadyFields();
+
+                if (0 < notReadyFields.length) {
+                    var fieldLabels = _.map(notReadyFields, function (field) {
+                        return i18n.getLabel(
+                            field.attribute.label,
+                            UserContext.get('catalogLocale'),
+                            field.attribute.code
+                        );
+                    });
+
+                    messenger.notificationFlashMessage(
+                        'error',
+                        _.__('pim_enrich.entity.product.info.field_not_ready', {'fields': fieldLabels.join(', ')})
+                    );
+
+                    return;
+                }
 
                 var loadingMask = new LoadingMask();
                 loadingMask.render().$el.appendTo(this.getRoot().$el).show();
@@ -69,6 +91,7 @@ define(
                             case 500:
                                 /* global console */
                                 console.log('Errors:', response.responseJSON);
+                                mediator.trigger('entity:error:save', response.responseJSON);
                                 break;
                             default:
                         }
@@ -80,18 +103,6 @@ define(
                     }).always(function () {
                         loadingMask.hide().$el.remove();
                     });
-            },
-            removeEmptyAttributes: function (product) {
-                var fields = FieldManager.getFields();
-                _.each(product.values, function (value, code) {
-                    if (fields[code]) {
-                        if (0 === fields[code].getData().length || 'edit' !== fields[code].getEditMode()) {
-                            delete product.values[code];
-                        } else {
-                            value = fields[code].getData();
-                        }
-                    }
-                });
             }
         });
     }

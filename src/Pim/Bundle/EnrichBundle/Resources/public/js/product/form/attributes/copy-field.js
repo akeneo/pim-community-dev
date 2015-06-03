@@ -16,7 +16,8 @@ define([
             template: _.template(template),
             selected: false,
             events: {
-                'change .copy-field-selector': 'selectionChanged'
+                'change .copy-field-selector': 'selectionChanged',
+                'click label': 'select'
             },
             initialize: function () {
                 this.selected = false;
@@ -50,13 +51,6 @@ define([
 
                 return this;
             },
-            getData: function () {
-                if (this.editable && this.enabled) {
-                    return this.model.get('values');
-                } else {
-                    return [];
-                }
-            },
             setData: function (data) {
                 this.data = data;
             },
@@ -71,6 +65,9 @@ define([
             },
             selectionChanged: function (event) {
                 this.selected = event.currentTarget.checked;
+            },
+            select: function () {
+                this.$('.copy-field-selector').click();
             },
             setSelected: function (selected) {
                 this.selected = selected;

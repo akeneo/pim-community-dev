@@ -30,7 +30,8 @@ define(
                             extension.code,
                             extension.loadedModule,
                             extension.targetZone,
-                            extension.insertAction
+                            extension.insertAction,
+                            extension.position
                         );
                     });
 

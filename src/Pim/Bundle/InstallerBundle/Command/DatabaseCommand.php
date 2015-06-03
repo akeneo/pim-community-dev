@@ -126,7 +126,7 @@ class DatabaseCommand extends ContainerAwareCommand
                 `sess_id` VARBINARY(128) NOT NULL PRIMARY KEY,
                 `sess_data` BLOB NOT NULL,
                 `sess_time` INTEGER UNSIGNED NOT NULL,
-                `sess_lifetime` MEDIUMINT NOT NULL
+                `sess_lifetime` MEDIUMINT NOT NULL DEFAULT  '0'
             ) COLLATE utf8_bin, ENGINE = InnoDB";
 
         $db = $this->getContainer()->get('doctrine');

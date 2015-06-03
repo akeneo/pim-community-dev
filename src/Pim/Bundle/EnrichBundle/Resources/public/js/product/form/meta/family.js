@@ -5,6 +5,7 @@ define(
     function (_, BaseForm, template) {
         return BaseForm.extend({
             tagName: 'span',
+            className: 'family',
             template: _.template(template),
             configure: function () {
                 this.listenTo(this.getRoot().model, 'change:family', this.render);

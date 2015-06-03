@@ -12,6 +12,7 @@ define(
         'pim/user-context',
         'pim/entity-manager',
         'oro/navigation',
+        'pim/i18n',
         'backbone/bootstrap-modal'
     ],
     function (
@@ -24,7 +25,8 @@ define(
         modalTemplate,
         UserContext,
         EntityManager,
-        Navigation
+        Navigation,
+        i18n
     ) {
         var FormView = BaseForm.extend({
             tagName: 'span',
@@ -103,7 +105,7 @@ define(
                             cancelText: _.__('pim_enrich.entity.product.meta.groups.modal.close'),
                             title: _.__(
                                 'pim_enrich.entity.product.meta.groups.modal.title',
-                                { group: group.label[UserContext.get('catalogLocale')] || '[' + group.code + ']' }
+                                { group: i18n.getLabel(group.label, UserContext.get('catalogLocale'), group.code) }
                             ),
                             content: this.modalTemplate({
                                 products:     productList.products,
