@@ -1,4 +1,4 @@
-# 1.3.x
+# 1.3.14 (2015-06-03)
 
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
