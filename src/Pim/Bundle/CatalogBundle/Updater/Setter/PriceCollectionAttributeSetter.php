@@ -115,16 +115,6 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
                 );
             }
 
-            if (!is_numeric($price['data']) && null !== $price['data']) {
-                throw InvalidArgumentException::arrayNumericKeyExpected(
-                    $attribute->getCode(),
-                    'data',
-                    'setter',
-                    'prices collection',
-                    gettype($price['data'])
-                );
-            }
-
             if (!in_array($price['currency'], $this->currencyManager->getActiveCodes())) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),

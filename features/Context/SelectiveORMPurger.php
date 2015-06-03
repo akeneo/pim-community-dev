@@ -4,9 +4,7 @@ namespace Context;
 
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
-use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Internal\CommitOrderCalculator;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
@@ -62,11 +60,8 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
 
         $commitOrder = $this->getCommitOrder($this->em, $classes);
 
-        // Get platform parameters
-        $platform = $this->em->getConnection()->getDatabasePlatform();
-
         // Drop association tables first
-        $orderedTables = $this->getAssociationTables($commitOrder, $platform);
+        $orderedTables = $this->getAssociationTables($commitOrder);
 
         // Get platform parameters
         $platform = $this->em->getConnection()->getDatabasePlatform();
@@ -97,7 +92,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     /**
      * {@inheritdoc}
      */
-    protected function getCommitOrder(EntityManagerInterface $em, array $classes)
+    protected function getCommitOrder(EntityManager $em, array $classes)
     {
         $calc = new CommitOrderCalculator();
 
@@ -146,7 +141,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     /**
      * {@inheritdoc}
      */
-    protected function getAssociationTables(array $classes, AbstractPlatform $platform)
+    protected function getAssociationTables(array $classes)
     {
         $associationTables = array();
 

@@ -36,7 +36,7 @@ class AttributeFilterDumper implements DumperInterface
      */
     public function dump(OutputInterface $output, HelperSet $helperSet)
     {
-        $output->writeln("<info>Useable attributes filters...<info>");
+        $output->writeln("<info>Useable attributes filters...</info>");
         $attributes = $this->repository->findAll();
         $rows = [];
         foreach ($attributes as $attribute) {
