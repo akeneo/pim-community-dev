@@ -23,7 +23,7 @@ Feature: Join a document to a product
     And I save the product
     Then I should see "akeneo.txt"
 
-  @javascript
+  @skip @javascript
   Scenario: Successfully display the document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
