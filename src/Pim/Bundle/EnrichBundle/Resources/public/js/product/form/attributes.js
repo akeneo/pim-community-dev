@@ -151,7 +151,6 @@ define(
                         var attribute = _.findWhere(attributes, {code: attributeCode});
                         if (!product.values[attribute.code]) {
                             product.values[attribute.code] = AttributeManager.generateValues(
-                                [],
                                 attribute,
                                 locales,
                                 channels

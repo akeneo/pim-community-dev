@@ -81,8 +81,9 @@ define([
 
                 return result;
             },
-            generateValues: function(values, attribute, locales, channels)
+            generateValues: function(attribute, locales, channels)
             {
+                var values = [];
                 _.each(locales, _.bind(function (locale) {
                    _.each(channels, _.bind(function (channel) {
                         var newValue = this.getValue(
