@@ -35,7 +35,7 @@ define(
                     );
 
                     if (!attributeGroupPermission.edit) {
-                        field.setEnabled(false);
+                        field.setEditable(false);
                     }
                 }, this));
 
