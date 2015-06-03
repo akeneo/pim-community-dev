@@ -46,7 +46,8 @@ define([
                     this.model.get('values'),
                     this.attribute,
                     locale,
-                    scope
+                    scope,
+                    false
                 );
 
                 context.mediaUrl = this.getMediaUrl(context.value.value);

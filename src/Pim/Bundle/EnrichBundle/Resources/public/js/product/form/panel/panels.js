@@ -74,7 +74,9 @@ define(
                 this.getParent().state.set('fullPanel', true);
             },
             closeFullPanel: function () {
-                this.getParent().state.set('fullPanel', false);
+                if (this.getParent().state.get('fullPanel')) {
+                    this.getParent().state.set('fullPanel', false);
+                }
             },
             resize: function () {
                 var panelContent = this.$('.panel-content');

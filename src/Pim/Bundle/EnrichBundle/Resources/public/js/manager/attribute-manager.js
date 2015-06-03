@@ -59,13 +59,7 @@ define(['jquery', 'underscore', 'pim/entity-manager'], function ($, _, EntityMan
             locale = attribute.localizable ? locale : null;
             scope  = attribute.scopable ? scope : null;
 
-            var result = null;
-
-            _.each(values, _.bind(function (value) {
-                if (value.scope === scope && value.locale === locale) {
-                    result = value;
-                }
-            }, this));
+            var result = _.findWhere(values, {scope: scope, locale: locale});
 
             if (!result) {
                 result = {
@@ -73,8 +67,6 @@ define(['jquery', 'underscore', 'pim/entity-manager'], function ($, _, EntityMan
                     'locale': locale,
                     'value':  this.getEmptyValue(attribute)
                 };
-
-                //values.push(result);
             }
 
             return result;
