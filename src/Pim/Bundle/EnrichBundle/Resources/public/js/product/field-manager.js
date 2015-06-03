@@ -53,7 +53,7 @@ define(
                 var notReadyFields = [];
 
                 _.each(fields, function (field) {
-                    if (!field.getReady()) {
+                    if (!field.isReady()) {
                         notReadyFields.push(field);
                     }
                 });

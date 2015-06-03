@@ -147,7 +147,7 @@ define([
             setReady: function (ready) {
                 this.ready = ready;
             },
-            getReady: function () {
+            isReady: function () {
                 return this.ready;
             },
             getEditMode: function () {

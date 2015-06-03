@@ -136,4 +136,13 @@ interface AttributeRepositoryInterface extends
      * @return AttributeInterface[]
      */
     public function getNonIdentifierAttributes();
+
+    /**
+     * Get attribute type by code attributes
+     *
+     * @param array $codes
+     *
+     * @return array
+     */
+    public function getAttributeTypeByCodes(array $codes);
 }

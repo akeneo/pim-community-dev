@@ -198,6 +198,7 @@ class MediaAttributeSetterSpec extends ObjectBehavior
 
         $value->setMedia($media)->shouldBeCalled();
         $media->setFile(Argument::any())->shouldBeCalled();
+        $media->setOriginalFilename('akeneo')->shouldBeCalled();
         $manager->handleProductMedias($product)->shouldBeCalled();
 
         $this->setAttributeData($product, $attribute, $data, ['locale' => 'fr_FR', 'scope' => 'mobile']);

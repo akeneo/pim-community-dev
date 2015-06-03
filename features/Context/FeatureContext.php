@@ -26,8 +26,10 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    /** @var KernelInterface */
     protected $kernel;
 
+    /** @var string[] */
     protected static $errorMessages = [];
 
     /**
@@ -204,7 +206,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Returns Container instance.
      *
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {
@@ -214,7 +216,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Return doctrine manager instance
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getEntityManager()
     {
@@ -222,7 +224,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getDocumentManager()
     {
@@ -230,7 +232,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return ManagerRegistry
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
      */
     public function getSmartRegistry()
     {
@@ -374,7 +376,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Get the mail recorder
      *
-     * @return MailRecorder
+     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
      */
     public function getMailRecorder()
     {

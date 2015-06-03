@@ -30,9 +30,9 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<info>Generating missing completenesses...<info>");
+        $output->writeln("<info>Generating missing completenesses...</info>");
         $this->getCompletenessManager()->generateMissing();
-        $output->writeln("<info>Missing completenesses generated.<info>");
+        $output->writeln("<info>Missing completenesses generated.</info>");
     }
 
     /**

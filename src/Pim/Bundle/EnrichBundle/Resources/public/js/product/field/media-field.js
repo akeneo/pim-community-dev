@@ -7,9 +7,10 @@ define([
         'routing',
         'pim/attribute-manager',
         'text!pim/template/product/field/media',
+        'pim/dialog',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
@@ -26,7 +27,7 @@ define([
                 return Field.prototype.getTemplateContext.apply(this, arguments)
                     .then(_.bind(function (templateContext) {
                         templateContext.mediaUrl = this.getMediaUrl(templateContext.value.value);
-                        templateContext.inUpload = !this.getReady();
+                        templateContext.inUpload = !this.isReady();
                         return templateContext;
                     }, this));
             },
@@ -54,11 +55,11 @@ define([
                 return Field.prototype.renderCopyInput.apply(this, arguments);
             },
             updateModel: function (event) {
-                if (!this.getReady()) {
-                    alert(_.__(
+                if (!this.isReady()) {
+                    Dialog.alert(_.__(
                         'pim_enrich.entity.product.info.already_in_upload',
                         {'locale': this.context.locale, 'scope': this.context.scope}
-                    ))
+                    ));
                 }
 
                 var input = event.currentTarget;
