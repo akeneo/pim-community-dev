@@ -30,7 +30,7 @@ class ProductCategoryManager
      * Constructor
      *
      * @param ProductCategoryRepositoryInterface $productRepo  Product repository
-     * @param CategoryRepositoryInterface        $categoryRepo Category repository
+     * @param CategoryRepositoryInterface        $categoryRepo Product category repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
