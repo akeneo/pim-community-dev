@@ -102,6 +102,26 @@ define([
                 }, this));
 
                 return values;
+            },
+            generateMissingPrices: function (values, attribute, currencies) {
+                if ('pim_catalog_price_collection' === attribute.type) {
+                    _.each(values, function (value) {
+                        var prices = [];
+                        _.each(currencies, function (currency) {
+                            var price = _.findWhere(value.value, {currency: currency.code});
+
+                            if (!price) {
+                                price = {data: null, currency: currency.code};
+                            }
+
+                            prices.push(price);
+                        });
+
+                        value.value = prices;
+                    });
+                }
+
+                return values;
             }
         };
     }

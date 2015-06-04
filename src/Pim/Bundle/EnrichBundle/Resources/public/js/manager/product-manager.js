@@ -70,8 +70,9 @@ define([
                     EntityManager.getRepository('attribute').findAll(),
                     EntityManager.getRepository('locale').findAll(),
                     EntityManager.getRepository('channel').findAll(),
+                    EntityManager.getRepository('currency').findAll(),
                     AttributeManager.getAttributesForProduct(product)
-                ).then(function (attributes, locales, channels, productAttributes) {
+                ).then(function (attributes, locales, channels, currencies, productAttributes) {
                     var deferred = new $.Deferred();
                     var values = {};
 
@@ -85,6 +86,8 @@ define([
                                 locales,
                                 channels
                             );
+
+                            AttributeManager.generateMissingPrices(values[attribute.code], attribute, currencies);
                         }
                     });
 
