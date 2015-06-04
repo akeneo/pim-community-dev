@@ -1,8 +1,19 @@
 'use strict';
 
 define(
-    ['pim/field', 'underscore', 'text!pim/template/product/field/textarea', 'summernote'],
-    function (Field, _, fieldTemplate) {
+    [
+        'pim/field',
+        'underscore',
+        'pim/attribute-manager',
+        'text!pim/template/product/field/textarea',
+        'summernote'
+    ],
+    function (
+        Field,
+        _,
+        AttributeManager,
+        fieldTemplate
+    ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'textarea',
@@ -31,7 +42,10 @@ define(
                 return this.fieldTemplate(context);
             },
             updateModel: function () {
-                this.setCurrentValue(this.$('textarea').code());
+                var data = this.$('textarea').code();
+                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+
+                this.setCurrentValue(data);
             },
             setFocus: function () {
                 this.$('textarea').first().focus();

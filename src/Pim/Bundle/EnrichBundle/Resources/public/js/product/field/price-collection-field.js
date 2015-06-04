@@ -12,7 +12,7 @@ define([
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
         events: {
-            'change input': 'updateModel'
+            'change input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
             if (_.isEmpty(context.value.value)) {

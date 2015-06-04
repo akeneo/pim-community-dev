@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
@@ -57,7 +58,10 @@ class ProductRestController
     protected $objectFilter;
 
     /** @var CollectionFilterInterface */
-    private $productEditDataFilter;
+    protected $productEditDataFilter;
+
+    /** @var ProductBuilderInterface */
+    protected $productBuilder;
 
     /**
      * @param ProductManager            $productManager
@@ -69,6 +73,7 @@ class ProductRestController
      * @param UserContext               $userContext
      * @param ObjectFilterInterface     $objectFilter
      * @param CollectionFilterInterface $productEditDataFilter
+     * @param ProductBuilderInterface   $productBuilder
      */
     public function __construct(
         ProductManager $productManager,
@@ -79,8 +84,10 @@ class ProductRestController
         ValidatorInterface $validator,
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
-        CollectionFilterInterface $productEditDataFilter
-    ) {
+        CollectionFilterInterface $productEditDataFilter,
+        ProductBuilderInterface $productBuilder
+    )
+    {
         $this->productManager        = $productManager;
         $this->attributeManager      = $attributeManager;
         $this->productUpdater        = $productUpdater;
@@ -90,6 +97,7 @@ class ProductRestController
         $this->userContext           = $userContext;
         $this->objectFilter          = $objectFilter;
         $this->productEditDataFilter = $productEditDataFilter;
+        $this->productBuilder        = $productBuilder;
     }
 
     /**
@@ -119,6 +127,7 @@ class ProductRestController
     public function getAction($id)
     {
         $product  = $this->findProductOr404($id);
+        $this->productBuilder->addMissingAssociations($product);
         $channels = array_keys($this->userContext->getChannelChoicesWithUserChannel());
         $locales  = $this->userContext->getUserLocaleCodes();
 

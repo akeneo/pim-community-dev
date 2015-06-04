@@ -302,6 +302,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.filter.chained'
             - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.builder.product'
 
     pim_enrich.controller.product_category_rest:
         class: %pim_enrich.controller.product_category_rest.class%

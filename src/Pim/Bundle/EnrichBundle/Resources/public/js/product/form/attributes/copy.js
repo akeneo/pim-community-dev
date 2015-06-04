@@ -80,7 +80,12 @@ define(
                         var attribute = _.findWhere(attributes, {code: code});
 
                         if (attribute.scopable || attribute.localizable) {
-                            var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
+                            var valueToCopy = AttributeManager.getValue(
+                                values,
+                                attribute,
+                                this.locale,
+                                this.scope
+                            );
 
                             var copyField;
                             if (
@@ -105,7 +110,7 @@ define(
             },
             copy: function () {
                 _.each(this.copyFields, function (copyField) {
-                    if (copyField.selected && copyField.field && copyField.field.getEditable()) {
+                    if (copyField.selected && copyField.field && copyField.field.isEditable()) {
                         copyField.field.setCurrentValue(copyField.data);
                         copyField.selected = false;
                     }
