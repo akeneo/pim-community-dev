@@ -28,3 +28,10 @@ services:
         class: %pimee_base_connector.processor.locale_access.class%
         arguments:
             - %pimee_security.entity.locale_access.class%
+
+    pimee_base_connector.processor.asset_category:
+        class: %pim_base_connector.processor.category.class%
+        parent: pim_base_connector.processor.transformer
+        arguments:
+            - 'PimEnterprise\Component\ProductAsset\Model\Category'
+            - '@pim_transform.cache.doctrine_cache'
