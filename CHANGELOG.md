@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4308: MongoDB indexes are removed on schema update
+- PIM-4314: Added missing translation keys
 
 # 1.3.14 (2015-06-03)
 
