@@ -78,17 +78,17 @@ Feature: Update multiple product by applying rules
       | copy_name | name       | name     | en_US       | fr_FR     |            |          |
     Given the product rule "copy_name" is executed
     And I am on the "my-loafer" product page
-    When I switch the locale to "French (France)"
+    When I switch the locale to "fr_FR"
     Then the product name should be "Mocassin blanc"
     When I am on the "boot" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Boots"
     When I am on the "fork" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Fork"
     When I am on the "rangers" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Rangers"
     When I am on the "mug" product page
-    And I switch the locale to "French (France)"
+    And I switch the locale to "fr_FR"
     Then the product name should be "Mug"
