@@ -32,3 +32,7 @@ flash.datagrid view:
   updated: Vue de grille mise à jour avec succès
   removed: Vue de grille supprimée avec succès
   not removable: "Vous n'avez pas le droit de supprimer cette vue"
+quick_export: Export rapide
+import: Import
+export: Export
+mass_edit: Edition de masse
