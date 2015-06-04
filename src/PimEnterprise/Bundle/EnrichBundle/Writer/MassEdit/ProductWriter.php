@@ -13,7 +13,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Writer\MassEdit;
 
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
-use Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter as BaseProductWriter;
+use Pim\Component\Connector\Writer\Doctrine\ProductWriter as BaseProductWriter;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
