@@ -77,4 +77,4 @@ services:
         arguments:
             - '@security.context'
         tags:
-            - { name: pim_catalog.filter.collection, type: pim:internal_api:locale:edit }
+            - { name: pim_catalog.filter.object, type: pim:internal_api:locale:edit }
