@@ -13,6 +13,12 @@ confirmation:
     export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export ?"
     user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
     role: Êtes-vous sûr de vouloir supprimer ce rôle ?
+pim_datagrid:
+  mass_action:
+    delete:
+      confirm_content: Êtes-vous sûr de vouloir supprimer les produits sélectionnés ?
+      success: Les produits sélectionnés ont été supprimés.
+      error: "Une erreur s'est produite lors de la suppression des produits sélectionnés, merci d'essayer à nouveau."
 flash:
   item:
     removed: Elément supprimé avec succès
