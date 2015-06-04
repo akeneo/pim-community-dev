@@ -5,9 +5,12 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
+use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
+use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -36,7 +39,7 @@ class ProductRestController
     /** @var AttributeManager */
     protected $attributeManager;
 
-    /** @var ProductUpdater */
+    /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
     /** @var SaverInterface */
@@ -54,19 +57,23 @@ class ProductRestController
     /** @var ObjectFilterInterface */
     protected $objectFilter;
 
+    /** @var CollectionFilterInterface */
+    protected $productEditDataFilter;
+
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
     /**
-     * @param ProductManager          $productManager
-     * @param AttributeManager        $attributeManager
-     * @param ProductUpdaterInterface $productUpdater
-     * @param SaverInterface          $productSaver
-     * @param NormalizerInterface     $normalizer
-     * @param ValidatorInterface      $validator
-     * @param UserContext             $userContext
-     * @param ObjectFilterInterface   $objectFilter
-     * @param ProductBuilderInterface $productBuilder
+     * @param ProductManager            $productManager
+     * @param AttributeManager          $attributeManager
+     * @param ProductUpdaterInterface   $productUpdater
+     * @param SaverInterface            $productSaver
+     * @param NormalizerInterface       $normalizer
+     * @param ValidatorInterface        $validator
+     * @param UserContext               $userContext
+     * @param ObjectFilterInterface     $objectFilter
+     * @param CollectionFilterInterface $productEditDataFilter
+     * @param ProductBuilderInterface   $productBuilder
      */
     public function __construct(
         ProductManager $productManager,
@@ -77,17 +84,20 @@ class ProductRestController
         ValidatorInterface $validator,
         UserContext $userContext,
         ObjectFilterInterface $objectFilter,
+        CollectionFilterInterface $productEditDataFilter,
         ProductBuilderInterface $productBuilder
-    ) {
-        $this->productManager   = $productManager;
-        $this->attributeManager = $attributeManager;
-        $this->productUpdater   = $productUpdater;
-        $this->productSaver     = $productSaver;
-        $this->normalizer       = $normalizer;
-        $this->validator        = $validator;
-        $this->userContext      = $userContext;
-        $this->objectFilter     = $objectFilter;
-        $this->productBuilder   = $productBuilder;
+    )
+    {
+        $this->productManager        = $productManager;
+        $this->attributeManager      = $attributeManager;
+        $this->productUpdater        = $productUpdater;
+        $this->productSaver          = $productSaver;
+        $this->normalizer            = $normalizer;
+        $this->validator             = $validator;
+        $this->userContext           = $userContext;
+        $this->objectFilter          = $objectFilter;
+        $this->productEditDataFilter = $productEditDataFilter;
+        $this->productBuilder        = $productBuilder;
     }
 
     /**
@@ -151,6 +161,11 @@ class ProductRestController
         }
 
         $data = json_decode($request->getContent(), true);
+        try {
+            $data = $this->productEditDataFilter->filterCollection($data, null);
+        } catch (ObjectNotFoundException $e) {
+            throw new BadRequestHttpException();
+        }
 
         $this->updateProduct($product, $data);
 
@@ -204,9 +219,9 @@ class ProductRestController
      *
      * @param string $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {
@@ -227,7 +242,7 @@ class ProductRestController
      *
      * @param int $id the attribute id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
      * @return AttributeInterface
      */
