@@ -38,8 +38,8 @@ define(
                     return;
                 }
                 createOption(this.attribute).done(_.bind(function (option) {
-                    var value = this.getCurrentValue().value;
                     if (this.isEditable()) {
+                        var value = this.getCurrentValue().value;
                         value.push(option.code);
                         this.setCurrentValue(value);
                     }
