@@ -45,7 +45,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     protected $factory;
 
     /** @var ProductDraftRepositoryInterface */
-    protected $repository;
+    protected $productDraftRepo;
 
     /**
      * @param ObjectManager                   $objectManager
@@ -53,7 +53,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param ComparatorRegistry              $comparatorRegistry
      * @param AttributeRepositoryInterface    $attributeRepository
      * @param ProductDraftFactory             $factory
-     * @param ProductDraftRepositoryInterface $productDraftRepository
+     * @param ProductDraftRepositoryInterface $productDraftRepo
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -61,14 +61,14 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
         ComparatorRegistry $comparatorRegistry,
         AttributeRepositoryInterface $attributeRepository,
         ProductDraftFactory $factory,
-        ProductDraftRepositoryInterface $productDraftRepository
+        ProductDraftRepositoryInterface $productDraftRepo
     ) {
         $this->objectManager          = $objectManager;
         $this->normalizer             = $normalizer;
         $this->comparatorRegistry     = $comparatorRegistry;
         $this->attributeRepository    = $attributeRepository;
         $this->factory                = $factory;
-        $this->productDraftRepository = $productDraftRepository;
+        $this->productDraftRepository = $productDraftRepo;
     }
 
     /**
