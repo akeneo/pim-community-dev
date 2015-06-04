@@ -110,7 +110,7 @@ define(
             },
             copy: function () {
                 _.each(this.copyFields, function (copyField) {
-                    if (copyField.selected && copyField.field && copyField.field.getEditable()) {
+                    if (copyField.selected && copyField.field && copyField.field.isEditable()) {
                         copyField.field.setCurrentValue(copyField.data);
                         copyField.selected = false;
                     }

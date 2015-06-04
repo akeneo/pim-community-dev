@@ -32,7 +32,10 @@ define(
                     return;
                 }
                 createOption(this.attribute).done(_.bind(function (option) {
-                    this.setCurrentValue(option.code);
+                    if (this.isEditable()) {
+                        this.setCurrentValue(option.code);
+                    }
+
                     this.render();
                 }, this));
             },
