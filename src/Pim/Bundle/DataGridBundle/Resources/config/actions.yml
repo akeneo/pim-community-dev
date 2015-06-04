@@ -7,9 +7,3 @@ services:
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.action.type, type: tab-redirect }
-
-    pim_datagrid.extension.action.type.inline_edit:
-        class: %pim_datagrid.extension.action.type.tab_redirect.class%
-        scope: prototype
-        tags:
-            - { name: oro_datagrid.extension.action.type, type: inline-edit }
