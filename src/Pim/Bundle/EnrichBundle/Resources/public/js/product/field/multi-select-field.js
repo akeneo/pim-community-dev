@@ -39,8 +39,11 @@ define(
                 }
                 createOption(this.attribute).done(_.bind(function (option) {
                     var value = this.getCurrentValue().value;
-                    value.push(option.code);
-                    this.setCurrentValue(value);
+                    if (this.isEditable()) {
+                        value.push(option.code);
+                        this.setCurrentValue(value);
+                    }
+
                     this.render();
                 }, this));
             },

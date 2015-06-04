@@ -15,9 +15,10 @@ define([
         'pim/attribute-manager',
         'text!pim/template/product/field/media',
         'pim/dialog',
+        'oro/mediator',
         'jquery.slimbox'
     ],
-    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog) {
+    function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
@@ -134,6 +135,7 @@ define([
                 );
 
                 productValue.value = value;
+                mediator.trigger('entity:form:edit:update_state');
             }
         });
     }

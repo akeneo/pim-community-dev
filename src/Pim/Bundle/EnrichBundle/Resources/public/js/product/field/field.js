@@ -148,7 +148,7 @@ define([
             setEditable: function (editable) {
                 this.editable = editable;
             },
-            getEditable: function () {
+            isEditable: function () {
                 return this.editable;
             },
             setReady: function (ready) {
@@ -176,6 +176,7 @@ define([
                 var productValue = this.getCurrentValue();
 
                 productValue.value = value;
+                mediator.trigger('entity:form:edit:update_state');
             }
         });
     }
