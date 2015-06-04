@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {

@@ -6,7 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\Common\Filter\ObjectIdResolverInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 
 class CategoryFilterSpec extends ObjectBehavior
