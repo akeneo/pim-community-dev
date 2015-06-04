@@ -17,29 +17,13 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         SecurityFacade $securityFacade,
         ObjectFilterInterface $objectFilter,
         AttributeRepositoryInterface $attributeRepository,
-        LocaleRepositoryInterface $localeRepository,
-        AttributeInterface $nameAttribute,
-        AttributeInterface $descriptionAttribute,
-        LocaleInterface $enLocale,
-        LocaleInterface $svLocale
+        LocaleRepositoryInterface $localeRepository
     ) {
-        $attributeRepository->findOneByIdentifier(Argument::is('name'))->willReturn($nameAttribute);
-        $attributeRepository->findOneByIdentifier(Argument::is('description'))->willReturn($descriptionAttribute);
-
-        $enLocale->isActivated()->willReturn(true);
-        $svLocale->isActivated()->willReturn(true);
-        $localeRepository->findOneByIdentifier(Argument::is('en_US'))->willReturn($enLocale);
-        $localeRepository->findOneByIdentifier(Argument::is('sv_SE'))->willReturn($svLocale);
-
         $this->beConstructedWith(
             $securityFacade,
             $objectFilter,
             $attributeRepository,
-            $localeRepository,
-            $nameAttribute,
-            $descriptionAttribute,
-            $enLocale,
-            $svLocale
+            $localeRepository
         );
     }
 
@@ -54,9 +38,7 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             'values'        => []
         ];
 
-        $securityFacade->isGranted(Argument::any())
-             ->shouldBeCalled()
-             ->willReturn(false);
+        $securityFacade->isGranted(Argument::any())->willReturn(false);
 
         $this->filterCollection($data, null)->shouldReturn(['values' => []]);
     }
@@ -72,19 +54,29 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             'values'        => []
         ];
 
-        $securityFacade->isGranted(Argument::any())
-             ->shouldBeCalled()
-             ->willReturn(true);
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
 
         $this->filterCollection($data, null)->shouldReturn($data);
     }
 
     function it_filters_values_data_on_attributes_group_rights(
         $objectFilter,
-        $nameAttribute,
-        $descriptionAttribute,
-        $enLocale
+        $attributeRepository,
+        $localeRepository,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descriptionAttribute,
+        LocaleInterface $enLocale
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(true);
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+
         $data = [
             'values' => [
                 'name' => [
@@ -104,27 +96,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $objectFilter->filterObject(
-            Argument::is($nameAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        $objectFilter->filterObject(
-            Argument::is($descriptionAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($enLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
         $this->filterCollection($data, null)->shouldReturn([
             'values' => [
                 'description' => [
@@ -140,11 +111,27 @@ class ProductEditDataFilterSpec extends ObjectBehavior
 
     function it_filters_values_data_on_locale_rights(
         $objectFilter,
-        $nameAttribute,
-        $descriptionAttribute,
-        $enLocale,
-        $svLocale
+        $attributeRepository,
+        $localeRepository,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descriptionAttribute,
+        LocaleInterface $enLocale,
+        LocaleInterface $svLocale
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+
+        $svLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('sv_SE')->willReturn($svLocale);
+        $objectFilter->filterObject($svLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+
         $data = [
             'values' => [
                 'name' => [
@@ -173,34 +160,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
                 ]
             ]
         ];
-
-        $objectFilter->filterObject(
-            Argument::is($nameAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($descriptionAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($enLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        $objectFilter->filterObject(
-            Argument::is($svLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
 
         $this->filterCollection($data, null)->shouldReturn([
             'values' => [
@@ -224,11 +183,27 @@ class ProductEditDataFilterSpec extends ObjectBehavior
 
     function it_does_not_filter_non_localizable_attributes(
         $objectFilter,
-        $nameAttribute,
-        $descriptionAttribute,
-        $enLocale,
-        $svLocale
+        $attributeRepository,
+        $localeRepository,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descriptionAttribute,
+        LocaleInterface $enLocale,
+        LocaleInterface $svLocale
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+
+        $svLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('sv_SE')->willReturn($svLocale);
+        $objectFilter->filterObject($svLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+
         $data = [
             'values' => [
                 'name' => [
@@ -253,34 +228,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $objectFilter->filterObject(
-            Argument::is($nameAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($descriptionAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($enLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        $objectFilter->filterObject(
-            Argument::is($svLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
         $this->filterCollection($data, null)->shouldReturn([
             'values' => [
                 'name' => [
@@ -303,10 +250,20 @@ class ProductEditDataFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_values_data_contains_a_non_existant_attribute(
         $objectFilter,
-        $nameAttribute,
-        $enLocale,
-        $attributeRepository
+        $attributeRepository,
+        $localeRepository,
+        AttributeInterface $nameAttribute,
+        LocaleInterface $enLocale
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('wrong')->willReturn(null);
+
         $data = [
             'values' => [
                 'name' => [
@@ -326,33 +283,30 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $objectFilter->filterObject(
-            Argument::is($nameAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($enLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $attributeRepository->findOneByIdentifier(Argument::is('wrong'))->willReturn(null);
-
         $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')
              ->during('filterCollection', [$data, null]);
     }
 
     function it_throws_an_exception_when_values_data_contains_a_non_existant_locale(
         $objectFilter,
-        $nameAttribute,
-        $descriptionAttribute,
-        $enLocale,
-        $localeRepository
+        $attributeRepository,
+        $localeRepository,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descriptionAttribute,
+        LocaleInterface $enLocale
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+
+        $localeRepository->findOneByIdentifier('wrong')->willReturn(null);
+
         $data = [
             'values' => [
                 'name' => [
@@ -372,41 +326,32 @@ class ProductEditDataFilterSpec extends ObjectBehavior
             ]
         ];
 
-        $objectFilter->filterObject(
-            Argument::is($nameAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($descriptionAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($enLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        $localeRepository->findOneByIdentifier(Argument::is('wrong'))->willReturn(null);
-
         $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')
              ->during('filterCollection', [$data, null]);
     }
 
     function it_throws_an_exception_when_values_data_contains_an_inactive_locale(
         $objectFilter,
-        $nameAttribute,
-        $descriptionAttribute,
-        $enLocale,
+        $attributeRepository,
         $localeRepository,
+        AttributeInterface $nameAttribute,
+        AttributeInterface $descriptionAttribute,
+        LocaleInterface $enLocale,
         LocaleInterface $inactiveLocale
     ) {
+        $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
+        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
+        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+
+        $enLocale->isActivated()->willReturn(true);
+        $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
+        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+
+        $inactiveLocale->isActivated()->willReturn(false);
+        $localeRepository->findOneByIdentifier('inactive')->willReturn($inactiveLocale);
+
         $data = [
             'values' => [
                 'name' => [
@@ -425,30 +370,6 @@ class ProductEditDataFilterSpec extends ObjectBehavior
                 ]
             ]
         ];
-
-        $objectFilter->filterObject(
-            Argument::is($nameAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($descriptionAttribute->getWrappedObject()),
-            Argument::is('pim:internal_api:attribute:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(false);
-
-        $objectFilter->filterObject(
-            Argument::is($enLocale->getWrappedObject()),
-            Argument::is('pim:internal_api:locale:edit')
-        )
-            ->shouldBeCalled()
-            ->willReturn(true);
-
-        $inactiveLocale->isActivated()->willReturn(false);
-        $localeRepository->findOneByIdentifier(Argument::is('inactive'))->willReturn($inactiveLocale);
 
         $this->shouldThrow('\Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException')
             ->during('filterCollection', [$data, null]);
