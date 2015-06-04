@@ -1,5 +1,12 @@
 'use strict';
-
+/**
+ * State manager extension
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define(
     [
         'jquery',
@@ -98,6 +105,11 @@ define(
                 return false;
             },
             hasModelChanged: function () {
+                if (this.state !== JSON.stringify(this.getRoot().model.toJSON())) {
+                    console.log(this.state);
+                    console.log(JSON.stringify(this.getRoot().model.toJSON()));
+                }
+
                 return this.state !== JSON.stringify(this.getRoot().model.toJSON());
             }
         });

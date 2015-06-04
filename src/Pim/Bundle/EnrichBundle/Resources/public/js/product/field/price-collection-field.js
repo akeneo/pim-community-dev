@@ -1,5 +1,12 @@
 'use strict';
-
+/**
+ * Price collection field
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 define([
         'jquery',
         'pim/field',
@@ -12,7 +19,7 @@ define([
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
         events: {
-            'change input': 'updateModel'
+            'change input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
             if (_.isEmpty(context.value.value)) {

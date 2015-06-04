@@ -74,7 +74,7 @@ define(['jquery', 'underscore', 'pim/entity-manager'], function ($, _, EntityMan
                     'value':  this.getEmptyValue(attribute)
                 };
 
-                values.push(result);
+                //values.push(result);
             }
 
             return result;

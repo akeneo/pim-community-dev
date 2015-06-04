@@ -1,0 +1,680 @@
+Searching 77 files for "Filips Alps <filips@akeneo.com>" (case sensitive)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/edit-form.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field-manager.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/boolean-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/date-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/media-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/metric-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/multi-select-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/number-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/price-collection-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/simple-select-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/text-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/textarea-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/associations.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/add-attribute.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/attribute-group-selector.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/copy-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/copy.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/validation-error.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/validation.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/variant-group.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/back-to-grid.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/categories.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/delete.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/download-pdf.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/form-tabs.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/locale-switcher.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/change-family.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/created.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/family.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/groups.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/updated.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/comments.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/completeness.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/history.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/panels.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/selector.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/product-label.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/save-and-back.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/save-buttons.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/save.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/scope-switcher.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/sequential-edit.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/state.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/status-switcher.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+47 matches across 47 files
+
+
+Searching 77 files for "@author    Filips" (case sensitive)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/pim-currencyfield.js:
+    6           * Allow expanding/collapsing currency fields
+    7           *
+    8:          * @author    Filips Alpe <filips@akeneo.com>
+    9           * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+   10           * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/pim-scopable.js:
+   17           * Allow expanding/collapsing scopable fields
+   18           *
+   19:          * @author    Filips Alpe <filips@akeneo.com>
+   20           * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+   21           * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/edit-form.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field-manager.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/boolean-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/date-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/media-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/metric-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/multi-select-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/number-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/price-collection-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/simple-select-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/text-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/field/textarea-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/associations.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/add-attribute.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/attribute-group-selector.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/copy-field.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/copy.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/validation-error.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/validation.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/attributes/variant-group.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/back-to-grid.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/categories.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/delete.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/download-pdf.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/form-tabs.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/locale-switcher.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/change-family.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/created.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/family.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/groups.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/meta/updated.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/comments.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/completeness.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/history.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/panels.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/panel/selector.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/product-label.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/save-and-back.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/save-buttons.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/save.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/scope-switcher.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/sequential-edit.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/state.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+/Volumes/Work/workspace/akeneo/ped/vendor/akeneo/pim-community-dev/src/Pim/Bundle/EnrichBundle/Resources/public/js/product/form/status-switcher.js:
+    4   *
+    5   * @author    Julien Sanchez <julien@akeneo.com>
+    6:  * @author    Filips Alps <filips@akeneo.com>
+    7   * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+    8   * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+
+49 matches across 49 files
