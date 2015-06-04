@@ -19,13 +19,13 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileFetcherInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Generate the variation files, store them in the filesystem and link them to the reference:
@@ -36,8 +36,6 @@ use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationReposito
  *      - set the variation file to the variation and save the variation to the database
  *
  * Where STORAGE is the virtual filesystem where files are stored.
- *
- * TODO: maybe FS_STORAGE should not be hardcoded
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -70,6 +68,9 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var array */
     protected $rawTransformations;
 
+    /** @var string */
+    protected $filesystemAlias;
+
     /**
      * @param ChannelConfigurationRepositoryInterface $configurationRepository
      * @param MountManager                            $mountManager
@@ -79,6 +80,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * @param RawFileStorerInterface                  $rawFileStorer
      * @param RawFileFetcherInterface                 $rawFileFetcher
      * @param MetadataBuilderRegistry                 $metadaBuilderRegistry
+     * @param string                                  $filesystemAlias
      */
     public function __construct(
         ChannelConfigurationRepositoryInterface $configurationRepository,
@@ -88,7 +90,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         FileTransformerInterface $fileTransformer,
         RawFileStorerInterface $rawFileStorer,
         RawFileFetcherInterface $rawFileFetcher,
-        MetadataBuilderRegistry $metadaBuilderRegistry
+        MetadataBuilderRegistry $metadaBuilderRegistry,
+        $filesystemAlias
     ) {
         $this->configurationRepository = $configurationRepository;
         $this->fileTransformer         = $fileTransformer;
@@ -98,6 +101,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->rawFileStorer           = $rawFileStorer;
         $this->rawFileFetcher          = $rawFileFetcher;
         $this->metadaBuilderRegistry   = $metadaBuilderRegistry;
+        $this->filesystemAlias         = $filesystemAlias;
     }
 
     /**
@@ -157,7 +161,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
         }
 
-        $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
+        $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
         $inputFileInfo     = $this->rawFileFetcher->fetch($inputFile, $storageFilesystem);
         $variationFileInfo = $this->fileTransformer->transform(
             $inputFileInfo,
@@ -165,7 +169,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             $outputFilename
         );
         $variationMetadata = $this->extractMetadata($variationFileInfo);
-        $variationFile     = $this->rawFileStorer->store($variationFileInfo, ProductAssetFileSystems::FS_STORAGE);
+        $variationFile     = $this->rawFileStorer->store($variationFileInfo, $this->filesystemAlias);
 
         $variationMetadata->setFile($variationFile);
         $this->metadataSaver->save($variationMetadata);
@@ -174,8 +178,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variation->setLocked($setVariationToLocked);
         $this->variationSaver->save($variation);
 
-        //TODO: use symfony SF component
-        unlink($inputFileInfo->getPathname());
+        $this->deleteFile($inputFileInfo);
     }
 
     /**
@@ -239,21 +242,15 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             throw new \LogicException(sprintf('The reference "%s" has no file.', $reference->getId()));
         }
 
-        //TODO: should be deleted if FS_STORAGE is not be hardcoded
-        if ($referenceFile->getStorage() !== ProductAssetFileSystems::FS_STORAGE) {
-            throw new \LogicException(
-                sprintf(
-                    'Can not build a variation for a file that is not stored in the "%s" filesystem.',
-                    ProductAssetFileSystems::FS_STORAGE
-                )
-            );
-        }
-
-        $storageFilesystem = $this->mountManager->getFilesystem(ProductAssetFileSystems::FS_STORAGE);
+        $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
 
         if (!$storageFilesystem->has($referenceFile->getKey())) {
             throw new \LogicException(
-                sprintf('The reference file "%s" is not present on the filesystem.', $referenceFile->getKey())
+                sprintf(
+                    'The reference file "%s" is not present on the filesystem "%s".',
+                    $referenceFile->getKey(),
+                    $this->filesystemAlias
+                )
             );
         }
 
@@ -296,5 +293,14 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $metadataBuilder = $this->metadaBuilderRegistry->getByFile($file);
 
         return $metadataBuilder->build($file);
+    }
+
+    /**
+     * @param \SplFileInfo $file
+     */
+    protected function deleteFile(\SplFileInfo $file)
+    {
+        $fs = new Filesystem();
+        $fs->remove($file->getPathname());
     }
 }

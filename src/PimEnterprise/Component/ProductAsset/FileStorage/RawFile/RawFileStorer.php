@@ -12,11 +12,14 @@
 namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
 use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\FileStorage\FileFactoryInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Move a raw file to the storage destination filesystem
@@ -67,19 +70,49 @@ class RawFileStorer implements RawFileStorerInterface
         $storageData = $this->pathGenerator->generate($localFile);
         $file        = $this->factory->create($localFile, $storageData, $destFsAlias);
 
-        $resource = fopen($localFile->getPathname(), 'r');
-        if (false === $filesystem->writeStream($file->getKey(), $resource)) {
-            throw new FileTransferException(
-                sprintf('Unable to move the file "%s" to the "%s" filesystem.', $localFile->getPathname(), $destFsAlias)
-            );
+        $error = sprintf(
+            'Unable to move the file "%s" to the "%s" filesystem.',
+            $localFile->getPathname(),
+            $destFsAlias
+        );
+
+        if (false === $resource = fopen($localFile->getPathname(), 'r')) {
+            throw new FileTransferException($error);
+        }
+
+        try {
+            $isFileWritten = $filesystem->writeStream($file->getKey(), $resource);
+        } catch (FileExistsException $e) {
+            throw new FileTransferException($error, $e->getCode(), $e);
+        }
+
+        if (false === $isFileWritten) {
+            throw new FileTransferException($error);
         }
 
         $this->saver->save($file);
-
-        if (false === unlink($localFile->getPathname())) {
-            throw new FileRemovalException(sprintf('Unable to delete the file "%s".', $localFile->getPathname()));
-        }
+        $this->deleteRawFile($localFile);
 
         return $file;
+    }
+
+    /**
+     * @param \SplFileInfo $file
+     *
+     * @throws FileRemovalException
+     */
+    protected function deleteRawFile(\SplFileInfo $file)
+    {
+        $fs = new Filesystem();
+
+        try {
+            $fs->remove($file->getPathname());
+        } catch (IOException $e) {
+            throw new FileRemovalException(
+                sprintf('Unable to delete the file "%s".', $file->getPathname()),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }

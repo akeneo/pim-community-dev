@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use PimEnterprise\Component\ProductAsset\FileStorage\FileFactoryInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
-use PimEnterprise\Component\ProductAsset\Model\File;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
@@ -37,6 +37,7 @@ class RawFileStorerSpec extends ObjectBehavior
         $localPathname = __DIR__ . DIRECTORY_SEPARATOR . 'my file.php';
         touch($localPathname);
         $rawFile->getPathname()->willReturn($localPathname);
+        $fs->has(Argument::any())->willReturn(false);
 
         $mountManager->getFilesystem('destination')->willReturn($fs);
         $pathGenerator->generate($rawFile)->willReturn(['path_infos']);
@@ -64,6 +65,29 @@ class RawFileStorerSpec extends ObjectBehavior
         $fs->writeStream(Argument::any(), Argument::any())->willReturn(false);
 
         $saver->save(Argument::any())->shouldNotBeCalled();
+
+        $this->shouldThrow(
+            new FileTransferException(
+                sprintf('Unable to move the file "%s" to the "destination" filesystem.', __FILE__)
+            )
+        )->during('store', [$rawFile, 'destination']);
+    }
+
+    function it_throws_an_exception_if_the_file_already_exists_on_the_filesystem(
+        $pathGenerator,
+        $mountManager,
+        $factory,
+        \SplFileInfo $rawFile,
+        Filesystem $fs,
+        FileInterface $file
+    ) {
+        $rawFile->getPathname()->willReturn(__FILE__);
+        $fs->has(Argument::any())->willReturn(true);
+        $fs->writeStream(Argument::any(), Argument::any())->willThrow(new FileExistsException('The file exists.'));
+        $mountManager->getFilesystem('destination')->willReturn($fs);
+        $pathGenerator->generate($rawFile)->willReturn(['path_infos']);
+        $factory->create($rawFile, ['path_infos'], 'destination')->willReturn($file);
+        $file->getKey()->willReturn('key-file');
 
         $this->shouldThrow(
             new FileTransferException(

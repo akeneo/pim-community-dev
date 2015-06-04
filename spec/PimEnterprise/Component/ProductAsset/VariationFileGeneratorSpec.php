@@ -24,7 +24,7 @@ use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior
 {
-    const STORAGE_FS = 'storage';
+    const STORAGE_FS = 'my_storage';
 
     function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
@@ -65,7 +65,8 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             $fileTransformer,
             $rawFileStorer,
             $rawFileFetcher,
-            $metadataBuilderRegistry
+            $metadataBuilderRegistry,
+            self::STORAGE_FS
         );
     }
 
@@ -291,7 +292,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $filesystem->has('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem.')
+            new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem "my_storage".')
         )->during('generateFromReference', [$reference, $ecommerce]);
     }
 
