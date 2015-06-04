@@ -140,3 +140,40 @@ Feature: Import proposals
       | product   | username                      | result                                                                                  |
       | my-jacket | Mary                          | {"values": {"name": [{"locale": "en_US", "scope": null, "value": "Wonderful jacket"}]}} |
       | my-jacket | clothing_product_draft_import | {"values": {"name": [{"locale": "en_US", "scope": null, "value": "My jacket"}]}}        |
+
+  Scenario: Remove an optional attribute to a proposal
+    Given I am logged in as "Mary"
+    And the following product drafts:
+      | product    | status | author                        | result                                                                                                                        |
+      | my-jacket  | ready  | clothing_product_draft_import | {"values":{"name":[{"locale":"en_US","scope":null,"value":"My jacket"}],"handmade":[{"locale":null,"scope":null,"value":0}]}} |
+    And the following CSV file to import:
+    """
+    sku;handmade
+    my-jacket;
+    """
+    And the following job "clothing_product_draft_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_product_draft_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_draft_import" job to finish
+    Then there should be 1 proposal
+    And I should get the following proposals:
+      | product   | username                      | result                                                                           |
+      | my-jacket | clothing_product_draft_import | {"values": {"name": [{"locale": "en_US", "scope": null, "value": "My jacket"}]}} |
+
+  Scenario: Remove a proposal if there is no diff
+    Given I am logged in as "Mary"
+    And the following product drafts:
+      | product    | status | author                        | result                                                           |
+      | my-jacket  | ready  | clothing_product_draft_import | {"values":{"handmade":[{"locale":null,"scope":null,"value":0}]}} |
+    And the following CSV file to import:
+    """
+    sku;handmade
+    my-jacket;
+    """
+    And the following job "clothing_product_draft_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "clothing_product_draft_import" import job page
+    And I launch the import job
+    And I wait for the "clothing_product_draft_import" job to finish
+    Then there should be 0 proposal
