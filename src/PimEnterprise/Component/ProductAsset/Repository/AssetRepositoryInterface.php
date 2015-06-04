@@ -13,12 +13,16 @@ namespace PimEnterprise\Component\ProductAsset\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 
 /**
  * Product asset repository interface
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface AssetRepositoryInterface extends ObjectRepository, IdentifiableObjectRepositoryInterface
+interface AssetRepositoryInterface extends
+    ObjectRepository,
+    IdentifiableObjectRepositoryInterface,
+    ReferenceDataRepositoryInterface
 {
 }
