@@ -1651,6 +1651,13 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
+        $this->wait();
+        $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block header .icon-angle-down');
+
+        foreach ($collapseSwitchers as $switcher) {
+            echo ($switcher->getHTML());
+            $switcher->click();
+        }
         foreach ($table->getHash() as $data) {
             $channel = $data['channel'];
             $locale  = $data['locale'];

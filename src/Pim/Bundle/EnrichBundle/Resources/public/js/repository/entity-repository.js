@@ -1,23 +1,25 @@
 'use strict';
 
 define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {
-    var EntityRepository = function (options) {
-        var entityListPromise = null;
-        var entityPromises = {};
-        this.options = options || {};
-
-        this.findAll = function () {
-            if (!entityListPromise) {
-                entityListPromise = $.getJSON(
+    return Backbone.Model.extend({
+        entityListPromise: null,
+        entityPromises: {},
+        initialize: function (options) {
+            this.entityListPromise = null;
+            this.entityPromises = {};
+            this.options = options || {};
+        },
+        findAll: function () {
+            if (!this.entityListPromise) {
+                this.entityListPromise = $.getJSON(
                     Routing.generate(this.options.urls.list)
                 ).then(_.identity).promise();
             }
 
-            return entityListPromise;
-        };
-
-        this.find = function (identifier) {
-            if (!(identifier in entityPromises)) {
+            return this.entityListPromise;
+        },
+        find: function (identifier) {
+            if (!(identifier in this.entityPromises)) {
                 var deferred = $.Deferred();
 
                 if (this.options.urls.get) {
@@ -37,25 +39,17 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                     });
                 }
 
-                entityPromises[identifier] = deferred.promise();
+                this.entityPromises[identifier] = deferred.promise();
             }
 
-            return entityPromises[identifier];
-        };
-
-        this.clear = function (entityId) {
+            return this.entityPromises[identifier];
+        },
+        clear: function (entityId) {
             if (entityId) {
-                delete entityPromises[entityId];
+                delete this.entityPromises[entityId];
             } else {
-                entityListPromise = null;
+                this.entityListPromise = null;
             }
-        };
-
-        return this;
-    };
-
-    // Provide a Backbone-like extension point
-    EntityRepository.extend = Backbone.Model.extend;
-
-    return EntityRepository;
+        }
+    });
 });
