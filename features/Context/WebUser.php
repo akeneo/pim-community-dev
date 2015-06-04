@@ -238,6 +238,7 @@ class WebUser extends RawMinkContext
      */
     public function iOpenThePanel($panel)
     {
+        $this->wait();
         $this->getCurrentPage()->openPanel($panel);
         $this->wait();
     }
