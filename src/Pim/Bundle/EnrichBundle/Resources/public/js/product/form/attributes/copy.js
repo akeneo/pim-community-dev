@@ -80,7 +80,12 @@ define(
                         var attribute = _.findWhere(attributes, {code: code});
 
                         if (attribute.scopable || attribute.localizable) {
-                            var valueToCopy = AttributeManager.getValue(values, attribute, this.locale, this.scope);
+                            var valueToCopy = AttributeManager.getValue(
+                                values,
+                                attribute,
+                                this.locale,
+                                this.scope
+                            );
 
                             var copyField;
                             if (

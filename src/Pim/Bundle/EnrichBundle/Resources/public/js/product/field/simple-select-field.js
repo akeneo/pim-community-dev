@@ -9,9 +9,10 @@ define(
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
+        'pim/attribute-manager',
         'jquery.select2'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, AttributeManager) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'simple-select',
@@ -84,6 +85,8 @@ define(
             },
             updateModel: function (event) {
                 var data = event.currentTarget.value;
+                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+
                 this.setCurrentValue(data);
             }
         });

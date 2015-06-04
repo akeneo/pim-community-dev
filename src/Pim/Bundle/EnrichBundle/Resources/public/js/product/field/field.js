@@ -169,6 +169,7 @@ define([
                 var productValue = this.getCurrentValue();
 
                 productValue.value = value;
+                mediator.trigger('entity:form:edit:update_state');
             }
         });
     }
