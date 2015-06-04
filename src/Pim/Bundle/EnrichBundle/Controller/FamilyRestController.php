@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -47,23 +46,5 @@ class FamilyRestController
         }
 
         return new JsonResponse($normalizedFamilies);
-    }
-
-    /**
-     * Get a single family
-     *
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
-    public function getAction($id)
-    {
-        $family = $this->familyRepository->findOneById($id);
-
-        if (null === $family) {
-            throw new NotFoundHttpException(sprintf('No family found for id "%s"', $id));
-        }
-
-        return new JsonResponse($this->normalizer->normalize($family, 'json'));
     }
 }

@@ -44,16 +44,4 @@ class ChannelRestController
 
         return new JsonResponse($normalizedChannels);
     }
-
-    /**
-     * @param int $id
-     *
-     * @return JsonResponse
-     */
-    public function getAction($id)
-    {
-        $channel = $this->channelRepository->findOneById($id);
-
-        return new JsonResponse($this->normalizer->normalize($channel, 'json'));
-    }
 }

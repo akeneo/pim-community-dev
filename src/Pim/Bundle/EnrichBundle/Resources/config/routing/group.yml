@@ -39,13 +39,6 @@ pim_enrich_group_rest_index:
     defaults: { _controller: pim_enrich.controller.group_rest:indexAction, _format: json }
     methods: [GET]
 
-pim_enrich_group_rest_get:
-    path: /rest/{identifier}
-    defaults: { _controller: pim_enrich.controller.group_rest:getAction, _format: json }
-    requirements:
-        identifier: '[a-zA-Z0-9_]+'
-    methods: [GET]
-
 pim_enrich_group_rest_list_products:
     path: /rest/{identifier}/products
     defaults: { _controller: pim_enrich.controller.group_rest:listProductsAction, _format: json }

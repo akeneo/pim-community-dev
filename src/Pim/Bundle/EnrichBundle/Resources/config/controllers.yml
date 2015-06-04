@@ -17,7 +17,6 @@ parameters:
     pim_enrich.controller.group_type.class:              Pim\Bundle\EnrichBundle\Controller\GroupTypeController
     pim_enrich.controller.completeness.class:            Pim\Bundle\EnrichBundle\Controller\CompletenessController
     pim_enrich.controller.sequential_edit.class:         Pim\Bundle\EnrichBundle\Controller\SequentialEditController
-    pim_enrich.controller.product_comment.class:         Pim\Bundle\EnrichBundle\Controller\ProductCommentController
     pim_enrich.controller.variant_group_attribute.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupAttributeController
     pim_enrich.controller.job_tracker.class:             Pim\Bundle\EnrichBundle\Controller\JobTrackerController
     pim_enrich.controller.product_rest.class:            Pim\Bundle\EnrichBundle\Controller\ProductRestController
@@ -255,17 +254,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_internal_api_serializer'
 
-    pim_enrich.controller.product_comment:
-        scope: request
-        class: %pim_enrich.controller.product_comment.class%
-        arguments:
-            - '@templating'
-            - '@security.context'
-            - '@form.factory'
-            - '@pim_catalog.manager.product'
-            - '@pim_comment.manager.comment'
-            - '@pim_comment.builder.comment'
-
     pim_enrich.controller.variant_group_attribute:
         scope: request
         class: %pim_enrich.controller.variant_group_attribute.class%
@@ -321,14 +309,12 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pim_internal_api_serializer'
             - '@pim_catalog.filter.chained'
-            - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.attribute_group_rest:
         class: %pim_enrich.controller.attribute_group_rest.class%
         arguments:
             - '@pim_catalog.repository.attribute_group'
             - '@pim_serializer'
-            - '@pim_catalog.filter.chained'
             - '@pim_catalog.filter.chained'
 
     pim_enrich.controller.family_rest:

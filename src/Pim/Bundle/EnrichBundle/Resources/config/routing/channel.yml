@@ -25,10 +25,3 @@ pim_enrich_channel_rest_index:
     path: /rest
     defaults: { _controller: pim_enrich.controller.channel_rest:indexAction, _format: json }
     methods: [GET]
-
-pim_enrich_channel_rest_get:
-    path: /rest/{id}
-    defaults: { _controller: pim_enrich.controller.channel_rest:getAction, _format: json }
-    requirements:
-        id: \d+
-    methods: [GET]
