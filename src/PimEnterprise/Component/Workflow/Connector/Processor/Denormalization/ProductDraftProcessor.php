@@ -16,8 +16,10 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Builder\ProductDraftBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -43,19 +45,29 @@ class ProductDraftProcessor extends AbstractProcessor
     /** @var ProductDraftBuilderInterface */
     protected $productDraftBuilder;
 
+    /** @var ProductDraftApplierInterface */
+    protected $productDraftApplier;
+
+    /** @var ProductDraftRepositoryInterface */
+    protected $productDraftRepo;
+
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter array converter
-     * @param IdentifiableObjectRepositoryInterface $repository     product repository
-     * @param ObjectUpdaterInterface                $updater        product updater
-     * @param ValidatorInterface                    $validator      product validator
-     * @param ProductDraftBuilderInterface          $productDraftBuilder
+     * @param StandardArrayConverterInterface       $arrayConverter         array converter
+     * @param IdentifiableObjectRepositoryInterface $repository             product repository
+     * @param ObjectUpdaterInterface                $updater                product updater
+     * @param ValidatorInterface                    $validator              product validator
+     * @param ProductDraftBuilderInterface          $productDraftBuilder    product draft builder
+     * @param ProductDraftApplierInterface          $productDraftApplier    product draft applier
+     * @param ProductDraftRepositoryInterface       $productDraftRepo       product draft repository
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator,
-        ProductDraftBuilderInterface $productDraftBuilder
+        ProductDraftBuilderInterface $productDraftBuilder,
+        ProductDraftApplierInterface $productDraftApplier,
+        ProductDraftRepositoryInterface $productDraftRepo
     ) {
         parent::__construct($repository);
 
@@ -63,6 +75,8 @@ class ProductDraftProcessor extends AbstractProcessor
         $this->updater             = $updater;
         $this->validator           = $validator;
         $this->productDraftBuilder = $productDraftBuilder;
+        $this->productDraftApplier = $productDraftApplier;
+        $this->productDraftRepo    = $productDraftRepo;
     }
 
     /**
@@ -78,6 +92,8 @@ class ProductDraftProcessor extends AbstractProcessor
             $this->skipItemWithMessage($item, sprintf('Product "%s" does not exist', $identifier));
         }
 
+        $product = $this->applyDraftToProduct($product);
+
         try {
             $this->updateProduct($product, $convertedItem);
         } catch (\InvalidArgumentException $exception) {
@@ -92,6 +108,24 @@ class ProductDraftProcessor extends AbstractProcessor
         $productDraft = $this->buildDraft($product, $item);
 
         return $productDraft;
+    }
+
+    /**
+     * Apply current draft values to product to fix problem with optional attributes
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductInterface
+     */
+    protected function applyDraftToProduct(ProductInterface $product)
+    {
+        $productDraft = $this->productDraftRepo->findUserProductDraft($product, $this->getCodeInstance());
+
+        if (null !== $productDraft) {
+            $this->productDraftApplier->apply($product, $productDraft);
+        }
+
+        return $product;
     }
 
     /**
@@ -164,8 +198,7 @@ class ProductDraftProcessor extends AbstractProcessor
      */
     protected function buildDraft(ProductInterface $product, array $item)
     {
-        $code = $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
-        $productDraft = $this->productDraftBuilder->build($product, $code);
+        $productDraft = $this->productDraftBuilder->build($product, $this->getCodeInstance());
 
         if (null === $productDraft) {
             $this->skipItemWithMessage($item, 'No diff between current product and this proposal');
@@ -176,5 +209,13 @@ class ProductDraftProcessor extends AbstractProcessor
         $productDraft->setStatus(ProductDraft::READY);
 
         return $productDraft;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getCodeInstance()
+    {
+        return $this->stepExecution->getJobExecution()->getJobInstance()->getCode();
     }
 }

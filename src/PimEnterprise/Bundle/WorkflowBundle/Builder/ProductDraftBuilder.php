@@ -101,7 +101,6 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
         if (!empty($diff)) {
             $productDraft = $this->getProductDraft($product, $username);
-            $diff = $this->mergeValues($productDraft->getChanges(), $diff);
             $productDraft->setChanges($diff);
 
             return $productDraft;
@@ -163,56 +162,5 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
     protected function getOriginalValue(array $originalValues, $code, $index)
     {
         return !isset($originalValues[$code][$index]) ? [] : $originalValues[$code][$index];
-    }
-
-    /**
-     * Merge values of old & new draft
-     *
-     * @param array $oldValues
-     * @param array $newValues
-     *
-     * @return array
-     */
-    protected function mergeValues(array $oldValues, array $newValues)
-    {
-        if (!isset($oldValues['values'])) {
-            return $newValues;
-        }
-
-        $attributeKeys = $this->getAttributeKeys($oldValues);
-
-        $values = $oldValues;
-        foreach ($newValues['values'] as $code => $value) {
-            foreach ($value as $data) {
-                $key = sprintf('%s-%s-%s', $code, $data['scope'], $data['locale']);
-                // replace old values by new
-                if (isset($attributeKeys[$key])) {
-                    $values['values'][$code][$attributeKeys[$key]] = $data;
-                } else {
-                    $values['values'][$code][] = $data;
-                }
-            }
-        }
-
-        return $values;
-    }
-
-    /**
-     * Get all attributes information (code, locale and scope) and position in iterator
-     *
-     * @param array $values
-     *
-     * @return array
-     */
-    protected function getAttributeKeys(array $values)
-    {
-        $keys = [];
-        foreach ($values['values'] as $code => $values) {
-            foreach ($values as $index => $data) {
-                $keys[sprintf('%s-%s-%s', $code, $data['scope'], $data['locale'])] = $index;
-            }
-        }
-
-        return $keys;
     }
 }
