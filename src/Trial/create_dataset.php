@@ -241,7 +241,7 @@ foreach ($images as $key => $references) {
         $em->persist($pimFile);
         $em->persist($reference);
 
-        $filesystem->copy($imageName, STORED . $pimFile->getPathname());
+        $filesystem->copy($imageName, STORED . $pimFile->getKey());
 
         try {
             $pipelines = getVariationPipeline($imageName);
@@ -253,7 +253,7 @@ foreach ($images as $key => $references) {
                 $varSplFile = createSplFile($outputName);
                 $varPimFile = createPimFile($varSplFile, $outputName);
 
-                $filesystem->copy($outputName, STORED . $varPimFile->getPathname());
+                $filesystem->copy($outputName, STORED . $varPimFile->getKey());
 
                 $variationBuildable = ((null === $locale) || ($channel->hasLocale($reference->getLocale())));
                 if (null !== $channel && $variationBuildable) {

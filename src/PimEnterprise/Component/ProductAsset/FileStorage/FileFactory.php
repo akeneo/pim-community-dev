@@ -50,11 +50,10 @@ class FileFactory implements FileFactoryInterface
         }
 
         $file = new $this->fileClass();
-        $file->setFilename($pathInfo['file_name']);
+        $file->setKey($pathInfo['path'] . $pathInfo['file_name']);
         $file->setGuid($pathInfo['guid']);
         $file->setMimeType($mimeType);
         $file->setOriginalFilename($originalFilename);
-        $file->setPath($pathInfo['path']);
         $file->setSize($size);
         $file->setExtension($extension);
         $file->setStorage($destFsAlias);

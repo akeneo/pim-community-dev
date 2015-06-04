@@ -7,17 +7,15 @@ PimEnterprise\Component\ProductAsset\Model\File:
             id: true
             generator:
                 strategy: AUTO
-        path:
+        key:
             type: string
             length: 255
             unique: true
+            column: file_key
         guid:
             type: string
             length: 255
             unique: true
-        filename:
-            type: string
-            length: 255
         originalFilename:
             type: string
             column: original_filename

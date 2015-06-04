@@ -30,14 +30,14 @@ interface FileInterface
     /**
      * @return string
      */
-    public function getPath();
+    public function getKey();
 
     /**
-     * @param string $path
+     * @param string $key
      *
      * @return FileInterface
      */
-    public function setPath($path);
+    public function setKey($key);
 
     /**
      * @return string
@@ -50,18 +50,6 @@ interface FileInterface
      * @return FileInterface
      */
     public function setGuid($guid);
-
-    /**
-     * @return string
-     */
-    public function getFilename();
-
-    /**
-     * @param string $filename
-     *
-     * @return FileInterface
-     */
-    public function setFilename($filename);
 
     /**
      * @return string
@@ -122,11 +110,6 @@ interface FileInterface
      * @return FileInterface
      */
     public function setStorage($storage);
-
-    /**
-     * @return string
-     */
-    public function getPathname();
 
     /**
      * @return UploadedFile

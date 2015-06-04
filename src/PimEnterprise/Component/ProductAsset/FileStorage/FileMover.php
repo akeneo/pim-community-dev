@@ -45,15 +45,15 @@ class FileMover implements FileMoverInterface
     public function move(FileInterface $file, $srcFsAlias, $destFsAlias)
     {
         $isFileMoved = $this->mountManager->move(
-            sprintf('%s://%s', $srcFsAlias, $file->getPathname()),
-            sprintf('%s://%s', $destFsAlias, $file->getPathname())
+            sprintf('%s://%s', $srcFsAlias, $file->getKey()),
+            sprintf('%s://%s', $destFsAlias, $file->getKey())
         );
 
         if (!$isFileMoved) {
             throw new FileTransferException(
                 sprintf(
                     'Impossible to move the file "%s" from "%s" to "%s".',
-                    $file->getPathname(),
+                    $file->getKey(),
                     $srcFsAlias,
                     $destFsAlias
                 )

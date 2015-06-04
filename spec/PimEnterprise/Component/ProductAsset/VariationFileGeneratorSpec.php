@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileDownloaderInterface;
+use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileFetcherInterface;
 use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfigurationInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileInterface;
@@ -24,7 +24,7 @@ use Prophecy\Argument;
 
 class VariationFileGeneratorSpec extends ObjectBehavior
 {
-    const STORAGE_FS = 'storage';
+    const STORAGE_FS = 'my_storage';
 
     function let(
         ChannelConfigurationRepositoryInterface $channelConfigurationRepository,
@@ -33,7 +33,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         SaverInterface $variationSaver,
         FileTransformerInterface $fileTransformer,
         RawFileStorerInterface $rawFileStorer,
-        RawFileDownloaderInterface $rawFileDownloader,
+        RawFileFetcherInterface $rawFileFetcher,
         MetadataBuilderRegistry $metadataBuilderRegistry,
         ChannelVariationsConfigurationInterface $channelConfiguration,
         ChannelInterface $ecommerce,
@@ -51,7 +51,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $reference->getVariation($ecommerce)->willReturn($variation);
         $reference->getFile()->willReturn($referenceFile);
 
-        $referenceFile->getPathname()->willReturn('path/to/my_original_file.txt');
+        $referenceFile->getKey()->willReturn('path/to/my_original_file.txt');
         $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
 
         $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
@@ -64,14 +64,15 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             $variationSaver,
             $fileTransformer,
             $rawFileStorer,
-            $rawFileDownloader,
-            $metadataBuilderRegistry
+            $rawFileFetcher,
+            $metadataBuilderRegistry,
+            self::STORAGE_FS
         );
     }
 
     function it_generates_the_variation_file_from_a_file(
         $ecommerce,
-        $rawFileDownloader,
+        $rawFileFetcher,
         $filesystem,
         $channelConfiguration,
         $fileTransformer,
@@ -95,7 +96,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
 
-        $rawFileDownloader->download($inputFile, $filesystem)->willReturn($inputFileInfo);
+        $rawFileFetcher->fetch($inputFile, $filesystem)->willReturn($inputFileInfo);
         $fileTransformer->transform(
             $inputFileInfo,
             ['t1', 't2'],
@@ -117,7 +118,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $reference,
         $referenceFile,
         $ecommerce,
-        $rawFileDownloader,
+        $rawFileFetcher,
         $filesystem,
         $channelConfiguration,
         $fileTransformer,
@@ -145,7 +146,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
 
-        $rawFileDownloader->download($referenceFile, $filesystem)->willReturn($referenceFileInfo);
+        $rawFileFetcher->fetch($referenceFile, $filesystem)->willReturn($referenceFileInfo);
         $fileTransformer->transform(
             $referenceFileInfo,
             ['t1', 't2'],
@@ -167,7 +168,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $reference,
         $referenceFile,
         $ecommerce,
-        $rawFileDownloader,
+        $rawFileFetcher,
         $filesystem,
         $channelConfiguration,
         $fileTransformer,
@@ -197,7 +198,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
 
-        $rawFileDownloader->download($referenceFile, $filesystem)->willReturn($referenceFileInfo);
+        $rawFileFetcher->fetch($referenceFile, $filesystem)->willReturn($referenceFileInfo);
         $fileTransformer->transform(
             $referenceFileInfo,
             ['t1', 't2'],
@@ -284,14 +285,14 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         FileInterface $referenceFile,
         Filesystem $filesystem
     ) {
-        $referenceFile->getPathname()->willReturn('path/to/file.txt');
+        $referenceFile->getKey()->willReturn('path/to/file.txt');
         $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
 
         $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
         $filesystem->has('path/to/file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem.')
+            new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem "my_storage".')
         )->during('generateFromReference', [$reference, $ecommerce]);
     }
 

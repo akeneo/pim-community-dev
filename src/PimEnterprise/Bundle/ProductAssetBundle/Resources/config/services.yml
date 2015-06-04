@@ -11,5 +11,6 @@ services:
             - '@pimee_product_asset.saver.variation'
             - '@akeneo_file_transformer.file_transformer'
             - '@pimee_product_asset.file_storage.raw_file.storer'
-            - '@pimee_product_asset.file_storage.raw_file.downloader'
+            - '@pimee_product_asset.file_storage.raw_file.fetcher'
             - '@pimee_product_asset.registry.metadata_builder'
+            - 'storage'
