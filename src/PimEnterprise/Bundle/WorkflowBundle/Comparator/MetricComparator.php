@@ -31,9 +31,8 @@ class MetricComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        if (!array_key_exists('value', $originals)) {
-            return $data;
-        }
+        $default = ['locale' => null, 'scope' => null, 'value' => []];
+        $originals = array_merge($default, $originals);
 
         $diff = array_diff_assoc($data['value'], $originals['value']);
 

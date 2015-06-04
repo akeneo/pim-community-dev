@@ -31,11 +31,12 @@ class PricesComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
+        $default = ['locale' => null, 'scope' => null, 'value' => []];
+        $originals = array_merge($default, $originals);
+
         $originalPrices = [];
-        if (array_key_exists('value', $originals)) {
-            foreach ($originals['value'] as $price) {
-                $originalPrices[$price['currency']] = $price['data'];
-            }
+        foreach ($originals['value'] as $price) {
+            $originalPrices[$price['currency']] = $price['data'];
         }
 
         $prices = [];

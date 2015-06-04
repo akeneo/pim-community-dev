@@ -33,11 +33,13 @@ class BooleanComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        if (!array_key_exists('value', $originals)) {
-            return $data;
-        }
-        $castedNewValue = (bool) $data['value'];
+        $default = ['locale' => null, 'scope' => null, 'value' => null];
+        $originals = array_merge($default, $originals);
 
-        return $castedNewValue !== $originals['value'] ? $data : null;
+        if ((bool) $originals['value'] === (bool) $data['value']) {
+            return null;
+        }
+
+        return $data;
     }
 }

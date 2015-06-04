@@ -31,12 +31,12 @@ class OptionsComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
+        $default = ['locale' => null, 'scope' => null, 'value' => []];
+        $originals = array_merge($default, $originals);
+
         $codes = [];
         foreach ($data['value'] as $index => $attribute) {
-            if (!array_key_exists('value', $originals)
-                || !isset($originals['value'][$index])
-                || $attribute['code'] !== $originals['value'][$index]['code']
-            ) {
+            if (!isset($originals['value'][$index]) || $attribute['code'] !== $originals['value'][$index]['code']) {
                 $codes[] = $attribute['code'];
             }
         }
