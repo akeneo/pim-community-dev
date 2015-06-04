@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AttributeGroupRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class AttributeGroupViewRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;

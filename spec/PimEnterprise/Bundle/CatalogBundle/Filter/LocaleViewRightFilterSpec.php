@@ -7,7 +7,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-class LocaleRightFilterSpec extends ObjectBehavior
+class LocaleViewRightFilterSpec extends ObjectBehavior
 {
     public function let(SecurityContextInterface $securityContext)
     {
