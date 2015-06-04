@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\AdderRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\AttributeAdderInterface;
 use Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface;
@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Updater\Adder\FieldAdderInterface;
 class ProductPropertyAdderSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         AdderRegistryInterface $adderRegistry
     ) {
         $this->beConstructedWith(
@@ -34,7 +34,7 @@ class ProductPropertyAdderSpec extends ObjectBehavior
         AttributeInterface $attribute,
         AttributeAdderInterface $adder
     ) {
-        $attributeRepository->findOneBy(['code' => 'color'])->willReturn($attribute);
+        $attributeRepository->findOneByIdentifier('color')->willReturn($attribute);
         $adderRegistry->getAttributeAdder($attribute)->willReturn($adder);
         $adder
             ->addAttributeData($product, $attribute, ['red', 'blue'], [])
@@ -49,7 +49,7 @@ class ProductPropertyAdderSpec extends ObjectBehavior
         ProductInterface $product,
         FieldAdderInterface $adder
     ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
         $adderRegistry->getFieldAdder('category')->willReturn($adder);
         $adder
             ->addFieldData($product, 'category', 'tshirt', [])

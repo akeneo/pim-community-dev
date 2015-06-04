@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertyRemoverInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
 
 /**
@@ -18,18 +18,18 @@ use Pim\Bundle\CatalogBundle\Updater\Remover\RemoverRegistryInterface;
  */
 class ProductPropertyRemover implements PropertyRemoverInterface
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var RemoverRegistryInterface */
     protected $removerRegistry;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param RemoverRegistryInterface     $removerRegistry
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param RemoverRegistryInterface              $removerRegistry
      */
     public function __construct(
-        AttributeRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         RemoverRegistryInterface $removerRegistry
     ) {
         $this->attributeRepository = $repository;
@@ -77,7 +77,7 @@ class ProductPropertyRemover implements PropertyRemoverInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
+        $attribute = $this->attributeRepository->findOneByIdentifier($code);
 
         return $attribute;
     }

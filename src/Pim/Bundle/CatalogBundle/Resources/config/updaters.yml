@@ -61,33 +61,33 @@ services:
     pim_catalog.updater.product:
         class: %pim_catalog.updater.product.class%
         arguments:
-            - @pim_catalog.updater.product_property_setter
-            - @pim_catalog.updater.product_property_copier
-            - @pim_catalog.updater.product_template
+            - '@pim_catalog.updater.product_property_setter'
+            - '@pim_catalog.updater.product_property_copier'
+            - '@pim_catalog.updater.product_template'
 
     pim_catalog.updater.product_property_setter:
         class: %pim_catalog.updater.product_property_setter.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.setter.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.setter.registry'
 
     pim_catalog.updater.product_property_adder:
         class: %pim_catalog.updater.product_property_adder.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.adder.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.adder.registry'
 
     pim_catalog.updater.product_property_remover:
         class: %pim_catalog.updater.product_property_remover.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.remover.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.remover.registry'
 
     pim_catalog.updater.product_property_copier:
         class: %pim_catalog.updater.product_property_copier.class%
         arguments:
-            - @pim_catalog.repository.attribute
-            - @pim_catalog.updater.copier.registry
+            - '@pim_catalog.repository.cached_attribute'
+            - '@pim_catalog.updater.copier.registry'
 
     pim_catalog.updater.product_template:
         class: %pim_catalog.updater.product_template.class%
@@ -180,7 +180,7 @@ services:
     pim_catalog.updater.setter.category_field:
         class: %pim_catalog.updater.setter.category_field.class%
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -204,7 +204,7 @@ services:
     pim_catalog.updater.setter.family_field:
         class: %pim_catalog.updater.setter.family_field.class%
         arguments:
-            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.cached_family'
             - ['family']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -220,7 +220,7 @@ services:
         class: %pim_catalog.updater.setter.multiselect_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.repository.attribute_option
+            - '@pim_catalog.repository.cached_attribute_option'
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -237,7 +237,7 @@ services:
         class: %pim_catalog.updater.setter.simpleselect_value.class%
         parent: pim_catalog.updater.setter.abstract
         arguments:
-            - @pim_catalog.repository.attribute_option
+            - '@pim_catalog.repository.cached_attribute_option'
             - ['pim_catalog_simpleselect']
         tags:
             - { name: 'pim_catalog.updater.setter' }
@@ -375,7 +375,7 @@ services:
     pim_catalog.updater.adder.category_field:
         class: %pim_catalog.updater.adder.category_field.class%
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -391,9 +391,9 @@ services:
     pim_catalog.updater.adder.multiselect_value:
         class: %pim_catalog.updater.adder.multiselect_value.class%
         arguments:
-            - @pim_catalog.builder.product
-            - @pim_catalog.validator.helper.attribute
-            - @pim_catalog.repository.attribute_option
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.validator.helper.attribute'
+            - '@pim_catalog.repository.cached_attribute_option'
             - ['pim_catalog_multiselect']
         tags:
             - { name: 'pim_catalog.updater.adder' }
@@ -425,7 +425,7 @@ services:
     pim_catalog.updater.remover.category_field:
         class: %pim_catalog.updater.remover.category_field.class%
         arguments:
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.cached_category'
             - ['categories']
         tags:
             - { name: 'pim_catalog.updater.remover' }

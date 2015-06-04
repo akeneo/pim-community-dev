@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -19,19 +19,19 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class SimpleSelectAttributeSetter extends AbstractAttributeSetter
 {
-    /** @var AttributeOptionRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilderInterface            $productBuilder
-     * @param AttributeValidatorHelper           $attrValidatorHelper
-     * @param AttributeOptionRepositoryInterface $attrOptionRepository
-     * @param array                              $supportedTypes
+     * @param ProductBuilderInterface               $productBuilder
+     * @param AttributeValidatorHelper              $attrValidatorHelper
+     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
+     * @param array                                 $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        AttributeOptionRepositoryInterface $attrOptionRepository,
+        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
@@ -57,9 +57,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
         if (null === $data) {
             $option = null;
         } else {
-            $option = $this->attrOptionRepository
-                ->findOneBy(['code' => $data, 'attribute' => $attribute]);
-
+            $option = $this->getOption($attribute, $data);
             if (null === $option) {
                 throw InvalidArgumentException::validEntityCodeExpected(
                     $attribute->getCode(),
@@ -118,5 +116,19 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
         $value->setOption($option);
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $optionCode
+     *
+     * @return AttributeOptionInterface|null
+     */
+    protected function getOption(AttributeInterface $attribute, $optionCode)
+    {
+        $identifier = $attribute->getCode().'.'.$optionCode;
+        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
+
+        return $option;
     }
 }

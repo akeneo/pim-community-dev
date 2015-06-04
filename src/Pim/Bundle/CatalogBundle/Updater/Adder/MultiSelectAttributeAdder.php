@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater\Adder;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
 /**
@@ -18,19 +18,19 @@ use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
  */
 class MultiSelectAttributeAdder extends AbstractAttributeAdder
 {
-    /** @var AttributeOptionRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attrOptionRepository;
 
     /**
-     * @param ProductBuilderInterface            $productBuilder
-     * @param AttributeValidatorHelper           $attrValidatorHelper
-     * @param AttributeOptionRepositoryInterface $attrOptionRepository
-     * @param array                              $supportedTypes
+     * @param ProductBuilderInterface               $productBuilder
+     * @param AttributeValidatorHelper              $attrValidatorHelper
+     * @param IdentifiableObjectRepositoryInterface $attrOptionRepository
+     * @param array                                 $supportedTypes
      */
     public function __construct(
         ProductBuilderInterface $productBuilder,
         AttributeValidatorHelper $attrValidatorHelper,
-        AttributeOptionRepositoryInterface $attrOptionRepository,
+        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         array $supportedTypes
     ) {
         parent::__construct($productBuilder, $attrValidatorHelper);
@@ -55,8 +55,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
 
         $attributeOptions = [];
         foreach ($data as $optionCode) {
-            $option = $this->attrOptionRepository
-                ->findOneBy(['code' => $optionCode, 'attribute' => $attribute]);
+            $option = $this->getOption($attribute, $optionCode);
             if (null === $option) {
                 throw InvalidArgumentException::arrayInvalidKey(
                     $attribute->getCode(),
@@ -128,5 +127,19 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
         foreach ($attributeOptions as $attributeOption) {
             $value->addOption($attributeOption);
         }
+    }
+
+    /**
+     * @param AttributeInterface $attribute
+     * @param string             $optionCode
+     *
+     * @return AttributeOptionInterface|null
+     */
+    protected function getOption(AttributeInterface $attribute, $optionCode)
+    {
+        $identifier = $attribute->getCode().'.'.$optionCode;
+        $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
+
+        return $option;
     }
 }

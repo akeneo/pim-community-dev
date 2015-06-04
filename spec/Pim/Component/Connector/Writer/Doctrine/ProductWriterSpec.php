@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
+namespace spec\Pim\Component\Connector\Writer\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Detacher\BulkObjectDetacherInterface;
@@ -23,7 +23,7 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter');
+        $this->shouldHaveType('\Pim\Component\Connector\Writer\Doctrine\ProductWriter');
     }
 
     function it_is_an_item_writer()

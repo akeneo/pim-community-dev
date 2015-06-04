@@ -27,6 +27,9 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     /** @var ClassMetadataFactory */
     protected $factory;
 
+    /** @var array */
+    protected $attrConstraintsCache;
+
     /**
      * Constructor
      *
@@ -37,6 +40,7 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     {
         $this->guesser = $guesser;
         $this->factory = $factory ?: new ClassMetadataFactory();
+        $this->attrConstraintsCache = [];
     }
 
     /**
@@ -73,14 +77,17 @@ class ProductValueMetadataFactory implements MetadataFactoryInterface
     protected function createMetadata(ProductValueInterface $value)
     {
         $class = ClassUtils::getClass($value);
-        $metadata = $this->factory->createMetadata($class);
         $attribute = $value->getAttribute();
-
-        foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
-            $this->addConstraint($metadata, $constraint, $attribute);
+        $cacheKey = $attribute->getCode();
+        if (!isset($this->attrConstraintsCache[$cacheKey])) {
+            $metadata = $this->factory->createMetadata($class);
+            foreach ($this->guesser->guessConstraints($attribute) as $constraint) {
+                $this->addConstraint($metadata, $constraint, $attribute);
+            }
+            $this->attrConstraintsCache[$cacheKey] = $metadata;
         }
 
-        return $metadata;
+        return $this->attrConstraintsCache[$cacheKey];
     }
 
     /**

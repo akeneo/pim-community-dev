@@ -31,6 +31,12 @@ class ProductAttributeFieldExtractor
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
+    /** @var array */
+    protected $fieldNameInfoCache;
+
+    /** @var array */
+    protected $excludedFieldNames;
+
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      * @param ChannelRepositoryInterface   $channelRepository
@@ -44,6 +50,8 @@ class ProductAttributeFieldExtractor
         $this->attributeRepository = $attributeRepository;
         $this->channelRepository   = $channelRepository;
         $this->localeRepository    = $localeRepository;
+        $this->fieldNameInfoCache  = [];
+        $this->excludedFieldNames  = [];
     }
 
     /**
@@ -66,19 +74,22 @@ class ProductAttributeFieldExtractor
      */
     public function extractAttributeFieldNameInfos($fieldName)
     {
-        $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
-        $attributeCode = $explodedFieldName[0];
-        $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
+        if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
+            $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);
+            $attributeCode = $explodedFieldName[0];
+            $attribute = $this->attributeRepository->findOneByIdentifier($attributeCode);
 
-        if (null !== $attribute) {
-            $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
-            $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldName);
-            $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfo);
-
-            return $attributeInfo;
+            if (null !== $attribute) {
+                $this->checkFieldNameTokens($attribute, $fieldName, $explodedFieldName);
+                $attributeInfo = $this->extractAttributeInfo($attribute, $explodedFieldName);
+                $this->checkFieldNameLocaleByChannel($attribute, $fieldName, $attributeInfo);
+                $this->fieldNameInfoCache[$fieldName] = $attributeInfo;
+            } else {
+                $this->excludedFieldNames[] = $fieldName;
+            }
         }
 
-        return null;
+        return isset($this->fieldNameInfoCache[$fieldName]) ? $this->fieldNameInfoCache[$fieldName] : null;
     }
 
     /**
@@ -103,7 +114,7 @@ class ProductAttributeFieldExtractor
         if ('prices' === $attribute->getBackendType()) {
             $info['price_currency'] = array_shift($explodedFieldName);
         } elseif ('metric' === $attribute->getBackendType()) {
-            // TODO: has been added
+            // TODO: has been added, useful?
             $info['metric_unit'] = array_shift($explodedFieldName);
         }
 

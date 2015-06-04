@@ -2,10 +2,10 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\AttributeCopierInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\CopierRegistryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Copier\FieldCopierInterface;
@@ -14,7 +14,7 @@ use Prophecy\Argument;
 class ProductPropertyCopierSpec extends ObjectBehavior
 {
     function let(
-        AttributeRepositoryInterface $attributeRepository,
+        IdentifiableObjectRepositoryInterface $attributeRepository,
         CopierRegistryInterface $copierRegistry
     ) {
         $this->beConstructedWith(
@@ -36,8 +36,8 @@ class ProductPropertyCopierSpec extends ObjectBehavior
         AttributeInterface $toAttribute,
         AttributeCopierInterface $copier
     ) {
-        $attributeRepository->findOneBy(['code' => 'color_one'])->willReturn($fromAttribute);
-        $attributeRepository->findOneBy(['code' => 'color_two'])->willReturn($toAttribute);
+        $attributeRepository->findOneByIdentifier('color_one')->willReturn($fromAttribute);
+        $attributeRepository->findOneByIdentifier('color_two')->willReturn($toAttribute);
         $copierRegistry->getAttributeCopier($fromAttribute, $toAttribute)->willReturn($copier);
         $copier
             ->copyAttributeData($product, $product, $fromAttribute, $toAttribute, [])
@@ -53,7 +53,7 @@ class ProductPropertyCopierSpec extends ObjectBehavior
         ProductInterface $toProduct,
         FieldCopierInterface $copier
     ) {
-        $attributeRepository->findOneBy(['code' => 'category'])->willReturn(null);
+        $attributeRepository->findOneByIdentifier('category')->willReturn(null);
         $copierRegistry->getFieldCopier('category', 'category')->willReturn($copier);
         $copier
             ->copyFieldData($fromProduct, $toProduct, 'category', 'category', [])
@@ -64,7 +64,7 @@ class ProductPropertyCopierSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_it_copies_an_unknown_field($attributeRepository, ProductInterface $product)
     {
-        $attributeRepository->findOneBy(Argument::any())->willReturn(null);
+        $attributeRepository->findOneByIdentifier(Argument::any())->willReturn(null);
         $this->shouldThrow(new \LogicException('No copier found for fields "unknown_field" and "to_field"'))->during(
             'copyData', [$product, $product, 'unknown_field', 'to_field', []]
         );

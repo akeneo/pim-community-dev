@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
 
 /**
@@ -18,22 +18,23 @@ use Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistryInterface;
  */
 class ProductPropertySetter implements PropertySetterInterface
 {
-    /** @var AttributeRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $attributeRepository;
 
     /** @var SetterRegistryInterface */
     protected $setterRegistry;
 
     /**
-     * @param AttributeRepositoryInterface $repository
-     * @param SetterRegistryInterface      $setterRegistry
+     * @param IdentifiableObjectRepositoryInterface $repository
+     * @param SetterRegistryInterface               $setterRegistry
      */
     public function __construct(
-        AttributeRepositoryInterface $repository,
+        IdentifiableObjectRepositoryInterface $repository,
         SetterRegistryInterface $setterRegistry
     ) {
         $this->attributeRepository = $repository;
         $this->setterRegistry      = $setterRegistry;
+        $this->attributesCache     = [];
     }
 
     /**
@@ -77,8 +78,6 @@ class ProductPropertySetter implements PropertySetterInterface
      */
     protected function getAttribute($code)
     {
-        $attribute = $this->attributeRepository->findOneBy(['code' => $code]);
-
-        return $attribute;
+        return $this->attributeRepository->findOneByIdentifier($code);
     }
 }

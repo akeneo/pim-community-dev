@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -9,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -17,7 +17,7 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
-        AttributeOptionRepositoryInterface $attrOptionRepository,
+        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
@@ -58,7 +58,7 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
         $attributeOption->getCode()->willReturn('red');
         $attribute->getCode()->willReturn('color');
         $attrOptionRepository
-            ->findOneBy(['code' => 'red', 'attribute' => $attribute])
+            ->findOneByIdentifier('color.red')
             ->shouldBeCalledTimes(1)
             ->willReturn($attributeOption);
 
@@ -124,7 +124,7 @@ class SimpleSelectAttributeSetterSpec extends ObjectBehavior
         $attributeOption->getCode()->willReturn('red');
 
         $attrOptionRepository
-            ->findOneBy(['code' => 'red', 'attribute' => $attribute])
+            ->findOneByIdentifier('attributeCode.red')
             ->shouldBeCalledTimes(3)
             ->willReturn($attributeOption);
 

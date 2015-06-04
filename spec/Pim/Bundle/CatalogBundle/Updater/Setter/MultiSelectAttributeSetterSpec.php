@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Updater\Setter;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
@@ -9,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Repository\AttributeOptionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 use Prophecy\Argument;
 
@@ -17,7 +17,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
 {
     function let(
         ProductBuilderInterface $builder,
-        AttributeOptionRepositoryInterface $attrOptionRepository,
+        IdentifiableObjectRepositoryInterface $attrOptionRepository,
         AttributeValidatorHelper $attrValidatorHelper
     ) {
         $this->beConstructedWith(
@@ -59,7 +59,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
         $product->getValue('color', 'fr_FR', 'mobile')->willReturn($colorValue);
 
         $attrOptionRepository
-            ->findOneBy(['code' => 'red', 'attribute' => $attribute])
+            ->findOneByIdentifier('color.red')
             ->shouldBeCalledTimes(1)
             ->willReturn($red);
 
@@ -98,7 +98,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
         $data = ['unknown code'];
 
         $attrOptionRepository
-            ->findOneBy(['code' => 'unknown code', 'attribute' => $attribute])
+            ->findOneByIdentifier('attributeCode.unknown code')
             ->shouldBeCalledTimes(1)
             ->willReturn(null);
 
@@ -133,7 +133,7 @@ class MultiSelectAttributeSetterSpec extends ObjectBehavior
         $attributeOption->getCode()->willReturn('attributeOptionCode');
 
         $attrOptionRepository
-            ->findOneBy(['code' => 'attributeOptionCode', 'attribute' => $attribute])
+            ->findOneByIdentifier('attributeCode.attributeOptionCode')
             ->shouldBeCalledTimes(3)
             ->willReturn($attributeOption);
 
