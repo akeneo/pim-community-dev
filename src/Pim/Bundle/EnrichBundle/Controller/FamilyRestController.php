@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
