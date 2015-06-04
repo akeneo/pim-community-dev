@@ -3,13 +3,11 @@
 define([
         'jquery',
         'underscore',
-        'pim/entity-manager',
-        'pim/attribute-manager'
+        'pim/entity-manager'
     ], function (
         $,
         _,
-        EntityManager,
-        AttributeManager
+        EntityManager
     ) {
         return {
             getAttributesForProduct: function (product) {
@@ -66,6 +64,7 @@ define([
                 }
             },
             getValue: function (values, attribute, locale, scope) {
+                //Should be splitted in two methods
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
 
@@ -81,16 +80,15 @@ define([
 
                 return result;
             },
-            generateValues: function(values, attribute, locales, channels)
-            {
+            generateValues: function (values, attribute, locales, channels) {
                 _.each(locales, _.bind(function (locale) {
-                   _.each(channels, _.bind(function (channel) {
+                    _.each(channels, _.bind(function (channel) {
                         var newValue = this.getValue(
                             values,
                             attribute,
                             locale.code,
                             channel.code
-                        )
+                        );
 
                         if (!_.findWhere(
                             values,
