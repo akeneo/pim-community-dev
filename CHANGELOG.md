@@ -3,6 +3,7 @@
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
 - PIM-4309: Fix bug processing media with a non existing media
+- PIM-4032: Wrong error message when deleting used attribute option by a published product
 
 # 1.3.13 (2015-05-29)
 
