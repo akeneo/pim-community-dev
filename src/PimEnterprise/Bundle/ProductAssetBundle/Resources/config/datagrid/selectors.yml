@@ -1,0 +1,10 @@
+parameters:
+    pimee_product_asset.extension.selector.orm.product_asset.class:   Pim\Bundle\ReferenceDataBundle\DataGrid\Extension\Selector\ORM\ReferenceDataSelector
+
+services:
+    pimee_product_asset.extension.selector.orm.product_asset:
+        class: %pimee_product_asset.extension.selector.orm.product_asset.class%
+        arguments:
+            - '@pim_datagrid.extension.selector.orm.product_value.base_selector'
+        tags:
+            - { name: pim_datagrid.extension.selector, type: pim_assets_collection }

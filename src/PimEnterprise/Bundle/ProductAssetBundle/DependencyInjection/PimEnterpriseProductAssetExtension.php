@@ -11,10 +11,10 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -32,6 +32,10 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('builders.yml');
         $loader->load('controllers.yml');
+        $loader->load('datagrid/attribute_types.yml');
+        $loader->load('datagrid/filters.yml');
+        $loader->load('datagrid/formatters.yml');
+        $loader->load('datagrid/selectors.yml');
         $loader->load('file_storage.yml');
         $loader->load('models.yml');
         $loader->load('repositories.yml');
