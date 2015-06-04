@@ -27,6 +27,11 @@ datagrid:
                 label: pimee_workflow.product_draft.created
                 type: field
                 frontend_type: datetime
+            status:
+                label: pimee_workflow.product_draft.status.label
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/product_draft_status.html.twig
+                frontend_type: html
         properties:
             id: ~
             approve_link:
@@ -52,6 +57,7 @@ datagrid:
                 label: pimee_workflow.product_draft.action.refuse
                 icon: remove
                 link: refuse_link
+        action_configuration: '@pimee_datagrid.datagrid.proposal.grid_helper->getActionConfigurationClosure'
         filters:
             columns:
                 author:
