@@ -14,6 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Classification\Model\TagInterface;
 
 /**
  * Product asset
@@ -46,12 +47,16 @@ class Asset implements AssetInterface
     /** @var \Datetime */
     protected $updatedAt;
 
+    /** @var ArrayCollection of TagInterface */
+    protected $tags;
+
     public function __construct()
     {
         $this->references = new ArrayCollection();
-        $this->isEnabled = true;
-        $this->createdAt = new \Datetime();
-        $this->updatedAt = new \Datetime();
+        $this->isEnabled  = true;
+        $this->createdAt  = new \Datetime();
+        $this->updatedAt  = new \Datetime();
+        $this->tags       = new ArrayCollection();
     }
 
     /**
@@ -296,6 +301,50 @@ class Asset implements AssetInterface
     public function __toString()
     {
         return $this->getCode();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeTag(TagInterface $tag)
+    {
+        $this->tags->removeElement($tag);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addTag(TagInterface $tag)
+    {
+        if (!$this->tags->contains($tag)) {
+            $this->tags->add($tag);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTagCodes()
+    {
+        $tags = [];
+        foreach ($this->getTags() as $tag) {
+            $tags[] = $tag->getCode();
+        }
+        sort($tags);
+
+        return implode(',', $tags);
     }
 
     /**
