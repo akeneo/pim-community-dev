@@ -59,12 +59,24 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
     }
 
-    function it_normalizes_a_value_with_a_float_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    function it_normalizes_a_value_with_a_float_data_with_decimals_allowed(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $value->getData()->willReturn(12.25);
+        $value->getData()->willReturn('12.2500');
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
+        $simpleAttribute->isDecimalsAllowed()->willReturn(true);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12.2500']);
+    }
+
+    function it_normalizes_a_value_with_a_float_data_with_decimals_not_allowed(ProductValueInterface $value, AttributeInterface $simpleAttribute)
+    {
+        $value->getData()->willReturn('12.0000');
+        $value->getAttribute()->willReturn($simpleAttribute);
+        $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('decimal');
+        $simpleAttribute->isDecimalsAllowed()->willReturn(false);
+        $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '12']);
     }
 
     function it_normalizes_a_value_with_a_string_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
@@ -72,18 +84,20 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn('my data');
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('varchar');
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'my data']);
     }
 
     function it_normalizes_a_value_with_a_boolean_data(ProductValueInterface $value, AttributeInterface $simpleAttribute)
     {
-        $value->getData()->willReturn(false);
         $value->getAttribute()->willReturn($simpleAttribute);
         $simpleAttribute->isLocaleSpecific()->willReturn(false);
+        $simpleAttribute->getBackendType()->willReturn('boolean');
+
+        $value->getData()->willReturn(false);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '0']);
 
         $value->getData()->willReturn(true);
-        $value->getAttribute()->willReturn($simpleAttribute);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => '1']);
     }
 

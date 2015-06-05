@@ -135,7 +135,33 @@
 # 1.3.x
 
 ## Bug fixes
+- PIM-4227: fix BC break introduced in 1.3.13
+
+# 1.3.13 (2015-05-29)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.3.12 (2015-05-22)
+
+## Bug fixes
+- PIM-4182: Fix product values normalization when decimals are not allowed
+- PIM-4203: fix mass edit of families after sorting by label
+- PIM-4208: Fix js memory leak on a product edit form with scopable attributes
+
+# 1.3.11 (2015-05-13)
+
+## Bug fixes
+- PIM-4044: Fix pressing Enter on a Product grid filter makes the page "unclickable"
+- PIM-4146: Fix the delete confirmation message that was not translated
+- PIM-4176: Fix context not keeped after product saving
+
+# 1.3.10 (2015-05-05)
+
+## Bug fixes
 - PIM-4113: Initialize cursors on first item during creation
+- PIM-4122: Preserve variant structure during an import containing empty values from a template
 
 # 1.3.9 (2015-04-21)
 
@@ -493,6 +519,16 @@
 - PIM-3730: Fix variant group link on product edit page
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
+
+# 1.2.35
+
+## Bug fixes
+- PIM-4227: Disable product versionning on category update (never used and very slow)
+
+# 1.2.34 (2015-05-27)
+
+## Bug fixes
+- PIM-4223: Fix grid sorting order initialization (changed to be consistent with Platform behavior)
 
 # 1.2.33 (2015-03-16)
 

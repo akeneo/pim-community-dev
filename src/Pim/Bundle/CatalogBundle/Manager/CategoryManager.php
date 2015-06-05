@@ -208,7 +208,7 @@ class CategoryManager
     /**
      * Move a category to another parent
      * If $prevSiblingId is provided, the category will be positioned after this
-     * category, otherwise if will be the first child of the parent categpry
+     * category, otherwise it will be the first child of the parent category
      *
      * @param int $categoryId
      * @param int $parentId
