@@ -64,21 +64,17 @@ define([
                 }
             },
             getValue: function (values, attribute, locale, scope) {
-                //Should be splitted in two methods
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
 
-                var result = _.findWhere(values, {scope: scope, locale: locale});
-
-                if (!result) {
-                    result = {
-                        'scope':  scope,
-                        'locale': locale,
-                        'value':  this.getEmptyValue(attribute)
-                    };
-                }
-
-                return result;
+                return _.findWhere(values, {scope: scope, locale: locale});
+            },
+            generateValue: function (attribute, locale, scope) {
+                return {
+                    'locale': locale,
+                    'scope':  scope,
+                    'value':  this.getEmptyValue(attribute)
+                };
             },
             generateMissingValues: function (values, attribute, locales, channels, currencies) {
                 _.each(locales, _.bind(function (locale) {
@@ -90,16 +86,13 @@ define([
                             channel.code
                         );
 
-                        if ('pim_catalog_price_collection' === attribute.type) {
-                            newValue.value = this.generateMissingPrices(newValue.value, currencies);
+                        if (!newValue) {
+                            newValue = this.generateValue(attribute, locale, scope)
+                            values.push(newValue);
                         }
 
-                        if (!_.findWhere(
-                            values,
-                            {scope: newValue.scope, locale: newValue.locale}
-                        )) {
-
-                            values.push(newValue);
+                        if ('pim_catalog_price_collection' === attribute.type) {
+                            newValue.value = this.generateMissingPrices(newValue.value, currencies);
                         }
 
                     }, this));
