@@ -1,3 +1,4 @@
+# TODO: should not be in a services.yml file
 parameters:
     pimee_product_asset.variation_file_generator.class: PimEnterprise\Component\ProductAsset\VariationFileGenerator
 
