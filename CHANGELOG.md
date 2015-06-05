@@ -130,6 +130,7 @@
 - Constructor of `Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager` has been changed
 - Constructor of `Pim\Bundle\CommentBundle\Manager\CommentManager` has been changed
 - Constructor of `Pim\Bundle\DatagridBundle\Manager\DatagridViewManager` has been changed
+- Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
 
 # 1.3.x
 
