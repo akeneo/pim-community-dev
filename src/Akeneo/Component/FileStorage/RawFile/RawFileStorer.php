@@ -9,26 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
+namespace Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\FileFactoryInterface;
+use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
 use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
-use PimEnterprise\Component\ProductAsset\FileStorage\FileFactoryInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Move a raw file to the storage destination filesystem
- * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
+ * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
  * and save it to the database.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
- *
- * TODO: could be moved in a dedicated FileStorage component
  */
 class RawFileStorer implements RawFileStorerInterface
 {

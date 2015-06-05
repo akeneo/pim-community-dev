@@ -10,7 +10,7 @@ services:
             - '@pimee_product_asset.repository.variation'
             - '@pimee_product_asset.repository.file_metadata'
             - '@pim_catalog.repository.channel'
-            - '@pimee_product_asset.file_storage.raw_file.storer'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
             - '@pimee_product_asset.variation_file_generator'
         calls:
             - [ setContainer, [ @service_container ] ]

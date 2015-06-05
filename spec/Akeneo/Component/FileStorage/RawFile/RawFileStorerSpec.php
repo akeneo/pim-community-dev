@@ -1,16 +1,16 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
+namespace spec\Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\FileFactoryInterface;
+use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\MountManager;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
-use PimEnterprise\Component\ProductAsset\FileStorage\FileFactoryInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\PathGeneratorInterface;
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use Prophecy\Argument;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
 

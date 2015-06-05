@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage;
+namespace Akeneo\Component\FileStorage;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

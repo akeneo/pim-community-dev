@@ -51,10 +51,10 @@ class Helper
     }
 
     /**
-     * @return \PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorer
+     * @return \Akeneo\Component\FileStorage\RawFile\RawFileStorer
      */
     public function getRawFileStorer()
     {
-        return $this->container->get('pimee_product_asset.file_storage.raw_file.storer');
+        return $this->container->get('akeneo_file_storage.file_storage.raw_file.storer');
     }
 }

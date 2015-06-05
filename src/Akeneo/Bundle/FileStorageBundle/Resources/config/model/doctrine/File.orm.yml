@@ -1,6 +1,6 @@
-PimEnterprise\Component\ProductAsset\Model\File:
+Akeneo\Component\FileStorage\Model\File:
     type: entity
-    table: pimee_product_asset_file
+    table: akeneo_file_storage_file
     fields:
         id:
             type: integer

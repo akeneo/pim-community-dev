@@ -1,13 +1,18 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\FileStorage;
+namespace spec\Akeneo\Component\FileStorage;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileFactorySpec extends ObjectBehavior
 {
-    function it_create_a_file_from_a_raw_file()
+    function let()
+    {
+        $this->beConstructedWith('\Akeneo\Component\FileStorage\Model\File');
+    }
+
+    function it_creates_a_file_from_a_raw_file()
     {
         $rawFile = new \SplFileInfo(__FILE__);
 
@@ -21,7 +26,7 @@ class FileFactorySpec extends ObjectBehavior
         $file->shouldBeValidFile();
     }
 
-    function it_create_a_file_from_an_uploaded_file()
+    function it_creates_a_file_from_an_uploaded_file()
     {
         $rawFile = new UploadedFile(__FILE__, 'FileFactorySpec.php', 'text/x-php', filesize(__FILE__));
 

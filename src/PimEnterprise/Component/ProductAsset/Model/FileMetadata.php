@@ -11,6 +11,8 @@
 
 namespace PimEnterprise\Component\ProductAsset\Model;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
+
 /**
  * Implementation of the FileMetadataInterface
  *
@@ -18,10 +20,10 @@ namespace PimEnterprise\Component\ProductAsset\Model;
  */
 class FileMetadata implements FileMetadataInterface
 {
-    /** @var integer */
+    /** @var int */
     protected $id;
 
-    /** @var File */
+    /** @var FileInterface */
     protected $file;
 
     /** @var \DateTime */

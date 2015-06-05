@@ -1,0 +1,3 @@
+parameters:
+    akeneo_file_storage.model.file.class:     Akeneo\Component\FileStorage\Model\File
+    akeneo_file_storage.model.file.interface: Akeneo\Component\FileStorage\Model\FileInterface

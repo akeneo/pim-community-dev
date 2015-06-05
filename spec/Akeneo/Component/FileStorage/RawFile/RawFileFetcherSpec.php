@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
+namespace spec\Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use League\Flysystem\FilesystemInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 use Prophecy\Argument;
 
 class RawFileFetcherSpec extends ObjectBehavior

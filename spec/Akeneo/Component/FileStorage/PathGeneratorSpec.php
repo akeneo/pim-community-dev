@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Component\ProductAsset\FileStorage;
+namespace spec\Akeneo\Component\FileStorage;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

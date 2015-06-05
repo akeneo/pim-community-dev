@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage;
+namespace Akeneo\Component\FileStorage;
 
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
+use Akeneo\Component\FileStorage\Model\FileInterface;
 
 /**
- * File factory, create a \PimEnterprise\Component\ProductAsset\Model\FileInterface
+ * File factory, create a \Akeneo\Component\FileStorage\Model\FileInterface
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */

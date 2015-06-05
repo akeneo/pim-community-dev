@@ -47,7 +47,7 @@ $registry->add($colorSpaceTransformation);
 $registry->add($scaleTransformation);
 
 $transformer = new \Akeneo\Component\FileTransformer\FileTransformer($registry);
-$pathGenerator = new \PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator();
+$pathGenerator = new \Akeneo\Component\FileStorage\PathGenerator();
 $filesystem = new \League\Flysystem\Filesystem(new \League\Flysystem\Adapter\Local($directory));
 $em = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
 
@@ -122,7 +122,7 @@ foreach ($images as $image) {
             $mimeType = MimeTypeGuesser::getInstance()->guess($imagePath);
             $storage = $pathGenerator->generate($imageFile);
 
-            $file = new \PimEnterprise\Component\ProductAsset\Model\File();
+            $file = new \Akeneo\Component\FileStorage\Model\File();
             $file->setFilename($storage['file_name']);
             $file->setGuid($storage['guid']);
             $file->setMimeType($mimeType);

@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Model;
+namespace Akeneo\Component\FileStorage\Model;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -17,8 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * File interface
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
- *
- * TODO: could be moved in a dedicated FileStorage component
  */
 interface FileInterface
 {

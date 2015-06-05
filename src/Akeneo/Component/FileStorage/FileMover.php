@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage;
+namespace Akeneo\Component\FileStorage;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
  * Move a file from a virtual filesystem to another

@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
+namespace Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use League\Flysystem\FilesystemInterface;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem

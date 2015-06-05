@@ -92,6 +92,7 @@ class AppKernel extends Kernel
 
             new Akeneo\Bundle\FileMetadataBundle\AkeneoFileMetadataBundle(),
             new Akeneo\Bundle\FileTransformerBundle\AkeneoFileTransformerBundle(),
+            new Akeneo\Bundle\FileStorageBundle\AkeneoFileStorageBundle(),
             new PimEnterprise\Bundle\ProductAssetBundle\PimEnterpriseProductAssetBundle(),
         ];
     }

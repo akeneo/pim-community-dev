@@ -9,26 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage\RawFile;
+namespace Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
 use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
 
 /**
  * Move a raw file to the storage destination filesystem
- * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
+ * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
  * and save it to the database.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
- *
- * TODO: could be moved in a dedicated FileStorage component
  */
 interface RawFileStorerInterface
 {
     /**
      * Move a raw file to the storage destination filesystem
-     * transforms it as a \PimEnterprise\Component\ProductAsset\Model\FileInterface
+     * transforms it as a \Akeneo\Component\FileStorage\Model\FileInterface
      * and save it to the database.
      *
      * @param \SplFileInfo $rawFile     file to store

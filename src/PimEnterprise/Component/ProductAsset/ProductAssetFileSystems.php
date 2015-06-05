@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage;
+namespace PimEnterprise\Component\ProductAsset;
 
 /**
  * List of the file systems that are used by the product asset component

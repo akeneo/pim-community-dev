@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\FileStorage;
+namespace Akeneo\Component\FileStorage;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeGuesser;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * File factory, create a \PimEnterprise\Component\ProductAsset\Model\FileInterface
+ * File factory, create a \Akeneo\Component\FileStorage\Model\FileInterface
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
@@ -27,7 +27,7 @@ class FileFactory implements FileFactoryInterface
     /**
      * @param string $fileClass
      */
-    public function __construct($fileClass = '\PimEnterprise\Component\ProductAsset\Model\File')
+    public function __construct($fileClass)
     {
         $this->fileClass = $fileClass;
     }

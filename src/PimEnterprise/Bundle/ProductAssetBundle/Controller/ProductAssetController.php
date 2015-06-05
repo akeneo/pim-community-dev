@@ -11,18 +11,18 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
-use PimEnterprise\Component\ProductAsset\FileStorage\ProductAssetFileSystems;
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
+use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
