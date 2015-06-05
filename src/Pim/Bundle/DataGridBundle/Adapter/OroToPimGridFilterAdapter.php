@@ -37,6 +37,13 @@ class OroToPimGridFilterAdapter implements GridFilterAdapterInterface
             $filters = $this->massActionDispatcher->getRawFilters($request);
         } else {
             $items =  $this->massActionDispatcher->dispatch($request);
+
+            foreach ($items as &$object) {
+                if (is_array($object)) {
+                    $object = $object[0];
+                }
+            }
+
             $itemIds = [];
 
             foreach ($items as $item) {

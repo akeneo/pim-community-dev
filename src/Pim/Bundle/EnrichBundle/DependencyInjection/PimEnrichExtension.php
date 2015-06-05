@@ -21,6 +21,13 @@ class PimEnrichExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter(
+            'pim_enrich_max_products_category_removal',
+            $configs[0]['max_products_category_removal']
+        );
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

@@ -30,7 +30,7 @@ class FieldFilterDumper implements DumperInterface
      */
     public function dump(OutputInterface $output, HelperSet $helperSet)
     {
-        $output->writeln("<info>Useable field filters...<info>");
+        $output->writeln("<info>Useable field filters...</info>");
         $fields = [
             'id',
             'created',
