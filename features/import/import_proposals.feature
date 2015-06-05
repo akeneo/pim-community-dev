@@ -177,3 +177,4 @@ Feature: Import proposals
     And I launch the import job
     And I wait for the "clothing_product_draft_import" job to finish
     Then there should be 0 proposal
+    And I should see "deleted 1"

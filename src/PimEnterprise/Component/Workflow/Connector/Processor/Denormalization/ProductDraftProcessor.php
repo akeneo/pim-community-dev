@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Component\Workflow\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
@@ -119,13 +120,23 @@ class ProductDraftProcessor extends AbstractProcessor
      */
     protected function applyDraftToProduct(ProductInterface $product)
     {
-        $productDraft = $this->productDraftRepo->findUserProductDraft($product, $this->getCodeInstance());
+        $productDraft = $this->getProductDraft($product);
 
         if (null !== $productDraft) {
             $this->productDraftApplier->apply($product, $productDraft);
         }
 
         return $product;
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return ProductDraft|null
+     */
+    protected function getProductDraft(ProductInterface $product)
+    {
+        return $this->productDraftRepo->findUserProductDraft($product, $this->getCodeInstance());
     }
 
     /**
@@ -179,6 +190,41 @@ class ProductDraftProcessor extends AbstractProcessor
     }
 
     /**
+     * Build product draft. If there is:
+     *  - diff between product and draft: return new draft, it will be created in writer
+     *  - no diff between product and draft and there is no draft for this product in DB: skip draft
+     *  - no diff between product and draft and there is a draft for this product in DB: return old draft, it will be
+     *      deleted in writer
+     *
+     * @param ProductInterface $product
+     * @param array            $item
+     *
+     * @throws InvalidItemException
+     *
+     * @return ProductDraft|null
+     */
+    protected function buildDraft(ProductInterface $product, array $item)
+    {
+        $productDraft = $this->productDraftBuilder->build($product, $this->getCodeInstance());
+
+        // no draft has been created because there is no diff between proposal and product
+        if (null === $productDraft) {
+            $deprecatedDraft = $this->getProductDraft($product);
+            if (null !== $deprecatedDraft) {
+                $deprecatedDraft->setChanges([]);
+
+                return $deprecatedDraft;
+            }
+
+            $this->skipItemWithMessage($item, 'No diff between current product and this proposal');
+        }
+
+        $productDraft->setStatus(ProductDraft::READY);
+
+        return $productDraft;
+    }
+
+    /**
      * @param ProductInterface $product
      *
      * @throws \InvalidArgumentException
@@ -188,27 +234,6 @@ class ProductDraftProcessor extends AbstractProcessor
     protected function validateProduct(ProductInterface $product)
     {
         return $this->validator->validate($product);
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param array            $item
-     *
-     * @return ProductDraft|null
-     */
-    protected function buildDraft(ProductInterface $product, array $item)
-    {
-        $productDraft = $this->productDraftBuilder->build($product, $this->getCodeInstance());
-
-        if (null === $productDraft) {
-            $this->skipItemWithMessage($item, 'No diff between current product and this proposal');
-
-            return null;
-        }
-
-        $productDraft->setStatus(ProductDraft::READY);
-
-        return $productDraft;
     }
 
     /**
