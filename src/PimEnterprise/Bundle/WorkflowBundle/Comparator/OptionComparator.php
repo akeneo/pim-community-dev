@@ -31,14 +31,17 @@ class OptionComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        if (!array_key_exists('value', $originals) || $data['value']['code'] !== $originals['value']['code']) {
-            return [
-                'locale' => $data['locale'],
-                'scope'  => $data['scope'],
-                'value'  => $data['value']['code'],
-            ];
+        $default = ['locale' => null, 'scope' => null, 'value' => null];
+        $originals = array_merge($default, $originals);
+
+        if ($data['value']['code'] === $originals['value']['code']) {
+            return null;
         }
 
-        return null;
+        return [
+            'locale' => $data['locale'],
+            'scope'  => $data['scope'],
+            'value'  => $data['value']['code'],
+        ];
     }
 }

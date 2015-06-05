@@ -22,10 +22,11 @@ interface ProductDraftBuilderInterface
 {
     /**
      * @param ProductInterface $product
+     * @param string           $username
      *
      * @throws \LogicException
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null returns null if no draft is created
      */
-    public function build(ProductInterface $product);
+    public function build(ProductInterface $product, $username);
 }

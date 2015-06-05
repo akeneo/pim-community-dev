@@ -11,7 +11,11 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Helper for proposal datagrid
@@ -23,12 +27,17 @@ class GridHelper
     /** @var UserManager $userManager */
     protected $userManager;
 
+    /** @var SecurityContextInterface  */
+    protected $securityContext;
+
     /**
-     * @param UserManager $userManager
+     * @param UserManager              $userManager
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(UserManager $userManager)
+    public function __construct(UserManager $userManager, SecurityContextInterface $securityContext)
     {
-        $this->userManager = $userManager;
+        $this->userManager     = $userManager;
+        $this->securityContext = $securityContext;
     }
     /**
      * Returns available proposal author choices
@@ -46,5 +55,22 @@ class GridHelper
         }
 
         return $choices;
+    }
+
+    /**
+     * Returns callback that will disable approve and refuse buttons
+     * given proposal status
+     *
+     * @return callable
+     */
+    public function getActionConfigurationClosure()
+    {
+        return function (ResultRecordInterface $record) {
+            if (null !== $this->securityContext &&
+                false === $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
+            ) {
+                return ['approve' => false, 'refuse' => false];
+            }
+        };
     }
 }

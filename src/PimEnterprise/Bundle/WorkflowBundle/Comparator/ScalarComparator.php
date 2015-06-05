@@ -37,6 +37,9 @@ class ScalarComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        return !array_key_exists('value', $originals) || $data['value'] !== $originals['value'] ? $data : null;
+        $default = ['locale' => null, 'scope' => null, 'value' => null];
+        $originals = array_merge($default, $originals);
+
+        return $data['value'] !== $originals['value'] ? $data : null;
     }
 }

@@ -34,11 +34,10 @@ class MediaComparator implements ComparatorInterface
      */
     public function getChanges(array $data, array $originals)
     {
-        $noValue = !isset($originals['value']) && !isset($data['value']);
-        $noFilepathChange = isset($originals['value']['filePath'])
-            && $data['value']['filePath'] === $originals['value']['filePath'];
+        $default = ['locale' => null, 'scope' => null, 'value' => ['filePath' => null]];
+        $originals = array_merge($default, $originals);
 
-        if ($noValue || $noFilepathChange) {
+        if ($this->getHashFile($data['value']['filePath']) === $this->getHashFile($originals['value']['filePath'])) {
             return null;
         }
 
@@ -46,5 +45,19 @@ class MediaComparator implements ComparatorInterface
         $data['value']['filename'] = str_replace(self::SEPATATOR_FILE, '', $filename);
 
         return $data;
+    }
+
+    /**
+     * @param string $filePath
+     *
+     * @return null|string
+     */
+    protected function getHashFile($filePath = null)
+    {
+        if (null !== $filePath) {
+            return sha1_file($filePath);
+        }
+
+        return null;
     }
 }
