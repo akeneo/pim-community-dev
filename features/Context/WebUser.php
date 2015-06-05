@@ -6,7 +6,6 @@ use Behat\Behat\Context\Step;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Model\Product;
@@ -1652,10 +1651,9 @@ class WebUser extends RawMinkContext
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
         $this->wait();
-        $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block header .icon-angle-down');
+        $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block[data-closed="true"] header .icon-angle-down');
 
         foreach ($collapseSwitchers as $switcher) {
-            echo ($switcher->getHTML());
             $switcher->click();
         }
         foreach ($table->getHash() as $data) {

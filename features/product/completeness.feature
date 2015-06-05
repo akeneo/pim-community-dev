@@ -34,7 +34,6 @@ Feature: Display the completeness of a product
       | tablet  | fr_FR  | warning | description side_view | 78%   |
     # Fix fake product update and remove the next two steps
     And I click on the Akeneo logo
-    And I confirm the navigation
     When I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness summary
