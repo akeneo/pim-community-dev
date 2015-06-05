@@ -13,9 +13,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessCollectionNormalizer implements NormalizerInterface
 {
-    /** @var array */
-    protected $supportedFormat = ['internal_api'];
-
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -64,7 +61,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         }
 
         return [
-            'completeness' => $this->normalizer->normalize($completeness['completeness'], 'json'),
+            'completeness' => $this->normalizer->normalize($completeness['completeness'], 'internal_api'),
             'missing'      => $missing
         ];
     }
