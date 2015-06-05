@@ -60,12 +60,6 @@ datagrid:
                 params:
                     - id
         actions:
-            inline-edit:
-                type:      inline-edit
-                label:     Edit attributes of the product
-                tab:       pim_enrich-product-tab-attribute
-                link:      edit_link
-                icon:      pencil
             edit:
                 type:      tab-redirect
                 label:     Edit attributes of the product
