@@ -80,14 +80,13 @@ define([
                         var attribute = _.findWhere(attributes, {code: attributeCode});
 
                         if (attribute.code in product.values) {
-                            values[attribute.code] = AttributeManager.generateValues(
+                            values[attribute.code] = AttributeManager.generateMissingValues(
                                 product.values[attribute.code],
                                 attribute,
                                 locales,
-                                channels
+                                channels,
+                                currencies
                             );
-
-                            AttributeManager.generateMissingPrices(values[attribute.code], attribute, currencies);
                         }
                     });
 
