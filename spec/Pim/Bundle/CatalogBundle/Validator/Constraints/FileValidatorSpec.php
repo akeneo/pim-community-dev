@@ -23,37 +23,48 @@ class FileValidatorSpec extends ObjectBehavior
 
     function it_validates_extensions(
         $context,
-        File $constraint)
-    {
-        $constraint->allowedExtensions = array('gif', 'jpg');
+        File $constraint
+    ) {
+        $constraint->allowedExtensions = ['gif', 'jpg'];
 
         $context
             ->addViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate(new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'), $constraint);
+        $this->validate(
+            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            $constraint
+        );
     }
 
     function it_does_not_validate_extensions(
         $context,
-        File $constraint)
-    {
-        $constraint->allowedExtensions = array('pdf', 'docx');
+        File $constraint
+    ) {
+        $constraint->allowedExtensions = ['pdf', 'docx'];
 
         $context
-            ->addViolation($constraint->extensionsMessage, ['{{ extensions }}' => join(', ', $constraint->allowedExtensions)])
+            ->addViolation(
+                $constraint->extensionsMessage,
+                ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
+            )
             ->shouldBeCalled();
 
-        $this->validate(new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'), $constraint);
+        $this->validate(
+            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'),
+            $constraint
+        );
     }
 
     function it_validates_extensions_with_product_media(
         $context,
         File $constraint,
-        ProductMediaInterface $productMedia)
-    {
-        $constraint->allowedExtensions = array('gif', 'jpg');
-        $productMedia->getFile()->willReturn(new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'));
+        ProductMediaInterface $productMedia
+    ) {
+        $constraint->allowedExtensions = ['gif', 'jpg'];
+        $productMedia->getFile()->willReturn(
+            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg')
+        );
 
         $context
             ->addViolation(Argument::any())
@@ -64,9 +75,9 @@ class FileValidatorSpec extends ObjectBehavior
 
     function it_validates_nullable_value(
         $context,
-        File $constraint)
-    {
-        $constraint->allowedExtensions = array('gif', 'jpg');
+        File $constraint
+    ) {
+        $constraint->allowedExtensions = ['gif', 'jpg'];
 
         $context
             ->addViolation(Argument::any())
@@ -77,14 +88,17 @@ class FileValidatorSpec extends ObjectBehavior
 
     function it_validates_empty_extensions(
         $context,
-        File $constraint)
-    {
-        $constraint->allowedExtensions = array();
+        File $constraint
+    ) {
+        $constraint->allowedExtensions = [];
 
         $context
             ->addViolation(Argument::any())
             ->shouldNotBeCalled();
 
-        $this->validate(new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/caterpillar_variant_import.zip'), $constraint);
+        $this->validate(
+            new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/caterpillar_variant_import.zip'),
+            $constraint
+        );
     }
 }
