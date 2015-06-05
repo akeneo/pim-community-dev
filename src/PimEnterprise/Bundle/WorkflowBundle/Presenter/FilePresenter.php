@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -46,8 +47,13 @@ class FilePresenter implements PresenterInterface
      */
     public function present($data, array $change)
     {
+        $media = $data->getMedia();
+        if (!$this->isDiff($change, $media)) {
+            return '';
+        }
+
         $before = '';
-        if (null !== $media = $data->getMedia()) {
+        if (null !== $media) {
             if (null !== $media->getFilename() && null !== $media->getOriginalFilename()) {
                 $before = sprintf(
                     '<li class="base file">%s</li>',
@@ -82,5 +88,28 @@ class FilePresenter implements PresenterInterface
             $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
             $originalFilename
         );
+    }
+
+    /**
+     * Check diff between old and new file
+     *
+     * @param array                 $change
+     * @param ProductMediaInterface $media
+     *
+     * @return bool
+     */
+    protected function isDiff(array $change, ProductMediaInterface $media = null)
+    {
+        if (null !== $media && null !== $media->getFilename()) {
+            $data = sha1_file($this->generator->generate('pim_enrich_media_show', [
+                'filename' => $media->getFilename()
+            ], UrlGeneratorInterface::ABSOLUTE_URL));
+        } else {
+            $data = null;
+        }
+
+        $change = isset($change['value']['filePath']) ? sha1_file($change['value']['filePath']) : null;
+
+        return $data !== $change;
     }
 }
