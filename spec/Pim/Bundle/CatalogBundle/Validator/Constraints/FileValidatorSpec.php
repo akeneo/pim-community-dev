@@ -40,7 +40,7 @@ class FileValidatorSpec extends ObjectBehavior
         $constraint->allowedExtensions = array('pdf', 'docx');
 
         $context
-            ->addViolation($constraint->extensionsMessage, ['{{ extensions }}' => implode(', ', $constraint->allowedExtensions)])
+            ->addViolation($constraint->extensionsMessage, ['%extensions%' => implode(', ', $constraint->allowedExtensions)])
             ->shouldBeCalled();
 
         $this->validate(new \SplFileInfo(__DIR__.'/../../../../../../features/Context/fixtures/akeneo.jpg'), $constraint);
