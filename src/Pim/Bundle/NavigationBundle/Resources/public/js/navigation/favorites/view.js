@@ -1,7 +1,6 @@
-/* global define */
 define(['underscore', 'backbone', 'oro/app', 'oro/mediator', 'oro/error',
     'oro/navigation/abstract-view', 'oro/navigation/model', 'oro/navigation/collection'],
-function(_, Backbone, app, mediator, error,
+function (_, Backbone, app, mediator, error,
      AbstractView, NavigationModel, NavigationCollection) {
     'use strict';
 
@@ -22,7 +21,7 @@ function(_, Backbone, app, mediator, error,
             'click': 'toggleItem'
         },
 
-        initialize: function() {
+        initialize: function () {
             AbstractView.prototype.initialize.apply(this, arguments);
             if (!this.options.collection) {
                 /** @type {oro.navigation.Collection} */
@@ -42,29 +41,29 @@ function(_, Backbone, app, mediator, error,
              */
             mediator.bind(
                 "hash_navigation_request:complete",
-                function() {
+                function () {
                     this.render();
                 },
                 this
             );
         },
 
-        activate: function() {
+        activate: function () {
             this.$icon.addClass('icon-gold');
         },
 
-        inactivate: function() {
+        inactivate: function () {
             this.$icon.removeClass('icon-gold');
         },
 
-        toggleItem: function(e) {
+        toggleItem: function (e) {
             var self = this;
             var current = this.getItemForCurrentPage();
             if (current.length) {
-                _.each(current, function(item) {
+                _.each(current, function (item) {
                     item.destroy({
                         wait: false, // This option affects correct disabling of favorites icon
-                        error: function(model, xhr, options) {
+                        error: function (model, xhr, options) {
                             if (xhr.status == 404 && !app.debug) {
                                 // Suppress error if it's 404 response and not debug mode
                                 self.inactivate();
@@ -85,13 +84,13 @@ function(_, Backbone, app, mediator, error,
             }
         },
 
-        addAll: function(items) {
-            items.each(function(item) {
+        addAll: function (items) {
+            items.each(function (item) {
                 this.addItemToTab(item);
             }, this);
         },
 
-        render: function() {
+        render: function () {
             this.checkTabContent();
             if (this.getItemForCurrentPage().length) {
                 this.activate();

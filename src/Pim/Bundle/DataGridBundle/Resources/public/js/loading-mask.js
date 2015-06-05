@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/translator'],
-function($, _, Backbone, __) {
+function ($, _, Backbone, __) {
     'use strict';
 
     /**
@@ -42,7 +41,7 @@ function($, _, Backbone, __) {
          * @param {Object} options
          * @param {Boolean} [options.liveUpdate] Update position of loading animation on window scroll and resize
          */
-        initialize: function(options) {
+        initialize: function (options) {
             options = options || {};
 
             if (_.has(options, 'liveUpdate')) {
@@ -61,7 +60,7 @@ function($, _, Backbone, __) {
          *
          * @return {*}
          */
-        show: function() {
+        show: function () {
             this.$el.show();
             this.displayed = true;
             this.resetPos().updatePos();
@@ -74,7 +73,7 @@ function($, _, Backbone, __) {
          * @return {*}
          * @protected
          */
-        updatePos: function() {
+        updatePos: function () {
             if (!this.displayed) {
                 return this;
             }
@@ -115,7 +114,7 @@ function($, _, Backbone, __) {
          * @return {*}
          * @protected
          */
-        resetPos: function() {
+        resetPos: function () {
             this.$('.loading-wrapper').css('height', '100%');
             return this;
         },
@@ -125,7 +124,7 @@ function($, _, Backbone, __) {
          *
          * @return {*}
          */
-        hide: function() {
+        hide: function () {
             this.$el.hide();
             this.displayed = false;
             this.resetPos();
@@ -137,7 +136,7 @@ function($, _, Backbone, __) {
          *
          * @return {*}
          */
-        render: function() {
+        render: function () {
             this.$el.empty();
             this.$el.append(this.template({
                 loadingHint: this.loadingHint

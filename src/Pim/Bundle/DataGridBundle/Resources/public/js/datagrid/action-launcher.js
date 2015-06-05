@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+function ($, _, Backbone) {
     'use strict';
 
     /**
@@ -44,7 +43,7 @@ function($, _, Backbone) {
         /** @property {String} */
         runAction: true,
 
-        /** @property {function(Object, ?Object=): String} */
+        /** @property {function (Object, ?Object=): String} */
         template:_.template(
             '<<%= tagName %> href="<%= link %>" class="action' +
                 '<%= className ? " " + className : "" %>' +
@@ -65,7 +64,7 @@ function($, _, Backbone) {
         ),
 
         attributesTemplate: _.template(
-            '<% _.each(attributes, function(attribute, name) { %>' +
+            '<% _.each(attributes, function (attribute, name) { %>' +
                 '<%= name %>="<%= attribute %>" ' +
             '<% }) %>'
         ),
@@ -80,7 +79,7 @@ function($, _, Backbone) {
          *
          * @param {Object} options
          * @param {oro.datagrid.AbstractAction} options.action
-         * @param {function(Object, ?Object=): string} [options.template]
+         * @param {function (Object, ?Object=): string} [options.template]
          * @param {String} [options.label]
          * @param {String} [options.icon]
          * @param {String} [options.link]
@@ -88,7 +87,7 @@ function($, _, Backbone) {
          * @param {Boolean} [options.onClickReturnValue]
          * @throws {TypeError} If mandatory option is undefined
          */
-        initialize: function(options) {
+        initialize: function (options) {
             options = options || {};
             if (!options.action) {
                 throw new TypeError("'action' is required");
@@ -161,7 +160,7 @@ function($, _, Backbone) {
          * @protected
          * @return {Boolean}
          */
-        onClick: function() {
+        onClick: function () {
             if (!this.enabled) {
                 return this.onClickReturnValue;
             }
@@ -180,7 +179,7 @@ function($, _, Backbone) {
          *
          * @return {*}
          */
-        disable: function() {
+        disable: function () {
             this.enabled = false;
             this.$el.addClass('disabled');
             return this;
@@ -191,7 +190,7 @@ function($, _, Backbone) {
          *
          * @return {*}
          */
-        enable: function() {
+        enable: function () {
             this.enabled = true;
             this.$el.removeClass('disabled');
             return this;

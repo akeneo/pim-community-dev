@@ -1,6 +1,5 @@
-/* global define */
 define(['underscore', 'routing', 'backbone'],
-function(_, routing, Backbone) {
+function (_, routing, Backbone) {
     'use strict';
 
     /**
@@ -17,7 +16,7 @@ function(_, routing, Backbone) {
             type: null
         },
 
-        url: function() {
+        url: function () {
             var base = _.result(this, 'urlRoot') || _.result(this.collection, 'url');
             if (base && base.indexOf(this.get('type')) === -1) {
                 base += (base.charAt(base.length - 1) === '/' ? '' : '/') + this.get('type');

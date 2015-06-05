@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter', 'jquery.select2'],
-function($, _, __, app, TextFilter) {
+function ($, _, __, app, TextFilter) {
     'use strict';
 
     /**
@@ -14,7 +13,7 @@ function($, _, __, app, TextFilter) {
         /**
          * Template for filter criteria
          *
-         * @property {function(Object, ?Object=): String}
+         * @property {function (Object, ?Object=): String}
          */
         popupCriteriaTemplate: _.template(
             '<div class="choicefilter">' +
@@ -68,14 +67,14 @@ function($, _, __, app, TextFilter) {
          *
          * @param {Object} options
          */
-        initialize: function() {
+        initialize: function () {
             // init filter content options if it was not initialized so far
             if (_.isUndefined(this.choices)) {
                 this.choices = [];
             }
             // temp code to keep backward compatible
             if ($.isPlainObject(this.choices)) {
-                this.choices = _.map(this.choices, function(option, i) {
+                this.choices = _.map(this.choices, function (option, i) {
                     return {value: i.toString(), label: option};
                 });
             }
@@ -94,11 +93,11 @@ function($, _, __, app, TextFilter) {
         /**
          * @inheritDoc
          */
-        _renderCriteria: function(el) {
+        _renderCriteria: function (el) {
             var selectedChoice = this.emptyValue.type;
             var selectedChoiceLabel = '';
             if (!_.isEmpty(this.choices)) {
-                var foundChoice = _.find(this.choices, function(choice) {
+                var foundChoice = _.find(this.choices, function (choice) {
                         return (choice.value == selectedChoice);
                     });
                 selectedChoiceLabel = foundChoice.label;
@@ -117,7 +116,7 @@ function($, _, __, app, TextFilter) {
         /**
          * @inheritDoc
          */
-        _getCriteriaHint: function() {
+        _getCriteriaHint: function () {
             var option, hint,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             if (value.type === 'empty') {
@@ -139,14 +138,14 @@ function($, _, __, app, TextFilter) {
          * @returns {{value: string, label: string}}
          * @private
          */
-        _getChoiceOption: function(valueType) {
+        _getChoiceOption: function (valueType) {
             return _.findWhere(this.choices, {value: valueType.toString()});
         },
 
         /**
          * @inheritDoc
          */
-        _writeDOMValue: function(value) {
+        _writeDOMValue: function (value) {
             this._setInputValue(this.criteriaValueSelectors.value, value.value);
             this._setInputValue(this.criteriaValueSelectors.type, value.type);
             return this;
@@ -156,7 +155,7 @@ function($, _, __, app, TextFilter) {
         /**
          * @inheritDoc
          */
-        _readDOMValue: function() {
+        _readDOMValue: function () {
             return {
                 value: this._getInputValue(this.criteriaValueSelectors.value),
                 type: this._getInputValue(this.criteriaValueSelectors.type)
@@ -166,7 +165,7 @@ function($, _, __, app, TextFilter) {
         /**
          * @inheritDoc
          */
-        _triggerUpdate: function(newValue, oldValue) {
+        _triggerUpdate: function (newValue, oldValue) {
             if (!app.isEqualsLoosely(newValue.value, oldValue.value) || !app.isEqualsLoosely(newValue.type, oldValue.type)) {
                 this.trigger('update');
             }
@@ -175,10 +174,10 @@ function($, _, __, app, TextFilter) {
         /**
          * @inheritDoc
          */
-        _onValueUpdated: function(newValue, oldValue) {
+        _onValueUpdated: function (newValue, oldValue) {
             // synchronize choice selector with new value
             var menu = this.$('.choicefilter .dropdown-menu');
-            menu.find('li a').each(function() {
+            menu.find('li a').each(function () {
                 var item = $(this);
                 if (item.data('value') == oldValue.type && item.parent().hasClass('active')) {
                     item.parent().removeClass('active');
@@ -202,8 +201,8 @@ function($, _, __, app, TextFilter) {
          * @param {Event} e
          * @protected
          */
-        _onClickChoiceValue: function(e) {
-            $(e.currentTarget).parent().parent().find('li').each(function() {
+        _onClickChoiceValue: function (e) {
+            $(e.currentTarget).parent().parent().find('li').each(function () {
                 $(this).removeClass('active');
             });
             $(e.currentTarget).parent().addClass('active');
@@ -224,17 +223,17 @@ function($, _, __, app, TextFilter) {
             e.preventDefault();
         },
 
-        _enableListSelection: function() {
+        _enableListSelection: function () {
             this.$(this.criteriaValueSelectors.value).select2({
                 multiple: true,
                 tokenSeparators: [',', ' ', ';'],
                 tags: [],
                 width: '290px',
-                formatNoMatches: function() { return ''; }
+                formatNoMatches: function () { return ''; }
             });
         },
 
-        _disableListSelection: function() {
+        _disableListSelection: function () {
             this.$(this.criteriaValueSelectors.value).select2('destroy');
         }
     });

@@ -1,7 +1,6 @@
- /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'oro/navigation', 'oro/translator', 'oro/mediator',
     'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher'],
-function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Modal, ActionLauncher) {
+function ($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Modal, ActionLauncher) {
     'use strict';
 
     /**
@@ -66,7 +65,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          * @param {Object} options
          * @param {Object} [options.launcherOptions] Options for new instance of launcher object
          */
-        initialize: function(options) {
+        initialize: function (options) {
             options = options || {};
 
             if (!options.datagrid) {
@@ -97,7 +96,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          * @param {Object} options Launcher options
          * @return {oro.datagrid.ActionLauncher}
          */
-        createLauncher: function(options) {
+        createLauncher: function (options) {
             options = options || {};
             if (_.isUndefined(options.icon) && !_.isUndefined(this.icon)) {
                 options.icon = this.icon;
@@ -109,7 +108,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
         /**
          * Run action
          */
-        run: function() {
+        run: function () {
             var options = {
                 doExecute: true
             };
@@ -123,22 +122,22 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
         /**
          * Execute action
          */
-        execute: function() {
+        execute: function () {
             var eventName = this.getEventName();
             mediator.once(eventName, this.executeConfiguredAction, this);
             this._confirmationExecutor(
                 _.bind(
-                    function() {mediator.trigger(eventName, this);},
+                    function () {mediator.trigger(eventName, this);},
                     this
                 )
             );
         },
 
-        getEventName: function() {
+        getEventName: function () {
             return 'grid_action_execute:' + this.datagrid.name + ':' + this.name;
         },
 
-        executeConfiguredAction: function(action) {
+        executeConfiguredAction: function (action) {
             if (action.frontend_type == 'export') {
                 this._handleExport(action);
             } else if (action.frontend_type == 'ajax') {
@@ -150,7 +149,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
         },
 
-        _confirmationExecutor: function(callback) {
+        _confirmationExecutor: function (callback) {
             if (this.confirmation) {
                 this.getConfirmDialog(callback).open();
             } else {
@@ -158,33 +157,33 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
         },
 
-        _handleExport: function(action) {
+        _handleExport: function (action) {
             if (action.dispatched) {
                 return;
             }
             require(
                 ['oro/' + action.frontend_type + '-widget'],
-                function(ExportAction) {
+                function (ExportAction) {
                     var exportAction = new ExportAction(action);
                     exportAction.run();
                 }
             );
         },
 
-        _handleWidget: function(action) {
+        _handleWidget: function (action) {
             if (action.dispatched) {
                 return;
             }
             action.frontend_options.url = action.frontend_options.url || this.getLinkWithParameters();
             action.frontend_options.title = action.frontend_options.title || this.label;
             require(['oro/' + action.frontend_type + '-widget'],
-            function(WidgetType) {
+            function (WidgetType) {
                 var widget = new WidgetType(action.frontend_options);
                 widget.render();
             });
         },
 
-        _handleRedirect: function(action) {
+        _handleRedirect: function (action) {
             if (action.dispatched) {
                 return;
             }
@@ -200,7 +199,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             }
         },
 
-        _handleAjax: function(action) {
+        _handleAjax: function (action) {
             if (action.dispatched) {
                 return;
             }
@@ -215,12 +214,12 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
             });
         },
 
-        _onAjaxError: function(jqXHR, textStatus, errorThrown) {
+        _onAjaxError: function (jqXHR, textStatus, errorThrown) {
             error.dispatch(null, jqXHR);
             this.datagrid.hideLoading();
         },
 
-        _onAjaxSuccess: function(data, textStatus, jqXHR) {
+        _onAjaxSuccess: function (data, textStatus, jqXHR) {
             if (data.count) {
                 this.datagrid.collection.state.totalRecords -= data.count;
             }
@@ -241,7 +240,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          * @return {String}
          * @private
          */
-        getLink: function(parameters) {
+        getLink: function (parameters) {
             if (_.isUndefined(parameters)) {
                 parameters = {};
             }
@@ -259,7 +258,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          *
          * @returns {String}
          */
-        getLinkWithParameters: function() {
+        getLinkWithParameters: function () {
             return this.getLink(this.getActionParameters());
         },
 
@@ -268,7 +267,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          *
          * @returns {Object}
          */
-        getActionParameters: function() {
+        getActionParameters: function () {
             return {};
         },
 
@@ -277,7 +276,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          *
          * @return {oro.Modal}
          */
-        getConfirmDialog: function(callback) {
+        getConfirmDialog: function (callback) {
             return new Modal({
                 title: this.messages.confirm_title,
                 content: this.messages.confirm_content,

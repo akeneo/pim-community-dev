@@ -1,6 +1,5 @@
-/* global define */
 define(['oro/datagrid/abstract-action'],
-function(AbstractAction) {
+function (AbstractAction) {
     'use strict';
 
     /**
@@ -22,7 +21,7 @@ function(AbstractAction) {
          * @param {oro.PageableCollection} options.collection Collection
          * @throws {TypeError} If collection is undefined
          */
-        initialize: function(options) {
+        initialize: function (options) {
             options = options || {};
 
             if (!options.datagrid) {
@@ -36,7 +35,7 @@ function(AbstractAction) {
         /**
          * Execute reset collection
          */
-        execute: function() {
+        execute: function () {
             this.collection.updateState(this.collection.initialState);
             this.collection.fetch();
         }

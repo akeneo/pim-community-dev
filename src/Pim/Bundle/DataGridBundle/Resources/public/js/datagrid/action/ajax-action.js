@@ -1,6 +1,5 @@
-/* global define */
 define(['oro/datagrid/model-action'],
-function(ModelAction) {
+function (ModelAction) {
     'use strict';
 
     /**
