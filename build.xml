@@ -4,7 +4,7 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,prepare-grunt,composer,require-mongo,vendors,phpunit,phpspec,phpspec-junit,grunt-test"/>
+    <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors,prepare-grunt,phpunit,phpspec,phpspec-junit,grunt-test"/>
 
     <target name="build-coverage" depends="prepare,composer,require-mongo,coverage"/>
 
