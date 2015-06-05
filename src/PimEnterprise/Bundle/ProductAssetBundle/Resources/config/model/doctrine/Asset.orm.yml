@@ -15,7 +15,7 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
         description:
             type: text
             nullable: true
-        isEnabled:
+        enabled:
             type: boolean
             column: is_enabled
         endOfUseAt:
