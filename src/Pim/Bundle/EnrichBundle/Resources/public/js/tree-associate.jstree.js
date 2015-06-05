@@ -8,12 +8,12 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
-            var self         = this;
-            var currentTree  = -1;
-            var id           = $el.attr('data-id');
-            var selectedTree = $el.attr('data-selected-tree');
-            var dataLocale   = $el.attr('data-datalocale');
-            var locked       = false;
+            var self         = this,
+                currentTree  = -1,
+                id           = $el.attr('data-id'),
+                selectedTree = $el.attr('data-selected-tree'),
+                dataLocale   = $el.attr('data-datalocale'),
+                locked       = false;
 
             this.config = {
                 core: {
@@ -46,30 +46,14 @@ define(
 
                             if ((!node || (node === -1)) && treeHasProduct) {
                                 // First load of the tree: get the checked categories
-                                return Routing.generate(
-                                    'pim_enrich_product_listcategories',
-                                    {
-                                        id: id,
-                                        categoryId: currentTree,
-                                        _format: 'json',
-                                        dataLocale: dataLocale,
-                                        context: 'associate'
-                                    }
-                                );
+                                return Routing.generate('pim_enrich_product_listcategories', { id: id, categoryId: currentTree, _format: 'json', dataLocale: dataLocale, context: 'associate' });
                             }
 
-                            return Routing.generate(
-                                'pim_enrich_categorytree_children',
-                                {
-                                    _format: 'json',
-                                    dataLocale: dataLocale,
-                                    context: 'associate'
-                                }
-                            );
+                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale, context: 'associate' });
                         },
                         data: function (node) {
-                            var data           = {};
-                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var data           = {},
+                                treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
@@ -95,7 +79,7 @@ define(
                 types: {
                     max_depth: -2,
                     max_children: -2,
-                    valid_children: ['folder'],
+                    valid_children: [ 'folder' ],
                     types: {
                         'default': {
                             valid_children: 'folder'
@@ -142,7 +126,7 @@ define(
                             $(hiddenCategoryId).val(selected).trigger('change');
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
+                            $('#'+treeLinkId+' i').removeClass('gray').addClass('green');
                         }
                     }
                 });
@@ -152,13 +136,13 @@ define(
                         var selected = $(hiddenCategoryId).val();
                         selected = selected.split(',');
                         var id = d.rslt.obj[0].id.replace('node_', '');
-                        selected.splice($.inArray(id, selected), 1);
+                        selected.splice($.inArray(id, selected),1);
                         selected = selected.join(',');
                         $(hiddenCategoryId).val(selected).trigger('change');
                         var treeId = e.target.id;
-                        if ($('#' + treeId).jstree('get_checked').length === 0) {
+                        if ($('#'+treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
+                            $('#'+treeLinkId+' i').removeClass('green').addClass('gray');
                         }
                     }
                 });
@@ -177,12 +161,12 @@ define(
                 });
             };
 
-            this.lock = function () {
+            this.lock = function() {
                 locked = true;
                 setLocked();
             };
 
-            this.unlock = function () {
+            this.unlock = function() {
                 locked = false;
                 setLocked();
             };

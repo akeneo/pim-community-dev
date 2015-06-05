@@ -1,3 +1,7 @@
+/*jshint browser: true*/
+/*jslint browser: true, nomen: true, todo: true, vars: true*/
+/*global define*/
+
 define(['jquery', 'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'], function ($) {
     'use strict';
 

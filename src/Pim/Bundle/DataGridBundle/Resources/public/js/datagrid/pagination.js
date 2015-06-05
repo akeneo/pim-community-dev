@@ -1,5 +1,6 @@
+/* global define */
 define(['jquery', 'underscore', 'backbone'],
-function ($, _, Backbone) {
+function($, _, Backbone) {
     'use strict';
 
     /**
@@ -93,7 +94,7 @@ function ($, _, Backbone) {
          *
          * @return {*}
          */
-        disable: function () {
+        disable: function() {
             this.enabled = false;
             this.render();
             return this;
@@ -104,7 +105,7 @@ function ($, _, Backbone) {
          *
          * @return {*}
          */
-        enable: function () {
+        enable: function() {
             this.enabled = true;
             this.render();
             return this;
@@ -201,7 +202,7 @@ function ($, _, Backbone) {
          *
          * @return {*}
          */
-        render: function () {
+        render: function() {
             this.$el.empty();
 
             var state = this.collection.state;

@@ -1,5 +1,7 @@
+/* jshint browser:true */
+/* global define */
 define(['underscore', 'backbone', 'oro/navigation', 'oro/navigation/dotmenu/view'],
-function (_, Backbone, Navigation, DotmenuView) {
+function(_, Backbone, Navigation, DotmenuView) {
     'use strict';
 
     /**
@@ -16,15 +18,15 @@ function (_, Backbone, Navigation, DotmenuView) {
             collection: null
         },
 
-        initialize: function () {
+        initialize: function() {
             this.dotMenu = new DotmenuView();
         },
 
-        getCollection: function () {
+        getCollection: function() {
             return this.options.collection;
         },
 
-        registerTab: function () {
+        registerTab: function() {
             this.dotMenu.addTab({
                 key: this.options.tabId,
                 title: this.options.tabTitle,
@@ -39,7 +41,7 @@ function (_, Backbone, Navigation, DotmenuView) {
          * @param  {String}  url
          * @return {*}
          */
-        getItemForCurrentPage: function (excludeGridParams) {
+        getItemForCurrentPage: function(excludeGridParams) {
             return this.getItemForPage(this.getCurrentPageItemData().url, excludeGridParams);
         },
 
@@ -49,7 +51,7 @@ function (_, Backbone, Navigation, DotmenuView) {
          * @param  {Boolean} excludeGridParams
          * @return {*}
          */
-        getItemForPage: function (url, excludeGridParams) {
+        getItemForPage: function(url, excludeGridParams) {
             return this.options.collection.filter(_.bind(function (item) {
                 var itemUrl = item.get('url');
                 if (!_.isUndefined(excludeGridParams) && excludeGridParams) {
@@ -64,7 +66,7 @@ function (_, Backbone, Navigation, DotmenuView) {
          * Get object with info about current page
          * @return {Object}
          */
-        getCurrentPageItemData: function () {
+        getCurrentPageItemData: function() {
             var url = '',
                 navigation = Navigation.getInstance();
             if (navigation) {
@@ -81,7 +83,7 @@ function (_, Backbone, Navigation, DotmenuView) {
          * @param el
          * @returns {Object}
          */
-        getNewItemData: function (el) {
+        getNewItemData: function(el) {
             var itemData = this.getCurrentPageItemData();
             if (el.data('url')) {
                 itemData['url'] = el.data('url');
@@ -92,20 +94,20 @@ function (_, Backbone, Navigation, DotmenuView) {
             return itemData;
         },
 
-        cleanupTab: function () {
+        cleanupTab: function() {
             this.dotMenu.cleanup(this.options.tabId);
             this.dotMenu.hideTab(this.options.tabId);
         },
 
-        addItemToTab: function (item, prepend) {
+        addItemToTab: function(item, prepend) {
             this.dotMenu.addTabItem(this.options.tabId, item, prepend);
         },
 
-        checkTabContent: function () {
+        checkTabContent: function() {
             this.dotMenu.checkTabContent(this.options.tabId);
         },
 
-        render: function () {
+        render: function() {
             this.checkTabContent();
             return this;
         }

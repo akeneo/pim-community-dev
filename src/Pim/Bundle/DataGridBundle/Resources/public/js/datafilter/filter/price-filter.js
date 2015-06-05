@@ -18,14 +18,14 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function () {
+            initialize: function() {
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
                 this.on('disable', this._onDisable, this);
 
             },
 
-            _onDisable: function () {
+            _onDisable: function() {
                 this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
                 this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Currency') + '<span class="caret"></span>');
             },
@@ -145,7 +145,7 @@ define(
              * @param value
              * @return boolean
              */
-            _isValueValid: function (value) {
+            _isValueValid: function(value) {
                 return (value.currency && value.type && !_.isUndefined(value.value)) ||
                        (!value.currency && !value.type && _.isUndefined(value.value)) ||
                        (value.type === 'empty' && value.currency);
@@ -154,7 +154,7 @@ define(
             /**
              * @inheritDoc
              */
-            _triggerUpdate: function (newValue, oldValue) {
+            _triggerUpdate: function(newValue, oldValue) {
                 if (!app.isEqualsLoosely(newValue, oldValue)) {
                     this.trigger('update');
                 }
@@ -163,10 +163,10 @@ define(
             /**
              * @inheritDoc
              */
-            _onValueUpdated: function (newValue, oldValue) {
+            _onValueUpdated: function(newValue, oldValue) {
                 var menu = this.$('.choicefilter .dropdown-menu');
 
-                menu.find('li a').each(function () {
+                menu.find('li a').each(function() {
                     var item = $(this),
                         value = item.data('value');
 
@@ -193,7 +193,7 @@ define(
             /**
              * @inheritDoc
              */
-            setValue: function (value) {
+            setValue: function(value) {
                 value = this._formatRawValue(value);
                 if (this._isValueValid(value)) {
                     if (this._isNewValueUpdated(value)) {
@@ -209,7 +209,7 @@ define(
             /**
              * @inheritDoc
              */
-            _onClickChoiceValue: function (e) {
+            _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 if ($(e.currentTarget).attr('data-input-toggle')) {
                     var parentDiv = $(e.currentTarget).parent().parent().parent().parent();

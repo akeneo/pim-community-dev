@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/translator', 'oro/datafilter/abstract-filter', 'oro/multiselect-decorator'],
-function (_, __, AbstractFilter, MultiselectDecorator) {
+function(_, __, AbstractFilter, MultiselectDecorator) {
     'use strict';
 
     /**
@@ -115,13 +116,13 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @param {Object} options
          */
-        initialize: function () {
+        initialize: function() {
             // init filter content options if it was not initialized so far
             if (_.isUndefined(this.choices)) {
                 this.choices = [];
             }
             // temp code to keep backward compatible
-            this.choices = _.map(this.choices, function (option, i) {
+            this.choices = _.map(this.choices, function(option, i) {
                 return _.isString(option) ? {value: i, label: option} : option;
             });
 
@@ -170,12 +171,12 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @protected
          */
-        _initializeSelectWidget: function () {
+        _initializeSelectWidget: function() {
             this.selectWidget = new MultiselectDecorator({
                 element: this.$(this.inputSelector),
                 parameters: _.extend({
                     noneSelectedText: this.placeholder,
-                    selectedText: _.bind(function (numChecked, numTotal, checkedItems) {
+                    selectedText: _.bind(function(numChecked, numTotal, checkedItems) {
                         return this._getSelectedText(checkedItems);
                     }, this),
                     position: {
@@ -183,15 +184,15 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
                         at: 'left bottom',
                         of: this.$(this.containerSelector)
                     },
-                    open: _.bind(function () {
+                    open: _.bind(function() {
                         this.selectWidget.onOpenDropdown();
                         this._setDropdownWidth();
                         this._setButtonPressed(this.$(this.containerSelector), true);
                         this.selectDropdownOpened = true;
                     }, this),
-                    close: _.bind(function () {
+                    close: _.bind(function() {
                         this._setButtonPressed(this.$(this.containerSelector), false);
-                        setTimeout(_.bind(function () {
+                        setTimeout(_.bind(function() {
                             this.selectDropdownOpened = false;
                         }, this), 100);
                     }, this)
@@ -209,13 +210,13 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          * @param {Array} checkedItems
          * @protected
          */
-        _getSelectedText: function (checkedItems) {
+        _getSelectedText: function(checkedItems) {
             if (_.isEmpty(checkedItems)) {
                 return this.placeholder;
             }
 
             var elements = [];
-            _.each(checkedItems, function (element) {
+            _.each(checkedItems, function(element) {
                 var title = element.getAttribute('title');
                 if (title) {
                     elements.push(title);
@@ -229,7 +230,7 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @return {String}
          */
-        _getCriteriaHint: function () {
+        _getCriteriaHint: function() {
             var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             var choice = _.find(this.choices, function (c) {
                 return (c.value == value.value);
@@ -242,7 +243,7 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @protected
          */
-        _setDropdownWidth: function () {
+        _setDropdownWidth: function() {
             if (!this.minimumWidth) {
                 this.minimumWidth = this.selectWidget.getMinimumDropdownWidth() + 22;
             }
@@ -259,13 +260,13 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          * @param {Event} e
          * @protected
          */
-        _onClickFilterArea: function (e) {
+        _onClickFilterArea: function(e) {
             if (!this.selectDropdownOpened) {
-                setTimeout(_.bind(function () {
+                setTimeout(_.bind(function() {
                     this.selectWidget.multiselect('open');
                 }, this), 50);
             } else {
-                setTimeout(_.bind(function () {
+                setTimeout(_.bind(function() {
                     this.selectWidget.multiselect('close');
                 }, this), 50);
             }
@@ -278,7 +279,7 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @protected
          */
-        _onSelectChange: function () {
+        _onSelectChange: function() {
             // set value
             this.setValue(this._formatRawValue(this._readDOMValue()));
 
@@ -292,7 +293,7 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @param {Event} e
          */
-        _onClickDisableFilter: function (e) {
+        _onClickDisableFilter: function(e) {
             e.preventDefault();
             this.disable();
         },
@@ -300,14 +301,14 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
         /**
          * @inheritDoc
          */
-        _isNewValueUpdated: function (newValue) {
+        _isNewValueUpdated: function(newValue) {
             return !_.isEqual(this.getValue().value || '', newValue.value);
         },
 
         /**
          * @inheritDoc
          */
-        _onValueUpdated: function (newValue, oldValue) {
+        _onValueUpdated: function(newValue, oldValue) {
             AbstractFilter.prototype._onValueUpdated.apply(this, arguments);
             this.selectWidget.multiselect('refresh');
         },
@@ -315,7 +316,7 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
         /**
          * @inheritDoc
          */
-        _writeDOMValue: function (value) {
+        _writeDOMValue: function(value) {
             this._setInputValue(this.inputSelector, value.value);
             return this;
         },
@@ -323,7 +324,7 @@ function (_, __, AbstractFilter, MultiselectDecorator) {
         /**
          * @inheritDoc
          */
-        _readDOMValue: function () {
+        _readDOMValue: function() {
             return {
                 value: this._getInputValue(this.inputSelector)
             };

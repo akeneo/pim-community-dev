@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/datafilter/abstract-formatter'],
-function (_, AbstractFormatter) {
+function(_, AbstractFormatter) {
     'use strict';
 
     /**

@@ -1,6 +1,6 @@
 define(
     ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'pim/datagrid/state'],
-    function (_, mediator, AbstractListener, DatagridState) {
+    function(_, mediator, AbstractListener, DatagridState) {
         'use strict';
 
         /**
@@ -44,7 +44,7 @@ define(
                         collection.trigger('updateState', collection);
 
                         // We have to use a timeout here because the toolbar is hidden right after triggering this event
-                        setTimeout(_.bind(function () {
+                        setTimeout(_.bind(function() {
                             this.$gridContainer.find('div.toolbar, div.filter-box').show();
                         }, this), 20);
                     }, this

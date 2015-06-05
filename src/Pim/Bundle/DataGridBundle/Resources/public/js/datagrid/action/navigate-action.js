@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/mediator', 'oro/datagrid/model-action'],
-function (_, mediator, ModelAction) {
+function(_, mediator, ModelAction) {
     'use strict';
 
     /**
@@ -25,7 +26,7 @@ function (_, mediator, ModelAction) {
          * @param {Object} options
          * @param {Boolean} options.useDirectLauncherLink
          */
-        initialize: function (options) {
+        initialize: function(options) {
             ModelAction.prototype.initialize.apply(this, arguments);
 
             if (options.useDirectLauncherLink) {
@@ -45,7 +46,7 @@ function (_, mediator, ModelAction) {
         /**
          * Execute redirect
          */
-        execute: function () {
+        execute: function() {
             window.location.href = this.getLink();
         },
 
@@ -54,7 +55,7 @@ function (_, mediator, ModelAction) {
          *
          * @private
          */
-        _preExecuteSubscriber: function (action, options) {
+        _preExecuteSubscriber: function(action, options) {
             mediator.trigger('grid_action:navigateAction:preExecute', action, options);
         }
     });

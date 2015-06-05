@@ -1,5 +1,6 @@
+/* global define */
 define(['backbone', 'oro/navigation/model'],
-function (Backbone, NavigationModel) {
+function(Backbone, NavigationModel) {
     'use strict';
 
     /**

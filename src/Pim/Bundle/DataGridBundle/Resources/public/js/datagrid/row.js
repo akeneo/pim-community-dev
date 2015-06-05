@@ -1,5 +1,6 @@
+/* global define */
 define(['jquery', 'underscore', 'backgrid'],
-function ($, _, Backgrid) {
+function($, _, Backgrid) {
     'use strict';
 
     /**
@@ -31,7 +32,7 @@ function ($, _, Backgrid) {
          *
          * @param {Event} e
          */
-        onClick: function (e) {
+        onClick: function(e) {
             var targetElement = e.target;
             var targetParentElement = $(e.target).parent().get(0);
 
@@ -41,7 +42,7 @@ function ($, _, Backgrid) {
 
             this.clickData.counter++;
             if (this.clickData.counter == 1 && !this._hasSelectedText()) {
-                _.delay(_.bind(function () {
+                _.delay(_.bind(function() {
                     if (!this._hasSelectedText() && this.clickData.counter == 1) {
                         this.trigger('clicked', this, e);
                     }
@@ -58,7 +59,7 @@ function ($, _, Backgrid) {
          * @returns {string}
          * @return {boolean}
          */
-        _hasSelectedText: function () {
+        _hasSelectedText: function() {
             var text = "";
             if (_.isFunction(window.getSelection)) {
                 text = window.getSelection().toString();
@@ -86,7 +87,7 @@ function ($, _, Backgrid) {
          * @param {Backgrid.Cell} cell
          * @private
          */
-        _listenToCellEvents: function (cell) {
+        _listenToCellEvents: function(cell) {
             if (cell.listenRowClick && _.isFunction(cell.onRowClicked)) {
                 this.on('clicked', _.bind(cell.onRowClicked, cell));
             }

@@ -88,7 +88,7 @@ config:
         oro/form/state:                pimui/js/form/state.js
 
         jquery-ui-full:            pimui/lib/jquery-ui/jquery-ui-1.10.3.custom.min
-        jquery.slimbox:            pimui/lib/slimbox2/slimbox2
+        jquery.slimbox:            pimui/js/slimbox2
         bootstrap.bootstrapswitch: pimui/lib/bootstrap-switch/bootstrap.switch
         tinymce:                   pimui/lib/tinymce/tinymce.min
         wysiwyg:                   pimui/js/pim-wysiwyg
