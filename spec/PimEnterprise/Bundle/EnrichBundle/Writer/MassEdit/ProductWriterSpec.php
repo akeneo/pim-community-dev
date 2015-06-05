@@ -33,7 +33,7 @@ class ProductWriterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('\Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter');
+        $this->shouldHaveType('\Pim\Component\Connector\Writer\Doctrine\ProductWriter');
     }
 
     function it_is_an_item_writer()
