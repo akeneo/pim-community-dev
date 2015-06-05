@@ -1,6 +1,7 @@
 Pim\Bundle\DataGridBundle\Entity\DatagridView:
     type:  entity
     table: pim_datagrid_view
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     fields:
         id:
             type: integer

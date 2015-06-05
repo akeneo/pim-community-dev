@@ -64,6 +64,7 @@ class SimpleJobLauncher extends BaseSimpleJobLauncher
 
         $jobConfiguration = $this->jobConfigFactory->create($jobExecution, $rawConfiguration);
 
+        // Hard to extract in a saver because of the previous merge, should be in the /Doctrine folder
         $this->objectManager->persist($jobConfiguration);
         $this->objectManager->flush($jobConfiguration);
 

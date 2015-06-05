@@ -28,7 +28,9 @@ class PimCommentExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('builders.yml');
         $loader->load('managers.yml');
+        $loader->load('removers.yml');
         $loader->load('repositories.yml');
+        $loader->load('savers.yml');
         $loader->load('controllers.yml');
         $loader->load('view_elements/product.yml');
     }

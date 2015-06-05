@@ -4,8 +4,6 @@ namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
@@ -22,9 +20,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class SequentialEditManager implements SaverInterface, RemoverInterface
 {
-    /** @var ObjectManager */
-    protected $om;
-
     /** @var SequentialEditRepository */
     protected $repository;
 
@@ -34,42 +29,43 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     /** @var ProductManager */
     protected $productManager;
 
+    /** @var SaverInterface */
+    protected $saver;
+
+    /** @var RemoverInterface */
+    protected $remover;
+
     /**
      * Constructor
      *
-     * @param ObjectManager            $om
      * @param SequentialEditRepository $repository
      * @param SequentialEditFactory    $factory
      * @param ProductManager           $productManager
+     * @param SaverInterface           $saver
+     * @param RemoverInterface         $remover
      */
     public function __construct(
-        ObjectManager $om,
         SequentialEditRepository $repository,
         SequentialEditFactory $factory,
-        ProductManager $productManager
+        ProductManager $productManager,
+        SaverInterface $saver,
+        RemoverInterface $remover
     ) {
-        $this->om             = $om;
         $this->repository     = $repository;
         $this->factory        = $factory;
         $this->productManager = $productManager;
+        $this->saver          = $saver;
+        $this->remover        = $remover;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5 please use SaverInterface::save
      */
     public function save($object, array $options = [])
     {
-        if (!$object instanceof SequentialEdit) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $this->om->persist($object);
-        $this->om->flush($object);
+        $this->saver->save($object, $options);
     }
 
     /**
@@ -87,20 +83,12 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated will be removed in 1.5 please use RemoverInterface::remove
      */
     public function remove($object, array $options = [])
     {
-        if (!$object instanceof SequentialEdit) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expects a Pim\Bundle\EnrichBundle\Entity\SequentialEdit, "%s" provided',
-                    ClassUtils::getClass($object)
-                )
-            );
-        }
-
-        $this->om->remove($object);
-        $this->om->flush($object);
+        $this->remover->remove($object, $options);
     }
 
     /**
@@ -112,7 +100,7 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
     {
         $sequentialEdit = $this->findByUser($user);
         if (null !== $sequentialEdit) {
-            $this->remove($sequentialEdit);
+            $this->remover->remove($sequentialEdit);
         }
     }
 

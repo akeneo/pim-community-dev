@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeGroupInterface;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
@@ -19,19 +20,25 @@ class AttributeGroupManager
     /** @var AttributeGroupRepositoryInterface */
     protected $repository;
 
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var BulkSaverInterface */
+    protected $attributeSaver;
+
+    /** @var SaverInterface */
+    protected $groupSaver;
 
     /**
-     * Constructor
-     *
-     * @param ObjectManager                     $objectManager Object manager
-     * @param AttributeGroupRepositoryInterface $repository    Repository
+     * @param AttributeGroupRepositoryInterface $repository
+     * @param SaverInterface                    $groupSaver
+     * @param BulkSaverInterface                $attributeSaver
      */
-    public function __construct(ObjectManager $objectManager, AttributeGroupRepositoryInterface $repository)
-    {
-        $this->repository    = $repository;
-        $this->objectManager = $objectManager;
+    public function __construct(
+        AttributeGroupRepositoryInterface $repository,
+        SaverInterface $groupSaver,
+        BulkSaverInterface $attributeSaver
+    ) {
+        $this->repository     = $repository;
+        $this->attributeSaver = $attributeSaver;
+        $this->groupSaver     = $groupSaver;
     }
 
     /**
@@ -51,9 +58,8 @@ class AttributeGroupManager
         $group->removeAttribute($attribute);
         $attribute->setGroup($default);
 
-        $this->objectManager->persist($group);
-        $this->objectManager->persist($attribute);
-        $this->objectManager->flush();
+        $this->attributeSaver->saveAll([$attribute]);
+        $this->groupSaver->save($group);
     }
 
     /**
@@ -69,10 +75,8 @@ class AttributeGroupManager
             $maxOrder++;
             $attribute->setSortOrder($maxOrder);
             $group->addAttribute($attribute);
-            $this->objectManager->persist($attribute);
         }
-
-        $this->objectManager->persist($group);
-        $this->objectManager->flush();
+        $this->attributeSaver->saveAll($attributes);
+        $this->groupSaver->save($group);
     }
 }
