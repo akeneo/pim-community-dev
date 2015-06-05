@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/translator', 'oro/modal'],
-function (_, __, Modal) {
+function(_, __, Modal) {
     'use strict';
 
     /**
@@ -13,7 +14,7 @@ function (_, __, Modal) {
         /**
          * @param {Object} options
          */
-        initialize: function (options) {
+        initialize: function(options) {
             options = _.extend({
                 title: __('Delete Confirmation'),
                 okText: __('Yes, Delete')

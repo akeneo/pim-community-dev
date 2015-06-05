@@ -1,6 +1,7 @@
+/* global define */
 define(['jquery', 'underscore', 'backbone', 'backgrid', 'oro/pageable-collection'],
 function ($, _, Backbone, Backgrid, PageableCollection) {
-    'use strict';
+    "use strict";
 
     /**
      * Datagrid header cell
@@ -31,7 +32,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
          *
          * Add listening "reset" event of collection to able catch situation when header cell should update it's sort state.
          */
-        initialize: function () {
+        initialize: function() {
             this.allowNoSorting = this.collection.multipleSorting;
             Backgrid.HeaderCell.prototype.initialize.apply(this, arguments);
             this._initCellDirection(this.collection);
@@ -51,7 +52,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
          * @param collection
          * @private
          */
-        _initCellDirection: function (collection) {
+        _initCellDirection: function(collection) {
             if (collection == this.collection) {
                 var state = collection.state;
                 var direction = null;
@@ -131,7 +132,7 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
         /**
          * @param {string} columnName
          * @param {null|"ascending"|"descending"} direction
-         * @param {function (*, *): number} [comparator]
+         * @param {function(*, *): number} [comparator]
          */
         sort: function (columnName, direction, comparator) {
             comparator = comparator || this._cidComparator;

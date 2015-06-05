@@ -1,6 +1,7 @@
+/* global define */
 define(['backbone', 'backgrid', 'oro/datagrid/header-cell'],
 function (Backbone, Backgrid, HeaderCell) {
-    'use strict';
+    "use strict";
 
     /**
      * Datagrid header widget

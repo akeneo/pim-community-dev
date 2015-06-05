@@ -1,5 +1,7 @@
+/* jshint browser:true */
+/* global define, require */
 define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/collection-filters-manager'],
-function ($, _, tools,  mediator, FiltersManager) {
+function($, _, tools,  mediator, FiltersManager) {
     'use strict';
 
     var initialized = false,
@@ -73,7 +75,7 @@ function ($, _, tools,  mediator, FiltersManager) {
             initialized = false;
 
             mediator.once('datagrid_collection_set_after', initHandler);
-            mediator.once('hash_navigation_request:start', function () {
+            mediator.once('hash_navigation_request:start', function() {
                 if (!initialized) {
                     mediator.off('datagrid_collection_set_after', initHandler);
                 }

@@ -1,6 +1,6 @@
 define(
     ['backbone', 'jquery', 'underscore', 'routing', 'oro/navigation'],
-    function (Backbone, $, _, Routing, Navigation) {
+    function(Backbone, $, _, Routing, Navigation) {
         'use strict';
 
         var Notification = Backbone.Model.extend({
@@ -41,31 +41,31 @@ define(
                 'click a':               'open'
             },
 
-            remove: function () {
+            remove: function() {
                 this.model.destroy({
                     url: Routing.generate('pim_notification_notification_remove', { id: this.model.get('id') }),
                     wait: false,
                     _method: 'DELETE'
                 });
 
-                this.$el.fadeOut(function () {
+                this.$el.fadeOut(function() {
                     this.remove();
                 });
             },
 
-            open: function (e) {
+            open: function(e) {
                 this.preventOpen(e);
                 if (this.model.get('url')) {
                     Navigation.getInstance().setLocation(this.model.get('url'));
                 }
             },
 
-            preventOpen: function (e) {
+            preventOpen: function(e) {
                 e.preventDefault();
                 e.stopPropagation();
             },
 
-            markAsRead: function () {
+            markAsRead: function() {
                 this.model.trigger('mark_as_read', this.model.id);
                 this.model.set('viewed', true);
                 $.ajax({
@@ -75,13 +75,13 @@ define(
                 });
             },
 
-            initialize: function () {
+            initialize: function() {
                 this.listenTo(this.model, 'change', this.render);
 
                 this.render();
             },
 
-            render: function () {
+            render: function() {
                 this.$el.html(
                     this.template({
                         viewed: this.model.get('viewed'),
@@ -94,7 +94,7 @@ define(
                 return this;
             },
 
-            getIcon: function (type) {
+            getIcon: function(type) {
                 return 'success' === type ? 'ok' : ('warning' === type ? 'warning-sign' : 'remove');
             }
         });
@@ -109,7 +109,7 @@ define(
                 'scroll': 'onScroll'
             },
 
-            initialize: function () {
+            initialize: function() {
                 _.bindAll(this, 'render');
 
                 this.collection.on('add reset', this.render);
@@ -117,16 +117,16 @@ define(
                 this.render();
             },
 
-            onScroll: function () {
+            onScroll: function() {
                 var self = this;
-                this.$el.on('scroll', function () {
-                    if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+                this.$el.on('scroll', function() {
+                    if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
                         self.loadNotifications();
                     }
                 });
             },
 
-            loadNotifications: function () {
+            loadNotifications: function() {
                 if (this.collection.loading || !this.collection.hasMore) {
                     return;
                 }
@@ -136,7 +136,7 @@ define(
                 this.collection.trigger('loading:start');
 
                 $.getJSON(Routing.generate('pim_notification_notification_list') + '?skip=' + this.collection.length)
-                    .then(_.bind(function (data) {
+                    .then(_.bind(function(data) {
                         this.collection.add(data.notifications);
                         this.collection.hasMore = data.notifications.length >= 10;
 
@@ -146,15 +146,15 @@ define(
                     }, this));
             },
 
-            render: function () {
+            render: function() {
                 this.$el.empty();
 
-                _.each(this.collection.models, function (model) {
+                _.each(this.collection.models, function(model) {
                     this.renderNotification(model);
                 }, this);
             },
 
-            renderNotification: function (item) {
+            renderNotification: function(item) {
                 var itemView = new NotificationView({
                     model: item
                 });
@@ -163,17 +163,17 @@ define(
             }
         });
 
-        return function (opts) {
+        return function(opts) {
             var notificationList = new NotificationList();
             var options = _.extend({}, { el: null, collection: notificationList }, opts);
             var notificationListView = new NotificationListView(options);
 
-            notificationList.setElement = function (element) {
+            notificationList.setElement = function(element) {
                 notificationListView.$el.prependTo(element);
                 notificationListView.delegateEvents();
                 notificationListView.render();
             };
-            notificationList.loadNotifications = function () {
+            notificationList.loadNotifications = function() {
                 return notificationListView.loadNotifications();
             };
 

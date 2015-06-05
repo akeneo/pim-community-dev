@@ -1,6 +1,6 @@
 define(
     ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'pim/datagrid/state', 'backbone/bootstrap-modal', 'jquery-ui-full'],
-    function ($, _, Backbone, Routing, LoadingMask, DatagridState) {
+    function($, _, Backbone, Routing, LoadingMask, DatagridState) {
         'use strict';
 
         var Column = Backbone.Model.extend({
@@ -24,7 +24,7 @@ define(
                             '<%= _.__("pim_datagrid.column_configurator.all_groups") %>' +
                             '<span class="badge badge-transparent pull-right"><%= columns.length %></span>' +
                         '</li>' +
-                        '<% _.each(groups, function (group) { %>' +
+                        '<% _.each(groups, function(group) { %>' +
                             '<li class="tab" data-value="<%= group.name %>">' +
                                 '<%= group.name %>' +
                                 '<span class="badge badge-transparent pull-right"><%= group.itemCount %></span>' +
@@ -38,7 +38,7 @@ define(
                         '<input type="search" placeholder="<%= _.__("pim_datagrid.column_configurator.search") %>"/>' +
                     '</h4>' +
                     '<ul id="column-list" class="connected-sortable">' +
-                        '<% _.each(_.where(columns, {displayed: false}), function (column) { %>' +
+                        '<% _.each(_.where(columns, {displayed: false}), function(column) { %>' +
                             '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
                                 '<i class="icon-th"></i><%= column.label %>' +
                                 '<a href="javascript:void(0);" class="action pull-right" title="<%= _.__("pim_datagrid.column_configurator.remove_column")  %>">' +
@@ -56,7 +56,7 @@ define(
                         '</button>' +
                     '</h4>' +
                     '<ul id="column-selection" class="connected-sortable">' +
-                        '<% _.each(_.where(columns, {displayed: true}), function (column) { %>' +
+                        '<% _.each(_.where(columns, {displayed: true}), function(column) { %>' +
                             '<li data-value="<%= column.code %>" data-group="<%= column.group %>">' +
                                 '<i class="icon-th"></i><%= column.label %>' +
                                 '<a href="javascript:void(0);" class="action pull-right" title="<%= _.__("pim_datagrid.column_configurator.remove_column")  %>">' +
@@ -76,14 +76,14 @@ define(
                 'click #column-selection .action': 'remove'
             },
 
-            search: function (e) {
+            search: function(e) {
                 var search = $(e.currentTarget).val();
 
-                var matchesSearch = function (text) {
+                var matchesSearch = function(text) {
                     return (''+text).toUpperCase().indexOf((''+search).toUpperCase()) >= 0;
                 };
 
-                this.$('#column-list').find('li').each(function () {
+                this.$('#column-list').find('li').each(function() {
                     if (matchesSearch($(this).data('value')) || matchesSearch($(this).text())) {
                         $(this).removeClass('hide');
                     } else {
@@ -92,7 +92,7 @@ define(
                 });
             },
 
-            filter: function (e) {
+            filter: function(e) {
                 var filter = $(e.currentTarget).data('value');
 
                 $(e.currentTarget).addClass('active').siblings('.active').removeClass('active');
@@ -100,7 +100,7 @@ define(
                 if (_.isUndefined(filter)) {
                     this.$('#column-list li').removeClass('filtered');
                 } else {
-                    this.$('#column-list').find('li').each(function () {
+                    this.$('#column-list').find('li').each(function() {
                         if (filter === $(this).data('group')) {
                             $(this).removeClass('filtered');
                         } else {
@@ -110,7 +110,7 @@ define(
                 }
             },
 
-            remove: function (e) {
+            remove: function(e) {
                 var $item = $(e.currentTarget).parent();
                 $item.appendTo(this.$('#column-list'));
 
@@ -120,22 +120,22 @@ define(
                 this.validateSubmission();
             },
 
-            reset: function () {
+            reset: function() {
                 this.$('#column-selection li').appendTo(this.$('#column-list'));
-                _.each(this.collection.where({displayed: true}), function (model) {
+                _.each(this.collection.where({displayed: true}), function(model) {
                     model.set('displayed', false);
                 });
                 this.validateSubmission();
             },
 
-            render: function () {
+            render: function() {
                 var groups = [{ position: 0, name: _.__('system_filter_group'), itemCount: 0 }];
 
-                _.each(this.collection.toJSON(), function (column) {
+                _.each(this.collection.toJSON(), function(column) {
                     if (_.isEmpty(_.where(groups, {name: column.group}))) {
                         var position = parseInt(column.groupOrder, 10);
                         if (!_.isNumber(position) || !_.isEmpty(_.where(groups, {position: position}))) {
-                            position = _.max(groups, function (group) { return group.position; }) + 1;
+                            position = _.max(groups, function(group) { return group.position; }) + 1;
                         }
 
                         groups.push({
@@ -148,7 +148,7 @@ define(
                     }
                 });
 
-                groups = _.sortBy(groups, function (group) { return group.position; });
+                groups = _.sortBy(groups, function(group) { return group.position; });
 
                 this.$el.html(
                     this.template({
@@ -163,7 +163,7 @@ define(
                     tolerance: 'pointer',
                     cursor: 'move',
                     cancel: 'div.alert',
-                    receive: _.bind(function (event, ui) {
+                    receive: _.bind(function(event, ui) {
                         var model = _.first(this.collection.where({code: ui.item.data('value')}));
                         model.set('displayed', ui.sender.is('#column-list'));
                         this.validateSubmission();
@@ -175,7 +175,7 @@ define(
                 return this;
             },
 
-            validateSubmission: function () {
+            validateSubmission: function() {
                 if (this.collection.where({displayed: true}).length) {
                     this.$('.alert').hide();
                     this.$el.closest('.modal').find('.btn.ok:not(.btn-primary)').addClass('btn-primary').attr('disabled', false);
@@ -185,7 +185,7 @@ define(
                 }
             },
 
-            getDisplayed: function () {
+            getDisplayed: function() {
                 return _.map(this.$('#column-selection li'), function (el) {
                     return $(el).data('value');
                 });
@@ -243,7 +243,7 @@ define(
                 this.render();
             },
 
-            render: function () {
+            render: function() {
                 this.$gridContainer
                     .find(this.target)
                     .append(
@@ -255,11 +255,11 @@ define(
                 this.subscribe();
             },
 
-            subscribe: function () {
+            subscribe: function() {
                 $('#configure-columns').one('click', this.execute.bind(this));
             },
 
-            execute: function (e) {
+            execute: function(e) {
                 e.preventDefault();
                 var url = Routing.generate('pim_datagrid_view_list_columns', { alias: this.gridName, dataLocale: this.locale });
 
@@ -277,7 +277,7 @@ define(
                     }
 
                     var columnList = new ColumnList();
-                    _.each(columns, function (column) {
+                    _.each(columns, function(column) {
                         column.displayed = _.indexOf(displayedCodes, column.code) !== -1;
                         columnList.add(column);
                     });
@@ -305,7 +305,7 @@ define(
                     columnListView.setElement('#column-configurator').render();
 
                     modal.on('cancel', this.subscribe.bind(this));
-                    modal.on('ok', _.bind(function () {
+                    modal.on('ok', _.bind(function() {
                         var values = columnListView.getDisplayed();
                         if (!values.length) {
                             return;

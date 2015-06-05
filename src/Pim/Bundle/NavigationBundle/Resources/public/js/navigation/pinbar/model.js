@@ -1,5 +1,6 @@
+/* global define */
 define(['oro/navigation/model'],
-function (NavigationModel) {
+function(NavigationModel) {
     'use strict';
 
     /**
@@ -13,7 +14,7 @@ function (NavigationModel) {
             url: null,
             position: null,
             type: 'pinbar',
-            displayType: null,
+            display_type: null,
             maximized: false,
             remove: false
         }

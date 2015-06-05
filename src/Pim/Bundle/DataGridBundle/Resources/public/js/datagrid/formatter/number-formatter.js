@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/datagrid/cell-formatter', 'oro/formatter/number'],
-function (_, CellFormatter, formatter) {
+function(_, CellFormatter, formatter) {
     'use strict';
 
     /**
@@ -15,7 +16,7 @@ function (_, CellFormatter, formatter) {
         this.formatter = getFormatter(this.style);
     };
 
-    var getFormatter = function (style) {
+    var getFormatter = function(style) {
         var functionName = 'format' + style.charAt(0).toUpperCase() + style.slice(1);
         if (!_.isFunction(formatter[functionName])) {
             throw new Error("Formatter doesn't support '" + style + "' number style");

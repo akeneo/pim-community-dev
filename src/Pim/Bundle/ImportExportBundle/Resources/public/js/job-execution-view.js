@@ -1,4 +1,3 @@
-/* jshint nonew:false, boss:true */
 define(
     ['jquery', 'backbone', 'underscore'],
     function ($, Backbone, _) {
@@ -29,7 +28,7 @@ define(
                 this.hideLabel            = params.hideLabel || this.hideLabel;
                 this.loadingImageSelector = params.loadingImageSelector;
 
-                this.listenTo(this.model, 'change', this.render);
+                this.listenTo(this.model, "change", this.render);
                 this.model.bind('request', this.ajaxStart, this);
                 this.model.bind('sync', this.ajaxComplete, this);
                 this.model.bind('error', this.ajaxError, this);
@@ -53,11 +52,7 @@ define(
                 $(this.loadingImageSelector).addClass('transparent');
                 clearInterval(interval);
                 interval = null;
-                this.$el.html(
-                    '<tr><td colspan="5"><span class="label label-important">' +
-                        options.xhr.statusText +
-                    '</span></td></tr>'
-                );
+                this.$el.html('<tr><td colspan="5"><span class="label label-important">' + options.xhr.statusText + '</span></td></tr>');
                 loading = false;
             },
 
@@ -73,7 +68,7 @@ define(
                 var hideLabel    = $link.data('hide-label');
 
                 $link.siblings('table').toggleClass('hide');
-                $link.text($link.text().trim() === displayLabel ? hideLabel : displayLabel);
+                $link.text($link.text().trim() == displayLabel ? hideLabel : displayLabel);
             },
 
             template: _.template($('#job-execution-summary').html()),
@@ -220,9 +215,7 @@ define(
                 };
 
                 interval = setInterval(function () {
-                    if (!loading) {
-                        jobExecution.fetch();
-                    }
+                    loading || jobExecution.fetch();
                 }, 1000);
 
                 // Clear interval when changing page to prevent continuing to sync object on other pages

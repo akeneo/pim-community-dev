@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'backbone', 'oro/navigation', 'oro/mediator'],
-function (_, Backbone, Navigation, mediator) {
+function(_, Backbone, Navigation, mediator) {
     'use strict';
 
     /**
@@ -35,7 +36,7 @@ function (_, Backbone, Navigation, mediator) {
          * @param {Object} options
          * @param {oro.PageableCollection} options.collection Collection of models.
          */
-        initialize: function (options) {
+        initialize: function(options) {
             options = options || {};
             if (!options.collection) {
                 throw new TypeError("'collection' is required");
@@ -61,7 +62,7 @@ function (_, Backbone, Navigation, mediator) {
          * @param {Object} options Fetch options
          * @private
          */
-        _handleStateChange: function (collection, options) {
+        _handleStateChange: function(collection, options) {
             options = options || {};
             if (options.ignoreSaveStateInUrl) {
                 return;
@@ -82,7 +83,7 @@ function (_, Backbone, Navigation, mediator) {
          *
          * @param {String} encodedStateData String represents encoded state stored in URL
          */
-        changeState: function (encodedStateData) {
+        changeState: function(encodedStateData) {
             var state = null;
             if (encodedStateData) {
                 state = this.collection.decodeStateData(encodedStateData);

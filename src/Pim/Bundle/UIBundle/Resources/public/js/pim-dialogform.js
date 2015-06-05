@@ -1,11 +1,10 @@
-/* global console */
 define(
     ['jquery', 'oro/navigation', 'oro/loading-mask', 'pim/initselect2', 'jquery-ui-full', 'bootstrap'],
     function ($, Navigation, LoadingMask, initSelect2) {
         'use strict';
 
         // Allow using select2 search box in jquery ui dialog
-        $.ui.dialog.prototype._allowInteraction = function (e) {
+        $.ui.dialog.prototype._allowInteraction = function(e) {
             return !!$(e.target).closest('.ui-dialog, .ui-datepicker, .select2-drop').length;
         };
 
@@ -89,7 +88,7 @@ define(
                             }
                         });
                     },
-                    close: function () {
+                    close: function(event, ui) {
                         $(this).remove();
                     }
                 });

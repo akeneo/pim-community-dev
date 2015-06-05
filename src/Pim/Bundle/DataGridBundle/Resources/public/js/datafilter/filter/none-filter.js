@@ -1,5 +1,6 @@
+/* global define */
 define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/abstract-filter'],
-function ($, _, __, AbstractFilter) {
+function($, _, __, AbstractFilter) {
     'use strict';
 
     /**
@@ -81,7 +82,7 @@ function ($, _, __, AbstractFilter) {
          *
          * @param {Object} options
          */
-        initialize: function (options) {
+        initialize: function(options) {
             options = options || {};
             if (_.has(options, 'popupHint')) {
                 this.popupHint = options.popupHint;
@@ -105,7 +106,7 @@ function ($, _, __, AbstractFilter) {
          * @param {Event} e
          * @protected
          */
-        _onClickCriteriaSelector: function (e) {
+        _onClickCriteriaSelector: function(e) {
             e.stopPropagation();
             $('body').trigger('click');
             if (!this.popupCriteriaShowed) {
@@ -120,7 +121,7 @@ function ($, _, __, AbstractFilter) {
          *
          * @private
          */
-        _onClickCloseCriteria: function () {
+        _onClickCloseCriteria: function() {
             this._hideCriteria();
             this._updateDOMValue();
         },
@@ -130,7 +131,7 @@ function ($, _, __, AbstractFilter) {
          *
          * @param {Event} e
          */
-        _onClickDisableFilter: function (e) {
+        _onClickDisableFilter: function(e) {
             e.preventDefault();
             this.disable();
         },
@@ -141,7 +142,7 @@ function ($, _, __, AbstractFilter) {
          * @param {Event} e
          * @protected
          */
-        _onClickOutsideCriteria: function (e) {
+        _onClickOutsideCriteria: function(e) {
             var elem = this.$(this.criteriaSelector);
 
             if (elem.get(0) !== e.target && !elem.has(e.target).length) {
@@ -168,7 +169,7 @@ function ($, _, __, AbstractFilter) {
             );
 
             this._renderCriteria(this.$(this.criteriaSelector));
-            this._clickOutsideCriteriaCallback = _.bind(function (e) {
+            this._clickOutsideCriteriaCallback = _.bind(function(e) {
                 if (this.popupCriteriaShowed) {
                     this._onClickOutsideCriteria(e);
                 }
@@ -185,7 +186,7 @@ function ($, _, __, AbstractFilter) {
          * @protected
          * @return {*}
          */
-        _renderCriteria: function (el) {
+        _renderCriteria: function(el) {
             $(el).append(
                 this.popupCriteriaTemplate({
                     popupHint: this._getPopupHint()
@@ -199,7 +200,7 @@ function ($, _, __, AbstractFilter) {
          *
          * @return {*}
          */
-        remove: function () {
+        remove: function() {
             $('body').off('click', this._clickOutsideCriteriaCallback);
             AbstractFilter.prototype.remove.call(this);
             return this;
@@ -210,10 +211,10 @@ function ($, _, __, AbstractFilter) {
          *
          * @protected
          */
-        _showCriteria: function () {
+        _showCriteria: function() {
             this.$(this.criteriaSelector).show();
             this._setButtonPressed(this.$(this.criteriaSelector), true);
-            setTimeout(_.bind(function () {
+            setTimeout(_.bind(function() {
                 this.popupCriteriaShowed = true;
             }, this), 100);
         },
@@ -223,10 +224,10 @@ function ($, _, __, AbstractFilter) {
          *
          * @protected
          */
-        _hideCriteria: function () {
+        _hideCriteria: function() {
             this.$(this.criteriaSelector).hide();
             this._setButtonPressed(this.$(this.criteriaSelector), false);
-            setTimeout(_.bind(function () {
+            setTimeout(_.bind(function() {
                 this.popupCriteriaShowed = false;
             }, this), 100);
         },
@@ -234,14 +235,14 @@ function ($, _, __, AbstractFilter) {
         /**
          * @inheritDoc
          */
-        _writeDOMValue: function (value) {
+        _writeDOMValue: function(value) {
             return this;
         },
 
         /**
          * @inheritDoc
          */
-        _readDOMValue: function () {
+        _readDOMValue: function() {
             return {};
         },
 
@@ -251,7 +252,7 @@ function ($, _, __, AbstractFilter) {
          * @return {String}
          * @protected
          */
-        _getPopupHint: function () {
+        _getPopupHint: function() {
             return this.popupHint ? this.popupHint: this.popupHint;
         },
 
@@ -261,7 +262,7 @@ function ($, _, __, AbstractFilter) {
          * @return {String}
          * @protected
          */
-        _getCriteriaHint: function () {
+        _getCriteriaHint: function() {
             return this.criteriaHint ? this.criteriaHint: this.placeholder;
         }
     });
