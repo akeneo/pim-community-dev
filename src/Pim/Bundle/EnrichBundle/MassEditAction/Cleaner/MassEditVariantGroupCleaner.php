@@ -141,6 +141,7 @@ class MassEditVariantGroupCleaner extends AbstractConfigurableStepElement implem
         $massEditJobConf = $this->jobConfigurationRepo->findOneBy(['jobExecution' => $jobExecution]);
         $massEditJobConf->setConfiguration($configuration);
 
+        // TODO use a saver
         $this->objectManager->persist($massEditJobConf);
         $this->objectManager->flush($massEditJobConf);
     }

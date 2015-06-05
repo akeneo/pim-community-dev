@@ -66,6 +66,8 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: extract to saver
      */
     public function save($object, array $options = [])
     {
@@ -87,6 +89,8 @@ class DatagridViewManager implements SaverInterface, RemoverInterface
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: extract to remover
      */
     public function remove($object, array $options = [])
     {

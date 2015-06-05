@@ -2,17 +2,20 @@
 
 namespace spec\Pim\Bundle\CommentBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CommentBundle\Model\CommentInterface;
 use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 
 class CommentManagerSpec extends ObjectBehavior
 {
     function let(
         CommentRepositoryInterface $repository,
-        ObjectManager $objectManager
+        SaverInterface $saver,
+        RemoverInterface $remover
     ) {
-        $this->beConstructedWith($repository, $objectManager);
+        $this->beConstructedWith($repository, $saver, $remover);
     }
 
     function it_is_a_saver()
@@ -25,33 +28,15 @@ class CommentManagerSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Remover\RemoverInterface');
     }
 
-    function it_throws_exception_when_save_anything_else_than_a_comment()
+    function it_saves_a_comment($saver, CommentInterface $comment)
     {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a use Pim\Bundle\CommentBundle\Model\CommentInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringSave($anythingElse);
+        $saver->save($comment, [])->shouldBeCalled();
+        $this->save($comment);
     }
 
-    function it_throws_exception_when_remove_anything_else_than_a_comment()
+    function it_removes_a_comment($remover, CommentInterface $comment)
     {
-        $anythingElse = new \stdClass();
-        $this
-            ->shouldThrow(
-                new \InvalidArgumentException(
-                    sprintf(
-                        'Expects a use Pim\Bundle\CommentBundle\Model\CommentInterface, "%s" provided',
-                        get_class($anythingElse)
-                    )
-                )
-            )
-            ->duringRemove($anythingElse);
+        $remover->remove($comment, [])->shouldBeCalled();
+        $this->remove($comment);
     }
 }

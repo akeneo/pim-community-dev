@@ -233,6 +233,7 @@ class CategoryManager
             $repo->persistAsFirstChildOf($category, $parent);
         }
 
+        // Some persists are done in NestedTreeRepository::__call, hard to safely use a saver here
         $this->getObjectManager()->flush();
     }
 
