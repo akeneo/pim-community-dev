@@ -44,8 +44,7 @@ Feature: Enforce no permissions for a locale
       | locale | user group | access |
       | en_US  | Manager    | view   |
     And I am logged in as "Julia"
-    When I am on the products page
-    And I click on the "foo" row
+    When I edit the "foo" product
     Then I should not see the "Save working copy" button
-    When I switch the locale to "German (Germany)"
+    When I switch the locale to "de_DE"
     Then I should see the "Save working copy" button
