@@ -23,6 +23,7 @@ class PimDataGridExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('controllers.yml');
         $loader->load('data_sources.yml');
+        $loader->load('entities.yml');
         $loader->load('registry.yml');
         $loader->load('formatters.yml');
         $loader->load('selectors.yml');
@@ -36,7 +37,9 @@ class PimDataGridExtension extends Extension
         $loader->load('attribute_types.yml');
         $loader->load('form_types.yml');
         $loader->load('managers.yml');
+        $loader->load('removers.yml');
         $loader->load('repositories.yml');
+        $loader->load('savers.yml');
         $loader->load('configurators.yml');
         $loader->load('adapters.yml');
 
