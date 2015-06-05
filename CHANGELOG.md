@@ -16,6 +16,7 @@
 - PIM-3758: Hide the category tree on products grid if user do not have the right to list categories
 - PIM-3929: Categories with circular references are skipped in processor during import
 - PIM-4024: Fix for metric and price denormalizer
+- PIM-4314: Added missing translation keys
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`

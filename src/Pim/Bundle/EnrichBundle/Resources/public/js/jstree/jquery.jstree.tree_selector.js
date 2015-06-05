@@ -74,7 +74,6 @@
             no_tree_message: false,
             node_label_field: 'code',
             preselect_node_id: false
-
         },
         _fn: {
             refresh: function (obj) {
