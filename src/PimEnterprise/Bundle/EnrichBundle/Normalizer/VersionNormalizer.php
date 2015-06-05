@@ -15,9 +15,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersionNormalizer implements NormalizerInterface
 {
-    /** @var array */
-    protected $supportedFormat = ['array', 'json'];
-
     /** @var string */
     protected $publProductClass;
 
