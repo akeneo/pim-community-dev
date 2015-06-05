@@ -55,11 +55,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             'id'      => $product->getId(),
             'created' => $this->serializer->normalize(
                 $this->versionManager->getOldestLogEntry($product),
-                'array'
+                'internal_api'
             ),
             'updated' => $this->serializer->normalize(
                 $this->versionManager->getNewestLogEntry($product),
-                'array'
+                'internal_api'
             )
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 

@@ -59,8 +59,8 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/entity-manager', 'pim/form-builder', 'pim/product-manager', 'pim/user-context'],
-                            function($, EntityManager, FormBuilder, ProductManager, UserContext) {
+                            ['jquery', 'pim/entity-manager', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog'],
+                            function($, EntityManager, FormBuilder, ProductManager, UserContext, Dialog) {
                                 $(function() {
                                     EntityManager.initialize().done(function () {
                                         $.when(
@@ -70,8 +70,13 @@
                                             document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
                                             form.setData(product, {silent: true});
                                             form.setElement('#product-edit-form').render();
-                                        }).fail(function(xhr, textStatus, errorThrown) {
-                                            alert(_.__('pim_enrich.alert.not_allowed'));
+                                        }).fail(function(response, textStatus, errorThrown) {
+                                            switch (response.status) {
+                                                case 400:
+                                                case 403:
+                                                    Dialog.alert(_.__('pim_enrich.alert.not_allowed'));
+                                                    break;
+                                            }
                                         });
                                     })
                                 });
