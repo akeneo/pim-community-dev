@@ -84,8 +84,9 @@ services:
     pim_catalog.manager.attribute_group:
         class: %pim_catalog.manager.attribute_group.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
             - '@pim_catalog.repository.attribute_group'
+            - '@pim_catalog.saver.attribute_group'
+            - '@pim_catalog.saver.attribute'
 
     pim_catalog.manager.locale:
         class: %pim_catalog.manager.locale.class%
