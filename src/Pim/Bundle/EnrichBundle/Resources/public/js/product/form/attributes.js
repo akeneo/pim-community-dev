@@ -151,7 +151,7 @@ define(
                     EntityManager.getRepository('locale').findAll(),
                     EntityManager.getRepository('channel').findAll(),
                     EntityManager.getRepository('currency').findAll()
-                ).then(_.bind(function (attributes, locales, channels) {
+                ).then(_.bind(function (attributes, locales, channels, currencies) {
                     var product = this.getData();
 
                     var hasRequiredValues = true;

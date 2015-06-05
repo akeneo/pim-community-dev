@@ -22,7 +22,7 @@ define([
             'change input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
-            context.value.value = _.sortBy(context.value.value, 'currency')
+            context.value.value = _.sortBy(context.value.value, 'currency');
 
             return this.fieldTemplate(context);
         },

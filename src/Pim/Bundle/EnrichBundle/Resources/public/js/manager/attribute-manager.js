@@ -87,7 +87,7 @@ define([
                         );
 
                         if (!newValue) {
-                            newValue = this.generateValue(attribute, locale, scope)
+                            newValue = this.generateValue(attribute, locale, channel);
                             values.push(newValue);
                         }
 

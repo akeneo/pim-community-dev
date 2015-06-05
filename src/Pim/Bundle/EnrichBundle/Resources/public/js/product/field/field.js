@@ -108,6 +108,7 @@ define([
             },
             setValues: function (values) {
                 if (values.length === 0) {
+                    /*global alert: true */
                     alert('value array is empty');
                 }
 
