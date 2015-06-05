@@ -565,7 +565,7 @@ class AssertionContext extends RawMinkContext
     public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
     {
         $footer = $this->getCurrentPage()->findFieldFooter($attribute);
-        $error = $footer->find('css', 'div:contains("Updated by variant group")');
+        $error = $footer->find('css', 'div.from-smart');
 
         if (!$error) {
             throw $this->createExpectationException(
