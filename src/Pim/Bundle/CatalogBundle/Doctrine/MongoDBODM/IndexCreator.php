@@ -230,7 +230,7 @@ class IndexCreator
     {
         $currencyCodes = $this->namingUtility->getCurrencyCodes();
         $updatedFields = $this->namingUtility->appendSuffixes($fields, $currencyCodes, '.');
-        $updatedFields = $this->namingUtility->appendSuffixes($fields, ['data'], '.');
+        $updatedFields = $this->namingUtility->appendSuffixes($updatedFields, ['data'], '.');
 
         return $updatedFields;
     }

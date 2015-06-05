@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- PIM-4312: Fix price indexes on MongoDB
+
 # 1.3.15 (2015-06-05)
 
 ## Bug fixes
