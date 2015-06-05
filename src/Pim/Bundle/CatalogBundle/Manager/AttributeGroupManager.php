@@ -20,10 +20,10 @@ class AttributeGroupManager
     /** @var AttributeGroupRepositoryInterface */
     protected $repository;
 
-    /** @param BulkSaverInterface */
+    /** @var BulkSaverInterface */
     protected $attributeSaver;
 
-    /** @param SaverInterface */
+    /** @var SaverInterface */
     protected $groupSaver;
 
     /**
@@ -36,9 +36,9 @@ class AttributeGroupManager
         SaverInterface $groupSaver,
         BulkSaverInterface $attributeSaver
     ) {
-        $this->repository = $repository;
+        $this->repository     = $repository;
         $this->attributeSaver = $attributeSaver;
-        $this->groupSaver = $groupSaver;
+        $this->groupSaver     = $groupSaver;
     }
 
     /**

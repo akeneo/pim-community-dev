@@ -40,8 +40,8 @@ class CommentManager implements SaverInterface, RemoverInterface
         RemoverInterface $remover
     ) {
         $this->repository = $repository;
-        $this->saver = $saver;
-        $this->remover = $remover;
+        $this->saver      = $saver;
+        $this->remover    = $remover;
     }
 
     /**

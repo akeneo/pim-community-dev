@@ -51,11 +51,11 @@ class SequentialEditManager implements SaverInterface, RemoverInterface
         SaverInterface $saver,
         RemoverInterface $remover
     ) {
-        $this->repository = $repository;
-        $this->factory = $factory;
+        $this->repository     = $repository;
+        $this->factory        = $factory;
         $this->productManager = $productManager;
-        $this->saver = $saver;
-        $this->remover = $remover;
+        $this->saver          = $saver;
+        $this->remover        = $remover;
     }
 
     /**
