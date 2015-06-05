@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -64,7 +64,7 @@ class VariantGroupProcessor extends AbstractProcessor
     protected $format;
 
     /** @var FieldNameBuilder */
-    protected $fieldNameBuilder;
+    protected $fieldExtractor;
 
     /** @var string */
     protected $class;
@@ -76,7 +76,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface               $detacher
      * @param NormalizerInterface                   $normalizer
      * @param ProductTemplateMediaManager           $templateMediaManager
-     * @param FieldNameBuilder                      $fieldNameBuilder
+     * @param ProductAttributeFieldExtractor        $fieldExtractor
      * @param string                                $groupClass
      * @param string                                $templateClass
      * @param string                                $format
@@ -88,7 +88,7 @@ class VariantGroupProcessor extends AbstractProcessor
         ObjectDetacherInterface $detacher,
         NormalizerInterface $normalizer,
         ProductTemplateMediaManager $templateMediaManager,
-        FieldNameBuilder $fieldNameBuilder,
+        ProductAttributeFieldExtractor $fieldExtractor,
         $groupClass,
         $templateClass,
         $format
@@ -98,7 +98,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $this->detacher             = $detacher;
         $this->normalizer           = $normalizer;
         $this->templateMediaManager = $templateMediaManager;
-        $this->fieldNameBuilder     = $fieldNameBuilder;
+        $this->fieldExtractor       = $fieldExtractor;
         $this->templateClass        = $templateClass;
         $this->format               = $format;
         $this->class                = $groupClass;
@@ -253,7 +253,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $templateCodes = null !== $template ? array_keys($template->getValuesData()) : [];
 
         foreach ($rawProductValues as $index => $data) {
-            $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($index);
+            $attributeInfos = $this->fieldExtractor->extractAttributeFieldNameInfos($index);
             $attribute = $attributeInfos['attribute'];
             if ("" === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
                 unset($rawProductValues[$index]);
