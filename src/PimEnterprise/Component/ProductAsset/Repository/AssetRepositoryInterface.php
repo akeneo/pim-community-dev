@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -25,4 +25,12 @@ interface AssetRepositoryInterface extends
     IdentifiableObjectRepositoryInterface,
     ReferenceDataRepositoryInterface
 {
+    /**
+     * Create the datagrid query builder for the asset grid
+     *
+     * @param array $parameters
+     *
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     */
+    public function createAssetDatagridQueryBuilder(array $parameters = []);
 }

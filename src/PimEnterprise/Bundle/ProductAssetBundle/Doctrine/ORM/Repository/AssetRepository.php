@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -71,6 +71,22 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
         }
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createAssetDatagridQueryBuilder(array $parameters = [])
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb
+            ->select($this->getAlias())
+            ->from($this->_entityName, $this->getAlias(), sprintf('%s.id', $this->getAlias()));
+
+        // TODO: Filter by owned categories by the user
+
+        return $qb;
     }
 
     /**

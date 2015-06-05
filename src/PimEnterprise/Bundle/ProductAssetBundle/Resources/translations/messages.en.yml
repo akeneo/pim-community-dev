@@ -24,6 +24,20 @@ pimee_product_asset:
         title:
             view: Product asset %asset.code% | View
             edit: Product asset %asset.code% | Edit
+    code:
+        label: Code
+    thumbnail:
+        label: Thumbnail
+    status:
+        label: Status
+    description:
+        label: Description
+    endOfUse:
+        label: End of use
+    createdAt:
+        label: Created at
+    updatedAt:
+        label: Last updated at
 
 Global settings.title: Global settings
 Variations.title: Variations
