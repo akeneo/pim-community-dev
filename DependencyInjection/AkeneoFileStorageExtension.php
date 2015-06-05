@@ -31,6 +31,7 @@ class AkeneoFileStorageExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('file_storage.yml');
         $loader->load('models.yml');
+        $loader->load('repositories.yml');
         $loader->load('savers.yml');
     }
 }
