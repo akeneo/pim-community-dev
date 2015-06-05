@@ -1,0 +1,14 @@
+PimEnterprise\Component\ProductAsset\Model\Tag:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
+        - Pim\Bundle\CatalogBundle\Validator\Constraints\Immutable:
+            properties:
+                - code
+    properties:
+        code:
+            - NotBlank: ~
+            - Regex:
+                pattern: /^[a-zA-Z0-9_]+$/
+                message: Tag code may contain only letters, numbers and underscores
+            - Length:
+                max: 100
