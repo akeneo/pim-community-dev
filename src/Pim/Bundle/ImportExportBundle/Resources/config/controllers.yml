@@ -14,7 +14,7 @@ services:
             - export
             - '@pim_import_export.form.type.job_instance'
             - '@pim_import_export.factory.job_instance'
-            - '@pim_base_connector.launcher.simple_job_launcher'
+            - '@pim_connector.launcher.simple_job_launcher'
 
     pim_import_export.controller.import_profile:
         parent: pim_enrich.controller.abstract_doctrine
@@ -25,7 +25,7 @@ services:
             - import
             - '@pim_import_export.form.type.job_instance'
             - '@pim_import_export.factory.job_instance'
-            - '@pim_base_connector.launcher.simple_job_launcher'
+            - '@pim_connector.launcher.simple_job_launcher'
 
     pim_import_export.controller.export_execution:
         parent: pim_enrich.controller.abstract_doctrine
