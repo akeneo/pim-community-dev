@@ -668,6 +668,7 @@ class Edit extends Form
     public function getAddOptionLinkFor($field)
     {
         $fieldContainer = $this->findFieldContainer($field);
+
         return $fieldContainer->find('css', '.add-attribute-option');
     }
 
