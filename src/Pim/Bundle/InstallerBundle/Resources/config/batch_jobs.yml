@@ -111,7 +111,7 @@ connector:
                     title:     pim_base_connector.jobs.csv_attribute_import.import.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute
-                        processor: pim_base_connector.processor.denormalization.attribute.flat
+                        processor: pim_connector.processor.denormalization.attribute.flat
                         writer:    pim_base_connector.writer.doctrine.attribute
 
         fixtures_attribute_options_yml:
@@ -127,7 +127,7 @@ connector:
                     title:     pim_installer.jobs.fixtures_attribute_options_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.denormalization.attribute_option.structured
+                        processor: pim_connector.processor.denormalization.attribute_option.structured
                         writer:    pim_base_connector.writer.doctrine.attribute_option
 
         fixtures_family_yml:
