@@ -1,6 +1,6 @@
 define(
     ['underscore', 'oro/mediator'],
-    function (_, mediator) {
+    function(_, mediator) {
         'use strict';
 
         var storageEnabled = typeof Storage !== 'undefined' && sessionStorage;
@@ -11,14 +11,14 @@ define(
             }
         };
 
-        var _getParsed = function (alias, key) {
+        var _getParsed = function(alias, key) {
             var rawValue = _get(alias, key);
             var parsedValue = {};
 
             if (null == rawValue) {
                 return rawValue;
             }
-            rawValue.split("&").forEach(function (part) {
+            rawValue.split("&").forEach(function(part) {
                 if (!part) return;
                 var item = part.split("=");
                 var key = decodeURIComponent(item[0]);
@@ -70,10 +70,10 @@ define(
          * A wrapper for storing datagrid state
          */
         return {
-            get: function (alias, keys) {
+            get: function(alias, keys) {
                 if (_.isArray(keys)) {
                     var values = {};
-                    _.each(keys, function (key) {
+                    _.each(keys, function(key) {
                         values[key] = _get(alias, key);
                     });
 
@@ -82,10 +82,10 @@ define(
                     return _get.apply(this, arguments);
                 }
             },
-            getParsed: function (alias, keys) {
+            getParsed: function(alias, keys) {
                 if (_.isArray(keys)) {
                     var values = {};
-                    _.each(keys, function (key) {
+                    _.each(keys, function(key) {
                         values[key] = _getParsed(alias, key);
                     });
 
@@ -94,9 +94,9 @@ define(
                     return _getParsed.apply(this, arguments);
                 }
             },
-            set: function (alias, data) {
+            set: function(alias, data) {
                 if (_.isObject(data)) {
-                    _.each(data, function (key, value) {
+                    _.each(data, function(key, value) {
                         _set(alias, value, key);
                     });
                 } else {
@@ -105,9 +105,9 @@ define(
 
                 return this;
             },
-            remove: function (alias, keys) {
+            remove: function(alias, keys) {
                 if (_.isArray(keys)) {
-                    _.each(keys, function (key) {
+                    _.each(keys, function(key) {
                         _remove(alias, key);
                     });
                 } else {

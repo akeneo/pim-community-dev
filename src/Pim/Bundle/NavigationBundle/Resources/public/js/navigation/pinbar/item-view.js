@@ -1,5 +1,7 @@
+/* jshint browser:true */
+/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/navigation', 'oro/mediator', 'oro/error'],
-function ($, _, Backbone, app, Navigation, mediator, error) {
+function($, _, Backbone, app, Navigation, mediator, error) {
     'use strict';
 
     /**
@@ -29,16 +31,16 @@ function ($, _, Backbone, app, Navigation, mediator, error) {
             'click span': 'maximize'
         },
 
-        initialize: function () {
+        initialize: function() {
             this.listenTo(this.model, 'destroy', this.removeItem);
-            this.listenTo(this.model, 'change:displayType', this.removeItem);
+            this.listenTo(this.model, 'change:display_type', this.removeItem);
             this.listenTo(this.model, 'change:remove', this.unpin);
             /**
              * Change active pinbar item after hash navigation request is completed
              */
             mediator.bind(
                 "hash_navigation_request:complete",
-                function () {
+                function() {
                     /*if (!this.isRemoved && this.checkCurrentUrl()) {
                         this.maximize();
                     }*/
@@ -48,11 +50,11 @@ function ($, _, Backbone, app, Navigation, mediator, error) {
             );
         },
 
-        unpin: function () {
+        unpin: function() {
             mediator.trigger("pinbar_item_remove_before", this.model);
             this.model.destroy({
                 wait: true,
-                error: _.bind(function (model, xhr, options) {
+                error: _.bind(function(model, xhr, options) {
                     if (xhr.status == 404 && !app.debug) {
                         // Suppress error if it's 404 response and not debug mode
                         this.removeItem();
@@ -64,17 +66,17 @@ function ($, _, Backbone, app, Navigation, mediator, error) {
             return false;
         },
 
-        maximize: function () {
+        maximize: function() {
             this.model.set('maximized', new Date().toISOString());
             return false;
         },
 
-        removeItem: function () {
+        removeItem: function() {
             this.isRemoved = true;
             this.remove();
         },
 
-        checkCurrentUrl: function () {
+        checkCurrentUrl: function() {
             var url = '',
                 modelUrl = this.model.get('url'),
                 navigation = Navigation.getInstance();
@@ -88,7 +90,7 @@ function ($, _, Backbone, app, Navigation, mediator, error) {
             return modelUrl == url;
         },
 
-        setActiveItem: function () {
+        setActiveItem: function() {
             if (this.checkCurrentUrl()) {
                 this.$el.addClass('active');
             } else {

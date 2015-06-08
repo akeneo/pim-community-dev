@@ -36,7 +36,7 @@ class FileValidator extends BaseFileValidator
     }
 
     /**
-     * Validate if extension is allowed
+     * Validate if extension is allowed.
      *
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
@@ -57,7 +57,7 @@ class FileValidator extends BaseFileValidator
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
-                    array('{{ extensions }}' => implode(', ', $constraint->allowedExtensions))
+                    ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
                 );
             }
         }

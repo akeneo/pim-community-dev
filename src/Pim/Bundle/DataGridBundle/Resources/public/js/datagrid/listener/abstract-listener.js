@@ -1,3 +1,5 @@
+/*jslint browser: true, nomen: true*/
+/*global define*/
 define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
     'use strict';
 

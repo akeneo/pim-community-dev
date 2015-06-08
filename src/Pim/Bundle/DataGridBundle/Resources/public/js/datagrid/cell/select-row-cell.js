@@ -1,6 +1,7 @@
+/* global define */
 define(['jquery', 'backbone', 'backgrid'],
 function ($, Backbone, Backgrid) {
-    'use strict';
+    "use strict";
 
     /**
      * Renders a checkbox for row selection.

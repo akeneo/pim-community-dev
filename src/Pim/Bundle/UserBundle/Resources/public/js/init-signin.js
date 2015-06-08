@@ -1,12 +1,14 @@
+/* jshint browser:true */
+/* global require */
 require(['jquery'],
-function ($) {
+function($) {
     'use strict';
 
-    $(function () {
+    $(function() {
 
-        var hashUrl = window.location.hash;
-        var hashUrlTag = '#url=';
-        var hashArray;
+        var hashUrl = window.location.hash,
+            hashUrlTag = '#url=',
+            hashArray;
         if (hashUrl.length && hashUrl.match(hashUrlTag)) {
             if (hashUrl.indexOf('|') !== -1) {
                 hashUrl = hashUrl.substring(0, hashUrl.indexOf('|'));

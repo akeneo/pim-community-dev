@@ -1,3 +1,6 @@
+/*jslint browser: true, vars: true, nomen: true*/
+/*jshint browser: true, devel: true*/
+/*global define*/
 define(function (require) {
     'use strict';
 
@@ -99,7 +102,7 @@ define(function (require) {
          * @param {String} page
          * @param {String} encodedStateData
          */
-        defaultAction: function (page, encodedStateData) {
+        defaultAction: function(page, encodedStateData) {
             this.url = page;
             if (!this.url) {
                 this.url = window.location.href.replace(this.baseUrl, '');
@@ -115,7 +118,7 @@ define(function (require) {
          *
          * @param options
          */
-        initialize: function (options) {
+        initialize: function(options) {
             for (var selector in this.selectors) if (this.selectors.hasOwnProperty(selector)) {
                 this.selectorCached[selector] = $(this.selectors[selector]);
             }
@@ -143,7 +146,7 @@ define(function (require) {
         /**
          * Ajax call for loading page content
          */
-        loadPage: function () {
+        loadPage: function() {
             if (this.url) {
                 this.beforeRequest();
 
@@ -154,10 +157,10 @@ define(function (require) {
                     url: pageUrl,
                     headers: this.headerObject,
                     data: stringState,
-                    beforeSend: function ( xhr ) {
+                    beforeSend: function( xhr ) {
                         $.isActive(false);
                         //remove standard ajax header because we already have a custom header sent
-                        xhr.setRequestHeader('X-Requested-With', {toString: function (){ return ''; }});
+                        xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                     },
 
                     error: _.bind(this.processError, this),
@@ -176,7 +179,7 @@ define(function (require) {
          *
          * @param jqXHR
          */
-        updateDebugToolbar: function (jqXHR) {
+        updateDebugToolbar: function(jqXHR) {
             var debugBarToken = jqXHR.getResponseHeader('x-debug-token');
             var entryPoint = window.location.pathname;
             if (entryPoint.indexOf('.php') !== -1) {
@@ -186,7 +189,7 @@ define(function (require) {
                 var url = entryPoint + '/_wdt/' + debugBarToken;
                 $.get(
                     this.baseUrl + url,
-                    _.bind(function (data) {
+                    _.bind(function(data) {
                         var dtContainer = $('<div class="sf-toolbar" id="sfwdt' + debugBarToken + '" style="display: block;" data-sfurl="' + url + '"/>');
                         dtContainer.html(data);
                         var scrollable = $('.scrollable-container:last');
@@ -204,7 +207,7 @@ define(function (require) {
         /**
          * Init
          */
-        init: function () {
+        init: function() {
             /**
              * Processing all links in grid after grid load
              */
@@ -267,7 +270,7 @@ define(function (require) {
         /**
          *  Triggered before hash navigation ajax request
          */
-        beforeRequest: function () {
+        beforeRequest: function() {
             this.loadingMask.show();
             if (this.notificationMessage) {
                 this.notificationMessage.close();
@@ -282,7 +285,7 @@ define(function (require) {
         /**
          *  Triggered after hash navigation ajax request
          */
-        afterRequest: function () {
+        afterRequest: function() {
             var message;
             while (message = flashMessages.shift()) {
                 messenger.notificationFlashMessage.apply(messenger, message);
@@ -294,12 +297,12 @@ define(function (require) {
          *
          * @protected
          */
-        renderLoadingMask: function () {
+        renderLoadingMask: function() {
             this.selectorCached.loadingMask.append(this.loadingMask.render().$el);
             this.loadingMask.hide();
         },
 
-        refreshPage: function () {
+        refreshPage: function() {
             this.loadPage();
         },
 
@@ -307,7 +310,7 @@ define(function (require) {
          * Clearing content area with native js, prevents freezing of firefox with firebug enabled.
          * If no container found, reload the page
          */
-        clearContainer: function () {
+        clearContainer: function() {
             var container = document.getElementById('container');
             if (container) {
                 container.innerHTML = '';
@@ -320,7 +323,7 @@ define(function (require) {
          * Remove grid state params from url
          * @param url
          */
-        removeGridParams: function (url) {
+        removeGridParams: function(url) {
             return url.split('#g')[0];
         },
 
@@ -331,7 +334,7 @@ define(function (require) {
          * @returns {Object}
          * @param prevPos
          */
-        getCorrectedData: function (rawData, prevPos) {
+        getCorrectedData: function(rawData, prevPos) {
             if (_.isUndefined(prevPos)) {
                 prevPos = -1;
             }
@@ -431,14 +434,14 @@ define(function (require) {
          *
          * @param selector
          */
-        disableEmptyLinks: function (selector) {
-            $(selector).on('click', function (e) {
+        disableEmptyLinks: function(selector) {
+            $(selector).on('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
             });
         },
 
-        processGridLinks: function () {
+        processGridLinks: function() {
             this.processClicks($(this.selectors.gridContainer).find(this.selectors.links));
         },
 
@@ -467,7 +470,7 @@ define(function (require) {
          * @param {String} textStatus
          * @param {String} errorThrown
          */
-        processError: function (XMLHttpRequest, textStatus, errorThrown) {
+        processError: function(XMLHttpRequest, textStatus, errorThrown) {
             var message403 = 'You do not have permission to this action';
             if (app.debug) {
                 if (XMLHttpRequest.status == 403) {
@@ -487,14 +490,14 @@ define(function (require) {
             }
         },
 
-        showMessage: function (message) {
+        showMessage: function(message) {
             messenger.notificationFlashMessage('error', message);
         },
 
         /**
          * Hide active dropdowns
          */
-        hideActiveDropdowns: function () {
+        hideActiveDropdowns: function() {
             this.selectorCached.menuDropdowns.removeClass('open');
         },
 
@@ -503,7 +506,7 @@ define(function (require) {
          *
          * @param messages
          */
-        addMessages: function (messages) {
+        addMessages: function(messages) {
             this.selectorCached.flashMessages.find('.flash-messages-holder').empty();
             for (var type in messages) {
                 if (messages.hasOwnProperty(type)) {
@@ -518,7 +521,7 @@ define(function (require) {
          * Adds a flash message to be displayed on next page load
          * @see oro/messenger
          */
-        addFlashMessage: function () {
+        addFlashMessage: function() {
             flashMessages.push(arguments);
         },
 
@@ -527,7 +530,7 @@ define(function (require) {
          *
          * @param showPinButton
          */
-        processPinButton: function (data) {
+        processPinButton: function(data) {
             if (data.showPinButton) {
                 this.selectorCached.pinButtonsContainer.show();
                 /**
@@ -549,7 +552,7 @@ define(function (require) {
          *
          * @param data
          */
-        updateMenuTabs: function (data) {
+        updateMenuTabs: function(data) {
             this.selectorCached.historyTab.html(data.history);
             this.selectorCached.mostViewedTab.html(data.mostviewed);
             /**
@@ -562,7 +565,7 @@ define(function (require) {
         /**
          * Trigger hash navigation complete event
          */
-        triggerCompleteEvent: function () {
+        triggerCompleteEvent: function() {
             /**
              * Backbone event. Fired when hash navigation ajax request is complete
              * @event hash_navigation_request:complete
@@ -576,7 +579,7 @@ define(function (require) {
          *
          * @param {String} selector
          */
-        processClicks: function (selector) {
+        processClicks: function(selector) {
             $(selector).not('.no-hash').on('click', _.bind(function (e) {
                 if (e.shiftKey || e.ctrlKey || e.metaKey || e.which === 2) {
                     return true;
@@ -606,8 +609,8 @@ define(function (require) {
          *
          * @param selector
          */
-        processAnchors: function (selector) {
-            $(selector).each(function () {
+        processAnchors: function(selector) {
+            $(selector).each(function() {
                 var href = $(this).attr('href');
                 var $href = /^#\w/.test(href) && $(href);
                 if ($href) {
@@ -616,7 +619,7 @@ define(function (require) {
                         $(this).on('click', function (e) {
                             e.preventDefault();
                             //finding parent div with scroll
-                            var scrollDiv = $href.parents().filter(function () {
+                            var scrollDiv = $href.parents().filter(function() {
                                 return $(this).get(0).scrollHeight > $(this).innerHeight();
                             });
                             if (!scrollDiv) {
@@ -635,7 +638,7 @@ define(function (require) {
         /**
          * Processing forms submit events
          */
-        processForms: function () {
+        processForms: function() {
             $('body').on('submit', _.bind(function (e) {
                 var $form = $(e.target);
                 if ($form.data('nohash') || e.isDefaultPrevented()) {
@@ -668,7 +671,7 @@ define(function (require) {
                             $form.ajaxSubmit({
                                 data: this.headerObject,
                                 headers: this.headerObject,
-                                complete: function (){
+                                complete: function(){
                                     $form.removeData('sent');
                                 },
                                 error: _.bind(this.processError, this),
@@ -690,7 +693,7 @@ define(function (require) {
          * @param  {Boolean} useRaw
          * @return {String}
          */
-        getHashUrl: function (includeGrid, useRaw) {
+        getHashUrl: function(includeGrid, useRaw) {
             var url = this.url;
             if (!url || useRaw) {
                 if (Backbone.history.fragment) {
@@ -716,7 +719,7 @@ define(function (require) {
          * @param url
          * @return {Boolean}
          */
-        checkThirdPartyLink: function (url) {
+        checkThirdPartyLink: function(url) {
             var external = new RegExp('^(https?:)?//(?!' + location.host + ')');
             return (url.indexOf('http') !== -1) && external.test(url);
         },
@@ -727,7 +730,7 @@ define(function (require) {
          * @param {String} url
          * @param options
          */
-        setLocation: function (url, options) {
+        setLocation: function(url, options) {
             if (_.isUndefined(options)) {
                 options = {};
             }
@@ -753,7 +756,7 @@ define(function (require) {
         /**
          * @return {Boolean}
          */
-        checkHashForUrl: function () {
+        checkHashForUrl: function() {
             return window.location.hash.indexOf('#url=') !== -1;
         },
 
@@ -762,7 +765,7 @@ define(function (require) {
          *
          * @return {Boolean}
          */
-        back: function () {
+        back: function() {
             window.history.back();
             return true;
         }
@@ -773,7 +776,7 @@ define(function (require) {
      *
      * @returns {boolean}
      */
-    Navigation.isEnabled = function () {
+    Navigation.isEnabled = function() {
         return Boolean(Navigation.prototype.enabled);
     };
 
@@ -782,7 +785,7 @@ define(function (require) {
      *
      * @returns {oro.Navigation}
      */
-    Navigation.getInstance = function () {
+    Navigation.getInstance = function() {
         return instance;
     };
 
@@ -791,7 +794,7 @@ define(function (require) {
      *
      * @param {Object} options
      */
-    Navigation.setup = function (options) {
+    Navigation.setup = function(options) {
         instance = new Navigation(options);
     };
 

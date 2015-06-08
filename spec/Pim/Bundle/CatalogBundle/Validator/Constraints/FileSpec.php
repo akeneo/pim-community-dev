@@ -18,7 +18,7 @@ class FileSpec extends ObjectBehavior
 
     function it_has_extension_message()
     {
-        $this->extensionsMessage->shouldBe('The file extension is not allowed (allowed extensions: {{ extensions }}).');
+        $this->extensionsMessage->shouldBe('file.extensions.message');
     }
 
     function it_has_allowed_extensions()

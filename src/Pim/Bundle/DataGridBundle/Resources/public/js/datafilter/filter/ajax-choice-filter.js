@@ -1,6 +1,6 @@
 define(
     ['jquery', 'underscore', 'oro/datafilter/multiselect-filter', 'routing'],
-    function ($, _, MultiSelectFilter, Routing) {
+    function($, _, MultiSelectFilter, Routing) {
         'use strict';
 
         return MultiSelectFilter.extend({
@@ -8,7 +8,7 @@ define(
             choiceUrl: null,
             choiceUrlParams: {},
 
-            initialize: function (options) {
+            initialize: function(options) {
                 options = options || {};
                 if (_.has(options, 'choiceUrl')) {
                     this.choiceUrl = options.choiceUrl;
@@ -41,7 +41,7 @@ define(
                 );
 
                 if (this.value.value) {
-                    _.each(this.value.value, function (item) {
+                    _.each(this.value.value, function(item) {
                         this.$(this.inputSelector).find('option[value="' + item + '"]').attr('selected', 'selected');
                     }, this);
                 }
@@ -51,11 +51,11 @@ define(
                 return this;
             },
 
-            show: function () {
+            show: function() {
                 if (!this.choicesFetched && !this.choices.length && this.choiceUrl) {
                     var url = Routing.generate(this.choiceUrl, this.choiceUrlParams);
 
-                    $.get(url, _.bind(function (data) {
+                    $.get(url, _.bind(function(data) {
                         this._updateChoices(data.results);
                         this.render();
 
@@ -66,10 +66,10 @@ define(
                 }
             },
 
-            _updateChoices: function (results) {
+            _updateChoices: function(results) {
                 var choices = [];
 
-                _.each(results, function (result) {
+                _.each(results, function(result) {
                     choices.push({ value: result.id, label: result.text });
                 });
                 choices.push({ value: 'empty', label: _.__('pim.grid.ajax_choice_filter.label_empty') });

@@ -1,7 +1,8 @@
-/* jshint unused:vars, eqeqeq:false */
+/* jshint browser:true */
+/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/navigation', 'oro/mediator', 'oro/navigation/abstract-view',
     'oro/navigation/pinbar/item-view', 'oro/navigation/pinbar/collection', 'oro/navigation/pinbar/model'],
-function ($, _, Backbone, Navigation, mediator, AbstractView,
+function($, _, Backbone, Navigation, mediator, AbstractView,
     PinbarItemView, PinbarCollection, PinbarModel) {
     'use strict';
 
@@ -27,10 +28,10 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
         massAdd: false,
 
         templates: {
-            noItemsMessage: _.template($('#template-no-pins-message').html())
+            noItemsMessage: _.template($("#template-no-pins-message").html())
         },
 
-        initialize: function () {
+        initialize: function() {
             AbstractView.prototype.initialize.apply(this, arguments);
             this.$listBar = this.getBackboneElement(this.options.listBar);
             this.$minimizeButton = Backbone.$(this.options.minimizeButton);
@@ -40,9 +41,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
                 this.options.collection = new PinbarCollection();
             }
 
-            this.listenTo(this.options.collection, 'add', function (item) {
-                this.setItemPosition(item);
-            });
+            this.listenTo(this.options.collection, 'add', function(item) {this.setItemPosition(item)});
             this.listenTo(this.options.collection, 'remove', this.onPageClose);
             this.listenTo(this.options.collection, 'reset', this.addAll);
             this.listenTo(this.options.collection, 'all', this.render);
@@ -55,7 +54,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
              * Changing pinbar state after grid is loaded
              */
             mediator.bind(
-                'grid_load:complete',
+                "grid_load:complete",
                 this.updatePinbarState,
                 this
             );
@@ -64,7 +63,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
              * Change pinbar icon state after hash navigation request is completed
              */
             mediator.bind(
-                'hash_navigation_request:complete',
+                "hash_navigation_request:complete",
                 this.checkPinbarIcon,
                 this
             );
@@ -76,7 +75,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
             this.render();
         },
 
-        resetCollection: function () {
+        resetCollection: function() {
             this.options.collection.reset.apply(this.options.collection, arguments);
         },
 
@@ -86,7 +85,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          * @param el
          * @return {*}
          */
-        getBackboneElement: function (el) {
+        getBackboneElement: function(el) {
             return el instanceof Backbone.$ ? el : this.$(el);
         },
 
@@ -95,7 +94,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          *
          * @param item
          */
-        handleItemStateChange: function (item) {
+        handleItemStateChange: function(item) {
             if (!this.massAdd) {
                 var url = null,
                     navigation,
@@ -124,7 +123,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
             }
         },
 
-        checkPinbarIcon: function () {
+        checkPinbarIcon: function() {
             if (this.getItemForCurrentPage().length) {
                 this.activate();
             } else {
@@ -135,7 +134,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
         /**
          * Handle page close
          */
-        onPageClose: function (item) {
+        onPageClose: function(item) {
             this.checkPinbarIcon();
             this.reorder();
         },
@@ -145,7 +144,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          *
          * @param e
          */
-        changePageState: function (e) {
+        changePageState: function(e) {
             var item = this.getItemForCurrentPage(true);
             if (item.length) {
                 this.closePage(item);
@@ -159,12 +158,12 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          *
          * @param e
          */
-        minimizePage: function (e) {
+        minimizePage: function(e) {
             mediator.trigger('pinbar_item_minimized');
             this.updatePinbarState();
             var pinnedItem = this.getItemForCurrentPage(true);
             if (pinnedItem.length) {
-                _.each(pinnedItem, function (item) {
+                _.each(pinnedItem, function(item) {
                     item.set('maximized', false);
                 }, this);
             } else {
@@ -178,14 +177,14 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
         /**
          *  Update current page item state to use new url
          */
-        updatePinbarState: function () {
+        updatePinbarState: function() {
             var pinnedItem, hashUrl,
                 navigation = Navigation.getInstance();
             if (navigation && navigation.useCache) {
                 pinnedItem = this.getItemForCurrentPage(true);
                 if (pinnedItem.length) {
                      hashUrl = navigation.getHashUrl(true, true);
-                     _.each(pinnedItem, function (item) {
+                     _.each(pinnedItem, function(item) {
                          if (item.get('url') !== hashUrl) {
                              item.set('url', hashUrl);
                              item.save();
@@ -200,8 +199,8 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          *
          * @param item
          */
-        closePage: function (item) {
-            _.each(item, function (item) {
+        closePage: function(item) {
+            _.each(item, function(item) {
                 item.set('remove', true);
             });
         },
@@ -209,7 +208,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
         /**
          * Mass add items
          */
-        addAll: function () {
+        addAll: function() {
             this.massAdd = true;
             this.markCurrentPageMaximized();
             this.options.collection.each(this.setItemPosition, this);
@@ -219,11 +218,11 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
         /**
          * Mark current page as maximized to be able to minimize.
          */
-        markCurrentPageMaximized: function ()
+        markCurrentPageMaximized: function()
         {
             var currentPageItems = this.getItemForCurrentPage(true);
             if (currentPageItems.length) {
-                _.each(currentPageItems, function (item) {
+                _.each(currentPageItems, function(item) {
                     item.set('maximized', new Date().toISOString());
                 });
             }
@@ -235,7 +234,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          * @param {oro.navigation.pinbar.Model} item
          * @param {number} position
          */
-        setItemPosition: function (item, position) {
+        setItemPosition: function(item, position) {
             if (_.isUndefined(position)) {
                 this.reorder();
             } else {
@@ -246,17 +245,17 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
         /**
          * Change position property of model based on current order
          */
-        reorder: function () {
-            this.options.collection.each(function (item, position) {
+        reorder: function() {
+            this.options.collection.each(function(item, position) {
                 item.set({position: position});
             });
         },
 
-        activate: function () {
+        activate: function() {
             this.$icon.addClass('icon-gold');
         },
 
-        inactivate: function () {
+        inactivate: function() {
             this.$icon.removeClass('icon-gold');
         },
 
@@ -265,26 +264,26 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          *
          * @param {oro.navigation.pinbar.Model} item
          */
-        renderItem: function (item) {
+        renderItem: function(item) {
             var position = item.get('position');
             var type = position >= this.options.maxItems ? 'tab': 'list';
 
-            if (item.get('displayType') !== type) {
+            if (item.get('display_type') != type) {
                 this.cleanup();
-                item.set('displayType', type);
+                item.set('display_type', type);
 
                 var view = new PinbarItemView({
                     type: type,
                     model: item
                 });
 
-                if (type === 'tab') {
+                if (type == 'tab') {
                     this.addItemToTab(view, !this.massAdd);
                     /**
                      * Backbone event. Fired when tab is changed
                      * @event tab:changed
                      */
-                    mediator.trigger('tab:changed', this.options.tabId);
+                    mediator.trigger("tab:changed", this.options.tabId);
                 } else {
                     var rowEl = view.render().el;
                     if (this.massAdd || position > 0) {
@@ -301,14 +300,14 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          *
          * @return {Boolean}
          */
-        needPinbarTab: function () {
+        needPinbarTab: function() {
             return (this.options.collection.length > this.options.maxItems);
         },
 
         /**
          * Clean up all pinbar items from menus
          */
-        cleanup: function ()
+        cleanup: function()
         {
             if (this.requireCleanup) {
                 this.$listBar.empty();
@@ -321,16 +320,16 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
          * Renders pinbar empty message if no items
          * Show/hide tabs section in ... menu on each event
          */
-        render: function () {
+        render: function() {
             if (!this.massAdd) {
-                if (this.options.collection.length === 0) {
+                if (this.options.collection.length == 0) {
                     this.requireCleanup = true;
                     this.$listBar.html(this.templates.noItemsMessage());
                     /**
                      * Backbone event. Fired when pinbar help link is shown
                      * @event pinbar_help:shown
                      */
-                    mediator.trigger('pinbar_help:shown');
+                    mediator.trigger("pinbar_help:shown");
                 }
 
                 this.checkTabContent();
@@ -338,7 +337,7 @@ function ($, _, Backbone, Navigation, mediator, AbstractView,
                  * Backbone event. Fired when tab is changed
                  * @event tab:changed
                  */
-                mediator.trigger('tab:changed', this.options.tabId);
+                mediator.trigger("tab:changed", this.options.tabId);
             }
         }
     });
