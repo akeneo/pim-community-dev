@@ -9,6 +9,7 @@ $fixers = [
     '-phpdoc_short_description',
     '-single_quote',
     '-trim_array_spaces',
+    '-operators_spaces',
     '-unary_operators_spaces',
     'align_equals',
     'align_double_arrow',

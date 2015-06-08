@@ -1,6 +1,6 @@
 <?php
 
-$branch = getenv('TRAVIS_BRANCH');
+$branch     = getenv('TRAVIS_BRANCH');
 $phpVersion = getenv('TRAVIS_PHP_VERSION');
 
 printf('Current branch inspected : %s' . PHP_EOL, $branch);
@@ -16,8 +16,8 @@ $fixers = [
     '-trim_array_spaces',
     '-operators_spaces',
     '-unary_operators_spaces',
-    '-unalign_equals',
-    '-unalign_double_arrow',
+    'align_equals',
+    'align_double_arrow',
     'newline_after_open_tag',
     'ordered_use',
     'phpdoc_order'

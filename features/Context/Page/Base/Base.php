@@ -133,7 +133,7 @@ class Base extends Page
         $button = $this->getButton($locator);
 
         if (!$button) {
-            $button =  $this->find(
+            $button = $this->find(
                 'named',
                 [
                     'link',
@@ -330,20 +330,24 @@ class Base extends Page
      * @param callable $callable
      * @param int      $wait
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return mixed
      */
-    public function spin($callable, $wait = 60)
+    public function spin($callable, $wait = 60, $message = '')
     {
         for ($i = 0; $i < $wait; $i++) {
             try {
-                if ($callable($this)) {
-                    return true;
+                if ($result = $callable($this)) {
+                    return $result;
                 }
             } catch (\Exception $e) {
                 // do nothing
             }
 
+            if ($message) {
+                printf('%s' . PHP_EOL, $message);
+            }
             sleep(1);
         }
 

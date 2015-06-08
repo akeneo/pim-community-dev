@@ -55,15 +55,22 @@ class Grid extends Index
      */
     public function getGrid()
     {
-        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+        try {
+            $grid = $this->spin(function () {
+                $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+                foreach ($grids as $grid) {
+                    if ($grid->isVisible()) {
+                        return $grid;
+                    }
+                }
 
-        foreach ($grids as $grid) {
-            if ($grid->isVisible()) {
-                return $grid;
-            }
+                return false;
+            });
+
+            return $grid;
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('No visible grids found');
         }
-
-        throw new \InvalidArgumentException('No visible grids found');
     }
 
     /**
@@ -87,7 +94,7 @@ class Grid extends Index
      */
     public function getRow($value)
     {
-        $value = str_replace('"', '', $value);
+        $value   = str_replace('"', '', $value);
         $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
 
         if (!$gridRow) {
@@ -127,7 +134,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
         return $action;
     }
@@ -369,12 +376,12 @@ class Grid extends Index
     public function isSortedAndOrdered($column, $order)
     {
         $column = strtoupper($column);
-        $order = strtolower($order);
+        $order  = strtolower($order);
         if ($this->getColumn($column)->getAttribute('class') !== $order) {
             return false;
         }
 
-        $values = $this->getValuesInColumn($column);
+        $values       = $this->getValuesInColumn($column);
         $sortedValues = $values;
         if ($order === 'ascending') {
             sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
@@ -406,7 +413,7 @@ class Grid extends Index
      */
     public function getColumn($columnName)
     {
-        $columnName = strtoupper($columnName);
+        $columnName    = strtoupper($columnName);
         $columnHeaders = $this->getColumnHeaders();
 
         foreach ($columnHeaders as $columnHeader) {
@@ -511,15 +518,22 @@ class Grid extends Index
      */
     public function clickOnResetButton()
     {
-        $resetBtn = $this
-            ->getElement('Grid toolbar')
-            ->find('css', sprintf('a:contains("%s")', 'Reset'));
+        try {
+            $this->spin(function () {
+                $resetBtn = $this
+                    ->getElement('Grid toolbar')
+                    ->find('css', sprintf('a:contains("%s")', 'Reset'));
+                if ($resetBtn) {
+                    $resetBtn->click();
 
-        if (!$resetBtn) {
+                    return true;
+                }
+
+                return false;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Reset button not found');
         }
-
-        $resetBtn->click();
     }
 
     /**
@@ -529,15 +543,18 @@ class Grid extends Index
      */
     public function clickOnRefreshButton()
     {
-        $refreshBtn = $this
-            ->getElement('Grid toolbar')
-            ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+        try {
+            $this->spin(function () {
+                $refreshBtn = $this
+                    ->getElement('Grid toolbar')
+                    ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+                $refreshBtn->click();
 
-        if (!$refreshBtn) {
+                return true;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Refresh button not found');
         }
-
-        $refreshBtn->click();
     }
 
     /**
@@ -651,15 +668,18 @@ class Grid extends Index
      */
     protected function clickFiltersList()
     {
-        $filterList = $this
-            ->getElement('Filters')
-            ->find('css', 'a#add-filter-button');
+        try {
+            $this->spin(function () {
+                $filterList = $filterList = $this
+                    ->getElement('Filters')
+                    ->find('css', 'a#add-filter-button');
+                $filterList->click();
 
-        if (!$filterList) {
+                return true;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Impossible to find filter list');
         }
-
-        $filterList->click();
     }
 
     /**
@@ -673,16 +693,20 @@ class Grid extends Index
      */
     public function selectRow($value)
     {
-        $row = $this->getRow($value);
-        $checkbox = $row->find('css', 'input[type="checkbox"]');
+        try {
+            /** @var NodeElement $checkbox */
+            $checkbox = $this->spin(function () use ($value) {
+                $row = $this->getRow($value);
+                $checkbox = $row->find('css', 'input[type="checkbox"]');
+                $checkbox->check();
 
-        if (!$checkbox) {
+                return $checkbox;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Couldn\'t find a checkbox for row "%s"', $value)
             );
         }
-
-        $checkbox->check();
 
         return $checkbox;
     }
@@ -807,8 +831,8 @@ class Grid extends Index
             $criteriaElt->fillField('value', $value);
         }
 
-        $buttons = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
+        $buttons        = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
+        $actionButton   = array_shift($buttons);
         $currencyButton = array_shift($buttons);
 
         // Open the dropdown menu with currency list and click on $currency line
@@ -840,9 +864,9 @@ class Grid extends Index
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->fillField('value', $value);
 
-        $buttons = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
+        $buttons      = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
         $actionButton = array_shift($buttons);
-        $unitButton = array_shift($buttons);
+        $unitButton   = array_shift($buttons);
 
         // Open the dropdown menu with unit list and click on $unit line
         $unitButton->click();
@@ -872,7 +896,7 @@ class Grid extends Index
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->fillField('value', $value);
 
-        $buttons = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
+        $buttons      = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
         $actionButton = array_shift($buttons);
 
         // Open the dropdown menu with action list and click on $action line

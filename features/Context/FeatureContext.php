@@ -61,7 +61,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
         if (file_exists($excludedTablesFile)) {
-            $parser = new Parser();
+            $parser         = new Parser();
             $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
             $excludedTables = $excludedTables['excluded_tables'];
         } else {
@@ -69,7 +69,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
-            $purgers[] = new MongoDBPurger($this->getDocumentManager());
+            $purgers[]        = new MongoDBPurger($this->getDocumentManager());
             $excludedTables[] = 'pim_catalog_product';
             $excludedTables[] = 'pim_catalog_product_value';
             $excludedTables[] = 'pim_catalog_media';
@@ -104,7 +104,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
             if ($driver instanceof Selenium2Driver) {
-                $dir = getenv('WORKSPACE');
+                $dir      = getenv('WORKSPACE');
                 $buildUrl = getenv('BUILD_URL');
                 if (false !== $dir) {
                     $dir = sprintf('%s/app/build/screenshots', $dir);
@@ -286,11 +286,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         $start = microtime(true);
-        $end = $start + $time / 1000.0;
+        $end   = $start + $time / 1000.0;
 
         if ($condition === null) {
             $defaultCondition = true;
-            $conditions = [
+            $conditions       = [
                 "document.readyState == 'complete'",           // Page is ready
                 "typeof $ != 'undefined'",                     // jQuery is loaded
                 "!$.active",                                   // No ajax request is active
@@ -382,15 +382,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * @param callable $callable
      * @param int      $wait
      *
-     * @return bool
      * @throws \Exception
+     *
+     * @return bool
      */
     public function spin($callable, $wait = 60)
     {
         for ($i = 0; $i < $wait; $i++) {
             try {
-                if ($callable($this)) {
-                    return true;
+                if ($result = $callable($this)) {
+                    return $result;
                 }
             } catch (\Exception $e) {
                 // do nothing
