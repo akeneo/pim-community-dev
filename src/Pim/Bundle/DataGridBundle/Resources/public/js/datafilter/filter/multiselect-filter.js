@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/translator', 'oro/datafilter/select-filter'],
-function (_, __, SelectFilter) {
+function(_, __, SelectFilter) {
     'use strict';
 
     /**
@@ -38,7 +39,7 @@ function (_, __, SelectFilter) {
         /**
          * @inheritDoc
          */
-        _onSelectChange: function () {
+        _onSelectChange: function() {
             SelectFilter.prototype._onSelectChange.apply(this, arguments);
             this._setDropdownWidth();
         }

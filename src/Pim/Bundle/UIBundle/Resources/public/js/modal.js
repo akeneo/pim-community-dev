@@ -1,5 +1,6 @@
-define(['underscore', 'backbone', 'backbone/bootstrap-modal'],
-function (_, Backbone) {
+/* global define */
+define(['underscore', 'backbone', 'oro/translator', 'backbone/bootstrap-modal'],
+function(_, Backbone, __) {
     'use strict';
 
     /**
@@ -11,10 +12,13 @@ function (_, Backbone) {
      * @extends Backbone.BootstrapModal
      */
     return Backbone.BootstrapModal.extend({
-        open: function () {
+        /** @property {String} */
+        className: 'modal oro-modal-danger',
+
+        open: function() {
             Backbone.BootstrapModal.prototype.open.apply(this, arguments);
 
-            this.once('cancel', _.bind(function () {
+            this.once('cancel', _.bind(function() {
                 this.$el.trigger('hidden');
             }, this));
         }

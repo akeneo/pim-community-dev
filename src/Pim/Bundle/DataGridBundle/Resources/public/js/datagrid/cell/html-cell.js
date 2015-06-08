@@ -1,5 +1,6 @@
+/* global define */
 define(['oro/datagrid/string-cell'],
-function (StringCell) {
+function(StringCell) {
     'use strict';
 
     /**

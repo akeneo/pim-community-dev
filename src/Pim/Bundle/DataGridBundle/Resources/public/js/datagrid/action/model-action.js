@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'oro/datagrid/abstract-action'],
-function (_, AbstractAction) {
+function(_, AbstractAction) {
     'use strict';
 
     /**
@@ -29,7 +30,7 @@ function (_, AbstractAction) {
          * @param {Backbone.Model} options.model Optional parameter
          * @throws {TypeError} If model is undefined
          */
-        initialize: function (options) {
+        initialize: function(options) {
             options = options || {};
 
             if (!options.model) {
@@ -54,7 +55,7 @@ function (_, AbstractAction) {
          * @return {String}
          * @throws {TypeError} If route is undefined
          */
-        getLink: function () {
+        getLink: function() {
             if (!this.link) {
                 throw new TypeError("'link' is required");
             }
@@ -85,7 +86,7 @@ function (_, AbstractAction) {
          * @return {String}
          * @protected
          */
-        addUrlParameter: function (url, parameterName, parameterValue) {
+        addUrlParameter: function(url, parameterName, parameterValue) {
             var urlhash, sourceUrl, replaceDuplicates = true;
             if(url.indexOf('#') > 0){
                 var cl = url.indexOf('#');

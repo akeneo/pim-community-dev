@@ -1,5 +1,6 @@
+/* global define */
 define(['underscore', 'backgrid', 'oro/formatter/datetime'],
-function (_, Backgrid, DateTimeFormatter) {
+function(_, Backgrid, DateTimeFormatter) {
     'use strict';
 
     /**
@@ -51,7 +52,7 @@ function (_, Backgrid, DateTimeFormatter) {
          * @returns {Function}
          * @private
          */
-        _getFormatterFunction: function (prefix, suffix) {
+        _getFormatterFunction: function(prefix, suffix) {
             suffix = suffix || '';
 
             function capitaliseFirstLetter(string) {

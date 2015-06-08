@@ -18,14 +18,14 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function () {
+            initialize: function() {
                 NumberFilter.prototype.initialize.apply(this, arguments);
 
                 this.on('disable', this._onDisable, this);
 
             },
 
-            _onDisable: function () {
+            _onDisable: function() {
                 this.$('.choicefilter button.dropdown-toggle').first().html(_.__('Action') + '<span class="caret"></span>');
                 this.$('.choicefilter button.dropdown-toggle').last().html(_.__('Unit') + '<span class="caret"></span>');
             },
@@ -76,7 +76,7 @@ define(
                 if (!value.value) {
                     return this.placeholder;
                 } else {
-                    var operator = _.find(this.choices, function (choice) {
+                    var operator = _.find(this.choices, function(choice) {
                         return choice.value == value.type;
                     });
                     operator = operator ? operator.label : '';
@@ -151,7 +151,7 @@ define(
              * @param value
              * @return boolean
              */
-            _isValueValid: function (value) {
+            _isValueValid: function(value) {
                 return (value.unit && value.type && !_.isUndefined(value.value)) ||
                        (!value.unit && !value.type && _.isUndefined(value.value)) ||
                        value.type === 'empty';
@@ -160,7 +160,7 @@ define(
             /**
              * @inheritDoc
              */
-            _triggerUpdate: function (newValue, oldValue) {
+            _triggerUpdate: function(newValue, oldValue) {
                 if (!app.isEqualsLoosely(newValue, oldValue)) {
                     this.trigger('update');
                 }
@@ -169,10 +169,10 @@ define(
             /**
              * @inheritDoc
              */
-            _onValueUpdated: function (newValue, oldValue) {
+            _onValueUpdated: function(newValue, oldValue) {
                 var menu = this.$('.choicefilter .dropdown-menu');
 
-                menu.find('li a').each(function () {
+                menu.find('li a').each(function() {
                     var item = $(this),
                         value = item.data('value');
 
@@ -199,7 +199,7 @@ define(
             /**
              * @inheritDoc
              */
-            setValue: function (value) {
+            setValue: function(value) {
                 value = this._formatRawValue(value);
                 if (this._isValueValid(value)) {
                     if (this._isNewValueUpdated(value)) {
@@ -215,7 +215,7 @@ define(
             /**
              * @inheritDoc
              */
-            _onClickChoiceValue: function (e) {
+            _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
                 var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
                 if ($(e.currentTarget).attr('data-value') === 'empty') {

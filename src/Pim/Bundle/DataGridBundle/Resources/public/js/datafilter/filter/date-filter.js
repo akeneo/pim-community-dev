@@ -1,5 +1,6 @@
+/* global define */
 define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'oro/locale-settings'],
-function ($, _, __, ChoiceFilter, localeSettings) {
+function($, _, __, ChoiceFilter, localeSettings) {
     'use strict';
 
     /**
@@ -13,7 +14,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * Template for filter criteria
          *
-         * @property {function (Object, ?Object=): String}
+         * @property {function(Object, ?Object=): String}
          */
         popupCriteriaTemplate: _.template(
             '<div>' +
@@ -155,7 +156,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _renderCriteria: function (el) {
+        _renderCriteria: function(el) {
             $(el).append(
                 this.popupCriteriaTemplate({
                     name: this.name,
@@ -167,7 +168,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
 
             $(el).find('select:first').bind('change', _.bind(this.changeFilterType, this));
 
-            _.each(this.criteriaValueSelectors.value, function (actualSelector, name) {
+            _.each(this.criteriaValueSelectors.value, function(actualSelector, name) {
                 this.dateWidgets[name] = this._initializeDateWidget(actualSelector);
             }, this);
 
@@ -181,11 +182,11 @@ function ($, _, __, ChoiceFilter, localeSettings) {
          * @return {*}
          * @protected
          */
-        _initializeDateWidget: function (widgetSelector) {
+        _initializeDateWidget: function(widgetSelector) {
             this.$(widgetSelector).datepicker(this.dateWidgetOptions);
             var widget = this.$(widgetSelector).datepicker('widget');
             widget.addClass(this.dateWidgetOptions.className);
-            $(this.dateWidgetSelector).on('click', function (e) {
+            $(this.dateWidgetSelector).on('click', function(e) {
                 e.stopImmediatePropagation();
             });
             return widget;
@@ -194,7 +195,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _getCriteriaHint: function () {
+        _getCriteriaHint: function() {
             var hint = '',
                 option, start, end, type,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
@@ -246,7 +247,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _formatDisplayValue: function (value) {
+        _formatDisplayValue: function(value) {
             var fromFormat = this.dateWidgetOptions.altFormat;
             var toFormat = this.dateWidgetOptions.dateFormat;
             return this._formatValueDates(value, fromFormat, toFormat);
@@ -255,7 +256,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _formatRawValue: function (value) {
+        _formatRawValue: function(value) {
             var fromFormat = this.dateWidgetOptions.dateFormat;
             var toFormat = this.dateWidgetOptions.altFormat;
             return this._formatValueDates(value, fromFormat, toFormat);
@@ -270,7 +271,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
          * @return {Object}
          * @protected
          */
-        _formatValueDates: function (value, fromFormat, toFormat) {
+        _formatValueDates: function(value, fromFormat, toFormat) {
             if (value.value && value.value.start) {
                 value.value.start = this._formatDate(value.value.start, fromFormat, toFormat);
             }
@@ -289,7 +290,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
          * @return {String}
          * @protected
          */
-        _formatDate: function (value, fromFormat, toFormat) {
+        _formatDate: function(value, fromFormat, toFormat) {
             var fromValue = $.datepicker.parseDate(fromFormat, value);
             if (!fromValue) {
                 fromValue = $.datepicker.parseDate(toFormat, value);
@@ -303,7 +304,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _writeDOMValue: function (value) {
+        _writeDOMValue: function(value) {
             this._setInputValue(this.criteriaValueSelectors.value.start, value.value.start);
             this._setInputValue(this.criteriaValueSelectors.value.end, value.value.end);
             this._setInputValue(this.criteriaValueSelectors.type, value.type);
@@ -313,7 +314,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _readDOMValue: function () {
+        _readDOMValue: function() {
             return {
                 type: this._getInputValue(this.criteriaValueSelectors.type),
                 value: {
@@ -326,19 +327,19 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _focusCriteria: function () {},
+        _focusCriteria: function() {},
 
         /**
          * @inheritDoc
          */
-        _hideCriteria: function () {
+        _hideCriteria: function() {
             ChoiceFilter.prototype._hideCriteria.apply(this, arguments);
         },
 
         /**
          * @inheritDoc
          */
-        _triggerUpdate: function (newValue, oldValue) {
+        _triggerUpdate: function(newValue, oldValue) {
             if ((newValue.type === 'empty' || oldValue.type === 'empty') && newValue.type !== oldValue.type) {
                 this.trigger('update');
                 return;
@@ -357,14 +358,14 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        setValue: function (value) {
+        setValue: function(value) {
             if (this._isValueValid(value)) {
                 return ChoiceFilter.prototype.setValue.apply(this, arguments);
             }
             return this;
         },
 
-        _isValueValid: function (value) {
+        _isValueValid: function(value) {
             if (_.isEqual(value, this.emptyValue) && !_.isEqual(this.value, value)) {
                 return true;
             }
@@ -374,7 +375,7 @@ function ($, _, __, ChoiceFilter, localeSettings) {
         /**
          * @inheritDoc
          */
-        _onValueUpdated: function (newValue, oldValue) {
+        _onValueUpdated: function(newValue, oldValue) {
             ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
             if ('empty' === newValue.type) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
