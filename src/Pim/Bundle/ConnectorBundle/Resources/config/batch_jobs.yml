@@ -15,13 +15,13 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_product
                         processor: pim_connector.processor.denormalization.product.flat
-                        writer:    pim_base_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.doctrine.product
                 import_associations:
                     title:     pim_base_connector.jobs.csv_product_import.import_associations.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
-                        writer:    pim_base_connector.writer.doctrine.association
+                        writer:    pim_connector.writer.doctrine.product_association
         csv_attribute_import:
             title: pim_base_connector.jobs.csv_attribute_import.title
             type:  import

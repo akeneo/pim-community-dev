@@ -64,5 +64,5 @@ services:
     pim_base_connector.writer.doctrine.group: '@pim_base_connector.writer.doctrine'
     pim_base_connector.writer.doctrine.attribute: '@pim_base_connector.writer.doctrine'
 
-    pim_base_connector.writer.doctrine.association: '@pim_base_connector.writer.doctrine.product_association'
+    pim_base_connector.writer.doctrine.association: '@pim_connector.writer.doctrine.product_association'
     pim_base_connector.writer.doctrine.category: '@pim_base_connector.writer.doctrine'

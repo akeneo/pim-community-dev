@@ -176,7 +176,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.yaml_product
                         processor: pim_base_connector.processor.product
-                        writer:    pim_base_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.doctrine.product
 
         fixtures_product_csv:
             title: pim_installer.jobs.fixtures_product_csv.title
@@ -192,7 +192,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_product
                         processor: pim_base_connector.processor.product
-                        writer:    pim_base_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.doctrine.product
 
         fixtures_job_yml:
             title: pim_installer.jobs.fixtures_job_yml.title
