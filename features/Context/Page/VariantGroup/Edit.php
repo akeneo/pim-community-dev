@@ -62,7 +62,7 @@ class Edit extends Form
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
         }
-        $field = $label->getParent()->find('css', 'input');
+        $field = $label->getParent()->find('css', 'input,textarea');
         if (!$field) {
             throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
         }
