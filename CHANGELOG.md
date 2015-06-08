@@ -124,6 +124,7 @@
 
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
+- PIM-4309: Fix bug processing media with a non existing media
 
 # 1.3.13 (2015-05-29)
 
