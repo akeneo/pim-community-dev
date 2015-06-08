@@ -14,6 +14,8 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Classification\CategoryAwareInterface;
+use Pim\Component\Classification\TagAwareInterface;
 use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 
 /**
@@ -21,7 +23,7 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-interface AssetInterface extends ReferenceDataInterface
+interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, CategoryAwareInterface
 {
     /**
      * @return int

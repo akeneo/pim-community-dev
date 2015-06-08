@@ -32,7 +32,8 @@ class ResolveDoctrineTargetModelPass extends AbstractResolveDoctrineTargetModelP
             'PimEnterprise\Component\ProductAsset\Model\FileInterface' => 'pimee_product_asset.model.file.class',
             'PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface' => 'pimee_product_asset.model.file_metadata.class',
             'PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface' => 'pimee_product_asset.model.image_metadata.class',
-            'PimEnterprise\Component\ProductAsset\Model\CategoryInterface' => 'pimee_product_asset.model.category.class'
+            'PimEnterprise\Component\ProductAsset\Model\CategoryInterface' => 'pimee_product_asset.model.category.class',
+            'PimEnterprise\Component\ProductAsset\Model\TagInterface' => 'pimee_product_asset.model.tag.class'
         ];
     }
 }

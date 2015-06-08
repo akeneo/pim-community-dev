@@ -5,6 +5,7 @@ parameters:
     pimee_product_asset.repository.reference.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ReferenceRepository
     pimee_product_asset.repository.variation.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\VariationRepository
     pimee_product_asset.repository.category.class:              Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
+    pimee_product_asset.repository.tag.class:                   Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
 
 services:
     pimee_product_asset.repository.channel_configuration:
@@ -56,5 +57,14 @@ services:
         factory_method: getRepository
         arguments:
             - %pimee_product_asset.model.category.class%
+        tags:
+            - { name: 'pim_repository' }
+
+    pimee_product_asset.repository.tag:
+        class: %pimee_product_asset.repository.tag.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - %pimee_product_asset.model.tag.class%
         tags:
             - { name: 'pim_repository' }
