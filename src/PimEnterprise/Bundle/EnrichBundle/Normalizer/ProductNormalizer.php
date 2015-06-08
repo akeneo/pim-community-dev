@@ -70,7 +70,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             $normalizedProduct['meta'],
             [
                 'published' => $published ?
-                    $this->serializer->normalize($published->getVersion(), 'json', $context) :
+                    $this->serializer->normalize($published->getVersion(), 'internal_api', $context) :
                     null,
                 'owner_groups' => $this->serializer->normalize($ownerGroups, 'internal_api', $context)
             ]

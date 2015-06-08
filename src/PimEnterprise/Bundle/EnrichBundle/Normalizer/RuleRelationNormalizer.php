@@ -22,6 +22,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class RuleRelationNormalizer implements NormalizerInterface
 {
+    /** @var array */
+    protected $supportedFormats = ['internal_api'];
+
     /** @var ManagerRegistry */
     protected $doctrine;
 
@@ -50,6 +53,6 @@ class RuleRelationNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof RuleRelationInterface && $format === 'array';
+        return $data instanceof RuleRelationInterface && in_array($format, $this->supportedFormats);
     }
 }

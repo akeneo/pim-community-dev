@@ -60,7 +60,7 @@ class RuleRelationController
 
         $normalizedRelations = [];
         foreach ($ruleRelations as $ruleRelation) {
-            $normalizedRelations[] = $this->normalizer->normalize($ruleRelation, 'array');
+            $normalizedRelations[] = $this->normalizer->normalize($ruleRelation, 'internal_api');
         }
 
         return new JsonResponse($normalizedRelations);
