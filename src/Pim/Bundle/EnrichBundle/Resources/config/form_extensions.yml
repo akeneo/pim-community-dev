@@ -2,13 +2,11 @@ extensions:
     product-edit-form:
         module: pim/product-edit-form
         zones:
-            header: >div>header
             title: header .product-title
             buttons: header .actions
             meta: header .meta
             state: header .state
             content: >div>.content
-        position: 100
 
     sequential-edit:
         module: pim/product-edit-form/sequential-edit
