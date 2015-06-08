@@ -2,6 +2,7 @@
 
 ## Bug fixes
 - PIM-4312: Fix price indexes on MongoDB
+- PIM-4112: Not translated Error message when wrong format import
 
 # 1.3.15 (2015-06-05)
 
