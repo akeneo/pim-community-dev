@@ -201,23 +201,25 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
 
     /**
      * @param GroupInterface $variantGroup
-     * @param array          $arrayValues
+     * @param array          $newValues
      */
-    public function setValues(GroupInterface $variantGroup, array $arrayValues)
+    public function setValues(GroupInterface $variantGroup, array $newValues)
     {
-        $values = $this->transformArrayToValues($arrayValues);
+        $template = $this->getProductTemplate($variantGroup);
+        $originalValues = $template->getValuesData();
+        $mergedValuesData = $this->mergeValuesData($originalValues, $newValues);
+        $mergedValues = $this->transformArrayToValues($mergedValuesData);
 
         // TODO: remove it when normalizers & setters will be uniformized (PIM-4246)
-        foreach ($arrayValues as $code => $data) {
+        foreach ($mergedValuesData as $code => $data) {
             foreach ($data as $index => $value) {
-                $arrayValues[$code][$index]['value'] = $value['data'];
-                unset($arrayValues[$code][$index]['data']);
+                $mergedValuesData[$code][$index]['value'] = $value['data'];
+                unset($mergedValuesData[$code][$index]['data']);
             }
         }
 
-        $template = $this->getProductTemplate($variantGroup);
-        $template->setValues($values);
-        $template->setValuesData($arrayValues);
+        $template->setValues($mergedValues);
+        $template->setValuesData($mergedValuesData);
 
         $variantGroup->setProductTemplate($template);
     }
@@ -269,5 +271,39 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
         }
 
         return $data;
+    }
+
+    /**
+     * Merge new values in original values
+     *
+     * @param array $originalValues
+     * @param array $newValues
+     *
+     * @return array
+     */
+    protected function mergeValuesData(array $originalValues, array $newValues)
+    {
+        foreach ($newValues as $code => $values) {
+            if (!isset($originalValues[$code])) {
+                $originalValues[$code] = $values;
+            } else {
+                foreach ($values as $newValue) {
+                    $newKey = $code;
+                    $newKey .= isset($value['locale']) ? '-'.$value['locale'] : '';
+                    $newKey .= isset($value['scope']) ? '-'.$value['scope'] : '';
+                    foreach ($originalValues[$code] as $currentIndex => $currentValue) {
+                        $currentKey = $code;
+                        $currentKey .= isset($value['locale']) ? '-'.$value['locale'] : '';
+                        $currentKey .= isset($value['scope']) ? '-'.$value['scope'] : '';
+                        if ($newKey === $currentKey) {
+                            unset($originalValues[$code][$currentIndex]);
+                        }
+                    }
+                    $originalValues[$code][] = $newValue;
+                }
+            }
+        }
+
+        return $originalValues;
     }
 }
