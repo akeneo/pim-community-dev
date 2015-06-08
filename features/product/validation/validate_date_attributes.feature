@@ -30,7 +30,7 @@ Feature: Validate date attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
+  @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of date attribute
     Given I change the Release to "2011-01-01"
     And I save the product
@@ -38,7 +38,7 @@ Feature: Validate date attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
+  @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date min constraint of scopable date attribute
     Given I change the "ecommerce Available" to "2012-01-01"
     And I save the product
@@ -46,7 +46,7 @@ Feature: Validate date attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-4216
+  @jira https://akeneo.atlassian.net/browse/PIM-4216
   Scenario: Validate the date max constraint of date attribute
     Given I change the Release to "2016-01-01"
     And I save the product
