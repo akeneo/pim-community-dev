@@ -32,11 +32,11 @@ define(
 
             return matchingValues;
         },
-        getAttributeGroupForAttribute: function (attributeGroups, attribute) {
+        getAttributeGroupForAttribute: function (attributeGroups, attributeCode) {
             var result = null;
 
             _.each(attributeGroups, function (attributeGroup) {
-                if (-1 !== attributeGroup.attributes.indexOf(attribute)) {
+                if (-1 !== attributeGroup.attributes.indexOf(attributeCode)) {
                     result = attributeGroup.code;
                 }
             });

@@ -22,14 +22,7 @@ define([
             'change input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
-            if (_.isEmpty(context.value.value)) {
-                _.each(context.currencies, function (currency) {
-                    context.value.value.push({
-                        currency: currency.code,
-                        data: null
-                    });
-                });
-            }
+            context.value.value = _.sortBy(context.value.value, 'currency');
 
             return this.fieldTemplate(context);
         },

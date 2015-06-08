@@ -52,7 +52,6 @@ define([
                 mediator.trigger('field:extension:add', {'field': this});
 
                 this.getTemplateContext().done(_.bind(function (templateContext) {
-                    this.$el.empty();
                     this.$el.html(this.template(templateContext));
                     this.$('.form-field .field-input').append(this.renderInput(templateContext));
 
@@ -109,12 +108,8 @@ define([
             },
             setValues: function (values) {
                 if (values.length === 0) {
-                    values.push(AttributeManager.getValue(
-                        [],
-                        this.attribute,
-                        this.context.locale,
-                        this.context.scope
-                    ));
+                    /*global alert: true */
+                    alert('value array is empty');
                 }
 
                 this.model.set('values', values);

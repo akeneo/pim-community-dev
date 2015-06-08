@@ -33,9 +33,7 @@ define(
             render: function () {
                 Field.prototype.render.apply(this, arguments);
 
-                setTimeout(_.bind(function () {
-                    this.$('.datepicker').datepicker();
-                }, this), 0);
+                this.$('.datepicker').datepicker();
             },
             updateModel: function (event) {
                 var data = event.currentTarget.value;

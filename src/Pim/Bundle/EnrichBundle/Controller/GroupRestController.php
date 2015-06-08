@@ -47,6 +47,18 @@ class GroupRestController
     }
 
     /**
+     * @param string $identifier
+     *
+     * @return JsonResponse
+     */
+    public function getAction($identifier)
+    {
+        $group = $this->groupManager->getRepository()->findOneByCode($identifier);
+
+        return new JsonResponse($this->normalizer->normalize($group, 'internal_api'));
+    }
+
+    /**
      * Display the products of a group
      *
      * @param string $identifier

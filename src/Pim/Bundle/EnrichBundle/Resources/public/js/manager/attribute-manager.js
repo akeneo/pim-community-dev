@@ -64,23 +64,22 @@ define([
                 }
             },
             getValue: function (values, attribute, locale, scope) {
-                //Should be splitted in two methods
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
 
-                var result = _.findWhere(values, {scope: scope, locale: locale});
-
-                if (!result) {
-                    result = {
-                        'scope':  scope,
-                        'locale': locale,
-                        'value':  this.getEmptyValue(attribute)
-                    };
-                }
-
-                return result;
+                return _.findWhere(values, {scope: scope, locale: locale});
             },
-            generateValues: function (values, attribute, locales, channels) {
+            generateValue: function (attribute, locale, scope) {
+                locale = attribute.localizable ? locale : null;
+                scope  = attribute.scopable ? scope : null;
+
+                return {
+                    'locale': locale,
+                    'scope':  scope,
+                    'value':  this.getEmptyValue(attribute)
+                };
+            },
+            generateMissingValues: function (values, attribute, locales, channels, currencies) {
                 _.each(locales, _.bind(function (locale) {
                     _.each(channels, _.bind(function (channel) {
                         var newValue = this.getValue(
@@ -90,36 +89,32 @@ define([
                             channel.code
                         );
 
-                        if (!_.findWhere(
-                            values,
-                            {scope: newValue.scope, locale: newValue.locale}
-                        )) {
+                        if (!newValue) {
+                            newValue = this.generateValue(attribute, locale.code, channel.code);
                             values.push(newValue);
                         }
+
+                        if ('pim_catalog_price_collection' === attribute.type) {
+                            newValue.value = this.generateMissingPrices(newValue.value, currencies);
+                        }
+
                     }, this));
                 }, this));
 
                 return values;
             },
-            generateMissingPrices: function (values, attribute, currencies) {
-                if ('pim_catalog_price_collection' === attribute.type) {
-                    _.each(values, function (value) {
-                        var prices = [];
-                        _.each(currencies, function (currency) {
-                            var price = _.findWhere(value.value, {currency: currency.code});
+            generateMissingPrices: function (prices, currencies) {
+                _.each(currencies, function (currency) {
+                    var price = _.findWhere(prices, {currency: currency.code});
 
-                            if (!price) {
-                                price = {data: null, currency: currency.code};
-                            }
+                    if (!price) {
+                        price = {data: null, currency: currency.code};
+                        prices.push(price);
+                    }
 
-                            prices.push(price);
-                        });
+                });
 
-                        value.value = prices;
-                    });
-                }
-
-                return values;
+                return prices;
             }
         };
     }

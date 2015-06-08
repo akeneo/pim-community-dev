@@ -23,7 +23,7 @@ class VersionNormalizer implements NormalizerInterface
     protected $translator;
 
     /** @var array */
-    protected $supportedFormats = ['array', 'json', 'internal_api'];
+    protected $supportedFormats = ['internal_api'];
 
     /** @var array */
     protected $authorCache = [];

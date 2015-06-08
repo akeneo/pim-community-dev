@@ -149,19 +149,21 @@ define(
                 $.when(
                     EntityManager.getRepository('attribute').findAll(),
                     EntityManager.getRepository('locale').findAll(),
-                    EntityManager.getRepository('channel').findAll()
-                ).then(_.bind(function (attributes, locales, channels) {
+                    EntityManager.getRepository('channel').findAll(),
+                    EntityManager.getRepository('currency').findAll()
+                ).then(_.bind(function (attributes, locales, channels, currencies) {
                     var product = this.getData();
 
                     var hasRequiredValues = true;
                     _.each(attributeCodes, function (attributeCode) {
                         var attribute = _.findWhere(attributes, {code: attributeCode});
                         if (!product.values[attribute.code]) {
-                            product.values[attribute.code] = AttributeManager.generateValues(
+                            product.values[attribute.code] = AttributeManager.generateMissingValues(
                                 [],
                                 attribute,
                                 locales,
-                                channels
+                                channels,
+                                currencies
                             );
                             hasRequiredValues = false;
                         }

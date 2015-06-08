@@ -79,16 +79,13 @@ define([
                     _.each(productAttributes, function (attributeCode) {
                         var attribute = _.findWhere(attributes, {code: attributeCode});
 
-                        if (attribute.code in product.values) {
-                            values[attribute.code] = AttributeManager.generateValues(
-                                product.values[attribute.code],
-                                attribute,
-                                locales,
-                                channels
-                            );
-
-                            AttributeManager.generateMissingPrices(values[attribute.code], attribute, currencies);
-                        }
+                        values[attribute.code] = AttributeManager.generateMissingValues(
+                            (attribute.code in product.values) ? product.values[attribute.code] : [],
+                            attribute,
+                            locales,
+                            channels,
+                            currencies
+                        );
                     });
 
                     product.values = values;

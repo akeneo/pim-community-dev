@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class CompletenessNormalizer implements NormalizerInterface
 {
     /** @var array */
-    protected $supportedFormat = ['array', 'json'];
+    protected $supportedFormat = ['internal_api'];
 
     /**
      * {@inheritdoc}
