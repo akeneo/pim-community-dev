@@ -2255,7 +2255,7 @@ class FixturesContext extends RawMinkContext
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_base_connector.array_converter.flat.attribute_field_extractor');
+        return $this->getContainer()->get('pim_connector.array_converter.flat.attribute_field_extractor');
     }
 
     /**
