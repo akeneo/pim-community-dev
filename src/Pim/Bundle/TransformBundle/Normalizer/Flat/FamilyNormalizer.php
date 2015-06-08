@@ -14,9 +14,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
  */
 class FamilyNormalizer extends Structured\FamilyNormalizer
 {
-    /**
-     * @var array
-     */
+    /** @var string[] */
     protected $supportedFormats = array('csv');
 
     /**

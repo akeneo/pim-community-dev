@@ -149,11 +149,11 @@ class ProductCommentRestController
     {
         $product = $this->findProductOr404($id);
 
-        $data = json_decode($request->getContent(), true);
+        $data           = json_decode($request->getContent(), true);
         $data['parent'] = $commentId;
 
         $reply = $this->commentBuilder->buildComment($product, $this->getUser());
-        $form = $this->formFactory->create(
+        $form  = $this->formFactory->create(
             'pim_comment_comment',
             $reply,
             ['is_reply' => true, 'csrf_protection' => false]

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\UserBundle\Controller;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;

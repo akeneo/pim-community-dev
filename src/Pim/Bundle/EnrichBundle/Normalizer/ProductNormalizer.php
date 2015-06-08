@@ -16,7 +16,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class ProductNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    /** @var string[] */
     protected $supportedFormat = ['internal_api'];
 
     /** @var NormalizerInterface */
@@ -49,7 +49,7 @@ class ProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = [])
     {
         $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
 

@@ -206,6 +206,8 @@ class Form extends Base
      * Add available attributes
      *
      * @param array $attributes
+     *
+     * @throws \Exception
      */
     public function addAvailableAttributes(array $attributes = [])
     {
@@ -366,7 +368,7 @@ class Form extends Base
             throw new \InvalidArgumentException(sprintf('Cannot find attribute "%s" field', $attribute));
         }
 
-        return $this->expand($label);
+        $this->expand($label);
     }
 
     /**
@@ -620,7 +622,7 @@ class Form extends Base
 
                 // Select the value in the displayed dropdown
                 if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
-                    return $item->click();
+                    $item->click();
                 }
             }
 

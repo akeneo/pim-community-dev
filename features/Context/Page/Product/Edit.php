@@ -594,11 +594,12 @@ class Edit extends Form
         if (null !== $select) {
             if (null !== $link = $field->find('css', 'a.select2-choice')) {
                 $link->click();
-
                 $this->getSession()->wait(5000, '!$.active');
 
                 if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $select))) {
-                    return $item->click();
+                    $item->click();
+
+                    return;
                 }
             }
 
@@ -726,14 +727,14 @@ class Edit extends Form
     }
 
     /**
-     * @return NodeElement|void
+     * @return NodeElement|null
      */
     public function getImagePreview()
     {
         $preview = $this->getElement('Image preview');
 
         if (!$preview || false === strpos($preview->getAttribute('style'), 'display: block')) {
-            return;
+            return null;
         }
 
         return $preview;

@@ -2323,7 +2323,9 @@ class FixturesContext extends RawMinkContext
     protected function flush($object = null)
     {
         if (!$object) {
-            return $this->flushAll();
+            $this->flushAll();
+
+            return;
         }
 
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));

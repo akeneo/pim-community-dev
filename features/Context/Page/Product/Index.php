@@ -5,6 +5,7 @@ namespace Context\Page\Product;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Grid;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Product index page
@@ -84,6 +85,8 @@ class Index extends Grid
 
     /**
      * @param string $locale
+     *
+     * @throws \Exception
      */
     public function switchLocale($locale)
     {
@@ -114,6 +117,8 @@ class Index extends Grid
 
     /**
      * @param Category $category
+     *
+     * @throws \Exception
      */
     public function clickCategoryFilterLink($category)
     {
