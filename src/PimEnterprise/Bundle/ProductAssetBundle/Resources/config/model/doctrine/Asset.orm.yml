@@ -49,3 +49,15 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
                 inverseJoinColumns:
                     tag_id:
                         referencedColumnName: id
+        categories:
+            targetEntity: PimEnterprise\Component\ProductAsset\Model\CategoryInterface
+            joinTable:
+                name: pimee_product_asset_asset_category
+                joinColumns:
+                    asset_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

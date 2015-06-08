@@ -12,3 +12,11 @@ PimEnterprise\Component\ProductAsset\Model\Category:
                 message: Category code may contain only letters, numbers and underscores
             - Length:
                 max: 100
+        translations:
+            - Valid: ~
+
+PimEnterprise\Component\ProductAsset\Model\CategoryTranslation:
+    properties:
+        label:
+            - Length:
+                max: 100

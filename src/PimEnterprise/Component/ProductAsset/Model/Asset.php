@@ -14,6 +14,7 @@ namespace PimEnterprise\Component\ProductAsset\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Classification\Model\CategoryInterface as BaseCategoryInterface;
 use Pim\Component\Classification\Model\TagInterface;
 
 /**
@@ -28,6 +29,9 @@ class Asset implements AssetInterface
 
     /** @var string */
     protected $code;
+
+    /** @var ArrayCollection of BaseCategoryInterface */
+    protected $categories;
 
     /** @var string */
     protected $description;
@@ -57,6 +61,7 @@ class Asset implements AssetInterface
         $this->createdAt  = new \Datetime();
         $this->updatedAt  = new \Datetime();
         $this->tags       = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     /**
@@ -345,6 +350,50 @@ class Asset implements AssetInterface
         sort($tags);
 
         return implode(',', $tags);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeCategory(BaseCategoryInterface $category)
+    {
+        $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addCategory(BaseCategoryInterface $category)
+    {
+        if (!$this->categories->contains($category)) {
+            $this->categories->add($category);
+        }
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCategoryCodes()
+    {
+        $codes = array();
+        foreach ($this->getCategories() as $category) {
+            $codes[] = $category->getCode();
+        }
+        sort($codes);
+
+        return implode(',', $codes);
     }
 
     /**
