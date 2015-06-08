@@ -30,8 +30,8 @@ Feature: Browse variant groups
     Then the grid should contain 10 elements
     And I should see the columns Code, Label and Axis
     And I should see groups bike_akeneo, boat_akeneo, car_akeneo, helicopter_akeneo, mug, mug_akeneo, plane_akeneo, tshirt_akeneo, sticker_akeneo, watch_akeneo
-    And the rows should be sorted ascending by code
-    And I should be able to sort the rows by code and label
+    And the rows should be sorted ascending by Code
+    And I should be able to sort the rows by Code and Label
     And I should be able to use the following filters:
       | filter | value  | result                                                                                                                            |
       | Code   | mug    | mug, mug_akeneo                                                                                                                   |

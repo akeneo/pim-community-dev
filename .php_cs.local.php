@@ -14,20 +14,12 @@ $fixers = [
     'align_double_arrow',
     'newline_after_open_tag',
     'ordered_use',
-    'phpdoc_order'
+    'phpdoc_order',
 ];
 
-exec('git show --name-only --oneline --pretty="format:" --diff-filter=AMR | grep -v ^spec/', $diff);
-$diff = array_filter($diff);
-
-exec('git diff --name-only', $diff);
-$diff = array_filter($diff);
-
-foreach ($diff as $filename) {
-    printf('Parsed file : %s' .PHP_EOL, $filename);
-}
-
-$finder->append($diff);
+$finder->name('*.php')
+    ->in(__DIR__ . '/features')
+    ->in(__DIR__ . '/src');
 
 return \Symfony\CS\Config\Config::create()
     ->fixers($fixers)

@@ -9,6 +9,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Context for assertions
@@ -162,11 +163,14 @@ class AssertionContext extends RawMinkContext
      * @param string $text
      *
      * @Then /^I should see (?:a )?flash message "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeFlashMessage($text)
     {
-        // TODO Flash essages tests temporarily disabled because unstable on CI
+        // TODO Flash messages tests temporarily disabled because unstable on CI
         return true;
+//        $this->getMainContext()->wait(10000, '$(".flash-messages-holder").length > 0');
 //        if (!$this->getCurrentPage()->findFlashMessage($text)) {
 //            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
 //        }
@@ -176,6 +180,8 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $tableNode
      *
      * @Then /^I should see a confirm dialog with the following content:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeAConfirmDialog(TableNode $tableNode)
     {
@@ -293,7 +299,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeThisExactHistory(TableNode $table)
     {
-        $actualUpdates = array();
+        $actualUpdates = [];
         $rows = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
             $version = (int) $row->find('css', 'td.number-cell')->getHtml();
@@ -373,7 +379,7 @@ class AssertionContext extends RawMinkContext
      */
     public function theFollowingCodesShouldNotBeAvailable($entity, TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $item) {
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
@@ -393,7 +399,7 @@ class AssertionContext extends RawMinkContext
      */
     public function theFollowingPagesShouldHaveTheFollowingTitles($table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $item) {
             $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
