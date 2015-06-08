@@ -16,7 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -33,7 +32,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         NormalizerInterface $valueNormalizer,
         ObjectDetacherInterface $detacher,
         ProductTemplateMediaManager $templateMediaManager,
-        ProductAttributeFieldExtractor $fieldExtractor,
+        FieldNameBuilder $fieldNameBuilder,
         StepExecution $stepExecution
     ) {
         $templateClass = 'Pim\Bundle\CatalogBundle\Entity\ProductTemplate';
@@ -45,7 +44,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
             $detacher,
             $valueNormalizer,
             $templateMediaManager,
-            $fieldExtractor,
+            $fieldNameBuilder,
             $groupClass,
             $templateClass,
             'csv'
