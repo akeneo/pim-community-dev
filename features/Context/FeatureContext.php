@@ -377,4 +377,33 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
     }
+
+    /**
+     * @param callable $callable
+     * @param int      $wait
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    public function spin($callable, $wait = 60)
+    {
+        for ($i = 0; $i < $wait; $i++) {
+            try {
+                if ($callable($this)) {
+                    return true;
+                }
+            } catch (\Exception $e) {
+                // do nothing
+            }
+
+            sleep(1);
+        }
+
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
+
+        throw new \Exception(
+            "Timeout thrown by ".$backtrace[1]['class']."::".$backtrace[1]['function']."()\n".
+            $backtrace[1]['file'].", line ".$backtrace[1]['line']
+        );
+    }
 }
