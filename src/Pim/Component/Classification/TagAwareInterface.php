@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Component\Classification\Model\TagInterface;
 
 /**
- * Implemented this interface allows to be aware of tags
+ * Implementing this interface allows to be aware of tags
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
