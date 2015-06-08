@@ -25,7 +25,7 @@ services:
             - '@pim_catalog.saver.product'
             - '@akeneo_storage_utils.doctrine.object_detacher'
 
-    pim_base_connector.writer.doctrine.attribute:
+    pim_connector.writer.doctrine.attribute:
         class: %pim_connector.writer.doctrine.base.class%
         arguments:
             - '@pim_catalog.saver.attribute'

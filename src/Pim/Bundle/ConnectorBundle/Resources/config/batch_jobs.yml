@@ -36,7 +36,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute
                         processor: pim_connector.processor.denormalization.attribute.flat
-                        writer:    pim_base_connector.writer.doctrine.attribute
+                        writer:    pim_connector.writer.doctrine.attribute
         csv_attribute_option_import:
             title: pim_base_connector.jobs.csv_attribute_option_import.title
             type:  import
