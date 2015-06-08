@@ -8,7 +8,9 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductTemplateMediaManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -61,6 +63,9 @@ class VariantGroupProcessor extends AbstractProcessor
     /** @var string */
     protected $format;
 
+    /** @var FieldNameBuilder */
+    protected $fieldExtractor;
+
     /** @var string */
     protected $class;
 
@@ -71,6 +76,7 @@ class VariantGroupProcessor extends AbstractProcessor
      * @param ObjectDetacherInterface               $detacher
      * @param NormalizerInterface                   $normalizer
      * @param ProductTemplateMediaManager           $templateMediaManager
+     * @param ProductAttributeFieldExtractor        $fieldExtractor
      * @param string                                $groupClass
      * @param string                                $templateClass
      * @param string                                $format
@@ -82,6 +88,7 @@ class VariantGroupProcessor extends AbstractProcessor
         ObjectDetacherInterface $detacher,
         NormalizerInterface $normalizer,
         ProductTemplateMediaManager $templateMediaManager,
+        ProductAttributeFieldExtractor $fieldExtractor,
         $groupClass,
         $templateClass,
         $format
@@ -91,6 +98,7 @@ class VariantGroupProcessor extends AbstractProcessor
         $this->detacher             = $detacher;
         $this->normalizer           = $normalizer;
         $this->templateMediaManager = $templateMediaManager;
+        $this->fieldExtractor       = $fieldExtractor;
         $this->templateClass        = $templateClass;
         $this->format               = $format;
         $this->class                = $groupClass;
@@ -166,7 +174,7 @@ class VariantGroupProcessor extends AbstractProcessor
     {
         $valuesData = $this->filterVariantGroupData($groupData, false);
         if (!empty($valuesData)) {
-            $values = $this->denormalizeValuesFromItemData($valuesData);
+            $values = $this->denormalizeValuesFromItemData($valuesData, $variantGroup->getProductTemplate());
             $this->validateValues($variantGroup, $values, $groupData);
             $template = $this->getProductTemplate($variantGroup);
             $template->setValues($values);
@@ -233,22 +241,26 @@ class VariantGroupProcessor extends AbstractProcessor
     }
 
     /**
-     * Filter empty values then denormalize the product values objects from CSV fields
+     * Filter empty values that are not used in a template then denormalize the product values objects from CSV fields
      *
-     * @param array $rawProductValues
+     * @param array                    $rawProductValues
+     * @param ProductTemplateInterface $template
      *
      * @return ProductValueInterface[]
      */
-    protected function denormalizeValuesFromItemData(array $rawProductValues)
+    protected function denormalizeValuesFromItemData(array $rawProductValues, ProductTemplateInterface $template = null)
     {
-        $nonEmptyValues = $rawProductValues;
-        foreach ($nonEmptyValues as $index => $data) {
-            if (trim($data) === "") {
-                unset($nonEmptyValues[$index]);
+        $templateCodes = null !== $template ? array_keys($template->getValuesData()) : [];
+
+        foreach ($rawProductValues as $index => $data) {
+            $attributeInfos = $this->fieldExtractor->extractAttributeFieldNameInfos($index);
+            $attribute = $attributeInfos['attribute'];
+            if ("" === trim($data) && !in_array($attribute->getCode(), $templateCodes)) {
+                unset($rawProductValues[$index]);
             }
         }
 
-        return $this->denormalizer->denormalize($nonEmptyValues, 'ProductValue[]', 'csv');
+        return $this->denormalizer->denormalize($rawProductValues, 'ProductValue[]', 'csv');
     }
 
     /**

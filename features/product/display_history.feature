@@ -183,7 +183,7 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property    | value      |
-      | 1       | length      | 30.0000    |
+      | 1       | length      | 30         |
       | 1       | length-unit | CENTIMETER |
     When I visit the "Attributes" tab
     And I change the "Length" to "35"
@@ -192,7 +192,7 @@ Feature: Display the product history
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
-      | 2       | length   | 35.0000 |
+      | 2       | length   | 35      |
     When I visit the "Attributes" tab
     And I remove the "Length" attribute
     And I visit the "History" tab

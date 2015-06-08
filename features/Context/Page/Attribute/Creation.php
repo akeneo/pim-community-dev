@@ -57,7 +57,7 @@ class Creation extends Form
     {
         if (!$this->getElement('attribute_option_table')->find('css', '.attribute_option_code')) {
             $this->getElement('add_option_button')->click();
-            $this->getSession()->wait(1000);
+            $this->getSession()->wait(10000);
         }
 
         $rows = $this->getOptionsElement();

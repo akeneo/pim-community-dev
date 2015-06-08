@@ -22,8 +22,10 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    /** @var KernelInterface */
     protected $kernel;
 
+    /** @var string[] */
     protected static $errorMessages = [];
 
     /**
@@ -63,7 +65,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
             $excludedTables = $excludedTables['excluded_tables'];
         } else {
-            $excludedTables = array();
+            $excludedTables = [];
         }
 
         if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
@@ -200,7 +202,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Returns Container instance.
      *
-     * @return ContainerInterface
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
     public function getContainer()
     {
@@ -210,7 +212,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Return doctrine manager instance
      *
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getEntityManager()
     {
@@ -218,7 +220,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return ObjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager
      */
     public function getDocumentManager()
     {
@@ -226,7 +228,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
-     * @return Doctrine\Common\Persistence\ManagerRegistry
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
      */
     public function getSmartRegistry()
     {
@@ -251,7 +253,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function listToArray($list)
     {
         if (empty($list)) {
-            return array();
+            return [];
         }
 
         return explode(', ', str_replace(' and ', ', ', $list));
@@ -277,7 +279,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @throws BehaviorException If timeout is reached
      */
-    public function wait($time = 10000, $condition = null)
+    public function wait($time = 30000, $condition = null)
     {
         if (!$this->getSession()->getDriver() instanceof Selenium2Driver) {
             return;
@@ -369,7 +371,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     /**
      * Get the mail recorder
      *
-     * @return MailRecorder
+     * @return \Pim\Bundle\EnrichBundle\Mailer\MailRecorder
      */
     public function getMailRecorder()
     {
