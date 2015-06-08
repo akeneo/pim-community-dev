@@ -70,6 +70,9 @@ define([
                 return _.findWhere(values, {scope: scope, locale: locale});
             },
             generateValue: function (attribute, locale, scope) {
+                locale = attribute.localizable ? locale : null;
+                scope  = attribute.scopable ? scope : null;
+
                 return {
                     'locale': locale,
                     'scope':  scope,
@@ -87,7 +90,7 @@ define([
                         );
 
                         if (!newValue) {
-                            newValue = this.generateValue(attribute, locale, channel);
+                            newValue = this.generateValue(attribute, locale.code, channel.code);
                             values.push(newValue);
                         }
 
