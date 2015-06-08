@@ -389,7 +389,7 @@ class AssertionContext extends RawMinkContext
                 sprintf('Expecting to see history row for version %s, not found', $version)
             );
         }
-        if(!$row->find('css', '.label-published')) {
+        if (!$row->find('css', '.label-published')) {
             throw $this->createExpectationException(
                 sprintf('Expecting to see version %d marked as published, but is not', $version)
             );
