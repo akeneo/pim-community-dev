@@ -113,7 +113,7 @@ datagrid:
                 context:
                     withHeader: true
                 messages:
-                    empty_selection: No products selected
+                    empty_selection: pim_datagrid.mass_action.delete.empty_selection
 
             mass_edit:
                 type: edit
