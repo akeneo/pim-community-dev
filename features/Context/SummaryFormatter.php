@@ -37,7 +37,7 @@ class SummaryFormatter extends ProgressFormatter
      */
     public function afterFeature(FeatureEvent $event)
     {
-        $fileName = $event->getFeature()->getFile();
+        $fileName     = $event->getFeature()->getFile();
         $relativeName = substr($fileName, strpos($fileName, 'features'));
 
         $this->writeLn();

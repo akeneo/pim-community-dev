@@ -198,7 +198,7 @@ class WebUser extends RawMinkContext
         $this->wait(); // Make sure that the tree is loaded
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
+        $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
             throw $this->createExpectationException(
@@ -272,7 +272,7 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
-        $linkCount = $this->getPage('Product edit')->countLocaleLinks();
+        $linkCount         = $this->getPage('Product edit')->countLocaleLinks();
         $expectedLinkCount = count($table->getHash());
 
         if ($linkCount !== $expectedLinkCount) {
@@ -499,7 +499,7 @@ class WebUser extends RawMinkContext
                 $options = $field->findAll('css', 'li.select2-search-choice div');
             }
 
-            $actual  = [];
+            $actual = [];
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
             }
@@ -775,7 +775,7 @@ class WebUser extends RawMinkContext
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
         $expectedAttributes = $this->listToArray($attributes);
-        $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+        $options            = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
         if (count($expectedAttributes) !== $actual = count($options)) {
             throw $this->createExpectationException(
@@ -985,7 +985,7 @@ class WebUser extends RawMinkContext
             if ($field->getAttribute('type') !== 'file') {
                 $field = $field->getParent()->find('css', 'input[type="file"]');
             }
-            $id = $field->getAttribute('id');
+            $id     = $field->getAttribute('id');
             $script = "$('{$id}').closest('div.control-group').find('[disabled]').removeAttr('disabled');";
         } else {
             $script = '$("[disabled]").removeAttr("disabled");';
@@ -1355,7 +1355,7 @@ class WebUser extends RawMinkContext
         } catch (BehaviorException $e) {
             $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
             $jobExecution = $jobInstance->getJobExecutions()->first();
-            $log = $jobExecution->getLogFile();
+            $log          = $jobExecution->getLogFile();
 
             if (is_file($log)) {
                 $dir = getenv('WORKSPACE');
@@ -1580,7 +1580,7 @@ class WebUser extends RawMinkContext
      */
     public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
     {
-        $channels = $this->listToArray($channels);
+        $channels    = $this->listToArray($channels);
         $expectation = $not === '';
         foreach ($channels as $channel) {
             if ($expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel)) {
@@ -1975,8 +1975,8 @@ class WebUser extends RawMinkContext
         $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
 
         $jobExecution = $jobInstance->getJobExecutions()->first();
-        $archivist = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
-        $file = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
+        $archivist    = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
+        $file         = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
 
         $file->open(new \Gaufrette\StreamMode('r'));
         $content = $file->read(1024);
@@ -2028,9 +2028,9 @@ class WebUser extends RawMinkContext
 
         foreach ($table->getHash() as $data) {
             try {
-                $author = $this->getFixturesContext()->getUser($data['author']);
-                $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-                $comment = $this->getCurrentPage()->findComment($data['message'], $authorName);
+                $author               = $this->getFixturesContext()->getUser($data['author']);
+                $authorName           = $author->getFirstName() . ' ' . $author->getLastName();
+                $comment              = $this->getCurrentPage()->findComment($data['message'], $authorName);
                 $comments[$data['#']] = $comment;
 
                 if (!empty($data['parent'])) {
@@ -2056,10 +2056,10 @@ class WebUser extends RawMinkContext
      */
     public function iDeleteTheComment($message)
     {
-        $username = $this->getMainContext()->getSubcontext('fixtures')->getUsername();
-        $author = $this->getFixturesContext()->getUser($username);
+        $username   = $this->getMainContext()->getSubcontext('fixtures')->getUsername();
+        $author     = $this->getFixturesContext()->getUser($username);
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+        $comment    = $this->getCurrentPage()->findComment($message, $authorName);
 
         // doing that because $commment->mouseOver() has no effect
         $this->getMainContext()->executeScript("$('.comment-buttons').css('display', 'inherit');");
@@ -2078,9 +2078,9 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeTheLinkToDeleteTheComment($message, $author)
     {
-        $author = $this->getFixturesContext()->getUser($author);
+        $author     = $this->getFixturesContext()->getUser($author);
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+        $comment    = $this->getCurrentPage()->findComment($message, $authorName);
 
         try {
             $this->getCurrentPage()->deleteComment($comment);
@@ -2114,9 +2114,9 @@ class WebUser extends RawMinkContext
      */
     public function iReplyToTheCommentWith($comment, $author, $reply)
     {
-        $author = $this->getFixturesContext()->getUser($author);
+        $author     = $this->getFixturesContext()->getUser($author);
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-        $comment = $this->getCurrentPage()->findComment($comment, $authorName);
+        $comment    = $this->getCurrentPage()->findComment($comment, $authorName);
 
         $this->getCurrentPage()->replyComment($comment, $reply);
         $this->wait();
