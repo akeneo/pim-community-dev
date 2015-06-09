@@ -35,7 +35,8 @@ services:
     pim_enrich.normalizer.product:
         class: %pim_enrich.normalizer.product.class%
         arguments:
-            - '@pim_serializer.normalizer.product'
+            - '@pim_serializer'
+            - '@pim_enrich.normalizer.version'
             - '@pim_versioning.manager.version'
             - '@pim_catalog.manager.locale'
         tags:

@@ -40,7 +40,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof \Iterable || is_array($data)) && in_array($format, $this->supportedFormat);
+        return ($data instanceof \Traversable || is_array($data)) && in_array($format, $this->supportedFormat);
     }
 
     /**

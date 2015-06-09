@@ -31,7 +31,11 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     {
         foreach ($completenesses as $locale => $channels) {
             foreach ($channels['channels'] as $channel => $completeness) {
-                $completenesses[$locale]['channels'][$channel] = $this->normalizeCompleteness($completeness);
+                $completenesses[$locale]['channels'][$channel] = $this->normalizeCompleteness(
+                    $completeness,
+                    $format,
+                    $context
+                );
             }
         }
 
@@ -49,11 +53,13 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * Normalize a completeness element
      *
-     * @param array $completeness
+     * @param array  $completeness
+     * @param string $format
+     * @param array  $context
      *
      * @return array
      */
-    protected function normalizeCompleteness($completeness)
+    protected function normalizeCompleteness($completeness, $format = null, array $context = array())
     {
         $missing = [];
         foreach ($completeness['missing'] as $attribute) {
@@ -61,8 +67,8 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
         }
 
         return [
-            'completeness' => $this->normalizer->normalize($completeness['completeness'], 'internal_api'),
-            'missing'      => $missing
+            'missing'      => $missing,
+            'completeness' => $this->normalizer->normalize($completeness['completeness'], $format, $context)
         ];
     }
 }
