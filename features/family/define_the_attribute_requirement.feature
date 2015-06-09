@@ -44,9 +44,6 @@ Feature: Define the attribute requirement
       | channel | locale | state   | missing_values                                  | ratio |
       | mobile  | en_US  | success |                                                 | 100%  |
       | tablet  | en_US  | warning | description weather_conditions rating side_view | 56%   |
-    # Fix fake product update and remove the next two steps
-    And I click on the Akeneo logo
-    And I confirm the navigation
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
