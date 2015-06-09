@@ -9,8 +9,6 @@ parameters:
     pimee_product_asset.model.category.class:           PimEnterprise\Component\ProductAsset\Model\Category
     pimee_product_asset.model.tag.interface:            PimEnterprise\Component\ProductAsset\Model\TagInterface
     pimee_product_asset.model.tag.class:                PimEnterprise\Component\ProductAsset\Model\Tag
-    pimee_product_asset.model.file.class:               PimEnterprise\Component\ProductAsset\Model\File
-    pimee_product_asset.model.file.interface:           PimEnterprise\Component\ProductAsset\Model\FileInterface
     pimee_product_asset.model.file_metadata.interface:  PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface
     pimee_product_asset.model.file_metadata.class:      PimEnterprise\Component\ProductAsset\Model\FileMetadata
     pimee_product_asset.model.image_metadata.interface: PimEnterprise\Component\ProductAsset\Model\ImageMetadataInterface

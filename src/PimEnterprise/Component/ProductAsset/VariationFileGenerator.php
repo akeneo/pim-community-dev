@@ -11,17 +11,17 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileFetcherInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\FileTransformer\FileTransformerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileFetcherInterface;
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
-use PimEnterprise\Component\ProductAsset\Model\FileInterface;
-use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;

@@ -46,7 +46,7 @@ function truncateTables()
 {
     global $helper;
 
-    $helper->truncateTable('pimee_product_asset_file');
+    $helper->truncateTable('akeneo_file_storage_file');
     $helper->truncateTable('pimee_product_asset_variation');
     $helper->truncateTable('pimee_product_asset_asset');
     $helper->truncateTable('pimee_product_asset_reference');

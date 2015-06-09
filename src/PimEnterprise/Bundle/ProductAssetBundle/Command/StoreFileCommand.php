@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use PimEnterprise\Component\ProductAsset\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -68,7 +68,7 @@ class StoreFileCommand extends ContainerAwareCommand
      */
     protected function getRawFileStorer()
     {
-        return $this->getContainer()->get('pimee_product_asset.file_storage.raw_file.storer');
+        return $this->getContainer()->get('akeneo_file_storage.file_storage.raw_file.storer');
     }
 
     /**

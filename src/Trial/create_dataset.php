@@ -38,7 +38,7 @@ $registry->add($colorSpaceTransformation);
 $registry->add($scaleTransformation);
 
 $transformer   = new \Akeneo\Component\FileTransformer\FileTransformer($registry);
-$pathGenerator = new \PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator();
+$pathGenerator = new \Akeneo\Component\FileStorage\PathGenerator();
 $filesystem    = new \League\Flysystem\Filesystem(new \League\Flysystem\Adapter\Local(DATASET));
 
 $em = $kernel->getContainer()->get('doctrine.orm.default_entity_manager');
@@ -60,13 +60,13 @@ function createSplFile($imageName)
 
 function createPimFile(\SplFileInfo $splFile, $imageName)
 {
-    $pathGenerator = new \PimEnterprise\Component\ProductAsset\FileStorage\PathGenerator();
+    $pathGenerator = new \Akeneo\Component\FileStorage\PathGenerator();
 
     $imagePath = DATASET . $imageName;
     $mimeType  = MimeTypeGuesser::getInstance()->guess($imagePath);
     $storage   = $pathGenerator->generate($splFile);
 
-    $pimFile = new \PimEnterprise\Component\ProductAsset\Model\File();
+    $pimFile = new \Akeneo\Component\FileStorage\Model\File();
 
     return $pimFile
         ->setFilename($storage['file_name'])

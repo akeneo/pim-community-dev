@@ -36,7 +36,6 @@ class PimEnterpriseProductAssetExtension extends Extension
         $loader->load('datagrid/filters.yml');
         $loader->load('datagrid/formatters.yml');
         $loader->load('datagrid/selectors.yml');
-        $loader->load('file_storage.yml');
         $loader->load('models.yml');
         $loader->load('repositories.yml');
         $loader->load('twig_extension.yml');
