@@ -41,6 +41,7 @@ Feature: Remove an attribute from a variant group
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Attributes" tab
     When I remove the "Comment" attribute
+    And I confirm the deletion
     And I am on the "boot" product page
     And I visit the "Other" group
     And I should see that Comment is not inherited from variant group attribute
