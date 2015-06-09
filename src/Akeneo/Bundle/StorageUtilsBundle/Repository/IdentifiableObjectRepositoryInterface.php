@@ -9,6 +9,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Repository;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
+// Why put it in the bundle whereas it was at its good place in a component imho ?
 interface IdentifiableObjectRepositoryInterface
 {
     /**

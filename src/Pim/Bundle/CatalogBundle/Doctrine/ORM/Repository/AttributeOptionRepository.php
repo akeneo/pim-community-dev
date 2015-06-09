@@ -80,6 +80,7 @@ class AttributeOptionRepository extends EntityRepository implements
                     'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
                 );
             } else {
+                // Use [] instead of array()
                 $results[] = array(
                     'id'   => $row['id'],
                     'text' => $row['label'] ?: sprintf('[%s]', $row['code'])

@@ -23,6 +23,7 @@ class ProductSavingOptionsResolver implements SavingOptionsResolverInterface
         $resolver = $this->createOptionsResolver();
         $resolver->setDefaults(
             [
+                // Realign params
                 'flush' => true,
                 'recalculate' => true,
                 'schedule' => true
@@ -41,6 +42,7 @@ class ProductSavingOptionsResolver implements SavingOptionsResolverInterface
         $resolver = $this->createOptionsResolver();
         $resolver->setDefaults(
             [
+                // Realign params
                 'flush' => true,
                 'recalculate' => false,
                 'schedule' => true,
@@ -60,6 +62,7 @@ class ProductSavingOptionsResolver implements SavingOptionsResolverInterface
         $resolver->setOptional(['flush', 'recalculate', 'schedule']);
         $resolver->setAllowedTypes(
             [
+                // Realign params
                 'flush' => 'bool',
                 'recalculate' => 'bool',
                 'schedule' => 'bool'

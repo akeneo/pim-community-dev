@@ -175,6 +175,7 @@ class CompletenessManager
         $channelCodes = $getCodes($channels);
         $localeCodes = $getCodes($locales);
         $channelTemplate = [
+            // Wrong indentation and use [] instead of array
             'channels'     => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
             'stats' => [
                 'total'    => 0,
@@ -192,9 +193,16 @@ class CompletenessManager
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
 
+            // Just for my information, I don't understand how a locale can't be in $completenesses if locale comes from a completeness in completenesses
             if (isset($completenesses[$locale->getCode()])) {
                 $completenesses[$locale->getCode()]['channels'][$channel->getCode()]['completeness'] = $completeness;
                 $completenesses[$locale->getCode()]['stats']['total']++;
+                /* More readable to do
+                if (0 === $completeness->getMissingCount()) {
+                    $completenesses[$locale->getCode()]['stats']['complete']++;
+                }
+                instead of the following three lines
+                */
                 $completenesses[$locale->getCode()]['stats']['complete'] = (0 === $completeness->getMissingCount()) ?
                     $completenesses[$locale->getCode()]['stats']['complete'] + 1 :
                     $completenesses[$locale->getCode()]['stats']['complete'];
@@ -258,7 +266,7 @@ class CompletenessManager
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {
-            $valueCode .= '-' .$locale;
+            $valueCode .= '-' . $locale;
         }
         if ($attribute->isScopable()) {
             $valueCode .= '-' . $scope;

@@ -42,6 +42,7 @@ class CreateProductCommand extends ContainerAwareCommand
         if (false !== $product) {
             $output->writeln(sprintf('<error>product with identifier "%s" already exists<error>', $identifier));
 
+            // Same here I don't understand why you return null in commands
             return;
         }
 
@@ -53,6 +54,7 @@ class CreateProductCommand extends ContainerAwareCommand
         if (0 !== $violations->count()) {
             $output->writeln(sprintf('<error>product "%s" is not valid<error>', $identifier));
 
+            // Same don't return null
             return;
         }
 

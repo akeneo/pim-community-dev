@@ -44,6 +44,7 @@ class CopyVariantGroupValuesCommand extends ContainerAwareCommand
         if (!$variantGroup || $variantGroup->getType()->isVariant() === false) {
             $output->writeln(sprintf('<error>The variant group "%s" does not exist.<error>', $code));
 
+            // A command should never return null
             return;
         }
 

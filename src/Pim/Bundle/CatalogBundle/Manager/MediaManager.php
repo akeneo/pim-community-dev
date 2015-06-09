@@ -358,6 +358,7 @@ class MediaManager
      *
      * @return string|null the path of the media or null if the media has no file attached
      */
+    // What is the case to ask a file and don't worry about its existence ?
     public function getFilePath(ProductMediaInterface $media, $checkFile = true)
     {
         if (null === $media->getFilename()) {

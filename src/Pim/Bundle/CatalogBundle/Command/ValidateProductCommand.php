@@ -43,6 +43,7 @@ class ValidateProductCommand extends ContainerAwareCommand
         if (!$product) {
             $output->writeln(sprintf('<error>product with identifier "%s" not found<error>', $identifier));
 
+            // don't return null
             return;
         }
 
@@ -53,6 +54,7 @@ class ValidateProductCommand extends ContainerAwareCommand
             foreach ($violations as $violation) {
                 $output->writeln(sprintf("<error>%s<error>", $violation->getMessage()));
             }
+            // don't return null
         }
     }
 
