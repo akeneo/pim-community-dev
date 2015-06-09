@@ -18,6 +18,7 @@
 - PIM-4024: Fix for metric and price denormalizer
 - PIM-4314: Added missing translation keys
 - PIM-4112: Not translated Error message when wrong format import
+- PMI-4032: Fix wrong error message when deleting used attribute option by a published product
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
