@@ -60,7 +60,7 @@
                                     EntityManager.initialize().done(function () {
                                         $.when(
                                             FormBuilder.build('pim/product-edit-form'),
-                                            ProductManager.get({{ productId }})
+                                            ProductManager.get('{{ productId }}')
                                         ).done(function(form, product) {
                                             document.title = document.title.replace('%product.sku%', _.escape(product.meta.label[UserContext.get('catalogLocale')]));
                                             form.setData(product, {silent: true});
