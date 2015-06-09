@@ -185,8 +185,7 @@ class ProductAssetController extends Controller
                             ]
                         );
                     }
-                    $varFormView                                                               = $this->createUploadForm(
-                    )->createView();
+                    $varFormView = $this->createUploadForm()->createView();
                     $varFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
                         'ref_%s_var_%s',
                         $reference->getId(),

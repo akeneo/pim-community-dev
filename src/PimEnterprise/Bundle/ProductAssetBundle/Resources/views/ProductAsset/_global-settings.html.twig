@@ -1,0 +1,34 @@
+<div class="tab-pane active" id="global-settings">
+
+    <h3> </h3>
+
+    <div class="control-group attribute-field">
+        <label class="control-label">{{'pimee_product_asset.enrich_asset.view.code'|trans}}</label>
+        <div class="controls">
+            <div class="value-field">
+                {{ asset.code }}
+            </div>
+            <div class="icons-container"></div>
+        </div>
+    </div>
+
+    <div class="control-group attribute-field">
+        <label class="control-label">{{'pimee_product_asset.enrich_asset.view.description'|trans}}</label>
+        <div class="controls">
+            <div class="value-field">
+                {{ asset.description }}
+            </div>
+            <div class="icons-container"></div>
+        </div>
+    </div>
+
+    <div class="control-group attribute-field">
+        <label class="control-label">{{'pimee_product_asset.enrich_asset.view.end_of_use'|trans}}</label>
+        <div class="controls">
+            <div class="value-field">
+                {{ asset.endOfUseAt|date("m / d / Y") }}
+            </div>
+            <div class="icons-container"></div>
+        </div>
+    </div>
+</div>
