@@ -843,6 +843,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $viewLabel
      *
      * @Then /^I should( not)? see the "([^"]*)" view$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheView($not, $viewLabel)
     {

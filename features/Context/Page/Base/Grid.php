@@ -643,19 +643,17 @@ class Grid extends Index
     protected function clickOnFilterToManage($filterName)
     {
         try {
-            $filterElement = $this
-                ->getElement('Manage filters')
-                ->find('css', sprintf('label:contains("%s")', $filterName));
+            $this->spin(function () use ($filterName) {
+                $filterElement = $this
+                    ->getElement('Manage filters')
+                    ->find('css', sprintf('label:contains("%s")', $filterName));
 
-            if (!$filterElement) {
-                throw new \InvalidArgumentException('Impossible to find filter "%s"', $filterName);
-            }
+                if ($filterElement) {
+                    $filterElement->click();
 
-            $filterElement->click();
-        } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Impossible to find filter "%s"', $filterName)
-            );
+                    return true;
+                }
+            });
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Impossible to activate filter "%s"', $filterName)
@@ -670,7 +668,7 @@ class Grid extends Index
     {
         try {
             $this->spin(function () {
-                $filterList = $filterList = $this
+                $filterList = $this
                     ->getElement('Filters')
                     ->find('css', 'a#add-filter-button');
                 $filterList->click();
@@ -697,7 +695,21 @@ class Grid extends Index
             /** @var NodeElement $checkbox */
             $checkbox = $this->spin(function () use ($value) {
                 $row = $this->getRow($value);
+
+                if (!$row) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Couldn\'t find row for "%s"', $value)
+                    );
+                }
+
                 $checkbox = $row->find('css', 'input[type="checkbox"]');
+
+                if (!$checkbox) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Couldn\'t find a checkbox for row "%s"', $value)
+                    );
+                }
+
                 $checkbox->check();
 
                 return $checkbox;
