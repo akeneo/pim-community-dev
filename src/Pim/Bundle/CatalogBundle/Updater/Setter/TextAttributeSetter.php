@@ -72,16 +72,13 @@ class TextAttributeSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
         if (null !== $data && !is_string($data)) {
-            throw InvalidArgumentException::stringExpected(
-                $attribute->getCode(),
-                'setter',
-                'text',
-                gettype($data)
-            );
+            throw InvalidArgumentException::stringExpected($attribute->getCode(), 'setter', 'text', gettype($data));
         }
     }
 }

@@ -73,6 +73,8 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
      * @param mixed              $data
      *
      * @return mixed
+     *
+     * @throws InvalidArgumentException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {

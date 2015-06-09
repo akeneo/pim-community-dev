@@ -36,6 +36,7 @@ class CommentController
      * @param SecurityContextInterface $securityContext
      * @param ManagerRegistry          $doctrine
      * @param CommentManager           $commentManager
+     * @param string                   $commentClassName
      */
     public function __construct(
         SecurityContextInterface $securityContext,

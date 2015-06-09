@@ -55,7 +55,7 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
-        if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1 && null !== $data) {
+        if (!is_bool($data) && '0' !== $data && '1' !== $data && 0 !== $data && 1 !== $data && null !== $data) {
             throw InvalidArgumentException::booleanExpected($attribute->getCode(), 'setter', 'boolean', gettype($data));
         }
     }
@@ -75,7 +75,6 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
-        $data = (bool) $data;
-        $value->setData($data);
+        $value->setData((bool) $data);
     }
 }

@@ -39,16 +39,13 @@ class EnabledFieldSetter extends AbstractFieldSetter
      *
      * @param string $field
      * @param mixed  $data
+     *
+     * @throws InvalidArgumentException
      */
     protected function checkData($field, $data)
     {
-        if (!is_bool($data) && $data !== '0' && $data !== '1' && $data !== 0 && $data !== 1) {
-            throw InvalidArgumentException::booleanExpected(
-                $field,
-                'setter',
-                'enabled',
-                gettype($data)
-            );
+        if (!is_bool($data) && '0' !== $data && '1' !== $data && 0 !== $data && 1 !== $data) {
+            throw InvalidArgumentException::booleanExpected($field, 'setter', 'enabled', gettype($data));
         }
     }
 }

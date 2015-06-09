@@ -75,6 +75,8 @@ class MetricAttributeSetter extends AbstractAttributeSetter
      *
      * @param AttributeInterface $attribute
      * @param mixed              $data
+     *
+     * @throws InvalidArgumentException
      */
     protected function checkData(AttributeInterface $attribute, $data)
     {
