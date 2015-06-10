@@ -17,6 +17,8 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
  * @author    Yohan Blain <yohan.blain@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * //TODO: really difficult to understand (split into smaller methods if needed and at least fill in phpdoc)
  */
 class ProductEditDataFilter implements CollectionFilterInterface
 {
@@ -148,7 +150,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     {
         if (!array_key_exists($code, $this->attributes)) {
             $attribute = $this->attributeRepository->findOneByIdentifier($code);
-            if (!$attribute) {
+            if (null === $attribute) {
                 throw new ObjectNotFoundException(sprintf('Attribute with code "%s" was not found.', $code));
             }
 
@@ -170,7 +172,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
     {
         if (!array_key_exists($code, $this->locales)) {
             $locale = $this->localeRepository->findOneByIdentifier($code);
-            if (!$locale) {
+            if (null === $locale) {
                 throw new ObjectNotFoundException(sprintf('Locale with code "%s" was not found.', $code));
             }
             if ($activeOnly && !$locale->isActivated()) {

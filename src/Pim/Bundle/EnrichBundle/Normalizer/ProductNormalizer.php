@@ -15,6 +15,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: spec it
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
@@ -28,6 +30,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     protected $versionManager;
 
     /** @var SerializerInterface */
+    //TODO: we need a normalizer here
     protected $serializer;
 
     /**
@@ -36,6 +39,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      * @param LocaleManager       $localeManager
      */
     public function __construct(
+        //TODO: we need a normalizer here
         NormalizerInterface $productNormalizer,
         VersionManager $versionManager,
         LocaleManager $localeManager

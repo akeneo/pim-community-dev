@@ -19,6 +19,9 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: a lot of things of CommentController have been removed and should not have been removed
+ * TODO: now we can not use comments out of products
  */
 class ProductCommentRestController
 {
@@ -81,12 +84,13 @@ class ProductCommentRestController
      * @AclAncestor("pim_enrich_product_comment")
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * //TODO: should use the getAction of a non product tinded controller
      */
     public function getAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
         $comments = $this->commentManager->getComments($product);
-        $class = $this->productManager->getProductName();
 
         return new JsonResponse($this->normalizer->normalize($comments, 'json'));
     }
@@ -98,20 +102,20 @@ class ProductCommentRestController
      * @param string  $id
      *
      * @return JsonResponse
+     *
+     * //TODO: should use the postAction of a non product tinded controller
      */
     public function postAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-
         $data = json_decode($request->getContent(), true);
-
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
 
         $form = $this->formFactory->create('pim_comment_comment', $comment, ['csrf_protection' => false]);
-
         $form->submit($data, false);
 
         if ($form->isValid()) {
+            //TODO: maybe it's time to declare a saver for the comments :)
             $this->commentManager->save($comment);
 
             return new JsonResponse($this->normalizer->normalize($comment, 'json'));
@@ -138,6 +142,8 @@ class ProductCommentRestController
      * @param string  $commentId
      *
      * @return JsonResponse
+     *
+     * //TODO: should use the postReplyAction of a non product tinded controller
      */
     public function postReplyAction(Request $request, $id, $commentId)
     {
@@ -193,6 +199,7 @@ class ProductCommentRestController
         $product = $this->productManager->find($id);
 
         if (!$product) {
+            //TODO: that can't work ;)
             throw $this->createNotFoundException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );

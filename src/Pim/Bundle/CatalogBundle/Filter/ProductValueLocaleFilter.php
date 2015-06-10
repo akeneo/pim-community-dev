@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Filter;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
- * Product Value filter
+ * Filter the product values according to some locale codes.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -22,6 +22,7 @@ class ProductValueLocaleFilter extends AbstractFilter implements CollectionFilte
             throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
         }
 
+        //TODO: please rename the option and the variable to "localeCodes"
         $locales   = isset($options['locales']) ? $options['locales'] : [];
         $attribute = $productValue->getAttribute();
 

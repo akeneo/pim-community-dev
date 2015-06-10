@@ -41,6 +41,7 @@ class GroupRestController
      */
     public function indexAction()
     {
+        //TODO: inject the repo instead
         $groups = $this->groupManager->getRepository()->getAllGroupsExceptVariant();
 
         return new JsonResponse($this->normalizer->normalize($groups, 'internal_api'));
@@ -53,6 +54,8 @@ class GroupRestController
      */
     public function getAction($identifier)
     {
+        //TODO: inject the repo instead
+        //TODO: findOneBy(['code' => ...])
         $group = $this->groupManager->getRepository()->findOneByCode($identifier);
 
         return new JsonResponse($this->normalizer->normalize($group, 'internal_api'));
@@ -69,6 +72,8 @@ class GroupRestController
      */
     public function listProductsAction($identifier)
     {
+        //TODO: inject the repo instead
+        //TODO: findOneBy(['code' => ...])
         $group = $this->groupManager->getRepository()->findOneByCode($identifier);
 
         if (!$group) {

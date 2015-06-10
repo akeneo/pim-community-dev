@@ -1,5 +1,5 @@
 <?php
-
+// TOOD: this whole namespace should be moved IMO to another component/bundle (AkeneoSecurity ?)
 namespace Pim\Bundle\CatalogBundle\Filter;
 
 /**
@@ -8,6 +8,8 @@ namespace Pim\Bundle\CatalogBundle\Filter;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * //TODO: real question here, does it really makes sense? Filtering only one object is the same that using a voter no?
  */
 interface ObjectFilterInterface
 {

@@ -23,6 +23,7 @@ class AttributeGroupRestController
     protected $normalizer;
 
     /** @var CollectionFilterInterface */
+    //TODO: rename it? securityFilter? should be done in all rest controllers if we do it
     protected $collectionFilter;
 
     /**

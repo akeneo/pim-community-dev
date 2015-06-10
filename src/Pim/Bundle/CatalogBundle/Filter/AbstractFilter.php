@@ -1,5 +1,5 @@
 <?php
-
+// TOOD: this whole namespace should be moved IMO to another component/bundle (AkeneoSecurity ?)
 namespace Pim\Bundle\CatalogBundle\Filter;
 
 /**
