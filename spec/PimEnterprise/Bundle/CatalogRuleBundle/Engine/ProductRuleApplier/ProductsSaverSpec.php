@@ -2,12 +2,12 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogRuleBundle\Engine\ProductRuleApplier;
 
+use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Akeneo\Bundle\RuleEngineBundle\Model\RuleInterface;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 

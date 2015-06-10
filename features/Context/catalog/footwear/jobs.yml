@@ -1,0 +1,21 @@
+jobs:
+    add_product_value_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     add_product_value_with_permission
+        label:     Mass add products values with permission check
+        type:      mass_edit
+    edit_common_attributes_with_permission:
+        connector: Akeneo Mass Edit Connector
+        alias:     edit_common_attributes_with_permission
+        label:     Mass edit common product attributes with permission check
+        type:      mass_edit
+    publish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     publish_product
+        label:     Mass publish products
+        type:      mass_edit
+    unpublish_product:
+        connector: Akeneo Mass Edit Connector
+        alias:     unpublish_product
+        label:     Mass unpublish products
+        type:      mass_edit

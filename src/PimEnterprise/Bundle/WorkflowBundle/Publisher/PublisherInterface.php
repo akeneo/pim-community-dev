@@ -33,7 +33,7 @@ interface PublisherInterface
      *
      * @param object $object
      *
-     * @return boolean
+     * @return bool
      */
     public function supports($object);
 }

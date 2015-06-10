@@ -3,24 +3,9 @@ imports:
 
 assetic:
     bundles:
-        - OroAsseticBundle
-        - OroUIBundle
-        - OroUserBundle
-        - OroFilterBundle
-        - OroNavigationBundle
-        - OroWindowsBundle
-        - OroEntityExtendBundle
-        - OroSecurityBundle
-        - PimUIBundle
-        - PimCatalogBundle
-        - PimEnrichBundle
         - PimEnterpriseEnrichBundle
 
 twig:
-    globals:
-        bap:
-            layout: PimEnterpriseEnrichBundle::base.html.twig
-            start_route: oro_default
     form:
         resources:
             - 'PimEnterpriseUIBundle:Form:pimee-fields.html.twig'
@@ -37,5 +22,5 @@ doctrine_migrations:
     namespace: Pimee\Upgrade\Schema
     name: PIM Enterprise Migrations
 
-parameters:
-    max_products_category_removal: 100
+pim_enrich:
+    max_products_category_removal: %max_products_category_removal%

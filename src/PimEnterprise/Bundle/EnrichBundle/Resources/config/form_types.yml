@@ -3,10 +3,9 @@ parameters:
     pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pimee_enrich.form.type.locale_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocalePermissionsType
     pim_enrich.form.type.available_attributes.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
-    pim_enrich.form.type.edit_common_attributes.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pimee_enrich.form.type.publish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType
-    pimee_enrich.form.type.unpublish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType
     pimee_enrich.form.type.classify.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
+    pimee_enrich.form.type.unpublish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\UnpublishType
     pimee_enrich.form.type.locale.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\LocaleType
 
 services:
@@ -32,7 +31,6 @@ services:
             - { name: form.type, alias: pim_product_edit }
         calls:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.remove_product_value_subscriber']]
-            - [addEventSubscriber, ['@pimee_workflow.form.subscriber.collect_product_value_changes']]
 
     pim_enrich.form.type.attribute_group:
         class: %pim_enrich.form.type.attribute_group.class%
@@ -73,18 +71,6 @@ services:
         calls:
             - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_permissions']]
 
-    pim_enrich.form.type.edit_common_attributes:
-        class: %pim_enrich.form.type.edit_common_attributes.class%
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.helper.locale'
-            - '@pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes'
-            - %pim_catalog.entity.attribute.class%
-            - %pim_catalog.entity.locale.class%
-            - %pim_enrich.mass_edit_action.edit_common_attributes.class%
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
-
     ##
     # New forms
     ##
@@ -97,6 +83,17 @@ services:
         class: %pimee_enrich.form.type.category_permissions.class%
         tags:
             - { name: form.type, alias: pimee_enrich_category_permissions }
+
+    # Override of the ClassifyType
+    pim_enrich.form.type.classify:
+        class: %pimee_enrich.form.type.classify.class%
+        arguments:
+            - '@pim_catalog.manager.category'
+            - '@security.context'
+            - %pim_catalog.entity.category.class%
+            - %pim_enrich.mass_edit_action.classify.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_classify }
 
     pimee_enrich.form.type.publish:
         class: %pimee_enrich.form.type.publish.class%
@@ -111,13 +108,6 @@ services:
             - %pimee_enrich.mass_edit_action.unpublish.class%
         tags:
             - { name: form.type, alias: pimee_enrich_mass_unpublish }
-
-    pimee_enrich.form.type.classify:
-        class: %pimee_enrich.form.type.classify.class%
-        arguments:
-            - %pim_enrich.mass_edit_action.classify.class%
-        tags:
-            - { name: form.type, alias: pimee_enrich_mass_classify }
 
     pimee_enrich.form.type.locale:
         class: %pimee_enrich.form.type.locale.class%

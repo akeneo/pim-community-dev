@@ -61,7 +61,7 @@ class AttributeGroupAccessRepository extends EntityRepository
      * @param AttributeGroupInterface               $group
      * @param \Oro\Bundle\UserBundle\Entity\Group[] $excludedUserGroups
      *
-     * @return integer
+     * @return int
      */
     public function revokeAccess(AttributeGroupInterface $group, array $excludedUserGroups = [])
     {
