@@ -121,10 +121,23 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
 
-# 1.3.x
+# 1.3.16 (2015-06-08)
+
+## Bug fixes
+- PIM-4312: Fix price indexes on MongoDB
+- PIM-4112: Not translated Error message when wrong format import
+
+# 1.3.15 (2015-06-05)
+
+## Bug fixes
+- PIM-4308: MongoDB indexes are removed on schema update
+- PIM-4314: Added missing translation keys
+
+# 1.3.14 (2015-06-03)
 
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
+- PIM-4309: Fix bug processing media with a non existing media
 
 # 1.3.13 (2015-05-29)
 
