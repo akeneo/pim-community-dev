@@ -25,17 +25,23 @@ define(
                 );
             },
             addExtension: function (event) {
-                PermissionManager.getPermissions().done(_.bind(function (permissions) {
-                    var field = event.field;
+                event.promises.push(
+                    PermissionManager.getPermissions().done(_.bind(function (permissions) {
+                        var deferred = $.Deferred();
+                        var field = event.field;
 
-                    if (field.attribute.localizable) {
-                        var localePermission = _.findWhere(permissions.locales, {code: field.context.locale});
+                        if (field.attribute.localizable) {
+                            var localePermission = _.findWhere(permissions.locales, {code: field.context.locale});
 
-                        if (!localePermission.edit) {
-                            field.setEditable(false);
+                            if (!localePermission.edit) {
+                                field.setEditable(false);
+                            }
                         }
-                    }
-                }, this));
+                        deferred.resolve();
+
+                        return deferred.promise();
+                    }, this))
+                );
 
                 return this;
             }

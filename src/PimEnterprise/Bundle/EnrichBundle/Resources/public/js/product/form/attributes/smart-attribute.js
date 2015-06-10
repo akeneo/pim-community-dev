@@ -28,18 +28,24 @@ define(
                 );
             },
             addExtension: function (event) {
-                RuleManager.getRuleRelations('attribute').done(_.bind(function (ruleRelations) {
-                    var field = event.field;
-                    var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
+                event.promises.push(
+                    RuleManager.getRuleRelations('attribute').done(_.bind(function (ruleRelations) {
+                        var deferred = $.Deferred();
+                        var field = event.field;
+                        var ruleRelation = _.findWhere(ruleRelations, {attribute: field.attribute.code});
 
-                    if (ruleRelation && field.isEditable()) {
-                        var $element = this.template({
-                            ruleRelation: ruleRelation
-                        });
+                        if (ruleRelation && field.isEditable()) {
+                            var $element = this.template({
+                                ruleRelation: ruleRelation
+                            });
 
-                        field.addElement('footer', 'from_smart', $element);
-                    }
-                }, this));
+                            field.addElement('footer', 'from_smart', $element);
+                        }
+                        deferred.resolve();
+
+                        return deferred.promise();
+                    }, this))
+                );
 
                 return this;
             }
