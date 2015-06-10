@@ -42,10 +42,21 @@ class Edit extends Form
                 'Category tree'           => ['css' => '#trees'],
                 'Comparison dropdown'     => ['css' => '.attribute-copy-actions'],
                 'Copy selection dropdown' => ['css' => '#copy-selection-switcher'],
-                'Copy translations link'  => ['css' => 'a#copy-selection'],
+                'Copy translations link'  => ['css' => 'a#copy-se-edit-formlection'],
                 'Comment threads'         => ['css' => '.comment-threads'],
             ]
         );
+    }
+
+    public function verifyAfterLogin()
+    {
+        $this->spin(function () {
+            $formContainer = $this->find('css', 'div.product-edit-form');
+            if ($formContainer) {
+                return true;
+            }
+            echo 'retry open product edit page' . PHP_EOL;
+        }, 30, 'cannot open product edit page');
     }
 
     /**
@@ -305,7 +316,7 @@ class Edit extends Form
         }
 
         if (!$label) {
-            $label = new \stdClass();
+            $label = new \StdClass();
         }
 
         $label->labelContent = $labelContent;
