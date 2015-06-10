@@ -49,24 +49,27 @@ define([
             },
             render: function () {
                 this.setEditable(true);
-                mediator.trigger('field:extension:add', {'field': this});
+                var promises = [];
+                mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
 
-                this.getTemplateContext().done(_.bind(function (templateContext) {
-                    this.$el.html(this.template(templateContext));
-                    this.$('.form-field .field-input').append(this.renderInput(templateContext));
+                $.when.apply($, promises).then(_.bind(function () {
+                    $.when(this.getTemplateContext()).then(_.bind(function (templateContext) {
+                        this.$el.html(this.template(templateContext));
+                        this.$('.form-field .field-input').append(this.renderInput(templateContext));
 
-                    _.each(this.elements, _.bind(function (elements, position) {
-                        var $container = this.$('.' + position + '-elements-container');
-                        $container.empty();
-                        _.each(elements, _.bind(function (element) {
-                            if (typeof element.render === 'function') {
-                                $container.append(element.render().$el);
-                            } else {
-                                $container.append(element);
-                            }
+                        _.each(this.elements, _.bind(function (elements, position) {
+                            var $container = this.$('.' + position + '-elements-container');
+                            $container.empty();
+                            _.each(elements, _.bind(function (element) {
+                                if (typeof element.render === 'function') {
+                                    $container.append(element.render().$el);
+                                } else {
+                                    $container.append(element);
+                                }
+                            }, this));
                         }, this));
+                        this.delegateEvents();
                     }, this));
-                    this.delegateEvents();
                 }, this));
 
                 return this;

@@ -35,18 +35,24 @@ define(
                     return;
                 }
 
-                EntityManager.getRepository('variantGroup').find(product.variant_group)
-                    .done(_.bind(function (variantGroup) {
-                        var field = event.field;
-                        if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
-                            var $element = this.template({
-                                variantGroup: variantGroup
-                            });
+                event.promises.push(
+                    EntityManager.getRepository('variantGroup').find(product.variant_group)
+                        .done(_.bind(function (variantGroup) {
+                            var deferred = $.Deferred();
+                            var field = event.field;
+                            if (variantGroup.values && _.contains(_.keys(variantGroup.values), field.attribute.code)) {
+                                var $element = this.template({
+                                    variantGroup: variantGroup
+                                });
 
-                            field.setEditable(false);
-                            field.addElement('footer', 'updated_by', $element);
-                        }
-                    }, this));
+                                field.setEditable(false);
+                                field.addElement('footer', 'updated_by', $element);
+                            }
+                            deferred.resolve();
+
+                            return deferred.promise();
+                        }, this))
+                );
 
                 return this;
             }
