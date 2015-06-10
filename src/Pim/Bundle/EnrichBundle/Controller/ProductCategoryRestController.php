@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -40,14 +41,15 @@ class ProductCategoryRestController
      *
      * @param string $id
      *
-     * @AclAncestor("pim_enrich_product_categories_view")
-     *
      * @return JsonResponse
+     *
+     * @AclAncestor("pim_enrich_product_categories_view")
      */
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees = $this->productCatManager->getProductCountByTree($product);
+        // Use the ProductCategoryRepository for that !
+        $trees   = $this->productCatManager->getProductCountByTree($product);
 
         $result = [
             'trees'      => [],
@@ -77,15 +79,16 @@ class ProductCategoryRestController
      *
      * @param string $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return ProductInterface
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @throws NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
+        // Use the ProductRepository for that ! Burn managers !
         $product = $this->productManager->find($id);
 
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );

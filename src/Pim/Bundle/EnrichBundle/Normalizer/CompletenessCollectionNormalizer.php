@@ -13,7 +13,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessCollectionNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    // in constructor
+    /** @var string[] */
     protected $supportedFormat = ['internal_api'];
 
     /** @var NormalizerInterface */
@@ -30,7 +31,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($completenesses, $format = null, array $context = array())
+    public function normalize($completenesses, $format = null, array $context = [])
     {
         foreach ($completenesses as $locale => $channels) {
             foreach ($channels['channels'] as $channel => $completeness) {
@@ -56,7 +57,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeCompleteness($completeness)
+    protected function normalizeCompleteness(array $completeness)
     {
         $missing = [];
         foreach ($completeness['missing'] as $attribute) {

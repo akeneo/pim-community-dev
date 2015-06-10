@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -26,7 +27,7 @@ class ProductRestController
     /** @var ProductManager */
     protected $productManager;
 
-    /** @var ProductUpdater */
+    /** @var ProductUpdaterInterface */
     protected $productUpdater;
 
     /** @var SaverInterface */
@@ -70,10 +71,10 @@ class ProductRestController
      *
      * @param int $id
      *
+     * @return array
+     *
      * @Template("PimEnrichBundle:Product:edit.html.twig")
      * @AclAncestor("pim_enrich_product_index")
-     *
-     * @return array
      */
     public function editAction($id)
     {
@@ -186,15 +187,16 @@ class ProductRestController
      *
      * @param string $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return ProductInterface
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @throws NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
+        // Use repository for that !
         $product = $this->productManager->find($id);
 
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );

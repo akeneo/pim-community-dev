@@ -19,39 +19,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessRestController
 {
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $compNormalizer;
 
-    /**
-     * @var CollectionFilterInterface
-     */
+    /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
     /**
-     * Constructor
-     *
      * @param CompletenessManager       $completenessManager
      * @param ProductManager            $productManager
      * @param ChannelManager            $channelManager
@@ -84,18 +70,19 @@ class CompletenessRestController
      */
     public function getAction($id)
     {
+        // Inject directly the product repo instead of this manager pls
         $product = $this->productManager->getProductRepository()->getFullProduct($id);
         $this->completenessManager->generateMissingForProduct($product);
 
         $channels = $this->channelManager->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
-        $fitleredLocales = $this->collectionFilter->filterCollection($locales, 'pim:internal_api:locale:view');
+        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim:internal_api:locale:view');
 
         $completenesses = $this->completenessManager->getProductCompleteness(
             $product,
             $channels,
-            $fitleredLocales,
+            $filteredLocales,
             $this->userContext->getCurrentLocale()->getCode()
         );
 

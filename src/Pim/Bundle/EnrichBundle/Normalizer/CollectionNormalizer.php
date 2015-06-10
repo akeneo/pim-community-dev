@@ -15,16 +15,17 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var SerializerInterface $serializer */
+    /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var array */
+    // In constructor
+    /** @var string[] */
     protected $supportedFormat = ['internal_api'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($elements, $format = null, array $context = array())
+    public function normalize($elements, $format = null, array $context = [])
     {
         $normalizedElements = [];
 
@@ -40,6 +41,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
+        // \Iterable is not completed on my ide, do you mean \Iterator ?
         return ($data instanceof \Iterable || is_array($data)) && in_array($format, $this->supportedFormat);
     }
 

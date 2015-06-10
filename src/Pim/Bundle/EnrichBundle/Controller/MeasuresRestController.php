@@ -25,6 +25,8 @@ class MeasuresRestController
     }
 
     /**
+     * Get measures configuration
+     *
      * @return JsonResponse
      */
     public function indexAction()

@@ -15,7 +15,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class LocaleNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    // in constructor
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /**
@@ -29,7 +30,7 @@ class LocaleNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($locale, $format = null, array $context = array())
+    public function normalize($locale, $format = null, array $context = [])
     {
         return [
             'code'     => $locale->getCode(),

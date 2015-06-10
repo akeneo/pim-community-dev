@@ -18,7 +18,8 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var array */
+    // in constructor
+    /** @var string[] */
     protected $supportedFormat = ['internal_api'];
 
     /** @var NormalizerInterface */
@@ -48,7 +49,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = [])
     {
         $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
         $normalizedProduct['meta'] = [

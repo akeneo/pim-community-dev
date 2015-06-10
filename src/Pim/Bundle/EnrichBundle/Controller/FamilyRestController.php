@@ -55,6 +55,8 @@ class FamilyRestController
      * @param int $id
      *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException
      */
     public function getAction($id)
     {

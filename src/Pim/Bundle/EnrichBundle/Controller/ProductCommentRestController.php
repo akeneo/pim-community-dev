@@ -4,12 +4,16 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
 use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -44,8 +48,6 @@ class ProductCommentRestController
     protected $validator;
 
     /**
-     * Constructor
-     *
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ProductManager           $productManager
@@ -78,15 +80,16 @@ class ProductCommentRestController
      * @param Request    $request
      * @param int|string $id
      *
-     * @AclAncestor("pim_enrich_product_comment")
+     * @return Response
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @AclAncestor("pim_enrich_product_comment")
      */
     public function getAction(Request $request, $id)
     {
-        $product = $this->findProductOr404($id);
+        $product  = $this->findProductOr404($id);
         $comments = $this->commentManager->getComments($product);
-        $class = $this->productManager->getProductName();
+        // Not used ?
+        $class    = $this->productManager->getProductName();
 
         return new JsonResponse($this->normalizer->normalize($comments, 'json'));
     }
@@ -184,15 +187,17 @@ class ProductCommentRestController
      *
      * @param int $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return ProductInterface
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @throws NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
 
-        if (!$product) {
+        if (null === $product) {
+            // You need to extend the symfony Controller and inject with a setter in DI the container to do it
+            // Or just throw new NotFoundHttpException which is simpler
             throw $this->createNotFoundException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
@@ -204,7 +209,7 @@ class ProductCommentRestController
     /**
      * Get the user from the Security Context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     * @return UserInterface|null
      */
     protected function getUser()
     {

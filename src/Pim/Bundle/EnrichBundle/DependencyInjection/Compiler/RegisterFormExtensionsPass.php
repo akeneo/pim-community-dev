@@ -60,7 +60,7 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      *
-     * @return SplFileInfo[]
+     * @return \SplFileInfo[]
      */
     protected function listConfigFiles(ContainerBuilder $container)
     {
@@ -92,11 +92,11 @@ class RegisterFormExtensionsPass implements CompilerPassInterface
      *
      * @param string $directory
      *
-     * @return SplFileInfo[]
+     * @return \SplFileInfo[]
      */
     protected function listConfigFilesInDirectory($directory)
     {
-        $files = [];
+        $files  = [];
         $finder = new Finder();
         $finder->files()->in($directory)->name('*.yml');
 

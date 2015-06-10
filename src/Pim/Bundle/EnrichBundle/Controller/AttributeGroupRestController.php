@@ -75,10 +75,12 @@ class AttributeGroupRestController
      * @param int $id
      *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException If the attribute group is not found or the user doesn't have the right to see it
      */
     public function getAction($id)
     {
-        $attributeGroup = $this->attributeGroupGroupRepo->findOneById($id);
+        $attributeGroup = $this->attributeGroupRepo->findOneById($id);
 
         if (null === $attributeGroup ||
             (

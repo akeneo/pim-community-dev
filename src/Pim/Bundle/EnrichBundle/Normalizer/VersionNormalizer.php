@@ -22,7 +22,8 @@ class VersionNormalizer implements NormalizerInterface
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var array */
+    // In constructor
+    /** @var string[] */
     protected $supportedFormats = ['array', 'json', 'internal_api'];
 
     /** @var array */
@@ -41,7 +42,7 @@ class VersionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($version, $format = null, array $context = array())
+    public function normalize($version, $format = null, array $context = [])
     {
         return [
             'id'           => $version->getId(),
@@ -72,6 +73,7 @@ class VersionNormalizer implements NormalizerInterface
     protected function normalizeAuthor($author)
     {
         if (!isset($this->authorCache[$author])) {
+            // Use repo for that
             $user = $this->userManager->findUserByUsername($author);
 
             if (null === $user) {

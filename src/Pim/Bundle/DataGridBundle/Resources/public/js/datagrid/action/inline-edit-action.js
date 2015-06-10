@@ -62,6 +62,7 @@ define(
             },
 
             onEscape: function (e) {
+                // What is this 27 ? Can it be a constant with a real nam e?
                 if (27 === e.which) {
                     this.close();
                 }

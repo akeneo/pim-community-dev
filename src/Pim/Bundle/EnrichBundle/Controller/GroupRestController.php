@@ -53,25 +53,27 @@ class GroupRestController
      */
     public function getAction($identifier)
     {
-        $group = $this->groupManager->getRepository()->findOneByCode($identifier);
+        $group = $this->groupManager->getRepository()->findOneByIdentifier($identifier);
 
         return new JsonResponse($this->normalizer->normalize($group, 'internal_api'));
     }
 
     /**
-     * Display the products of a group
+     * Get the products list of a group
      *
      * @param string $identifier
      *
      * @return JsonResponse
      *
+     * @throws NotFoundHttpException
+     *
      * @AclAncestor("pim_enrich_product_index")
      */
     public function listProductsAction($identifier)
     {
-        $group = $this->groupManager->getRepository()->findOneByCode($identifier);
+        $group = $this->groupManager->getRepository()->findOneByIdentifier($identifier);
 
-        if (!$group) {
+        if (null === $group) {
             throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $identifier));
         }
 

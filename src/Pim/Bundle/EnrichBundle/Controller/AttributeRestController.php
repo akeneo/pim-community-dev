@@ -67,16 +67,16 @@ class AttributeRestController
      *
      * @param int $id
      *
-     * @throws NotFoundHttpException If the attribute is not found or the user doesn't have the right to see it
-     *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException If the attribute is not found or the user doesn't have the right to see it
      */
     public function getAction($id)
     {
         $attribute = $this->attributeRepository->findOneById($id);
 
         if (null === $attribute || $this->objectFilter->filterObject($attribute, 'pim:internal_api:attribute:view')) {
-            throw new NotFoundHttpException(sprintf('Attribute with id "%s", does not exists', $id));
+            throw new NotFoundHttpException(sprintf('Attribute with id "%s" does not exists', $id));
         }
 
         return new JsonResponse($this->normalizer->normalize($attribute, 'internal_api'));

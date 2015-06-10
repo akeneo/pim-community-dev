@@ -34,6 +34,8 @@ class ChannelRestController
     }
 
     /**
+     * Get the channels collection
+     *
      * @return JsonResponse
      */
     public function indexAction()
@@ -46,13 +48,19 @@ class ChannelRestController
     }
 
     /**
+     * Returns the channel with the given $id
+     *
      * @param int $id
      *
      * @return JsonResponse
+     *
+     * And don't forget throws doc
      */
     public function getAction($id)
     {
         $channel = $this->channelRepository->findOneById($id);
+
+        // Should throw an exception if channel doesn't exist
 
         return new JsonResponse($this->normalizer->normalize($channel, 'json'));
     }

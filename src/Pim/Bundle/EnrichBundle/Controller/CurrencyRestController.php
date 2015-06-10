@@ -26,6 +26,8 @@ class CurrencyRestController
     }
 
     /**
+     * Get list of the activated currencies
+     *
      * @return JsonResponse
      */
     public function indexAction()
