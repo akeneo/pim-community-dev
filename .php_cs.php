@@ -1,27 +1,12 @@
 <?php
 
-$branch = getenv('TRAVIS_BRANCH');
+$branch     = getenv('TRAVIS_BRANCH');
 $phpVersion = getenv('TRAVIS_PHP_VERSION');
 
 printf('Current branch inspected : %s' . PHP_EOL, $branch);
 
 $finder = \Symfony\CS\Finder\DefaultFinder::create()->files();
-
-$fixers = [
-    '-concat_without_spaces',
-    '-empty_return',
-    '-multiline_array_trailing_comma',
-    '-phpdoc_short_description',
-    '-single_quote',
-    '-trim_array_spaces',
-    '-operators_spaces',
-    '-unary_operators_spaces',
-    '-unalign_equals',
-    '-unalign_double_arrow',
-    'newline_after_open_tag',
-    'ordered_use',
-    'phpdoc_order'
-];
+$fixers = require __DIR__ . '/.php_cs-fixers.php';
 
 if (is_numeric(getenv('TRAVIS_PULL_REQUEST'))) {
     $commitRange = str_replace('...', '..', getenv('TRAVIS_COMMIT_RANGE'));

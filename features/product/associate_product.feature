@@ -70,4 +70,4 @@ Feature: Associate a product
     And I press the "Save" button
     Then the row "shoelaces" should be checked
     And the row "black-boots" should be checked
-    And I should be able to sort the rows by IS ASSOCIATED
+    And I should be able to sort the rows by Is associated

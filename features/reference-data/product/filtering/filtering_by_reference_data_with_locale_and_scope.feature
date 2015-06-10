@@ -1,5 +1,5 @@
 @javascript
-Feature: Filter products with locale and scope
+Feature: Filter products by reference data with locale and scope
   In order to filter products in the catalog per reference data
   As a regular user
   I need to be able to filter products in the catalog

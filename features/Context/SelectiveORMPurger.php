@@ -49,7 +49,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
      */
     public function purge()
     {
-        $classes = array();
+        $classes   = array();
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
 
         foreach ($metadatas as $metadata) {

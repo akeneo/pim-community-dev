@@ -16,7 +16,7 @@ Feature: Edit an export
     And I press the "Save" button
     Then I should see "My export"
 
-  @javascript
+  @javascript @unstable
   Scenario: Successfully update export job configuration
     Given I am on the "footwear_product_export" export job edit page
     Then I should see the Channel, Delimiter, Enclosure, With header and File path fields

@@ -176,7 +176,7 @@ class Form extends Base
     public function getValidationErrors()
     {
         $tooltips = $this->findAll('css', $this->elements['Validation errors']['css']);
-        $errors = array();
+        $errors   = array();
 
         foreach ($tooltips as $tooltip) {
             $errors[] = $tooltip->getAttribute('data-original-title');
@@ -305,7 +305,7 @@ class Form extends Base
      */
     public function fillField($field, $value, Element $element = null)
     {
-        $label = $this->extractLabelElement($field, $element);
+        $label     = $this->extractLabelElement($field, $element);
         $fieldType = $this->getFieldType($label);
 
         switch ($fieldType) {
@@ -446,7 +446,7 @@ class Form extends Base
     protected function extractLabelElement($field, $element)
     {
         $subLabelContent = null;
-        $labelContent = $field;
+        $labelContent    = $field;
 
         if (false !== strpbrk($field, '€$')) {
             if (false !== strpos($field, ' ')) {
@@ -464,7 +464,7 @@ class Form extends Base
             $label = new \stdClass();
         }
 
-        $label->labelContent = $labelContent;
+        $label->labelContent    = $labelContent;
         $label->subLabelContent = $subLabelContent;
 
         return $label;
@@ -531,8 +531,8 @@ class Form extends Base
      */
     protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
-        $allValues = explode(',', $value);
-        $selectedValues = $label->getParent()->findAll('css', '.select2-search-choice');
+        $allValues          = explode(',', $value);
+        $selectedValues     = $label->getParent()->findAll('css', '.select2-search-choice');
         $selectedTextValues = array_map(function ($selectedValue) {
             return $selectedValue->getText();
         }, $selectedValues);
@@ -668,7 +668,7 @@ class Form extends Base
      */
     protected function fillTextField(NodeElement $label, $value)
     {
-        $for = $label->getAttribute('for');
+        $for   = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
 
         $field->setValue($value);
