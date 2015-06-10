@@ -225,6 +225,7 @@ class ProductRestController
      */
     protected function findProductOr404($id)
     {
+        //TODO: use the repo to do that
         $product = $this->productManager->find($id);
         $product = $this->objectFilter->filterObject($product, 'pim:internal_api:product:view') ? null : $product;
 

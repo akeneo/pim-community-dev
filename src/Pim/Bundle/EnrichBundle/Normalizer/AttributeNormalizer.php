@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface
 {
-    /** @var array $supportedFormats */
+    /** @var array */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */

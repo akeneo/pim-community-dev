@@ -4,12 +4,14 @@ parameters:
     pim_enrich.filter.product_value.channel.class: Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter
 
 services:
+    # TODO: should be moved to a dedicated bundle (AkeneoSecurity ?)
     pim_catalog.filter.chained:
         class: %pim_catalog.filter.chained.class%
 
     pim_enrich.filter.product_value.locale:
         class: %pim_enrich.filter.product_value.locale.class%
         tags:
+            #TODO: we never use double dots on tags, do we ? maybe we should replace them by "." to be consistent
             - { name: pim_catalog.filter.collection, type: pim:transform:product_value:flat }
             - { name: pim_catalog.filter.collection, type: pim:transform:product_value:structured }
             - { name: pim_catalog.filter.collection, type: pim:external_api:product:view }

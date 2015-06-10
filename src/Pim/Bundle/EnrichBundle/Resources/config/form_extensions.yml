@@ -1,3 +1,4 @@
+# TODO: as we have said, could be useful to split it into several files
 extensions:
     product-edit-form:
         module: pim/product-edit-form

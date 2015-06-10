@@ -38,6 +38,7 @@ class FamilyRestController
      */
     public function indexAction()
     {
+        //TODO: is it normal? no performances pbs?
         $families = $this->familyRepository->findAll();
 
         $normalizedFamilies = [];

@@ -47,6 +47,7 @@ class AttributeRestController
      */
     public function indexAction()
     {
+        //TODO: is it normal? no performances pbs?
         $attributes = $this->attributeRepository->findAll();
         $filteredAttributes = $this->collectionFilter->filterCollection($attributes, 'pim:internal_api:attribute:view');
         $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');

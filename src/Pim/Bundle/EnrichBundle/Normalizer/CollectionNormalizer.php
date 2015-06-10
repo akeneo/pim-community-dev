@@ -12,14 +12,19 @@ use Symfony\Component\Serializer\SerializerInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: spec it !!
  */
 class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var SerializerInterface $serializer */
+    /** @var SerializerInterface */
+    //TODO: we need a normalizer here
     protected $serializer;
 
     /** @var array */
     protected $supportedFormat = ['internal_api'];
+
+    //TODO: no constructor?
 
     /**
      * {@inheritdoc}
@@ -40,6 +45,7 @@ class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterf
      */
     public function supportsNormalization($data, $format = null)
     {
+        //TODO \Iterable does not exist ^^
         return ($data instanceof \Iterable || is_array($data)) && in_array($format, $this->supportedFormat);
     }
 
