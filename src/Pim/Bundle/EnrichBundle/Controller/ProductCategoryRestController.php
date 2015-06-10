@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -47,6 +48,7 @@ class ProductCategoryRestController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
+        // TODO use repo for that
         $trees = $this->productCatManager->getProductCountByTree($product);
 
         $result = [
@@ -77,15 +79,16 @@ class ProductCategoryRestController
      *
      * @param string $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return ProductInterface
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @throws NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
+        // TODO use repo for that
         $product = $this->productManager->find($id);
 
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );

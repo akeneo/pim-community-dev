@@ -75,15 +75,15 @@ class AttributeOptionRepository extends EntityRepository implements
                 $autoSorting = $row['properties']['autoOptionSorting'];
             }
             if ('code' === $options['type']) {
-                $results[] = array(
+                $results[] = [
                     'id'   => $row['code'],
                     'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
-                );
+                ];
             } else {
-                $results[] = array(
+                $results[] = [
                     'id'   => $row['id'],
                     'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
-                );
+                ];
             }
         }
 

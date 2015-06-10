@@ -41,6 +41,7 @@ class GroupRestController
      */
     public function indexAction()
     {
+        // TODO Use repo !
         $groups = $this->groupManager->getRepository()->getAllGroupsExceptVariant();
 
         return new JsonResponse($this->normalizer->normalize($groups, 'internal_api'));
@@ -53,6 +54,7 @@ class GroupRestController
      */
     public function getAction($identifier)
     {
+        // TODO Use repo ! And use the ->findOneByIdentifier($identifier) method
         $group = $this->groupManager->getRepository()->findOneByCode($identifier);
 
         return new JsonResponse($this->normalizer->normalize($group, 'internal_api'));
@@ -65,13 +67,16 @@ class GroupRestController
      *
      * @return JsonResponse
      *
+     * @throws NotFoundHttpException
+     *
      * @AclAncestor("pim_enrich_product_index")
      */
     public function listProductsAction($identifier)
     {
+        // TODO Use repo ! And use the ->findOneByIdentifier($identifier) method
         $group = $this->groupManager->getRepository()->findOneByCode($identifier);
 
-        if (!$group) {
+        if (null === $group) {
             throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $identifier));
         }
 

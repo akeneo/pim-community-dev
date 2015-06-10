@@ -98,6 +98,8 @@ class AssociationFieldSetter extends AbstractFieldSetter
      * Set products and groups to associations
      *
      * @param ProductInterface $product
+     *
+     * @throws InvalidArgumentException
      */
     protected function setProductsAndGroupsToAssociations(ProductInterface $product, $data)
     {

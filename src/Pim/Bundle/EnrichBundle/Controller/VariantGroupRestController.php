@@ -59,12 +59,14 @@ class VariantGroupRestController
      * @param int $identifier
      *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException
      */
     public function getAction($identifier)
     {
-        $variantGroup = $this->variantGroupRepo->findOneByCode($identifier);
+        $variantGroup = $this->variantGroupRepo->findOneByIdentifier($identifier);
 
-        if (!$variantGroup) {
+        if (null === $variantGroup) {
             throw new NotFoundHttpException(sprintf('Variant group with code "%s" not found', $identifier));
         }
 

@@ -16,10 +16,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersioningRestController
 {
+    /** @var VersionRepositoryInterface */
     protected $versionRepository;
+
+    /** @var FQCNResolver */
     protected $FQCNResolver;
+
+    /** @var NormalizerInterface */
     protected $normalizer;
 
+    /**
+     * @param VersionRepositoryInterface $versionRepository
+     * @param FQCNResolver               $FQCNResolver
+     * @param NormalizerInterface        $normalizer
+     */
     public function __construct(
         VersionRepositoryInterface $versionRepository,
         FQCNResolver $FQCNResolver,
@@ -34,7 +44,7 @@ class VersioningRestController
      * Get the history of the given entity type with the given entityId
      *
      * @param string $entityType
-     * @param string $entityId
+     * @param int    $entityId
      *
      * @return JSONResponse
      */

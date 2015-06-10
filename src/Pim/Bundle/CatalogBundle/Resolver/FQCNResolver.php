@@ -15,30 +15,30 @@ class FQCNResolver
     protected $classNames = [];
 
     /**
-     * Get FQCN for the givent entity type
+     * Get FQCN for the given entity type
      *
      * @param string $entityType
      *
-     * @throws LogicException
-     *
      * @return string
+     *
+     * @throws \LogicException
      */
     public function getFQCN($entityType)
     {
         if (!isset($this->classNames[$entityType])) {
-            throw \LogicException(sprintf('The class name for %s is unknown', $entityType));
+            throw new \LogicException(sprintf('The class name for %s is unknown', $entityType));
         }
 
         return $this->classNames[$entityType];
     }
 
     /**
-     * Set the FCQN for the given entity type
+     * Add the FCQN for the given entity type
      *
      * @param string $entityType
      * @param string $className
      */
-    public function setFQCN($entityType, $className)
+    public function addFQCN($entityType, $className)
     {
         $this->classNames[$entityType] = $className;
     }

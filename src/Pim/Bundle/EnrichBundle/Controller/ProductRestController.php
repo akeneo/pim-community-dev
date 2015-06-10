@@ -120,9 +120,9 @@ class ProductRestController
     /**
      * @param string $id Product id
      *
-     * @throws NotFoundHttpException If product is not found or the user cannot see it
-     *
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException If product is not found or the user cannot see it
      */
     public function getAction($id)
     {
@@ -148,10 +148,10 @@ class ProductRestController
      * @param Request $request
      * @param string  $id
      *
+     * @return JsonResponse
+     *
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
-     *
-     * @return JsonResponse
      */
     public function postAction(Request $request, $id)
     {
@@ -190,11 +190,11 @@ class ProductRestController
      *
      * @AclAncestor("pim_enrich_product_remove_attribute")
      *
+     * @return JsonResponse
+     *
      * @throws NotFoundHttpException     If product is not found or the user cannot see it
      * @throws AccessDeniedHttpException If the user does not have right to edit the product
      * @throws BadRequestHttpException   If the attribute is not removable
-     *
-     * @return JsonResponse
      */
     public function removeAttributeAction($productId, $attributeId)
     {
@@ -219,16 +219,16 @@ class ProductRestController
      *
      * @param string $id the product id
      *
-     * @throws NotFoundHttpException
-     *
      * @return ProductInterface
+     *
+     * @throws NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
         $product = $this->objectFilter->filterObject($product, 'pim:internal_api:product:view') ? null : $product;
 
-        if (!$product) {
+        if (null === $product) {
             throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
@@ -242,15 +242,16 @@ class ProductRestController
      *
      * @param int $id the attribute id
      *
-     * @throws NotFoundHttpException
-     *
      * @return AttributeInterface
+     *
+     * @throws NotFoundHttpException
      */
     protected function findAttributeOr404($id)
     {
+        // TODO use the repo for that because this method from manager already throw an exception
         $attribute = $this->attributeManager->getAttribute($id);
 
-        if (!$attribute) {
+        if ( null === $attribute) {
             throw new NotFoundHttpException(
                 sprintf('Attribute with id %s could not be found.', (string) $id)
             );

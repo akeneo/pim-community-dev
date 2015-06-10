@@ -177,6 +177,7 @@ class LocaleHelper
      */
     public function getDisplayLanguage($code, $translateIn = null)
     {
+        // TODO: not used
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
 
         return \Locale::getDisplayLanguage($code);
@@ -192,6 +193,7 @@ class LocaleHelper
      */
     public function getDisplayRegion($code, $translateIn = null)
     {
+        // TODO: not used
         $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
 
         return \Locale::getDisplayRegion($code);

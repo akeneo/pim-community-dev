@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
  */
 class CommentNormalizer extends SerializerAwareNormalizer implements NormalizerInterface
 {
-    /** @var string[] $supportedFormats */
+    /** @var string[] */
     protected $supportedFormats = ['json', 'xml'];
 
     /**
