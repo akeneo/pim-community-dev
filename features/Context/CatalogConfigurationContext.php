@@ -40,15 +40,15 @@ class CatalogConfigurationContext extends RawMinkContext
      * @var array Entity loaders and corresponding files
      */
     protected $preEntityLoaders = array(
-        'CurrencyLoader'       => 'currencies',
-        'LocaleLoader'         => null,
+        'CurrencyLoader' => 'currencies',
+        'LocaleLoader'   => null,
     );
 
     /**
      * @var array Entity loaders and corresponding files
      */
     protected $postEntityLoaders = array(
-        'UserLoader'           => 'users',
+        'UserLoader' => 'users',
     );
 
     /**
@@ -85,7 +85,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $treatedFiles = [];
         foreach ($this->preEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = $this->getLoaderFile($files, $fileName);
+            $file   = $this->getLoaderFile($files, $fileName);
             if ($file) {
                 $treatedFiles[] = $file;
             }
@@ -105,7 +105,7 @@ class CatalogConfigurationContext extends RawMinkContext
 
         foreach ($this->postEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = $this->getLoaderFile($files, $fileName);
+            $file   = $this->getLoaderFile($files, $fileName);
             if ($file) {
                 $treatedFiles[] = $file;
             }
@@ -135,7 +135,7 @@ class CatalogConfigurationContext extends RawMinkContext
         $files = [];
         foreach ($directories as &$directory) {
             $directory = sprintf('%s/%s', $directory, strtolower($catalog));
-            $files = array_merge($files, glob($directory.'/*'));
+            $files     = array_merge($files, glob($directory.'/*'));
         }
 
         if (empty($files)) {
@@ -187,7 +187,7 @@ class CatalogConfigurationContext extends RawMinkContext
     protected function initializeReferenceRepository()
     {
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
-        $listener = new ORMReferenceListener($this->referenceRepository);
+        $listener                  = new ORMReferenceListener($this->referenceRepository);
         $this->getEntityManager()->getEventManager()->addEventSubscriber($listener);
     }
 

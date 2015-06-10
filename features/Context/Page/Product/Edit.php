@@ -163,7 +163,7 @@ class Edit extends Form
             // mobile Description
             $words = explode(' ', $name);
             $scope = array_shift($words);
-            $name = implode(' ', $words);
+            $name  = implode(' ', $words);
 
             // Check that it is really a scoped field, not a field with a two word label
             if (strtolower($scope) === $scope) {

@@ -3,13 +3,17 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\EnrichBundle\Mailer\MailRecorder;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\BatchableOperationInterface;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Context of the website
@@ -186,13 +190,15 @@ class WebUser extends RawMinkContext
      * @param string $parent
      *
      * @Then /^I should (not )?see the "([^"]*)" category under the "([^"]*)" category$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
     {
         $this->wait(); // Make sure that the tree is loaded
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
+        $childNode  = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
             throw $this->createExpectationException(
@@ -214,6 +220,8 @@ class WebUser extends RawMinkContext
      */
     public function iVisitTheTab($tab)
     {
+        $tabLocator = sprintf('$("a:contains(\'%s\')").length > 0;', $tab);
+        $this->wait(30000, $tabLocator);
         $this->getCurrentPage()->visitTab($tab);
         $this->wait();
     }
@@ -259,10 +267,12 @@ class WebUser extends RawMinkContext
      * @param TableNode $table
      *
      * @Then /^the locale switcher should contain the following items:$/
+     *
+     * @throws ExpectationException
      */
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
-        $linkCount = $this->getPage('Product edit')->countLocaleLinks();
+        $linkCount         = $this->getPage('Product edit')->countLocaleLinks();
         $expectedLinkCount = count($table->getHash());
 
         if ($linkCount !== $expectedLinkCount) {
@@ -348,6 +358,8 @@ class WebUser extends RawMinkContext
      * @param string $title
      *
      * @Then /^I should see the "([^"]*)" section$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheSection($title)
     {
@@ -360,6 +372,8 @@ class WebUser extends RawMinkContext
      * @param int $expectedCount
      *
      * @Given /^the Options section should contain ([^"]*) options?$/
+     *
+     * @throws ExpectationException
      */
     public function theOptionsSectionShouldContainOption($expectedCount = 1)
     {
@@ -385,6 +399,8 @@ class WebUser extends RawMinkContext
      * @param string $attributes
      *
      * @Given /^attributes? in group "([^"]*)" should be (.*)$/
+     *
+     * @throws ExpectationException
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
@@ -428,6 +444,8 @@ class WebUser extends RawMinkContext
      * @param string $title
      *
      * @Then /^the title of the product should be "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function theTitleOfTheProductShouldBe($title)
     {
@@ -449,6 +467,8 @@ class WebUser extends RawMinkContext
      * @Then /^the product (.*) should be empty$/
      * @Then /^the product (.*) should be "([^"]*)"$/
      * @Then /^the field (.*) should contain "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
@@ -479,7 +499,7 @@ class WebUser extends RawMinkContext
                 $options = $field->findAll('css', 'li.select2-search-choice div');
             }
 
-            $actual  = array();
+            $actual = [];
             foreach ($options as $option) {
                 $actual[] = $option->getHtml();
             }
@@ -545,6 +565,8 @@ class WebUser extends RawMinkContext
      * @param string $group
      *
      * @Then /^I should (not )?see available attributes? (.*) in group "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeAvailableAttributesInGroup($not, $attributes, $group)
     {
@@ -589,6 +611,8 @@ class WebUser extends RawMinkContext
      * @param string $families
      *
      * @Then /^I should see the families (.*)$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheFamilies($families)
     {
@@ -610,6 +634,8 @@ class WebUser extends RawMinkContext
      * @param string $group
      *
      * @Given /^I should see attributes? "([^"]*)" in group "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeAttributesInGroup($attributes, $group)
     {
@@ -632,6 +658,8 @@ class WebUser extends RawMinkContext
      * @param string $field
      *
      * @Then /^I should (not )?see a remove link next to the "([^"]*)" field$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeARemoveLinkNextToTheField($not, $field)
     {
@@ -661,6 +689,9 @@ class WebUser extends RawMinkContext
      * @param string $field
      *
      * @When /^I remove the "([^"]*)" attribute$/
+     *
+     * @throws ExpectationException
+     * @throws \Behat\Mink\Exception\ElementNotFoundException
      */
     public function iRemoveTheAttribute($field)
     {
@@ -696,6 +727,8 @@ class WebUser extends RawMinkContext
      * @param string $field
      *
      * @When /^I add a new option to the "([^"]*)" attribute$/
+     *
+     * @throws ExpectationException
      */
     public function iAddANewOptionToTheAttribute($field)
     {
@@ -736,11 +769,13 @@ class WebUser extends RawMinkContext
      * @param string $attributes
      *
      * @Then /^eligible attributes as label should be (.*)$/
+     *
+     * @throws ExpectationException
      */
     public function eligibleAttributesAsLabelShouldBe($attributes)
     {
         $expectedAttributes = $this->listToArray($attributes);
-        $options = $this->getPage('Family edit')->getAttributeAsLabelOptions();
+        $options            = $this->getPage('Family edit')->getAttributeAsLabelOptions();
 
         if (count($expectedAttributes) !== $actual = count($options)) {
             throw $this->createExpectationException(
@@ -818,7 +853,7 @@ class WebUser extends RawMinkContext
      */
     public function iCanSearchByTheFollowingTypes(TableNode $table)
     {
-        $list = array();
+        $list = [];
         foreach ($table->getHash() as $row) {
             $list[] = $row['type'];
         }
@@ -832,7 +867,7 @@ class WebUser extends RawMinkContext
      */
     public function iCanNotSearchByTheFollowingTypes(TableNode $table)
     {
-        $list = array();
+        $list = [];
         foreach ($table->getHash() as $row) {
             $list[] = $row['type'];
         }
@@ -870,11 +905,11 @@ class WebUser extends RawMinkContext
      */
     public function iResetTheRights($role)
     {
-        return array(
+        return [
             new Step\Then(sprintf('I am on the "%s" role page', $role)),
             new Step\Then('I grant all rights'),
             new Step\Then('I save the role')
-        );
+        ];
     }
 
     /**
@@ -886,7 +921,7 @@ class WebUser extends RawMinkContext
      */
     public function removingPermissionsShouldHideTheButtons(TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then('I am on the "Administrator" role page');
@@ -912,7 +947,7 @@ class WebUser extends RawMinkContext
      */
     public function removingPermissionsShouldHideTheHistory(TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $data) {
             $steps[] = new Step\Then(sprintf('I am on the %s page', $data['page']));
@@ -950,7 +985,7 @@ class WebUser extends RawMinkContext
             if ($field->getAttribute('type') !== 'file') {
                 $field = $field->getParent()->find('css', 'input[type="file"]');
             }
-            $id = $field->getAttribute('id');
+            $id     = $field->getAttribute('id');
             $script = "$('{$id}').closest('div.control-group').find('[disabled]').removeAttr('disabled');";
         } else {
             $script = '$("[disabled]").removeAttr("disabled");';
@@ -975,8 +1010,11 @@ class WebUser extends RawMinkContext
     /**
      * @param string $link
      *
-     * @return Step\Given
      * @Given /^I open "([^"]*)" in the current window$/
+
+     * @throws ExpectationException
+     *
+     * @return Step\Given
      */
     public function iOpenInTheCurrentWindow($link)
     {
@@ -1073,6 +1111,8 @@ class WebUser extends RawMinkContext
      * @param string $button
      *
      * @Given /^I should not see the "([^"]*)" button$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldNotSeeTheButton($button)
     {
@@ -1162,6 +1202,8 @@ class WebUser extends RawMinkContext
      * @param Product $product
      *
      * @Given /^(product "([^"]*)") should be disabled$/
+     *
+     * @throws ExpectationException
      */
     public function productShouldBeDisabled(Product $product)
     {
@@ -1175,6 +1217,8 @@ class WebUser extends RawMinkContext
      * @param Product $product
      *
      * @Given /^(product "([^"]*)") should be enabled$/
+     *
+     * @throws ExpectationException
      */
     public function productShouldBeEnabled(Product $product)
     {
@@ -1208,6 +1252,8 @@ class WebUser extends RawMinkContext
      * @param int $count
      *
      * @Then /^there should be (\d+) updates?$/
+     *
+     * @throws ExpectationException
      */
     public function thereShouldBeUpdate($count)
     {
@@ -1268,6 +1314,8 @@ class WebUser extends RawMinkContext
      * @param string $property
      *
      * @Then /^I should see "([^"]*)" next to the (\w+)$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeNextToThe($message, $property)
     {
@@ -1307,7 +1355,7 @@ class WebUser extends RawMinkContext
         } catch (BehaviorException $e) {
             $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
             $jobExecution = $jobInstance->getJobExecutions()->first();
-            $log = $jobExecution->getLogFile();
+            $log          = $jobExecution->getLogFile();
 
             if (is_file($log)) {
                 $dir = getenv('WORKSPACE');
@@ -1355,6 +1403,8 @@ class WebUser extends RawMinkContext
      * @Given /^I wait for the "([^"]*)" mass-edit job to finish$/
      *
      * @param string $operationAlias
+     *
+     * @throws ExpectationException
      */
     public function iWaitForTheMassEditJobToFinish($operationAlias)
     {
@@ -1441,6 +1491,8 @@ class WebUser extends RawMinkContext
      * @param TableNode $table
      *
      * @Given /^the category order in the file "([^"]*)" should be following:$/
+     *
+     * @throws ExpectationException
      */
     public function theCategoryOrderInTheFileShouldBeFollowing($fileName, TableNode $table)
     {
@@ -1449,7 +1501,7 @@ class WebUser extends RawMinkContext
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }
 
-        $categories = array();
+        $categories = [];
         foreach (array_keys($table->getRowsHash()) as $category) {
             $categories[] = $category;
         }
@@ -1470,6 +1522,8 @@ class WebUser extends RawMinkContext
      * @param string $target
      *
      * @Given /^I copy the file "([^"]*)" to "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iCopyTheFileTo($original, $target)
     {
@@ -1521,10 +1575,12 @@ class WebUser extends RawMinkContext
      * @param string $channels
      *
      * @Then /^attribute "([^"]*)" should( not)? be required in channels? (.*)$/
+     *
+     * @throws ExpectationException
      */
     public function attributeShouldBeRequiredInChannels($attribute, $not, $channels)
     {
-        $channels = $this->listToArray($channels);
+        $channels    = $this->listToArray($channels);
         $expectation = $not === '';
         foreach ($channels as $channel) {
             if ($expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel)) {
@@ -1564,6 +1620,8 @@ class WebUser extends RawMinkContext
      * @param TableNode $table
      *
      * @Then /^I should see the completeness:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
@@ -1685,6 +1743,7 @@ class WebUser extends RawMinkContext
     public function iMoveOnToTheNextStep()
     {
         $this->scrollContainerTo(900);
+        $this->wait(10000, '$(".btn:contains(\'Next\')").length > 0');
         $this->getCurrentPage()->next();
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
@@ -1704,6 +1763,9 @@ class WebUser extends RawMinkContext
      * @param PyStringNode $csv
      *
      * @Then /^exported file of "([^"]*)" should contain:$/
+     *
+     * @throws ExpectationException
+     * @throws \Exception
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
@@ -1732,14 +1794,14 @@ class WebUser extends RawMinkContext
         );
         $csvFile->setCsvControl($delimiter, $enclosure, $escape);
 
-        $expectedLines = array();
+        $expectedLines = [];
         foreach ($csv->getLines() as $line) {
             if (!empty($line)) {
                 $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
             }
         }
 
-        $actualLines = array();
+        $actualLines = [];
         while ($data = $csvFile->fgetcsv()) {
             if (!empty($data)) {
                 $actualLines[] = array_map(
@@ -1810,6 +1872,8 @@ class WebUser extends RawMinkContext
      * @param TableNode $table
      *
      * @Then /^export directory of "([^"]*)" should contain the following media:$/
+     *
+     * @throws ExpectationException
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
@@ -1903,14 +1967,16 @@ class WebUser extends RawMinkContext
      * @param PyStringNode $data
      *
      * @Given /^the invalid data file of "([^"]*)" should contain:$/
+     *
+     * @throws ExpectationException
      */
     public function theInvalidDataFileOfShouldContain($code, PyStringNode $data)
     {
         $jobInstance = $this->getMainContext()->getSubcontext('fixtures')->getJobInstance($code);
 
         $jobExecution = $jobInstance->getJobExecutions()->first();
-        $archivist = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
-        $file = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
+        $archivist    = $this->getMainContext()->getContainer()->get('pim_base_connector.event_listener.archivist');
+        $file         = $archivist->getArchive($jobExecution, 'invalid', 'invalid_items.csv');
 
         $file->open(new \Gaufrette\StreamMode('r'));
         $content = $file->read(1024);
@@ -1962,9 +2028,9 @@ class WebUser extends RawMinkContext
 
         foreach ($table->getHash() as $data) {
             try {
-                $author = $this->getFixturesContext()->getUser($data['author']);
-                $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-                $comment = $this->getCurrentPage()->findComment($data['message'], $authorName);
+                $author               = $this->getFixturesContext()->getUser($data['author']);
+                $authorName           = $author->getFirstName() . ' ' . $author->getLastName();
+                $comment              = $this->getCurrentPage()->findComment($data['message'], $authorName);
                 $comments[$data['#']] = $comment;
 
                 if (!empty($data['parent'])) {
@@ -1990,10 +2056,10 @@ class WebUser extends RawMinkContext
      */
     public function iDeleteTheComment($message)
     {
-        $username = $this->getMainContext()->getSubcontext('fixtures')->getUsername();
-        $author = $this->getFixturesContext()->getUser($username);
+        $username   = $this->getMainContext()->getSubcontext('fixtures')->getUsername();
+        $author     = $this->getFixturesContext()->getUser($username);
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+        $comment    = $this->getCurrentPage()->findComment($message, $authorName);
 
         // doing that because $commment->mouseOver() has no effect
         $this->getMainContext()->executeScript("$('.comment-buttons').css('display', 'inherit');");
@@ -2008,14 +2074,13 @@ class WebUser extends RawMinkContext
      *
      * @return bool
      *
-     *
      * @Then /^I should not see the link to delete the "([^"]*)" comment of "([^"]*)"$/
      */
     public function iShouldNotSeeTheLinkToDeleteTheComment($message, $author)
     {
-        $author = $this->getFixturesContext()->getUser($author);
+        $author     = $this->getFixturesContext()->getUser($author);
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-        $comment = $this->getCurrentPage()->findComment($message, $authorName);
+        $comment    = $this->getCurrentPage()->findComment($message, $authorName);
 
         try {
             $this->getCurrentPage()->deleteComment($comment);
@@ -2049,9 +2114,9 @@ class WebUser extends RawMinkContext
      */
     public function iReplyToTheCommentWith($comment, $author, $reply)
     {
-        $author = $this->getFixturesContext()->getUser($author);
+        $author     = $this->getFixturesContext()->getUser($author);
         $authorName = $author->getFirstName() . ' ' . $author->getLastName();
-        $comment = $this->getCurrentPage()->findComment($comment, $authorName);
+        $comment    = $this->getCurrentPage()->findComment($comment, $authorName);
 
         $this->getCurrentPage()->replyComment($comment, $reply);
         $this->wait();
@@ -2101,7 +2166,7 @@ class WebUser extends RawMinkContext
      *
      * @return Page
      */
-    protected function openPage($page, array $options = array())
+    protected function openPage($page, array $options = [])
     {
         $page = $this->getNavigationContext()->openPage($page, $options);
         $this->wait();

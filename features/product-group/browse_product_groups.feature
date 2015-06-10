@@ -22,8 +22,8 @@ Feature: Browse product groups
     Then the grid should contain 2 elements
     And I should see the columns Code, Label and Type
     And I should see groups CROSS_SELL_1 and CROSS_SELL_2
-    And the rows should be sorted ascending by code
-    And I should be able to sort the rows by code, label and type
+    And the rows should be sorted ascending by Code
+    And I should be able to sort the rows by Code, Label and Type
     And I should be able to use the following filters:
       | filter | value  | result                        |
       | Code   | 2      | CROSS_SELL_2                  |
