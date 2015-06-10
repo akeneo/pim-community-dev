@@ -57,7 +57,7 @@ define(
             },
             switchChannel: function (event) {
                 var $completenessBlock = $(event.currentTarget).parents('.completeness-block');
-                if ($completenessBlock.attr('data-closed') === 'false') {
+                if ('false' === $completenessBlock.attr('data-closed')) {
                     $completenessBlock.attr('data-closed', 'true');
                 } else {
                     $completenessBlock.attr('data-closed', 'false');

@@ -39,7 +39,7 @@ define([
                         return templateContext;
                     }, this));
             },
-            getMediaUrl: function (value) {
+            getMediaUrl: function (value) { // TODO value ? What is value ?
                 if (value && value.filePath) {
                     var filename = value.filePath;
                     filename = filename.substring(filename.lastIndexOf('/') + 1);
@@ -96,10 +96,12 @@ define([
 
                         return myXhr;
                     }, this)
-                }).done(_.bind(function (data) {
+                })
+                .done(_.bind(function (data) {
                     this.setUploadContextValue(data);
                     this.render();
-                }, this)).then(_.bind(function () {
+                }, this))
+                .then(_.bind(function () {
                     this.$('> .media-field .progress').css({opacity: 0});
                     this.setReady(true);
                     this.uploadContext = {};

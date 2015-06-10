@@ -43,6 +43,7 @@ define(
                 return this;
             },
             delete: function () {
+            // TODO delete dsems to be a reserved word according to PHPStorm you should not use it as method name
                 Dialog.confirm(
                     _.__('confirmation.remove.product'),
                     _.__('pim_enrich.confirmation.delete_item'),

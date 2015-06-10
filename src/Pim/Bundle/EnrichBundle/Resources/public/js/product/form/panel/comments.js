@@ -89,10 +89,12 @@ define(
                     url: Routing.generate('pim_enrich_product_comments_rest_post', { id: this.getData().meta.id }),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': this.$('.comment-create textarea').val() })
-                }).done(_.bind(function () {
+                })
+                .done(_.bind(function () {
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.create.success'));
-                }, this)).fail(function () {
+                }, this))
+                .fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.create.error'));
                 });
             },
@@ -102,10 +104,12 @@ define(
                     type: 'POST',
                     headers: { accept: 'application/json' },
                     data: { _method: 'DELETE' }
-                }).done(_.bind(function () {
+                })
+                .done(_.bind(function () {
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.delete.success'));
-                }, this)).fail(function () {
+                }, this))
+                .fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.delete.error'));
                 });
             },
@@ -123,11 +127,13 @@ define(
                     ),
                     contentType: 'application/json',
                     data: JSON.stringify({ 'body': $thread.find('textarea').val()})
-                }).done(_.bind(function () {
+                })
+                .done(_.bind(function () {
                     $thread.find('textarea').val('');
                     this.render();
                     messenger.notificationFlashMessage('success', _.__('flash.comment.reply.success'));
-                }, this)).fail(function () {
+                }, this))
+                .fail(function () {
                     messenger.notificationFlashMessage('error', _.__('flash.comment.reply.error'));
                 });
             }

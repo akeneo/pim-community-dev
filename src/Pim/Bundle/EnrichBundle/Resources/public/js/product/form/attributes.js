@@ -51,15 +51,17 @@ define(
                 'click .remove-attribute': 'removeAttribute'
             },
             visibleFields: {},
-            rendering: false,
+            rendering: false, // TODO should be isRendering if it's a bool
             configure: function () {
                 this.getRoot().addTab('attributes', 'Attributes');
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
+
                 mediator.on('product:action:post_update', _.bind(this.postSave, this));
                 mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
                 mediator.on('show_attribute', _.bind(this.showAttribute, this));
+
                 window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clear();
 
@@ -315,6 +317,7 @@ define(
             }
         });
 
+        // TODO why not return directly the view ?
         return FormView;
     }
 );

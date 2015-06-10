@@ -6,11 +6,13 @@ define(
         return function (tab) {
             var $tab = $(tab);
             var target = $tab.attr('href');
-            if (!target || target === '#' || target.indexOf('javascript') === 0) {
+            // TODO can you use something else than !trucmuch ? As null === trucmuch ?
+            if (!target || '#' === target || 0 === target.indexOf('javascript')) {
                 return;
             }
             var $target = $(target);
 
+            // TODO same here if (undefined === $target.attr('data-loaded') etc)
             if (!$target.attr('data-loaded') && !$target.attr('data-loading') && $target.attr('data-url')) {
                 $target.attr('data-loading', 1);
                 if (!$target.hasClass('active')) {

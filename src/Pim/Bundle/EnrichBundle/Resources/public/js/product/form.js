@@ -1,4 +1,5 @@
 'use strict';
+// TODO Why there is no doc in all js files ?
 /**
  * Form main class
  *
@@ -17,7 +18,7 @@ define(
                 this.zones        = {};
                 this.targetZone   = '';
                 this.insertAction = null;
-                this.configured   = false;
+                this.configured   = false; // TODO if it's a boolean, must renamed as isConfigured
             },
             setZones: function (zones) {
                 this.zones = zones;

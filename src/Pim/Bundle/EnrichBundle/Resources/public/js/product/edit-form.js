@@ -56,6 +56,7 @@ define(
             }
         });
 
+        // TODO why use a var for it and not return BaseForm.extend({ etc ...}) ?
         return FormView;
     }
 );

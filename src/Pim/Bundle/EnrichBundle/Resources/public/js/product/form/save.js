@@ -107,7 +107,8 @@ define(
                             'error',
                             _.__('pim_enrich.entity.product.info.update_failed')
                         );
-                    }).always(function () {
+                    })
+                    .always(function () {
                         loadingMask.hide().$el.remove();
                     });
             }

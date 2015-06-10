@@ -71,6 +71,7 @@ define(
 
                 this.delegateEvents();
                 this.resize();
+
                 return this;
             },
             closePanel: function () {

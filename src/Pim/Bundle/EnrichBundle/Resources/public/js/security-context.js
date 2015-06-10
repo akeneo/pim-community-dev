@@ -6,7 +6,7 @@ define(
         var SecurityContext = Backbone.Model.extend({
             url: Routing.generate('pim_user_security_rest_get'),
             isGranted: function (acl) {
-                return this.get(acl) === true;
+                return true === this.get(acl);
             }
         });
 

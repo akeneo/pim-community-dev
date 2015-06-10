@@ -42,8 +42,8 @@ define([
             var unit = this.$('.unit option:selected').val();
 
             this.setCurrentValue({
-                unit: '' !== unit ? unit : this.attribute.default_metric_unit,
-                data: '' !== data ? data : null
+                unit: ('' !== unit) ? unit : this.attribute.default_metric_unit,
+                data: ('' !== data) ? data : null
             });
         }
     });

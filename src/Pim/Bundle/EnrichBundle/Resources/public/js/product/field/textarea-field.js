@@ -50,7 +50,7 @@ define(
             },
             updateModel: function () {
                 var data = this.$('textarea').code();
-                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+                data = ('' === data) ? AttributeManager.getEmptyValue(this.attribute) : data;
 
                 this.setCurrentValue(data);
             },

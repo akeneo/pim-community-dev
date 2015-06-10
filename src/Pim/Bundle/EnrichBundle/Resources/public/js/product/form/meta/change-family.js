@@ -56,6 +56,7 @@ define(
             }
         });
 
+        // TODO why not return the form view directly ?
         return FormView;
     }
 );
