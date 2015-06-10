@@ -175,7 +175,7 @@ class CompletenessManager
         $channelCodes = $getCodes($channels);
         $localeCodes = $getCodes($locales);
         $channelTemplate = [
-            'channels'     => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
+            'channels' => array_fill_keys($channelCodes, ['completeness' => null, 'missing' => []]),
             'stats' => [
                 'total'    => 0,
                 'complete' => 0
@@ -189,6 +189,8 @@ class CompletenessManager
 
         $allCompletenesses = $product->getCompletenesses();
         foreach ($allCompletenesses as $completeness) {
+            // TODO: Please refactor this foreach body.
+            // Use a var for $locale->getCode(), and no ternary as it "messes" the code
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
 

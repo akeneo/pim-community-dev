@@ -197,6 +197,9 @@ class AssociationFieldSetter extends AbstractFieldSetter
      */
     protected function checkAssociationData($field, array $data, $assocTypeCode, $items)
     {
+        // TODO: Could $item be an array?
+        // TODO: $assocTypeCode is not used.
+
         if (!is_array($items) || !is_string($assocTypeCode) ||
             (!isset($items['products']) && !isset($items['groups']))
         ) {

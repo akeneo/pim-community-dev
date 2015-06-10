@@ -40,6 +40,7 @@ class AssociationTypeRestController
     {
         $associationTypes = $this->associationTypeRepo->findAll();
 
+        // TODO: The normalizer asks for an object, not an array
         $data = $this->normalizer->normalize($associationTypes, 'internal_api');
 
         return new JsonResponse($data);

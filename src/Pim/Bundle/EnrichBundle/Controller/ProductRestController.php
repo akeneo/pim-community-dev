@@ -86,8 +86,7 @@ class ProductRestController
         ObjectFilterInterface $objectFilter,
         CollectionFilterInterface $productEditDataFilter,
         ProductBuilderInterface $productBuilder
-    )
-    {
+    ) {
         $this->productManager        = $productManager;
         $this->attributeManager      = $attributeManager;
         $this->productUpdater        = $productUpdater;
