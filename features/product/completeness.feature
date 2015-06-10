@@ -32,8 +32,6 @@ Feature: Display the completeness of a product
       | mobile  | fr_FR  | success |                       | 100%  |
       | tablet  | en_US  | warning | side_view             | 89%   |
       | tablet  | fr_FR  | warning | description side_view | 78%   |
-    # Fix fake product update and remove the next two steps
-    And I click on the Akeneo logo
     When I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness summary
@@ -141,9 +139,6 @@ Feature: Display the completeness of a product
       | mobile  | fr_FR  | success |                       | 100%  |
       | tablet  | en_US  | warning | side_view             | 89%   |
       | tablet  | fr_FR  | warning | description side_view | 78%   |
-    # Fix fake product update and remove the next two steps
-    And I click on the Akeneo logo
-    And I confirm the navigation
     When I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness summary
@@ -203,9 +198,6 @@ Feature: Display the completeness of a product
       | mobile  | en_US  | success  |                       | 100%  |
       | mobile  | fr_FR  | success  |                       | 100%  |
       | tablet  | fr_FR  | warning  | description side_view | 78%   |
-    # Fix fake product update and remove the next two steps
-    And I click on the Akeneo logo
-    And I confirm the navigation
     When I am on the "sandals" product page
     And I open the "Completeness" panel
     Then I should see the completeness summary
