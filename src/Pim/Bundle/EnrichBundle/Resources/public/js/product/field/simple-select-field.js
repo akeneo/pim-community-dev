@@ -49,13 +49,9 @@ define(
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            render: function () {
-                Field.prototype.render.apply(this, arguments);
-
-                var $elem = this.$('input.select-field');
-
-                this.getChoiceUrl().done(function (choiceUrl) {
-                    $elem.select2('destroy').select2({
+            postRender: function () {
+                this.getChoiceUrl().done(_.bind(function (choiceUrl) {
+                    this.$('input.select-field').select2('destroy').select2({
                         ajax: {
                             url: choiceUrl,
                             cache: true,
@@ -68,7 +64,7 @@ define(
                         },
                         initSelection: function (element, callback) {
                             var id = $(element).val();
-                            if (id !== '') {
+                            if ('' !== id) {
                                 $.ajax(choiceUrl).done(function (response) {
                                     var selected = _.findWhere(response.results, {id: id});
                                     callback(selected);
@@ -78,7 +74,7 @@ define(
                         placeholder: ' ',
                         allowClear: true
                     });
-                });
+                }, this));
             },
             getChoiceUrl: function () {
                 return $.Deferred().resolve(

@@ -50,13 +50,9 @@ define(
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            render: function () {
-                Field.prototype.render.apply(this, arguments);
-
-                var $elem = this.$('input.select-field');
-
-                this.getChoiceUrl().done(function (choiceUrl) {
-                    $elem.select2('destroy').select2({
+            postRender: function () {
+                this.getChoiceUrl().done(_.bind(function (choiceUrl) {
+                    this.$('input.select-field').select2('destroy').select2({
                         ajax: {
                             url: choiceUrl,
                             cache: true,
@@ -71,15 +67,14 @@ define(
                             $.ajax(choiceUrl).done(function (response) {
                                 var results = response.results;
                                 var choices = _.map($(element).val().split(','), function (choice) {
-                                    var selected = _.findWhere(results, {id: choice});
-                                    return selected;
+                                    return _.findWhere(results, {id: choice});
                                 });
                                 callback(choices);
                             });
                         },
                         multiple: true
                     });
-                });
+                }, this));
             },
             getChoiceUrl: function () {
                 return $.Deferred().resolve(

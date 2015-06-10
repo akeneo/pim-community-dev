@@ -19,9 +19,7 @@ define(
         renderInput: function (context) {
             return this.fieldTemplate(context);
         },
-        render: function () {
-            Field.prototype.render.apply(this, arguments);
-
+        postRender: function () {
             this.$('.switch').bootstrapSwitch();
         },
         updateModel: function (event) {
