@@ -27,9 +27,10 @@ define(
             events: {
                 'change textarea': 'updateModel'
             },
-            render: function () {
-                Field.prototype.render.apply(this, arguments);
-
+            renderInput: function (context) {
+                return this.fieldTemplate(context);
+            },
+            postRender: function () {
                 if (this.attribute.wysiwyg_enabled) {
                     this.$('textarea').summernote({
                         disableResizeEditor: true,
@@ -43,10 +44,6 @@ define(
                         ]
                     }).on('summernote.blur', _.bind(this.updateModel, this));
                 }
-
-            },
-            renderInput: function (context) {
-                return this.fieldTemplate(context);
             },
             updateModel: function () {
                 var data = this.$('textarea').code();

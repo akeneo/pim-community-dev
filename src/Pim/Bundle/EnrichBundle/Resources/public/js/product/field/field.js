@@ -68,6 +68,7 @@ define([
                                 }
                             }, this));
                         }, this));
+                        this.postRender();
                         this.delegateEvents();
                     }, this));
                 }, this));
@@ -77,6 +78,7 @@ define([
             renderInput: function () {
                 throw new Error('You should implement your field template');
             },
+            postRender: function () {},
             renderCopyInput: function (context, locale, scope) {
                 context.value = AttributeManager.getValue(
                     this.model.get('values'),
