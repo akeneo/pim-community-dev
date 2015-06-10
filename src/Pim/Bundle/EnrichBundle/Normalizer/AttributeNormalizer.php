@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AttributeNormalizer implements NormalizerInterface
 {
-    /** @var array $supportedFormats */
+    // TODO Should be in constructor to be customizable
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */
@@ -31,7 +32,7 @@ class AttributeNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = array())
+    public function normalize($attribute, $format = null, array $context = [])
     {
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
             'id'              => $attribute->getId(),

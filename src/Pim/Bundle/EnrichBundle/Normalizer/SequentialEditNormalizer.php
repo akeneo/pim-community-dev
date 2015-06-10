@@ -14,9 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class SequentialEditNormalizer implements NormalizerInterface
 {
-    /**
-     * @var string[]
-     */
+    // TODO Should be in constructor to be customizable
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */
@@ -33,7 +32,7 @@ class SequentialEditNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = [])
     {
         $result = [
             'objectSet' => $object->getObjectSet()

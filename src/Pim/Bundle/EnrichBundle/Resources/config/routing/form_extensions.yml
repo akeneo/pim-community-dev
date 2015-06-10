@@ -1,3 +1,4 @@
+#  it's weird pim_enrich_form_extension_rest_index lead to getAction and not indexAction, should be renamed pim_enrich_form_extension_rest_get
 pim_enrich_form_extension_rest_index:
     path: /extensions.{_format}
     defaults: { _controller: pim_enrich.controller.form_extension_rest:getAction, _format: json }

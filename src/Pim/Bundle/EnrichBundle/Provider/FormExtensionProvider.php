@@ -22,14 +22,6 @@ class FormExtensionProvider
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /**
-     * @param SecurityFacade $securityFacade
-     */
-    public function __construct(SecurityFacade $securityFacade)
-    {
-        $this->securityFacade = $securityFacade;
-    }
-
     /** @var array */
     protected $defaults = [
         'module'        => null,
@@ -39,6 +31,14 @@ class FormExtensionProvider
         'zones'         => [],
         'aclResourceId' => null
     ];
+
+    /**
+     * @param SecurityFacade $securityFacade
+     */
+    public function __construct(SecurityFacade $securityFacade)
+    {
+        $this->securityFacade = $securityFacade;
+    }
 
     /**
      * @param string $code

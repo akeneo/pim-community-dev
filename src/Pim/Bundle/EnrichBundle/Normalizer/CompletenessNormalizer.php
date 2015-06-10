@@ -14,13 +14,14 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    // TODO Should be in constructor to be customizable
+    /** @var string[] */
     protected $supportedFormat = ['internal_api'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($completeness, $format = null, array $context = array())
+    public function normalize($completeness, $format = null, array $context = [])
     {
         return [
             'required' => $completeness->getRequiredCount(),

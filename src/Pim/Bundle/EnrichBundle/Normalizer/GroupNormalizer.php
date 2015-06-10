@@ -14,7 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class GroupNormalizer implements NormalizerInterface
 {
-    /** @var array */
+    // TODO Should be in constructor to be customizable
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */

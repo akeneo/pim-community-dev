@@ -42,6 +42,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      * @param SecurityFacade               $securityFacade
      * @param ObjectFilterInterface        $objectFilter
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param LocaleRepositoryInterface    $localeRepository
      */
     public function __construct(
         SecurityFacade $securityFacade,
@@ -65,6 +66,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
         $filteredProductData = [];
 
         foreach ($collection as $type => $data) {
+            // TODO refactor this foreach
             if ('values' === $type) {
                 $filteredProductData['values'] = $this->filterValuesData($data);
             } else {
@@ -102,7 +104,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      *
      * @return array
      */
-    protected function filterValuesData($valuesData)
+    protected function filterValuesData(array $valuesData)
     {
         $filteredValuesData = [];
 
@@ -140,9 +142,9 @@ class ProductEditDataFilter implements CollectionFilterInterface
     /**
      * @param string $code
      *
-     * @throws ObjectNotFoundException
-     *
      * @return AttributeInterface
+     *
+     * @throws ObjectNotFoundException
      */
     protected function getAttribute($code)
     {
@@ -162,9 +164,9 @@ class ProductEditDataFilter implements CollectionFilterInterface
      * @param string $code
      * @param bool   $activeOnly
      *
-     * @throws ObjectNotFoundException
-     *
      * @return LocaleInterface
+     *
+     * @throws ObjectNotFoundException
      */
     protected function getLocale($code, $activeOnly = true)
     {

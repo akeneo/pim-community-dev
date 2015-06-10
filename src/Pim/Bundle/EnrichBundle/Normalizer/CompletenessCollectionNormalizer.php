@@ -27,7 +27,7 @@ class CompletenessCollectionNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($completenesses, $format = null, array $context = array())
+    public function normalize($completenesses, $format = null, array $context = [])
     {
         foreach ($completenesses as $locale => $channels) {
             foreach ($channels['channels'] as $channel => $completeness) {

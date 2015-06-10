@@ -35,11 +35,13 @@ class UserRestController
 
     /**
      * @return JsonResponse
+     *
+     * @throws NotFoundHttpException
      */
     public function getAction()
     {
         $token = $this->securityContext->getToken();
-        $user = null !== $token ? $token->getUser() : null;
+        $user  = (null !== $token) ? $token->getUser() : null;
 
         if (null === $user) {
             throw new NotFoundHttpException('No logged in user found');
