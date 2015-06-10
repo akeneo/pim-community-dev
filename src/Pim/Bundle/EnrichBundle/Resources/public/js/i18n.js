@@ -4,6 +4,7 @@ define(
     ['underscore'],
     function (_) {
         return {
+            // Why isn't it a template flag.html ?
             flagTemplate: _.template(
                 '<span class="flag-language">' +
                     '<i class="flag flag-<%= country %>"></i>' +
@@ -12,7 +13,7 @@ define(
             ),
             getFlag: function (locale, displayLanguage) {
                 displayLanguage = (undefined === displayLanguage) ? true : displayLanguage;
-                if (locale) {
+                if (locale) { // if locale null ? What can be in local else ?
                     var info = locale.split('_');
 
                     return this.flagTemplate({

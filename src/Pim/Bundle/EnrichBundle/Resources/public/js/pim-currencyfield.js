@@ -21,7 +21,7 @@ define(
             smallInputClass: 'input-mini',
             inputThreshold:  3,
 
-            currencyTemplate: _.template(
+            currencyTemplate: _.template( // no template ?
                 '<span class="currency-header<%= small ? " small" : "" %>">' +
                     '<% _.each(currencies, function (currency) { %>' +
                         '<span class="currency-label"><%= currency %></span>' +
@@ -29,7 +29,7 @@ define(
                 '</span>'
             ),
 
-            template: _.template(
+            template: _.template( // no template ?
                 '<% _.each(data, function (item) { %>' +
                     '<% _.each(currencies, function (currency, index) { %>' +
                         '<% if (item.label === currency) { %>' +

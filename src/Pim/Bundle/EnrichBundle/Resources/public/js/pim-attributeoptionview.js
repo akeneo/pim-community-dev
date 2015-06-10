@@ -30,7 +30,7 @@ define(
         var EditableItemView = Backbone.View.extend({
             tagName: 'tr',
             className: 'editable-item-row',
-            showTemplate: _.template(
+            showTemplate: _.template( // Why don't use a template-patapouette.html ?
                 '<td>' +
                     '<span class="handle"><i class="icon-reorder"></i></span>' +
                     '<span class="option-code"><%= item.code %></span>' +
@@ -49,7 +49,7 @@ define(
                     '<span class="btn btn-small delete-row"><i class="icon-trash"></i></span>' +
                 '</td>'
             ),
-            editTemplate: _.template(
+            editTemplate: _.template( // same
                 '<td class="field-cell">' +
                     '<input type="text" class="attribute_option_code exclude" value="<%= item.code %>"/>' +
                     '<i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>' +
