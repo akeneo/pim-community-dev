@@ -82,7 +82,7 @@ variant_groups:
     csv:
         processor:         pim_base_connector.processor.denormalization.csv_variant_group
     yml:
-        processor:         pim_connector.processor.denormalization.variant_group.flat
+        processor:         pim_base_connector.processor.group
 
 products:
     order: 80
