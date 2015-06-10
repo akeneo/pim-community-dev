@@ -197,23 +197,6 @@ class GroupController extends AbstractController
     }
 
     /**
-     * Display the products of a group
-     *
-     * TODO : find a way to use param converter with interfaces
-     *
-     * @param Group $group
-     *
-     * @return array
-     *
-     * @AclAncestor("pim_enrich_product_index")
-     * @Template("PimEnrichBundle:Group:_productList.html.twig")
-     */
-    public function productListAction(Group $group)
-    {
-        return $this->groupManager->getProductList($group, static::MAX_PRODUCTS);
-    }
-
-    /**
      * History of a group
      *
      * TODO : find a way to use param converter with interfaces

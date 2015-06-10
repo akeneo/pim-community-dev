@@ -50,7 +50,7 @@ class AttributeGroupRestController
         $attributeGroups    = $this->attributeGroupRepo->findAll();
         $filteredAttrGroups = $this->collectionFilter->filterCollection(
             $attributeGroups,
-            'pim:internal_api:attribute_group:view'
+            'pim.internal_api.attribute_group.view'
         );
 
         $normalizedAttrGroups = [];

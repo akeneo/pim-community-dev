@@ -9,6 +9,7 @@ use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
@@ -34,6 +35,9 @@ class ProductCommentRestController
     /** @var CommentManager */
     protected $commentManager;
 
+    /** @var CommentSaver */
+    protected $commentSaver;
+
     /** @var CommentBuilder */
     protected $commentBuilder;
 
@@ -50,6 +54,7 @@ class ProductCommentRestController
      * @param FormFactoryInterface     $formFactory
      * @param ProductManager           $productManager
      * @param CommentManager           $commentManager
+     * @param CommentSaver             $commentSaver
      * @param CommentBuilder           $commentBuilder
      * @param NormalizerInterface      $normalizer
      * @param ValidatorInterface       $validator
@@ -59,6 +64,7 @@ class ProductCommentRestController
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
         CommentManager $commentManager,
+        CommentSaver $commentSaver,
         CommentBuilder $commentBuilder,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator
@@ -67,6 +73,7 @@ class ProductCommentRestController
         $this->formFactory     = $formFactory;
         $this->productManager  = $productManager;
         $this->commentManager  = $commentManager;
+        $this->commentSaver    = $commentSaver;
         $this->commentBuilder  = $commentBuilder;
         $this->normalizer      = $normalizer;
         $this->validator       = $validator;
@@ -86,7 +93,6 @@ class ProductCommentRestController
     {
         $product = $this->findProductOr404($id);
         $comments = $this->commentManager->getComments($product);
-        $class = $this->productManager->getProductName();
 
         return new JsonResponse($this->normalizer->normalize($comments, 'json'));
     }
@@ -102,17 +108,13 @@ class ProductCommentRestController
     public function postAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-
-        $data = json_decode($request->getContent(), true);
-
+        $data    = json_decode($request->getContent(), true);
         $comment = $this->commentBuilder->buildComment($product, $this->getUser());
-
-        $form = $this->formFactory->create('pim_comment_comment', $comment, ['csrf_protection' => false]);
-
+        $form    = $this->formFactory->create('pim_comment_comment', $comment, ['csrf_protection' => false]);
         $form->submit($data, false);
 
         if ($form->isValid()) {
-            $this->commentManager->save($comment);
+            $this->commentSaver->save($comment);
 
             return new JsonResponse($this->normalizer->normalize($comment, 'json'));
         }
@@ -161,7 +163,7 @@ class ProductCommentRestController
             $comment = $reply->getParent();
             $comment->setRepliedAt($now);
 
-            $this->commentManager->save($reply);
+            $this->commentSaver->save($reply);
 
             return new JsonResponse($this->normalizer->normalize($reply, 'json'));
         }
@@ -193,7 +195,7 @@ class ProductCommentRestController
         $product = $this->productManager->find($id);
 
         if (!$product) {
-            throw $this->createNotFoundException(
+            throw new NotFoundHttpException(
                 sprintf('Product with id %s could not be found.', (string) $id)
             );
         }
