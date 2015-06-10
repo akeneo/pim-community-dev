@@ -8,11 +8,25 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 class AttributeRequirementFactorySpec extends ObjectBehavior
 {
-    function it_creates_an_attribute_requirement(
+    function it_creates_a_required_attribute_requirement(
         AttributeInterface $attribute,
         ChannelInterface $channel
     ) {
-        $this->createAttributeRequirement($attribute, $channel, true)
-            ->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+        $attributeRequirement = $this->createAttributeRequirement($attribute, $channel, true);
+        $attributeRequirement->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+        $attributeRequirement->getAttribute()->shouldBeEqualTo($attribute);
+        $attributeRequirement->getChannel()->shouldBeEqualTo($channel);
+        $attributeRequirement->isRequired()->shouldReturn(true);
+    }
+
+    function it_creates_an_unrequired_attribute_requirement(
+        AttributeInterface $attribute,
+        ChannelInterface $channel
+    ) {
+        $attributeRequirement = $this->createAttributeRequirement($attribute, $channel, false);
+        $attributeRequirement->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
+        $attributeRequirement->getAttribute()->shouldBeEqualTo($attribute);
+        $attributeRequirement->getChannel()->shouldBeEqualTo($channel);
+        $attributeRequirement->isRequired()->shouldReturn(false);
     }
 }

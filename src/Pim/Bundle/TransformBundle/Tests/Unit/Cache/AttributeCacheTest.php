@@ -163,7 +163,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      * @param array $expected
      * @param array $actual
      *
-     * @return boolean
+     * @return bool
      */
     protected function assertEqualArrays($expected, $actual)
     {
@@ -174,11 +174,11 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param integer $productId
-     * @param array   $attributeCodes
-     * @param string  $familyCode
-     * @param array   $familyAttributeCodes
-     * @param array   $categories
+     * @param int    $productId
+     * @param array  $attributeCodes
+     * @param string $familyCode
+     * @param array  $familyAttributeCodes
+     * @param array  $categories
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */

@@ -28,6 +28,7 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
+     *
      * @var string
      */
     protected $delimiter = ';';
@@ -35,11 +36,12 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
+     *
      * @var string
      */
     protected $enclosure = '"';
 
-    /** @var boolean */
+    /** @var bool */
     protected $withHeader = true;
 
     /** @var StepExecution */
@@ -106,7 +108,7 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     /**
      * Set whether or not to print a header row into the csv
      *
-     * @param boolean $withHeader
+     * @param bool $withHeader
      */
     public function setWithHeader($withHeader)
     {
@@ -116,7 +118,7 @@ abstract class Processor extends AbstractConfigurableStepElement implements
     /**
      * Get whether or not to print a header row into the csv
      *
-     * @return boolean
+     * @return bool
      */
     public function isWithHeader()
     {

@@ -2,9 +2,9 @@
 
 namespace Context\Page\Base;
 
+use Behat\Mink\Element\Element;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
-use Behat\Mink\Element\Element;
 
 /**
  * Basic form page
@@ -49,7 +49,16 @@ class Form extends Base
     }
 
     /**
+     * Press the save button
+     */
+    public function saveAndClose()
+    {
+        $this->pressButton('Save and close');
+    }
+
+    /**
      * Visit the specified tab
+     *
      * @param string $tab
      */
     public function visitTab($tab)
@@ -78,6 +87,7 @@ class Form extends Base
 
     /**
      * Visit the specified group
+     *
      * @param string $group
      */
     public function visitGroup($group)
@@ -87,6 +97,7 @@ class Form extends Base
 
     /**
      * Get the specified section
+     *
      * @param string $title
      *
      * @return NodeElement
@@ -135,6 +146,7 @@ class Form extends Base
 
     /**
      * Add available attributes
+     *
      * @param array $attributes
      */
     public function addAvailableAttributes(array $attributes = array())
@@ -241,8 +253,6 @@ class Form extends Base
      * @param string  $field
      * @param string  $value
      * @param Element $element
-     *
-     * @return null
      */
     public function fillField($field, $value, Element $element = null)
     {
@@ -287,8 +297,6 @@ class Form extends Base
 
     /**
      * @param string $attribute
-     *
-     * @return null
      */
     public function expandAttribute($attribute)
     {
@@ -339,11 +347,13 @@ class Form extends Base
 
     /**
      * Find a price field
+     *
      * @param string $name
      * @param string $currency
      *
-     * @return NodeElement
      * @throws ElementNotFoundException
+     *
+     * @return NodeElement
      */
     protected function findPriceField($name, $currency)
     {
@@ -379,8 +389,8 @@ class Form extends Base
     /**
      * Extracts and return the label NodeElement, identified by $field content and $element
      *
-     * @param string    $field
-     * @param Element   $element
+     * @param string  $field
+     * @param Element $element
      *
      * @return \Behat\Mink\Element\NodeElement
      */
@@ -428,11 +438,9 @@ class Form extends Base
         }
 
         if ($label->hasAttribute('for')) {
-
             $for = $label->getAttribute('for');
 
             if (0 === strpos($for, 's2id_')) {
-
                 if ($label->getParent()->find('css', '.select2-container-multi')) {
                     return 'multiSelect2';
                 } elseif ($label->getParent()->find('css', 'select')) {
@@ -469,8 +477,8 @@ class Form extends Base
      * $value can be a string of multiple values. Each value must be separated with comma, eg :
      * 'Hot, Dry, Fresh'
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      *
      * @throws InvalidArgumentException
      */
@@ -487,7 +495,6 @@ class Form extends Base
 
         foreach ($selectedValues as $selectedValue) {
             if (false === in_array($selectedValue->getText(), $allValues)) {
-
                 $closeButton = $selectedValue->find('css', 'a');
 
                 if (!$closeButton) {
@@ -538,15 +545,14 @@ class Form extends Base
     /**
      * Fills a simple (unique value) select2 field with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      *
      * @throws InvalidArgumentException
      */
     protected function fillSelect2Field($label, $value)
     {
         if (trim($value)) {
-
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
                 $link->click();
 
@@ -567,8 +573,8 @@ class Form extends Base
     /**
      * Fills a select element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      */
     protected function fillSelectField($label, $value)
     {
@@ -580,8 +586,8 @@ class Form extends Base
     /**
      * Fills a Wysiwyg editor element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      */
     protected function fillWysiwygField($label, $value)
     {
@@ -595,8 +601,8 @@ class Form extends Base
     /**
      * Fills a date field element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      */
     protected function fillDateField($label, $value)
     {
@@ -610,8 +616,8 @@ class Form extends Base
     /**
      * Fills a text field element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      */
     protected function fillTextField($label, $value)
     {
@@ -629,8 +635,8 @@ class Form extends Base
      * We have a field "$" embedded inside a "Price" field
      * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
      *
-     * @param \Behat\Mink\Element\NodeElement   $label
-     * @param string                            $value
+     * @param \Behat\Mink\Element\NodeElement $label
+     * @param string                          $value
      *
      * @throws ElementNotFoundException
      */

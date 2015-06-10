@@ -36,8 +36,6 @@ class CsvProductWriter extends CsvWriter
 
     /**
      * @param array $media
-     *
-     * @return void
      */
     protected function copyMedia(array $media)
     {

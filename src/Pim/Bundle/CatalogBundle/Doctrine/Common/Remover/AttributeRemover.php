@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\Common\Remover;
 
-use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Remover\RemovingOptionsResolverInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Util\ClassUtils;
-use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Bundle\CatalogBundle\Builder\ProductTemplateBuilderInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductTemplateRepositoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -32,30 +32,30 @@ class AttributeRemover implements RemoverInterface
     protected $eventDispatcher;
 
     /** @var ProductTemplateBuilderInterface */
-    protected $productTemplateBuilder;
+    protected $productTplBuilder;
 
     /** @var ProductTemplateRepositoryInterface */
-    protected $productTemplateRepository;
+    protected $productTplRepository;
 
     /**
      * @param ObjectManager                      $objectManager
      * @param RemovingOptionsResolverInterface   $optionsResolver
      * @param EventDispatcherInterface           $eventDispatcher
-     * @param ProductTemplateBuilderInterface    $productTemplateBuilder
-     * @param ProductTemplateRepositoryInterface $productTemplateRepository
+     * @param ProductTemplateBuilderInterface    $productTplBuilder
+     * @param ProductTemplateRepositoryInterface $productTplRepository
      */
     public function __construct(
         ObjectManager $objectManager,
         RemovingOptionsResolverInterface $optionsResolver,
         EventDispatcherInterface $eventDispatcher,
-        ProductTemplateBuilderInterface $productTemplateBuilder = null,
-        ProductTemplateRepositoryInterface $productTemplateRepository = null
+        ProductTemplateBuilderInterface $productTplBuilder = null,
+        ProductTemplateRepositoryInterface $productTplRepository = null
     ) {
         $this->objectManager = $objectManager;
         $this->optionsResolver = $optionsResolver;
         $this->eventDispatcher = $eventDispatcher;
-        $this->productTemplateBuilder = $productTemplateBuilder;
-        $this->productTemplateRepository = $productTemplateRepository;
+        $this->productTplBuilder = $productTplBuilder;
+        $this->productTplRepository = $productTplRepository;
     }
 
     /**
@@ -92,13 +92,13 @@ class AttributeRemover implements RemoverInterface
      */
     protected function removeFromProductTemplate(AttributeInterface $attribute)
     {
-        if (null === $this->productTemplateBuilder || null === $this->productTemplateRepository) {
+        if (null === $this->productTplBuilder || null === $this->productTplRepository) {
             return;
         }
 
-        foreach ($this->productTemplateRepository->findAll() as $productTemplate) {
+        foreach ($this->productTplRepository->findAll() as $productTemplate) {
             if ($productTemplate->hasValueForAttribute($attribute)) {
-                $this->productTemplateBuilder->removeAttribute($productTemplate, $attribute);
+                $this->productTplBuilder->removeAttribute($productTemplate, $attribute);
 
                 $attributeCodes = $productTemplate->getAttributeCodes();
                 empty($attributeCodes)

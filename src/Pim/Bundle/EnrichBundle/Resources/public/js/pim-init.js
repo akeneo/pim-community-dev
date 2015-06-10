@@ -68,14 +68,6 @@ define(
             };
 
             $(function(){
-                if ($.isPlainObject($.uniform)) {
-                    $.uniform.restore();
-                }
-
-                $(document).on('uniformInit', function () {
-                    $.uniform.restore();
-                });
-
                 $(document).on('tab.loaded', 'form.form-horizontal', function(e, tab) {
                     pageInit($(tab));
                 });

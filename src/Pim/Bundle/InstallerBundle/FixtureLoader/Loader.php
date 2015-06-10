@@ -5,7 +5,7 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,50 +19,32 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class Loader implements LoaderInterface
 {
-    /**
-     * @staticvar string Start event name
-     */
+    /**  @staticvar string Start event name */
     const EVENT_STARTED = 'pim_installer.installer.fixture_loader.start';
 
-    /**
-     * @staticvar string End event name
-     */
+    /** @staticvar string End event name */
     const EVENT_COMPLETED = 'pim_installer.installer.fixture_loader.end';
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $objectManager;
 
-    /**
-     * @var ReaderInterface
-     */
+    /** @var ReaderInterface */
     protected $reader;
 
-    /**
-     * @var ItemProcessorInterface
-     */
+    /** @var ItemProcessorInterface */
     protected $processor;
 
-    /**
-     * @var DoctrineCache
-     */
+    /** @var DoctrineCache */
     protected $doctrineCache;
 
-    /**
-     * @var EventDispatcherInterface
-     */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
-    /**
-     * @var boolean
-     */
+    /** @var bool */
     protected $multiple;
 
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
+    /** @var MediaManager */
+    protected $mediaManager;
 
     /**
      * Constructor
@@ -72,7 +54,7 @@ class Loader implements LoaderInterface
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher
-     * @param boolean                  $multiple
+     * @param bool                     $multiple
      * @param ProductManager           $productManager
      */
     public function __construct(
@@ -82,7 +64,7 @@ class Loader implements LoaderInterface
         ItemProcessorInterface $processor,
         EventDispatcherInterface $eventDispatcher,
         $multiple,
-        ProductManager $productManager
+        MediaManager $mediaManager
     ) {
         $this->objectManager = $objectManager;
         $this->doctrineCache = $doctrineCache;
@@ -90,7 +72,7 @@ class Loader implements LoaderInterface
         $this->processor = $processor;
         $this->eventDispatcher = $eventDispatcher;
         $this->multiple = $multiple;
-        $this->productManager = $productManager;
+        $this->mediaManager = $mediaManager;
     }
 
     /**
@@ -143,7 +125,7 @@ class Loader implements LoaderInterface
     protected function persistObject($object)
     {
         if ($object instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
-            $this->productManager->handleMedia($object);
+            $this->mediaManager->handleProductMedias($object);
         }
         $this->objectManager->persist($object);
         $this->doctrineCache->setReference($object);

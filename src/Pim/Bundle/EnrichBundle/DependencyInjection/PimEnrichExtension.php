@@ -21,11 +21,20 @@ class PimEnrichExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        $configuration = new Configuration();
+        $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter(
+            'pim_enrich_max_products_category_removal',
+            $configs[0]['max_products_category_removal']
+        );
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('attribute_icons.yml');
+        $loader->load('cleaners.yml');
         $loader->load('colors.yml');
+        $loader->load('command.yml');
         $loader->load('controllers.yml');
         $loader->load('datagrid_listeners.yml');
         $loader->load('entities.yml');
@@ -39,10 +48,14 @@ class PimEnrichExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('mass_actions.yml');
         $loader->load('normalizers.yml');
+        $loader->load('processors.yml');
         $loader->load('providers.yml');
+        $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('resolvers.yml');
+        $loader->load('savers.yml');
         $loader->load('serializers.yml');
+        $loader->load('steps.yml');
         $loader->load('twig.yml');
         $loader->load('view_elements.yml');
         $loader->load('view_elements/association_type.yml');

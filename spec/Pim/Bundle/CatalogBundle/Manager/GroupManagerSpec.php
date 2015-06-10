@@ -2,19 +2,15 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
-use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Prophecy\Argument;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class GroupManagerSpec extends ObjectBehavior
 {

@@ -93,7 +93,7 @@ class CategoryFilter extends NumberFilter
      * @param FilterDatasourceAdapterInterface $ds
      * @param array                            $data
      *
-     * @return boolean has been applied
+     * @return bool has been applied
      */
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
@@ -106,7 +106,7 @@ class CategoryFilter extends NumberFilter
      * @param FilterDatasourceAdapterInterface $ds
      * @param array                            $data
      *
-     * @return boolean has been applied
+     * @return bool has been applied
      */
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
@@ -128,7 +128,7 @@ class CategoryFilter extends NumberFilter
      * @param FilterDatasourceAdapterInterface $ds
      * @param array                            $data
      *
-     * @return boolean has been applied
+     * @return bool has been applied
      */
     protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
     {

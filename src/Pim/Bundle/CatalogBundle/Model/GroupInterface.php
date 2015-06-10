@@ -14,13 +14,16 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface,
- VersionableInterface
+interface GroupInterface extends
+    TranslatableInterface,
+    GroupSequenceProviderInterface,
+    ReferableInterface,
+    VersionableInterface
 {
     /**
      * Get the id
      *
-     * @return integer
+     * @return int
      */
     public function getId();
 
@@ -51,6 +54,7 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
 
     /**
      * Get group type
+     *
      * @return GroupTypeInterface
      */
     public function getType();
@@ -123,9 +127,9 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
      *
      * @param AttributeInterface $attribute
      *
-     * @return GroupInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return GroupInterface
      */
     public function removeAttribute(AttributeInterface $attribute);
 
@@ -172,9 +176,9 @@ interface GroupInterface extends TranslatableInterface, GroupSequenceProviderInt
      *
      * @param AttributeInterface $attribute
      *
-     * @return GroupInterface
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return GroupInterface
      */
     public function removeAxisAttribute(AttributeInterface $attribute);
 

@@ -4,8 +4,8 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\EnrichBundle\Form\Handler\HandlerInterface;
@@ -105,6 +105,7 @@ class GroupController extends AbstractController
      *
      * @Template
      * @AclAncestor("pim_enrich_group_index")
+     *
      * @return Response
      */
     public function indexAction(Request $request)
@@ -116,10 +117,12 @@ class GroupController extends AbstractController
 
     /**
      * Create a group
+     *
      * @param Request $request
      *
      * @Template
      * @AclAncestor("pim_enrich_group_create")
+     *
      * @return Response|RedirectResponse
      */
     public function createAction(Request $request)
@@ -156,6 +159,7 @@ class GroupController extends AbstractController
      *
      * @Template
      * @AclAncestor("pim_enrich_group_edit")
+     *
      * @return array
      */
     public function editAction(Group $group)
@@ -178,6 +182,7 @@ class GroupController extends AbstractController
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_remove")
+     *
      * @return Response|RedirectResponse
      */
     public function removeAction(Group $group)
@@ -216,6 +221,7 @@ class GroupController extends AbstractController
      * @param Group $group
      *
      * @AclAncestor("pim_enrich_group_history")
+     *
      * @return Response
      */
     public function historyAction(Group $group)

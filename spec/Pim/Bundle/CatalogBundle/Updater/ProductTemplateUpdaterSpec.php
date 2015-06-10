@@ -73,25 +73,23 @@ class ProductTemplateUpdaterSpec extends ObjectBehavior
 
         $template->getValuesData()->willReturn($updates);
 
-        $productUpdater->setValue([$product], 'description', 'Foo', 'en_US', 'ecommerce')->shouldBeCalled();
-        $productUpdater->setValue([$product], 'description', 'Bar', 'en_US', 'mobile')->shouldBeCalled();
-        $productUpdater->setValue([$product], 'color', 'red', null, null)->shouldBeCalled();
+        $productUpdater->setData($product, 'description', 'Foo', ['locale' => 'en_US', 'scope' => 'ecommerce'])->shouldBeCalled();
+        $productUpdater->setData($product, 'description', 'Bar', ['locale' => 'en_US', 'scope' => 'mobile'])->shouldBeCalled();
+        $productUpdater->setData($product, 'color', 'red', ['locale' => null, 'scope' => null])->shouldBeCalled();
         $productUpdater
-            ->setValue(
-                [$product],
+            ->setData(
+                $product,
                 'price',
                 [['data' => 10, 'currency' => 'EUR'], ['data' => 20, 'currency' => 'USD']],
-                'fr_FR',
-                null
+                ['locale' => 'fr_FR', 'scope' => null]
             )
             ->shouldBeCalled();
         $productUpdater
-            ->setValue(
-                [$product],
+            ->setData(
+                $product,
                 'image',
                 ['filePath' => '/uploads/image.jpg', 'originalFilename' => 'Image.jpg'],
-                null,
-                'mobile'
+                ['locale' => null, 'scope' => 'mobile']
             )
             ->shouldBeCalled();
 

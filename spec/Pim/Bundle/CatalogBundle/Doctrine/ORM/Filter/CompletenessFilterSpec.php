@@ -4,9 +4,9 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
-use PhpSpec\ObjectBehavior;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Prophecy\Argument;
 

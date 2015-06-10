@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'pimdashboard/js/abstract-widget'],
+    ['jquery', 'underscore', 'pim/dashboard/abstract-widget'],
     function ($, _, AbstractWidget) {
         'use strict';
 

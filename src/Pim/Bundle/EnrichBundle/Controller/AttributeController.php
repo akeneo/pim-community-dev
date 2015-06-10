@@ -145,6 +145,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @Template
      * @AclAncestor("pim_enrich_attribute_index")
+     *
      * @return Template
      */
     public function indexAction()
@@ -154,10 +155,12 @@ class AttributeController extends AbstractDoctrineController
 
     /**
      * Create attribute
+     *
      * @param Request $request
      *
      * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_create")
+     *
      * @return array
      */
     public function createAction(Request $request)
@@ -190,10 +193,11 @@ class AttributeController extends AbstractDoctrineController
      * Edit attribute form
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @Template("PimEnrichBundle:Attribute:form.html.twig")
      * @AclAncestor("pim_enrich_attribute_edit")
+     *
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -221,6 +225,7 @@ class AttributeController extends AbstractDoctrineController
      * @param Request $request
      *
      * @AclAncestor("pim_enrich_attribute_sort")
+     *
      * @return Response
      */
     public function sortAction(Request $request)
@@ -252,11 +257,12 @@ class AttributeController extends AbstractDoctrineController
      * Create a new option for a simple/multi-select attribute
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      * @param string  $dataLocale
      *
      * @Template("PimEnrichBundle:Attribute:form_options.html.twig")
      * @AclAncestor("pim_enrich_attribute_edit")
+     *
      * @return Response
      */
     public function createOptionAction(Request $request, $id, $dataLocale)
@@ -303,7 +309,7 @@ class AttributeController extends AbstractDoctrineController
      * Remove attribute
      *
      * @param Request $request
-     * @param integer $id
+     * @param int     $id
      *
      * @AclAncestor("pim_enrich_attribute_remove")
      *
@@ -326,10 +332,11 @@ class AttributeController extends AbstractDoctrineController
     /**
      * Find an attribute
      *
-     * @param integer $id
+     * @param int $id
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
      * @return AttributeInterface
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findAttributeOr404($id)
     {
@@ -343,7 +350,7 @@ class AttributeController extends AbstractDoctrineController
      *
      * @throws DeleteException For ajax requests if the attribute is not removable
      *
-     * @return RedirectResponse|null
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
      */
     protected function validateRemoval(AttributeInterface $attribute)
     {

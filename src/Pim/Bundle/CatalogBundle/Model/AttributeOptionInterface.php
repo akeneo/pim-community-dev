@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
@@ -92,6 +93,7 @@ interface AttributeOptionInterface extends ReferableInterface
 
     /**
      * Get code
+     *
      * @return string
      */
     public function getCode();

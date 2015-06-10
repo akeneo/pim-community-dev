@@ -24,7 +24,7 @@ class RegisterViewElementsPassSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\EnrichBundle\DependencyInjection\Compiler\RegisterViewElementsPass');
     }
 
-   function it_is_a_compiler_pass()
+    function it_is_a_compiler_pass()
     {
         $this->shouldImplement('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }

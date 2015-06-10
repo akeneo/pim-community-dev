@@ -8,6 +8,8 @@ import:
 
 import_report:
     resource: '@PimImportExportBundle/Resources/config/routing/import_execution.yml'
+    prefix: /collect/import_execution
 
 export_report:
     resource: '@PimImportExportBundle/Resources/config/routing/export_execution.yml'
+    prefix: /spread/export_execution

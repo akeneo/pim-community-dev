@@ -135,7 +135,7 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes the status
      *
-     * @param integer $status
+     * @param int $status
      *
      * @return string
      */

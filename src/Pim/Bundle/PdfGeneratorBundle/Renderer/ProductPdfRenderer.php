@@ -86,6 +86,7 @@ class ProductPdfRenderer implements RendererInterface
 
     /**
      * Get attributes to display
+     *
      * @param ProductInterface $product
      * @param string           $locale
      *
@@ -98,6 +99,7 @@ class ProductPdfRenderer implements RendererInterface
 
     /**
      * get attributes grouped by attribute group
+     *
      * @param ProductInterface $product
      * @param string           $locale
      *
@@ -121,6 +123,7 @@ class ProductPdfRenderer implements RendererInterface
 
     /**
      * Get all image attributes
+     *
      * @param ProductInterface $product
      * @param string           $locale
      *
@@ -141,6 +144,7 @@ class ProductPdfRenderer implements RendererInterface
 
     /**
      * Options configuration (for the option resolver)
+     *
      * @param OptionsResolverInterface $resolver
      */
     protected function configureOptions(OptionsResolverInterface $resolver)

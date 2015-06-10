@@ -6,13 +6,13 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Gaufrette\Filesystem;
 use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * Media Manager uses Gaufrette to manage medias
@@ -178,12 +178,12 @@ class MediaManager
     /**
      * Create a media and load file information
      *
-     * @param string  $filename
-     * @param boolean $isUploaded
-     *
-     * @return ProductMediaInterface
+     * @param string $filename
+     * @param bool   $isUploaded
      *
      * @throws \InvalidArgumentException When file does not exist
+     *
+     * @return ProductMediaInterface
      */
     public function createFromFilename($filename, $isUploaded = true)
     {
@@ -275,7 +275,7 @@ class MediaManager
         return sprintf(
             '%s-%s-%s-%s-%s-%s',
             uniqid(),
-            Urlizer::urlize($product->getIdentifier(), '_'),
+            Urlizer::urlize($product->getIdentifier()->getData(), '_'),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
             $value->getScope(),
@@ -288,9 +288,9 @@ class MediaManager
      *
      * @param ProductMediaInterface $media
      *
-     * @return string|null the base 64 representation of the file media or null if the media has no file attached
-     *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
+     *
+     * @return string|null the base 64 representation of the file media or null if the media has no file attached
      */
     public function getBase64(ProductMediaInterface $media)
     {
@@ -315,7 +315,7 @@ class MediaManager
      *
      * @param ProductMediaInterface $media     ProductMediaInterface entity
      * @param string                $filename  Filename
-     * @param boolean               $overwrite Overwrite file or not
+     * @param bool                  $overwrite Overwrite file or not
      */
     protected function upload(ProductMediaInterface $media, $filename, $overwrite = false)
     {
@@ -339,9 +339,9 @@ class MediaManager
     /**
      * Write file in filesystem
      *
-     * @param string  $filename  Filename
-     * @param string  $content   File content
-     * @param boolean $overwrite Overwrite file or not
+     * @param string $filename  Filename
+     * @param string $content   File content
+     * @param bool   $overwrite Overwrite file or not
      */
     protected function write($filename, $content, $overwrite = false)
     {
@@ -353,9 +353,9 @@ class MediaManager
      *
      * @param ProductMediaInterface $media
      *
-     * @return string|null the path of the media or null if the media has no file attached
-     *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
+     *
+     * @return string|null the path of the media or null if the media has no file attached
      */
     public function getFilePath(ProductMediaInterface $media)
     {
@@ -392,7 +392,7 @@ class MediaManager
      *
      * @param ProductMediaInterface $media
      *
-     * @return boolean
+     * @return bool
      */
     protected function fileExists(ProductMediaInterface $media)
     {

@@ -138,7 +138,7 @@ connector:
                     title:     pim_base_connector.jobs.csv_attribute_option_import.import.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute_option
-                        processor: pim_base_connector.processor.attribute_option
+                        processor: pim_base_connector.processor.denormalization.attribute_option.flat
                         writer:    pim_base_connector.writer.doctrine.attribute_option
         csv_association_type_import:
             title: pim_base_connector.jobs.csv_association_type_import.title

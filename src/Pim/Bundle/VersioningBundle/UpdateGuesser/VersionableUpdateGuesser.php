@@ -19,7 +19,7 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
      * Entities configured as versionable without implementing interface because coming
      * from third party bundles
      *
-     * @var array $versionableEntities
+     * @var array
      */
     protected $versionableEntities;
 

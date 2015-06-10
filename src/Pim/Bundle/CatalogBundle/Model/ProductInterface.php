@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -13,8 +14,13 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductInterface extends LocalizableInterface, ScopableInterface, TimestampableInterface,
- VersionableInterface, CommentSubjectInterface, ReferableInterface
+interface ProductInterface extends
+    LocalizableInterface,
+    ScopableInterface,
+    TimestampableInterface,
+    VersionableInterface,
+    CommentSubjectInterface,
+    ReferableInterface
 {
     /**
      * Get the ID of the product
@@ -31,12 +37,13 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      * @return ProductInterface
      */
     public function setId($id);
+
     /**
      * Get the identifier of the product
      *
-     * @return ProductValueInterface the identifier of the product
-     *
      * @throws MissingIdentifierException if no identifier could be found
+     *
+     * @return ProductValueInterface the identifier of the product
      */
     public function getIdentifier();
 
@@ -175,9 +182,9 @@ interface ProductInterface extends LocalizableInterface, ScopableInterface, Time
      *
      * @param AssociationInterface $association
      *
-     * @return ProductInterface
-     *
      * @throws \LogicException
+     *
+     * @return ProductInterface
      */
     public function addAssociation(AssociationInterface $association);
 

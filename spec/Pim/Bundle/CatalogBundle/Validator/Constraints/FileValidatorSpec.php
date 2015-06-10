@@ -5,9 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Validator\Constraints;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\FileValidator;
-use Symfony\Component\Validator\ExecutionContextInterface;
 use Prophecy\Argument;
+use Symfony\Component\Validator\ExecutionContextInterface;
 
 class FileValidatorSpec extends ObjectBehavior
 {

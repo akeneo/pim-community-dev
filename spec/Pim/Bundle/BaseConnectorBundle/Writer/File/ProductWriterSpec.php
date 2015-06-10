@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\ProductMediaInterface;
 
 class ProductWriterSpec extends ObjectBehavior
 {

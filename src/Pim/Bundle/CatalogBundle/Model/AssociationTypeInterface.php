@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -11,8 +12,11 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AssociationTypeInterface extends TranslatableInterface, ReferableInterface,
- VersionableInterface, TimestampableInterface
+interface AssociationTypeInterface extends
+    TranslatableInterface,
+    ReferableInterface,
+    VersionableInterface,
+    TimestampableInterface
 {
     /**
      * Get id
@@ -24,7 +28,7 @@ interface AssociationTypeInterface extends TranslatableInterface, ReferableInter
     /**
      * Set id
      *
-     * @param integer $id
+     * @param int $id
      *
      * @return AssociationTypeInterface
      */

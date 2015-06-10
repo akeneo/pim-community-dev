@@ -12,24 +12,24 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractTranslation
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
     /**
-     * @var string $foreignKey
+     * @var string
      */
     protected $foreignKey;
 
     /**
      * Get id
      *
-     * @return integer $id
+     * @return int $id
      */
     public function getId()
     {

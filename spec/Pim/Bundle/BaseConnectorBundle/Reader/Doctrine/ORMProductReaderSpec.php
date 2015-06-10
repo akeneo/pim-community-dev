@@ -8,10 +8,10 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\ProductRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 
@@ -30,10 +30,16 @@ class ORMProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_has_a_channel()
+    function it_is_configurable(AbstractQuery $query)
     {
+        $this->getChannel()->shouldReturn(null);
+        $this->getQuery()->shouldReturn(null);
+
         $this->setChannel('mobile');
+        $this->setQuery($query);
+
         $this->getChannel()->shouldReturn('mobile');
+        $this->getQuery()->shouldReturn($query);
     }
 
     function it_reads_products_one_by_one(
@@ -101,7 +107,6 @@ class ORMProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read()->shouldReturn($sku1);
-
     }
 
     function it_converts_metric_values(

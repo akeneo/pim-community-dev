@@ -14,8 +14,6 @@ parameters:
     websocket_host:       "127.0.0.1"
     websocket_port:       8080
 
-    session_handler:      ~
-
     upload_dir:           %kernel.root_dir%/uploads/product
     archive_dir:          %kernel.root_dir%/archive
 
@@ -26,6 +24,7 @@ parameters:
 
     uservoice_key:                 ~
     mass_edit_limit:               1000
+    max_products_category_removal: 100
 
     # Product storage driver can be doctrine/orm or doctrine/mongodb-odm
     pim_catalog_product_storage_driver: doctrine/orm
@@ -36,3 +35,4 @@ parameters:
 
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
 
+    security.exception_listener.class: Pim\Bundle\UserBundle\Security\FirewallExceptionListener

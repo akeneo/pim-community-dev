@@ -71,12 +71,12 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $metricConverter;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $executed = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $missingCompleteness;
 
@@ -86,7 +86,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param DocumentManager            $documentManager
-     * @param boolean                    $missingCompleteness
+     * @param bool                       $missingCompleteness
      */
     public function __construct(
         ProductRepositoryInterface $repository,

@@ -1,4 +1,5 @@
 <?php
+
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -58,7 +59,7 @@ interface AssociationInterface extends ReferableInterface
      *
      * @param ProductInterface $product
      *
-     * @return boolean
+     * @return bool
      */
     public function hasProduct(ProductInterface $product);
 
@@ -73,6 +74,7 @@ interface AssociationInterface extends ReferableInterface
 
     /**
      * Get association type
+     *
      * @return AssociationTypeInterface
      */
     public function getAssociationType();
@@ -113,6 +115,7 @@ interface AssociationInterface extends ReferableInterface
 
     /**
      * Get owner
+     *
      * @return ProductInterface
      */
     public function getOwner();

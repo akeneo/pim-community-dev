@@ -28,7 +28,8 @@ Feature: Add products to a variant group
     And I check the row "sandal-white-37"
     And I check the row "sandal-white-38"
     And I press the "Save" button
-    Then the product "sandal-white-37" should have the following value:
+    Then the rows "sandal-white-37 and sandal-white-38" should be checked
+    And the product "sandal-white-37" should have the following value:
       | name-en_US   | EN name     |
       | comment      | New comment |
       | manufacturer | [Converse]  |
@@ -45,7 +46,7 @@ Feature: Add products to a variant group
     And I should see products sandal-white-37
     And I check the row "sandal-white-37"
     And I press the "Save" button
-    Then I should be redirected on the variant groups page
+    Then the row "sandal-white-37" should be checked
     When I edit the "sandal-white-37" product
     And I visit the "History" tab
     And I should see history:
@@ -53,13 +54,14 @@ Feature: Add products to a variant group
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
 
-  Scenario: Successfully delete a variant groups, product history should be updated without context
+  Scenario: Successfully delete a variant group, product history should be updated without context
     Given I am on the "SANDAL" variant group page
     Then the grid should contain 3 elements
     And I should see products sandal-white-37
     And I check the row "sandal-white-37"
     And I press the "Save" button
-    Then I am on the variant groups page
+    Then the row "sandal-white-37" should be checked
+    When I am on the variant groups page
     And I click on the "Delete" action of the row which contains "SANDAL"
     And I confirm the deletion
     Then I edit the "sandal-white-37" product
@@ -70,7 +72,7 @@ Feature: Add products to a variant group
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
       | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3736
+  @jira https://akeneo.atlassian.net/browse/PIM-3736 @unstable
   Scenario: Reject product addition in a variant group, products count should be correct
     Given the following products:
       | sku              | family  | categories        | size | color | name-en_US |
@@ -88,4 +90,4 @@ Feature: Add products to a variant group
     And I check the row "duplicate-sandal"
     And I press the "Save" button
     Then I should see "Products: 3"
-    But the row "duplicate-sandal" should be checked
+    And the row "duplicate-sandal" should be checked

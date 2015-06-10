@@ -18,7 +18,7 @@ class ViewUpdaterRegistry
      * Register a view updater
      *
      * @param ViewUpdaterInterface $updater
-     * @param integer              $position
+     * @param int                  $position
      */
     public function registerUpdater(ViewUpdaterInterface $updater, $position)
     {

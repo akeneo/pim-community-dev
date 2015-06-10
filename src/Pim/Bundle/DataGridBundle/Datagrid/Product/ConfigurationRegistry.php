@@ -38,7 +38,7 @@ class ConfigurationRegistry
      *
      * @param string $attributeType the type
      *
-     * @return boolean
+     * @return bool
      */
     public function hasConfiguration($attributeType)
     {

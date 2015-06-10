@@ -42,9 +42,10 @@ class ValidDateRangeValidator extends ConstraintValidator
 
     /**
      * Check if the date/time/datetime is valid based on the rules defined in the entity
+     *
      * @param mixed $date
      *
-     * @return boolean
+     * @return bool
      */
     protected function isDateValid($date)
     {

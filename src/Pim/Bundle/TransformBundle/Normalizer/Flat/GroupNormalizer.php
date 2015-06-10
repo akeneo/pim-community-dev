@@ -15,7 +15,7 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
 class GroupNormalizer extends Structured\GroupNormalizer
 {
     /**
-     * @var array $supportedFormats
+     * @var array
      */
     protected $supportedFormats = array('csv');
 
@@ -39,7 +39,7 @@ class GroupNormalizer extends Structured\GroupNormalizer
         }
 
         $valuesData = $group->getProductTemplate()->getValuesData();
-        $values = $this->serializer->denormalize($valuesData, 'ProductValue[]', 'json');
+        $values = $this->valuesDenormalizer->denormalize($valuesData, 'ProductValue[]', 'json');
 
         $normalizedValues = [];
         foreach ($values as $value) {

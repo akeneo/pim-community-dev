@@ -22,6 +22,7 @@ class TechnicalContext extends RawMinkContext
     {
         $identifiers = $this->getMainContext()->listToArray($identifiers);
         $serializer = $this->getContainer()->get('pim_serializer');
+        $productValueClass = $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
 
         foreach ($identifiers as $identifier) {
             $product = $this->getFixturesContext()->getProduct($identifier);
@@ -34,7 +35,7 @@ class TechnicalContext extends RawMinkContext
                 foreach ($valuesData as $valueData) {
                     $createdValue = $serializer->denormalize(
                         $valueData,
-                        'Pim\Bundle\CatalogBundle\Model\ProductValue',
+                        $productValueClass,
                         'json',
                         ['attribute' => $attribute]
                     );

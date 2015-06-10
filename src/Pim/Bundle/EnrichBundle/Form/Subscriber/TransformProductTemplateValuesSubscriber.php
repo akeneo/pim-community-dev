@@ -62,8 +62,6 @@ class TransformProductTemplateValuesSubscriber implements EventSubscriberInterfa
 
     /**
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function postSubmit(FormEvent $event)
     {

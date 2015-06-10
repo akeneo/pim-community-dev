@@ -132,7 +132,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
      */
     public function preFlush(PreFlushEventArgs $args)
     {
-        $dm = $args->getDocumentManager();
+        $dm  = $args->getDocumentManager();
         $uow = $dm->getUnitOfWork();
         foreach ($uow->getScheduledDocumentUpdates() as $document) {
             $metadata = $dm->getClassMetadata(get_class($document));
@@ -149,8 +149,6 @@ class EntitiesTypeSubscriber implements EventSubscriber
      *
      * @param object        $document
      * @param ClassMetadata $metadata
-     *
-     * @return null
      */
     private function synchronizeReferencedCollectionIds($document, ClassMetadata $metadata)
     {
@@ -160,8 +158,9 @@ class EntitiesTypeSubscriber implements EventSubscriber
                 if (!$oldValue instanceof ReferencedCollection) {
                     throw new \LogicException(
                         sprintf(
-                            'Property "%s" of "%s" should be an instance of ' .
-                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection, got "%s"',
+                            'Property "%s" of "%s" should be an instance of '.
+                            'Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM\Collections\ReferencedCollection, ' .
+                            'got "%s"',
                             $field,
                             get_class($document),
                             is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)
@@ -182,7 +181,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
                         return $id;
                     }
                 )
-                ->toArray();
+                    ->toArray();
 
                 $metadata->reflFields[$mapping['idsField']]->setValue($document, $newValue);
             }

@@ -4,10 +4,10 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -48,7 +48,7 @@ class IndexCreator
         NamingUtility $namingUtility,
         $productClass,
         LoggerInterface $logger,
-        $attributeClass = 'Pim\Bundle\CatalogBundle\Entity\Attribute'
+        $attributeClass
     ) {
         $this->managerRegistry = $managerRegistry;
         $this->namingUtility   = $namingUtility;

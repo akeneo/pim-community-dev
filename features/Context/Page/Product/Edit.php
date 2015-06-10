@@ -2,9 +2,9 @@
 
 namespace Context\Page\Product;
 
-use Context\Page\Base\Form;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
+use Context\Page\Base\Form;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class Edit extends Form
 {
     /**
-     * @var string $path
+     * @var string
      */
     protected $path = '/enrich/product/{id}/edit';
 
@@ -47,7 +47,7 @@ class Edit extends Form
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function countLocaleLinks()
     {
@@ -127,7 +127,7 @@ class Edit extends Form
     /**
      * @param string $group
      *
-     * @return integer
+     * @return int
      */
     public function getFieldsCountFor($group)
     {
@@ -261,8 +261,9 @@ class Edit extends Form
     /**
      * Get the completeness content
      *
-     * @return \Behat\Mink\Element\NodeElement
      * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement
      */
     public function findCompletenessContent()
     {
@@ -317,8 +318,9 @@ class Edit extends Form
     /**
      * Get the comment threads node
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed
      * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed
      */
     protected function findCommentTopics()
     {
@@ -328,8 +330,9 @@ class Edit extends Form
     /**
      * Get the comment replies node
      *
-     * @return \Behat\Mink\Element\NodeElement|mixed
      * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement|mixed
      */
     protected function findCommentReplies()
     {
@@ -340,8 +343,9 @@ class Edit extends Form
      * @param string $message
      * @param string $author
      *
-     * @return NodeElement     the comment
      * @throws \LogicException in case the comment does not exist
+     *
+     * @return NodeElement the comment
      */
     public function findComment($message, $author)
     {
@@ -352,7 +356,6 @@ class Edit extends Form
 
         $columnIdx = null;
         foreach ($comments as $index => $thread) {
-
             if (null !== $currentMessage = $this->findCommentMessage($thread)) {
                 $currentMessage = $currentMessage->getText();
             }
@@ -443,6 +446,7 @@ class Edit extends Form
 
     /**
      * Check completeness state
+     *
      * @param string $channelCode
      * @param string $localeCode
      * @param string $state
@@ -472,6 +476,7 @@ class Edit extends Form
 
     /**
      * Check completeness message
+     *
      * @param string $channelCode
      * @param string $localeCode
      * @param string $info
@@ -504,6 +509,7 @@ class Edit extends Form
 
     /**
      * Check completeness ratio
+     *
      * @param string $channelCode
      * @param string $localeCode
      * @param string $ratio
@@ -538,7 +544,9 @@ class Edit extends Form
 
     /**
      * Find legend div
+     *
      * @throws \InvalidArgumentException
+     *
      * @return \Behat\Mink\Element\NodeElement
      */
     public function findCompletenessLegend()
@@ -585,9 +593,9 @@ class Edit extends Form
     /**
      * @param string $category
      *
-     * @return NodeElement
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return NodeElement
      */
     public function findCategoryInTree($category)
     {
@@ -682,6 +690,7 @@ class Edit extends Form
 
     /**
      * Find a completeness cell from column and row (channel and locale codes)
+     *
      * @param string $columnCode (channel code)
      * @param string $rowCode    (locale code)
      *
@@ -716,8 +725,9 @@ class Edit extends Form
      * @param string $name
      * @param string $scope
      *
-     * @return NodeElement
      * @throws ElementNotFoundException
+     *
+     * @return NodeElement
      */
     protected function findScopedField($name, $scope)
     {

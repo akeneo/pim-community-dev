@@ -48,15 +48,16 @@ class SetProductsSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad', /* 'prePersist' deactivated for now to avoid side effect during import */];
+        return [
+            'postLoad',
+            // 'prePersist' deactivated for now to avoid side effect during import */
+        ];
     }
 
     /**
      * Injects related products inside the group
      *
      * @param LifecycleEventArgs $args
-     *
-     * @return null
      */
     public function postLoad(LifecycleEventArgs $args)
     {

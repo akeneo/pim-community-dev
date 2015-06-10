@@ -13,34 +13,52 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
  */
 class CopierRegistry implements CopierRegistryInterface
 {
-    /** @var CopierInterface[] */
-    protected $copiers = [];
+    /** @var AttributeCopierInterface[] priorized attribute copiers */
+    protected $attributeCopiers = [];
+
+    /** @var FieldCopierInterface[] priorized field copiers */
+    protected $fieldCopiers = [];
 
     /**
      * {@inheritdoc}
      */
     public function register(CopierInterface $copier)
     {
-        $this->copiers[] = $copier;
+        if ($copier instanceof FieldCopierInterface) {
+            $this->fieldCopiers[] = $copier;
+        }
+        if ($copier instanceof AttributeCopierInterface) {
+            $this->attributeCopiers[] = $copier;
+        }
+
+        return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    public function getFieldCopier($fromField, $toField)
     {
-        foreach ($this->copiers as $copier) {
-            if ($copier->supports($fromAttribute, $toAttribute)) {
+        foreach ($this->fieldCopiers as $copier) {
+            if ($copier->supportsFields($fromField, $toField)) {
                 return $copier;
             }
         }
 
-        throw new \LogicException(
-            sprintf(
-                'Source and destination attributes "%s" and "%s" are not supported by any copier',
-                $fromAttribute->getCode(),
-                $toAttribute->getCode()
-            )
-        );
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAttributeCopier(AttributeInterface $fromAttribute, AttributeInterface $toAttribute)
+    {
+        foreach ($this->attributeCopiers as $copier) {
+            if ($copier->supportsAttributes($fromAttribute, $toAttribute)) {
+                return $copier;
+            }
+        }
+
+        return null;
     }
 }

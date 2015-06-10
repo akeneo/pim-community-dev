@@ -16,8 +16,8 @@ interface CommentRepositoryInterface
      * Get comments related to a resource, ordered by creation date.
      * Replies are not returned by this method.
      *
-     * @param string         $resourceName
-     * @param integer|string $resourceId
+     * @param string     $resourceName
+     * @param int|string $resourceId
      *
      * @return \Doctrine\Common\Collections\ArrayCollection|\Pim\Bundle\CommentBundle\Model\CommentInterface[]
      */

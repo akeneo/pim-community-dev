@@ -34,9 +34,9 @@ class AttributeTypeRegistry
      *
      * @param string $alias
      *
-     * @return AttributeTypeInterface
-     *
      * @throws \LogicException
+     *
+     * @return AttributeTypeInterface
      */
     public function get($alias)
     {

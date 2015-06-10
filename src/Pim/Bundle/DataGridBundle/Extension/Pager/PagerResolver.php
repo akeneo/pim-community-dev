@@ -37,9 +37,9 @@ class PagerResolver
     /**
      * @param string $datasourceType
      *
-     * @return PagerInterface
-     *
      * @throws InvalidConfigurationException
+     *
+     * @return PagerInterface
      */
     public function getPager($datasourceType)
     {

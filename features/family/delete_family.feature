@@ -19,7 +19,7 @@ Feature: Delete a family
     Given I edit the "sneakers" family
     When I press the "Delete" button
     And I confirm the deletion
-    Then the grid should contain 2 elements
+    Then the grid should contain 3 elements
     And I should not see family sneakers
 
   Scenario: Successfully delete a family used by a product
@@ -31,8 +31,3 @@ Feature: Delete a family
     And I confirm the deletion
     When I edit the "foo" product
     Then I should see "Family: N/A"
-    When I save the product
-    And I visit the "History" tab
-    Then I should see history:
-      | version | property | value |
-      | 2       | family   |       |

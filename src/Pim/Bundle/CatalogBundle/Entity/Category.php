@@ -19,47 +19,47 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 class Category implements CategoryInterface
 {
     /**
-     * @var integer $id
+     * @var int
      */
     protected $id;
 
     /**
-     * @var string $code
+     * @var string
      */
     protected $code;
 
     /**
-     * @var integer $left
+     * @var int
      */
     protected $left;
 
     /**
-     * @var integer $level
+     * @var int
      */
     protected $level;
 
     /**
-     * @var integer $right
+     * @var int
      */
     protected $right;
 
     /**
-     * @var integer $root
+     * @var int
      */
     protected $root;
 
     /**
-     * @var CategoryInterface $parent
+     * @var CategoryInterface
      */
     protected $parent;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection $children
+     * @var \Doctrine\Common\Collections\Collection
      */
     protected $children;
 
     /**
-     * @var ArrayCollection $products
+     * @var ArrayCollection
      */
     protected $products;
 
@@ -72,17 +72,17 @@ class Category implements CategoryInterface
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
-     * @var string $locale
+     * @var string
      */
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
+     * @var ArrayCollection
      */
     protected $translations;
 
     /**
-     * @var ArrayCollection $channels
+     * @var ArrayCollection
      */
     protected $channels;
 
@@ -100,7 +100,7 @@ class Category implements CategoryInterface
     /**
      * Get id
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -133,7 +133,8 @@ class Category implements CategoryInterface
 
     /**
      * Set left
-     * @param integer $left
+     *
+     * @param int $left
      *
      * @return CategoryInterface
      */
@@ -147,7 +148,7 @@ class Category implements CategoryInterface
     /**
      * Get left
      *
-     * @return integer
+     * @return int
      */
     public function getLeft()
     {
@@ -174,7 +175,8 @@ class Category implements CategoryInterface
 
     /**
      * Set right
-     * @param integer $right
+     *
+     * @param int $right
      *
      * @return CategoryInterface
      */
@@ -188,7 +190,7 @@ class Category implements CategoryInterface
     /**
      * Get right
      *
-     * @return integer
+     * @return int
      */
     public function getRight()
     {
@@ -295,7 +297,7 @@ class Category implements CategoryInterface
     /**
      * Get products count
      *
-     * @return integer
+     * @return int
      */
     public function getProductsCount()
     {

@@ -6,9 +6,9 @@ use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Context\Page\Base\Grid;
+use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 
 /**
  * Feature context for the datagrid related steps
@@ -39,7 +39,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param integer $count
+     * @param int $count
      *
      * @Given /^the grid should contain (\d+) elements?$/
      */
@@ -104,6 +104,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $action
+     * @param string $value
+     *
+     * @Then /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*)"$/
+     */
+    public function iFilterByNumber($filterName, $action, $value)
+    {
+        $this->datagrid->filterPerNumber($filterName, $action, $value);
+        $this->wait();
+    }
+
+    /**
      * @param string $code
      *
      * @Given /^I filter by "category" with value "([^"]*)"$/
@@ -146,13 +159,31 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $column = strtoupper($column);
         $actual = $this->datagrid->getColumnValue($column, $row);
 
-        if ($expectation !== $actual) {
+        // do not consider the elements' order of "actual" and "expectation"
+        $expectation = explode(',', $expectation);
+        $expectation = array_map(
+            function ($row) {
+                return trim($row);
+            },
+            $expectation
+        );
+        $actual = explode(',', $actual);
+        $actual = array_map(
+            function ($row) {
+                return trim($row);
+            },
+            $actual
+        );
+
+        $diff = array_diff($actual, $expectation);
+
+        if (!empty($diff)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting column "%s" to contain "%s", got "%s"',
                     $column,
-                    $expectation,
-                    $actual
+                    implode(',', $expectation),
+                    implode(',', $actual)
                 )
             );
         }
@@ -206,6 +237,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShowTheFilter($filterName)
     {
         if (strtolower($filterName) !== 'category') {
+            $this->wait();
             $this->datagrid->showFilter($filterName);
             $this->wait();
             $this->datagrid->assertFilterVisible($filterName);
@@ -228,7 +260,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $columns
      *
      * @Given /^I display the columns (.*)$/
-    */
+     */
     public function iDisplayTheColumns($columns)
     {
         $columns = $this->getMainContext()->listToArray($columns);
@@ -387,6 +419,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iChangePageSize($size)
     {
         $this->datagrid->changePageSize((int) $size);
+        $this->wait();
+    }
+
+    /**
+     * @param int $size
+     *
+     * @When /^page size should be (\d+)$/
+     */
+    public function pageSizeShouldBe($size)
+    {
+        $this->datagrid->pageSizeIs((int) $size);
         $this->wait();
     }
 
@@ -829,8 +872,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * Wait
      *
-     * @param integer $time
-     * @param string  $condition
+     * @param int    $time
+     * @param string $condition
      */
     protected function wait($time = 10000, $condition = null)
     {
