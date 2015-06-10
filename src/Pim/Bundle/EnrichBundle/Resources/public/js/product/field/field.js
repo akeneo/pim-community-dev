@@ -52,8 +52,9 @@ define([
                 var promises = [];
                 mediator.trigger('field:extension:add', {'field': this, 'promises': promises});
 
-                $.when.apply($, promises).then(_.bind(function () {
-                    $.when(this.getTemplateContext()).then(_.bind(function (templateContext) {
+                $.when.apply($, promises)
+                    .then(_.bind(function () { return this.getTemplateContext(); }, this))
+                    .then(_.bind(function (templateContext) {
                         this.$el.html(this.template(templateContext));
                         this.$('.form-field .field-input').append(this.renderInput(templateContext));
 
@@ -71,7 +72,6 @@ define([
                         this.postRender();
                         this.delegateEvents();
                     }, this));
-                }, this));
 
                 return this;
             },
