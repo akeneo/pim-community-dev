@@ -18,6 +18,7 @@
 - PIM-4024: Fix for metric and price denormalizer
 - PIM-4314: Added missing translation keys
 - PIM-4112: Not translated Error message when wrong format import
+- PMI-4032: Fix wrong error message when deleting used attribute option by a published product
 
 ## BC breaks
 - Change the constructor of `Pim\Bundle\VersioningBundle\EventSubscriber\AddUserSubscriber`, removed `Pim\Bundle\VersioningBundle\Manager\VersionManager`
@@ -123,10 +124,23 @@
 - Remove Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface
 - Remove `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 
-# 1.3.x
+# 1.3.16 (2015-06-08)
+
+## Bug fixes
+- PIM-4312: Fix price indexes on MongoDB
+- PIM-4112: Not translated Error message when wrong format import
+
+# 1.3.15 (2015-06-05)
+
+## Bug fixes
+- PIM-4308: MongoDB indexes are removed on schema update
+- PIM-4314: Added missing translation keys
+
+# 1.3.14 (2015-06-03)
 
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
+- PIM-4309: Fix bug processing media with a non existing media
 
 # 1.3.13 (2015-05-29)
 
