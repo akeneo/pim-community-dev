@@ -148,7 +148,7 @@ Feature: Export products
       | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
       | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
       | tshirt-white | number_in_stock          | 186                               |           | ecommerce    |
-      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | fr_FR     |              |
+      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | de_DE     |              |
       | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
       | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
       | tshirt-black | description              | Un T-shirt noir élégant           | fr_FR     | ecommerce    |
@@ -161,9 +161,9 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;categories;color;country_of_manufacture;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;manufacturer;material;name-de_DE;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;size
-    tshirt-white;men_2013,men_2014,men_2015;white;usa;"Ein elegantes weißes T-Shirt";"Un T-shirt blanc élégant";1;tshirts;;american_apparel;cotton;"Weißes T-Shirt";"T-shirt blanc";186;10.90;9.00;15.00;size_M
-    tshirt-black;men_2013,men_2014,men_2015;black;usa;"Ein elegantes schwarzes T-Shirt";"Un T-shirt noir élégant";1;tshirts;;american_apparel;cotton;"Schwarzes T-Shirt";"T-shirt noir";98;10.90;9.00;15.00;size_L
+    sku;categories;color;country_of_manufacture;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;manufacturer;material;name-de_DE;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;size
+    tshirt-white;men_2013,men_2014,men_2015;white;usa;4.20;3.80;6.00;"Ein elegantes weißes T-Shirt";"Un T-shirt blanc élégant";1;tshirts;;american_apparel;cotton;"Weißes T-Shirt";"T-shirt blanc";186;10.90;9.00;15.00;size_M
+    tshirt-black;men_2013,men_2014,men_2015;black;usa;;;;"Ein elegantes schwarzes T-Shirt";"Un T-shirt noir élégant";1;tshirts;;american_apparel;cotton;"Schwarzes T-Shirt";"T-shirt noir";98;10.90;9.00;15.00;size_L
     """
 
   @jira https://akeneo.atlassian.net/browse/PIM-4182
@@ -181,7 +181,7 @@ Feature: Export products
       | tshirt-white | name                     | Weißes T-Shirt                    | de_DE     |              |
       | tshirt-white | description              | Un T-shirt blanc élégant          | fr_FR     | ecommerce    |
       | tshirt-white | description              | Ein elegantes weißes T-Shirt      | de_DE     | ecommerce    |
-      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | fr_FR     |              |
+      | tshirt-white | customs_tax              | 4.20 EUR, 6 USD, 3.80 GBP         | de_DE     |              |
       | tshirt-white | washing_temperature      | 40 CELSIUS                        |           |              |
       | tshirt-black | name                     | T-shirt noir                      | fr_FR     |              |
       | tshirt-black | name                     | Schwarzes T-Shirt                 | de_DE     |              |
@@ -195,7 +195,7 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;categories;color;country_of_manufacture;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;manufacturer;material;name-de_DE;name-fr_FR;price-EUR;price-GBP;price-USD;size;washing_temperature;washing_temperature-unit
-    tshirt-white;men_2013,men_2014,men_2015;white;usa;"Ein elegantes weißes T-Shirt";"Un T-shirt blanc élégant";1;tshirts;;american_apparel;cotton;"Weißes T-Shirt";"T-shirt blanc";10.90;9.00;15.00;size_M;40;CELSIUS
-    tshirt-black;men_2013,men_2014,men_2015;black;usa;"Ein elegantes schwarzes T-Shirt";"Un T-shirt noir élégant";1;tshirts;;american_apparel;cotton;"Schwarzes T-Shirt";"T-shirt noir";10.90;9.00;15.00;size_L;40;CELSIUS
+    sku;categories;color;country_of_manufacture;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;description-de_DE-ecommerce;description-fr_FR-ecommerce;enabled;family;groups;manufacturer;material;name-de_DE;name-fr_FR;price-EUR;price-GBP;price-USD;size;washing_temperature;washing_temperature-unit
+    tshirt-white;men_2013,men_2014,men_2015;white;usa;4.20;3.80;6.00;"Ein elegantes weißes T-Shirt";"Un T-shirt blanc élégant";1;tshirts;;american_apparel;cotton;"Weißes T-Shirt";"T-shirt blanc";10.90;9.00;15.00;size_M;40;CELSIUS
+    tshirt-black;men_2013,men_2014,men_2015;black;usa;;;;"Ein elegantes schwarzes T-Shirt";"Un T-shirt noir élégant";1;tshirts;;american_apparel;cotton;"Schwarzes T-Shirt";"T-shirt noir";10.90;9.00;15.00;size_L;40;CELSIUS
     """
