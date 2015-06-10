@@ -67,6 +67,7 @@ Feature: Filter products with multiples metrics filters
     And I hide the filter "Packaging"
     And I hide the filter "Weight"
 
+  @unstable
   Scenario: Successfully filter only one product
     Given I filter by "Packaging" with value "= 10 Gram"
     And I filter by "Weight" with value "= 200 Gram"

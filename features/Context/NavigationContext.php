@@ -202,7 +202,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             return null;
         }
 
-        $page = ucfirst($page);
+        $page   = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
 
@@ -221,7 +221,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
-        $page = ucfirst($page);
+        $page   = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -235,7 +235,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iEditTheUserGroup($identifier)
     {
-        $page = 'UserGroup';
+        $page   = 'UserGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('UserGroup edit', $page), ['id' => $entity->getId()]);
@@ -248,7 +248,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iEditTheUserRole($label)
     {
-        $page = 'UserRole';
+        $page   = 'UserRole';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($label);
         $this->openPage(sprintf('UserRole edit', $page), ['id' => $entity->getId()]);
@@ -263,7 +263,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheEntityShowPage($identifier, $page)
     {
-        $page = ucfirst($page);
+        $page   = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
@@ -277,7 +277,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
-        $page = 'AttributeGroup';
+        $page   = 'AttributeGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -290,7 +290,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iEditTheAssociationType($identifier)
     {
-        $page = 'AssociationType';
+        $page   = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -378,7 +378,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheProductGroupEditPage($identifier)
     {
-        $page = 'ProductGroup';
+        $page   = 'ProductGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -392,7 +392,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheVariantGroupEditPage($identifier)
     {
-        $page = 'VariantGroup';
+        $page   = 'VariantGroup';
         $entity = $this->getFixturesContext()->getProductGroup($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
@@ -405,7 +405,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheGroupTypeEditPage($identifier)
     {
-        $page = 'GroupType';
+        $page   = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -418,7 +418,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheAssociationTypeEditPage($identifier)
     {
-        $page = 'AssociationType';
+        $page   = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
@@ -446,7 +446,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
     {
         $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
-        $page = $this->getCurrentPage()->open(['id' => $job->getId()]);
+        $page              = $this->getCurrentPage()->open(['id' => $job->getId()]);
 
         return new Step\Then('I should see "403 Forbidden"');
     }
@@ -496,7 +496,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheJobPage(JobInstance $job)
     {
-        $jobPage = sprintf('%s show', ucfirst($job->getType()));
+        $jobPage         = sprintf('%s show', ucfirst($job->getType()));
         $expectedAddress = $this->getPage($jobPage)->getUrl(['id' => $job->getId()]);
         $this->assertAddress($expectedAddress);
     }

@@ -25,28 +25,28 @@ Feature: Sort products per fields
   Scenario: Successfully sort products by family
     Given I am on the products page
     And the grid should contain 7 elements
-    And I should be able to sort the rows by family
+    And I should be able to sort the rows by Family
 
   Scenario: Successfully sort products by status
     Given I am on the products page
     And the grid should contain 7 elements
-    And I should be able to sort the rows by status
+    And I should be able to sort the rows by Status
 
   # TODO : calculate completeness
   Scenario: Successfully sort products by complete
     Given I am on the products page
     And the grid should contain 7 elements
-    And I should be able to sort the rows by status
+    And I should be able to sort the rows by Status
 
   Scenario: Successfully sort products by created at
     Given I am on the products page
     And the grid should contain 7 elements
-    And I should be able to sort the rows by created at
+    And I should be able to sort the rows by Created at
 
   Scenario: Successfully sort products by updated at
     Given I am on the products page
     And the grid should contain 7 elements
-    And I should be able to sort the rows by updated at
+    And I should be able to sort the rows by Updated at
 
   Scenario: Successfully sort products by status
     Given the following products:
@@ -60,4 +60,4 @@ Feature: Sort products per fields
       | Mug        | yes     |
     When I am on the products page
     And the grid should contain 7 elements
-    And I should be able to sort the rows by status
+    And I should be able to sort the rows by Status
