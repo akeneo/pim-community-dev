@@ -25,19 +25,25 @@ define(
                 );
             },
             addExtension: function (event) {
-                PermissionManager.getPermissions().done(_.bind(function (permissions) {
-                    var field = event.field;
-                    /* jshint sub:true */
-                    /* jscs:disable requireDotNotation */
-                    var attributeGroupPermission = _.findWhere(
-                        permissions['attribute_groups'],
-                        {code: field.attribute.group}
-                    );
+                event.promises.push(
+                    PermissionManager.getPermissions().done(_.bind(function (permissions) {
+                        var deferred = $.Deferred();
+                        var field = event.field;
+                        /* jshint sub:true */
+                        /* jscs:disable requireDotNotation */
+                        var attributeGroupPermission = _.findWhere(
+                            permissions['attribute_groups'],
+                            {code: field.attribute.group}
+                        );
 
-                    if (!attributeGroupPermission.edit) {
-                        field.setEditable(false);
-                    }
-                }, this));
+                        if (!attributeGroupPermission.edit) {
+                            field.setEditable(false);
+                        }
+                        deferred.resolve();
+
+                        return deferred.promise();
+                    }, this))
+                );
 
                 return this;
             }
