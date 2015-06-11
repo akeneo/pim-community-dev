@@ -20,7 +20,7 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
-class ProductDraftToStandardConverter implements StandardArrayConverterInterface
+class ProductDraftStandardConverter implements StandardArrayConverterInterface
 {
     /** @var StandardArrayConverterInterface */
     protected $productConverter;
