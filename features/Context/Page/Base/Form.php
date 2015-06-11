@@ -18,28 +18,28 @@ class Form extends Base
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
-            array(
-                'Tabs'                            => array('css' => '#form-navbar'),
-                'Oro tabs'                        => array('css' => '.navbar.scrollspy-nav'),
-                'Form tabs'                       => array('css' => '.nav-tabs.form-tabs'),
-                'Associations list'               => array('css' => '#associations-list'),
-                'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
-                'Panel selector'                  => array('css' => '.panel-selector'),
-                'Groups'                          => array('css' => '.tab-groups'),
-                'Form Groups'                     => array('css' => '.attribute-group-selector'),
-                'Validation errors'               => array('css' => '.validation-tooltip'),
-                'Available attributes form'       => array('css' => '#pim_available_attributes'),
-                'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
-                'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
-                'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),
-                'Available attributes add button' => array('css' => '.pimmultiselect a.btn:contains("Add")'),
-                'Updates grid'                    => array('css' => '.tab-pane.tab-history table.grid'),
-            ),
+            [
+                'Tabs'                            => ['css' => '#form-navbar'],
+                'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
+                'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
+                'Associations list'               => ['css' => '#associations-list'],
+                'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
+                'Panel selector'                  => ['css' => '.panel-selector'],
+                'Groups'                          => ['css' => '.tab-groups'],
+                'Form Groups'                     => ['css' => '.attribute-group-selector'],
+                'Validation errors'               => ['css' => '.validation-tooltip'],
+                'Available attributes form'       => ['css' => '#pim_available_attributes'],
+                'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
+                'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
+                'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
+                'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
+                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
+            ],
             $this->elements
         );
     }
@@ -119,15 +119,24 @@ class Form extends Base
      * Visit the specified group
      *
      * @param string $group
+     *
+     * @throws ElementNotFoundException
+     * @throws \Exception
      */
     public function visitGroup($group)
     {
         $groups = $this->find('css', $this->elements['Groups']['css']);
         if (!$groups) {
             $groups = $this->getElement('Form Groups');
-            $button = $groups
-                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group))
-                ->getParent();
+
+            $groupsContainer = $groups
+                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+
+            $button = null;
+
+            if ($groupsContainer) {
+                $button = $groupsContainer->getParent();
+            }
 
             if (!$button) {
                 throw new \Exception(sprintf('Could not find group "%s".', $group));
@@ -176,7 +185,7 @@ class Form extends Base
     public function getValidationErrors()
     {
         $tooltips = $this->findAll('css', $this->elements['Validation errors']['css']);
-        $errors   = array();
+        $errors   = [];
 
         foreach ($tooltips as $tooltip) {
             $errors[] = $tooltip->getAttribute('data-original-title');
@@ -198,7 +207,7 @@ class Form extends Base
      *
      * @param array $attributes
      */
-    public function addAvailableAttributes(array $attributes = array())
+    public function addAvailableAttributes(array $attributes = [])
     {
         $this->openAvailableAttributesMenu();
 
@@ -531,7 +540,7 @@ class Form extends Base
      * @param NodeElement $label
      * @param string      $value
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
@@ -599,7 +608,7 @@ class Form extends Base
      * @param NodeElement $label
      * @param string      $value
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     protected function fillSelect2Field(NodeElement $label, $value)
     {
