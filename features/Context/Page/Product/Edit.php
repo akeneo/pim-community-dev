@@ -113,6 +113,8 @@ class Edit extends Form
 
     /**
      * @param string $locale
+     *
+     * @throws \Exception
      */
     public function switchLocale($locale)
     {
@@ -149,6 +151,8 @@ class Edit extends Form
 
     /**
      * @param string $scope
+     *
+     * @throws \Exception
      */
     public function switchScope($scope)
     {
@@ -200,8 +204,6 @@ class Edit extends Form
     }
 
     /**
-     * @param string $group
-     *
      * @return NodeElement
      */
     public function getFields()
@@ -258,6 +260,8 @@ class Edit extends Form
 
     /**
      * @param string $name
+     *
+     * @throws ElementNotFoundException
      *
      * @return NodeElement
      */
@@ -378,7 +382,8 @@ class Edit extends Form
      * Find a compound field
      *
      * @param string $name
-     * @param string $subLabelText
+     * @param        $value
+     * @param        $currency
      *
      * @throws ElementNotFoundException
      *
@@ -438,7 +443,7 @@ class Edit extends Form
     /**
      * Fills a textarea field element with $value, identified by its container or label.
      *
-     * @param NodeElement $fieldContainerOrLabel
+     * @param NodeElement $fieldContainer
      * @param string      $value
      */
     protected function fillTextAreaField(NodeElement $fieldContainer, $value)
@@ -459,7 +464,7 @@ class Edit extends Form
      * @param NodeElement $fieldContainer
      * @param string      $value
      *
-     * @throws \InvalidArgumentException
+     * @throws ExpectationException
      */
     protected function fillSelectField(NodeElement $fieldContainer, $value)
     {

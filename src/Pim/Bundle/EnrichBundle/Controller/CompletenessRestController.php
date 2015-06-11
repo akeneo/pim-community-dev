@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Completeness rest controller
@@ -19,39 +20,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessRestController
 {
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $compNormalizer;
 
-    /**
-     * @var CollectionFilterInterface
-     */
+    /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
     /**
-     * Constructor
-     *
      * @param CompletenessManager       $completenessManager
      * @param ProductManager            $productManager
      * @param ChannelManager            $channelManager
@@ -99,6 +86,7 @@ class CompletenessRestController
             $this->userContext->getCurrentLocale()->getCode()
         );
 
+        // TODO: The normalizer asks for an object, not an array
         return new JsonResponse($this->compNormalizer->normalize($completenesses));
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Resolver;
 
+use LogicException;
+
 /**
  * FQCN Resolver
  *
@@ -15,7 +17,7 @@ class FQCNResolver
     protected $classNames = [];
 
     /**
-     * Get FQCN for the givent entity type
+     * Get FQCN for the given entity type
      *
      * @param string $entityType
      *
@@ -26,7 +28,7 @@ class FQCNResolver
     public function getFQCN($entityType)
     {
         if (!isset($this->classNames[$entityType])) {
-            throw \LogicException(sprintf('The class name for %s is unknown', $entityType));
+            throw new LogicException(sprintf('The class name for %s is unknown', $entityType));
         }
 
         return $this->classNames[$entityType];

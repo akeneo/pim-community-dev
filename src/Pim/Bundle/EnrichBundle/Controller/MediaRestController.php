@@ -14,8 +14,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MediaRestController
 {
+    /** @var string */
     protected $rootDir;
 
+    /**
+     * @param string $rootDir
+     */
     public function __construct($rootDir)
     {
         $this->rootDir = $rootDir;
@@ -24,7 +28,9 @@ class MediaRestController
     /**
      * Post a new media and return it's temporary identifier
      *
-     * @return JSONResponse
+     * @param Request $request
+     *
+     * @return JsonResponse
      */
     public function postAction(Request $request)
     {

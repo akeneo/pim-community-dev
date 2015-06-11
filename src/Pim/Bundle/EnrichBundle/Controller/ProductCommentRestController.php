@@ -44,8 +44,6 @@ class ProductCommentRestController
     protected $validator;
 
     /**
-     * Constructor
-     *
      * @param SecurityContextInterface $securityContext
      * @param FormFactoryInterface     $formFactory
      * @param ProductManager           $productManager
@@ -86,7 +84,6 @@ class ProductCommentRestController
     {
         $product = $this->findProductOr404($id);
         $comments = $this->commentManager->getComments($product);
-        $class = $this->productManager->getProductName();
 
         return new JsonResponse($this->normalizer->normalize($comments, 'json'));
     }

@@ -40,6 +40,7 @@ class ChannelRestController
     {
         $channels = $this->channelRepository->findAll();
 
+        // TODO: The normalizer asks for an object, not an array
         $normalizedChannels = $this->normalizer->normalize($channels, 'json');
 
         return new JsonResponse($normalizedChannels);
