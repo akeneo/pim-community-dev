@@ -4,16 +4,16 @@ namespace Akeneo\Bundle\StorageUtilsBundle\EventSubscriber;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 
 /**
- * Configure the ORM mappings of the metadata classes.
+ * Configure the mappings of the metadata classes.
  *
  * @author    Julien Janvier <jjanvier@gmail.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ConfigureOrmMappingsSubscriber implements EventSubscriber
+class ConfigureMappingsSubscriber implements EventSubscriber
 {
     /** @var MappingsOverrideConfiguratorInterface */
     protected $configurator;
@@ -48,8 +48,10 @@ class ConfigureOrmMappingsSubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
     {
-        $metadata = $eventArgs->getClassMetadata();
-        $configuration = $eventArgs->getEntityManager()->getConfiguration();
-        $this->configurator->configure($metadata, $configuration, $this->mappingOverrides);
+        $this->configurator->configure(
+            $eventArgs->getClassMetadata(),
+            $this->mappingOverrides,
+            $eventArgs->getObjectManager()->getConfiguration()
+        );
     }
 }

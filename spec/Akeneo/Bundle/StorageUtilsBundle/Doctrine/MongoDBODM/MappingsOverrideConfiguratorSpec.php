@@ -1,30 +1,33 @@
 <?php
 
-namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
+namespace spec\Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 
 use Doctrine\Common\Persistence\Mapping\Driver\MappingDriver;
-use Doctrine\ORM\Configuration;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ODM\MongoDB\Configuration;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @require Doctrine\ODM\MongoDB\Query\Builder
+ */
 class MappingsOverrideConfiguratorSpec extends ObjectBehavior
 {
     function let(
-        EntityManagerInterface $em,
+        DocumentManager $dm,
         Configuration $configuration
     ) {
-        $em->getConfiguration()->willReturn($configuration);
+        $dm->getConfiguration()->willReturn($configuration);
     }
 
     function it_configures_the_mappings_of_an_original_model_that_is_override($configuration) {
 
         $metadataInfo = new ClassMetadataInfo('Foo\Bar\OriginalQux');
-        $metadataInfo->mapManyToMany(['fieldName' => 'relation1', 'targetEntity' => 'Foo']);
-        $metadataInfo->mapManyToOne(['fieldName' => 'relation2', 'targetEntity' => 'Foo']);
-        $metadataInfo->mapOneToMany(['fieldName' => 'relation3', 'targetEntity' => 'Foo', 'mappedBy' => 'baz']);
-        $metadataInfo->mapOneToOne(['fieldName' => 'relation4', 'targetEntity' => 'Foo']);
+        $metadataInfo->mapOneReference(['fieldName' => 'relation1', 'targetEntity' => 'Foo']);
+        $metadataInfo->mapManyReference(['fieldName' => 'relation2', 'targetEntity' => 'Foo']);
+        $metadataInfo->mapOneEmbedded(['fieldName' => 'relation3', 'targetEntity' => 'Foo', 'mappedBy' => 'baz']);
+        $metadataInfo->mapManyEmbedded(['fieldName' => 'relation4', 'targetEntity' => 'Foo']);
 
         $overrides = [
             ['original' => 'Foo\Bar\OriginalQux', 'override' => 'Acme\Bar\OverrideQux'],
@@ -46,7 +49,6 @@ class MappingsOverrideConfiguratorSpec extends ObjectBehavior
 
         $mappingDriver->getAllClassNames()->willReturn([$originalQux1]);
         $configuration->getMetadataDriverImpl()->willReturn($mappingDriver);
-        $configuration->getNamingStrategy()->willReturn(null);
         $metadataInfo->getName()->willReturn($overrideQux1);
         $mappingDriver->loadMetadataForClass($originalQux1, Argument::any())->shouldBeCalled();
 
@@ -62,9 +64,10 @@ class MappingsOverrideConfiguratorSpec extends ObjectBehavior
     {
         return [
             'beAnOverrideModel' => function($subject) {
-                $mappings = $subject->getAssociationMappings();
+                $mappings = $subject->associationMappings;
 
-                return $subject->isMappedSuperclass && empty($mappings);
+                return $subject->isMappedSuperclass &&
+                    0 === count($mappings);
             },
         ];
     }

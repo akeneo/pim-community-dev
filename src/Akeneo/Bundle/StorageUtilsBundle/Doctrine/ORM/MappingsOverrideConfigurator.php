@@ -4,8 +4,7 @@ namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\ORM;
 
 use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\DBAL\Configuration;
-use Doctrine\ORM\Configuration as OrmConfiguration;
+use Doctrine\ORM\Configuration;
 use Doctrine\ORM\Mapping\ClassMetadata as OrmClassMetadata;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -24,17 +23,18 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
 class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterface
 {
     /**
-     * @param ClassMetadata $metadata
-     * @param Configuration $configuration
-     * @param array         $mappingOverrides
-     *
-     * @return ClassMetadata
+     * {@inheritdoc}
      */
-    public function configure(ClassMetadata $metadata, Configuration $configuration, array $mappingOverrides)
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration)
     {
         if (!$metadata instanceof ClassMetadataInfo) {
             throw new \InvalidArgumentException(
                 'This configurator only handles "Doctrine\ORM\Mapping\ClassMetadataInfo".'
+            );
+        }
+        if (!$configuration instanceof Configuration) {
+            throw new \InvalidArgumentException(
+                'This configurator only handles "Doctrine\ORM\Configuration".'
             );
         }
 
@@ -56,9 +56,9 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
      * Set the association mappings of a metadata.
      *
      * @param ClassMetadataInfo $metadata
-     * @param OrmConfiguration  $configuration
+     * @param Configuration     $configuration
      */
-    protected function setAssociationMappings(ClassMetadataInfo $metadata, OrmConfiguration $configuration)
+    protected function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration)
     {
         $supportedClasses = $configuration->getMetadataDriverImpl()->getAllClassNames();
 
@@ -105,6 +105,7 @@ class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterf
             $type,
             [
                 ClassMetadataInfo::MANY_TO_MANY,
+                ClassMetadataInfo::MANY_TO_ONE,
                 ClassMetadataInfo::ONE_TO_MANY,
                 ClassMetadataInfo::ONE_TO_ONE,
             ],

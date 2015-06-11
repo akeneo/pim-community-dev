@@ -3,10 +3,12 @@
 namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-use Doctrine\DBAL\Configuration;
 
 /**
- * Configure the mappings of the metadata classes.
+ * Configure the mappings of the metadata classes that are override.
+ *
+ * Let's say we override the model Foo\Bar\Model by our custom class Acme\Bar\Model.
+ * All the associations of Foo\Bar\Model will be removed and injected in the metadata of Acme\Bar\Model.
  *
  * @author    Julien Janvier <jjanvier@gmail.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -19,15 +21,15 @@ interface MappingsOverrideConfiguratorInterface
      *
      * Here is an example of mapping overrides (keys "original" and "override" are expected):
      * $mappingOverrides = [
-     *      ['original' => 'Foo\Bar\Class', 'override' => 'Acme\Bar\Class'],
-     *      ['original' => 'Foo\Baz\Class', 'override' => 'Acme\Baz\Class'],
+     *      ['original' => 'Foo\Bar\Model', 'override' => 'Acme\Bar\Model'],
+     *      ['original' => 'Foo\Baz\Model', 'override' => 'Acme\Baz\Model'],
      *  ]
      *
      * @param ClassMetadata $metadata
-     * @param Configuration $configuration
+     * @param mixed         $configuration
      * @param array         $mappingOverrides
      *
      * @return ClassMetadata
      */
-    public function configure(ClassMetadata $metadata, Configuration $configuration, array $mappingOverrides);
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration);
 }

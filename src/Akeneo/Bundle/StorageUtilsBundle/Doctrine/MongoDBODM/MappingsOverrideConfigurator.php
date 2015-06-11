@@ -1,11 +1,11 @@
 <?php
 
-namespace Akeneo\Bundle\StorageUtilsBundle\EventSubscriber\MongoDBODM;
+namespace Akeneo\Bundle\StorageUtilsBundle\Doctrine\MongoDBODM;
 
-use Doctrine\Common\EventSubscriber;
+use Akeneo\Bundle\StorageUtilsBundle\Doctrine\MappingsOverrideConfiguratorInterface;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\ODM\MongoDB\Configuration;
-use Doctrine\ODM\MongoDB\Event\LoadClassMetadataEventArgs;
-use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata as MongoClassMetadata;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
 
 /**
@@ -19,54 +19,26 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
  * Sylius/Bundle/ResourceBundle/EventListener/LoadODMMetadataSubscriber.php
  *
  * Original authors are Ivannis Suárez Jérez <ivannis.suarez@gmail.com> and Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
- *
- * TODO: spec it
  */
-class ConfigureMongoMappingsSubscriber implements EventSubscriber
+class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterface
 {
-    /** @var array */
-    protected $mappingOverrides;
-
     /**
-     * Constructor
-     *
-     * @param array $mappingOverrides
+     * {@inheritdoc}
      */
-    public function __construct(array $mappingOverrides)
+    public function configure(ClassMetadata $metadata, array $mappingOverrides, $configuration)
     {
-        $this->mappingOverrides = $mappingOverrides;
-    }
-
-    /**
-     * @return array
-     */
-    public function getSubscribedEvents()
-    {
-        return [
-            'loadClassMetadata',
-        ];
-    }
-
-    /**
-     * @param LoadClassMetadataEventArgs $eventArgs
-     */
-    public function loadClassMetadata(LoadClassMetadataEventArgs $eventArgs)
-    {
-        $metadata = $eventArgs->getClassMetadata();
-
-        if ($metadata instanceof ClassMetadataInfo) {
-            $configuration = $eventArgs->getDocumentManager()->getConfiguration();
-            $this->configureMappings($metadata, $configuration);
+        if (!$metadata instanceof ClassMetadataInfo) {
+            throw new \InvalidArgumentException(
+                'This configurator only handles "Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo".'
+            );
         }
-    }
+        if (!$configuration instanceof Configuration) {
+            throw new \InvalidArgumentException(
+                'This configurator only handles "Doctrine\ODM\MongoDB\Configuration".'
+            );
+        }
 
-    /**
-     * @param ClassMetadataInfo $metadata
-     * @param Configuration     $configuration
-     */
-    protected function configureMappings(ClassMetadataInfo $metadata, Configuration $configuration)
-    {
-        foreach ($this->mappingOverrides as $override) {
+        foreach ($mappingOverrides as $override) {
             if ($override['override'] === $metadata->getName()) {
                 $metadata->isMappedSuperclass = false;
                 $this->setAssociationMappings($metadata, $configuration);
@@ -76,6 +48,8 @@ class ConfigureMongoMappingsSubscriber implements EventSubscriber
                 $this->unsetAssociationMappings($metadata);
             }
         }
+
+        return $metadata;
     }
 
     /**
@@ -84,12 +58,15 @@ class ConfigureMongoMappingsSubscriber implements EventSubscriber
      * @param ClassMetadataInfo $metadata
      * @param Configuration     $configuration
      */
-    protected function setAssociationMappings(ClassMetadataInfo $metadata, $configuration)
+    protected function setAssociationMappings(ClassMetadataInfo $metadata, Configuration $configuration)
     {
+        $supportedClasses = $configuration->getMetadataDriverImpl()->getAllClassNames();
+
         foreach (class_parents($metadata->getName()) as $parent) {
-            $parentMetadata = new ClassMetadata($parent);
-            if (in_array($parent, $configuration->getMetadataDriverImpl()->getAllClassNames())) {
+            if (in_array($parent, $supportedClasses)) {
+                $parentMetadata = new MongoClassMetadata($parent);
                 $configuration->getMetadataDriverImpl()->loadMetadataForClass($parent, $parentMetadata);
+
                 foreach ($parentMetadata->associationMappings as $key => $value) {
                     if ($this->hasRelation($value['association'])) {
                         $metadata->associationMappings[$key] = $value;
