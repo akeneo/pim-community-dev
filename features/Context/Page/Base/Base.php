@@ -107,6 +107,8 @@ class Base extends Page
     /**
      * Get page title
      *
+     * @throws \Exception
+     *
      * @return string
      */
     public function getTitle()
@@ -118,8 +120,7 @@ class Base extends Page
         $name      = $elt->find('css', '.product-name');
 
         if (!$subtitle || !$separator || !$name) {
-            $title = $this->getElement('Product title')
-                ->find('css', '.product-label')->getText();
+            $title = $this->getElement('Product title')->find('css', '.product-label')->getText();
             if (!$title) {
                 throw new \Exception('Could not find the page title');
             }

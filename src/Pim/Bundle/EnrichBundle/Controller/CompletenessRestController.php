@@ -19,39 +19,25 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessRestController
 {
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $completenessNormalizer;
 
-    /**
-     * @var CollectionFilterInterface
-     */
+    /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
     /**
-     * Constructor
-     *
      * @param CompletenessManager       $completenessManager
      * @param ProductManager            $productManager
      * @param ChannelManager            $channelManager
