@@ -34,7 +34,7 @@ class CategoryExtensionSpec extends ObjectBehavior
         $functions->shouldHaveKey('children_tree_response');
         $functions->shouldHaveKey('list_categories_response');
         $functions->shouldHaveKey('list_trees_response');
-        $functions->shouldHaveKey('category_exceeds_products_limit_for_removal');
+        $functions->shouldHaveKey('exceeds_products_limit_for_removal');
         $functions->shouldHaveKey('get_products_limit_for_removal');
     }
 
@@ -344,10 +344,10 @@ class CategoryExtensionSpec extends ObjectBehavior
     function it_checks_if_a_category_exceeds_the_products_limit_for_removal($manager, Category $category)
     {
         $manager->getProductsCountInCategory(Argument::any(), true)->willReturn(11);
-        $this->categoryExceedsProductsLimitForRemoval($category, true)->shouldReturn(true);
+        $this->exceedsProductsLimitForRemoval($category, true)->shouldReturn(true);
 
         $manager->getProductsCountInCategory(Argument::any(), true)->willReturn(10);
-        $this->categoryExceedsProductsLimitForRemoval($category, true)->shouldReturn(false);
+        $this->exceedsProductsLimitForRemoval($category, true)->shouldReturn(false);
     }
 
     function it_gives_the_products_limit_for_removal()
