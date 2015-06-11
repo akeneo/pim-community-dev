@@ -10,9 +10,9 @@ Feature: Update boolean fields
       | is_discount | boolean |
     And the following products:
       | sku  | handmade |
-      | AKN1 | true     |
-      | AKN2 | false    |
+      | AKN1 | 1        |
+      | AKN2 | 0        |
     Then I should get the following products after apply the following updater to it:
-      | product | actions                                                                      | result                                          |
-      | AKN1    | [{"type": "copy_data", "from_field": "handmade", "to_field": "is_discount"}] | {"values": {"is_discount": [{"value": true}]}}  |
-      | AKN2    | [{"type": "copy_data", "from_field": "handmade", "to_field": "is_discount"}] | {"values": {"is_discount": [{"value": false}]}} |
+      | product | actions                                                                      | result                                        |
+      | AKN1    | [{"type": "copy_data", "from_field": "handmade", "to_field": "is_discount"}] | {"values": {"is_discount": [{"value": 1}]}} |
+      | AKN2    | [{"type": "copy_data", "from_field": "handmade", "to_field": "is_discount"}] | {"values": {"is_discount": [{"value": 0}]}} |
