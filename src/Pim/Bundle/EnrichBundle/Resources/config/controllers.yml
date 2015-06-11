@@ -363,8 +363,8 @@ services:
         class: %pim_enrich.controller.completeness_rest.class%
         arguments:
             - '@pim_catalog.manager.completeness'
-            - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.channel'
             - '@pim_user.context.user'
             - '@pim_enrich.normalizer.completeness_collection'
             - '@pim_catalog.filter.chained'

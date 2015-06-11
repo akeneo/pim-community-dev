@@ -3,9 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -19,57 +19,45 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class CompletenessRestController
 {
-    /**
-     * @var CompletenessManager
-     */
+    /** @var CompletenessManager */
     protected $completenessManager;
 
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
+    /** @var ChannelRepositoryInterface */
+    protected $channelRepository;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $completenessNormalizer;
 
-    /**
-     * @var CollectionFilterInterface
-     */
+    /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
     /**
      * Constructor
      *
-     * @param CompletenessManager       $completenessManager
-     * @param ProductManager            $productManager
-     * @param ChannelManager            $channelManager
-     * @param UserContext               $userContext
-     * @param NormalizerInterface       $completenessNormalizer
-     * @param CollectionFilterInterface $collectionFilter
+     * @param CompletenessManager        $completenessManager
+     * @param ProductRepositoryInterface $productRepository
+     * @param ChannelRepositoryInterface $channelRepository
+     * @param UserContext                $userContext
+     * @param NormalizerInterface        $completenessNormalizer
+     * @param CollectionFilterInterface  $collectionFilter
      */
     public function __construct(
         CompletenessManager $completenessManager,
-        ProductManager $productManager,
-        ChannelManager $channelManager,
+        ProductRepositoryInterface $productRepository,
+        ChannelRepositoryInterface $channelRepository,
         UserContext $userContext,
         NormalizerInterface $completenessNormalizer,
         CollectionFilterInterface $collectionFilter
     ) {
         $this->completenessManager    = $completenessManager;
-        $this->productManager         = $productManager;
-        $this->channelManager         = $channelManager;
+        $this->productRepository      = $productRepository;
+        $this->channelRepository      = $channelRepository;
         $this->userContext            = $userContext;
         $this->completenessNormalizer = $completenessNormalizer;
         $this->collectionFilter       = $collectionFilter;
@@ -84,10 +72,10 @@ class CompletenessRestController
      */
     public function getAction($id)
     {
-        $product = $this->productManager->getProductRepository()->getFullProduct($id);
+        $product = $this->productRepository->getFullProduct($id);
         $this->completenessManager->generateMissingForProduct($product);
 
-        $channels = $this->channelManager->getFullChannels();
+        $channels = $this->channelRepository->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
         $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
