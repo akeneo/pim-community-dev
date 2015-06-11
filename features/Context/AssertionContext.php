@@ -21,9 +21,24 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class AssertionContext extends RawMinkContext
 {
     /**
+     * Checks, that page contains specified text.
+     *
+     * @Then /^(?:|I )should see the text "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function assertPageContainsText($text)
+    {
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextContains($text);
+            return true;
+        });
+    }
+
+    /**
      * @param string $expectedTitle
      *
      * @Then /^I should see the title "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
@@ -104,6 +119,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheFields($fields)
     {
@@ -123,6 +140,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fields
      *
      * @Then /^I should not see the (.*) fields?$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldNotSeeTheFields($fields)
     {
@@ -142,6 +161,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fields
      *
      * @Given /^the fields? (.*) should be disabled$/
+     *
+     * @throws ExpectationException
      */
     public function theFieldsShouldBeDisabled($fields)
     {
@@ -150,8 +171,6 @@ class AssertionContext extends RawMinkContext
             $field = $this->getCurrentPage()->findField($fieldName);
             if (!$field) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
-
-                return;
             }
             if (!$field->hasAttribute('disabled')) {
                 throw $this->createExpectationException(sprintf('Expecting field "%s" to be disabled.', $fieldName));
@@ -165,6 +184,8 @@ class AssertionContext extends RawMinkContext
      * @Then /^I should see (?:a )?flash message "([^"]*)"$/
      *
      * @throws ExpectationException
+     *
+     * @return bool
      */
     public function iShouldSeeFlashMessage($text)
     {
@@ -214,6 +235,8 @@ class AssertionContext extends RawMinkContext
      * @param string $link
      *
      * @Then /^I should not see the "([^"]*)" link$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldNotSeeTheLink($link)
     {
@@ -226,11 +249,14 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $table
      *
      * @Then /^I should see history:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeHistory(TableNode $table)
     {
         if ($this->getCurrentPage()->find('css', '.panel-container')) {
-            return $this->iShouldSeeHistoryInPanel($table);
+            $this->iShouldSeeHistoryInPanel($table);
+            return;
         }
 
         $updates = [];
@@ -298,6 +324,8 @@ class AssertionContext extends RawMinkContext
 
     /**
      * @param TableNode $table
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeHistoryInPanel(TableNode $table)
     {
@@ -388,6 +416,8 @@ class AssertionContext extends RawMinkContext
      * @param $version
      *
      * @Then /^the version (\d+) should be marked as published$/
+     *
+     * @throws ExpectationException
      */
     public function versionShouldBeMarkedAsPublished($version)
     {
@@ -408,6 +438,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fileName
      *
      * @Given /^file "([^"]*)" should exist$/
+     *
+     * @throws ExpectationException
      */
     public function fileShouldExist($fileName)
     {
@@ -422,6 +454,8 @@ class AssertionContext extends RawMinkContext
      * @param int    $rows
      *
      * @Given /^file "([^"]*)" should contain (\d+) rows$/
+     *
+     * @throws ExpectationException
      */
     public function fileShouldContainRows($fileName, $rows)
     {
@@ -534,6 +568,8 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $table
      *
      * @Given /^I should see notifications?:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeNotifications(TableNode $table)
     {
