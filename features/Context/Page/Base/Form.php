@@ -249,15 +249,19 @@ class Form extends Base
      */
     public function attachFileToField($locator, $path)
     {
-        $field = $this->findField($locator);
-
-        if (null === $field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
-        }
-
-        if ($field->getAttribute('type') !== 'file') {
-            $field = $field->getParent()->find('css', 'input[type="file"]');
-        }
+        $field = $this->spin(function () use ($locator) {
+            $field = $this->findField($locator);
+            if (null === $field) {
+                return false;
+            }
+            if ($field->getAttribute('type') === 'file') {
+                $field = $field->getParent()->find('css', 'input[type="file"]');
+            }
+            if ($field !== null) {
+                return $field;
+            }
+            echo "retry find file input" . PHP_EOL;
+        });
 
         $field->attachFile($path);
     }

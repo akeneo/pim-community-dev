@@ -28,6 +28,13 @@ class Base extends Page
     ];
 
     /**
+     * Verify that page is loaded after login
+     */
+    public function verifyAfterLogin()
+    {
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function fillField($locator, $value)
@@ -336,12 +343,13 @@ class Base extends Page
     /**
      * @param callable $callable
      * @param int      $wait
+     * @param string   $message
      *
      * @throws \Exception
      *
      * @return mixed
      */
-    public function spin($callable, $wait = 60, $message = '')
+    public function spin($callable, $wait = 60, $message = 'no message')
     {
         for ($i = 0; $i < $wait; $i++) {
             try {
@@ -352,17 +360,21 @@ class Base extends Page
                 // do nothing
             }
 
-            if ($message) {
-                printf('%s' . PHP_EOL, $message);
-            }
             sleep(1);
         }
 
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3);
 
-        throw new \Exception(
-            "Timeout thrown by ".$backtrace[1]['class']."::".$backtrace[1]['function']."()\n".
-            $backtrace[1]['file'].", line ".$backtrace[1]['line']
-        );
+        $messagePattern = 'Timeout thrown by %s::%s()' . PHP_EOL
+            . '%s, line %d' . PHP_EOL
+            . 'message : %s';
+
+        throw new \Exception(sprintf($messagePattern,
+            $backtrace[1]['class'],
+            $backtrace[1]['function'],
+            $backtrace[1]['file'],
+            $backtrace[1]['line'],
+            $message
+        ));
     }
 }
