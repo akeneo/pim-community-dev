@@ -219,7 +219,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
         if (null !== $variantGroup && null !== $variantGroup->getProductTemplate()) {
             $template = $variantGroup->getProductTemplate();
             foreach (array_keys($data) as $field) {
-                if ($template->hasValueForAttributeCode($field)) {
+                if ($template->hasValueForAttributeCode($field) || null === $product->getValue($field)) {
                     $shouldEraseData = true;
                 }
             }
