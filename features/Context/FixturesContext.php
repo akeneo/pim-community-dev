@@ -37,6 +37,7 @@ class FixturesContext extends RawMinkContext
         'english' => 'en_US',
         'french'  => 'fr_FR',
         'german'  => 'de_DE',
+        'english UK' => 'en_GB',
     ];
 
     protected $attributeTypes = [
