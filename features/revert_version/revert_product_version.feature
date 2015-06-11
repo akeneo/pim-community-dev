@@ -147,16 +147,15 @@ Feature: Revert a product to a previous version
   Scenario: Successfully revert a pim_catalog_boolean attribute
     Given the following product:
       | sku   | family | handmade |
-      | jeans | pants  | 1        |
+      | jeans | pants  | 0        |
       | short | pants  |          |
     Given I am on the "jeans" product page
-    When I uncheck the "Handmade" switch
+    When I check the "Handmade" switch
     And I save the product
     And I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: jeans"
     And the product "jeans" should have the following values:
-      | handmade | 1 |
-    Then the "Handmade" field should contain "1"
+      | handmade |  |
     Given I am on the "short" product page
     And I visit the "Attributes" tab
     And I add available attributes Handmade
