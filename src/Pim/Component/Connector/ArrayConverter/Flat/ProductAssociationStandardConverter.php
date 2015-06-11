@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
@@ -21,22 +21,22 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
     /** @var AssociationColumnsResolver */
     protected $assocColumnsResolver;
 
-    /** @var AttributeFieldsResolver */
-    protected $attributeFieldResolver;
+    /** @var AttributeColumnsResolver */
+    protected $attrColumnsResolver;
 
     /**
      * @param ProductStandardConverter   $productConverter
      * @param AssociationColumnsResolver $assocColumnsResolver
-     * @param AttributeFieldsResolver    $attributeFieldResolver
+     * @param AttributeColumnsResolver   $attrColumnsResolver
      */
     public function __construct(
         ProductStandardConverter $productConverter,
         AssociationColumnsResolver $assocColumnsResolver,
-        AttributeFieldsResolver $attributeFieldResolver
+        AttributeColumnsResolver $attrColumnsResolver
     ) {
         $this->productConverter = $productConverter;
         $this->assocColumnsResolver = $assocColumnsResolver;
-        $this->attributeFieldResolver = $attributeFieldResolver;
+        $this->attrColumnsResolver = $attrColumnsResolver;
     }
 
     /**
@@ -91,7 +91,7 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
     protected function filter(array $item)
     {
         $requiredFields = $this->assocColumnsResolver->resolveAssociationColumns();
-        $requiredFields[] = $this->attributeFieldResolver->resolveIdentifierField();
+        $requiredFields[] = $this->attrColumnsResolver->resolveIdentifierField();
 
         foreach (array_keys($item) as $fieldName) {
             if (!in_array($fieldName, $requiredFields)) {

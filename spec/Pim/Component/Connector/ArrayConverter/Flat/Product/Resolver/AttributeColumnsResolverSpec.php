@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 
-class AttributeFieldsResolverSpec extends ObjectBehavior
+class AttributeColumnsResolverSpec extends ObjectBehavior
 {
     function let(
         AttributeRepositoryInterface $attributeRepository,
@@ -68,7 +68,7 @@ class AttributeFieldsResolverSpec extends ObjectBehavior
                 ]
             );
 
-        $this->resolveAttributesFields()
+        $this->resolveAttributeColumns()
             ->shouldReturn(
                 [
                     'sku',

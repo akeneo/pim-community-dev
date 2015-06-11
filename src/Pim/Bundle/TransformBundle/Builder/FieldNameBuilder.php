@@ -17,20 +17,20 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColu
 class FieldNameBuilder
 {
     /** @var AssociationColumnsResolver*/
-    protected $AssociationColumnsResolver;
+    protected $associationColumnsResolver;
 
     /** @var ProductAttributeFieldExtractor*/
     protected $attributeFieldExtractor;
 
     /**
-     * @param AssociationColumnsResolver      $AssociationColumnsResolver
+     * @param AssociationColumnsResolver     $associationColumnsResolver
      * @param ProductAttributeFieldExtractor $attributeFieldExtractor
      */
     public function __construct(
-        AssociationColumnsResolver $AssociationColumnsResolver,
+        AssociationColumnsResolver $associationColumnsResolver,
         ProductAttributeFieldExtractor $attributeFieldExtractor
     ) {
-        $this->AssociationColumnsResolver = $AssociationColumnsResolver;
+        $this->associationColumnsResolver = $associationColumnsResolver;
         $this->attributeFieldExtractor = $attributeFieldExtractor;
     }
 
@@ -41,7 +41,7 @@ class FieldNameBuilder
      */
     public function getAssociationFieldNames()
     {
-        return $this->AssociationColumnsResolver->resolveAssociationColumns();
+        return $this->associationColumnsResolver->resolveAssociationColumns();
     }
 
     /**

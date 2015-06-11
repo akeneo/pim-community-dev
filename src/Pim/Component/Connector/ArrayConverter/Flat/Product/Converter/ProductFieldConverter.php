@@ -21,7 +21,7 @@ class ProductFieldConverter
     protected $fieldSplitter;
 
     /**
-     * @param FieldSplitter             $fieldSplitter
+     * @param FieldSplitter              $fieldSplitter
      * @param AssociationColumnsResolver $assocFieldResolver
      */
     public function __construct(FieldSplitter $fieldSplitter, AssociationColumnsResolver $assocFieldResolver)

@@ -58,7 +58,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string                         $entityClass
      * @param ProductBuilder                 $productBuilder
      * @param ProductAttributeFieldExtractor $attFieldExtractor
-     * @param AssociationColumnsResolver      $assocFieldResolver
+     * @param AssociationColumnsResolver     $assocFieldResolver
      * @param string                         $associationClass
      * @param string                         $categoryClass
      * @param string                         $familyClass

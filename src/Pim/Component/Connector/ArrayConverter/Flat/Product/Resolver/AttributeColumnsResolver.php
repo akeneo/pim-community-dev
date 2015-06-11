@@ -12,10 +12,8 @@ use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: naming Fields vs Columns ?
  */
-class AttributeFieldsResolver
+class AttributeColumnsResolver
 {
     /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
@@ -63,7 +61,7 @@ class AttributeFieldsResolver
     /**
      * @return array
      */
-    public function resolveAttributesFields()
+    public function resolveAttributeColumns()
     {
         if (empty($this->attributesFields)) {
             $attributes = $this->attributeRepository->findAll();
