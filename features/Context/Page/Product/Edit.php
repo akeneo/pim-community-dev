@@ -279,7 +279,9 @@ class Edit extends Form
 
         $container = $labelNode->getParent()->getParent()->getParent();
 
-        $field = $container->find('css', 'div.field-input input');
+        $field = $this->spin(function () use ($container) {
+            return $container->find('css', 'div.field-input input');
+        });
         if (!$field) {
             $field = $container->find('css', 'div.field-input textarea');
             if (!$field) {

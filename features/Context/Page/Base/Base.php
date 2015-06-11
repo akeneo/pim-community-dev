@@ -345,8 +345,9 @@ class Base extends Page
      * @param int      $wait
      * @param string   $message
      *
-     * @return mixed
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function spin($callable, $wait = 60, $message = 'no message')
     {
