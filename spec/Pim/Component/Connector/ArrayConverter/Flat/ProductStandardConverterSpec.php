@@ -10,7 +10,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverter
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
 use Prophecy\Argument;
 
@@ -19,7 +19,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
     function let(
         ProductAttributeFieldExtractor $fieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
-        AssociationFieldsResolver $assocFieldsResolver,
+        AssociationColumnsResolver $assocFieldsResolver,
         AttributeFieldsResolver $attrFieldsResolver,
         ProductFieldConverter $productFieldConverter,
         ColumnsMerger $columnsMerger,
@@ -62,7 +62,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $columnsMapper->map($item)->willReturn($item);
 
         $attrFieldsResolver->resolveAttributesFields()->willReturn(['sku', 'name', 'release_date-ecommerce']);
-        $assocFieldsResolver->resolveAssociationFields()->willReturn([]);
+        $assocFieldsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
 
@@ -170,7 +170,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $item = ['sku' => '1069978', 'enabled' => 1];
 
         $attrFieldsResolver->resolveAttributesFields()->willReturn(['sku']);
-        $assocFieldsResolver->resolveAssociationFields()->willReturn([]);
+        $assocFieldsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
         $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute]);
@@ -195,7 +195,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $item = ['sku' => '1069978', 'enabled' => 1];
 
         $attrFieldsResolver->resolveAttributesFields()->willReturn(['sku']);
-        $assocFieldsResolver->resolveAssociationFields()->willReturn([]);
+        $assocFieldsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
         $productFieldConverter->supportsColumn('sku')->willReturn(false);

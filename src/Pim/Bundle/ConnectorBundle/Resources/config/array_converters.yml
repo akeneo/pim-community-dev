@@ -18,7 +18,7 @@ parameters:
     # TODO: rename following services
     pim_connector.array_converter.flat.attribute_field_extractor.class:          Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
     pim_connector.array_converter.flat.attribute_field_resolver.class:           Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver
-    pim_connector.array_converter.flat.association_field_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver
+    pim_connector.array_converter.flat.association_field_resolver.class:         Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver
     pim_connector.array_converter.splitter.field.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
     pim_connector.array_converter.merger.columns.class:                          Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger
     pim_connector.array_converter.flat.variant_group.class:                      Pim\Component\Connector\ArrayConverter\Flat\VariantGroupStandardConverter

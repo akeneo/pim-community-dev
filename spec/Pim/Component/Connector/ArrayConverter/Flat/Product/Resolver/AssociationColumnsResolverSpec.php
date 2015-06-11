@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 
-class AssociationFieldsResolverSpec extends ObjectBehavior
+class AssociationColumnsResolverSpec extends ObjectBehavior
 {
     function let(AssociationTypeRepositoryInterface $assocTypeRepo)
     {
@@ -21,7 +21,7 @@ class AssociationFieldsResolverSpec extends ObjectBehavior
         $assocType1->getCode()->willReturn("ASSOC_TYPE_1");
         $assocType2->getCode()->willReturn("ASSOC_TYPE_2");
         $assocTypeRepo->findAll()->willReturn([$assocType1, $assocType2]);
-        $this->resolveAssociationFields()->shouldReturn(
+        $this->resolveAssociationColumns()->shouldReturn(
             [
                 "ASSOC_TYPE_1-groups",
                 "ASSOC_TYPE_1-products",

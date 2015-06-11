@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Builder;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 
 /**
  * Create field names for associations and product values
@@ -16,21 +16,21 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFiel
  */
 class FieldNameBuilder
 {
-    /** @var AssociationFieldsResolver*/
-    protected $associationFieldsResolver;
+    /** @var AssociationColumnsResolver*/
+    protected $AssociationColumnsResolver;
 
     /** @var ProductAttributeFieldExtractor*/
     protected $attributeFieldExtractor;
 
     /**
-     * @param AssociationFieldsResolver      $associationFieldsResolver
+     * @param AssociationColumnsResolver      $AssociationColumnsResolver
      * @param ProductAttributeFieldExtractor $attributeFieldExtractor
      */
     public function __construct(
-        AssociationFieldsResolver $associationFieldsResolver,
+        AssociationColumnsResolver $AssociationColumnsResolver,
         ProductAttributeFieldExtractor $attributeFieldExtractor
     ) {
-        $this->associationFieldsResolver = $associationFieldsResolver;
+        $this->AssociationColumnsResolver = $AssociationColumnsResolver;
         $this->attributeFieldExtractor = $attributeFieldExtractor;
     }
 
@@ -41,7 +41,7 @@ class FieldNameBuilder
      */
     public function getAssociationFieldNames()
     {
-        return $this->associationFieldsResolver->resolveAssociationFields();
+        return $this->AssociationColumnsResolver->resolveAssociationColumns();
     }
 
     /**

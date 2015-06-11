@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
@@ -11,19 +11,19 @@ class ProductAssociationStandardConverterSpec extends ObjectBehavior
 {
     function let(
         ProductStandardConverter $productConverter,
-        AssociationFieldsResolver $associationFieldResolver,
+        AssociationColumnsResolver $assocColumnsResolver,
         AttributeFieldsResolver $attributeFieldResolver
     ) {
         $this->beConstructedWith(
             $productConverter,
-            $associationFieldResolver,
+            $assocColumnsResolver,
             $attributeFieldResolver
         );
     }
 
     function it_converts(
         $productConverter,
-        $associationFieldResolver,
+        $assocColumnsResolver,
         $attributeFieldResolver
     ) {
         $item = [
@@ -36,7 +36,7 @@ class ProductAssociationStandardConverterSpec extends ObjectBehavior
             'XSELL-products'         => 'AKN_TS, ORO_TSH'
         ];
 
-        $associationFieldResolver->resolveAssociationFields()->willReturn(['XSELL-groups', 'XSELL-products']);
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn(['XSELL-groups', 'XSELL-products']);
         $attributeFieldResolver->resolveIdentifierField()->willReturn('sku');
 
         $filteredItem = [

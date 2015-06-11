@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
@@ -18,24 +18,24 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
     /** @var ProductStandardConverter */
     protected $productConverter;
 
-    /** @var AssociationFieldsResolver */
-    protected $associationFieldResolver;
+    /** @var AssociationColumnsResolver */
+    protected $assocColumnsResolver;
 
     /** @var AttributeFieldsResolver */
     protected $attributeFieldResolver;
 
     /**
-     * @param ProductStandardConverter  $productConverter
-     * @param AssociationFieldsResolver $associationFieldResolver
-     * @param AttributeFieldsResolver   $attributeFieldResolver
+     * @param ProductStandardConverter   $productConverter
+     * @param AssociationColumnsResolver $assocColumnsResolver
+     * @param AttributeFieldsResolver    $attributeFieldResolver
      */
     public function __construct(
         ProductStandardConverter $productConverter,
-        AssociationFieldsResolver $associationFieldResolver,
+        AssociationColumnsResolver $assocColumnsResolver,
         AttributeFieldsResolver $attributeFieldResolver
     ) {
         $this->productConverter = $productConverter;
-        $this->associationFieldResolver = $associationFieldResolver;
+        $this->assocColumnsResolver = $assocColumnsResolver;
         $this->attributeFieldResolver = $attributeFieldResolver;
     }
 
@@ -90,7 +90,7 @@ class ProductAssociationStandardConverter implements StandardArrayConverterInter
      */
     protected function filter(array $item)
     {
-        $requiredFields = $this->associationFieldResolver->resolveAssociationFields();
+        $requiredFields = $this->assocColumnsResolver->resolveAssociationColumns();
         $requiredFields[] = $this->attributeFieldResolver->resolveIdentifierField();
 
         foreach (array_keys($item) as $fieldName) {
