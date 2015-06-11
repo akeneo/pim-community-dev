@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -21,28 +22,28 @@ class GroupRestController
     /** @staticvar integer The maximum number of group products to be displayed */
     const MAX_PRODUCTS = 5;
 
-    /** @var GroupManager */
-    protected $groupManager;
-
     /** @var GroupRepositoryInterface */
     protected $groupRepository;
+
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
     /** @var NormalizerInterface */
     protected $normalizer;
 
     /**
-     * @param GroupManager             $groupManager
-     * @param GroupRepositoryInterface $groupRepository
-     * @param NormalizerInterface      $normalizer
+     * @param GroupRepositoryInterface   $groupRepository
+     * @param ProductRepositoryInterface $productRepository
+     * @param NormalizerInterface        $normalizer
      */
     public function __construct(
-        GroupManager $groupManager,
         GroupRepositoryInterface $groupRepository,
+        ProductRepositoryInterface $productRepository,
         NormalizerInterface $normalizer
     ) {
-        $this->groupManager    = $groupManager;
-        $this->groupRepository = $groupRepository;
-        $this->normalizer      = $normalizer;
+        $this->groupRepository   = $groupRepository;
+        $this->productRepository = $productRepository;
+        $this->normalizer        = $normalizer;
     }
 
     /**
@@ -84,8 +85,9 @@ class GroupRestController
             throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $identifier));
         }
 
-        $productList = $this->groupManager->getProductList($group, static::MAX_PRODUCTS);
-
-        return new JsonResponse($this->normalizer->normalize($productList, 'internal_api'));
+        return new JsonResponse($this->normalizer->normalize([
+            'products'     => $this->productRepository->getProductsByGroup($group, self::MAX_PRODUCTS),
+            'productCount' => $this->productRepository->getProductCountByGroup($group)
+        ], 'internal_api'));
     }
 }

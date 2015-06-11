@@ -326,7 +326,8 @@ services:
     pim_enrich.controller.group_rest:
         class: %pim_enrich.controller.group_rest.class%
         arguments:
-            - '@pim_catalog.manager.group'
+            - '@pim_catalog.repository.group'
+            - '@pim_catalog.repository.product'
             - '@pim_internal_api_serializer'
 
     pim_enrich.controller.variant_group_rest:
