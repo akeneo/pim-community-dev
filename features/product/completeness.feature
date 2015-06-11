@@ -75,6 +75,7 @@ Feature: Display the completeness of a product
      | column   | value |
      | complete | 50%   |
 
+  @skip-pef
   Scenario: Successfully update the completeness at product save
     Given I am on the "sneakers" product page
     When I open the "Completeness" panel
@@ -99,6 +100,7 @@ Feature: Display the completeness of a product
       | tablet  | en_US  | success |                 | 100%  |
       | tablet  | fr_FR  | warning | description     | 89%   |
 
+  @skip-pef
   Scenario: Successfully display the completeness of the product in the grid after product save (PIM-2916)
     Given I am on the "sneakers" product page
     And I visit the "Attributes" tab

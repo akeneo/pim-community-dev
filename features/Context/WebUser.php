@@ -7,6 +7,7 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -1083,7 +1084,7 @@ class WebUser extends RawMinkContext
      * @param string $link
      *
      * @Given /^I open "([^"]*)" in the current window$/
-
+     *
      * @throws ExpectationException
      *
      * @return Step\Given
@@ -1705,11 +1706,15 @@ class WebUser extends RawMinkContext
     public function iShouldSeeTheCompleteness(TableNode $table)
     {
         $this->wait();
-        $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block[data-closed="true"] header .icon-angle-down');
+        $collapseSwitchers = $this->getCurrentPage()->findAll('css', '.completeness-block header .btn');
 
         foreach ($collapseSwitchers as $switcher) {
-            $switcher->click();
+            /** @var NodeElement $switcher */
+            if ('true' === $switcher->getParent()->getParent()->getAttribute('data-closed')) {
+                $switcher->click();
+            }
         }
+
         foreach ($table->getHash() as $data) {
             $channel = $data['channel'];
             $locale  = $data['locale'];
