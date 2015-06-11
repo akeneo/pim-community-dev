@@ -42,7 +42,7 @@ class CompletenessRestController
     /**
      * @var NormalizerInterface
      */
-    protected $compNormalizer;
+    protected $completenessNormalizer;
 
     /**
      * @var CollectionFilterInterface
@@ -56,7 +56,7 @@ class CompletenessRestController
      * @param ProductManager            $productManager
      * @param ChannelManager            $channelManager
      * @param UserContext               $userContext
-     * @param NormalizerInterface       $compNormalizer
+     * @param NormalizerInterface       $completenessNormalizer
      * @param CollectionFilterInterface $collectionFilter
      */
     public function __construct(
@@ -64,15 +64,15 @@ class CompletenessRestController
         ProductManager $productManager,
         ChannelManager $channelManager,
         UserContext $userContext,
-        NormalizerInterface $compNormalizer,
+        NormalizerInterface $completenessNormalizer,
         CollectionFilterInterface $collectionFilter
     ) {
-        $this->completenessManager = $completenessManager;
-        $this->productManager      = $productManager;
-        $this->channelManager      = $channelManager;
-        $this->userContext         = $userContext;
-        $this->compNormalizer      = $compNormalizer;
-        $this->collectionFilter    = $collectionFilter;
+        $this->completenessManager    = $completenessManager;
+        $this->productManager         = $productManager;
+        $this->channelManager         = $channelManager;
+        $this->userContext            = $userContext;
+        $this->completenessNormalizer = $completenessNormalizer;
+        $this->collectionFilter       = $collectionFilter;
     }
 
     /**
@@ -99,6 +99,6 @@ class CompletenessRestController
             $this->userContext->getCurrentLocale()->getCode()
         );
 
-        return new JsonResponse($this->compNormalizer->normalize($completenesses));
+        return new JsonResponse($this->completenessNormalizer->normalize($completenesses, 'internal_api'));
     }
 }
