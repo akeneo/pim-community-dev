@@ -172,8 +172,6 @@ class ProductBuilder implements ProductBuilderInterface
                 $product->removeValue($value);
             }
         }
-
-        $this->objectManager->flush($product);
     }
 
     /**

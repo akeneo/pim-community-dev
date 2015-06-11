@@ -170,6 +170,9 @@ class ProductManager
      * @param ProductInterface   $product
      * @param AttributeInterface $attribute
      * @param array              $savingOptions
+     *
+     * @deprecated will be removed in 1.5, please use ProductBuilder::removeAttributeFromProduct() and
+     *             ProductSaver::save() instead.
      */
     public function removeAttributeFromProduct(
         ProductInterface $product,

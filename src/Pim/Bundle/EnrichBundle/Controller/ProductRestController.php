@@ -8,10 +8,10 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\ObjectNotFoundException;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
 use Pim\Bundle\CatalogBundle\Filter\ObjectFilterInterface;
-use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Updater\ProductUpdaterInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -33,11 +33,11 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class ProductRestController
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /** @var AttributeManager */
-    protected $attributeManager;
+    /** @var AttributeRepositoryInterface */
+    protected $attributeRepository;
 
     /** @var ProductUpdaterInterface */
     protected $productUpdater;
@@ -64,20 +64,20 @@ class ProductRestController
     protected $productBuilder;
 
     /**
-     * @param ProductManager            $productManager
-     * @param AttributeManager          $attributeManager
-     * @param ProductUpdaterInterface   $productUpdater
-     * @param SaverInterface            $productSaver
-     * @param NormalizerInterface       $normalizer
-     * @param ValidatorInterface        $validator
-     * @param UserContext               $userContext
-     * @param ObjectFilterInterface     $objectFilter
-     * @param CollectionFilterInterface $productEditDataFilter
-     * @param ProductBuilderInterface   $productBuilder
+     * @param ProductRepositoryInterface   $productRepository
+     * @param AttributeRepositoryInterface $attributeRepository
+     * @param ProductUpdaterInterface      $productUpdater
+     * @param SaverInterface               $productSaver
+     * @param NormalizerInterface          $normalizer
+     * @param ValidatorInterface           $validator
+     * @param UserContext                  $userContext
+     * @param ObjectFilterInterface        $objectFilter
+     * @param CollectionFilterInterface    $productEditDataFilter
+     * @param ProductBuilderInterface      $productBuilder
      */
     public function __construct(
-        ProductManager $productManager,
-        AttributeManager $attributeManager,
+        ProductRepositoryInterface $productRepository,
+        AttributeRepositoryInterface $attributeRepository,
         ProductUpdaterInterface $productUpdater,
         SaverInterface $productSaver,
         NormalizerInterface $normalizer,
@@ -87,8 +87,8 @@ class ProductRestController
         CollectionFilterInterface $productEditDataFilter,
         ProductBuilderInterface $productBuilder
     ) {
-        $this->productManager        = $productManager;
-        $this->attributeManager      = $attributeManager;
+        $this->productRepository     = $productRepository;
+        $this->attributeRepository   = $attributeRepository;
         $this->productUpdater        = $productUpdater;
         $this->productSaver          = $productSaver;
         $this->normalizer            = $normalizer;
@@ -208,7 +208,8 @@ class ProductRestController
             throw new BadRequestHttpException();
         }
 
-        $this->productManager->removeAttributeFromProduct($product, $attribute);
+        $this->productBuilder->removeAttributeFromProduct($product, $attribute);
+        $this->productSaver->save($product, ['recalculate' => false, 'schedule' => false]);
 
         return new JsonResponse();
     }
@@ -224,7 +225,7 @@ class ProductRestController
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productManager->find($id);
+        $product = $this->productRepository->findOneByWithValues($id);
         $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
 
         if (!$product) {
@@ -247,11 +248,11 @@ class ProductRestController
      */
     protected function findAttributeOr404($id)
     {
-        $attribute = $this->attributeManager->getAttribute($id);
+        $attribute = $this->attributeRepository->find($id);
 
         if (!$attribute) {
             throw new NotFoundHttpException(
-                sprintf('Attribute with id %s could not be found.', (string) $id)
+                sprintf('Attribute with id %s could not be found.', $id)
             );
         }
 
