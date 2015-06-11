@@ -53,3 +53,10 @@ liip_imagine:
             filters:
                 thumbnail:    { size: [320, 240], mode: outbound }
                 strip:        ~
+        thumbnail_small:
+            quality:          95
+            data_loader:      flysystem_data_loader
+            format:           jpg
+            filters:
+                thumbnail:    { size: [80, 120], mode: inset }
+                strip:        ~
