@@ -91,7 +91,8 @@ Feature: Filter products by text field
       | name   | empty | book and mug |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
-    Given the following attributes:
+    Given I add the "english" locale to the "mobile" channel
+    And the following attributes:
       | label | type | localizable | scopable | useable as grid filter |
       | name  | text | yes         | yes      | yes                    |
     And the following products:
