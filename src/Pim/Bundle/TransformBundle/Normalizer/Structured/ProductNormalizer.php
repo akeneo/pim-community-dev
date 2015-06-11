@@ -114,7 +114,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         $values = $this->filter->filterCollection(
             $values,
-            isset($context['filter_type']) ? $context['filter_type'] : 'pim:transform:product_value:structured',
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.structured',
             $context
         );
 

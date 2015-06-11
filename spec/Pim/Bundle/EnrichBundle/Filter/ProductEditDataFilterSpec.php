@@ -68,14 +68,14 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(true);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(true);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
-        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($descriptionAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $enLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+        $objectFilter->filterObject($enLocale, 'pim.internal_api.locale.edit')->willReturn(false);
 
         $data = [
             'values' => [
@@ -119,18 +119,18 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         LocaleInterface $svLocale
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
-        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($descriptionAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $enLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+        $objectFilter->filterObject($enLocale, 'pim.internal_api.locale.edit')->willReturn(true);
 
         $svLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('sv_SE')->willReturn($svLocale);
-        $objectFilter->filterObject($svLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+        $objectFilter->filterObject($svLocale, 'pim.internal_api.locale.edit')->willReturn(false);
 
         $data = [
             'values' => [
@@ -191,18 +191,18 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         LocaleInterface $svLocale
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
-        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($descriptionAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $enLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+        $objectFilter->filterObject($enLocale, 'pim.internal_api.locale.edit')->willReturn(true);
 
         $svLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('sv_SE')->willReturn($svLocale);
-        $objectFilter->filterObject($svLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+        $objectFilter->filterObject($svLocale, 'pim.internal_api.locale.edit')->willReturn(false);
 
         $data = [
             'values' => [
@@ -256,11 +256,11 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $enLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(false);
+        $objectFilter->filterObject($enLocale, 'pim.internal_api.locale.edit')->willReturn(false);
 
         $attributeRepository->findOneByIdentifier('wrong')->willReturn(null);
 
@@ -296,14 +296,14 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         LocaleInterface $enLocale
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
-        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($descriptionAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $enLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+        $objectFilter->filterObject($enLocale, 'pim.internal_api.locale.edit')->willReturn(true);
 
         $localeRepository->findOneByIdentifier('wrong')->willReturn(null);
 
@@ -340,14 +340,14 @@ class ProductEditDataFilterSpec extends ObjectBehavior
         LocaleInterface $inactiveLocale
     ) {
         $attributeRepository->findOneByIdentifier('name')->willReturn($nameAttribute);
-        $objectFilter->filterObject($nameAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($nameAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $attributeRepository->findOneByIdentifier('description')->willReturn($descriptionAttribute);
-        $objectFilter->filterObject($descriptionAttribute, 'pim:internal_api:attribute:edit')->willReturn(false);
+        $objectFilter->filterObject($descriptionAttribute, 'pim.internal_api.attribute.edit')->willReturn(false);
 
         $enLocale->isActivated()->willReturn(true);
         $localeRepository->findOneByIdentifier('en_US')->willReturn($enLocale);
-        $objectFilter->filterObject($enLocale, 'pim:internal_api:locale:edit')->willReturn(true);
+        $objectFilter->filterObject($enLocale, 'pim.internal_api.locale.edit')->willReturn(true);
 
         $inactiveLocale->isActivated()->willReturn(false);
         $localeRepository->findOneByIdentifier('inactive')->willReturn($inactiveLocale);

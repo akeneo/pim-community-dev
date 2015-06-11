@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\GroupManager;
+use Pim\Bundle\CatalogBundle\Repository\GroupRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -23,17 +24,25 @@ class GroupRestController
     /** @var GroupManager */
     protected $groupManager;
 
+    /** @var GroupRepositoryInterface */
+    protected $groupRepository;
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
     /**
-     * @param GroupManager        $groupManager
-     * @param NormalizerInterface $normalizer
+     * @param GroupManager             $groupManager
+     * @param GroupRepositoryInterface $groupRepository
+     * @param NormalizerInterface      $normalizer
      */
-    public function __construct(GroupManager $groupManager, NormalizerInterface $normalizer)
-    {
-        $this->groupManager = $groupManager;
-        $this->normalizer   = $normalizer;
+    public function __construct(
+        GroupManager $groupManager,
+        GroupRepositoryInterface $groupRepository,
+        NormalizerInterface $normalizer
+    ) {
+        $this->groupManager    = $groupManager;
+        $this->groupRepository = $groupRepository;
+        $this->normalizer      = $normalizer;
     }
 
     /**
@@ -41,7 +50,7 @@ class GroupRestController
      */
     public function indexAction()
     {
-        $groups = $this->groupManager->getRepository()->getAllGroupsExceptVariant();
+        $groups = $this->groupRepository->getAllGroupsExceptVariant();
 
         return new JsonResponse($this->normalizer->normalize($groups, 'internal_api'));
     }
@@ -53,7 +62,7 @@ class GroupRestController
      */
     public function getAction($identifier)
     {
-        $group = $this->groupManager->getRepository()->findOneByCode($identifier);
+        $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
         return new JsonResponse($this->normalizer->normalize($group, 'internal_api'));
     }
@@ -69,7 +78,7 @@ class GroupRestController
      */
     public function listProductsAction($identifier)
     {
-        $group = $this->groupManager->getRepository()->findOneByCode($identifier);
+        $group = $this->groupRepository->findOneBy(['code' => $identifier]);
 
         if (!$group) {
             throw new NotFoundHttpException(sprintf('Group with code "%s" not found', $identifier));

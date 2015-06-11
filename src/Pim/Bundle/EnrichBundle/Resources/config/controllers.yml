@@ -301,7 +301,7 @@ services:
     pim_enrich.controller.media_rest:
         class: %pim_enrich.controller.media_rest.class%
         arguments:
-            - %kernel.root_dir%
+            - %upload_dir%
 
     pim_enrich.controller.attribute_rest:
         class: %pim_enrich.controller.attribute_rest.class%
@@ -383,6 +383,7 @@ services:
             - '@form.factory'
             - '@pim_catalog.manager.product'
             - '@pim_comment.manager.comment'
+            - '@pim_catalog.saver.comment'
             - '@pim_comment.builder.comment'
             - '@pim_serializer'
             - '@validator'

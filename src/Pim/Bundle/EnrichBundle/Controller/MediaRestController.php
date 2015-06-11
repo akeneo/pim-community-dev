@@ -14,11 +14,15 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class MediaRestController
 {
-    protected $rootDir;
+    /** @var string */
+    protected $uploadDir;
 
-    public function __construct($rootDir)
+    /**
+     * @param string $uploadDir
+     */
+    public function __construct($uploadDir)
     {
-        $this->rootDir = $rootDir;
+        $this->uploadDir = $uploadDir;
     }
 
     /**
@@ -31,7 +35,7 @@ class MediaRestController
         $file = $request->files->get('file');
 
         $movedFile = $file->move(
-            $this->rootDir . '/uploads/product/',
+            $this->uploadDir . '/',
             uniqid() . '_' . $file->getClientOriginalName()
         );
 

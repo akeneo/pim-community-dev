@@ -108,14 +108,14 @@ class ProductEditDataFilter implements CollectionFilterInterface
 
         foreach ($valuesData as $attributeCode => $contextValues) {
             $attribute = $this->getAttribute($attributeCode);
-            if (!$this->objectFilter->filterObject($attribute, 'pim:internal_api:attribute:edit')) {
+            if (!$this->objectFilter->filterObject($attribute, 'pim.internal_api.attribute.edit')) {
                 $filteredContextValues = [];
 
                 foreach ($contextValues as $contextValue) {
                     if (null === $contextValue['locale'] ||
                         !$this->objectFilter->filterObject(
                             $this->getLocale($contextValue['locale']),
-                            'pim:internal_api:locale:edit'
+                            'pim.internal_api.locale.edit'
                         )
                     ) {
                         $filteredContextValues[] = $contextValue;

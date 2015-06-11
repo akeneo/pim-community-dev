@@ -48,8 +48,8 @@ class LocaleRestController
     public function indexAction()
     {
         $locales           = $this->localeRepository->getActivatedLocales();
-        $fitleredLocales   = $this->collectionFilter->filterCollection($locales, 'pim:internal_api:locale:view');
-        $normalizedLocales = $this->normalizer->normalize($fitleredLocales, 'internal_api');
+        $filteredLocales   = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
+        $normalizedLocales = $this->normalizer->normalize($filteredLocales, 'internal_api');
 
         return new JsonResponse($normalizedLocales);
     }

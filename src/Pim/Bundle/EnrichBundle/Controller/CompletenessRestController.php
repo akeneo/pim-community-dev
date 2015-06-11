@@ -90,12 +90,12 @@ class CompletenessRestController
         $channels = $this->channelManager->getFullChannels();
         $locales = $this->userContext->getUserLocales();
 
-        $fitleredLocales = $this->collectionFilter->filterCollection($locales, 'pim:internal_api:locale:view');
+        $filteredLocales = $this->collectionFilter->filterCollection($locales, 'pim.internal_api.locale.view');
 
         $completenesses = $this->completenessManager->getProductCompleteness(
             $product,
             $channels,
-            $fitleredLocales,
+            $filteredLocales,
             $this->userContext->getCurrentLocale()->getCode()
         );
 

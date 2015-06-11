@@ -77,7 +77,7 @@ class FamilyNormalizer implements NormalizerInterface
         $filteredAttributes = $this->collectionFilter ?
             $this->collectionFilter->filterCollection(
                 $family->getAttributes(),
-                'pim:internal_api:attribute:view'
+                'pim.internal_api.attribute.view'
             ) :
             $family->getAttributes();
 

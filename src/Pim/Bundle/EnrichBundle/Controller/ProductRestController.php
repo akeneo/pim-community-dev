@@ -137,7 +137,7 @@ class ProductRestController
                 [
                     'locales'     => $locales,
                     'channels'    => $channels,
-                    'filter_type' => 'pim:internal_api:product_value:view'
+                    'filter_type' => 'pim.internal_api.product_value.view'
                 ]
             )
         );
@@ -155,7 +155,7 @@ class ProductRestController
     public function postAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        if ($this->objectFilter->filterObject($product, 'pim:internal_api:product:edit')) {
+        if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -198,7 +198,7 @@ class ProductRestController
     public function removeAttributeAction($productId, $attributeId)
     {
         $product = $this->findProductOr404($productId);
-        if ($this->objectFilter->filterObject($product, 'pim:internal_api:product:edit')) {
+        if ($this->objectFilter->filterObject($product, 'pim.internal_api.product.edit')) {
             throw new AccessDeniedHttpException();
         }
 
@@ -225,7 +225,7 @@ class ProductRestController
     protected function findProductOr404($id)
     {
         $product = $this->productManager->find($id);
-        $product = $this->objectFilter->filterObject($product, 'pim:internal_api:product:view') ? null : $product;
+        $product = $this->objectFilter->filterObject($product, 'pim.internal_api.product.view') ? null : $product;
 
         if (!$product) {
             throw new NotFoundHttpException(

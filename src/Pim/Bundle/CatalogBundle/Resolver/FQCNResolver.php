@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Resolver;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+
 /**
  * FQCN Resolver
  *
@@ -14,32 +17,22 @@ class FQCNResolver
     /** @var array */
     protected $classNames = [];
 
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
     /**
-     * Get FQCN for the givent entity type
+     * Get FQCN for the given entity type
      *
      * @param string $entityType
      *
-     * @throws LogicException
+     * @throws InvalidArgumentException
      *
      * @return string
      */
     public function getFQCN($entityType)
     {
-        if (!isset($this->classNames[$entityType])) {
-            throw \LogicException(sprintf('The class name for %s is unknown', $entityType));
-        }
-
-        return $this->classNames[$entityType];
-    }
-
-    /**
-     * Set the FCQN for the given entity type
-     *
-     * @param string $entityType
-     * @param string $className
-     */
-    public function setFQCN($entityType, $className)
-    {
-        $this->classNames[$entityType] = $className;
+        return $this->container->getParameter(sprintf('pim_catalog.entity.%s.class', $entityType));
     }
 }

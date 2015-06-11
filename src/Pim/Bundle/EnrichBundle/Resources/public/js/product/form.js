@@ -30,19 +30,15 @@ define(
                 }
             },
             configure: function () {
-                var deferred = $.Deferred();
-
-                var extensionPromises = [];
-                _.each(this.extensions, function (extension) {
-                    extensionPromises.push(extension.configure());
-                });
-
-                $.when.apply($, extensionPromises).done(_.bind(function () {
-                    this.configured = true;
-                    deferred.resolve();
-                }, this));
-
-                return deferred.promise();
+                return $.when(
+                        _.map(this.extensions, function (extension) {
+                            return extension.configure();
+                        })
+                    )
+                    .done(_.bind(function () {
+                        this.configured = true;
+                    }, this)
+                );
             },
             addExtension: function (code, extension, zone, insertAction, position) {
                 extension.setParent(this);
@@ -99,8 +95,6 @@ define(
                     console.log(extension.parent.code, 'triggered the rendering of', extension.code);
                     extension.render();
                 });
-
-                sortedExtensions = undefined;
 
                 return this;
             }
