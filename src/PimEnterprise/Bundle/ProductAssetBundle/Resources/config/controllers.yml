@@ -12,5 +12,6 @@ services:
             - '@pim_catalog.repository.channel'
             - '@akeneo_file_storage.file_storage.raw_file.storer'
             - '@pimee_product_asset.variation_file_generator'
+            - '@pimee_product_asset.form.asset'
         calls:
             - [ setContainer, [ @service_container ] ]

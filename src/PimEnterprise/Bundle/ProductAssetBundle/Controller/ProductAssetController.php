@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use PimEnterprise\Bundle\ProductAssetBundle\Form\AssetType;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
@@ -27,6 +28,7 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Process\PhpExecutableFinder;
 
@@ -58,6 +60,9 @@ class ProductAssetController extends Controller
     /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
+    /** @var Form */
+    protected $assetForm;
+
     /**
      * @param AssetRepositoryInterface          $assetRepository
      * @param ReferenceRepositoryInterface      $referenceRepository
@@ -74,7 +79,8 @@ class ProductAssetController extends Controller
         FileMetadataRepositoryInterface $metadataRepository,
         ChannelRepositoryInterface $channelRepository,
         RawFileStorerInterface $rawFileStorer,
-        VariationFileGeneratorInterface $variationFileGenerator
+        VariationFileGeneratorInterface $variationFileGenerator,
+        Form $assetForm
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -83,6 +89,7 @@ class ProductAssetController extends Controller
         $this->channelRepository      = $channelRepository;
         $this->rawFileStorer          = $rawFileStorer;
         $this->variationFileGenerator = $variationFileGenerator;
+        $this->assetForm              = $assetForm;
     }
 
     /**
@@ -155,6 +162,31 @@ class ProductAssetController extends Controller
      * @return array
      */
     public function editAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+//        $this->assetForm->setData(new AssetType());
+//        $this->assetForm->setData($productAsset);
+        $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
+
+        return [
+            'asset' => $productAsset,
+            'form'  => $assetForm
+//            'assetForm'   => $this->assetForm->createView(),
+        ];
+    }
+
+    /**
+     * Edit an asset
+     *
+     * @param Request    $request
+     * @param int|string $id
+     *
+     * @Template
+     * @AclAncestor("pimee_product_asset_index")
+     *
+     * @return array
+     */
+    public function editOldAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
         $channels     = $this->channelRepository->getFullChannels();

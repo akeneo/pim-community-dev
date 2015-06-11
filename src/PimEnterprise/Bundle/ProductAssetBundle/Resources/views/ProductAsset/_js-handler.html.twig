@@ -1,0 +1,28 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'underscore', 'datepicker', 'jquery.select2', 'tinymce'],
+        function ($, _, datepicker, select2, tinymce) {
+            'use strict';
+
+            $(function () {
+                _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
+
+//                $('#s2id_pimee_product_asset_tags').select2('tags', true);
+//                $('input[name="value"]').select2({
+//                    tags: [],
+//                    tokenSeparators: [',', ';', ' ']
+//                });
+
+                // submit form
+                $('div.submit-form a').click(function() {
+                    var action = $(this).attr('value');
+                    $('#{{ form.vars.id }}').attr('action', $('#{{ form.vars.id }}').attr('action') +"&action="+ action);
+                    tinymce.triggerSave();
+                    $('#{{ form.vars.id }}').submit();
+                });
+            });
+        }
+    );
+</script>
