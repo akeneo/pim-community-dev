@@ -27,7 +27,7 @@
 
     {% set buttons %}
         {% if form.vars.value.id %}
-            {% if category_exceeds_products_limit_for_removal(form.vars.value, true) %}
+            {% if exceeds_products_limit_for_removal(form.vars.value, true) %}
                 {{ elements.link(
                     'btn.delete',
                     null,
