@@ -5,12 +5,12 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
-class ProductAssociationToStandardConverterSpec extends ObjectBehavior
+class ProductAssociationStandardConverterSpec extends ObjectBehavior
 {
     function let(
-        ProductToStandardConverter $productConverter,
+        ProductStandardConverter $productConverter,
         AssociationFieldsResolver $associationFieldResolver,
         AttributeFieldsResolver $attributeFieldResolver
     ) {

@@ -5,7 +5,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
-class AttributeOptionToStandardConverterSpec extends ObjectBehavior
+class AttributeOptionStandardConverterSpec extends ObjectBehavior
 {
     function let(LocaleRepositoryInterface $localeRepository)
     {

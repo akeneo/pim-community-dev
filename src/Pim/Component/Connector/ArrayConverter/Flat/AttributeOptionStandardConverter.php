@@ -1,34 +1,44 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Structured;
+namespace Pim\Component\Connector\ArrayConverter\Flat;
 
+use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Convert structured format to standard format for attribute option
+ * Convert flat format to standard format for attribute option
  *
  * @author    Nicolas Dupont <nicola@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionToStandardConverter implements StandardArrayConverterInterface
+class AttributeOptionStandardConverter implements StandardArrayConverterInterface
 {
+    /** @var LocaleRepositoryInterface */
+    protected $localeRepository;
+
+    /**
+     * @param LocaleRepositoryInterface $localeRepository
+     */
+    public function __construct(LocaleRepositoryInterface $localeRepository)
+    {
+        $this->localeRepository = $localeRepository;
+    }
+
     /**
      * {@inheritdoc}
      *
-     * Converts yaml array to standard structured array:
+     * Converts flat csv array to standard structured array:
      *
      * Before:
      * {
      *     'attribute': 'maximum_print_size',
      *     'code': '210_x_1219_mm',
-     *     'sortOrder': 2,
-     *     'labels': {
-     *         'de_DE': '210 x 1219 mm',
-     *         'en_US': '210 x 1219 mm',
-     *         'fr_FR': '210 x 1219 mm'
-     *     }
+     *     'sort_order': '2',
+     *     'label-de_DE': '210 x 1219 mm',
+     *     'label-en_US': '210 x 1219 mm',
+     *     'label-fr_FR': '210 x 1219 mm'
      * }
      *
      * After:
@@ -46,10 +56,23 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
     public function convert(array $item, array $options = [])
     {
         $this->validate($item);
-        $item['sort_order'] = $item['sortOrder'];
-        unset($item['sortOrder']);
+        $convertedItem = ['labels' => []];
+        foreach ($item as $field => $data) {
+            $isLabel = false !== strpos($field, 'label-', 0);
+            if ($isLabel) {
+                $labelTokens = explode('-', $field);
+                $labelLocale = $labelTokens[1];
+                $convertedItem['labels'][$labelLocale] = $data;
+            } else {
+                $convertedItem[$field] = $data;
+            }
+        }
+        if (!isset($convertedItem['sort_order'])) {
+            $convertedItem['sort_order'] = 1;
+        }
+        $convertedItem['sort_order'] = (int) $convertedItem['sort_order'];
 
-        return $item;
+        return $convertedItem;
     }
 
     /**
@@ -72,7 +95,12 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
             }
         }
 
-        $authorizedFields = array_merge($requiredFields, ['sortOrder', 'labels']);
+        $authorizedFields = array_merge($requiredFields, ['sort_order']);
+        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
+        foreach ($localeCodes as $code) {
+            $authorizedFields[] = 'label-' . $code;
+        }
+
         foreach ($item as $field => $data) {
             if (!in_array($field, $authorizedFields)) {
                 throw new ArrayConversionException(
@@ -83,12 +111,6 @@ class AttributeOptionToStandardConverter implements StandardArrayConverterInterf
                     )
                 );
             }
-        }
-
-        if (isset($item['labels']) && !is_array($item['labels'])) {
-            throw new ArrayConversionException(
-                sprintf('Field "labels" must be an array, data provided is "%s"', print_r($item['labels'], true))
-            );
         }
     }
 }

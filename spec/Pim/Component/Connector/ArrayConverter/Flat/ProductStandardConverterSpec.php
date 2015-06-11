@@ -14,7 +14,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFiel
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
 use Prophecy\Argument;
 
-class ProductToStandardConverterSpec extends ObjectBehavior
+class ProductStandardConverterSpec extends ObjectBehavior
 {
     function let(
         ProductAttributeFieldExtractor $fieldExtractor,

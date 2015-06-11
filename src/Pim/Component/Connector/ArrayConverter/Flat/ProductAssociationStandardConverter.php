@@ -12,12 +12,10 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: rename!
  */
-class ProductAssociationToStandardConverter implements StandardArrayConverterInterface
+class ProductAssociationStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var ProductToStandardConverter */
+    /** @var ProductStandardConverter */
     protected $productConverter;
 
     /** @var AssociationFieldsResolver */
@@ -27,12 +25,12 @@ class ProductAssociationToStandardConverter implements StandardArrayConverterInt
     protected $attributeFieldResolver;
 
     /**
-     * @param ProductToStandardConverter $productConverter
-     * @param AssociationFieldsResolver  $associationFieldResolver
-     * @param AttributeFieldsResolver    $attributeFieldResolver
+     * @param ProductStandardConverter  $productConverter
+     * @param AssociationFieldsResolver $associationFieldResolver
+     * @param AttributeFieldsResolver   $attributeFieldResolver
      */
     public function __construct(
-        ProductToStandardConverter $productConverter,
+        ProductStandardConverter $productConverter,
         AssociationFieldsResolver $associationFieldResolver,
         AttributeFieldsResolver $attributeFieldResolver
     ) {

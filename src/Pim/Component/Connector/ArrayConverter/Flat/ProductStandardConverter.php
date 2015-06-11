@@ -19,10 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: rename!
  */
-class ProductToStandardConverter implements StandardArrayConverterInterface
+class ProductStandardConverter implements StandardArrayConverterInterface
 {
     /** @var ValueConverterRegistryInterface */
     protected $converterRegistry;

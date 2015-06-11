@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 
-class AttributeToStandardConverterSpec extends ObjectBehavior
+class AttributeStandardConverterSpec extends ObjectBehavior
 {
     function it_is_a_standard_array_converter()
     {

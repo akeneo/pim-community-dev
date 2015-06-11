@@ -6,14 +6,14 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
-class VariantGroupToStandardConverterSpec extends ObjectBehavior
+class VariantGroupStandardConverterSpec extends ObjectBehavior
 {
     function let(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductToStandardConverter $productConverter
+        ProductStandardConverter $productConverter
     ) {
         $this->beConstructedWith($localeRepository, $attributeRepository, $productConverter);
     }
