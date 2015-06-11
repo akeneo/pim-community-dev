@@ -5,4 +5,4 @@ services:
     pim_catalog.resolver.fqcn:
         class: %pim_catalog.resolver.fqcn.class%
         arguments:
-            - '@container'
+            - '@service_container'

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
@@ -35,7 +36,7 @@ class ProductCommentRestController
     /** @var CommentManager */
     protected $commentManager;
 
-    /** @var CommentSaver */
+    /** @var SaverInterface */
     protected $commentSaver;
 
     /** @var CommentBuilder */
@@ -54,7 +55,7 @@ class ProductCommentRestController
      * @param FormFactoryInterface     $formFactory
      * @param ProductManager           $productManager
      * @param CommentManager           $commentManager
-     * @param CommentSaver             $commentSaver
+     * @param SaverInterface           $commentSaver
      * @param CommentBuilder           $commentBuilder
      * @param NormalizerInterface      $normalizer
      * @param ValidatorInterface       $validator
@@ -64,7 +65,7 @@ class ProductCommentRestController
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
         CommentManager $commentManager,
-        CommentSaver $commentSaver,
+        SaverInterface $commentSaver,
         CommentBuilder $commentBuilder,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator
