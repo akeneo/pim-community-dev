@@ -40,6 +40,11 @@ class UTCDateTimeType extends DateTimeType
             (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
         );
 
+        // Dates are stored in UTC timezone
+        // @see PIM-4216
+        $serverTimezone = date_default_timezone_get();
+        $val->setTimezone(new \DateTimeZone($serverTimezone));
+
         if (!$val) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
