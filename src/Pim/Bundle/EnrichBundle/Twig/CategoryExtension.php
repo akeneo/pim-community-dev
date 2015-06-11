@@ -39,12 +39,12 @@ class CategoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            'children_response'                           => new \Twig_Function_Method($this, 'childrenResponse'),
-            'children_tree_response'                      => new \Twig_Function_Method($this, 'childrenTreeResponse'),
-            'list_categories_response'                    => new \Twig_Function_Method($this, 'listCategoriesResponse'),
-            'list_trees_response'                         => new \Twig_Function_Method($this, 'listTreesResponse'),
-            'category_exceeds_products_limit_for_removal' => new \Twig_Function_Method($this, 'categoryExceedsProductsLimitForRemoval'),
-            'get_products_limit_for_removal'              => new \Twig_Function_Method($this, 'getProductsLimitForRemoval')
+            'children_response'                  => new \Twig_Function_Method($this, 'childrenResponse'),
+            'children_tree_response'             => new \Twig_Function_Method($this, 'childrenTreeResponse'),
+            'list_categories_response'           => new \Twig_Function_Method($this, 'listCategoriesResponse'),
+            'list_trees_response'                => new \Twig_Function_Method($this, 'listTreesResponse'),
+            'exceeds_products_limit_for_removal' => new \Twig_Function_Method($this, 'exceedsProductsLimitForRemoval'),
+            'get_products_limit_for_removal'     => new \Twig_Function_Method($this, 'getProductsLimitForRemoval')
         ];
     }
 
@@ -174,7 +174,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return bool
      */
-    public function categoryExceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub)
+    public function exceedsProductsLimitForRemoval(CategoryInterface $category, $includeSub)
     {
         return null !== $this->productsLimitForRemoval &&
             $this->countProducts($category, $includeSub, true) > $this->productsLimitForRemoval;
