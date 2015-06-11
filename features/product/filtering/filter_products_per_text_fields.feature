@@ -10,8 +10,8 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products with special characters value for text attribute
     Given the following attribute:
-      | label | type | useable as grid filter |
-      | name  | text | yes                    |
+      | label | type | useable as grid filter | localizable |
+      | name  | text | yes                    | yes         |
     And the following products:
       | sku      | name-en_US                     |
       | 11026270 | HP LA2206xc + WF722A           |
