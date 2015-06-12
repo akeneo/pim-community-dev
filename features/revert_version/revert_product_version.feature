@@ -336,7 +336,7 @@ Feature: Revert a product to a previous version
 
     Scenario: Successfully revert a pim_catalog_textarea attribute
       Given the following product:
-        | sku     | family | description-tablet-en_US |
+        | sku     | family | description-en_US-tablet |
         | t-shirt | tees   | A nice t-shirt.          |
         | marcel  | tees   |                          |
       Given I am on the "t-shirt" product page
@@ -345,7 +345,7 @@ Feature: Revert a product to a previous version
       When I visit the "History" tab
       When I click on the "Revert to this version" action of the row which contains "sku: t-shirt"
       Then the product "t-shirt" should have the following values:
-        | description-tablet-en_US | A nice t-shirt. |
+        | description-en_US-tablet | A nice t-shirt. |
       Given I am on the "marcel" product page
       And I visit the "Attributes" tab
       And I visit the "Product information" group
