@@ -347,6 +347,7 @@ class WebUser extends RawMinkContext
 
     /**
      * @param TableNode $table
+     * @param string    $productPage
      *
      * @Then /^the locale switcher should contain the following items:$/
      *

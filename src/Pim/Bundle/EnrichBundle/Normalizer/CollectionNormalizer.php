@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -15,16 +16,16 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class CollectionNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @var SerializerInterface $serializer */
+    /** @var Serializer $serializer */
     protected $serializer;
 
-    /** @var array */
+    /** @var string[] */
     protected $supportedFormat = ['internal_api'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($elements, $format = null, array $context = array())
+    public function normalize($elements, $format = null, array $context = [])
     {
         $normalizedElements = [];
 

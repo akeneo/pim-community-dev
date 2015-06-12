@@ -22,7 +22,7 @@ class VersionNormalizer implements NormalizerInterface
     /** @var TranslatorInterface */
     protected $translator;
 
-    /** @var array */
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /** @var array */

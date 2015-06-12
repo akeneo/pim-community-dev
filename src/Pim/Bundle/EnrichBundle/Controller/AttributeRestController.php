@@ -47,8 +47,9 @@ class AttributeRestController
      */
     public function indexAction()
     {
-        $attributes = $this->attributeRepository->findAll();
-        $filteredAttributes = $this->collectionFilter->filterCollection($attributes, 'pim.internal_api.attribute.view');
+        $attributes           = $this->attributeRepository->findAll();
+        $filteredAttributes   = $this->collectionFilter
+            ->filterCollection($attributes, 'pim.internal_api.attribute.view');
         $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
 
         return new JsonResponse($normalizedAttributes);

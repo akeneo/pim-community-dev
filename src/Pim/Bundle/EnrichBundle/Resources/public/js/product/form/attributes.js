@@ -251,7 +251,6 @@ define(
                 _.each(FieldManager.getFields(), function (field) {
                     if (!field.getValid()) {
                         mediator.trigger('show_attribute', {attribute: field.attribute.code});
-                        return;
                     }
                 });
                 this.updateAttributeGroupBadges();

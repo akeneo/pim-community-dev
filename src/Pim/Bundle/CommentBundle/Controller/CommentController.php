@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CommentBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
