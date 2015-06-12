@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
- * Converts flat multi select value into structured one.
+ * Converts flat media value into structured one.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleSelectConverter extends AbstractValueConverter
+class MediaConverter extends AbstractValueConverter
 {
     /**
      * @param FieldSplitter $fieldSplitter
@@ -28,14 +28,16 @@ class SimpleSelectConverter extends AbstractValueConverter
      */
     public function convert(array $attributeFieldInfo, $value)
     {
-        if ('' === $value) {
-            $value = null;
+        if ('' !== $value) {
+            $data = ['filePath' => $value, 'originalFilename' => basename($value)];
+        } else {
+            $data = ['filePath' => null, 'originalFilename' => null];
         }
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
             'locale' => $attributeFieldInfo['locale_code'],
             'scope'  => $attributeFieldInfo['scope_code'],
-            'data'   => $value,
+            'data'   => $data,
         ]]];
     }
 }

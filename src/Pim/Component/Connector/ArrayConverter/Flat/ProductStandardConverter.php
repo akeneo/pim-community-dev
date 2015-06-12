@@ -3,7 +3,7 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;

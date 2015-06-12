@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -25,7 +25,7 @@ class ScalarConverterSpec extends ObjectBehavior
 
     function it_is_a_converter()
     {
-        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface');
+        $this->shouldImplement('Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterInterface');
     }
 
     function it_supports_converter_field()

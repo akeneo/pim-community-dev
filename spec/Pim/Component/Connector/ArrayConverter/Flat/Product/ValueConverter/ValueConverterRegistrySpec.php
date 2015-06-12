@@ -1,16 +1,16 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterInterface;
 
 class ValueConverterRegistrySpec extends ObjectBehavior
 {
     function it_is_a_registry()
     {
         $this->shouldImplement(
-            'Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface'
+            'Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface'
         );
     }
 
