@@ -1,3 +1,8 @@
+# 1.3.x
+
+## Bug fixes
+- Fixed missing parameter in mapping
+
 # 1.3.16 (2015-06-08)
 
 # 1.3.15 (2015-06-05)
