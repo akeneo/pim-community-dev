@@ -11,8 +11,8 @@ Feature: Browse channels
     Then the grid should contain 3 elements
     And I should see the columns Code, Label and Category tree
     And I should see channels ecommerce, tablet and print
-    And the rows should be sorted ascending by code
-    And I should be able to sort the rows by code, label and category tree
+    And the rows should be sorted ascending by Code
+    And I should be able to sort the rows by Code, Label and Category tree
     And I should be able to use the following filters:
       | filter        | value           | result               |
       | Code          | t               | tablet and print     |

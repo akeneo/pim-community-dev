@@ -61,7 +61,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
         if (file_exists($excludedTablesFile)) {
-            $parser = new Parser();
+            $parser         = new Parser();
             $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
             $excludedTables = $excludedTables['excluded_tables'];
         } else {
@@ -69,7 +69,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
-            $purgers[] = new MongoDBPurger($this->getDocumentManager());
+            $purgers[]        = new MongoDBPurger($this->getDocumentManager());
             $excludedTables[] = 'pim_catalog_product';
             $excludedTables[] = 'pim_catalog_product_value';
             $excludedTables[] = 'pim_catalog_media';
@@ -104,7 +104,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
             if ($driver instanceof Selenium2Driver) {
-                $dir = getenv('WORKSPACE');
+                $dir      = getenv('WORKSPACE');
                 $buildUrl = getenv('BUILD_URL');
                 if (false !== $dir) {
                     $dir = sprintf('%s/app/build/screenshots', $dir);
@@ -286,11 +286,11 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         }
 
         $start = microtime(true);
-        $end = $start + $time / 1000.0;
+        $end   = $start + $time / 1000.0;
 
         if ($condition === null) {
             $defaultCondition = true;
-            $conditions = [
+            $conditions       = [
                 "document.readyState == 'complete'",           // Page is ready
                 "typeof $ != 'undefined'",                     // jQuery is loaded
                 "!$.active",                                   // No ajax request is active
@@ -376,5 +376,35 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
+    }
+
+    /**
+     * @param callable $callable
+     * @param int      $wait
+     *
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function spin($callable, $wait = 60)
+    {
+        for ($i = 0; $i < $wait; $i++) {
+            try {
+                if ($result = $callable($this)) {
+                    return $result;
+                }
+            } catch (\Exception $e) {
+                // do nothing
+            }
+
+            sleep(1);
+        }
+
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
+
+        throw new \Exception(
+            "Timeout thrown by ".$backtrace[1]['class']."::".$backtrace[1]['function']."()\n".
+            $backtrace[1]['file'].", line ".$backtrace[1]['line']
+        );
     }
 }

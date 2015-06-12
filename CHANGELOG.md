@@ -18,6 +18,8 @@
 - PIM-3929: Categories with circular references are skipped in processor during import
 - PIM-4024: Fix for metric and price denormalizer
 - PIM-4314: Added missing translation keys
+- PIM-4112: Not translated Error message when wrong format import
+- PMI-4032: Fix wrong error message when deleting used attribute option by a published product
 
 ## BC breaks
 - `Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\VariantGroupWriter` and `Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\VariantGroupProcessor` are deprecated
@@ -133,10 +135,23 @@
 - Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
 - Depreciate and change constructor of `Pim\Bundle\TransformBundle\Builder\FieldNameBuilder`
 
-# 1.3.x
+# 1.3.16 (2015-06-08)
+
+## Bug fixes
+- PIM-4312: Fix price indexes on MongoDB
+- PIM-4112: Not translated Error message when wrong format import
+
+# 1.3.15 (2015-06-05)
+
+## Bug fixes
+- PIM-4308: MongoDB indexes are removed on schema update
+- PIM-4314: Added missing translation keys
+
+# 1.3.14 (2015-06-03)
 
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
+- PIM-4309: Fix bug processing media with a non existing media
 
 # 1.3.13 (2015-05-29)
 
@@ -521,7 +536,7 @@
 - PIM-3632: Correctly show scopable attribute icons on scope change
 - PIM-3583: Fix the bad parsed filter value with spaces
 
-# 1.2.35
+# 1.2.35 (2015-05-29)
 
 ## Bug fixes
 - PIM-4227: Disable product versionning on category update (never used and very slow)

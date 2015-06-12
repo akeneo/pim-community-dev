@@ -9,6 +9,7 @@ use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
 /**
  * Context for assertions
@@ -43,7 +44,7 @@ class AssertionContext extends RawMinkContext
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
-            $found = $this->getSession()->evaluateScript(sprintf($script, $error));
+            $found  = $this->getSession()->evaluateScript(sprintf($script, $error));
             if ($found) {
                 return;
             }
@@ -65,7 +66,7 @@ class AssertionContext extends RawMinkContext
     {
         if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
             $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
-            $found = $this->getSession()->evaluateScript(sprintf($script, $error));
+            $found  = $this->getSession()->evaluateScript(sprintf($script, $error));
             assertFalse($found, sprintf('Expecting to not see validation error, "%s" found', $error));
         }
     }
@@ -162,11 +163,14 @@ class AssertionContext extends RawMinkContext
      * @param string $text
      *
      * @Then /^I should see (?:a )?flash message "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeFlashMessage($text)
     {
-        // TODO Flash essages tests temporarily disabled because unstable on CI
+        // TODO Flash messages tests temporarily disabled because unstable on CI
         return true;
+//        $this->getMainContext()->wait(10000, '$(".flash-messages-holder").length > 0');
 //        if (!$this->getCurrentPage()->findFlashMessage($text)) {
 //            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
 //        }
@@ -176,6 +180,8 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $tableNode
      *
      * @Then /^I should see a confirm dialog with the following content:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeAConfirmDialog(TableNode $tableNode)
     {
@@ -183,7 +189,7 @@ class AssertionContext extends RawMinkContext
 
         if (isset($tableHash['title'])) {
             $expectedTitle = $tableHash['title'];
-            $title = $this->getCurrentPage()->getConfirmDialogTitle();
+            $title         = $this->getCurrentPage()->getConfirmDialogTitle();
 
             if ($expectedTitle !== $title) {
                 throw $this->createExpectationException(
@@ -194,7 +200,7 @@ class AssertionContext extends RawMinkContext
 
         if (isset($tableHash['content'])) {
             $expectedContent = $tableHash['content'];
-            $content = $this->getCurrentPage()->getConfirmDialogContent();
+            $content         = $this->getCurrentPage()->getConfirmDialogContent();
 
             if ($expectedContent !== $content) {
                 throw $this->createExpectationException(
@@ -224,10 +230,10 @@ class AssertionContext extends RawMinkContext
     public function iShouldSeeHistory(TableNode $table)
     {
         $updates = [];
-        $rows = $this->getCurrentPage()->getHistoryRows();
+        $rows    = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
             $version = (int) $row->find('css', 'td.number-cell')->getHtml();
-            $author = $row->findAll('css', 'td.string-cell');
+            $author  = $row->findAll('css', 'td.string-cell');
             if (count($author) > 4) {
                 $author = $row->findAll('css', 'td.string-cell')[1]->getHtml();
             } else {
@@ -293,8 +299,8 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeThisExactHistory(TableNode $table)
     {
-        $actualUpdates = array();
-        $rows = $this->getCurrentPage()->getHistoryRows();
+        $actualUpdates = [];
+        $rows          = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
             $version = (int) $row->find('css', 'td.number-cell')->getHtml();
             $allData = $row->findAll('css', 'td>ul');
@@ -303,7 +309,7 @@ class AssertionContext extends RawMinkContext
             $beforeData = explode("\n", $beforeData);
             foreach ($beforeData as $dataItem) {
                 if ("" !== $dataItem) {
-                    list($property, $value) = explode(':', $dataItem);
+                    list($property, $value)            = explode(':', $dataItem);
                     $actualUpdates[$version.$property] = [
                         'version'  => $version,
                         'property' => $property,
@@ -316,12 +322,12 @@ class AssertionContext extends RawMinkContext
             $afterData = explode("\n", $afterData);
             foreach ($afterData as $dataItem) {
                 if ("" !== $dataItem) {
-                    list($property, $value) = explode(':', $dataItem);
+                    list($property, $value)                     = explode(':', $dataItem);
                     $actualUpdates[$version.$property]['after'] = $value;
                 }
             }
         }
-        $actualUpdates = array_values($actualUpdates);
+        $actualUpdates   = array_values($actualUpdates);
         $expectedUpdates = $table->getHash();
 
         assertEquals($actualUpdates, $expectedUpdates);
@@ -353,7 +359,7 @@ class AssertionContext extends RawMinkContext
             throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
         }
 
-        $file = fopen($fileName, 'rb');
+        $file     = fopen($fileName, 'rb');
         $rowCount = 0;
         while (fgets($file) !== false) {
             $rowCount++;
@@ -373,7 +379,7 @@ class AssertionContext extends RawMinkContext
      */
     public function theFollowingCodesShouldNotBeAvailable($entity, TableNode $table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $item) {
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
@@ -393,7 +399,7 @@ class AssertionContext extends RawMinkContext
      */
     public function theFollowingPagesShouldHaveTheFollowingTitles($table)
     {
-        $steps = array();
+        $steps = [];
 
         foreach ($table->getHash() as $item) {
             $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
@@ -560,7 +566,7 @@ class AssertionContext extends RawMinkContext
     public function theFieldShouldHaveTheFollowingOptions($fieldName, PyStringNode $string)
     {
         $field = $this->getCurrentPage()->findField($fieldName);
-        $id = $field->getAttribute('id');
+        $id    = $field->getAttribute('id');
 
         if ('select' === $field->getTagName()) {
             $options = $field->findAll('css', 'option');
