@@ -173,14 +173,16 @@ class CompletenessManager
             );
         };
         $channelCodes = $getCodes($channels);
-        $localeCodes = $getCodes($locales);
+        $localeCodes  = $getCodes($locales);
+
         $channelTemplate = [
-            'channels'     => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
-            'stats' => [
+            'channels' => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
+            'stats'    => [
                 'total'    => 0,
                 'complete' => 0
             ]
         ];
+
         $completenesses = array_fill_keys($localeCodes, $channelTemplate);
 
         if (!$family) {
