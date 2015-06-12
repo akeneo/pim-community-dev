@@ -26,7 +26,7 @@ class Grid extends Index
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
@@ -49,21 +49,28 @@ class Grid extends Index
     /**
      * Returns the currently visible grid, if there is one
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      *
      * @return NodeElement
      */
     public function getGrid()
     {
-        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+        try {
+            $grid = $this->spin(function () {
+                $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+                foreach ($grids as $grid) {
+                    if ($grid->isVisible()) {
+                        return $grid;
+                    }
+                }
 
-        foreach ($grids as $grid) {
-            if ($grid->isVisible()) {
-                return $grid;
-            }
+                return false;
+            });
+
+            return $grid;
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException('No visible grids found');
         }
-
-        throw new \InvalidArgumentException('No visible grids found');
     }
 
     /**
@@ -87,7 +94,7 @@ class Grid extends Index
      */
     public function getRow($value)
     {
-        $value = str_replace('"', '', $value);
+        $value   = str_replace('"', '', $value);
         $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
 
         if (!$gridRow) {
@@ -127,7 +134,7 @@ class Grid extends Index
     public function findAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+        $action     = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
         return $action;
     }
@@ -135,8 +142,10 @@ class Grid extends Index
     /**
      * @param string               $filterName The name of the filter
      * @param string               $value      The value to filter by
-     * @param string               $operator   If false, no operator will be selected
+     * @param bool|string          $operator   If false, no operator will be selected
      * @param DriverInterface|null $driver     Required to filter by multiple choices
+     *
+     * @throws \Behat\Mink\Exception\ElementNotFoundException
      */
     public function filterBy($filterName, $value, $operator = false, DriverInterface $driver = null)
     {
@@ -189,7 +198,7 @@ class Grid extends Index
                     foreach ($values as $value) {
                         $driver->getWebDriverSession()
                             ->element('xpath', $select2->getXpath())
-                            ->postValue(array('value' => array($value)));
+                            ->postValue(['value' => [$value]]);
                         sleep(2);
                         $results->find('css', 'li')->click();
                         sleep(2);
@@ -268,7 +277,7 @@ class Grid extends Index
      */
     public function changePageSize($num)
     {
-        assertContains($num, array(10, 25, 50, 100), 'Only 10, 25, 50 and 100 records per page are available');
+        assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
         $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
         $element->find('css', 'button')->click();
         $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
@@ -279,7 +288,7 @@ class Grid extends Index
      */
     public function pageSizeIs($num)
     {
-        assertContains($num, array(10, 25, 50, 100), 'Only 10, 25, 50 and 100 records per page are available');
+        assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
         $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
         assertNotNull($element->find('css', sprintf('button:contains("%d")', $num)));
     }
@@ -308,7 +317,7 @@ class Grid extends Index
     {
         $column = $this->getColumnPosition($column, true);
         $rows   = $this->getRows();
-        $values = array();
+        $values = [];
 
         foreach ($rows as $row) {
             $cell = $this->getRowCell($row, $column);
@@ -367,12 +376,12 @@ class Grid extends Index
     public function isSortedAndOrdered($column, $order)
     {
         $column = strtoupper($column);
-        $order = strtolower($order);
+        $order  = strtolower($order);
         if ($this->getColumn($column)->getAttribute('class') !== $order) {
             return false;
         }
 
-        $values = $this->getValuesInColumn($column);
+        $values       = $this->getValuesInColumn($column);
         $sortedValues = $values;
         if ($order === 'ascending') {
             sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
@@ -404,7 +413,7 @@ class Grid extends Index
      */
     public function getColumn($columnName)
     {
-        $columnName = strtoupper($columnName);
+        $columnName    = strtoupper($columnName);
         $columnHeaders = $this->getColumnHeaders();
 
         foreach ($columnHeaders as $columnHeader) {
@@ -427,13 +436,15 @@ class Grid extends Index
      */
     public function getColumnSorter($columnName)
     {
-        if (!$this->getColumn($columnName)->find('css', 'a')) {
+        $sorter = $this->getColumn($columnName)->find('css', 'a');
+
+        if (!$sorter) {
             throw new \InvalidArgumentException(
                 sprintf('Column %s is not sortable', $columnName)
             );
         }
 
-        return $this->getColumn($columnName)->find('css', 'a');
+        return $sorter;
     }
 
     /**
@@ -507,15 +518,22 @@ class Grid extends Index
      */
     public function clickOnResetButton()
     {
-        $resetBtn = $this
-            ->getElement('Grid toolbar')
-            ->find('css', sprintf('a:contains("%s")', 'Reset'));
+        try {
+            $this->spin(function () {
+                $resetBtn = $this
+                    ->getElement('Grid toolbar')
+                    ->find('css', sprintf('a:contains("%s")', 'Reset'));
+                if ($resetBtn) {
+                    $resetBtn->click();
 
-        if (!$resetBtn) {
+                    return true;
+                }
+
+                return false;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Reset button not found');
         }
-
-        $resetBtn->click();
     }
 
     /**
@@ -525,15 +543,18 @@ class Grid extends Index
      */
     public function clickOnRefreshButton()
     {
-        $refreshBtn = $this
-            ->getElement('Grid toolbar')
-            ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+        try {
+            $this->spin(function () {
+                $refreshBtn = $this
+                    ->getElement('Grid toolbar')
+                    ->find('css', sprintf('a:contains("%s")', 'Refresh'));
+                $refreshBtn->click();
 
-        if (!$refreshBtn) {
+                return true;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Refresh button not found');
         }
-
-        $refreshBtn->click();
     }
 
     /**
@@ -622,19 +643,17 @@ class Grid extends Index
     protected function clickOnFilterToManage($filterName)
     {
         try {
-            $filterElement = $this
-                ->getElement('Manage filters')
-                ->find('css', sprintf('label:contains("%s")', $filterName));
+            $this->spin(function () use ($filterName) {
+                $filterElement = $this
+                    ->getElement('Manage filters')
+                    ->find('css', sprintf('label:contains("%s")', $filterName));
 
-            if (!$filterElement) {
-                throw new \InvalidArgumentException('Impossible to find filter "%s"', $filterName);
-            }
+                if ($filterElement) {
+                    $filterElement->click();
 
-            $filterElement->click();
-        } catch (\InvalidArgumentException $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Impossible to find filter "%s"', $filterName)
-            );
+                    return true;
+                }
+            });
         } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Impossible to activate filter "%s"', $filterName)
@@ -647,15 +666,18 @@ class Grid extends Index
      */
     protected function clickFiltersList()
     {
-        $filterList = $this
-            ->getElement('Filters')
-            ->find('css', 'a#add-filter-button');
+        try {
+            $this->spin(function () {
+                $filterList = $this
+                    ->getElement('Filters')
+                    ->find('css', 'a#add-filter-button');
+                $filterList->click();
 
-        if (!$filterList) {
+                return true;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException('Impossible to find filter list');
         }
-
-        $filterList->click();
     }
 
     /**
@@ -669,22 +691,40 @@ class Grid extends Index
      */
     public function selectRow($value)
     {
-        $row = $this->getRow($value);
-        $checkbox = $row->find('css', 'input[type="checkbox"]');
+        try {
+            /** @var NodeElement $checkbox */
+            $checkbox = $this->spin(function () use ($value) {
+                $row = $this->getRow($value);
 
-        if (!$checkbox) {
+                if (!$row) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Couldn\'t find row for "%s"', $value)
+                    );
+                }
+
+                $checkbox = $row->find('css', 'input[type="checkbox"]');
+
+                if (!$checkbox) {
+                    throw new \InvalidArgumentException(
+                        sprintf('Couldn\'t find a checkbox for row "%s"', $value)
+                    );
+                }
+
+                $checkbox->check();
+
+                return $checkbox;
+            });
+        } catch (\Exception $e) {
             throw new \InvalidArgumentException(
                 sprintf('Couldn\'t find a checkbox for row "%s"', $value)
             );
         }
 
-        $checkbox->check();
-
         return $checkbox;
     }
     /**
      * @param NodeElement $row
-     * @param string      $position
+     * @param int         $position
      *
      * @return NodeElement
      */
@@ -692,7 +732,7 @@ class Grid extends Index
     {
         $cells = $row->findAll('css', 'td');
 
-        $visibleCells = array();
+        $visibleCells = [];
         foreach ($cells as $cell) {
             $style = $cell->getAttribute('style');
             if (!$style || !preg_match('/display: ?none;/', $style)) {
@@ -759,7 +799,7 @@ class Grid extends Index
             return $headers;
         }
 
-        $visibleHeaders = array();
+        $visibleHeaders = [];
         foreach ($headers as $header) {
             $style = $header->getAttribute('style');
             if (!$style || !preg_match('/display: ?none;/', $style)) {
@@ -785,6 +825,9 @@ class Grid extends Index
      * @param string $action     Type of filtering (>, >=, etc.)
      * @param number $value      Value to filter
      * @param string $currency   Currency on which to filter
+     *
+     * @throws \Behat\Mink\Exception\ElementNotFoundException
+     * @throws \Exception
      */
     public function filterPerPrice($filterName, $action, $value, $currency)
     {
@@ -800,8 +843,8 @@ class Grid extends Index
             $criteriaElt->fillField('value', $value);
         }
 
-        $buttons = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
-        $actionButton = array_shift($buttons);
+        $buttons        = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
+        $actionButton   = array_shift($buttons);
         $currencyButton = array_shift($buttons);
 
         // Open the dropdown menu with currency list and click on $currency line
@@ -833,9 +876,9 @@ class Grid extends Index
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->fillField('value', $value);
 
-        $buttons = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
+        $buttons      = $filter->findAll('css', '.metricfilter button.dropdown-toggle');
         $actionButton = array_shift($buttons);
-        $unitButton = array_shift($buttons);
+        $unitButton   = array_shift($buttons);
 
         // Open the dropdown menu with unit list and click on $unit line
         $unitButton->click();
@@ -865,7 +908,7 @@ class Grid extends Index
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->fillField('value', $value);
 
-        $buttons = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
+        $buttons      = $filter->findAll('css', '.filter-criteria button.dropdown-toggle');
         $actionButton = array_shift($buttons);
 
         // Open the dropdown menu with action list and click on $action line
@@ -880,7 +923,7 @@ class Grid extends Index
      */
     public function openColumnsPopin()
     {
-        return $this->getElement('Configure columns')->click();
+        $this->getElement('Configure columns')->click();
     }
 
     /**

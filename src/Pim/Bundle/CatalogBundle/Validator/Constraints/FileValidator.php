@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 
 /**
- * Constraint
+ * Constraint.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -36,7 +36,7 @@ class FileValidator extends BaseFileValidator
     }
 
     /**
-     * Validate if extension is allowed
+     * Validate if extension is allowed.
      *
      * @param mixed      $value      The value that should be validated
      * @param Constraint $constraint The constraint for the validation
@@ -57,7 +57,7 @@ class FileValidator extends BaseFileValidator
             if (!in_array(strtolower($extension), $constraint->allowedExtensions)) {
                 $this->context->addViolation(
                     $constraint->extensionsMessage,
-                    array('{{ extensions }}' => implode(', ', $constraint->allowedExtensions))
+                    ['%extensions%' => implode(', ', $constraint->allowedExtensions)]
                 );
             }
         }

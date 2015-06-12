@@ -50,7 +50,7 @@ class Edit extends Creation
         }
 
         $eltHandle = $elt->find('css', '.handle');
-        $target = $list[$position-1];
+        $target    = $list[$position-1];
 
         $eltHandle->dragTo($target);
 

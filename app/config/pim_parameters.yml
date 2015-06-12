@@ -35,3 +35,5 @@ parameters:
     # mongodb_database: akeneo_pim
 
     doctrine_migrations_dir: %kernel.root_dir%/../upgrades/schema
+
+    security.exception_listener.class: Pim\Bundle\UserBundle\Security\FirewallExceptionListener

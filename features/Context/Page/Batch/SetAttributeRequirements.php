@@ -14,10 +14,10 @@ use Context\Page\Base\Wizard;
 class SetAttributeRequirements extends Wizard
 {
     protected $elements = [
-        'Available attributes button' => ['css' => 'button:contains("Select attributes")'],
+        'Available attributes button'     => ['css' => 'button:contains("Select attributes")'],
         'Available attributes add button' => ['css' => '.pimmultiselect a:contains("Select")'],
-        'Available attributes form' => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
-        'Attributes' => ['css' => 'table.attributes'],
+        'Available attributes form'       => ['css' => '#pim_catalog_mass_edit_family_add_attribute'],
+        'Attributes'                      => ['css' => 'table.attributes'],
     ];
 
     /**
@@ -43,7 +43,7 @@ class SetAttributeRequirements extends Wizard
     protected function getAttributeRequirementCell($attribute, $channel)
     {
         $attributesTable = $this->getElement('Attributes');
-        $columnIdx = 0;
+        $columnIdx       = 0;
 
         foreach ($attributesTable->findAll('css', 'thead th') as $index => $header) {
             if ($header->getText() === strtoupper($channel)) {
