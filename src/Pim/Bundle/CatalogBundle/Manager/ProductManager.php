@@ -171,7 +171,7 @@ class ProductManager
      * @param AttributeInterface $attribute
      * @param array              $savingOptions
      *
-     * @deprecated will be removed in 1.5, please use ProductBuilder::removeAttributeFromProduct() and
+     * @deprecated Will be removed in 1.5, please use ProductBuilderInterface::removeAttributeFromProduct() and
      *             ProductSaver::save() instead.
      */
     public function removeAttributeFromProduct(
@@ -194,7 +194,7 @@ class ProductManager
      *
      * @return AttributeInterface|null
      *
-     * @deprecated will be removed in 1.5, please use AttributeRepositoryInterface::getIdentifierAttribute();
+     * @deprecated will be removed in 1.5, please use AttributeRepositoryInterface::getIdentifier();
      */
     public function getIdentifierAttribute()
     {

@@ -3,8 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -17,22 +18,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  */
 class ProductCategoryRestController
 {
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /** @var ProductCategoryManager */
-    protected $productCatManager;
+    /** @var ProductCategoryRepositoryInterface */
+    protected $productCategoryRepository;
 
     /**
-     * @param ProductManager         $productManager
-     * @param ProductCategoryManager $productCatManager
+     * @param ProductRepositoryInterface         $productRepository
+     * @param ProductCategoryRepositoryInterface $productCategoryRepository
      */
     public function __construct(
-        ProductManager $productManager,
-        ProductCategoryManager $productCatManager
+        ProductRepositoryInterface $productRepository,
+        ProductCategoryRepositoryInterface $productCategoryRepository
     ) {
-        $this->productManager    = $productManager;
-        $this->productCatManager = $productCatManager;
+        $this->productRepository         = $productRepository;
+        $this->productCategoryRepository = $productCategoryRepository;
     }
 
     /**
@@ -47,7 +48,7 @@ class ProductCategoryRestController
     public function listAction($id)
     {
         $product = $this->findProductOr404($id);
-        $trees = $this->productCatManager->getProductCountByTree($product);
+        $trees = $this->productCategoryRepository->getProductCountByTree($product);
 
         $result = [
             'trees'      => [],
@@ -77,13 +78,13 @@ class ProductCategoryRestController
      *
      * @param string $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productManager->find($id);
+        $product = $this->productRepository->findOneByWithValues($id);
 
         if (!$product) {
             throw new NotFoundHttpException(

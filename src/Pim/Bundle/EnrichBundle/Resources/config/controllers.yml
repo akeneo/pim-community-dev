@@ -295,8 +295,8 @@ services:
     pim_enrich.controller.product_category_rest:
         class: %pim_enrich.controller.product_category_rest.class%
         arguments:
-            - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.product_category'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_category'
 
     pim_enrich.controller.media_rest:
         class: %pim_enrich.controller.media_rest.class%
