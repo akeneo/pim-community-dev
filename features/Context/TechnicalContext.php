@@ -20,14 +20,14 @@ class TechnicalContext extends RawMinkContext
      */
     public function iShouldBeAbleToNormalizeAndDenormalizeProducts($identifiers)
     {
-        $identifiers = $this->getMainContext()->listToArray($identifiers);
-        $serializer = $this->getContainer()->get('pim_serializer');
+        $identifiers       = $this->getMainContext()->listToArray($identifiers);
+        $serializer        = $this->getContainer()->get('pim_serializer');
         $productValueClass = $this->getContainer()->getParameter('pim_catalog.entity.product_value.class');
 
         foreach ($identifiers as $identifier) {
             $product = $this->getFixturesContext()->getProduct($identifier);
-            $data = $serializer->normalize($product, 'json');
-            $values = $data['values'];
+            $data    = $serializer->normalize($product, 'json');
+            $values  = $data['values'];
 
             foreach ($values as $attributeCode => $valuesData) {
                 $attribute = $this->getFixturesContext()->getAttribute($attributeCode);

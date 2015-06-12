@@ -61,7 +61,7 @@ class Creation extends Form
         }
 
         $rows = $this->getOptionsElement();
-        $row = end($rows);
+        $row  = end($rows);
 
         $row->find('css', '.attribute_option_code')->setValue($name);
         $row->find('css', '.btn.update-row')->click();

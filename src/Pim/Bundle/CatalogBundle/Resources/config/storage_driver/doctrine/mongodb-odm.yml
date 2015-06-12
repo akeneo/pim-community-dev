@@ -83,6 +83,7 @@ services:
             - @pim_catalog.doctrine.naming_utility
             - %pim_catalog.entity.product.class%
             - @logger
+            - %pim_catalog.entity.attribute.class%
 
     pim_catalog.doctrine.naming_utility:
         class: %pim_catalog.doctrine.naming_utility.class%

@@ -145,7 +145,7 @@ class FixturesContext extends RawMinkContext
         } elseif ('get' === $getter = substr($method, 0, 3)) {
             $entityName = substr($method, 3);
         } else {
-            $getter = null;
+            $getter     = null;
             $entityName = null;
         }
 
@@ -396,7 +396,7 @@ class FixturesContext extends RawMinkContext
         }
 
         $namespace = $this->getEntities()[$entityName];
-        $entities = $this->getRepository($namespace)->findAll();
+        $entities  = $this->getRepository($namespace)->findAll();
 
         foreach ($entities as $entity) {
             $this->remove($entity, false);
@@ -512,8 +512,8 @@ class FixturesContext extends RawMinkContext
         $comments = [];
 
         foreach ($table->getHash() as $row) {
-            $product = $this->getProductRepository()->findOneByIdentifier($row['product']);
-            $row['resource'] = $product;
+            $product             = $this->getProductRepository()->findOneByIdentifier($row['product']);
+            $row['resource']     = $product;
             $comments[$row['#']] = $this->createComment($row, $comments);
         }
 
@@ -674,7 +674,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getEntityOrException('Attribute', ['code' => $data['attribute']]);
-            $option = $this->getEntityOrException(
+            $option    = $this->getEntityOrException(
                 'AttributeOption',
                 ['code' => $data['code'], 'attribute' => $attribute]
             );
@@ -772,7 +772,7 @@ class FixturesContext extends RawMinkContext
         $channel = $this->getChannel($channel);
 
         $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
-        $locale = $this->getLocale($localeCode);
+        $locale     = $this->getLocale($localeCode);
         $channel->addLocale($locale);
         $this->persist($channel);
         $this->persist($locale);
@@ -807,7 +807,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingJobConfiguration($code, TableNode $table)
     {
-        $jobInstance = $this->getJobInstance($code);
+        $jobInstance   = $this->getJobInstance($code);
         $configuration = $jobInstance->getRawConfiguration();
 
         foreach ($table->getRowsHash() as $property => $value) {
@@ -831,9 +831,9 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProductGroups(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $code = $data['code'];
+            $code  = $data['code'];
             $label = $data['label'];
-            $type = $data['type'];
+            $type  = $data['type'];
 
             $attributes = (!isset($data['axis']) || $data['axis'] == '')
                 ? [] : explode(', ', $data['axis']);
@@ -852,7 +852,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAssociationTypes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $code = $data['code'];
+            $code  = $data['code'];
             $label = isset($data['label']) ? $data['label'] : null;
 
             $this->createAssociationType($code, $label);
@@ -867,8 +867,8 @@ class FixturesContext extends RawMinkContext
     public function theFollowingGroupTypes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $code = $data['code'];
-            $label = isset($data['label']) ? $data['label'] : null;
+            $code      = $data['code'];
+            $label     = isset($data['label']) ? $data['label'] : null;
             $isVariant = isset($data['variant']) ? $data['variant'] : 0;
 
             $this->createGroupType($code, $label, $isVariant);
@@ -901,7 +901,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingAttributeReferenceData($attribute, $referenceData)
     {
-        $attribute = $this->getAttribute(strtolower($attribute));
+        $attribute         = $this->getAttribute(strtolower($attribute));
         $referenceDataType = $attribute->getReferenceDataName();
 
         foreach ($this->listToArray($referenceData) as $code) {
@@ -1034,7 +1034,7 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
-            $value = $this->getProductValue($identifier, strtolower($attribute));
+            $value      = $this->getProductValue($identifier, strtolower($attribute));
             $actualCode = $value->getOption() ? $value->getOption()->getCode() : null;
             assertEquals($optionCode, $actualCode);
         }
@@ -1053,8 +1053,8 @@ class FixturesContext extends RawMinkContext
         $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $options = $productValue->getOptions();
-            $optionCodes = $options->map(
+            $options      = $productValue->getOptions();
+            $optionCodes  = $options->map(
                 function ($option) {
                     return $option->getCode();
                 }
@@ -1091,7 +1091,7 @@ class FixturesContext extends RawMinkContext
         $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            $media = $productValue->getMedia();
+            $media        = $productValue->getMedia();
             if ('' === trim($filename)) {
                 if ($media) {
                     assertNull($media->getOriginalFilename());
@@ -1151,13 +1151,13 @@ class FixturesContext extends RawMinkContext
     {
         $delimiter = ';';
 
-        $data = $table->getRowsHash();
+        $data    = $table->getRowsHash();
         $columns = implode($delimiter, array_keys($data));
 
         $rows = [];
         foreach ($data as $values) {
             foreach ($values as $index => $value) {
-                $value = in_array($value, ['yes', 'no']) ? (int) $value === 'yes' : $value;
+                $value          = in_array($value, ['yes', 'no']) ? (int) $value === 'yes' : $value;
                 $rows[$index][] = $value;
             }
         }
@@ -1223,9 +1223,9 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeCategories($expectedTotal)
     {
-        $class = $this->getContainer()->getParameter('pim_catalog.entity.category.class');
+        $class      = $this->getContainer()->getParameter('pim_catalog.entity.category.class');
         $repository = $this->getSmartRegistry()->getRepository($class);
-        $total = count($repository->findAll());
+        $total      = count($repository->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -1244,12 +1244,12 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getRowsHash() as $rawCode => $value) {
             $infos = $this->getFieldExtractor()->extractAttributeFieldNameInfos($rawCode);
 
-            $attribute = $infos['attribute'];
+            $attribute     = $infos['attribute'];
             $attributeCode = $attribute->getCode();
-            $localeCode = $infos['locale_code'];
-            $scopeCode = $infos['scope_code'];
+            $localeCode    = $infos['locale_code'];
+            $scopeCode     = $infos['scope_code'];
             $priceCurrency = isset($infos['price_currency']) ? $infos['price_currency'] : null;
-            $productValue = $product->getValue($attributeCode, $localeCode, $scopeCode);
+            $productValue  = $product->getValue($attributeCode, $localeCode, $scopeCode);
 
             if ('' === $value) {
                 assertEmpty((string) $productValue);
@@ -1302,7 +1302,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $product = $this->getProduct($productCode);
+        $product    = $this->getProduct($productCode);
         $categories = $product->getCategories()->map(
             function ($category) {
                 return $category->getCode();
@@ -1514,9 +1514,9 @@ class FixturesContext extends RawMinkContext
      */
     public function iDeleteProductMediaFromFilesystem($productName)
     {
-        $product = $this->getProduct($productName);
+        $product      = $this->getProduct($productName);
         $mediaManager = $this->getMediaManager();
-        $allMedia = $product->getMedia();
+        $allMedia     = $product->getMedia();
         foreach ($allMedia as $media) {
             unlink($mediaManager->getFilePath($media));
         }
@@ -1577,18 +1577,18 @@ class FixturesContext extends RawMinkContext
      */
     protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {
-        $em = $this->getEntityManager();
+        $em   = $this->getEntityManager();
         $repo = $em->getRepository('PimCatalogBundle:AttributeRequirement');
 
         $attribute = $this->getAttribute($attributeCode);
-        $family = $this->getFamily($familyCode);
-        $channel = $this->getChannel($channelCode);
+        $family    = $this->getFamily($familyCode);
+        $channel   = $this->getChannel($channelCode);
 
         return $repo->findOneBy(
             [
                 'attribute' => $attribute,
-                'family' => $family,
-                'channel' => $channel,
+                'family'    => $family,
+                'channel'   => $channel,
             ]
         );
     }
@@ -1687,7 +1687,7 @@ class FixturesContext extends RawMinkContext
     {
         if (is_string($data)) {
             $data = [
-                'code' => $data,
+                'code'  => $data,
                 'group' => 'other',
             ];
         }
@@ -1718,11 +1718,11 @@ class FixturesContext extends RawMinkContext
         $properties = [];
         foreach ($data as $key => $element) {
             if (in_array($element, ['yes', 'no'])) {
-                $element = $element === 'yes';
+                $element    = $element === 'yes';
                 $data[$key] = $element;
             }
             if (false !== strpos($key, 'property-')) {
-                $property = str_replace('property-', '', $key);
+                $property              = str_replace('property-', '', $key);
                 $properties[$property] = $element;
                 unset($data[$key]);
             }
@@ -1964,7 +1964,7 @@ class FixturesContext extends RawMinkContext
     protected function createColorReferenceData($code, $label)
     {
         $configuration = $this->getReferenceDataRegistry()->get('color');
-        $class = $configuration->getClass();
+        $class         = $configuration->getClass();
 
         $color = new $class();
         $color->setCode($code);
@@ -1991,7 +1991,7 @@ class FixturesContext extends RawMinkContext
     protected function createFabricReferenceData($code, $label)
     {
         $configuration = $this->getReferenceDataRegistry()->get('fabrics');
-        $class = $configuration->getClass();
+        $class         = $configuration->getClass();
 
         $fabric = new $class();
         $fabric->setCode($code);
@@ -2016,8 +2016,8 @@ class FixturesContext extends RawMinkContext
         $requirements = [];
         foreach ($data as $key => $value) {
             if (false !== strpos($key, 'requirements-')) {
-                $channel = str_replace('requirements-', '', $key);
-                $attributes = explode(',', $value);
+                $channel                = str_replace('requirements-', '', $key);
+                $attributes             = explode(',', $value);
                 $requirements[$channel] = $attributes;
                 unset($data[$key]);
             }
@@ -2060,7 +2060,7 @@ class FixturesContext extends RawMinkContext
      */
     protected function createComment(array $data, array $comments)
     {
-        $resource = $data['resource'];
+        $resource  = $data['resource'];
         $createdAt = \DateTime::createFromFormat('j-M-Y', $data['created_at']);
 
         $comment = new Comment();

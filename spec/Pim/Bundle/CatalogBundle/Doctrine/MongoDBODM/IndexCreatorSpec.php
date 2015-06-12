@@ -11,8 +11,9 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\CurrencyInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Prophecy\Argument;
+use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Psr\Log\LoggerInterface;
+use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -34,7 +35,8 @@ class IndexCreatorSpec extends ObjectBehavior
             $managerRegistry,
             $namingUtility,
             'Product',
-            $logger
+            $logger,
+            'Attribute'
         );
     }
 
@@ -150,8 +152,9 @@ class IndexCreatorSpec extends ObjectBehavior
             ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')
             ->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
         $namingUtility
-            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')
+            ->appendSuffixes(['normalizedData.price.EUR', 'normalizedData.price.USD'], ['data'], '.')
             ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
+
         $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
 
         $indexes = array_fill(0, 10, 'fake_index');
@@ -257,7 +260,7 @@ class IndexCreatorSpec extends ObjectBehavior
             ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')
             ->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
         $namingUtility
-            ->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')
+            ->appendSuffixes(['normalizedData.price.EUR', 'normalizedData.price.USD'], ['data'], '.')
             ->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
 
         $price->getCode()->willReturn('price');
@@ -387,6 +390,111 @@ class IndexCreatorSpec extends ObjectBehavior
             );
 
         $this->ensureIndexesFromAttribute($description);
+    }
+
+    function it_generates_completeness_indexes(
+        $namingUtility,
+        $collection,
+        ChannelInterface $channelWeb,
+        ChannelInterface $channelPrint,
+        LocaleInterface $localeFr,
+        LocaleInterface $localeEn
+    ) {
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
+        $namingUtility->getChannels()->willReturn([$channelWeb, $channelPrint]);
+
+        $channelWeb->getLocales()->willReturn([$localeEn]);
+        $channelPrint->getLocales()->willReturn([$localeFr, $localeEn]);
+        $channelPrint->getCode()->willReturn('PRINT');
+        $channelWeb->getCode()->willReturn('WEB');
+        $localeEn->getCode()->willReturn('en_US');
+        $localeFr->getCode()->willReturn('fr_FR');
+
+        $indexOptions = [
+            'background' => true,
+            'w'          => 0
+        ];
+
+        $collection
+            ->ensureIndex(['normalizedData.completenesses.PRINT-en_US' => 1], $indexOptions)
+            ->shouldBeCalled();
+        $collection
+            ->ensureIndex(['normalizedData.completenesses.PRINT-fr_FR' => 1], $indexOptions)
+            ->shouldBeCalled();
+        $collection
+            ->ensureIndex(['normalizedData.completenesses.WEB-en_US' => 1], $indexOptions)
+            ->shouldBeCalled();
+
+        $this->ensureCompletenessesIndexes();
+    }
+
+    function it_generates_unique_attribute_indexes(
+        $namingUtility,
+        $collection,
+        $managerRegistry,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $sku,
+        AttributeInterface $ean
+    ) {
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
+
+        $managerRegistry->getRepository('Attribute')->willReturn($attributeRepository);
+        $attributeRepository
+            ->findBy(['unique' => true], ['created' => 'ASC'], 64)
+            ->willReturn([$sku, $ean]);
+
+        $namingUtility->getAttributeNormFields($sku)->willReturn(['normalizedData.sku']);
+        $namingUtility->getAttributeNormFields($ean)->willReturn(['normalizedData.ean']);
+
+        $indexOptions = [
+            'background' => true,
+            'w'          => 0
+        ];
+
+        $collection
+            ->ensureIndex(['normalizedData.sku' => 1], $indexOptions)
+            ->shouldBeCalled();
+        $collection
+            ->ensureIndex(['normalizedData.ean' => 1], $indexOptions)
+            ->shouldBeCalled();
+
+        $this->ensureUniqueAttributesIndexes();
+    }
+
+    function it_generates_attribute_indexes(
+        $namingUtility,
+        $collection,
+        $managerRegistry,
+        AttributeRepositoryInterface $attributeRepository,
+        AttributeInterface $name,
+        AttributeInterface $description
+    ) {
+        $indexes = array_fill(0, 10, 'fake_index');
+        $collection->getIndexInfo()->willReturn($indexes);
+
+        $managerRegistry->getRepository('Attribute')->willReturn($attributeRepository);
+        $attributeRepository
+            ->findBy(['useableAsGridFilter' => true], ['created' => 'ASC'], 64)
+            ->willReturn([$name, $description]);
+
+        $namingUtility->getAttributeNormFields($name)->willReturn(['normalizedData.name']);
+        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description']);
+
+        $indexOptions = [
+            'background' => true,
+            'w'          => 0
+        ];
+
+        $collection
+            ->ensureIndex(['normalizedData.name' => 1], $indexOptions)
+            ->shouldBeCalled();
+        $collection
+            ->ensureIndex(['normalizedData.description' => 1], $indexOptions)
+            ->shouldBeCalled();
+
+        $this->ensureAttributesIndexes();
     }
 
     function it_logs_error_when_the_maximum_number_of_indexes_is_reached(

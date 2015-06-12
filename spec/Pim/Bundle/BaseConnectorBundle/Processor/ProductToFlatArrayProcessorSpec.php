@@ -140,4 +140,27 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
             )
         )->duringProcess($product);
     }
+    function it_throws_an_exception_if_no_file_is_found(
+        ChannelInterface $channel,
+        ProductInterface $product,
+        ChannelManager $channelManager,
+        Serializer $serializer,
+        ProductValueInterface $productValue,
+        AttributeInterface $attribute
+    ) {
+        $product->getValues()->willReturn([$productValue]);
+        $productValue->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_image');
+        $product->getIdentifier()->willReturn($productValue);
+        $productValue->getData()->willReturn('data');
+        $this->setChannel('foobar');
+        $channelManager->getChannelByCode('foobar')->willReturn($channel);
+
+        $serializer
+            ->normalize(['data'], 'flat', ['field_name' => 'media', 'prepare_copy' => true])
+            ->willThrow('Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException');
+
+        $this->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')->during('process', [$product]);
+    }
+
 }

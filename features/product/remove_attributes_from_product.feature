@@ -25,7 +25,7 @@ Feature: Remove an attribute from a product
     Then I should see flash message "Attribute successfully removed from the product"
     And attribute in group "Colors" should be Color
 
-  @javascript
+  @javascript @unstable
   Scenario: Successfully remove a scopable attribute from a product
     Given the following attribute:
       | code            | label           | scopable | group |

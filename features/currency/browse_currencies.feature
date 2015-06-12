@@ -11,8 +11,8 @@ Feature: Browse currencies
 
   Scenario: Successfully view, sort and filter currencies
     Then I should see the columns Code and Activated
-    And the rows should be sorted ascending by code
-    And I should be able to sort the rows by code and activated
+    And the rows should be sorted ascending by Code
+    And I should be able to sort the rows by Code and Activated
     And I should be able to use the following filters:
       | filter    | value | result      |
       | Code      | EU    | EUR         |
