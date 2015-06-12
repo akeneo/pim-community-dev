@@ -79,21 +79,21 @@ pim_enrich_product_rest_post:
 
 pim_enrich_product_category_rest_list:
     path: /rest/{id}/categories
-    defaults: { _controller: pim_enrich.controller.product_category_rest:listAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product_category:listAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
 
 pim_enrich_product_completeness_rest_get:
     path: /rest/{id}/completeness
-    defaults: { _controller: pim_enrich.controller.completeness_rest:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.completeness:getAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
     methods: [GET]
 
 pim_enrich_product_history_rest_get:
     path: /rest/{entityId}/history
-    defaults: { _controller: pim_enrich.controller.versioning_rest:getAction, entityType: product, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.versioning:getAction, entityType: product, _format: json }
     requirements:
         entityId: '[0-9a-f]+'
     methods: [GET]
@@ -109,7 +109,7 @@ pim_enrich_product_remove_attribute_rest:
 
 pim_enrich_product_comments_rest_get:
     path: /{id}/comments.{_format}
-    defaults: { _controller: pim_enrich.controller.product_comment_rest:getAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product_comment:getAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
         _format: json
@@ -117,7 +117,7 @@ pim_enrich_product_comments_rest_get:
 
 pim_enrich_product_comments_rest_post:
     path: /{id}/comments.{_format}
-    defaults: { _controller: pim_enrich.controller.product_comment_rest:postAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product_comment:postAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
         _format: json
@@ -125,7 +125,7 @@ pim_enrich_product_comments_rest_post:
 
 pim_enrich_product_comment_reply_rest_post:
     path: /{id}/comments/{commentId}.{_format}
-    defaults: { _controller: pim_enrich.controller.product_comment_rest:postReplyAction, _format: json }
+    defaults: { _controller: pim_enrich.controller.rest.product_comment:postReplyAction, _format: json }
     requirements:
         id: '[0-9a-f]+'
         commentId: '[0-9a-f]+'

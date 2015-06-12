@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface;
@@ -8,16 +8,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
- * Attribute rest controller
+ * Attribute group controller
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRestController
+class AttributeGroupController
 {
     /** @var EntityRepository */
-    protected $attributeRepository;
+    protected $attributeGroupRepo;
 
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -26,31 +26,38 @@ class AttributeRestController
     protected $collectionFilter;
 
     /**
-     * @param EntityRepository          $attributeRepository
+     * @param EntityRepository          $attributeGroupRepo
      * @param NormalizerInterface       $normalizer
      * @param CollectionFilterInterface $collectionFilter
      */
     public function __construct(
-        EntityRepository $attributeRepository,
+        EntityRepository $attributeGroupRepo,
         NormalizerInterface $normalizer,
         CollectionFilterInterface $collectionFilter
     ) {
-        $this->attributeRepository = $attributeRepository;
-        $this->normalizer          = $normalizer;
-        $this->collectionFilter    = $collectionFilter;
+        $this->attributeGroupRepo = $attributeGroupRepo;
+        $this->normalizer         = $normalizer;
+        $this->collectionFilter   = $collectionFilter;
     }
 
     /**
-     * Get the attribute collection
+     * Get attribute group collection
      *
      * @return JsonResponse
      */
     public function indexAction()
     {
-        $attributes = $this->attributeRepository->findAll();
-        $filteredAttributes = $this->collectionFilter->filterCollection($attributes, 'pim.internal_api.attribute.view');
-        $normalizedAttributes = $this->normalizer->normalize($filteredAttributes, 'internal_api');
+        $attributeGroups    = $this->attributeGroupRepo->findAll();
+        $filteredAttrGroups = $this->collectionFilter->filterCollection(
+            $attributeGroups,
+            'pim.internal_api.attribute_group.view'
+        );
 
-        return new JsonResponse($normalizedAttributes);
+        $normalizedAttrGroups = [];
+        foreach ($filteredAttrGroups as $attributeGroup) {
+            $normalizedAttrGroups[$attributeGroup->getCode()] = $this->normalizer->normalize($attributeGroup, 'json');
+        }
+
+        return new JsonResponse($normalizedAttrGroups);
     }
 }
