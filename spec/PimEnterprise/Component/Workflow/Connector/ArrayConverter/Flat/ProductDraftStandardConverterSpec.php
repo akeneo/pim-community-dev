@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
-class ProductDraftToStandardConverterSpec extends ObjectBehavior
+class ProductDraftStandardConverterSpec extends ObjectBehavior
 {
     function let(
         StandardArrayConverterInterface $productConverter,

@@ -147,16 +147,15 @@ Feature: Revert a product to a previous version
   Scenario: Successfully revert a pim_catalog_boolean attribute
     Given the following product:
       | sku   | family | handmade |
-      | jeans | pants  | yes      |
+      | jeans | pants  | 0        |
       | short | pants  |          |
     Given I am on the "jeans" product page
-    When I uncheck the "Handmade" switch
+    When I check the "Handmade" switch
     And I save the product
     And I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: jeans"
     And the product "jeans" should have the following values:
-      | handmade | 1 |
-    Then the "Handmade" field should contain "1"
+      | handmade |  |
     Given I am on the "short" product page
     And I visit the "Attributes" tab
     And I add available attributes Handmade
@@ -165,7 +164,7 @@ Feature: Revert a product to a previous version
     And I visit the "History" tab
     When I click on the "Revert to this version" action of the row which contains "sku: short"
     And the product "short" should have the following values:
-      | handmade |  |
+      | handmade | |
 
   Scenario: Successfully revert a pim_catalog_date attribute
     Given the following product:
@@ -337,7 +336,7 @@ Feature: Revert a product to a previous version
 
     Scenario: Successfully revert a pim_catalog_textarea attribute
       Given the following product:
-        | sku     | family | description-tablet-en_US |
+        | sku     | family | description-en_US-tablet |
         | t-shirt | tees   | A nice t-shirt.          |
         | marcel  | tees   |                          |
       Given I am on the "t-shirt" product page
@@ -346,7 +345,7 @@ Feature: Revert a product to a previous version
       When I visit the "History" tab
       When I click on the "Revert to this version" action of the row which contains "sku: t-shirt"
       Then the product "t-shirt" should have the following values:
-        | description-tablet-en_US | A nice t-shirt. |
+        | description-en_US-tablet | A nice t-shirt. |
       Given I am on the "marcel" product page
       And I visit the "Attributes" tab
       And I visit the "Product information" group

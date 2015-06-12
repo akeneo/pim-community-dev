@@ -1,9 +1,9 @@
 parameters:
-    pimee_base_connector.array_converter.flat.product_draft.class: PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat\ProductDraftToStandardConverter
+    pimee_base_connector.array_converter.flat.product_draft.class: PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat\ProductDraftStandardConverter
 
 services:
     pimee_base_connector.array_converter.flat.product_draft:
         class: %pimee_base_connector.array_converter.flat.product_draft.class%
         arguments:
-            - '@pim_base_connector.array_converter.flat.product'
-            - '@pim_base_connector.array_converter.flat.attribute_field_extractor'
+            - '@pim_connector.array_converter.flat.product'
+            - '@pim_connector.array_converter.flat.attribute_field_extractor'

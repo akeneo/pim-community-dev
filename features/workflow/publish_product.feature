@@ -37,10 +37,7 @@ Feature: Publish a product
 
   @javascript
   Scenario: Successfully publish a product containing attributes
-    Given the following product:
-      | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
-    And the following attributes:
+    Given the following attributes:
       | code      | label-en_US | type | scopable | unique | date_min   | date_max   | group |
       | release   | Release     | date | no       | yes    | 2013-01-01 | 2015-12-12 | info  |
       | available | Available   | date | yes      | no     | 2013-01-01 | 2015-12-12 | info  |
@@ -53,16 +50,19 @@ Feature: Publish a product
     And the following attributes:
       | code    | label-en_US | type   | scopable | negative_allowed | decimals_allowed | number_min | number_max | group |
       | customs | Customs     | prices | yes      |                  | yes              | 10         | 100        | info  |
+    And the following product:
+      | sku       | family  | name-en_US |
+      | my-jacket | jackets | Jackets    |
     And the following family:
       | code | label-en_US | attributes                                               |
       | baz  | Baz         | sku, release, available, max_length, popularity, customs |
     And the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2013-02-02    |           |
-      | my-jacket | available  | 2013-02-02    | ecommerce |
-      | my-jacket | max_length | 25 CENTIMETER | ecommerce |
-      | my-jacket | popularity | 9             | ecommerce |
-      | my-jacket | customs    | 100 EUR       | ecommerce |
+      | product   | attribute  | value         | scope  |
+      | my-jacket | release    | 2013-02-02    |        |
+      | my-jacket | available  | 2013-02-02    | tablet |
+      | my-jacket | max_length | 25 CENTIMETER | tablet |
+      | my-jacket | popularity | 9             | tablet |
+      | my-jacket | customs    | 100 EUR       | tablet |
     And I edit the "my-jacket" product
     When I press the "Publish" button
     And I confirm the publishing
