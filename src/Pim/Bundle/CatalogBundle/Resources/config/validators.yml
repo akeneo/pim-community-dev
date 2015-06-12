@@ -42,7 +42,7 @@ services:
 
     pim_catalog.validator.unique_value_set:
         class: %pim_catalog.validator.unique_value_set.class%
-        public: false
+        public: true
 
     # Validators
     pim_catalog.validator.constraint.valid_metric:

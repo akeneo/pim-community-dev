@@ -37,6 +37,7 @@ class FixturesContext extends RawMinkContext
         'english' => 'en_US',
         'french'  => 'fr_FR',
         'german'  => 'de_DE',
+        'english UK' => 'en_GB',
     ];
 
     protected $attributeTypes = [
@@ -269,30 +270,13 @@ class FixturesContext extends RawMinkContext
             $data['enabled'] = ($data['enabled'] === 'yes');
         }
 
-        // Clear product transformer cache
-        $this
-            ->getContainer()
-            ->get('pim_transform.transformer.product')
-            ->reset();
-
-        // Reset product import validator
-        $this
-            ->getContainer()
-            ->get('pim_base_connector.validator.product_import')
-            ->reset();
-
+        // use the processor part of the import system
         $product = $this->loadFixture('products', $data);
-        $this->getMediaManager()->handleProductMedias($product);
-
-        // we get rid of "add missing values" but we still have an issue with the ORM price filter on empty operator
-        /** @var ProductValueInterface $value */
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $this->getProductBuilder()->addMissingPrices($value);
-            }
-        }
-
         $this->getProductSaver()->save($product, ['recalculate' => false]);
+
+        // reset the unique value set to allow to update product values
+        $uniqueValueSet = $this->getContainer()->get('pim_catalog.validator.unique_value_set');
+        $uniqueValueSet->reset();
 
         return $product;
     }
@@ -487,8 +471,6 @@ class FixturesContext extends RawMinkContext
 
             $this->createProduct($data);
         }
-
-        $this->flush();
     }
 
     /**
@@ -2255,7 +2237,7 @@ class FixturesContext extends RawMinkContext
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_base_connector.array_converter.flat.attribute_field_extractor');
+        return $this->getContainer()->get('pim_connector.array_converter.flat.attribute_field_extractor');
     }
 
     /**

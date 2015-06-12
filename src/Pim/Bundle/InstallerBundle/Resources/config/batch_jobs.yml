@@ -111,8 +111,8 @@ connector:
                     title:     pim_base_connector.jobs.csv_attribute_import.import.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute
-                        processor: pim_base_connector.processor.denormalization.attribute.flat
-                        writer:    pim_base_connector.writer.doctrine.attribute
+                        processor: pim_connector.processor.denormalization.attribute.flat
+                        writer:    pim_connector.writer.doctrine.attribute
 
         fixtures_attribute_options_yml:
             title: pim_installer.jobs.fixtures_attribute_options_yml.title
@@ -127,8 +127,8 @@ connector:
                     title:     pim_installer.jobs.fixtures_attribute_options_yml.import.title
                     services:
                         reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_base_connector.processor.denormalization.attribute_option.structured
-                        writer:    pim_base_connector.writer.doctrine.attribute_option
+                        processor: pim_connector.processor.denormalization.attribute_option.structured
+                        writer:    pim_connector.writer.doctrine.attribute_option
 
         fixtures_family_yml:
             title: pim_installer.jobs.fixtures_family_yml.title
@@ -176,7 +176,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.yaml_product
                         processor: pim_base_connector.processor.product
-                        writer:    pim_base_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.doctrine.product
 
         fixtures_product_csv:
             title: pim_installer.jobs.fixtures_product_csv.title
@@ -192,7 +192,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_product
                         processor: pim_base_connector.processor.product
-                        writer:    pim_base_connector.writer.doctrine.product
+                        writer:    pim_connector.writer.doctrine.product
 
         fixtures_job_yml:
             title: pim_installer.jobs.fixtures_job_yml.title

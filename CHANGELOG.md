@@ -123,7 +123,6 @@
 - ProductTemplateUpdater now takes ProductPropertyUpdaterInterface as argument and not anymore ProductUpdaterInterface
 - Remove fixtures_product_yml and fixtures_association_yml from the InstallerBundle, csv format is now mandatory for products
 - ProductUpdater takes ValidatorInterface as second argument
-- Remove method getAssociationFieldNames() from `Pim\Bundle\TransformBundle\Builder\FieldBuilder`
 - Rename `Pim\Bundle\TransformBundle\Builder\FieldBuilder` to `Pim\Component\Connector\ArrayConverter\Flat\ProductAttributeFieldExtractor`
 - Method `createAttribute` of Pim/Bundle/CatalogBundle/Manager/AttributeManager.php is now deprecated use `AttributeFactory::createAttribute` instead
 - Constructor of `Pim\Bundle\EnrichBundle\Controller\ChannelController` now takes a BulkSaver as last argument (to save locales)
@@ -132,6 +131,7 @@
 - Constructor of `Pim\Bundle\CommentBundle\Manager\CommentManager` has been changed
 - Constructor of `Pim\Bundle\DatagridBundle\Manager\DatagridViewManager` has been changed
 - Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
+- Depreciate and change constructor of `Pim\Bundle\TransformBundle\Builder\FieldNameBuilder`
 
 # 1.3.x
 

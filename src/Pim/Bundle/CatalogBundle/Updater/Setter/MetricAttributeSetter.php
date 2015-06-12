@@ -55,6 +55,11 @@ class MetricAttributeSetter extends AbstractAttributeSetter
     ) {
         $options = $this->resolver->resolve($options);
         $this->checkLocaleAndScope($attribute, $options['locale'], $options['scope'], 'metric');
+
+        if (null === $data) {
+            $data = ['data' => null, 'unit' => null];
+        }
+
         $this->checkData($attribute, $data);
 
         $unit = $data['unit'];

@@ -1,2 +1,2 @@
 parameters:
-    pim_base_connector.model.job_configuration.class: Pim\Component\Connector\Model\JobConfiguration
+    pim_connector.model.job_configuration.class: Pim\Component\Connector\Model\JobConfiguration

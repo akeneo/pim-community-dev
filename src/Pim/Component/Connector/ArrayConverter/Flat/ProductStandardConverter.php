@@ -7,8 +7,8 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverter
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -19,10 +19,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: rename!
  */
-class ProductToStandardConverter implements StandardArrayConverterInterface
+class ProductStandardConverter implements StandardArrayConverterInterface
 {
     /** @var ValueConverterRegistryInterface */
     protected $converterRegistry;
@@ -30,11 +28,11 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /** @var ProductAttributeFieldExtractor */
     protected $attrFieldExtractor;
 
-    /** @var AttributeFieldsResolver */
-    protected $attrFieldsResolver;
+    /** @var AttributeColumnsResolver */
+    protected $attrColumnsResolver;
 
-    /** @var AssociationFieldsResolver */
-    protected $assocFieldsResolver;
+    /** @var AssociationColumnsResolver */
+    protected $assocColumnsResolver;
 
     /** @var ProductFieldConverter */
     protected $productFieldConverter;
@@ -51,8 +49,8 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     /**
      * @param ProductAttributeFieldExtractor  $attrFieldExtractor
      * @param ValueConverterRegistryInterface $converterRegistry
-     * @param AssociationFieldsResolver       $assocFieldsResolver
-     * @param AttributeFieldsResolver         $attrFieldsResolver
+     * @param AssociationColumnsResolver      $assocColumnsResolver
+     * @param AttributeColumnsResolver        $attrColumnsResolver
      * @param ProductFieldConverter           $productFieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
@@ -60,16 +58,16 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     public function __construct(
         ProductAttributeFieldExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
-        AssociationFieldsResolver $assocFieldsResolver,
-        AttributeFieldsResolver $attrFieldsResolver,
+        AssociationColumnsResolver $assocColumnsResolver,
+        AttributeColumnsResolver $attrColumnsResolver,
         ProductFieldConverter $productFieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper
     ) {
         $this->attrFieldExtractor = $attrFieldExtractor;
         $this->converterRegistry = $converterRegistry;
-        $this->assocFieldsResolver = $assocFieldsResolver;
-        $this->attrFieldsResolver = $attrFieldsResolver;
+        $this->assocColumnsResolver = $assocColumnsResolver;
+        $this->attrColumnsResolver = $attrColumnsResolver;
         $this->productFieldConverter = $productFieldConverter;
         $this->columnsMerger = $columnsMerger;
         $this->columnsMapper = $columnsMapper;
@@ -264,7 +262,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
         ];
         $optional = array_merge(
             ['family', 'enabled', 'categories', 'groups'],
-            $this->attrFieldsResolver->resolveAttributesFields(),
+            $this->attrColumnsResolver->resolveAttributeColumns(),
             $this->getOptionalAssociationFields()
         );
 
@@ -287,7 +285,7 @@ class ProductToStandardConverter implements StandardArrayConverterInterface
     protected function getOptionalAssociationFields()
     {
         if (empty($this->optionalAssociationFields)) {
-            $this->optionalAssociationFields = $this->assocFieldsResolver->resolveAssociationFields();
+            $this->optionalAssociationFields = $this->assocColumnsResolver->resolveAssociationColumns();
         }
 
         return $this->optionalAssociationFields;

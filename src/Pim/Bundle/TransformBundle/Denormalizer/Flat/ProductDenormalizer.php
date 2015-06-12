@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 
 /**
  * Product flat denormalizer
@@ -32,7 +32,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var ProductAttributeFieldExtractor */
     protected $attrFieldExtractor;
 
-    /** @var AssociationFieldsResolver */
+    /** @var AssociationColumnsResolver */
     protected $assocFieldResolver;
 
     /** @var ProductBuilder */
@@ -58,7 +58,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string                         $entityClass
      * @param ProductBuilder                 $productBuilder
      * @param ProductAttributeFieldExtractor $attFieldExtractor
-     * @param AssociationFieldsResolver      $assocFieldResolver
+     * @param AssociationColumnsResolver     $assocFieldResolver
      * @param string                         $associationClass
      * @param string                         $categoryClass
      * @param string                         $familyClass
@@ -70,7 +70,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $entityClass,
         ProductBuilder $productBuilder,
         ProductAttributeFieldExtractor $attFieldExtractor,
-        AssociationFieldsResolver $assocFieldResolver,
+        AssociationColumnsResolver $assocFieldResolver,
         $associationClass,
         $categoryClass,
         $familyClass,
@@ -210,7 +210,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         // Get association field names and add associations
-        $assocFieldNames  = $this->assocFieldResolver->resolveAssociationFields();
+        $assocFieldNames  = $this->assocFieldResolver->resolveAssociationColumns();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 if (strlen($data[$assocFieldName]) > 0) {

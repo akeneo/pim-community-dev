@@ -5,13 +5,13 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver;
 use Pim\Bundle\CatalogBundle\Repository\AssociationTypeRepositoryInterface;
 
 /**
- * Resolves association field name
+ * Resolves association columns
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AssociationFieldsResolver
+class AssociationColumnsResolver
 {
     /** @var string */
     const GROUP_ASSOCIATION_SUFFIX   = '-groups';
@@ -39,7 +39,7 @@ class AssociationFieldsResolver
      *
      * @return array
      */
-    public function resolveAssociationFields()
+    public function resolveAssociationColumns()
     {
         if (empty($this->associationFieldsCache)) {
             $fieldNames = [];

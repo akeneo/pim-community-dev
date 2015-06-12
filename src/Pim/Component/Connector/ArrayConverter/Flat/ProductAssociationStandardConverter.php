@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**
@@ -12,33 +12,31 @@ use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: rename!
  */
-class ProductAssociationToStandardConverter implements StandardArrayConverterInterface
+class ProductAssociationStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var ProductToStandardConverter */
+    /** @var ProductStandardConverter */
     protected $productConverter;
 
-    /** @var AssociationFieldsResolver */
-    protected $associationFieldResolver;
+    /** @var AssociationColumnsResolver */
+    protected $assocColumnsResolver;
 
-    /** @var AttributeFieldsResolver */
-    protected $attributeFieldResolver;
+    /** @var AttributeColumnsResolver */
+    protected $attrColumnsResolver;
 
     /**
-     * @param ProductToStandardConverter $productConverter
-     * @param AssociationFieldsResolver  $associationFieldResolver
-     * @param AttributeFieldsResolver    $attributeFieldResolver
+     * @param ProductStandardConverter   $productConverter
+     * @param AssociationColumnsResolver $assocColumnsResolver
+     * @param AttributeColumnsResolver   $attrColumnsResolver
      */
     public function __construct(
-        ProductToStandardConverter $productConverter,
-        AssociationFieldsResolver $associationFieldResolver,
-        AttributeFieldsResolver $attributeFieldResolver
+        ProductStandardConverter $productConverter,
+        AssociationColumnsResolver $assocColumnsResolver,
+        AttributeColumnsResolver $attrColumnsResolver
     ) {
         $this->productConverter = $productConverter;
-        $this->associationFieldResolver = $associationFieldResolver;
-        $this->attributeFieldResolver = $attributeFieldResolver;
+        $this->assocColumnsResolver = $assocColumnsResolver;
+        $this->attrColumnsResolver = $attrColumnsResolver;
     }
 
     /**
@@ -92,8 +90,8 @@ class ProductAssociationToStandardConverter implements StandardArrayConverterInt
      */
     protected function filter(array $item)
     {
-        $requiredFields = $this->associationFieldResolver->resolveAssociationFields();
-        $requiredFields[] = $this->attributeFieldResolver->resolveIdentifierField();
+        $requiredFields = $this->assocColumnsResolver->resolveAssociationColumns();
+        $requiredFields[] = $this->attrColumnsResolver->resolveIdentifierField();
 
         foreach (array_keys($item) as $fieldName) {
             if (!in_array($fieldName, $requiredFields)) {

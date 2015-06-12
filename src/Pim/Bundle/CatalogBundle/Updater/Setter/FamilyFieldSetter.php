@@ -40,7 +40,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
     {
         $this->checkData($field, $data);
 
-        if (null !== $data) {
+        if (null !== $data && '' !== $data) {
             $family = $this->getFamily($data);
             if (null === $family) {
                 throw InvalidArgumentException::expected(
@@ -65,7 +65,7 @@ class FamilyFieldSetter extends AbstractFieldSetter
      */
     protected function checkData($field, $data)
     {
-        if (!is_string($data) && null !== $data) {
+        if (!is_string($data) && null !== $data && '' !== $data) {
             throw InvalidArgumentException::stringExpected(
                 $field,
                 'setter',

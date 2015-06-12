@@ -3,19 +3,19 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 class ProductFieldConverterSpec extends ObjectBehavior
 {
-    function let(FieldSplitter $fieldSplitter, AssociationFieldsResolver $assocFieldResolver)
+    function let(FieldSplitter $fieldSplitter, AssociationColumnsResolver $assocFieldResolver)
     {
         $this->beConstructedWith($fieldSplitter, $assocFieldResolver);
     }
 
     function it_supports_converter_column($assocFieldResolver)
     {
-        $assocFieldResolver->resolveAssociationFields()->willReturn(['X_SELL-groups', 'associations']);
+        $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
 
         $this->supportsColumn('associations')->shouldReturn(true);
         $this->supportsColumn('enabled')->shouldReturn(true);
@@ -29,7 +29,7 @@ class ProductFieldConverterSpec extends ObjectBehavior
 
     function it_converts($assocFieldResolver, $fieldSplitter)
     {
-        $assocFieldResolver->resolveAssociationFields()->willReturn(['X_SELL-groups', 'associations']);
+        $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
 
         $this->convert('enabled', 'true')->shouldReturn(['enabled' => true]);
         $this->convert('enabled', true)->shouldReturn(['enabled' => true]);

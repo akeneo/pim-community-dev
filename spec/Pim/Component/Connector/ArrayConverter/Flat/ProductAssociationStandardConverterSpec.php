@@ -3,28 +3,28 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeFieldsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\ProductToStandardConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
-class ProductAssociationToStandardConverterSpec extends ObjectBehavior
+class ProductAssociationStandardConverterSpec extends ObjectBehavior
 {
     function let(
-        ProductToStandardConverter $productConverter,
-        AssociationFieldsResolver $associationFieldResolver,
-        AttributeFieldsResolver $attributeFieldResolver
+        ProductStandardConverter $productConverter,
+        AssociationColumnsResolver $assocColumnsResolver,
+        AttributeColumnsResolver $attrColumnsResolver
     ) {
         $this->beConstructedWith(
             $productConverter,
-            $associationFieldResolver,
-            $attributeFieldResolver
+            $assocColumnsResolver,
+            $attrColumnsResolver
         );
     }
 
     function it_converts(
         $productConverter,
-        $associationFieldResolver,
-        $attributeFieldResolver
+        $assocColumnsResolver,
+        $attrColumnsResolver
     ) {
         $item = [
             'sku'                    => '1069978',
@@ -36,8 +36,8 @@ class ProductAssociationToStandardConverterSpec extends ObjectBehavior
             'XSELL-products'         => 'AKN_TS, ORO_TSH'
         ];
 
-        $associationFieldResolver->resolveAssociationFields()->willReturn(['XSELL-groups', 'XSELL-products']);
-        $attributeFieldResolver->resolveIdentifierField()->willReturn('sku');
+        $assocColumnsResolver->resolveAssociationColumns()->willReturn(['XSELL-groups', 'XSELL-products']);
+        $attrColumnsResolver->resolveIdentifierField()->willReturn('sku');
 
         $filteredItem = [
             'sku'                    => '1069978',

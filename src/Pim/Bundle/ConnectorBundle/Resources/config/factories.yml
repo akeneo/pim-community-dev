@@ -1,8 +1,8 @@
 parameters:
-    pim_base_connector.factory.job_configuration.class: Pim\Component\Connector\Factory\JobConfigurationFactory
+    pim_connector.factory.job_configuration.class: Pim\Component\Connector\Factory\JobConfigurationFactory
 
 services:
-    pim_base_connector.factory.job_configuration:
-        class: %pim_base_connector.factory.job_configuration.class%
+    pim_connector.factory.job_configuration:
+        class: %pim_connector.factory.job_configuration.class%
         arguments:
-            - %pim_base_connector.model.job_configuration.class%
+            - %pim_connector.model.job_configuration.class%

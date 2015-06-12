@@ -14,7 +14,7 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupToStandardConverter implements StandardArrayConverterInterface
+class VariantGroupStandardConverter implements StandardArrayConverterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
@@ -22,18 +22,18 @@ class VariantGroupToStandardConverter implements StandardArrayConverterInterface
     /** @var LocaleRepositoryInterface */
     protected $attributeRepository;
 
-    /** @var ProductToStandardConverter */
+    /** @var ProductStandardConverter */
     protected $productConverter;
 
     /**
      * @param LocaleRepositoryInterface    $localeRepository
      * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductToStandardConverter   $productConverter
+     * @param ProductStandardConverter     $productConverter
      */
     public function __construct(
         LocaleRepositoryInterface $localeRepository,
         AttributeRepositoryInterface $attributeRepository,
-        ProductToStandardConverter $productConverter
+        ProductStandardConverter $productConverter
     ) {
         $this->localeRepository    = $localeRepository;
         $this->attributeRepository = $attributeRepository;

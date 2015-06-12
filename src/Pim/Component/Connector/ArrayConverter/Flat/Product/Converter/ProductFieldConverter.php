@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationFieldsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
@@ -14,17 +14,17 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
  */
 class ProductFieldConverter
 {
-    /** @var AssociationFieldsResolver */
+    /** @var AssociationColumnsResolver */
     protected $assocFieldResolver;
 
     /** @var FieldSplitter */
     protected $fieldSplitter;
 
     /**
-     * @param FieldSplitter             $fieldSplitter
-     * @param AssociationFieldsResolver $assocFieldResolver
+     * @param FieldSplitter              $fieldSplitter
+     * @param AssociationColumnsResolver $assocFieldResolver
      */
-    public function __construct(FieldSplitter $fieldSplitter, AssociationFieldsResolver $assocFieldResolver)
+    public function __construct(FieldSplitter $fieldSplitter, AssociationColumnsResolver $assocFieldResolver)
     {
         $this->assocFieldResolver = $assocFieldResolver;
         $this->fieldSplitter      = $fieldSplitter;
@@ -42,7 +42,7 @@ class ProductFieldConverter
      */
     public function convert($column, $value)
     {
-        $associationFields = $this->assocFieldResolver->resolveAssociationFields();
+        $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
         if (in_array($column, $associationFields)) {
             $value = $this->fieldSplitter->splitCollection($value);
@@ -67,7 +67,7 @@ class ProductFieldConverter
      */
     public function supportsColumn($column)
     {
-        $associationFields = $this->assocFieldResolver->resolveAssociationFields();
+        $associationFields = $this->assocFieldResolver->resolveAssociationColumns();
 
         $fields = array_merge(['categories', 'groups', 'enabled', 'family'], $associationFields);
 

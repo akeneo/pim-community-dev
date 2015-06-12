@@ -4,7 +4,6 @@ namespace Pim\Component\Connector\Processor\Denormalization;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
-use Pim\Bundle\BaseConnectorBundle\Processor\Denormalization\AbstractProcessor;
 use Pim\Bundle\CatalogBundle\Factory\AttributeFactory;
 use Pim\Bundle\CatalogBundle\Model\attributeInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;

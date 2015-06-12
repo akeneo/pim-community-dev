@@ -9,8 +9,15 @@
 The 1.4 enhances the Updater API (introduced in 1.3).
 
 In 1.3, the API covers only update of values of a product (set and copy), with the 1.4 we:
- - provide updaters for other objects
- - provide a way to update fields and attribute values of product (we add addData and removeData methods)
+ - provide updaters for other objects (ObjectUpdaterInterface::update)
+ - provide a way to set fields and attribute values of product (PropertySetterInterface::setData)
+ - provide a way to add data in fields and attribute values of product (PropertyAdderInterface::addData)
+ - provide a way to remove data in fields and attribute values of product (PropertyRemoverInterface::removeData)
+ - provide a way to copy data in fields and attribute values of product (PropertyCopierInterface::copyData)
+
+The goal of this API is to give a straightforward and normalized way to update objects of the PIM to enhance the Developer Experience.
+
+To achieve a consistent API and avoid BC Breaks, we depreciate few methods from ProductUpdater.
 
 ## UPGRADE IMPORT/EXPORT
 
@@ -23,28 +30,24 @@ The challenge is, in one hand to provide a more straightforward and extensible s
 With the current system:
  - BatchBundle is responsible to provide the batch architecture and base classes (inspired by Spring Batch)
  - BaseConnector provides Readers, Processors, Writers, others technicals classes and DI which allows to import and export Catalog Data
- - TransformBundle provides Normalizers and Denomalizers to transform array to object and object to array, some Transformers kind of "extended Denormalizers"
+ - TransformBundle provides Normalizers and Denormalizers to transform array to object and object to array, some Transformers kind of "extended Denormalizers"
  - ImportExportBundle provides controllers, form and UI
 
-In fact responsibility are not that clear, for instance, we have different implementations of a same service, successively introduced and kept for BC concerns.
+Responsibilities are not that clear, for instance, we have different implementations for a same service, successively introduced and kept for BC concerns.
 
-Backward compatibility must be handle on classes and also on DI.
+This part is often used and extended in custom projects and backward compatibility must be handled on classes and DI levels.
 
-To make the new system more understandable, we introduce it in a new ConnectorBundle.
+To make the new system more understandable, we introduce it in a new ConnectorBundle and depreciate the BaseConnectorBundle.
 
 Strategy is the following,
- - copy/paste the 1.3 batch_jobs.yml file in the new bundle and make it evolve
- - rename the deprecated batch_jobs.yml in the BaseConnectorBundle (to avoid automatic loading)
- - keep all old services and classes in the BaseConnector
- - introduce new classes and services in the new bundle
- - [ToDiscuss]
+ - remove the deprecated batch_jobs.yml in the BaseConnectorBundle (to avoid automatic loading)
+ - keep old services and classes in the BaseConnector to be backward compatible
+ - introduce new classes and services in the new Connector bundle and component
+ - [ToDiscuss][WIP]
    - copy old but useful classes from the old connector to the new one,
    - erase the content of the old class and depreciate it
    - old class extends the new one
-
-[ToDiscuss] NB: we'll probably re-ajust this strategy before the release depending how far we are with the re-work
-
-Idea is that at the end, the new connector bundle contains all the usefull and up to dates classes and services
+   - idea is that at the end, the new connector bundle contains all the useful and up to date classes and services.
 
 ## Partially fix BC breaks
 
