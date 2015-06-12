@@ -230,7 +230,7 @@ class ProductRestController
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %s could not be found.', (string) $id)
+                sprintf('Product with id %d could not be found.', $id)
             );
         }
 
@@ -252,7 +252,7 @@ class ProductRestController
 
         if (!$attribute) {
             throw new NotFoundHttpException(
-                sprintf('Attribute with id %s could not be found.', $id)
+                sprintf('Attribute with id %d could not be found.', $id)
             );
         }
 
