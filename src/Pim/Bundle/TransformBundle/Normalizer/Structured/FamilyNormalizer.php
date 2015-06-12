@@ -15,19 +15,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class FamilyNormalizer implements NormalizerInterface
 {
-    /**
-     * @var array
-     */
+    /** @var string[] */
     protected $supportedFormats = ['json', 'xml'];
 
-    /**
-     * @var TranslationNormalizer
-     */
+    /** @var TranslationNormalizer */
     protected $transNormalizer;
 
-    /**
-     * @var CollectionFilterInterface
-     */
+    /** @var CollectionFilterInterface */
     protected $collectionFilter;
 
     /**

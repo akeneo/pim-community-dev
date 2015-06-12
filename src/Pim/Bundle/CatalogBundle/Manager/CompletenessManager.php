@@ -192,12 +192,14 @@ class CompletenessManager
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
 
-            if (isset($completenesses[$locale->getCode()])) {
-                $completenesses[$locale->getCode()]['channels'][$channel->getCode()]['completeness'] = $completeness;
-                $completenesses[$locale->getCode()]['stats']['total']++;
-                $completenesses[$locale->getCode()]['stats']['complete'] = (0 === $completeness->getMissingCount()) ?
-                    $completenesses[$locale->getCode()]['stats']['complete'] + 1 :
-                    $completenesses[$locale->getCode()]['stats']['complete'];
+            $completenesslocaleCode = $locale->getCode();
+            if (isset($completenesses[$completenesslocaleCode])) {
+                $completenesses[$completenesslocaleCode]['channels'][$channel->getCode()]['completeness'] = $completeness;
+                $completenesses[$completenesslocaleCode]['stats']['total']++;
+
+                if (0 === $completeness->getMissingCount()) {
+                    $completenesses[$completenesslocaleCode]['stats']['complete']++;
+                }
             }
         }
 
@@ -258,7 +260,7 @@ class CompletenessManager
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {
-            $valueCode .= '-' .$locale;
+            $valueCode .= '-' . $locale;
         }
         if ($attribute->isScopable()) {
             $valueCode .= '-' . $scope;

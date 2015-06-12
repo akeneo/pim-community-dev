@@ -14,9 +14,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class SequentialEditNormalizer implements NormalizerInterface
 {
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     protected $supportedFormats = ['internal_api'];
 
     /** @var NormalizerInterface */
