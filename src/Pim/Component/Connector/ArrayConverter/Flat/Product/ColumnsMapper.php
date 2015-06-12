@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 /**
  * Maps column names, for instance, 'my-custom-name' to 'family'

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Merger;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 
