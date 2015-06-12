@@ -90,3 +90,24 @@ Feature: Publish a product
     And I should see product my-jacket
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
+
+  @javascript
+  Scenario: Fail to delete attribute options if it's used by a published product
+    Given the following attributes:
+      | code    | label   | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
+      | climate | Climate | multiselect | no       | no          |                   |               |                     |
+    And the following product:
+      | sku       | family  | name-en_US |
+      | my-jacket | jackets | Jackets    |
+    And the following "climate" attribute options: Hot and Cold
+    And the following product values:
+      | product   | attribute | value | locale | scope |
+      | my-jacket | climate   | Hot   |        |       |
+    And I edit the "my-jacket" product
+    When I press the "Publish" button
+    And I confirm the publishing
+    Then I edit the "climate" attribute
+    And I visit the "Values" tab
+    When I remove the "Hot" option
+    And I confirm the deletion
+    Then I should see "Impossible to remove an option that has been published in a product"

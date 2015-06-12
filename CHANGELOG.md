@@ -7,6 +7,7 @@
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
 - PIM-3296: Better display of options changes in Proposals
+- PIM-4311: Create indexes on PublishedProduct
 
 ## BC Breaks
 - Change the constructor of `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`, added `Symfony\Component\Security\Core\SecurityContextInterface` argument
@@ -37,7 +38,11 @@
 - ProductsUpdater takes now ProductPropertySetterInterface and ProductPropertyCopierInterface as arguments and not anymore ProductUpdaterInterface
 - ValueActionValidator takes now ProductPropertySetterInterface and ProductPropertyCopierInterface as arguments and not anymore ProductUpdaterInterface
 
-# 1.3.x
+# 1.3.16 (2015-06-08)
+
+# 1.3.15 (2015-06-05)
+
+# 1.3.14 (2015-06-03)
 
 ## Bug fixes
 - PIM-4227: fix BC break introduced in 1.3.13
@@ -118,7 +123,7 @@
 
 # 1.3.0-RC1 (2015-02-03)
 
-## Community Edition changes
+## Community Edition changes
 - Based on CE 1.3.x, see [changelog](https://github.com/akeneo/pim-community-dev/blob/master/CHANGELOG.md)
 
 ## Features
@@ -317,7 +322,7 @@
 
 ## Improvements
 
-## BC breaks
+## BC breaks
 
 # 1.0.1 (2014-09-10)
 
@@ -325,7 +330,7 @@
 
 ## Improvements
 
-## BC breaks
+## BC breaks
 
 # 1.0.0 - "Dandelion" (2014-08-29)
 
@@ -335,7 +340,7 @@
 - Fixed read only mode of products page
 - Fixed a regression on product draft submission
 
-## BC breaks
+## BC breaks
 
 # 1.0.0-RC3 (2014-08-27)
 
@@ -350,7 +355,7 @@
 - Don't allow users without corresponding rights to edit entity permissions
 - Imported categories now have the permissions of their parent
 
-## BC breaks
+## BC breaks
 - Change constructor of `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/AttributeGroupPermissionsSubscriber`, `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/CategoryPermissionsSubscriber` and `src/PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/LocalePermissionsSubscriber` to inject `Oro\Bundle\SecurityBundle\SecurityFacade` as the second argument
 - JS and CSS are not minified anymore. We advise to use server side compression for bandwidth savings.
 - Change constructor of `PimEnterprise/Bundle/SecurityBundle/Manager/CategoryAccessManager` to add the user group class as fourth argument
@@ -377,5 +382,5 @@
 - Fix the number of proposals displayed in the proposal widget
 - Take into account permission on 'Edit working copy' button
 
-## BC breaks
+## BC breaks
 - Put media back into published product (as now in product)
