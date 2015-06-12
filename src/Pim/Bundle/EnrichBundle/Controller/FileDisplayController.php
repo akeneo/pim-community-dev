@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
 use Liip\ImagineBundle\Controller\ImagineController;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Liip\ImagineBundle\Model\Binary;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +31,9 @@ class FileDisplayController extends Controller
     /** @var MountManager */
     protected $mountManager;
 
+    /** @var FilterManager */
+    protected $filterManager;
+
     /** @var string */
     protected $filesystemName;
 
@@ -35,11 +41,13 @@ class FileDisplayController extends Controller
         ImagineController $imagineController,
         CacheManager $cacheManager,
         MountManager $mountManager,
+        FilterManager $filterManager,
         $filesystemName
     ) {
         $this->imagineController = $imagineController;
         $this->cacheManager      = $cacheManager;
         $this->mountManager      = $mountManager;
+        $this->filterManager     = $filterManager;
         $this->filesystemName    = $filesystemName;
     }
 
@@ -51,29 +59,25 @@ class FileDisplayController extends Controller
      */
     public function showAction(Request $request, $filename)
     {
-        // TODO: Ensure we receive the filepath and not only the filename to create
-        // a cache image with the same path
         $filepath = $filename;
         $filter = $request->query->get('filter');
 
-        if (null !== $filter) {
-            try {
+        try {
+            if (null !== $filter) {
                 $imageResponse = $this->imagineController->filterAction($request, $filepath, $filter);
-            } catch (\Exception $e) {
-                $imageResponse = $this->getFallbackImageResponse();
+            } else {
+                // TODO: Change the way we read the distant files
+                $filesystem = $this->getFilesystem();
+                $content = $filesystem->read($filename);
+                $mimeType = $filesystem->getMimetype($filename);
+                $imageResponse = new Response($content);
+
+                if (null !== $mimeType) {
+                    $imageResponse->headers->set('Content-Type', $mimeType);
+                }
             }
-        }
-
-        if (!isset($imageResponse)) {
-            $filesystem = $this->getFilesystem();
-            $content = $filesystem->read($filename);
-            $mimeType = $filesystem->getMimetype($filename);
-
-            $imageResponse = new Response($content);
-
-            if (null !== $mimeType) {
-                $imageResponse->headers->set('Content-Type', $mimeType);
-            }
+        } catch (FileNotFoundException $e) {
+            $imageResponse = $this->getFallbackImageResponse($filter);
         }
 
         return $imageResponse;
@@ -88,14 +92,21 @@ class FileDisplayController extends Controller
     }
 
     /**
+     * @param string $filter
+     *
      * @return Response
      */
-    protected function getFallbackImageResponse()
+    protected function getFallbackImageResponse($filter = null)
     {
         $path = realpath(__DIR__ . '/../' . self::FALLBACK_IMAGE_PATH);
         $content = file_get_contents($path);
 
-        $imageResponse = new Response($content);
+        $binary = new Binary($content, 'image/png');
+        if (null !== $filter) {
+            $binary = $this->filterManager->applyFilter($binary, $filter);
+        }
+
+        $imageResponse = new Response($binary->getContent());
         $imageResponse->headers->set('Content-Type', 'image/png');
 
         return $imageResponse;
