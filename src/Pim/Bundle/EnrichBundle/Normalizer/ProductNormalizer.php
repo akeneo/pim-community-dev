@@ -52,16 +52,14 @@ class ProductNormalizer implements NormalizerInterface
     public function normalize($product, $format = null, array $context = array())
     {
         $normalizedProduct = $this->productNormalizer->normalize($product, 'json', $context);
+
+        $oldestLog = $this->versionManager->getOldestLogEntry($product);
+        $newestLog = $this->versionManager->getNewestLogEntry($product);
+
         $normalizedProduct['meta'] = [
             'id'      => $product->getId(),
-            'created' => $this->versionNormalizer->normalize(
-                $this->versionManager->getOldestLogEntry($product),
-                'internal_api'
-            ),
-            'updated' => $this->versionNormalizer->normalize(
-                $this->versionManager->getNewestLogEntry($product),
-                'internal_api'
-            )
+            'created' => $oldestLog !== null ? $this->versionNormalizer->normalize($oldestLog, 'internal_api') : null,
+            'updated' => $newestLog !== null ? $this->versionNormalizer->normalize($newestLog, 'internal_api') : null
         ] + $this->getLabels($product) + $this->getAssociationMeta($product);
 
         return $normalizedProduct;
