@@ -40,12 +40,6 @@ class TechnicalContext extends RawMinkContext
                         ['attribute' => $attribute]
                     );
                     $newData = $serializer->normalize($createdValue, 'json', ['entity' => 'product']);
-                    // hack due to inconsistance in json normalization, may have impact on already stored format
-                    // if we change it
-                    if ('pim_catalog_boolean' === $createdValue->getAttribute()->getAttributeType()) {
-                        $valueData['value'] = $valueData['value'] === '1' ? true : false;
-                    }
-
                     assertSame(
                         $valueData,
                         $newData,
