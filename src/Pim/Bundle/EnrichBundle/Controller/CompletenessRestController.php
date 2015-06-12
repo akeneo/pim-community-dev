@@ -38,8 +38,6 @@ class CompletenessRestController
     protected $collectionFilter;
 
     /**
-     * Constructor
-     *
      * @param CompletenessManager        $completenessManager
      * @param ProductRepositoryInterface $productRepository
      * @param ChannelRepositoryInterface $channelRepository

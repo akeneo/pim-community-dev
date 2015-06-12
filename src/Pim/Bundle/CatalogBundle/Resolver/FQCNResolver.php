@@ -17,6 +17,9 @@ class FQCNResolver
     /** @var array */
     protected $classNames = [];
 
+    /**
+     * @param ContainerInterface $container
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;

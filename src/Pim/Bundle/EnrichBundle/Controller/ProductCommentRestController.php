@@ -52,8 +52,6 @@ class ProductCommentRestController
     protected $validator;
 
     /**
-     * Constructor
-     *
      * @param SecurityContextInterface   $securityContext
      * @param FormFactoryInterface       $formFactory
      * @param ProductRepositoryInterface $productRepository
