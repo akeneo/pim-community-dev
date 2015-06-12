@@ -29,6 +29,7 @@ class AssertionContext extends RawMinkContext
     {
         $this->getMainContext()->spin(function () use ($text) {
             $this->assertSession()->pageTextContains($text);
+
             return true;
         });
     }
@@ -256,6 +257,7 @@ class AssertionContext extends RawMinkContext
     {
         if ($this->getCurrentPage()->find('css', '.panel-container')) {
             $this->iShouldSeeHistoryInPanel($table);
+
             return;
         }
 

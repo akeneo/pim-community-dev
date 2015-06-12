@@ -3,15 +3,18 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
-use Pim\Bundle\CommentBundle\Manager\CommentManager;
+use Pim\Bundle\CommentBundle\Repository\CommentRepositoryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -30,11 +33,11 @@ class ProductCommentRestController
     /** @var FormFactoryInterface */
     protected $formFactory;
 
-    /** @var ProductManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /** @var CommentManager */
-    protected $commentManager;
+    /** @var CommentRepositoryInterface */
+    protected $commentRepository;
 
     /** @var SaverInterface */
     protected $commentSaver;
@@ -49,49 +52,51 @@ class ProductCommentRestController
     protected $validator;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ProductManager           $productManager
-     * @param CommentManager           $commentManager
-     * @param SaverInterface           $commentSaver
-     * @param CommentBuilder           $commentBuilder
-     * @param NormalizerInterface      $normalizer
-     * @param ValidatorInterface       $validator
+     * @param SecurityContextInterface   $securityContext
+     * @param FormFactoryInterface       $formFactory
+     * @param ProductRepositoryInterface $productRepository
+     * @param CommentRepositoryInterface $commentRepository
+     * @param SaverInterface             $commentSaver
+     * @param CommentBuilder             $commentBuilder
+     * @param NormalizerInterface        $normalizer
+     * @param ValidatorInterface         $validator
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
-        ProductManager $productManager,
-        CommentManager $commentManager,
+        ProductRepositoryInterface $productRepository,
+        CommentRepositoryInterface $commentRepository,
         SaverInterface $commentSaver,
         CommentBuilder $commentBuilder,
         NormalizerInterface $normalizer,
         ValidatorInterface $validator
     ) {
-        $this->securityContext = $securityContext;
-        $this->formFactory     = $formFactory;
-        $this->productManager  = $productManager;
-        $this->commentManager  = $commentManager;
-        $this->commentSaver    = $commentSaver;
-        $this->commentBuilder  = $commentBuilder;
-        $this->normalizer      = $normalizer;
-        $this->validator       = $validator;
+        $this->securityContext   = $securityContext;
+        $this->formFactory       = $formFactory;
+        $this->productRepository = $productRepository;
+        $this->commentRepository = $commentRepository;
+        $this->commentSaver      = $commentSaver;
+        $this->commentBuilder    = $commentBuilder;
+        $this->normalizer        = $normalizer;
+        $this->validator         = $validator;
     }
 
     /**
      * List comments made on a product
      *
-     * @param Request    $request
      * @param int|string $id
      *
      * @AclAncestor("pim_enrich_product_comment")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
      */
-    public function getAction(Request $request, $id)
+    public function getAction($id)
     {
         $product = $this->findProductOr404($id);
-        $comments = $this->commentManager->getComments($product);
+        $comments = $this->commentRepository->getComments(
+            ClassUtils::getClass($product),
+            $product->getId()
+        );
 
         return new JsonResponse($this->normalizer->normalize($comments, 'json'));
     }
@@ -185,13 +190,13 @@ class ProductCommentRestController
      *
      * @param int $id the product id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return ProductInterface
      */
     protected function findProductOr404($id)
     {
-        $product = $this->productManager->find($id);
+        $product = $this->productRepository->findOneByWithValues($id);
 
         if (!$product) {
             throw new NotFoundHttpException(
@@ -205,7 +210,7 @@ class ProductCommentRestController
     /**
      * Get the user from the Security Context
      *
-     * @return \Symfony\Component\Security\Core\User\UserInterface|null
+     * @return UserInterface|null
      */
     protected function getUser()
     {
