@@ -32,7 +32,7 @@ define(
                 this.listenTo(this.state, 'change', this.render);
                 this.product = null;
 
-                return this;
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
                 return $.when(
@@ -109,7 +109,7 @@ define(
                 }
             },
             addAttributes: function (attributeCodes) {
-                this.getParent().addAttributes(attributeCodes);
+                this.trigger('add-attribute:add', {codes: attributeCodes});
             },
             updateOptionalAttributes: function (product) {
                 this.product = product;

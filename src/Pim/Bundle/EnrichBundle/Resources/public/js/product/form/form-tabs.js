@@ -29,13 +29,15 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addTab = _.bind(this.addTab, this);
+                _.each(this.extensions, _.bind(function (extension) {
+                    extension.on('tab:register', _.bind(this.registerTab, this));
+                }, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addTab: function (code, label) {
+            registerTab: function (event) {
                 var tabs = this.state.get('tabs') || [];
-                tabs.push({ code: code, label: label });
+                tabs.push({ code: event.code, label: event.label });
 
                 this.state.set('tabs', tabs, {silent: true});
 
@@ -59,15 +61,12 @@ define(
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
                 if (currentTab) {
-                    currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);
-                    /* global console */
-                    console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
-                    currentTab.render();
+                    this.renderExtension(currentTab);
                 }
 
                 var panels = this.extensions.panels;
                 if (panels) {
-                    panels.getTargetElement()[panels.insertAction](panels.el);
+                    panels.getTargetElement().append(panels.el);
                     panels.render();
                 }
 

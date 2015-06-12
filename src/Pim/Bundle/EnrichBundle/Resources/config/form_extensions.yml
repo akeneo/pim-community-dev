@@ -2,6 +2,7 @@ extensions:
     product-edit-form:
         module: pim/product-edit-form
         zones:
+            sequential: .sequential
             title: header .product-title
             buttons: header .actions
             meta: header .meta
@@ -11,8 +12,7 @@ extensions:
     sequential-edit:
         module: pim/product-edit-form/sequential-edit
         parent: product-edit-form
-        insertAction: before
-        targetZone: header
+        targetZone: sequential
         aclResourceId: pim_enrich_product_edit_attributes
         position: 100
 
@@ -20,9 +20,9 @@ extensions:
         module: pim/product-edit-form/form-tabs
         parent: product-edit-form
         targetZone: content
-        insertAction: append
         zones:
             container: .tab-container
+            panels: .panels
         position: 100
 
     product-label:
@@ -80,7 +80,6 @@ extensions:
     state:
         module: pim/product-edit-form/state
         parent: product-edit-form
-        insertAction: append
         targetZone: state
         position: 900
 
@@ -88,7 +87,6 @@ extensions:
         module: pim/product-edit-form/meta/family
         parent: product-edit-form
         targetZone: meta
-        insertAction: append
         zones:
             family: self
         position: 80
@@ -96,7 +94,6 @@ extensions:
     change-family:
         module: pim/product-edit-form/meta/change-family
         parent: family
-        insertAction: append
         targetZone: family
         aclResourceId: pim_enrich_product_change_family
         position: 100
@@ -104,21 +101,18 @@ extensions:
     groups:
         module: pim/product-edit-form/meta/groups
         parent: product-edit-form
-        insertAction: append
         targetZone: meta
         position: 110
 
     created:
         module: pim/product-edit-form/meta/created
         parent: product-edit-form
-        insertAction: append
         targetZone: meta
         position: 90
 
     updated:
         module: pim/product-edit-form/meta/updated
         parent: product-edit-form
-        insertAction: append
         targetZone: meta
         position: 100
 
@@ -132,7 +126,7 @@ extensions:
             edit-actions: .tab-content > header > .attribute-edit-actions
             context-selectors: .tab-content > header > .attribute-edit-actions > .context-selectors
             other-actions: .tab-content > header > .attribute-edit-actions > .other-actions
-            attributes: self
+            sidebar: .sidebar
         position: 90
 
     categories:
@@ -157,8 +151,7 @@ extensions:
     panels:
         module: pim/product-edit-form/panel/panels
         parent: form-tabs
-        targetZone: container
-        insertAction: after
+        targetZone: panels
         zones:
             panel-content: .panel-content
         position: 100
@@ -166,15 +159,13 @@ extensions:
     attribute-group-selector:
         module: pim/product-edit-form/attributes/attribute-group-selector
         parent: attributes
-        targetZone: attributes
-        insertAction: prepend
+        targetZone: sidebar
         position: 100
 
     add-attribute:
         module: pim/product-edit-form/attributes/add-attribute
         parent: attributes
         targetZone: other-actions
-        insertAction: append
         aclResourceId: pim_enrich_product_add_attribute
         position: 100
 
@@ -182,14 +173,12 @@ extensions:
         module: pim/product-edit-form/scope-switcher
         parent: attributes
         targetZone: context-selectors
-        insertAction: append
         position: 100
 
     locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: attributes
         targetZone: context-selectors
-        insertAction: append
         position: 100
 
     copy:
@@ -218,14 +207,12 @@ extensions:
         parent: panels
         module: pim/product-edit-form/panel/completeness
         targetZone: panel-content
-        insertAction: append
         position: 100
 
     comments:
         parent: panels
         module: pim/product-edit-form/panel/comments
         targetZone: panel-content
-        insertAction: append
         aclResourceId: pim_enrich_product_comment
         position: 100
 
@@ -233,7 +220,6 @@ extensions:
         parent: panels
         module: pim/product-edit-form/panel/history
         targetZone: panel-content
-        insertAction: append
         aclResourceId: pim_enrich_product_history
         zones:
             history: self
@@ -248,14 +234,12 @@ extensions:
         module: pim/product-edit-form/scope-switcher
         parent: copy
         targetZone: context-selectors
-        insertAction: append
         position: 100
 
     copy-locale-switcher:
         module: pim/product-edit-form/locale-switcher
         parent: copy
         targetZone: context-selectors
-        insertAction: append
         position: 100
 
 attribute_fields:

@@ -27,7 +27,11 @@ define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone
                         Routing.generate(this.options.urls.get, { identifier: identifier })
                     ).then(_.identity).done(function (entity) {
                         deferred.resolve(entity);
-                    }).fail(deferred.reject);
+                    }).fail(function () {
+                        console.log(arguments);
+
+                        return deferred.reject();
+                    });
                 } else {
                     this.findAll().done(function (entities) {
                         var entity = _.findWhere(entities, {code: identifier});

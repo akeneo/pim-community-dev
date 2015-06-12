@@ -18,6 +18,7 @@ define(
         'text!pim/template/product/meta/group-modal',
         'pim/user-context',
         'pim/entity-manager',
+        'pim/group-manager',
         'oro/navigation',
         'pim/i18n',
         'backbone/bootstrap-modal'
@@ -32,6 +33,7 @@ define(
         modalTemplate,
         UserContext,
         EntityManager,
+        GroupManager,
         Navigation,
         i18n
     ) {
@@ -52,46 +54,16 @@ define(
                     return this;
                 }
 
-                this.getProductGroups(this.getData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getData()).done(_.bind(function (groups) {
                     this.$el.html(
                         this.template({
                             groups: groups,
                             locale: UserContext.get('catalogLocale')
                         })
                     );
-
-                    this.delegateEvents();
                 }, this));
 
                 return this;
-            },
-            getProductGroups: function (product) {
-                var deferred = $.Deferred();
-
-                var promises = [];
-                var groups = [];
-
-                _.each(product.groups, function (groupCode) {
-                    promises.push(
-                        EntityManager.getRepository('group').find(groupCode).done(function (group) {
-                            groups.push(group);
-                        })
-                    );
-                });
-
-                if (product.variant_group) {
-                    promises.push(
-                        EntityManager.getRepository('variantGroup').find(product.variant_group).done(function (group) {
-                            groups.push(group);
-                        })
-                    );
-                }
-
-                $.when.apply($, promises).done(function () {
-                    deferred.resolve(groups);
-                });
-
-                return deferred.promise();
             },
             getProductList: function (groupCode) {
                 return $.getJSON(
@@ -99,7 +71,7 @@ define(
                 ).then(_.identity);
             },
             displayModal: function (event) {
-                this.getProductGroups(this.getData()).done(_.bind(function (groups) {
+                GroupManager.getProductGroups(this.getData()).done(_.bind(function (groups) {
                     var group = _.findWhere(groups, { code: event.currentTarget.dataset.group });
 
                     $.when(

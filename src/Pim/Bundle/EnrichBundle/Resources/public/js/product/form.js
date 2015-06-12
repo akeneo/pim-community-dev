@@ -16,7 +16,6 @@ define(
                 this.extensions   = {};
                 this.zones        = {};
                 this.targetZone   = '';
-                this.insertAction = null;
                 this.configured   = false;
             },
             setZones: function (zones) {
@@ -30,22 +29,19 @@ define(
                 }
             },
             configure: function () {
-                return $.when(
-                        _.map(this.extensions, function (extension) {
-                            return extension.configure();
-                        })
-                    )
+                return $.when(_.map(this.extensions, function (extension) {
+                        return extension.configure();
+                    }))
                     .done(_.bind(function () {
                         this.configured = true;
                     }, this)
                 );
             },
-            addExtension: function (code, extension, zone, insertAction, position) {
+            addExtension: function (code, extension, zone, position) {
                 extension.setParent(this);
 
                 extension.code         = code;
                 extension.targetZone   = zone;
-                extension.insertAction = insertAction;
                 extension.position     = position;
 
                 this.extensions[code] = extension;
@@ -89,14 +85,17 @@ define(
             },
             renderExtensions: function () {
                 var sortedExtensions = _.sortBy(this.extensions, 'position');
-                _.each(sortedExtensions, function (extension) {
-                    extension.getTargetElement()[extension.insertAction](extension.el);
-                    /* global console */
-                    console.log(extension.parent.code, 'triggered the rendering of', extension.code);
-                    extension.render();
-                });
+                _.each(sortedExtensions, _.bind(function (extension) {
+                    this.renderExtension(extension);
+                }, this));
 
                 return this;
+            },
+            renderExtension: function (extension) {
+                extension.getTargetElement().append(extension.el);
+                /* global console */
+                console.log(extension.parent.code, 'triggered the rendering of', extension.code);
+                extension.render();
             }
         });
     }

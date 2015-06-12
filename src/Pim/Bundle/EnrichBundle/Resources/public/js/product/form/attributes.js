@@ -50,10 +50,12 @@ define(
             events: {
                 'click .remove-attribute': 'removeAttribute'
             },
-            visibleFields: {},
             rendering: false,
             configure: function () {
-                this.getRoot().addTab('attributes', 'Attributes');
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: _.__('pim_enrich.form.product.tab.attributes.title')
+                });
 
                 this.listenTo(this.getRoot().model, 'change', this.render);
                 this.listenTo(UserContext, 'change:catalogLocale change:catalogScope', this.render);
@@ -61,11 +63,15 @@ define(
                 mediator.on('product:action:post_validation_error', _.bind(this.postValidationError, this));
                 mediator.on('show_attribute', _.bind(this.showAttribute, this));
                 window.addEventListener('resize', _.bind(this.resize, this));
-                FieldManager.clear();
+                FieldManager.clearFields();
 
-                return $.when(
-                    BaseForm.prototype.configure.apply(this, arguments)
-                );
+                _.each(this.extensions, _.bind(function (extension) {
+                    extension.on('comparison:change', _.bind(this.comparisonChange, this));
+                    extension.on('attribute-group:changed', _.bind(this.render, this));
+                    extension.on('add-attribute:add', _.bind(this.addAttributes, this));
+                }, this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
                 if (!this.configured || this.rendering) {
@@ -96,10 +102,10 @@ define(
                             var $productValuesPanel = this.$('.product-values');
                             $productValuesPanel.empty();
 
-                            this.visibleFields = {};
+                            FieldManager.clearVisibleFields();
                             _.each(arguments, _.bind(function (field) {
                                 field.render();
-                                this.visibleFields[field.attribute.code] = field;
+                                FieldManager.addVisibleField(field.attribute.code);
                                 $productValuesPanel.append(field.$el);
                             }, this));
                             this.rendering = false;
@@ -126,7 +132,7 @@ define(
                         locale: UserContext.get('catalogLocale'),
                         scope: UserContext.get('catalogScope'),
                         uiLocale: UserContext.get('catalogLocale'),
-                        optional: AttributeManager.isOptional(attributeCode, product, families),
+                        optional: AttributeManager.isOptional(field.attribute, product, families),
                         removable: SecurityContext.isGranted('pim_enrich_product_remove_attribute')
                     });
                     field.setValues(values);
@@ -145,7 +151,9 @@ define(
 
                 return $.when.apply($, promises).promise();
             },
-            addAttributes: function (attributeCodes) {
+            addAttributes: function (event) {
+                var attributeCodes = event.codes;
+
                 $.when(
                     EntityManager.getRepository('attribute').findAll(),
                     EntityManager.getRepository('locale').findAll(),
@@ -248,11 +256,14 @@ define(
             postValidationError: function () {
                 this.render();
                 this.extensions['attribute-group-selector'].removeBadges();
-                _.each(FieldManager.getFields(), function (field) {
-                    if (!field.getValid()) {
-                        mediator.trigger('show_attribute', {attribute: field.attribute.code});
-                    }
-                });
+                var invalidField = _.reduce(FieldManager.getFields(), function (invalidField, field) {
+                    return !field.isValid() ? field : invalidField;
+                }, null);
+
+                if (invalidField) {
+                    mediator.trigger('show_attribute', {attribute: invalidField.attribute.code});
+                }
+
                 this.updateAttributeGroupBadges();
             },
             postSave: function () {
@@ -272,7 +283,7 @@ define(
                                 field.attribute.code
                             );
 
-                            if (!field.getValid()) {
+                            if (!field.isValid()) {
                                 this.extensions['attribute-group-selector'].addToBadge(attributeGroup, 'invalid');
                             }
                         }, this));
@@ -311,6 +322,9 @@ define(
 
                         FieldManager.getFields()[event.attribute].setFocus();
                     }, this));
+            },
+            comparisonChange: function (open) {
+                this.$el[open ? 'addClass' : 'removeClass']('comparison-mode');
             }
         });
 

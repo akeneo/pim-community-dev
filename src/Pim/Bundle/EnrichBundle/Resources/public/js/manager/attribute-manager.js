@@ -11,11 +11,15 @@ define([
     ) {
         return {
             getAttributesForProduct: function (product) {
-                return EntityManager.getRepository('family').findAll().then(function (families) {
-                    return !product.family ?
-                        _.keys(product.values) :
-                        _.union(_.keys(product.values), families[product.family].attributes);
-                });
+                if (!product.family) {
+                    return $.Deferred().resolve(_.keys(product.values));
+                } else {
+                    return EntityManager.getRepository('family')
+                        .find(product.family)
+                        .then(function (family) {
+                            return _.union(_.keys(product.values), family.attributes);
+                        });
+                }
             },
             getOptionalAttributes: function (product) {
                 return $.when(
@@ -28,11 +32,13 @@ define([
                             return _.findWhere(attributes, {code: attributeCode});
                         }
                     );
+
                     return optionalAttributes;
                 });
             },
             isOptional: function (attribute, product, families) {
-                return !product.family ? true : !_.contains(families[product.family].attributes, attribute);
+                return 'pim_catalog_identifier' !== attribute.type &&
+                    (!product.family ? true : !_.contains(families[product.family].attributes, attribute));
             },
             getEmptyValue: function (attribute) {
                 switch (attribute.type) {
@@ -43,6 +49,7 @@ define([
                     case 'pim_reference_data_simpleselect':
                     case 'pim_catalog_identifier':
                     case 'pim_catalog_number':
+                    case 'pim_catalog_textarea':
                         return null;
                     case 'pim_catalog_metric':
                         return {
@@ -53,7 +60,6 @@ define([
                     case 'pim_reference_data_multiselect':
                         return [];
                     case 'pim_catalog_text':
-                    case 'pim_catalog_textarea':
                         return '';
                     case 'pim_catalog_boolean':
                         return false;

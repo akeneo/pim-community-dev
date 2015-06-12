@@ -48,12 +48,10 @@ define(
             addValidationErrors: function (data) {
                 _.each(data.values, _.bind(function (fieldErrors, attributeCode) {
                     FieldManager.getField(attributeCode).done(_.bind(function (field) {
-                        var validationError = new ValidationError(fieldErrors, this);
-
                         field.addElement(
                             'footer',
                             'validation',
-                            validationError
+                            new ValidationError(fieldErrors, this)
                         );
 
                         field.setValid(false);

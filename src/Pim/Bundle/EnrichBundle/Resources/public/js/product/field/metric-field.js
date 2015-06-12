@@ -37,6 +37,9 @@ define([
                 return templateContext;
             });
         },
+        setFocus: function () {
+            this.$('.data:first').focus();
+        },
         updateModel: function () {
             var data = this.$('.data').val();
             var unit = this.$('.unit option:selected').val();

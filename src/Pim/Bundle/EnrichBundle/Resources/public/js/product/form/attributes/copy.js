@@ -15,11 +15,23 @@ define(
         'text!pim/template/product/tab/attribute/copy',
         'pim/product-edit-form/attributes/copyfield',
         'pim/entity-manager',
+        'pim/field-manager',
         'pim/attribute-manager',
         'pim/product-manager',
         'pim/user-context'
     ],
-    function ($, _, BaseForm, template, CopyField, EntityManager, AttributeManager, ProductManager, UserContext) {
+    function (
+        $,
+        _,
+        BaseForm,
+        template,
+        CopyField,
+        EntityManager,
+        FieldManager,
+        AttributeManager,
+        ProductManager,
+        UserContext
+    ) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'attribute-copy-actions',
@@ -46,24 +58,16 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {
-                if (this.copying) {
-                    this.getParent().$el.addClass('comparision-mode');
-                } else {
-                    this.getParent().$el.removeClass('comparision-mode');
-                }
+                this.trigger('comparison:change', this.copying);
 
-                this.$el.html(
-                    this.template({
-                        'copying': this.copying
-                    })
-                );
+                this.$el.html(this.template({'copying': this.copying}));
 
                 if (this.copying) {
                     _.each(this.copyFields, _.bind(function (copyField, code) {
-                        var field = this.getParent().visibleFields[code];
+                        var field = FieldManager.getVisibleField(code);
                         if (field) {
                             copyField.setField(field);
-                            copyField.field.addElement('comparision', 'copy', copyField);
+                            copyField.field.addElement('comparison', 'copy', copyField);
                             copyField.field.render();
                         }
 
@@ -136,7 +140,7 @@ define(
 
                 _.each(this.copyFields, _.bind(function (copyField) {
                     if (copyField.field) {
-                        copyField.field.removeElement('comparision', 'copy');
+                        copyField.field.removeElement('comparison', 'copy');
                     }
                 }, this));
 
@@ -164,7 +168,7 @@ define(
             },
             selectAllVisible: function () {
                 _.each(this.copyFields, _.bind(function (copyField, attributeCode) {
-                    if (this.getParent().visibleFields[attributeCode]) {
+                    if (FieldManager.getVisibleField(attributeCode)) {
                         copyField.selected = true;
                     }
                 }, this));

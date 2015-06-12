@@ -30,15 +30,12 @@ define([
             var data = [];
             var $elements = $(event.currentTarget).parents('.price-collection-field').find('.price-input');
             _.each($elements, _.bind(function (element) {
-                var input = $(element).children('input');
+                var $input = $(element).children('input');
 
-                var inputData = input.val();
-
-                inputData = ('' !== inputData) ? parseFloat(inputData) : inputData;
-                inputData = isNaN(inputData) || '' === inputData ? null : inputData;
-
-                input.val(null === inputData ? input.defaultValue : inputData);
-                data.push({'data': inputData, 'currency': input.data('currency')});
+                var inputData = $input.val();
+                if ('' !== inputData) {
+                    data.push({'data': inputData, 'currency': $input.data('currency')});
+                }
             }, this));
 
             this.setCurrentValue(data);
@@ -52,6 +49,9 @@ define([
 
                 return templateContext;
             });
+        },
+        setFocus: function () {
+            this.$('input[type="text"]:first').focus();
         }
     });
 });

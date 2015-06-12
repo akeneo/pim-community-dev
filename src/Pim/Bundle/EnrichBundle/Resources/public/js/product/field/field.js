@@ -86,7 +86,7 @@ define([
                     locale,
                     scope
                 );
-                context.editMode = 'disabled';
+                context.editMode = 'view';
 
                 return this.renderInput(context);
             },
@@ -136,14 +136,11 @@ define([
             setValid: function (valid) {
                 this.valid = valid;
             },
-            getValid: function () {
+            isValid: function () {
                 return this.valid;
             },
-            complete: function () {
-                return true;
-            },
             setFocus: function () {
-                this.$('input').first().focus();
+                this.$('input:first').focus();
             },
             setEditable: function (editable) {
                 this.editable = editable;

@@ -33,7 +33,7 @@ define(
                 this.listenTo(this.state, 'change', this.render);
                 this.badges = {};
 
-                return this;
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
             render: function () {
                 this.$el.empty();
@@ -64,7 +64,7 @@ define(
             change: function (event) {
                 if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {
                     this.state.set('current', event.currentTarget.dataset.attributeGroup);
-                    this.getParent().render();
+                    this.trigger('attribute-group:changed');
                 }
             },
             getCurrent: function () {
