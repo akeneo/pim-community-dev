@@ -13,7 +13,7 @@ parameters:
     pim_connector.array_converter.flat.product.simpleselect.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\SimpleSelectConverter
     pim_connector.array_converter.flat.product.media.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\MediaConverter
     pim_connector.array_converter.flat.product.scalar.class:                     Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ScalarConverter
-    pim_connector.array_converter.flat.product.field.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter
+    pim_connector.array_converter.flat.product.field.class:                      Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter
 
     # TODO: rename following services
     pim_connector.array_converter.flat.attribute_field_extractor.class:          Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor

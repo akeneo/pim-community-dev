@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
@@ -34,8 +34,8 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     /** @var AssociationColumnsResolver */
     protected $assocColumnsResolver;
 
-    /** @var ProductFieldConverter */
-    protected $productFieldConverter;
+    /** @var FieldConverter */
+    protected $fieldConverter;
 
     /** @var ColumnsMerger */
     protected $columnsMerger;
@@ -51,7 +51,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      * @param ValueConverterRegistryInterface $converterRegistry
      * @param AssociationColumnsResolver      $assocColumnsResolver
      * @param AttributeColumnsResolver        $attrColumnsResolver
-     * @param ProductFieldConverter           $productFieldConverter
+     * @param FieldConverter           $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
      */
@@ -60,7 +60,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
-        ProductFieldConverter $productFieldConverter,
+        FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper
     ) {
@@ -68,7 +68,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         $this->converterRegistry = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;
         $this->attrColumnsResolver = $attrColumnsResolver;
-        $this->productFieldConverter = $productFieldConverter;
+        $this->fieldConverter = $fieldConverter;
         $this->columnsMerger = $columnsMerger;
         $this->columnsMapper = $columnsMapper;
         $this->optionalAssociationFields = [];
@@ -169,8 +169,8 @@ class ProductStandardConverter implements StandardArrayConverterInterface
 
         $result = [];
         foreach ($mergedItems as $column => $value) {
-            if ($this->productFieldConverter->supportsColumn($column)) {
-                $value = $this->productFieldConverter->convert($column, $value);
+            if ($this->fieldConverter->supportsColumn($column)) {
+                $value = $this->fieldConverter->convert($column, $value);
             } else {
                 $value = $this->convertValue($column, $value);
             }

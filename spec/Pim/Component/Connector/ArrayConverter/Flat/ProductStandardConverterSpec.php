@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
@@ -21,7 +21,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
-        ProductFieldConverter $productFieldConverter,
+        FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper
     ) {
@@ -30,7 +30,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
             $converterRegistry,
             $assocColumnsResolver,
             $attrColumnsResolver,
-            $productFieldConverter,
+            $fieldConverter,
             $columnsMerger,
             $columnsMapper
         );
@@ -38,7 +38,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
 
     function it_converts(
         $fieldExtractor,
-        $productFieldConverter,
+        $fieldConverter,
         $converterRegistry,
         $columnsMerger,
         $columnsMapper,
@@ -66,16 +66,16 @@ class ProductStandardConverterSpec extends ObjectBehavior
 
         $columnsMerger->merge($item)->willReturn($item);
 
-        $productFieldConverter->supportsColumn('sku')->willReturn(false);
-        $productFieldConverter->supportsColumn('categories')->willReturn(true);
-        $productFieldConverter->supportsColumn('enabled')->willReturn(true);
-        $productFieldConverter->supportsColumn('name')->willReturn(false);
-        $productFieldConverter->supportsColumn('release_date-ecommerce')->willReturn(false);
+        $fieldConverter->supportsColumn('sku')->willReturn(false);
+        $fieldConverter->supportsColumn('categories')->willReturn(true);
+        $fieldConverter->supportsColumn('enabled')->willReturn(true);
+        $fieldConverter->supportsColumn('name')->willReturn(false);
+        $fieldConverter->supportsColumn('release_date-ecommerce')->willReturn(false);
 
-        $productFieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn(
+        $fieldConverter->convert('categories', 'audio_video_sales,loudspeakers,sony')->willReturn(
             ['categories' => ['audio_video_sales', 'loudspeakers', 'sony']]
         );
-        $productFieldConverter->convert('enabled', '1')->willReturn(['enabled' => true]);
+        $fieldConverter->convert('enabled', '1')->willReturn(['enabled' => true]);
 
         $converterRegistry->getConverter(Argument::any())->willReturn($converter);
 
@@ -161,7 +161,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
     function it_throws_an_exception_if_no_converters_found(
         $attrColumnsResolver,
         $assocColumnsResolver,
-        $productFieldConverter,
+        $fieldConverter,
         $converterRegistry,
         $fieldExtractor,
         $columnsMerger,
@@ -176,7 +176,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getAttributeType()->willReturn('sku');
 
-        $productFieldConverter->supportsColumn('sku')->willReturn(false);
+        $fieldConverter->supportsColumn('sku')->willReturn(false);
 
         $converterRegistry->getConverter(Argument::any())->willReturn(null);
 
@@ -190,7 +190,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $attrColumnsResolver,
         $assocColumnsResolver,
         $columnsMerger,
-        $productFieldConverter
+        $fieldConverter
     ) {
         $item = ['sku' => '1069978', 'enabled' => 1];
 
@@ -198,7 +198,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
-        $productFieldConverter->supportsColumn('sku')->willReturn(false);
+        $fieldConverter->supportsColumn('sku')->willReturn(false);
 
         $this->shouldThrow(new \LogicException('Unable to convert the given column "sku"'))->during(
             'convert',

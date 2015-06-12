@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Converter;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
@@ -12,7 +12,7 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFieldConverter
+class FieldConverter
 {
     /** @var AssociationColumnsResolver */
     protected $assocFieldResolver;
