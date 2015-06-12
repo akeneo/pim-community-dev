@@ -382,8 +382,8 @@ services:
         arguments:
             - '@security.context'
             - '@form.factory'
-            - '@pim_catalog.manager.product'
-            - '@pim_comment.manager.comment'
+            - '@pim_catalog.repository.product'
+            - '@pim_comment.repository.comment'
             - '@pim_catalog.saver.comment'
             - '@pim_comment.builder.comment'
             - '@pim_serializer'
