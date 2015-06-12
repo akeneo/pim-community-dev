@@ -3,8 +3,8 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
 class ProductAssociationStandardConverterSpec extends ObjectBehavior

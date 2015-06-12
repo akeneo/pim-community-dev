@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Manager\AttributeValuesResolver;

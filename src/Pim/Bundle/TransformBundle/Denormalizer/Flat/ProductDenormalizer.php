@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 
 /**
  * Product flat denormalizer

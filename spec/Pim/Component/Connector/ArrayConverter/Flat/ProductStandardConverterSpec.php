@@ -10,8 +10,8 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConv
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Prophecy\Argument;
 
 class ProductStandardConverterSpec extends ObjectBehavior

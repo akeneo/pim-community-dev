@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 
 class FieldNameBuilderSpec extends ObjectBehavior
 {

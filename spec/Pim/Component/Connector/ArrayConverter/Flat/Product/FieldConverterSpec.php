@@ -3,7 +3,7 @@
 namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 class FieldConverterSpec extends ObjectBehavior

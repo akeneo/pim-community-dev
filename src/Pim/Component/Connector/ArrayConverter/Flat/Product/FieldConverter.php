@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
 
 /**
