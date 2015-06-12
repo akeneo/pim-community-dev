@@ -171,14 +171,11 @@ class LocaleHelper
      * Get the language from a locale code
      *
      * @param string $code
-     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
      *
      * @return string
      */
-    public function getDisplayLanguage($code, $translateIn = null)
+    public function getDisplayLanguage($code)
     {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-
         return \Locale::getDisplayLanguage($code);
     }
 
@@ -186,14 +183,11 @@ class LocaleHelper
      * Get the region from a locale code
      *
      * @param string $code
-     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
      *
      * @return string
      */
-    public function getDisplayRegion($code, $translateIn = null)
+    public function getDisplayRegion($code)
     {
-        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
-
         return \Locale::getDisplayRegion($code);
     }
 

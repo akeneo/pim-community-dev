@@ -332,7 +332,7 @@ class MediaManager
                 $media->resetFile();
             } elseif (false !== strpos($file->getFilename(), $media->getOriginalFilename())) {
                 $originalFilename = $media->getOriginalFilename();
-            } elseif (!(null === $media->getOriginalFilename() || '' === $media->getOriginalFilename())) {
+            } elseif (null !== $media->getOriginalFilename() && '' !== $media->getOriginalFilename()) {
                 $originalFilename = $media->getOriginalFilename();
                 $media->resetFile();
             } else {
