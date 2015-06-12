@@ -170,7 +170,7 @@ class IndexCreator
     {
         $attributes = $this->getAttributeRepository()->findBy(
             ['useableAsGridFilter' => true],
-            ['created' => 'ASC'],
+            ['created'             => 'ASC'],
             self::MONGODB_INDEXES_LIMIT
         );
 
