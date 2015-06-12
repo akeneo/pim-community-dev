@@ -34,9 +34,9 @@ use Pim\Component\ReferenceData\Model\ReferenceDataInterface;
 class FixturesContext extends RawMinkContext
 {
     protected $locales = [
-        'english' => 'en_US',
-        'french'  => 'fr_FR',
-        'german'  => 'de_DE',
+        'english'    => 'en_US',
+        'french'     => 'fr_FR',
+        'german'     => 'de_DE',
         'english UK' => 'en_GB',
     ];
 
