@@ -93,12 +93,12 @@ Feature: Publish a product
 
   @javascript
   Scenario: Fail to delete attribute options if it's used by a published product
-    Given the following product:
-      | sku       | family  | name-en_US |
-      | my-jacket | jackets | Jackets    |
-    And the following attributes:
+    Given the following attributes:
       | code    | label   | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |
       | climate | Climate | multiselect | no       | no          |                   |               |                     |
+    And the following product:
+      | sku       | family  | name-en_US |
+      | my-jacket | jackets | Jackets    |
     And the following "climate" attribute options: Hot and Cold
     And the following product values:
       | product   | attribute | value | locale | scope |
