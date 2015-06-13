@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 
-class ProductAttributeFieldExtractorSpec extends ObjectBehavior
+class AttributeColumnInfoExtractorSpec extends ObjectBehavior
 {
     const ASSOC_TYPE_CLASS = 'Pim\Bundle\CatalogBundle\Entity\AssociationType';
     const ATTRIBUTE_CLASS  = 'Pim\Bundle\CatalogBundle\Entity\Attribute';
@@ -35,7 +35,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('bar');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
-        $this->extractAttributeFieldNameInfos('foo')->shouldReturn(
+        $this->extractColumnInfo('foo')->shouldReturn(
             [
                 'attribute'   => $attribute,
                 'locale_code' => null,
@@ -49,7 +49,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
     ) {
         $channelRepository->findOneByIdentifier('foo')->willReturn(null);
 
-        $this->extractAttributeFieldNameInfos('foo')->shouldReturn(null);
+        $this->extractColumnInfo('foo')->shouldReturn(null);
     }
 
     function it_returns_attribute_informations_from_field_name_with_localizable_attribute(
@@ -73,7 +73,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(true);
 
         // Test only localizable attribute
-        $this->extractAttributeFieldNameInfos('foo-en_US')->shouldReturn(
+        $this->extractColumnInfo('foo-en_US')->shouldReturn(
             [
                 'attribute'   => $attribute,
                 'locale_code' => 'en_US',
@@ -83,7 +83,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
 
         // Test localizable + scopable attribute
         $attribute->isScopable()->willReturn(true);
-        $this->extractAttributeFieldNameInfos('foo-en_US-ecommerce')->shouldReturn(
+        $this->extractColumnInfo('foo-en_US-ecommerce')->shouldReturn(
             [
                 'attribute'   => $attribute,
                 'locale_code' => 'en_US',
@@ -93,7 +93,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
 
         // Test localizable + scopable + price attribute
         $attribute->getBackendType()->willReturn('prices');
-        $this->extractAttributeFieldNameInfos('foo-en_US-ecommerce-EUR')->shouldReturn(
+        $this->extractColumnInfo('foo-en_US-ecommerce-EUR')->shouldReturn(
             [
                 'attribute'      => $attribute,
                 'locale_code'    => 'en_US',
@@ -104,7 +104,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
 
         // Test localizable + price attribute
         $attribute->isScopable()->willReturn(false);
-        $this->extractAttributeFieldNameInfos('foo-en_US-EUR')->shouldReturn(
+        $this->extractColumnInfo('foo-en_US-EUR')->shouldReturn(
             [
                 'attribute'      => $attribute,
                 'locale_code'    => 'en_US',
@@ -125,7 +125,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
         // Test only scopable attribute
-        $this->extractAttributeFieldNameInfos('foo-ecommerce')->shouldReturn(
+        $this->extractColumnInfo('foo-ecommerce')->shouldReturn(
             [
                 'attribute'   => $attribute,
                 'locale_code' => null,
@@ -135,7 +135,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
 
         // Test scopable + price attribute
         $attribute->getBackendType()->willReturn('prices');
-        $this->extractAttributeFieldNameInfos('foo-ecommerce-EUR')->shouldReturn(
+        $this->extractColumnInfo('foo-ecommerce-EUR')->shouldReturn(
             [
                 'attribute'      => $attribute,
                 'locale_code'    => null,
@@ -155,7 +155,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $attribute->getBackendType()->willReturn('prices');
         $attributeRepository->findOneByIdentifier('foo')->willReturn($attribute);
 
-        $this->extractAttributeFieldNameInfos('foo-USD')->shouldReturn(
+        $this->extractColumnInfo('foo-USD')->shouldReturn(
             [
                 'attribute'   => $attribute,
                 'locale_code' => null,
@@ -177,7 +177,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('sku')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "sku-fr_FR" is not well-formatted, attribute "sku" expects no locale, no scope, no currency'))
-            ->duringExtractAttributeFieldNameInfos('sku-fr_FR');
+            ->duringExtractColumnInfo('sku-fr_FR');
 
         // localizable without any locale
         $attribute->getCode()->willReturn('name');
@@ -187,7 +187,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('name')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "name" is not well-formatted, attribute "name" expects a locale, no scope, no currency'))
-            ->duringExtractAttributeFieldNameInfos('name');
+            ->duringExtractColumnInfo('name');
 
         // localizable, scopable and price without any currency
         $attribute->getCode()->willReturn('cost');
@@ -197,7 +197,7 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $attributeRepository->findOneByIdentifier('cost')->willReturn($attribute);
 
         $this->shouldThrow(new \InvalidArgumentException('The field "cost" is not well-formatted, attribute "cost" expects a locale, a scope, an optional currency'))
-            ->duringExtractAttributeFieldNameInfos('cost');
+            ->duringExtractColumnInfo('cost');
     }
 
     function it_throws_exception_when_the_field_name_is_not_consistent_with_the_channel_locale(
@@ -229,6 +229,6 @@ class ProductAttributeFieldExtractorSpec extends ObjectBehavior
         $channel->hasLocale($locale)->shouldBeCalled()->willReturn(false);
 
         $this->shouldThrow(new \InvalidArgumentException('The locale "de_DE" of the field "description-de_DE-mobile" is not available in scope "mobile"'))
-            ->duringExtractAttributeFieldNameInfos('description-de_DE-mobile');
+            ->duringExtractColumnInfo('description-de_DE-mobile');
     }
 }

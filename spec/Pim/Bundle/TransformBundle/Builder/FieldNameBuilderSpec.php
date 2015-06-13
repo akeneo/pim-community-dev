@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\TransformBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 
 class FieldNameBuilderSpec extends ObjectBehavior
 {
     function let(
         AssociationColumnsResolver $resolver,
-        ProductAttributeFieldExtractor $extractor
+        AttributeColumnInfoExtractor $extractor
     ) {
         $this->beConstructedWith($resolver, $extractor);
     }
@@ -28,7 +28,7 @@ class FieldNameBuilderSpec extends ObjectBehavior
 
     function it_resolves_attribute_info($extractor)
     {
-        $extractor->extractAttributeFieldNameInfos('field')->shouldBeCalled();
+        $extractor->extractColumnInfo('field')->shouldBeCalled();
         $this->extractAttributeFieldNameInfos('field');
     }
 }

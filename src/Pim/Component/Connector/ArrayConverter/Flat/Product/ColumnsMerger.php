@@ -2,8 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric
  *
@@ -28,13 +26,13 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttribu
  */
 class ColumnsMerger
 {
-    /** @var ProductAttributeFieldExtractor */
+    /** @var AttributeColumnInfoExtractor */
     protected $fieldExtractor;
 
     /**
-     * @param ProductAttributeFieldExtractor $fieldExtractor
+     * @param AttributeColumnInfoExtractor $fieldExtractor
      */
-    public function __construct(ProductAttributeFieldExtractor $fieldExtractor)
+    public function __construct(AttributeColumnInfoExtractor $fieldExtractor)
     {
         $this->fieldExtractor = $fieldExtractor;
     }
@@ -50,7 +48,7 @@ class ColumnsMerger
         $collectedMetrics = [];
         $collectedPrices = [];
         foreach ($row as $fieldName => $fieldValue) {
-            $attributeInfos = $this->fieldExtractor->extractAttributeFieldNameInfos($fieldName);
+            $attributeInfos = $this->fieldExtractor->extractColumnInfo($fieldName);
             if (null !== $attributeInfos) {
                 $attribute = $attributeInfos['attribute'];
                 if ('metric' === $attribute->getBackendType()) {
@@ -83,9 +81,9 @@ class ColumnsMerger
         $attribute = $attributeInfos['attribute'];
         $cleanField = $attribute->getCode();
         $cleanField .= (null === $attributeInfos['locale_code']) ?
-            '' : ProductAttributeFieldExtractor::FIELD_SEPARATOR.$attributeInfos['locale_code'];
+            '' : AttributeColumnInfoExtractor::FIELD_SEPARATOR.$attributeInfos['locale_code'];
         $cleanField .= (null === $attributeInfos['scope_code']) ?
-            '' : ProductAttributeFieldExtractor::FIELD_SEPARATOR.$attributeInfos['scope_code'];
+            '' : AttributeColumnInfoExtractor::FIELD_SEPARATOR.$attributeInfos['scope_code'];
 
         return $cleanField;
     }
@@ -130,7 +128,7 @@ class ColumnsMerger
                 sprintf(
                     '%s%s%s',
                     $metricData['data'],
-                    ProductAttributeFieldExtractor::UNIT_SEPARATOR,
+                    AttributeColumnInfoExtractor::UNIT_SEPARATOR,
                     $metricData['unit']
                 )
             );
@@ -158,11 +156,11 @@ class ColumnsMerger
             $collectedPrices[$cleanField][] = sprintf(
                 '%s%s%s',
                 $fieldValue,
-                ProductAttributeFieldExtractor::UNIT_SEPARATOR,
+                AttributeColumnInfoExtractor::UNIT_SEPARATOR,
                 $attributeInfos['price_currency']
             );
         } else {
-            $collectedPrices[$cleanField] = explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $fieldValue);
+            $collectedPrices[$cleanField] = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $fieldValue);
         }
 
         return $collectedPrices;
@@ -179,7 +177,7 @@ class ColumnsMerger
     protected function mergePriceData(array $resultRow, array $collectedPrices)
     {
         foreach ($collectedPrices as $fieldName => $prices) {
-            $resultRow[$fieldName] = implode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $prices);
+            $resultRow[$fieldName] = implode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $prices);
         }
 
         return $resultRow;

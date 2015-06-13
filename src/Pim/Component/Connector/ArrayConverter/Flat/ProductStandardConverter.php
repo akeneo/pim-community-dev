@@ -3,10 +3,10 @@
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -25,7 +25,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     /** @var ValueConverterRegistryInterface */
     protected $converterRegistry;
 
-    /** @var ProductAttributeFieldExtractor */
+    /** @var AttributeColumnInfoExtractor */
     protected $attrFieldExtractor;
 
     /** @var AttributeColumnsResolver */
@@ -47,7 +47,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     protected $optionalAssociationFields;
 
     /**
-     * @param ProductAttributeFieldExtractor  $attrFieldExtractor
+     * @param AttributeColumnInfoExtractor    $attrFieldExtractor
      * @param ValueConverterRegistryInterface $converterRegistry
      * @param AssociationColumnsResolver      $assocColumnsResolver
      * @param AttributeColumnsResolver        $attrColumnsResolver
@@ -56,7 +56,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      * @param ColumnsMapper                   $columnsMapper
      */
     public function __construct(
-        ProductAttributeFieldExtractor $attrFieldExtractor,
+        AttributeColumnInfoExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
@@ -193,7 +193,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertValue($column, $value)
     {
-        $attributeFieldInfo = $this->attrFieldExtractor->extractAttributeFieldNameInfos($column);
+        $attributeFieldInfo = $this->attrFieldExtractor->extractColumnInfo($column);
 
         if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
             $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());

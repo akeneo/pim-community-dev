@@ -4,11 +4,11 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 class ColumnsMergerSpec extends ObjectBehavior
 {
-    function let(ProductAttributeFieldExtractor $fieldExtractor)
+    function let(AttributeColumnInfoExtractor $fieldExtractor)
     {
         $this->beConstructedWith($fieldExtractor);
     }
@@ -20,8 +20,8 @@ class ColumnsMergerSpec extends ObjectBehavior
             'enabled' => '1',
             'categories' => 'tshirt,men'
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('enabled')->willReturn(null);
-        $fieldExtractor->extractAttributeFieldNameInfos('categories')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('enabled')->willReturn(null);
+        $fieldExtractor->extractColumnInfo('categories')->willReturn(null);
 
         $mergedRow = $row;
         $this->merge($row)->shouldReturn($mergedRow);
@@ -40,7 +40,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => null
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('name-fr_FR')->willReturn($attributeInfoData);
+        $fieldExtractor->extractColumnInfo('name-fr_FR')->willReturn($attributeInfoData);
         $name->getBackendType()->willReturn('text');
 
         $mergedRow = $row;
@@ -60,7 +60,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => null
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('weight')->willReturn($attributeInfoData);
+        $fieldExtractor->extractColumnInfo('weight')->willReturn($attributeInfoData);
         $weight->getCode()->willReturn('weight');
         $weight->getBackendType()->willReturn('metric');
 
@@ -81,7 +81,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => null
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('weight-fr_FR')->willReturn($attributeInfoData);
+        $fieldExtractor->extractColumnInfo('weight-fr_FR')->willReturn($attributeInfoData);
 
         $weight->getCode()->willReturn('weight');
         $weight->getBackendType()->willReturn('metric');
@@ -104,7 +104,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => null
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('weight')->willReturn($attributeInfoData);
+        $fieldExtractor->extractColumnInfo('weight')->willReturn($attributeInfoData);
 
         $attributeInfoUnit = [
             'attribute' => $weight,
@@ -112,7 +112,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => 'unit'
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('weight-unit')->willReturn($attributeInfoUnit);
+        $fieldExtractor->extractColumnInfo('weight-unit')->willReturn($attributeInfoUnit);
 
         $weight->getCode()->willReturn('weight');
         $weight->getBackendType()->willReturn('metric');
@@ -135,7 +135,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => null
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('weight-fr_FR')->willReturn($attributeInfoData);
+        $fieldExtractor->extractColumnInfo('weight-fr_FR')->willReturn($attributeInfoData);
 
         $attributeInfoUnit = [
             'attribute' => $weight,
@@ -143,7 +143,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'metric_unit' => 'unit'
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('weight-fr_FR-unit')->willReturn($attributeInfoUnit);
+        $fieldExtractor->extractColumnInfo('weight-fr_FR-unit')->willReturn($attributeInfoUnit);
 
         $weight->getCode()->willReturn('weight');
         $weight->getBackendType()->willReturn('metric');
@@ -165,7 +165,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'price_currency' => null
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('price-fr_FR')->willReturn($attributeInfoData);
+        $fieldExtractor->extractColumnInfo('price-fr_FR')->willReturn($attributeInfoData);
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
 
@@ -188,7 +188,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'price_currency' => 'EUR'
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('price-EUR')->willReturn($attributeInfoEur);
+        $fieldExtractor->extractColumnInfo('price-EUR')->willReturn($attributeInfoEur);
 
         $attributeInfoUsd = [
             'attribute' => $price,
@@ -196,7 +196,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'price_currency' => 'USD'
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('price-USD')->willReturn($attributeInfoUsd);
+        $fieldExtractor->extractColumnInfo('price-USD')->willReturn($attributeInfoUsd);
 
         $attributeInfoChf = [
             'attribute' => $price,
@@ -204,7 +204,7 @@ class ColumnsMergerSpec extends ObjectBehavior
             'scope_code' => null,
             'price_currency' => 'CHF'
         ];
-        $fieldExtractor->extractAttributeFieldNameInfos('price-CHF')->willReturn($attributeInfoChf);
+        $fieldExtractor->extractColumnInfo('price-CHF')->willReturn($attributeInfoChf);
 
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');

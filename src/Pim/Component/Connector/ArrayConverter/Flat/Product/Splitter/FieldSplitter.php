@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
  * Split fields
@@ -26,7 +26,7 @@ class FieldSplitter
      */
     public function splitUnitValue($value)
     {
-        return '' === $value ? [] : explode(ProductAttributeFieldExtractor::UNIT_SEPARATOR, $value);
+        return '' === $value ? [] : explode(AttributeColumnInfoExtractor::UNIT_SEPARATOR, $value);
     }
 
     /**
@@ -42,7 +42,7 @@ class FieldSplitter
     {
         $tokens = [];
         if ('' !== $value) {
-            $tokens = explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $value);
+            $tokens = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $value);
             array_walk($tokens, function (&$token) {
                $token = trim($token);
             });
@@ -61,6 +61,6 @@ class FieldSplitter
      */
     public function splitFieldName($field)
     {
-        return '' === $field ? [] : explode(ProductAttributeFieldExtractor::FIELD_SEPARATOR, $field);
+        return '' === $field ? [] : explode(AttributeColumnInfoExtractor::FIELD_SEPARATOR, $field);
     }
 }

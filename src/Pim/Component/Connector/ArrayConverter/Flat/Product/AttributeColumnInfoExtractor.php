@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor;
+namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
@@ -13,10 +13,8 @@ use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * TODO: rename!!
  */
-class ProductAttributeFieldExtractor
+class AttributeColumnInfoExtractor
 {
     const ARRAY_SEPARATOR = ',';
     const FIELD_SEPARATOR = '-';
@@ -72,7 +70,7 @@ class ProductAttributeFieldExtractor
      *
      * @return array|null
      */
-    public function extractAttributeFieldNameInfos($fieldName)
+    public function extractColumnInfo($fieldName)
     {
         if (!isset($this->fieldNameInfoCache[$fieldName]) && !in_array($fieldName, $this->excludedFieldNames)) {
             $explodedFieldName = explode(self::FIELD_SEPARATOR, $fieldName);

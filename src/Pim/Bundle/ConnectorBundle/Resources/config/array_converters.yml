@@ -21,7 +21,7 @@ parameters:
     pim_connector.array_converter.flat.product.association_columns_resolver.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver
     pim_connector.array_converter.flat.product.columns_merger.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger
     pim_connector.array_converter.flat.product.columns_mapper.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper
-    pim_connector.array_converter.flat.attribute_field_extractor.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
+    pim_connector.array_converter.flat.attribute_field_extractor.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
     pim_connector.array_converter.splitter.field.class:                            Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
 
 services:

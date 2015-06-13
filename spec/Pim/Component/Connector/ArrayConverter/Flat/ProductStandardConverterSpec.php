@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
@@ -17,7 +17,7 @@ use Prophecy\Argument;
 class ProductStandardConverterSpec extends ObjectBehavior
 {
     function let(
-        ProductAttributeFieldExtractor $fieldExtractor,
+        AttributeColumnInfoExtractor $fieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
@@ -85,11 +85,11 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $attribute4->getAttributeType()->willReturn('name');
         $attribute5->getAttributeType()->willReturn('release_date-ecommerce');
 
-        $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute1]);
-        $fieldExtractor->extractAttributeFieldNameInfos('categories')->willReturn(['attribute' => $attribute2]);
-        $fieldExtractor->extractAttributeFieldNameInfos('enabled')->willReturn(['attribute' => $attribute3]);
-        $fieldExtractor->extractAttributeFieldNameInfos('name')->willReturn(['attribute' => $attribute4]);
-        $fieldExtractor->extractAttributeFieldNameInfos('release_date-ecommerce')->willReturn(
+        $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute1]);
+        $fieldExtractor->extractColumnInfo('categories')->willReturn(['attribute' => $attribute2]);
+        $fieldExtractor->extractColumnInfo('enabled')->willReturn(['attribute' => $attribute3]);
+        $fieldExtractor->extractColumnInfo('name')->willReturn(['attribute' => $attribute4]);
+        $fieldExtractor->extractColumnInfo('release_date-ecommerce')->willReturn(
             ['attribute' => $attribute5]
         );
 
@@ -173,7 +173,7 @@ class ProductStandardConverterSpec extends ObjectBehavior
         $assocColumnsResolver->resolveAssociationColumns()->willReturn([]);
 
         $columnsMerger->merge($item)->willReturn($item);
-        $fieldExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['attribute' => $attribute]);
+        $fieldExtractor->extractColumnInfo('sku')->willReturn(['attribute' => $attribute]);
         $attribute->getAttributeType()->willReturn('sku');
 
         $fieldConverter->supportsColumn('sku')->willReturn(false);
