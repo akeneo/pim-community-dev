@@ -66,7 +66,10 @@ class PriceFilter extends AbstractAttributeFilter implements AttributeFilterInte
     ) {
         $this->checkLocaleAndScope($attribute, $locale, $scope, 'price');
         $this->checkValue($attribute, $value);
-        $value['data'] = (string) $value['data'];
+
+        if (Operators::IS_EMPTY !== $operator) {
+            $value['data'] = (float) $value['data'];
+        }
 
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $locale, $scope);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
