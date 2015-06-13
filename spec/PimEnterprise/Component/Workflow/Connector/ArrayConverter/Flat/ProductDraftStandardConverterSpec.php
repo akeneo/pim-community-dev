@@ -3,14 +3,14 @@
 namespace spec\PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 class ProductDraftStandardConverterSpec extends ObjectBehavior
 {
     function let(
         StandardArrayConverterInterface $productConverter,
-        ProductAttributeFieldExtractor $attributeExtractor
+        AttributeColumnInfoExtractor $attributeExtractor
     ) {
         $this->beConstructedWith($productConverter, $attributeExtractor);
     }
@@ -44,10 +44,10 @@ class ProductDraftStandardConverterSpec extends ObjectBehavior
         ];
 
 
-        $attributeExtractor->extractAttributeFieldNameInfos('sku')->willReturn(['ciyciy']);
-        $attributeExtractor->extractAttributeFieldNameInfos('name-fr_FR')->willReturn([]);
-        $attributeExtractor->extractAttributeFieldNameInfos('description-en_US-mobile')->willReturn([]);
-        $attributeExtractor->extractAttributeFieldNameInfos('length')->willReturn([]);
+        $attributeExtractor->extractColumnInfo('sku')->willReturn(['ciyciy']);
+        $attributeExtractor->extractColumnInfo('name-fr_FR')->willReturn([]);
+        $attributeExtractor->extractColumnInfo('description-en_US-mobile')->willReturn([]);
+        $attributeExtractor->extractColumnInfo('length')->willReturn([]);
 
         $productConverter->convert($values, [])->willReturn($convertedValues);
 
