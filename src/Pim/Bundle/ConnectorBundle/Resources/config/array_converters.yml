@@ -17,11 +17,11 @@ parameters:
 
     pim_connector.array_converter.flat.product.field_converter.class: Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter
 
-    pim_connector.array_converter.flat.attribute_field_extractor.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
     pim_connector.array_converter.flat.product.attribute_columns_resolver.class:   Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver
     pim_connector.array_converter.flat.product.association_columns_resolver.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver
     pim_connector.array_converter.flat.product.columns_merger.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger
     pim_connector.array_converter.flat.product.columns_mapper.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper
+    pim_connector.array_converter.flat.attribute_field_extractor.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
     pim_connector.array_converter.splitter.field.class:                            Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
 
 services:
@@ -134,7 +134,7 @@ services:
             - '@pim_connector.array_converter.splitter.field'
             - '@pim_connector.array_converter.flat.product.association_columns_resolver'
 
-    # resolvers
+    # columns resolvers
     pim_connector.array_converter.flat.product.attribute_columns_resolver:
         class: %pim_connector.array_converter.flat.product.attribute_columns_resolver.class%
         arguments:
@@ -151,12 +151,12 @@ services:
     pim_connector.array_converter.splitter.field:
         class: %pim_connector.array_converter.splitter.field.class%
 
-    # mergers
+    # columns mergers
     pim_connector.array_converter.flat.product.columns_merger:
         class: %pim_connector.array_converter.flat.product.columns_merger.class%
         arguments:
             - '@pim_connector.array_converter.flat.attribute_field_extractor'
 
-    # mappers
+    # columns mappers
     pim_connector.array_converter.flat.product.columns_mapper:
         class: %pim_connector.array_converter.flat.product.columns_mapper.class%

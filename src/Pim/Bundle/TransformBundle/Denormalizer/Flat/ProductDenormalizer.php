@@ -5,8 +5,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 
 /**
  * Product flat denormalizer
@@ -222,9 +222,9 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                         $this->associationClass,
                         $format,
                         [
-                            'entity' => $association,
+                            'entity'                => $association,
                             'association_type_code' => $associationTypeCode,
-                            'part' => $part
+                            'part'                  => $part
                         ] + $context
                     );
 

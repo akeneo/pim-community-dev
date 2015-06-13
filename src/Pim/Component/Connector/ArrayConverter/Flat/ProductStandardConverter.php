@@ -2,13 +2,13 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -51,7 +51,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      * @param ValueConverterRegistryInterface $converterRegistry
      * @param AssociationColumnsResolver      $assocColumnsResolver
      * @param AttributeColumnsResolver        $attrColumnsResolver
-     * @param FieldConverter           $fieldConverter
+     * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
      */

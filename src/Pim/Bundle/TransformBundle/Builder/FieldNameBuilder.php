@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Builder;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
 
 /**
  * Create field names for associations and product values
