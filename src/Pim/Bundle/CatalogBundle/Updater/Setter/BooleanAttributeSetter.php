@@ -60,7 +60,11 @@ class BooleanAttributeSetter extends AbstractAttributeSetter
         if (null === $value) {
             $value = $this->productBuilder->addProductValue($product, $attribute, $locale, $scope);
         }
-        $data = (bool) $data;
+
+        if (1 === $data || '1' === $data || 0 === $data || '0' === $data) {
+            $data = (bool) $data;
+        }
+
         $value->setData($data);
     }
 }
