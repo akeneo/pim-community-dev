@@ -57,17 +57,19 @@ define(
                         state: this.state.toJSON()
                     })
                 );
+                this.initializeDropZones();
 
                 if (this.state.get('currentPanel')) {
                     var currentPanel = this.extensions[this.state.get('currentPanel')];
-
-                    this.renderExtension(currentPanel);
+                    this.renderExtension(currentPanel)
+                    this.getZone('panel-content').appendChild(currentPanel.el);
                 }
 
                 var selectorExtension = this.extensions.selector;
-                console.log(this.code, 'triggered the rendering of', selectorExtension.code);
-                this.getParent().$('>header').append(selectorExtension.render().$el);
+                this.renderExtension(selectorExtension);
+                this.getParent().$('>header').append(selectorExtension.$el);
 
+                this.delegateEvents();
                 this.resize();
 
                 return this;

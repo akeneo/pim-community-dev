@@ -67,7 +67,7 @@ define(
                         var field = FieldManager.getVisibleField(code);
                         if (field) {
                             copyField.setField(field);
-                            copyField.field.addElement('comparison', 'copy', copyField);
+                            copyField.field.addElement('comparison', this.code, copyField);
                             copyField.field.render();
                         }
 
@@ -140,7 +140,7 @@ define(
 
                 _.each(this.copyFields, _.bind(function (copyField) {
                     if (copyField.field) {
-                        copyField.field.removeElement('comparison', 'copy');
+                        copyField.field.removeElement('comparison', this.code);
                     }
                 }, this));
 
