@@ -67,7 +67,7 @@ define(
 
                 _.each(this.extensions, _.bind(function (extension) {
                     extension.on('comparison:change', _.bind(this.comparisonChange, this));
-                    extension.on('attribute-group:changed', _.bind(this.render, this));
+                    extension.on('attribute-group:change', _.bind(this.render, this));
                     extension.on('add-attribute:add', _.bind(this.addAttributes, this));
                 }, this));
 

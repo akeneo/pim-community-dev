@@ -472,13 +472,19 @@ class Edit extends Form
         if (null !== $link = $fieldContainer->find('css', 'a.select2-choice')) {
             $link->click();
 
-            $this->getSession()->wait(1000);
+            $item = $this->spin(function () use ($value) {
+                $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
 
-            $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
-            // Select the value in the displayed dropdown
-            if (null !== $item) {
-                return $item->click();
-            }
+                if (null === $item) {
+                    return false;
+                } else {
+                    return $item;
+                }
+
+                echo "retry find select item" . PHP_EOL;
+            });
+
+            return $item->click();
         }
 
         throw new ExpectationException(
@@ -594,13 +600,20 @@ class Edit extends Form
         if (null !== $select) {
             if (null !== $link = $field->find('css', 'a.select2-choice')) {
                 $link->click();
-                $this->getSession()->wait(5000, '!$.active');
 
-                if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $select))) {
-                    $item->click();
+                $item = $this->spin(function () use ($select) {
+                    $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
 
-                    return;
-                }
+                    if (null === $item) {
+                        return false;
+                    } else {
+                        return $item;
+                    }
+
+                    echo "retry find select item" . PHP_EOL;
+                });
+
+                return $item->click();
             }
 
             throw new \InvalidArgumentException(
@@ -618,13 +631,22 @@ class Edit extends Form
      */
     public function findValidationTooltip($text)
     {
-        return $this->find(
-            'css',
-            sprintf(
-                '.validation-errors span:contains("%s")',
-                $text
-            )
-        );
+        return $this->spin(function () use ($text) {
+            $tooltip = $this->find(
+                'css',
+                sprintf(
+                    '.validation-errors span:contains("%s")',
+                    $text
+                )
+            );
+
+            if (null !== $tooltip) {
+                return $tooltip;
+            } else {
+                return false;
+            }
+        });
+
     }
 
     /**

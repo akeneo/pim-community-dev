@@ -95,7 +95,7 @@ define(
                     .append($('<span>', { 'class': 'caret' }))
                     .removeAttr('style');
 
-                $menu.find('input[type="search"]').width(198);
+                $menu.find('input[type="search"]').width(200);
 
                 var $content = $menu.find('.ui-multiselect-checkboxes');
                 if (!$content.html()) {

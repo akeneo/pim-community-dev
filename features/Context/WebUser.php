@@ -233,10 +233,51 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->openPanel('History');
-        $this->wait();
+        $expandButton = $this->spin(function () {
+            return $this->getCurrentPage()->find('css', '.expand-history');
+        });
 
-        $this->getCurrentPage()->find('css', '.expand-history')->click();
+        $expandButton->click();
         $this->wait();
+    }
+
+    /**
+     * TODO : remove this after https://github.com/akeneo/pim-community-dev/pull/2855 merge !
+     * @param callable $callable
+     * @param int      $wait
+     * @param string   $message
+     *
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function spin($callable, $wait = 60, $message = 'no message')
+    {
+        for ($i = 0; $i < $wait; $i++) {
+            try {
+                if ($result = $callable($this)) {
+                    return $result;
+                }
+            } catch (\Exception $e) {
+                // do nothing
+            }
+
+            sleep(1);
+        }
+
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3);
+
+        $messagePattern = 'Timeout thrown by %s::%s()' . PHP_EOL
+            . '%s, line %d' . PHP_EOL
+            . 'message : %s';
+
+        throw new \Exception(sprintf($messagePattern,
+            $backtrace[1]['class'],
+            $backtrace[1]['function'],
+            $backtrace[1]['file'],
+            $backtrace[1]['line'],
+            $message
+        ));
     }
 
     /**

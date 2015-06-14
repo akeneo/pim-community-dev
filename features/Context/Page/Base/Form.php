@@ -620,10 +620,13 @@ class Form extends Base
 
                 $this->getSession()->wait(5000, '!$.active');
 
-                // Select the value in the displayed dropdown
-                if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
-                    $item->click();
-                }
+                $field = $this->spin(function () use ($value) {
+                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
+                });
+
+                $field->click();
+
+                return;
             }
 
             throw new \InvalidArgumentException(
