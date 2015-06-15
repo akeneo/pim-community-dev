@@ -542,8 +542,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
-        $datePattern     = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
-        $operator        = false;
+
+        $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
+        $operator    = false;
 
         $matches = [];
         if (preg_match($datePattern, $value, $matches)) {
