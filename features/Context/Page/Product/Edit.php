@@ -448,14 +448,18 @@ class Edit extends Form
      */
     protected function fillTextAreaField(NodeElement $fieldContainer, $value)
     {
-        $field = $fieldContainer->find('css', 'div.field-input > textarea');
+        $this->spin(function () use ($value, $fieldContainer) {
+            $field = $fieldContainer->find('css', 'div.field-input > textarea');
 
-        if (!$field || !$field->isVisible()) {
-            // the textarea can be hidden (display=none) when using WYSIWYG
-            $field = $fieldContainer->find('css', 'div.note-editor > div.note-editable');
-        }
+            if (!$field || !$field->isVisible()) {
+                // the textarea can be hidden (display=none) when using WYSIWYG
+                $field = $fieldContainer->find('css', 'div.note-editor > .note-editable');
+            }
 
-        $field->setValue($value);
+            $field->setValue($value);
+
+            return ($field->getValue() === $value || $field->getHTML() === $value);
+        });
     }
 
     /**
@@ -472,15 +476,7 @@ class Edit extends Form
             $link->click();
 
             $item = $this->spin(function () use ($value) {
-                $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
-
-                if (null === $item) {
-                    return false;
-                } else {
-                    return $item;
-                }
-
-                echo "retry find select item" . PHP_EOL;
+                return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
             });
 
             return $item->click();
@@ -518,7 +514,10 @@ class Edit extends Form
             $link->click();
             $this->getSession()->wait(1000);
 
-            $item = $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
+            $item = $this->spin(function () use ($value) {
+                return $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
+            });
+
             // Select the value in the displayed dropdown
             if (null !== $item) {
                 $item->click();
@@ -594,31 +593,25 @@ class Edit extends Form
         }
 
         $field = $label->getParent()->find('css', 'div.field-input');
-        $this->fillTextField($label, $text);
-
         if (null !== $select) {
             if (null !== $link = $field->find('css', 'a.select2-choice')) {
                 $link->click();
 
                 $item = $this->spin(function () use ($select) {
-                    $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
-
-                    if (null === $item) {
-                        return false;
-                    } else {
-                        return $item;
-                    }
-
-                    echo "retry find select item" . PHP_EOL;
+                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $select));
                 });
-
-                return $item->click();
             }
 
-            throw new \InvalidArgumentException(
-                sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
-            );
+            if (!$item) {
+                throw new \InvalidArgumentException(
+                    sprintf('Could not find select2 widget inside %s', $field->getParent()->getHtml())
+                );
+            }
+
+            $item->click();
         }
+
+        $this->fillTextField($label, $text);
     }
 
     /**
@@ -631,21 +624,14 @@ class Edit extends Form
     public function findValidationTooltip($text)
     {
         return $this->spin(function () use ($text) {
-            $tooltip = $this->find(
+            return $this->find(
                 'css',
                 sprintf(
                     '.validation-errors span:contains("%s")',
                     $text
                 )
             );
-
-            if (null !== $tooltip) {
-                return $tooltip;
-            } else {
-                return false;
-            }
         });
-
     }
 
     /**
@@ -815,7 +801,12 @@ class Edit extends Form
         }
 
         $textarea->setValue($message);
-        $replyBox->pressButton('Reply');
+
+        $this->spin(function () use ($replyBox) {
+            $replyBox->find('css', '.send-comment')->click();
+
+            return true;
+        });
     }
 
     /**

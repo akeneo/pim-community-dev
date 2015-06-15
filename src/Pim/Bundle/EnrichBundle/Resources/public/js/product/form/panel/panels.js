@@ -31,10 +31,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                _.each(this.extensions, _.bind(function (extension) {
-                    extension.on('panel:register', _.bind(this.registerPanel, this));
-                }, this));
-
+                this.onExtensions('panel:register', _.bind(this.registerPanel, this));
                 this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);

@@ -62,7 +62,7 @@ define([
 
                 return Field.prototype.renderCopyInput.apply(this, arguments);
             },
-            updateModel: function (event) {
+            updateModel: function () {
                 if (!this.isReady()) {
                     Dialog.alert(_.__(
                         'pim_enrich.entity.product.info.already_in_upload',
@@ -70,7 +70,10 @@ define([
                     ));
                 }
 
-                var input = event.currentTarget;
+                var input = this.$('.edit input[type="file"]').get(0);
+                if (!input || 0 === input.files.length) {
+                    return;
+                }
 
                 var formData = new FormData();
                 formData.append('file', input.files[0]);

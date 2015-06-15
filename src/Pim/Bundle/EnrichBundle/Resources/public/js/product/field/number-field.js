@@ -22,14 +22,23 @@ define([
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'number',
             events: {
-                'change input': 'updateModel'
+                'change input[type="text"]:first': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
-            updateModel: function (event) {
-                var data = event.currentTarget.value;
-                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+            updateModel: function () {
+                var data = this.$('input').get(0).value;
+
+                if ('' !== data) {
+                    var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
+
+                    if (!isNaN(numericValue)) {
+                        data = numericValue;
+                    }
+                } else {
+                    data =  AttributeManager.getEmptyValue(this.attribute);
+                }
 
                 this.setCurrentValue(data);
             }

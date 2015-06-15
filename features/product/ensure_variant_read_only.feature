@@ -3,7 +3,7 @@ Feature: Disable attribute fields updated by a variant group
   As a product manager
   I need should not be able to edit an attributes owned by a variant group
 
-  @skip-pef @javascript
+  @javascript
   Scenario: Successfully display a readonly form for a product in a variant group
     Given the "default" catalog configuration
     And the following attributes:

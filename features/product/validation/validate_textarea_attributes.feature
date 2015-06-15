@@ -8,11 +8,11 @@ Feature: Validate textarea attributes of a product
     Given the "default" catalog configuration
     And the following attributes:
       | code             | label-en_US     | type     | scopable | max_characters | wysiwyg_enabled |
-      | info             | Info            | textarea | no       | 5              | no              |
-      | description      | Description     | textarea | yes      | 5              | no              |
       | long_info        | Longinfo        | textarea | no       | 10             | yes             |
       | long_description | Longdescription | textarea | yes      | 10             | yes             |
       | long_text        | Longtext        | textarea | no       |                | yes             |
+      | info             | Info            | textarea | no       | 5              | no              |
+      | description      | Description     | textarea | yes      | 5              | no              |
     And the following family:
       | code | label-en_US | attributes                                                     |
       | baz  | Baz         | sku, info, long_info, description, long_description, long_text |
@@ -41,6 +41,7 @@ Feature: Validate textarea attributes of a product
     Then I should see validation tooltip "This value is too long. It should have 10 characters or less."
     And there should be 1 error in the "Other" tab
 
+  #To pass this scenario your navigator have to be in front (wysiwyg related)
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
     Given I switch the scope to "ecommerce"
     And I change the Longdescription to "information"

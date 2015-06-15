@@ -12,7 +12,6 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     And I am logged in as "Julia"
     And I am on the "boots" product page
 
-  @skip-pef
   Scenario: Sucessfully add a new option to a simple select attribute
     Given I visit the "Sizes" group
     And I add a new option to the "Size" attribute

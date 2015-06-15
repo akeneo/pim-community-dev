@@ -44,9 +44,9 @@ define(
             configure: function () {
                 _.bindAll(this, 'render', 'unbindEvents', 'linkClicked', 'beforeUnload');
 
-                this.listenTo(this.getRoot().model, 'all', this.collectState);
-                this.listenTo(this.getRoot().model, 'all', this.render);
-                this.listenTo(mediator, 'entity:form:edit:update_state', this.render);
+                this.listenTo(this.getRoot().model, 'all', _.bind(this.collectState, this));
+                this.listenTo(this.getRoot().model, 'all', _.bind(this.render, this));
+                this.listenTo(mediator, 'entity:form:edit:update_state', _.bind(this.render, this));
 
                 mediator.on('product:action:post_update', _.bind(function (data) {
                     this.state = JSON.stringify(data);
@@ -58,12 +58,12 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             bindEvents: function () {
-                $(window).on('beforeunload', this.beforeUnload);
-                $(this.linkSelector).off('click').on('click', this.linkClicked);
+                $(window).on('beforeunload', _.bind(this.beforeUnload, this));
+                $(this.linkSelector).off('click').on('click', _.bind(this.linkClicked, this));
             },
             unbindEvents: function () {
                 $(window).off('beforeunload', this.beforeUnload);
-                $(this.linkSelector).off('click', this.linkClicked);
+                $(this.linkSelector).off('click', _.bind(this.linkClicked, this));
             },
             render: function () {
                 this.collectState();
@@ -73,7 +73,7 @@ define(
                     })
                 ).css('opacity', this.hasModelChanged() ? 1 : 0);
 
-                this.getRoot().$el.one('change', this.render);
+                this.getRoot().$el.one('change', _.bind(this.render, this));
 
                 return this;
             },

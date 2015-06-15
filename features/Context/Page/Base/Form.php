@@ -464,6 +464,7 @@ class Form extends Base
     protected function extractLabelElement($field, $element)
     {
         $subLabelContent = null;
+        $channel         = null;
         $labelContent    = $field;
 
         if (false !== strpbrk($field, '€$')) {
@@ -473,15 +474,29 @@ class Form extends Base
         }
 
         if ($element) {
-            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            $label = $this->spin(function () use ($element, $labelContent) {
+                return $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            });
         } else {
-            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            $labeParts = explode(' ', $labelContent);
+            $channel   = in_array(reset($labeParts), ['mobile', 'ecommerce', 'print', 'tablet']) ?
+                reset($labeParts) :
+                null;
+
+            if (null !== $channel) {
+                $labelContent = substr($labelContent, strlen($channel . ' '));
+            }
+
+            $label = $this->spin(function () use ($labelContent) {
+                return $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            });
         }
 
-        if (! $label) {
+        if (!$label) {
             $label = new \stdClass();
         }
 
+        $label->channel         = $channel;
         $label->labelContent    = $labelContent;
         $label->subLabelContent = $subLabelContent;
 
@@ -500,8 +515,12 @@ class Form extends Base
      */
     protected function getFieldType($label)
     {
-        if (null === $label || false === $label instanceof NodeElement) {
+        if (null === $label || !($label instanceof NodeElement)) {
             return null;
+        }
+
+        if (null !== $label->subLabelContent) {
+            return 'compound';
         }
 
         if ($label->hasAttribute('for')) {
@@ -689,6 +708,10 @@ class Form extends Base
      */
     protected function fillTextField(NodeElement $label, $value)
     {
+        if (!$label->getAttribute('for') && null !== $label->channel) {
+            $label = $label->getParent()->find('css', sprintf('[data-scope="%s"] label', $label->channel));
+        }
+
         $for   = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
 

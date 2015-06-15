@@ -24,7 +24,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'simple-select',
             events: {
-                'change input': 'updateModel',
+                'change input[type="hidden"].select-field:first': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
             getTemplateContext: function () {
@@ -90,8 +90,8 @@ define(
                     )
                 ).promise();
             },
-            updateModel: function (event) {
-                var data = event.currentTarget.value;
+            updateModel: function () {
+                var data = this.$('input[type="hidden"].select-field').get(0).value;
                 data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
 
                 this.setCurrentValue(data);

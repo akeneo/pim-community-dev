@@ -29,9 +29,7 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                _.each(this.extensions, _.bind(function (extension) {
-                    extension.on('tab:register', _.bind(this.registerTab, this));
-                }, this));
+                this.onExtensions('tab:register',  _.bind(this.registerTab, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

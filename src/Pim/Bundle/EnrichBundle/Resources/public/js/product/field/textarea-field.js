@@ -25,7 +25,8 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'textarea',
             events: {
-                'change textarea': 'updateModel'
+                'change textarea': 'updateModel',
+                'blur textarea': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
@@ -46,7 +47,11 @@ define(
                 }
             },
             updateModel: function () {
-                var data = this.$('textarea').code();
+                if (this.attribute.wysiwyg_enabled) {
+                    var data = this.$('textarea').code();
+                } else {
+                    var data = this.$('textarea:first').text();
+                }
                 data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
 
                 this.setCurrentValue(data);
@@ -54,6 +59,8 @@ define(
             setFocus: function () {
                 if (this.attribute.wysiwyg_enabled) {
                     this.$('textarea:first').summernote('focus');
+                } else {
+                    this.$('textarea:first').focus();
                 }
             }
         });

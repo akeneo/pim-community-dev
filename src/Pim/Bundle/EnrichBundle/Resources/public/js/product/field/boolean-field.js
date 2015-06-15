@@ -14,7 +14,7 @@ define(
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'boolean',
         events: {
-            'change input': 'updateModel'
+            'change input[type="checkbox"]:first': 'updateModel'
         },
         renderInput: function (context) {
             return this.fieldTemplate(context);
@@ -22,8 +22,9 @@ define(
         postRender: function () {
             this.$('.switch').bootstrapSwitch();
         },
-        updateModel: function (event) {
-            var data = event.currentTarget.checked;
+        updateModel: function () {
+            var data = this.$('input[type="checkbox"]').get(0).checked;
+
             this.setCurrentValue(data);
         }
     });

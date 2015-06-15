@@ -73,6 +73,7 @@ define(
 
                     this.delegateEvents();
                     this.renderExtensions();
+                    this.getParent().resize();
                 }
 
                 return this;
@@ -125,6 +126,9 @@ define(
                 }
                 if (attribute.scopable) {
                     info = '<span>' + key.shift() + '</span>' + info;
+                }
+                if (0 < key.length) {
+                    info = key.join(' ') + info;
                 }
                 if (info) {
                     info = '<span class="attribute-info">' + info + '</span>';

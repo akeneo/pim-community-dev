@@ -4,7 +4,6 @@ Feature: Display the product history
   As a product manager
   I need to have access to a product history
 
-  @skip-pef
   Scenario: Display product updates
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
@@ -18,9 +17,9 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property | value       |
-      | 1       | sku      | sandals-001 |
+      | 1       | SKU      | sandals-001 |
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3420 @skip-pef
+  @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when a linked attribute option is removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -32,17 +31,18 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property           | value      |
-      | 1       | weather_conditions | cold,snowy |
+      | 1       | Weather conditions | cold,snowy |
     When I edit the "weather_conditions" attribute
     And I visit the "Values" tab
     And I remove the "snowy" option
+    And I confirm the deletion
     And I save the attribute
     And I edit the "boots" product
     When I open the history
     Then there should be 1 updates
     And I should see history:
       | version | property           | value      |
-      | 1       | weather_conditions | cold,snowy |
+      | 1       | Weather conditions | cold,snowy |
 
   Scenario: Update product history when a linked category is removed
     Given a "footwear" catalog configuration
@@ -88,7 +88,7 @@ Feature: Display the product history
       | version | property   | value    |
       | 2       | categories | men_2014 |
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3420
+  @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when a linked attribute is removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -100,7 +100,7 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property     | value    |
-      | 1       | manufacturer | Converse |
+      | 1       | Manufacturer | Converse |
     When I edit the "manufacturer" attribute
     And I press the "Delete" button
     And I confirm the deletion
@@ -111,7 +111,7 @@ Feature: Display the product history
       | version | property     | value    |
       | 1       | manufacturer | Converse |
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3420
+  @jira https://akeneo.atlassian.net/browse/PIM-3420
   Scenario: Update product history when multiple linked attributes are removed
     Given a "footwear" catalog configuration
     And the following product:
@@ -123,8 +123,8 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property           | value      |
-      | 1       | weather_conditions | cold,snowy |
-      | 1       | comment            | nice boots |
+      | 1       | Weather conditions | cold,snowy |
+      | 1       | Comment            | nice boots |
     When I edit the "weather_conditions" attribute
     And I press the "Delete" button
     And I confirm the deletion
@@ -133,13 +133,13 @@ Feature: Display the product history
     And I confirm the deletion
     And I edit the "boots" product
     When I open the history
-    Then there should be 1 updates
+    Then there should be 1 update
     And I should see history:
       | version | property           | value      |
       | 1       | weather_conditions | cold,snowy |
       | 1       | comment            | nice boots |
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3628
+  @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product prices
     Given a "footwear" catalog configuration
     And the following product:
@@ -151,29 +151,30 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property  | value |
-      | 1       | price-EUR | 10.00 |
-      | 1       | price-USD | 20.00 |
+      | 1       | Price EUR | 10.00 |
+      | 1       | Price USD | 20.00 |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
-    And I change the "USD Price" to "19"
+    And I change the "Price" to "19 USD"
     And I save the product
     When I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property  | value |
-      | 2       | price-USD | 19.00 |
+      | 2       | Price USD | 19.00 |
     When I visit the "Attributes" tab
     And I visit the "Marketing" group
     And I remove the "Price" attribute
+    And I confirm the deletion
     And I save the product
     When I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property  | value |
-      | 3       | price-EUR |       |
-      | 3       | price-USD |       |
+      | 3       | Price EUR |       |
+      | 3       | Price USD |       |
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3628
+  @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product metric
     Given a "footwear" catalog configuration
     And the following product:
@@ -185,8 +186,8 @@ Feature: Display the product history
     Then there should be 1 update
     And I should see history:
       | version | property    | value      |
-      | 1       | length      | 30         |
-      | 1       | length-unit | CENTIMETER |
+      | 1       | Length      | 30         |
+      | 1       | Length unit | CENTIMETER |
     When I visit the "Attributes" tab
     And I change the "Length" to "35 CENTIMETER"
     And I save the product
@@ -194,18 +195,19 @@ Feature: Display the product history
     Then there should be 2 updates
     And I should see history:
       | version | property | value   |
-      | 2       | length   | 35      |
+      | 2       | Length   | 35      |
     When I visit the "Attributes" tab
     And I remove the "Length" attribute
+    And I confirm the deletion
     And I save the product
     When I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property    | value |
-      | 3       | length      |       |
-      | 3       | length-unit |       |
+      | 3       | Length      |       |
+      | 3       | Length unit |       |
 
-  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3628
+  @jira https://akeneo.atlassian.net/browse/PIM-3628
   Scenario: Update product history when updating product media
     Given a "footwear" catalog configuration
     And a "boots" product
@@ -213,19 +215,19 @@ Feature: Display the product history
     When I edit the "boots" product
     And I add available attribute Side view
     And I visit the "Media" group
-    And I attach file "SNKRS-1R.png" to "side_view"
+    And I attach file "SNKRS-1R.png" to "Side view"
     And I save the product
     When I open the history
     Then there should be 2 updates
     And I should see history:
       | version | property  | value           |
-      | 2       | side_view | .*SNKRS-1R\.png |
+      | 2       | Side view | .*SNKRS-1R\.png |
     When I visit the "Attributes" tab
     And I visit the "Media" group
-    And I remove the "side_view" file
+    And I remove the "Side view" file
     And I save the product
     When I open the history
     Then there should be 3 updates
     And I should see history:
       | version | property  | value |
-      | 3       | side_view |       |
+      | 3       | Side view |       |
