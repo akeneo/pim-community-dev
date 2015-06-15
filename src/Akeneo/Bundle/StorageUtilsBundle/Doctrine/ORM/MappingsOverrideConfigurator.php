@@ -18,7 +18,8 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  * This class is largely based on the Sylius project's class
  * Sylius/Bundle/ResourceBundle/EventListener/LoadORMMetadataSubscriber.php
  *
- * Original authors are Ivan Molchanov <ivan.molchanov@opensoftdev.ru> and Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
+ * Original authors are Ivan Molchanov <ivan.molchanov@opensoftdev.ru>
+ * and Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
  */
 class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterface
 {

@@ -18,7 +18,8 @@ use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo;
  * This class is largely based on the Sylius project's class
  * Sylius/Bundle/ResourceBundle/EventListener/LoadODMMetadataSubscriber.php
  *
- * Original authors are Ivannis Suárez Jérez <ivannis.suarez@gmail.com> and Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
+ * Original authors are Ivannis Suárez Jérez <ivannis.suarez@gmail.com>
+ * and Paweł Jędrzejewski <pjedrzejewski@sylius.pl>
  */
 class MappingsOverrideConfigurator implements MappingsOverrideConfiguratorInterface
 {
