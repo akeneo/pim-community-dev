@@ -8,6 +8,7 @@ use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Page\Base\Base;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -654,9 +655,15 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->currentPage = $page;
 
+        /** @var Base $page */
         $page = $this->getCurrentPage()->open($options);
-        $this->loginIfRequired();
-        $page->verifyAfterLogin();
+
+        // spin function to deal with invalid CSRF problems
+        $this->getMainContext()->spin(function () use ($page) {
+            $this->loginIfRequired();
+
+            return $page->verifyAfterLogin();
+        }, 30);
         $this->wait();
 
         return $page;

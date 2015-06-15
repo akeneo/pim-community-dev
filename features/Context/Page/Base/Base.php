@@ -5,6 +5,7 @@ namespace Context\Page\Base;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -17,6 +18,8 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class Base extends Page
 {
+    use SpinCapableTrait;
+
     protected $elements = [
         'Dialog'         => ['css' => 'div.modal'],
         'Title'          => ['css' => '.navbar-title'],
@@ -32,6 +35,7 @@ class Base extends Page
      */
     public function verifyAfterLogin()
     {
+        return true;
     }
 
     /**
@@ -339,43 +343,5 @@ class Base extends Page
         }
 
         return $listItem;
-    }
-
-    /**
-     * @param callable $callable
-     * @param int      $wait
-     * @param string   $message
-     *
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function spin($callable, $wait = 60, $message = 'no message')
-    {
-        for ($i = 0; $i < $wait; $i++) {
-            try {
-                if ($result = $callable($this)) {
-                    return $result;
-                }
-            } catch (\Exception $e) {
-                // do nothing
-            }
-
-            sleep(1);
-        }
-
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 3);
-
-        $messagePattern = 'Timeout thrown by %s::%s()' . PHP_EOL
-            . '%s, line %d' . PHP_EOL
-            . 'message : %s';
-
-        throw new \Exception(sprintf($messagePattern,
-            $backtrace[1]['class'],
-            $backtrace[1]['function'],
-            $backtrace[1]['file'],
-            $backtrace[1]['line'],
-            $message
-        ));
     }
 }

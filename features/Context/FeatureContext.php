@@ -22,6 +22,8 @@ use Symfony\Component\Yaml\Parser;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
+    use SpinCapableTrait;
+
     /** @var KernelInterface */
     protected $kernel;
 
@@ -377,35 +379,5 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getMailRecorder()
     {
         return $this->getContainer()->get('pim_enrich.mailer.mail_recorder');
-    }
-
-    /**
-     * @param callable $callable
-     * @param int      $wait
-     *
-     * @throws \Exception
-     *
-     * @return bool
-     */
-    public function spin($callable, $wait = 60)
-    {
-        for ($i = 0; $i < $wait; $i++) {
-            try {
-                if ($result = $callable($this)) {
-                    return $result;
-                }
-            } catch (\Exception $e) {
-                // do nothing
-            }
-
-            sleep(1);
-        }
-
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
-
-        throw new \Exception(
-            "Timeout thrown by ".$backtrace[1]['class']."::".$backtrace[1]['function']."()\n".
-            $backtrace[1]['file'].", line ".$backtrace[1]['line']
-        );
     }
 }
