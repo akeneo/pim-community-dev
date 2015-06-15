@@ -1,0 +1,60 @@
+datagrid:
+    asset-grid:
+        options:
+            entityHint: asset
+        source:
+            type: pimee_datasource_asset
+            entity: 'PimEnterprise\Component\ProductAsset\Model\Asset'
+            repository_method: createAssetDatagridQueryBuilder
+            repository_parameters:
+                - currentUser
+        columns:
+            references:
+                label:         pimee_product_asset.thumbnail.label
+                type:          asset_thumbnail
+                template:      PimEnterpriseProductAssetBundle:Property:thumbnail.html.twig
+                frontend_type: html
+                selector:      asset_thumbnail
+            code:
+                type: field
+                frontend_type: string
+                label: pimee_product_asset.code.label
+            description:
+                type: field
+                frontend_type: string
+                label: pimee_product_asset.description.label
+            enabled:
+                label:         pimee_product_asset.status.label
+                type:          twig
+                template:      PimDataGridBundle:Property:enabled.html.twig
+                frontend_type: html
+            endOfUseAt:
+                type: field
+                frontend_type: datetime
+                label: pimee_product_asset.endOfUse.label
+            createdAt:
+                type: field
+                frontend_type: datetime
+                label: pimee_product_asset.createdAt.label
+            updatedAt:
+                type: field
+                frontend_type: datetime
+                label: pimee_product_asset.updatedAt.label
+        properties:
+            id: ~
+        sorters:
+            columns:
+                code:
+                    data_name: pa.code
+                description:
+                    data_name: pa.description
+                enabled:
+                    data_name: pa.enabled
+                endOfUseAt:
+                    data_name: pa.endOfUseAt
+                createdAt:
+                    data_name: pa.createdAt
+                updatedAt:
+                    data_name: pa.updatedAt
+            default:
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

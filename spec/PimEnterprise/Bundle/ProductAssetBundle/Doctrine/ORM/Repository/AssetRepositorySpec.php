@@ -86,4 +86,14 @@ class AssetRepositorySpec extends ObjectBehavior
 
         $this->findBySearch('my-search', ['limit' => 15, 'page' => 3]);
     }
+
+    function it_creates_asset_query_builder($em, QueryBuilder $qb)
+    {
+        $em->createQueryBuilder()->willReturn($qb);
+
+        $qb->select('pa, pa.createdAt as createdAt, pa.updatedAt as updatedAt')->willReturn($qb);
+        $qb->from('PimEnterprise\Component\ProductAsset\Model\Asset', 'pa', 'pa.id')->willReturn($qb);
+
+        $this->createAssetDatagridQueryBuilder([]);
+    }
 }

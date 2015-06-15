@@ -40,7 +40,7 @@ class Asset implements AssetInterface
     protected $references;
 
     /** @var bool */
-    protected $isEnabled;
+    protected $enabled;
 
     /** @var \Datetime */
     protected $endOfUseAt;
@@ -57,7 +57,7 @@ class Asset implements AssetInterface
     public function __construct()
     {
         $this->references = new ArrayCollection();
-        $this->isEnabled  = true;
+        $this->enabled    = true;
         $this->createdAt  = new \Datetime();
         $this->updatedAt  = new \Datetime();
         $this->tags       = new ArrayCollection();
@@ -217,7 +217,7 @@ class Asset implements AssetInterface
      */
     public function isEnabled()
     {
-        return $this->isEnabled;
+        return $this->enabled;
     }
 
     /**
@@ -225,7 +225,7 @@ class Asset implements AssetInterface
      */
     public function setEnabled($isEnabled)
     {
-        $this->isEnabled = $isEnabled;
+        $this->enabled = $isEnabled;
 
         return $this;
     }

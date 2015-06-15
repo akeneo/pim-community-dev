@@ -1,0 +1,10 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% block content %}
+    {% set title = 'asset.overview'|trans %}
+
+    {{ elements.page_header(title) }}
+
+    {{ dataGrid.renderGrid('asset-grid', { dataLocale: locale_code(), currentUser: app.user }) }}
+{% endblock %}
