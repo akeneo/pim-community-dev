@@ -33,7 +33,7 @@
                                     <i class="icon-ok required" data-toggle="tooltip" data-original-title="{{ 'Required'|trans }}" data-placement="right"></i>
                                 </div>
                             {% else %}
-                                {{ form_widget(form.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
+                                {{ form_widget(form.indexedAttributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
                             {% endif %}
                         </td>
                     {% endfor %}

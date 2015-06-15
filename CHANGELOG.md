@@ -121,6 +121,7 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
+- Change `getAttributeRequirements()` return of `Pim\Bundle\CatalogBundle\Entity\Family`. Attribute requirements are not indexed by key 'attributeCode_channelCode' anymore. Use `getIndexedAttributeRequirements()` for that.
 
 # 1.3.16 (2015-06-08)
 
