@@ -35,7 +35,6 @@ class FormExtensionProvider
         'module'        => null,
         'parent'        => null,
         'targetZone'    => null,
-        'insertAction'  => 'append',
         'zones'         => [],
         'aclResourceId' => null
     ];

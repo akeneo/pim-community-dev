@@ -35,7 +35,10 @@ define(
                 'click .expanded>tbody>tr:not(.changeset)': 'toggleVersion'
             },
             configure: function () {
-                this.getRoot().addPanel('history', 'History');
+                this.trigger('panel:register', {
+                    code: this.code,
+                    label: _.__('pim_enrich.form.product.panel.history.title')
+                });
 
                 mediator.on('product:action:post_update', _.bind(this.refreshHistory, this));
 

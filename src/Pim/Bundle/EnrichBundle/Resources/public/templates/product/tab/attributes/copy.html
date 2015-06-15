@@ -1,9 +1,9 @@
 <% if (!copying) { %>
     <div class="btn start-copying"><%= _.__('pim_enrich.entity.product.btn.copy') %></div>
 <% } else { %>
-    <div class="context-selectors"></div>
-    <div class="other-actions">
-        <div class="copy-actions">
+    <div data-drop-zone="context-selectors" class="context-selectors"></div>
+    <div data-drop-zone="other-actions" class="other-actions">
+        <div data-drop-zone="copy-actions" class="copy-actions">
             <div class="btn-group selection-dropdown">
                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <%= _.__('pim_enrich.entity.product.copy.select') %>

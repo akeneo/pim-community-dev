@@ -31,18 +31,19 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addPanel = _.bind(this.addPanel, this);
+                _.each(this.extensions, _.bind(function (extension) {
+                    extension.on('panel:register', _.bind(this.registerPanel, this));
+                }, this));
+
                 this.listenTo(this.getParent().state, 'change:fullPanel', this.render);
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addPanel: function (code, label) {
+            registerPanel: function (event) {
                 var panels = this.state.get('panels') || [];
-                panels.push({ code: code, label: label });
+                panels.push({ code: event.code, label: event.label });
 
-                this.state.set('panels', panels, {silent: true});
-
-                this.state.trigger('change');
+                this.state.set('panels', panels);
             },
             render: function () {
                 if (!this.configured) {
@@ -56,21 +57,21 @@ define(
                         state: this.state.toJSON()
                     })
                 );
+                this.initializeDropZones();
 
                 if (this.state.get('currentPanel')) {
                     var currentPanel = this.extensions[this.state.get('currentPanel')];
-                    /* global console */
-                    console.log(this.code, 'triggered the rendering of', currentPanel.code);
-                    currentPanel.getTargetElement()[currentPanel.insertAction](currentPanel.el);
-                    currentPanel.render();
+                    this.renderExtension(currentPanel)
+                    this.getZone('panel-content').appendChild(currentPanel.el);
                 }
 
                 var selectorExtension = this.extensions.selector;
-                console.log(this.code, 'triggered the rendering of', selectorExtension.code);
-                this.getParent().$('>header').append(selectorExtension.render().$el);
+                this.renderExtension(selectorExtension);
+                this.getParent().$('>header').append(selectorExtension.$el);
 
                 this.delegateEvents();
                 this.resize();
+
                 return this;
             },
             closePanel: function () {

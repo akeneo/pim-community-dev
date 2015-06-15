@@ -29,13 +29,15 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addTab = _.bind(this.addTab, this);
+                _.each(this.extensions, _.bind(function (extension) {
+                    extension.on('tab:register', _.bind(this.registerTab, this));
+                }, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
-            addTab: function (code, label) {
+            registerTab: function (event) {
                 var tabs = this.state.get('tabs') || [];
-                tabs.push({ code: code, label: label });
+                tabs.push({ code: event.code, label: event.label });
 
                 this.state.set('tabs', tabs, {silent: true});
 
@@ -56,26 +58,27 @@ define(
                     })
                 );
                 this.delegateEvents();
+                this.initializeDropZones();
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
                 if (currentTab) {
-                    currentTab.getTargetElement()[currentTab.insertAction](currentTab.el);
-                    /* global console */
-                    console.log(currentTab.parent.code, 'triggered the rendering of', currentTab.code);
-                    currentTab.render();
+                    this.renderExtension(currentTab);
+                    var zone = this.getZone('container');
+                    this.getZone('container').appendChild(currentTab.el);
                 }
 
-                var panels = this.extensions.panels;
+                var panels = this.extensions['panels'];
                 if (panels) {
-                    panels.getTargetElement()[panels.insertAction](panels.el);
-                    panels.render();
+                    this.renderExtension(panels);
+                    this.getZone('panels').appendChild(panels.el);
                 }
 
                 return this;
             },
             changeTab: function (event) {
-                this.state.set('currentTab', event.currentTarget.dataset.tab);
-                this.state.set('fullPanel', false);
+                this.state.set('currentTab', event.currentTarget.dataset.tab, {silent: true});
+                this.state.set('fullPanel', false, {silent: true});
+                this.state.trigger('change');
             }
         });
     }

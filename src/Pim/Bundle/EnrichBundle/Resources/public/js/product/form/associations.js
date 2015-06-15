@@ -93,7 +93,10 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addTab('associations', _.__('pim_enrich.form.product.tab.associations.title'));
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: _.__('pim_enrich.form.product.tab.associations.title')
+                });
 
                 _.each(this.datagrids, _.bind(function (datagrid) {
                     mediator.on('datagrid:selectModel:' + datagrid.name, _.bind(function (model) {

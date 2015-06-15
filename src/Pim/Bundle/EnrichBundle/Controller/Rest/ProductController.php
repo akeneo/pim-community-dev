@@ -168,7 +168,7 @@ class ProductController
 
         $this->updateProduct($product, $data);
 
-        $violations = $this->validateProduct($product);
+        $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
@@ -290,24 +290,6 @@ class ProductController
                 );
             }
         }
-    }
-
-    /**
-     * Validates a product
-     *
-     * @param ProductInterface $product
-     *
-     * @return ConstraintViolationListInterface
-     */
-    protected function validateProduct(ProductInterface $product)
-    {
-        $violations = $this->validator->validate($product);
-
-        if (0 === $violations->count()) {
-            $violations = $this->validator->validate($product->getValues());
-        }
-
-        return $violations;
     }
 
     /**

@@ -37,7 +37,7 @@ define([
                     this.productPromises[id] = $.Deferred().resolve(data).promise();
 
                     return data;
-                }, this)).promise();
+                }, this));
             },
             remove: function (id) {
                 return $.ajax({
@@ -47,7 +47,7 @@ define([
                     data: { _method: 'DELETE' }
                 }).then(_.bind(function () {
                     delete this.productPromises[id];
-                }, this)).promise();
+                }, this));
             },
             clear: function (id) {
                 if (id in this.productPromises) {

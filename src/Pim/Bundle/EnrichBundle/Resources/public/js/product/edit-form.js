@@ -51,7 +51,7 @@ define(
             },
             clearCache: function () {
                 EntityManager.clearAll();
-                FieldManager.clear();
+                FieldManager.clearFields();
                 this.render();
             }
         });

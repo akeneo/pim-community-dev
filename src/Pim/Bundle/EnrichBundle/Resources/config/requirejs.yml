@@ -101,6 +101,7 @@ config:
 
         # Managers
         pim/product-manager:                pimenrich/js/manager/product-manager
+        pim/group-manager:                  pimenrich/js/manager/group-manager
         pim/attribute-manager:              pimenrich/js/manager/attribute-manager
         pim/attribute-group-manager:        pimenrich/js/manager/attribute-group-manager
         pim/entity-manager:                 pimenrich/js/manager/entity-manager

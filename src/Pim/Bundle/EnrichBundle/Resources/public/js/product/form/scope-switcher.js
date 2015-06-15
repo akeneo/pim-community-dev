@@ -22,18 +22,22 @@ define(
                 'click li a': 'changeScope'
             },
             render: function () {
-                EntityManager.getRepository('channel').findAll().done(_.bind(function (channels) {
-                    if (!this.getParent().getScope()) {
-                        this.getParent().setScope(channels[0].code, {silent: true});
-                    }
-                    this.$el.html(
-                        this.template({
-                            channels: channels,
-                            currentScope: this.getParent().getScope()
-                        })
-                    );
-                    this.delegateEvents();
-                }, this));
+                EntityManager.getRepository('channel')
+                    .findAll()
+                    .done(_.bind(function (channels) {
+                        if (!this.getParent().getScope()) {
+                            this.getParent().setScope(channels[0].code, {silent: true});
+                        }
+
+                        this.$el.html(
+                            this.template({
+                                channels: channels,
+                                currentScope: this.getParent().getScope()
+                            })
+                        );
+                        this.delegateEvents();
+                    }, this)
+                );
 
                 return this;
             },

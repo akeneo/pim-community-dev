@@ -25,7 +25,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'date',
             events: {
-                'change input': 'updateModel'
+                'change input[type="text"]:first': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);

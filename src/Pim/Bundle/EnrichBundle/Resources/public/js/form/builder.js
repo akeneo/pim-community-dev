@@ -12,8 +12,6 @@ define(
             ).done(function (Form, extensionMeta) {
                 var form = new Form();
 
-                form.setZones(extensionMeta.zones);
-
                 var extensionPromises = [];
                 _.each(extensionMeta.extensions, function (extension) {
                     var extensionPromise = buildForm(extension.module);
@@ -30,7 +28,6 @@ define(
                             extension.code,
                             extension.loadedModule,
                             extension.targetZone,
-                            extension.insertAction,
                             extension.position
                         );
                     });

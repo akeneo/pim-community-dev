@@ -38,6 +38,7 @@ define(
                 if (!SecurityContext.isGranted('pim_enrich_attribute_edit')) {
                     return;
                 }
+
                 createOption(this.attribute).done(_.bind(function (option) {
                     if (this.isEditable()) {
                         this.setCurrentValue(option.code);

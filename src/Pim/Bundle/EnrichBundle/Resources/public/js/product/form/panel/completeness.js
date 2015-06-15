@@ -27,7 +27,10 @@ define(
                 'click .missing-attributes span': 'showAttribute'
             },
             configure: function () {
-                this.getRoot().addPanel('completeness', 'Completeness');
+                this.trigger('panel:register', {
+                    code: this.code,
+                    label: _.__('pim_enrich.form.product.panel.completeness.title')
+                });
 
                 mediator.on('product:action:post_update', _.bind(this.update, this));
 

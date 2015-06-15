@@ -37,7 +37,10 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addPanel('comments', _.__('pim_comment.product.tab.comment.title'));
+                this.trigger('panel:register', {
+                    code: this.code,
+                    label: _.__('pim_comment.product.panel.comment.title')
+                });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
