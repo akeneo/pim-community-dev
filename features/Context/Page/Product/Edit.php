@@ -51,13 +51,12 @@ class Edit extends Form
 
     public function verifyAfterLogin()
     {
-        $this->spin(function () {
-            $formContainer = $this->find('css', 'div.product-edit-form');
-            if ($formContainer) {
-                return true;
-            }
-            echo 'retry open product edit page' . PHP_EOL;
-        }, 30, 'cannot open product edit page');
+        $formContainer = $this->find('css', 'div.product-edit-form');
+        if (!$formContainer) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
