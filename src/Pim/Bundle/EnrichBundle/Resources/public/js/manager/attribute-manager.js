@@ -38,7 +38,7 @@ define([
             },
             isOptional: function (attribute, product, families) {
                 return 'pim_catalog_identifier' !== attribute.type &&
-                    (!product.family ? true : !_.contains(families[product.family].attributes, attribute));
+                    (!product.family ? true : !_.contains(families[product.family].attributes, attribute.code));
             },
             getEmptyValue: function (attribute) {
                 switch (attribute.type) {

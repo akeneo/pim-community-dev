@@ -58,23 +58,27 @@ define(
                     })
                 );
                 this.delegateEvents();
+                this.initializeDropZones();
 
                 var currentTab = this.extensions[this.state.get('currentTab')];
                 if (currentTab) {
                     this.renderExtension(currentTab);
+                    var zone = this.getZone('container');
+                    this.getZone('container').appendChild(currentTab.el);
                 }
 
-                var panels = this.extensions.panels;
+                var panels = this.extensions['panels'];
                 if (panels) {
-                    panels.getTargetElement().append(panels.el);
-                    panels.render();
+                    this.renderExtension(panels);
+                    this.getZone('panels').appendChild(panels.el);
                 }
 
                 return this;
             },
             changeTab: function (event) {
-                this.state.set('currentTab', event.currentTarget.dataset.tab);
-                this.state.set('fullPanel', false);
+                this.state.set('currentTab', event.currentTarget.dataset.tab, {silent: true});
+                this.state.set('fullPanel', false, {silent: true});
+                this.state.trigger('change');
             }
         });
     }

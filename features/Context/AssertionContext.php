@@ -327,14 +327,21 @@ class AssertionContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @Then /^I should see history in panel:$/
+     *
      * @throws ExpectationException
      */
     public function iShouldSeeHistoryInPanel(TableNode $table)
     {
-        $block = $this->getCurrentPage()->find('css', '.history-block');
+        $block = $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.history-block');
+        });
 
         foreach ($table->getHash() as $data) {
-            $row = $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
+            $row = $this->getMainContext()->spin(function () use ($block, $data) {
+                return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
+            });
+
             if (!$row) {
                 throw $this->createExpectationException(
                     sprintf('Expecting to see history row for version %s, not found', $data['version'])

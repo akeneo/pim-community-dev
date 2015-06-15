@@ -6,15 +6,17 @@
     </div>
 <% } else { %>
     <div class="tabbable tabs-left">
-        <ul class="nav nav-tabs" id="associations-list">
-            <% _.each(associationTypes, function (associationType) { %>
-                <li data-association-type="<%= associationType.code %>"<% if (associationType.code === state.currentAssociationType) { %> class="active"<% } %>>
-                    <a href="javascript:void(0);">
-                        <%= associationType.label[locale] || '[' + associationType.code + ']'  %>
-                    </a>
-                </li>
-            <% }); %>
-        </ul>
+        <div class="sidebar">
+            <ul class="nav nav-tabs" id="associations-list">
+                <% _.each(associationTypes, function (associationType) { %>
+                    <li data-association-type="<%= associationType.code %>"<% if (associationType.code === state.currentAssociationType) { %> class="active"<% } %>>
+                        <a href="javascript:void(0);">
+                            <%= associationType.label[locale] || '[' + associationType.code + ']'  %>
+                        </a>
+                    </li>
+                <% }); %>
+            </ul>
+        </div>
         <div class="tab-content">
             <div id="association-buttons" class="navbar-extra pull-right">
                 <button type="button" class="btn pull-right hide" data-association-target="products">

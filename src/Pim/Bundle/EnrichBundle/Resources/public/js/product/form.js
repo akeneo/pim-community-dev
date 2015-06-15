@@ -18,16 +18,6 @@ define(
                 this.targetZone   = '';
                 this.configured   = false;
             },
-            setZones: function (zones) {
-                this.zones = zones;
-            },
-            getTargetElement: function () {
-                if ('self' === this.parent.zones[this.targetZone]) {
-                    return this.parent.$el;
-                } else {
-                    return this.parent.$(this.parent.zones[this.targetZone]);
-                }
-            },
             configure: function () {
                 return $.when(_.map(this.extensions, function (extension) {
                         return extension.configure();
@@ -84,18 +74,37 @@ define(
                 return this.renderExtensions();
             },
             renderExtensions: function () {
-                var sortedExtensions = _.sortBy(this.extensions, 'position');
-                _.each(sortedExtensions, _.bind(function (extension) {
+                this.initializeDropZones();
+
+                _.each(this.extensions, _.bind(function (extension) {
+                    this.getZone(extension.targetZone).appendChild(extension.el);
                     this.renderExtension(extension);
                 }, this));
 
                 return this;
             },
             renderExtension: function (extension) {
-                extension.getTargetElement().append(extension.el);
                 /* global console */
                 console.log(extension.parent.code, 'triggered the rendering of', extension.code);
-                extension.render();
+                return extension.render();
+            },
+            initializeDropZones: function () {
+                this.zones = _.indexBy(this.$('[data-drop-zone]'), function (zone) {
+                    return zone.dataset.dropZone;
+                });
+
+                this.zones['self'] = this.el;
+            },
+            getZone: function (code) {
+                if (!(code in this.zones)) {
+                    this.zones[code] = this.$('[data-drop-zone="' + code + '"]')[0];
+                }
+
+                if (!this.zones[code]) {
+                    throw new Error('Zone "' + code + '" does not exist');
+                }
+
+                return this.zones[code];
             }
         });
     }

@@ -235,15 +235,11 @@ class WebUser extends RawMinkContext
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->openPanel('History');
-        $this->wait();
+        $expandButton = $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.expand-history');
+        });
 
-        $moreButton = $this->getCurrentPage()->find('css', '.expand-history');
-
-        if (!$moreButton) {
-            throw $this->createExpectationException('Expecting to see history "More" button, not found');
-        }
-
-        $moreButton->click();
+        $expandButton->click();
         $this->wait();
     }
 

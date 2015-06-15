@@ -26,11 +26,9 @@ define(
             className: 'add-attribute',
             template: _.template(template),
             state: null,
-            product: null,
             initialize: function () {
                 this.state = new Backbone.Model({});
                 this.listenTo(this.state, 'change', this.render);
-                this.product = null;
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -67,7 +65,7 @@ define(
                         collision: 'none'
                     }
                 };
-                opts.selectedText = opts.title;
+                opts.selectedText     = opts.title;
                 opts.noneSelectedText = opts.title;
 
                 var $select = this.$('select');
@@ -78,7 +76,7 @@ define(
                 });
                 var $menu = $('.ui-multiselect-menu.pimmultiselect');
 
-                var $footerContainer = $('<div>', { 'class': 'ui-multiselect-footer' }).appendTo($menu);
+                var $footerContainer = $('<div>', { 'class': 'ui-multiselect-footer' });
                 var $saveButton = $('<a>', {
                     'class': 'btn btn-small',
                     text: _.__('pim_enrich.form.product.tab.attributes.btn.add')
@@ -88,12 +86,16 @@ define(
                         if (values !== null) {
                             this.addAttributes(values);
                         }
-                    }, this)).appendTo($footerContainer);
+                    }, this));
 
-                var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
-                $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
+                $footerContainer.append($saveButton);
+                $menu.append($footerContainer);
 
-                $menu.find('input[type="search"]').width(207);
+                var $openButton = this.$('button.pimmultiselect').addClass('btn btn-group')
+                    .append($('<span>', { 'class': 'caret' }))
+                    .removeAttr('style');
+
+                $menu.find('input[type="search"]').width(200);
 
                 var $content = $menu.find('.ui-multiselect-checkboxes');
                 if (!$content.html()) {
@@ -112,7 +114,6 @@ define(
                 this.trigger('add-attribute:add', {codes: attributeCodes});
             },
             updateOptionalAttributes: function (product) {
-                this.product = product;
                 return AttributeManager.getOptionalAttributes(product).then(_.bind(function (attributes) {
                     this.state.set('attributes', attributes);
 

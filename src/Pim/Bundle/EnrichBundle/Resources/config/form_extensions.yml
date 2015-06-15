@@ -1,13 +1,6 @@
 extensions:
     product-edit-form:
         module: pim/product-edit-form
-        zones:
-            sequential: .sequential
-            title: header .product-title
-            buttons: header .actions
-            meta: header .meta
-            state: header .state
-            content: >div>.content
 
     sequential-edit:
         module: pim/product-edit-form/sequential-edit
@@ -20,9 +13,6 @@ extensions:
         module: pim/product-edit-form/form-tabs
         parent: product-edit-form
         targetZone: content
-        zones:
-            container: .tab-container
-            panels: .panels
         position: 100
 
     product-label:
@@ -43,14 +33,7 @@ extensions:
         parent: product-edit-form
         targetZone: buttons
         aclResourceId: pim_pdf_generator_product_download
-        position: 100
-
-    status-switcher:
-        module: pim/product-edit-form/status-switcher
-        parent: product-edit-form
-        targetZone: buttons
-        aclResourceId: pim_enrich_product_change_state
-        position: 100
+        position: 90
 
     delete:
         module: pim/product-edit-form/delete
@@ -59,11 +42,18 @@ extensions:
         aclResourceId: pim_enrich_product_remove
         position: 100
 
+    status-switcher:
+        module: pim/product-edit-form/status-switcher
+        parent: product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_change_state
+        position: 110
+
     save-buttons:
         module: pim/product-edit-form/save-buttons
         parent: product-edit-form
         targetZone: buttons
-        position: 110
+        position: 120
 
     save:
         module: pim/product-edit-form/save
@@ -87,22 +77,14 @@ extensions:
         module: pim/product-edit-form/meta/family
         parent: product-edit-form
         targetZone: meta
-        zones:
-            family: self
         position: 80
 
     change-family:
         module: pim/product-edit-form/meta/change-family
         parent: family
-        targetZone: family
+        targetZone: self
         aclResourceId: pim_enrich_product_change_family
         position: 100
-
-    groups:
-        module: pim/product-edit-form/meta/groups
-        parent: product-edit-form
-        targetZone: meta
-        position: 110
 
     created:
         module: pim/product-edit-form/meta/created
@@ -116,17 +98,17 @@ extensions:
         targetZone: meta
         position: 100
 
+    groups:
+        module: pim/product-edit-form/meta/groups
+        parent: product-edit-form
+        targetZone: meta
+        position: 110
+
     attributes:
         module: pim/product-edit-form/attributes
         parent: form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_edit_attributes
-        zones:
-            header: .tab-content > header
-            edit-actions: .tab-content > header > .attribute-edit-actions
-            context-selectors: .tab-content > header > .attribute-edit-actions > .context-selectors
-            other-actions: .tab-content > header > .attribute-edit-actions > .other-actions
-            sidebar: .sidebar
         position: 90
 
     categories:
@@ -134,8 +116,6 @@ extensions:
         parent: form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
-        zones:
-            categories: self
         position: 100
 
     associations:
@@ -143,17 +123,12 @@ extensions:
         parent: form-tabs
         targetZone: container
         aclResourceId: pim_enrich_associations_view
-        zones:
-            header: .tab-content > header
-            associations: self
         position: 110
 
     panels:
         module: pim/product-edit-form/panel/panels
         parent: form-tabs
         targetZone: panels
-        zones:
-            panel-content: .panel-content
         position: 100
 
     attribute-group-selector:
@@ -167,6 +142,12 @@ extensions:
         parent: attributes
         targetZone: other-actions
         aclResourceId: pim_enrich_product_add_attribute
+        position: 90
+
+    copy:
+        module: pim/product-edit-form/attributes/copy
+        parent: attributes
+        targetZone: header
         position: 100
 
     scope-switcher:
@@ -179,17 +160,7 @@ extensions:
         module: pim/product-edit-form/locale-switcher
         parent: attributes
         targetZone: context-selectors
-        position: 100
-
-    copy:
-        module: pim/product-edit-form/attributes/copy
-        parent: attributes
-        targetZone: header
-        zones:
-            copy-actions: .other-actions > .copy-actions
-            context-selectors: .context-selectors
-            other-actions: .other-actions
-        position: 100
+        position: 110
 
     validation:
         module: pim/product-edit-form/attributes/validation
@@ -200,7 +171,7 @@ extensions:
     variant-group:
         module: pim/product-edit-form/attributes/variant-group
         parent: attributes
-        targetZone: attributes
+        targetZone: self
         position: 100
 
     completeness:
@@ -214,16 +185,14 @@ extensions:
         module: pim/product-edit-form/panel/comments
         targetZone: panel-content
         aclResourceId: pim_enrich_product_comment
-        position: 100
+        position: 110
 
     history:
         parent: panels
         module: pim/product-edit-form/panel/history
         targetZone: panel-content
         aclResourceId: pim_enrich_product_history
-        zones:
-            history: self
-        position: 100
+        position: 120
 
     selector:
         parent: panels
@@ -240,7 +209,7 @@ extensions:
         module: pim/product-edit-form/locale-switcher
         parent: copy
         targetZone: context-selectors
-        position: 100
+        position: 110
 
 attribute_fields:
     pim_catalog_boolean:          pim/boolean-field

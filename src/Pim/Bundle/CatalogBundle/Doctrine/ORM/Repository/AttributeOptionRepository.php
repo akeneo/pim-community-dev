@@ -76,7 +76,7 @@ class AttributeOptionRepository extends EntityRepository implements
             }
 
             $results[] = [
-                'id'   => ('code' === $options['type']) ? $row['code'] : $row['id'],
+                'id'   => (isset($options['type']) && 'code' === $options['type']) ? $row['code'] : $row['id'],
                 'text' => null !== $row['label'] ? $row['label'] : sprintf('[%s]', $row['code'])
             ];
         }

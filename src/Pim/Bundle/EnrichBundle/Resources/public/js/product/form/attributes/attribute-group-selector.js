@@ -64,7 +64,7 @@ define(
             change: function (event) {
                 if (event.currentTarget.dataset.attributeGroup !== this.state.get('current')) {
                     this.state.set('current', event.currentTarget.dataset.attributeGroup);
-                    this.trigger('attribute-group:changed');
+                    this.trigger('attribute-group:change');
                 }
             },
             getCurrent: function () {
