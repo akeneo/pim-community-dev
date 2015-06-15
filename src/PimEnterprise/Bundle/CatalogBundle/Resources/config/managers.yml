@@ -20,6 +20,8 @@ services:
             - '@event_dispatcher'
             - '@pimee_security.repository.category_access'
             - '@security.context'
+            - '@pim_catalog.repository.category'
+            - '@pim_catalog.factory.category'
 
     pim_catalog.manager.product_category:
         class: %pim_catalog.manager.product_category.class%
