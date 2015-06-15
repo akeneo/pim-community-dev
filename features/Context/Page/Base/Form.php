@@ -84,7 +84,10 @@ class Form extends Base
      */
     public function openPanel($panel)
     {
-        $elt = $this->getElement('Panel selector');
+        $elt = $this->spin(function () {
+            return $this->getElement('Panel selector');
+        });
+
         if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
             $elt->pressButton($panel);
         }

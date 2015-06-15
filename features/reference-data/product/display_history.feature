@@ -32,7 +32,7 @@ Feature: Display the product history
       | color | Green |
     Then I save the product
     And I open the history
-    And I should see history:
+    And I should see history in panel:
       | version | property | value |
       | 3       | [color]  | Green |
 
@@ -43,6 +43,6 @@ Feature: Display the product history
       | fabrics | Cashmerewool, Neoprene |
     Then I save the product
     And I open the history
-    And I should see history:
+    And I should see history in panel:
       | version | property  | value                 |
       | 2       | [fabrics] | Cashmerewool,Neoprene |
