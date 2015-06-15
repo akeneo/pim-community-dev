@@ -35,13 +35,21 @@ class Configuration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('original')->isRequired()->cannotBeEmpty()
                                 ->validate()
-                                ->ifTrue(function ($class) { return false === class_exists($class); })
+                                ->ifTrue(
+                                    function ($class) {
+                                        return false === class_exists($class);
+                                    }
+                                )
                                 ->thenInvalid('Invalid original class "%s".')
                                 ->end()
                             ->end()
                             ->scalarNode('override')->isRequired()->cannotBeEmpty()
                                 ->validate()
-                                ->ifTrue(function ($class) { return false === class_exists($class); })
+                                ->ifTrue(
+                                    function ($class) {
+                                        return false === class_exists($class);
+                                    }
+                                )
                                 ->thenInvalid('Invalid overriden class "%s".')
                                 ->end()
                             ->end()
