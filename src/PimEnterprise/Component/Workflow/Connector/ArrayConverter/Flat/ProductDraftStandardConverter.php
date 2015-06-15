@@ -11,12 +11,12 @@
 
 namespace PimEnterprise\Component\Workflow\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Product draft converter
+ * Product draft converter.
  *
  * @author Marie Bochu <marie.bochu@akeneo.com>
  */
@@ -25,18 +25,18 @@ class ProductDraftStandardConverter implements StandardArrayConverterInterface
     /** @var StandardArrayConverterInterface */
     protected $productConverter;
 
-    /** @var ProductAttributeFieldExtractor */
+    /** @var AttributeColumnInfoExtractor */
     protected $attributeExtractor;
 
     /**
      * @param StandardArrayConverterInterface $productConverter
-     * @param ProductAttributeFieldExtractor  $attributeExtractor
+     * @param AttributeColumnInfoExtractor    $attributeExtractor
      */
     public function __construct(
         StandardArrayConverterInterface $productConverter,
-        ProductAttributeFieldExtractor $attributeExtractor
+        AttributeColumnInfoExtractor $attributeExtractor
     ) {
-        $this->productConverter   = $productConverter;
+        $this->productConverter = $productConverter;
         $this->attributeExtractor = $attributeExtractor;
     }
 
@@ -85,7 +85,7 @@ class ProductDraftStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
-     * Filters the item to check if there is something else than attributes
+     * Filters the item to check if there is something else than attributes.
      *
      * @param array $item
      *
@@ -96,7 +96,7 @@ class ProductDraftStandardConverter implements StandardArrayConverterInterface
     protected function filter(array $item)
     {
         foreach ($item as $key => $value) {
-            $attributeInfo = $this->attributeExtractor->extractAttributeFieldNameInfos($key);
+            $attributeInfo = $this->attributeExtractor->extractColumnInfo($key);
 
             if (null === $attributeInfo) {
                 throw new ArrayConversionException(
