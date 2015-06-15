@@ -2,8 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 
 /**

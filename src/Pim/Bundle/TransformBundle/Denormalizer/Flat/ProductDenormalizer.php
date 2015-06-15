@@ -5,8 +5,8 @@ namespace Pim\Bundle\TransformBundle\Denormalizer\Flat;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
  * Product flat denormalizer
@@ -29,7 +29,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @staticvar string */
     const FIELD_GROUPS       = 'groups';
 
-    /** @var ProductAttributeFieldExtractor */
+    /** @var AttributeColumnInfoExtractor */
     protected $attrFieldExtractor;
 
     /** @var AssociationColumnsResolver */
@@ -54,22 +54,22 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected $productValueClass;
 
     /**
-     * @param ManagerRegistry                $managerRegistry
-     * @param string                         $entityClass
-     * @param ProductBuilder                 $productBuilder
-     * @param ProductAttributeFieldExtractor $attFieldExtractor
-     * @param AssociationColumnsResolver     $assocFieldResolver
-     * @param string                         $associationClass
-     * @param string                         $categoryClass
-     * @param string                         $familyClass
-     * @param string                         $groupClass
-     * @param string                         $productValueClass
+     * @param ManagerRegistry              $managerRegistry
+     * @param string                       $entityClass
+     * @param ProductBuilder               $productBuilder
+     * @param AttributeColumnInfoExtractor $attFieldExtractor
+     * @param AssociationColumnsResolver   $assocFieldResolver
+     * @param string                       $associationClass
+     * @param string                       $categoryClass
+     * @param string                       $familyClass
+     * @param string                       $groupClass
+     * @param string                       $productValueClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
         ProductBuilder $productBuilder,
-        ProductAttributeFieldExtractor $attFieldExtractor,
+        AttributeColumnInfoExtractor $attFieldExtractor,
         AssociationColumnsResolver $assocFieldResolver,
         $associationClass,
         $categoryClass,
@@ -222,9 +222,9 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                         $this->associationClass,
                         $format,
                         [
-                            'entity' => $association,
+                            'entity'                => $association,
                             'association_type_code' => $associationTypeCode,
-                            'part' => $part
+                            'part'                  => $part
                         ] + $context
                     );
 
@@ -261,7 +261,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         foreach ($data as $attFieldName => $dataValue) {
-            $attributeInfos = $this->attFieldExtractor->extractAttributeFieldNameInfos($attFieldName);
+            $attributeInfos = $this->attFieldExtractor->extractColumnInfo($attFieldName);
             $attribute = $attributeInfos['attribute'];
             unset($attributeInfos['attribute']);
 

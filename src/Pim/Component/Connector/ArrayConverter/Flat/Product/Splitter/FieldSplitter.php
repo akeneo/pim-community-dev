@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
  * Split fields
@@ -10,6 +10,8 @@ use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttribu
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO : two concerns
  */
 class FieldSplitter
 {
@@ -24,7 +26,7 @@ class FieldSplitter
      */
     public function splitUnitValue($value)
     {
-        return '' === $value ? [] : explode(ProductAttributeFieldExtractor::UNIT_SEPARATOR, $value);
+        return '' === $value ? [] : explode(AttributeColumnInfoExtractor::UNIT_SEPARATOR, $value);
     }
 
     /**
@@ -40,7 +42,7 @@ class FieldSplitter
     {
         $tokens = [];
         if ('' !== $value) {
-            $tokens = explode(ProductAttributeFieldExtractor::ARRAY_SEPARATOR, $value);
+            $tokens = explode(AttributeColumnInfoExtractor::ARRAY_SEPARATOR, $value);
             array_walk($tokens, function (&$token) {
                $token = trim($token);
             });
@@ -59,6 +61,6 @@ class FieldSplitter
      */
     public function splitFieldName($field)
     {
-        return '' === $field ? [] : explode(ProductAttributeFieldExtractor::FIELD_SEPARATOR, $field);
+        return '' === $field ? [] : explode(AttributeColumnInfoExtractor::FIELD_SEPARATOR, $field);
     }
 }

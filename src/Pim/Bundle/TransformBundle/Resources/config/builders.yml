@@ -6,5 +6,5 @@ services:
     pim_transform.builder.field_name:
         class: %pim_transform.builder.field_name.class%
         arguments:
-          - '@pim_connector.array_converter.flat.association_field_resolver'
-          - '@pim_connector.array_converter.flat.attribute_field_extractor'
+          - '@pim_connector.array_converter.flat.product.association_columns_resolver'
+          - '@pim_connector.array_converter.flat.product.attribute_column_info_extractor'

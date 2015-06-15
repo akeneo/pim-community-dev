@@ -133,6 +133,10 @@ class PriceCollectionAttributeSetter extends AbstractAttributeSetter
         }
 
         foreach ($data as $price) {
+            if (is_numeric($price['data'])) {
+                $price['data'] = (float) $price['data'];
+            }
+
             $this->productBuilder->addPriceForCurrencyWithData($value, $price['currency'], $price['data']);
         }
     }

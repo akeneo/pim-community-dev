@@ -2,13 +2,13 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ProductFieldConverter;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Converter\ValueConverterRegistryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Mapper\ColumnsMapper;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Merger\ColumnsMerger;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AssociationColumnsResolver;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Resolver\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -25,7 +25,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     /** @var ValueConverterRegistryInterface */
     protected $converterRegistry;
 
-    /** @var ProductAttributeFieldExtractor */
+    /** @var AttributeColumnInfoExtractor */
     protected $attrFieldExtractor;
 
     /** @var AttributeColumnsResolver */
@@ -34,8 +34,8 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     /** @var AssociationColumnsResolver */
     protected $assocColumnsResolver;
 
-    /** @var ProductFieldConverter */
-    protected $productFieldConverter;
+    /** @var FieldConverter */
+    protected $fieldConverter;
 
     /** @var ColumnsMerger */
     protected $columnsMerger;
@@ -47,20 +47,20 @@ class ProductStandardConverter implements StandardArrayConverterInterface
     protected $optionalAssociationFields;
 
     /**
-     * @param ProductAttributeFieldExtractor  $attrFieldExtractor
+     * @param AttributeColumnInfoExtractor    $attrFieldExtractor
      * @param ValueConverterRegistryInterface $converterRegistry
      * @param AssociationColumnsResolver      $assocColumnsResolver
      * @param AttributeColumnsResolver        $attrColumnsResolver
-     * @param ProductFieldConverter           $productFieldConverter
+     * @param FieldConverter                  $fieldConverter
      * @param ColumnsMerger                   $columnsMerger
      * @param ColumnsMapper                   $columnsMapper
      */
     public function __construct(
-        ProductAttributeFieldExtractor $attrFieldExtractor,
+        AttributeColumnInfoExtractor $attrFieldExtractor,
         ValueConverterRegistryInterface $converterRegistry,
         AssociationColumnsResolver $assocColumnsResolver,
         AttributeColumnsResolver $attrColumnsResolver,
-        ProductFieldConverter $productFieldConverter,
+        FieldConverter $fieldConverter,
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper
     ) {
@@ -68,7 +68,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         $this->converterRegistry = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;
         $this->attrColumnsResolver = $attrColumnsResolver;
-        $this->productFieldConverter = $productFieldConverter;
+        $this->fieldConverter = $fieldConverter;
         $this->columnsMerger = $columnsMerger;
         $this->columnsMapper = $columnsMapper;
         $this->optionalAssociationFields = [];
@@ -169,8 +169,8 @@ class ProductStandardConverter implements StandardArrayConverterInterface
 
         $result = [];
         foreach ($mergedItems as $column => $value) {
-            if ($this->productFieldConverter->supportsColumn($column)) {
-                $value = $this->productFieldConverter->convert($column, $value);
+            if ($this->fieldConverter->supportsColumn($column)) {
+                $value = $this->fieldConverter->convert($column, $value);
             } else {
                 $value = $this->convertValue($column, $value);
             }
@@ -193,7 +193,7 @@ class ProductStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertValue($column, $value)
     {
-        $attributeFieldInfo = $this->attrFieldExtractor->extractAttributeFieldNameInfos($column);
+        $attributeFieldInfo = $this->attrFieldExtractor->extractColumnInfo($column);
 
         if (null !== $attributeFieldInfo && isset($attributeFieldInfo['attribute'])) {
             $converter = $this->converterRegistry->getConverter($attributeFieldInfo['attribute']->getAttributeType());

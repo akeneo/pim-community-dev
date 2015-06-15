@@ -1242,7 +1242,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
 
         foreach ($table->getRowsHash() as $rawCode => $value) {
-            $infos = $this->getFieldExtractor()->extractAttributeFieldNameInfos($rawCode);
+            $infos = $this->getFieldExtractor()->extractColumnInfo($rawCode);
 
             $attribute     = $infos['attribute'];
             $attributeCode = $attribute->getCode();
@@ -2233,11 +2233,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor
+     * @return \Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
      */
     protected function getFieldExtractor()
     {
-        return $this->getContainer()->get('pim_connector.array_converter.flat.attribute_field_extractor');
+        return $this->getContainer()->get('pim_connector.array_converter.flat.product.attribute_column_info_extractor');
     }
 
     /**

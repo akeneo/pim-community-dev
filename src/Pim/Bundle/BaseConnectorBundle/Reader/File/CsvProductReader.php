@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\CurrencyRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Extractor\ProductAttributeFieldExtractor;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor;
 
 /**
  * Product csv reader
@@ -26,7 +26,7 @@ class CsvProductReader extends CsvReader
     /** @var string[] Media attribute codes */
     protected $mediaAttributes;
 
-    /** @var ProductAttributeFieldExtractor */
+    /** @var AttributeColumnInfoExtractor */
     protected $fieldExtractor;
 
     /** @var ChannelRepositoryInterface */
@@ -44,16 +44,16 @@ class CsvProductReader extends CsvReader
     /**
      * Constructor
      *
-     * @param EntityManager                  $entityManager
-     * @param ProductAttributeFieldExtractor $fieldExtractor
-     * @param string                         $attributeClass
-     * @param string                         $channelClass
-     * @param string                         $localeClass
-     * @param string                         $currencyClass
+     * @param EntityManager                $entityManager
+     * @param AttributeColumnInfoExtractor $fieldExtractor
+     * @param string                       $attributeClass
+     * @param string                       $channelClass
+     * @param string                       $localeClass
+     * @param string                       $currencyClass
      */
     public function __construct(
         EntityManager $entityManager,
-        ProductAttributeFieldExtractor $fieldExtractor,
+        AttributeColumnInfoExtractor $fieldExtractor,
         $attributeClass,
         $channelClass,
         $localeClass,
@@ -165,7 +165,7 @@ class CsvProductReader extends CsvReader
         $currencies = $this->currencyRepository->getActivatedCurrencyCodes();
 
         foreach ($this->fieldNames as $fieldName) {
-            if (null !== $info = $this->fieldExtractor->extractAttributeFieldNameInfos($fieldName)) {
+            if (null !== $info = $this->fieldExtractor->extractColumnInfo($fieldName)) {
                 $locale = $info['locale_code'];
                 $channel = $info['scope_code'];
                 $currency = isset($info['price_currency']) ? $info['price_currency'] : null;
