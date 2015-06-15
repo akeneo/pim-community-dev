@@ -8,6 +8,7 @@ parameters:
     pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
     pim_catalog.updater.attribute.class:                     Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
     pim_catalog.updater.variant_group.class:                 Pim\Bundle\CatalogBundle\Updater\VariantGroupUpdater
+    pim_catalog.updater.group.class:                         Pim\Bundle\CatalogBundle\Updater\GroupUpdater
 
     pim_catalog.updater.setter.registry.class:                Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
 
@@ -114,6 +115,11 @@ services:
             - @pim_catalog.builder.product
             - @pim_catalog.updater.product
             - %pim_catalog.entity.product_template.class%
+
+    pim_catalog.updater.group:
+        class: %pim_catalog.updater.group.class%
+        arguments:
+            - @pim_catalog.repository.group_type
 
     # Setters
     pim_catalog.updater.setter.registry:

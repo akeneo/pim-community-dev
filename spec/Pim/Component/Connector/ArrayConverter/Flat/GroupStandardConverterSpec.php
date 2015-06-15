@@ -8,74 +8,31 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter;
 
-class VariantGroupStandardConverterSpec extends ObjectBehavior
+class GroupStandardConverterSpec extends ObjectBehavior
 {
-    function let(
-        LocaleRepositoryInterface $localeRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ProductStandardConverter $productConverter
-    ) {
-        $this->beConstructedWith($localeRepository, $attributeRepository, $productConverter);
+    function let(LocaleRepositoryInterface $localeRepository)
+    {
+        $this->beConstructedWith($localeRepository);
     }
 
-    function it_converts(
-        $localeRepository,
-        $attributeRepository,
-        $productConverter,
-        AttributeInterface $mainColorAttribute,
-        AttributeInterface $tshirtStyleAttribute,
-        AttributeInterface $description1Attribute,
-        AttributeInterface $description2Attribute
-    ) {
+    function it_converts($localeRepository)
+    {
         $fields = [
             'code'        => 'mycode',
-            'axis'        => 'main_color,secondary_color',
-            'type'        => 'VARIANT',
+            'type'        => 'RELATED',
             'label-fr_FR' => 'T-shirt super beau',
             'label-en_US' => 'T-shirt very beautiful',
         ];
 
-        $values = [
-            'main_color'                 => 'white',
-            'tshirt_style'               => 'turtleneck,sportwear',
-            'description-fr_FR-ecommerce'=> '<p>description</p>',
-            'description-en_US-ecommerce'=> '<p>description</p>'
-        ];
-
-        $convertedValues = [
-            'main_color'   => 'white',
-            'tshirt_style' => ['turtleneck', 'sportwear'],
-            'description'  => [
-                [
-                    'locale' => 'fr_FR',
-                    'scope'  => 'ecommerce',
-                    'data'   => '<p>description</p>'
-                ],
-                [
-                    'locale' => 'en_US',
-                    'scope'  => 'ecommerce',
-                    'data'   => '<p>description</p>'
-                ],
-            ]
-        ];
-
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
-        $attributeRepository->getIdentifierCode('main_color')->willReturn($mainColorAttribute);
-        $attributeRepository->getIdentifierCode('tshirt_style')->willReturn($tshirtStyleAttribute);
-        $attributeRepository->getIdentifierCode('description-fr_FR-ecommerce')->willReturn($description1Attribute);
-        $attributeRepository->getIdentifierCode('description-en_US-ecommerce')->willReturn($description2Attribute);
 
-        $productConverter->convert($values)->willReturn($convertedValues);
-
-        $this->convert($fields + $values)->shouldReturn([
+        $this->convert($fields)->shouldReturn([
             'labels'   => [
                 'fr_FR' => 'T-shirt super beau',
                 'en_US' => 'T-shirt very beautiful',
             ],
-            'code'    => 'mycode',
-            'axis'    => ['main_color', 'secondary_color'],
-            'type'    => 'VARIANT',
-            'values'  => $convertedValues
+            'code'     => 'mycode',
+            'type'     => 'RELATED',
         ]);
     }
 
@@ -119,13 +76,13 @@ class VariantGroupStandardConverterSpec extends ObjectBehavior
         );
     }
 
-    function it_throws_an_exception_if_there_is_non_authorized_fields_in_array($localeRepository)
+    function it_throws_an_exception_if_there_is_not_authorized_fields_in_array($localeRepository)
     {
         $localeRepository->getActivatedLocaleCodes()->willReturn(['fr_FR', 'en_US']);
         $exception = new \LogicException(sprintf(
             'Field "%s" is provided, authorized fields are: "%s"',
             'not_authorized',
-            'axis, type, code, label-fr_FR, label-en_US'
+            'type, code, label-fr_FR, label-en_US'
         ));
 
         $this->shouldThrow($exception)->during(

@@ -5,6 +5,7 @@ parameters:
     pim_connector.array_converter.flat.product.class:                            Pim\Component\Connector\ArrayConverter\Flat\ProductStandardConverter
     pim_connector.array_converter.flat.product_association.class:                Pim\Component\Connector\ArrayConverter\Flat\ProductAssociationStandardConverter
     pim_connector.array_converter.flat.variant_group.class:                      Pim\Component\Connector\ArrayConverter\Flat\VariantGroupStandardConverter
+    pim_connector.array_converter.flat.group.class:                              Pim\Component\Connector\ArrayConverter\Flat\GroupStandardConverter
 
     pim_connector.array_converter.flat.product.value_converter.registry.class:     Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\ValueConverterRegistry
     pim_connector.array_converter.flat.product.value_converter.abstract.class:     Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter\AbstractValueConverter
@@ -61,6 +62,12 @@ services:
             - '@pim_catalog.repository.locale'
             - '@pim_catalog.repository.attribute'
             - '@pim_connector.array_converter.flat.product'
+
+    pim_connector.array_converter.flat.group:
+        class: %pim_connector.array_converter.flat.group.class%
+        arguments:
+            - '@pim_catalog.repository.locale'
+            - '@pim_catalog.repository.attribute'
 
     # extractors
     pim_connector.array_converter.flat.product.attribute_column_info_extractor:

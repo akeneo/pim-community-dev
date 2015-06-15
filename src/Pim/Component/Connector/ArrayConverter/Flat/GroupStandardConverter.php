@@ -2,42 +2,28 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 
 /**
- * Variant group Flat Converter
+ * Group Flat Converter
  *
- * @author    Marie Bochu <marie.bochu@akeneo.com>
+ * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupStandardConverter implements StandardArrayConverterInterface
+class GroupStandardConverter implements StandardArrayConverterInterface
 {
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var LocaleRepositoryInterface */
-    protected $attributeRepository;
-
-    /** @var ProductStandardConverter */
-    protected $productConverter;
-
     /**
-     * @param LocaleRepositoryInterface    $localeRepository
-     * @param AttributeRepositoryInterface $attributeRepository
-     * @param ProductStandardConverter     $productConverter
+     * @param LocaleRepositoryInterface $localeRepository
      */
-    public function __construct(
-        LocaleRepositoryInterface $localeRepository,
-        AttributeRepositoryInterface $attributeRepository,
-        ProductStandardConverter $productConverter
-    ) {
-        $this->localeRepository    = $localeRepository;
-        $this->attributeRepository = $attributeRepository;
-        $this->productConverter    = $productConverter;
+    public function __construct(LocaleRepositoryInterface $localeRepository)
+    {
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -47,42 +33,21 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
      *
      * Before:
      * [
-     *     'code': 'mycode',
-     *     'axis': 'main_color,'secondary_color'
-     *     'label-fr_FR': 'T-shirt super beau',
-     *     'label-en_US': 'T-shirt very beautiful',
-     *     'type': 'VARIANT',
-     *     'main_color': 'white',
-     *     'tshirt_style': 'turtleneck,sportwear',
-     *     'description-fr_FR-ecommerce': '<p>description</p>'
-     *     'description-en_US-ecommerce': '<p>description</p>'
+     *      'code' => 'group1',
+     *      'type' => 'RELATED',
+     *      'label-de_DE' => '',
+     *      'label-en_US' => '',
+     *      'label-fr_FR' => '',
      * ]
      *
      * After:
      * {
      *     "code": "mycode",
+     *     "type": "RELATED",
      *     "labels": {
      *         "en_US": "T-shirt very beautiful",
-     *         "fr_FR": "T-shirt super beau"
-     *     }
-     *     "axis": ["main_color", "secondary_color"],
-     *     "type": "VARIANT",
-     *     "values": {
-     *         "main_color": "white",
-     *         "tshirt_style": ["turtleneck","sportwear"],
-     *         "description": [
-     *              {
-     *                  "locale": "fr_FR",
-     *                  "scope": "ecommerce",
-     *                  "data": "<p>description</p>",
-     *              },
-     *              {
-     *                  "locale": "en_US",
-     *                  "scope": "ecommerce",
-     *                  "data": "<p>description</p>",
-     *              }
-     *          ]
-     *     }
+     *         "fr_FR": "T-shirt super beau",
+     *     },
      * }
      */
     public function convert(array $item, array $options = [])
@@ -93,11 +58,6 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
             if ('' !== $data) {
                 $convertedItem = $this->convertField($convertedItem, $field, $data);
             }
-        }
-
-        if (isset($convertedItem['values'])) {
-            $convertedItem['values'] = $this->productConverter->convert($convertedItem['values']);
-            unset($convertedItem['values']['enabled']);
         }
 
         return $convertedItem;
@@ -117,18 +77,10 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
                 $labelLocale = $labelTokens[1];
                 $convertedItem['labels'][$labelLocale] = $data;
                 break;
-
             case 'code':
             case 'type':
                 $convertedItem[$field] = $data;
                 break;
-
-            case 'axis':
-                $convertedItem[$field] = explode(',', $data);
-                break;
-
-            default:
-                $convertedItem['values'][$field] = $data;
         }
 
         return $convertedItem;
@@ -140,7 +92,7 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
     protected function validate(array $item)
     {
         $this->validateRequiredFields($item, ['code', 'type']);
-        $this->validateAuthorizedFields($item, ['axis', 'type', 'code']);
+        $this->validateAuthorizedFields($item, ['type', 'code']);
     }
 
     /**
@@ -188,7 +140,7 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
         }
 
         foreach ($item as $field => $data) {
-            if (!in_array($field, $authorizedFields) && !$this->isAttribute($field)) {
+            if (!in_array($field, $authorizedFields)) {
                 throw new ArrayConversionException(
                     sprintf(
                         'Field "%s" is provided, authorized fields are: "%s"',
@@ -198,15 +150,5 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
                 );
             }
         }
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return bool
-     */
-    protected function isAttribute($code)
-    {
-        return null !== $this->attributeRepository->getIdentifierCode($code);
     }
 }

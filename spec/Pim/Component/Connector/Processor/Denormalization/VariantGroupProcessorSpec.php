@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Factory\GroupFactory;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductTemplateInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
@@ -24,10 +25,18 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $variantUpdater,
         ValidatorInterface $validator,
-        $groupClass,
-        StepExecution $stepExecution
+        GroupFactory $groupFactory,
+        StepExecution $stepExecution,
+        $groupClass
     ) {
-        $this->beConstructedWith($variantConverter, $repository, $variantUpdater, $validator, $groupClass);
+        $this->beConstructedWith(
+            $variantConverter,
+            $repository,
+            $variantUpdater,
+            $validator,
+            $groupFactory,
+            $groupClass
+        );
         $this->setStepExecution($stepExecution);
     }
 

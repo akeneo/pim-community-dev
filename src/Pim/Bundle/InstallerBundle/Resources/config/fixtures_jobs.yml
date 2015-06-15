@@ -94,14 +94,24 @@ jobs:
             filePath: families.yml
             multiple: false
 
-    fixtures_group_yml:
+    fixtures_variant_group_csv:
         order: 70
         connector: Data fixtures
-        alias:     fixtures_group_yml
+        alias:     fixtures_variant_group_csv
+        label:     Variant groups data fixtures
+        type:      fixtures
+        configuration:
+            filePath: variant_groups.csv
+            multiple: false
+
+    fixtures_group_csv:
+        order: 70
+        connector: Data fixtures
+        alias:     fixtures_group_csv
         label:     Groups data fixtures
         type:      fixtures
         configuration:
-            filePath: groups.yml
+            filePath: groups.csv
             multiple: false
 
     fixtures_product_csv:
