@@ -1,6 +1,5 @@
-/* global define */
 define(['underscore', 'backgrid'],
-function(_, Backgrid) {
+function (_, Backgrid) {
     'use strict';
 
     /**
@@ -17,7 +16,7 @@ function(_, Backgrid) {
         initialize: function (options) {
             if (this.choices) {
                 this.optionValues = [];
-                _.each(this.choices, function(value, key) {
+                _.each(this.choices, function (value, key) {
                     this.optionValues.push([value, key]);
                 }, this);
             }

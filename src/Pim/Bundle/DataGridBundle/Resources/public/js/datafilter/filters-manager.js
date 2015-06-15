@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/multiselect-decorator'],
-function($, _, Backbone, mediator, MultiselectDecorator) {
+function ($, _, Backbone, mediator, MultiselectDecorator) {
     'use strict';
 
     /**
@@ -44,7 +43,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         addButtonTemplate: _.template(
             '<select id="add-filter-select" multiple>' +
                 '<%  var groups = [_.__("system_filter_group")];' +
-                    '_.each(filters, function(filter) {' +
+                    '_.each(filters, function (filter) {' +
                         'if (filter.group) {' +
                             'var key = filter.groupOrder !== null ? filter.groupOrder : "last";' +
                             'if (_.isUndefined(groups[key])) {' +

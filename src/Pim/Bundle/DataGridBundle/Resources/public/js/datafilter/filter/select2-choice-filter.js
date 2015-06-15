@@ -1,6 +1,6 @@
 define(
     ['jquery', 'underscore', 'oro/datafilter/text-filter', 'routing', 'jquery.select2'],
-    function($, _, TextFilter, Routing) {
+    function ($, _, TextFilter, Routing) {
         'use strict';
 
         return TextFilter.extend({
@@ -41,7 +41,7 @@ define(
                 'click .operator_choice': '_onSelectOperator'
             },
 
-            initialize: function(options) {
+            initialize: function (options) {
                 _.extend(this.events, TextFilter.prototype.events);
 
                 options = options || {};
@@ -67,7 +67,7 @@ define(
                 TextFilter.prototype.initialize.apply(this, arguments);
             },
 
-            _onSelectOperator: function(e) {
+            _onSelectOperator: function (e) {
                 $(e.currentTarget).parent().parent().find('li').removeClass('active');
                 $(e.currentTarget).parent().addClass('active');
                 var parentDiv = $(e.currentTarget).parent().parent().parent();
@@ -81,17 +81,17 @@ define(
                 e.preventDefault();
             },
 
-            _enableInput: function() {
+            _enableInput: function () {
                 this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
                 this.$(this.criteriaValueSelectors.value).show();
             },
 
-            _disableInput: function() {
+            _disableInput: function () {
                 this.$(this.criteriaValueSelectors.value).val('').select2('destroy');
                 this.$(this.criteriaValueSelectors.value).hide();
             },
 
-            _getSelect2Config: function() {
+            _getSelect2Config: function () {
                 var config = {
                     multiple: true,
                     allowClear: false,
@@ -103,7 +103,7 @@ define(
                     config.ajax = {
                         url: Routing.generate(this.choiceUrl, this.choiceUrlParams),
                         cache: true,
-                        data: _.bind(function(term, page) {
+                        data: _.bind(function (term, page) {
                             return {
                                 search: term,
                                 options: {
@@ -112,7 +112,7 @@ define(
                                 }
                             };
                         }, this),
-                        results: _.bind(function(data) {
+                        results: _.bind(function (data) {
                             this._cacheResults(data.results);
                             data.more = this.resultsPerPage === data.results.length;
 
@@ -120,7 +120,7 @@ define(
                         }, this)
                     };
                 } else {
-                    config.data = _.map(this.choices, function(choice) {
+                    config.data = _.map(this.choices, function (choice) {
                         return {
                             id: choice.value,
                             text: choice.label
@@ -131,7 +131,7 @@ define(
                 return config;
             },
 
-            _writeDOMValue: function(value) {
+            _writeDOMValue: function (value) {
                 this.$('li .operator_choice[data-value="' + value.type + '"]').trigger('click');
                 var operator = this.$('li.active .operator_choice').data('value');
                 if ('empty' === operator) {
@@ -143,7 +143,7 @@ define(
                 return this;
             },
 
-            _readDOMValue: function() {
+            _readDOMValue: function () {
                 var operator = this.emptyChoice ? this.$('li.active .operator_choice').data('value') : 'in';
 
                 return {
@@ -152,7 +152,7 @@ define(
                 };
             },
 
-            _renderCriteria: function(el) {
+            _renderCriteria: function (el) {
                 this.operatorChoices = {
                     'in':    _.__('pim.grid.choice_filter.label_in_list'),
                     'empty': _.__('pim.grid.choice_filter.label_empty')
@@ -170,7 +170,7 @@ define(
                 this.$(this.criteriaValueSelectors.value).select2(this._getSelect2Config());
             },
 
-            _onClickCriteriaSelector: function(e) {
+            _onClickCriteriaSelector: function (e) {
                 e.stopPropagation();
                 $('body').trigger('click');
                 if (!this.popupCriteriaShowed) {
@@ -181,13 +181,13 @@ define(
                 }
             },
 
-            _onClickCloseCriteria: function() {
+            _onClickCloseCriteria: function () {
                 TextFilter.prototype._onClickCloseCriteria.apply(this, arguments);
 
                 this.$(this.criteriaValueSelectors.value).select2('close');
             },
 
-            _onClickOutsideCriteria: function(e) {
+            _onClickOutsideCriteria: function (e) {
                 var elem = this.$(this.criteriaSelector);
 
                 if (e.target != $('body').get(0) && e.target !== elem.get(0) && !elem.has(e.target).length) {
@@ -211,11 +211,11 @@ define(
                 }, this);
             },
 
-            _getCachedResults: function(ids) {
+            _getCachedResults: function (ids) {
                 var results = [],
                     missingResults = [];
 
-                _.each(ids, function(id) {
+                _.each(ids, function (id) {
                     if (_.isUndefined(this.resultCache[id])) {
                         if (_.isEmpty(this.choices)) {
                             missingResults.push(id);
@@ -237,7 +237,7 @@ define(
 
                     $.ajax({
                         url: Routing.generate(this.choiceUrl, this.choiceUrlParams) + '&' + $.param(params),
-                        success: _.bind(function(data) {
+                        success: _.bind(function (data) {
                             this._cacheResults(data.results);
                             results = _.union(results, data.results);
                         }, this),
@@ -248,21 +248,21 @@ define(
                 return results;
             },
 
-            _getInputValue: function(input) {
+            _getInputValue: function (input) {
                 return this.$(input).select2('val');
             },
 
-            _setInputValue: function(input, value) {
+            _setInputValue: function (input, value) {
                 this.$(input).select2('data', this._getCachedResults(value));
 
                 return this;
             },
 
-            _updateDOMValue: function() {
+            _updateDOMValue: function () {
                 return this._writeDOMValue(this.getValue());
             },
 
-            _formatDisplayValue: function(value) {
+            _formatDisplayValue: function (value) {
                 if (_.isEmpty(value.value)) {
                     return value;
                 }
@@ -272,7 +272,7 @@ define(
                 };
             },
 
-            _getCriteriaHint: function() {
+            _getCriteriaHint: function () {
                 var operator = this.$('li.active .operator_choice').data('value');
                 if ('empty' === operator) {
                     return this.operatorChoices[operator];

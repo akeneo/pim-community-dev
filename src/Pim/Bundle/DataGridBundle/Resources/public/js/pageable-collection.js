@@ -1,6 +1,5 @@
-/* global define */
 define(['underscore', 'backbone', 'backbone/pageable-collection', 'oro/app'],
-function(_, Backbone, BackbonePageableCollection, app) {
+function (_, Backbone, BackbonePageableCollection, app) {
     'use strict';
 
     /**
@@ -37,8 +36,8 @@ function(_, Backbone, BackbonePageableCollection, app) {
          */
         queryParams: _.extend({}, BackbonePageableCollection.prototype.queryParams, {
             directions: {
-                "-1": "ASC",
-                "1": "DESC"
+                '-1': 'ASC',
+                '1': 'DESC'
             },
             totalRecords: undefined,
             totalPages: undefined
@@ -78,11 +77,11 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param models
          * @param options
          */
-        initialize: function(models, options) {
+        initialize: function (models, options) {
             options = options || {};
             if (options.state) {
                 if (options.state.sorters) {
-                    _.each(options.state.sorters, function(direction, field) {
+                    _.each(options.state.sorters, function (direction, field) {
                         options.state.sorters[field] = this.getSortDirectionKey(direction);
                     }, this);
                 }
@@ -120,7 +119,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          *
          * @protected
          */
-        onRemove: function() {
+        onRemove: function () {
             if (this.state.totalRecords > 0) {
                 this.state.totalRecords--;
             }
@@ -132,7 +131,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {Object} stateObject
          * @return {String}
          */
-        encodeStateData: function(stateObject) {
+        encodeStateData: function (stateObject) {
             var data = _.pick(stateObject, _.keys(this.stateShortKeys));
             data.gridName = this.inputName;
             data = app.invertKeys(data, this.stateShortKeys);
@@ -145,7 +144,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} stateString
          * @return {Object}
          */
-        decodeStateData: function(stateString) {
+        decodeStateData: function (stateString) {
             var data = app.unpackFromQueryString(stateString);
             data = app.invertKeys(data, _.invert(this.stateShortKeys));
             return data;
@@ -159,7 +158,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} prefix
          * @return {Object}
          */
-        processFiltersParams: function(data, state, prefix) {
+        processFiltersParams: function (data, state, prefix) {
             if (!state) {
                 state = this.state;
             }
@@ -187,7 +186,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             var state = app.deepClone(state);
             state.parameters = state.parameters || {};
 
-            _.each(this.additionalParameters, _.bind(function(value, key) {
+            _.each(this.additionalParameters, _.bind(function (value, key) {
                 if (!_.isUndefined(state[value])) {
                     state.parameters[key] = state[value]
                 }
@@ -203,10 +202,10 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} prefix
          * @return {Object}
          */
-        generateParameterStrings: function(parameters, prefix) {
+        generateParameterStrings: function (parameters, prefix) {
             var localStrings = {};
             var localPrefix = prefix;
-            _.each(parameters, function(filterParameters, filterKey) {
+            _.each(parameters, function (filterParameters, filterKey) {
                 filterKey = filterKey.toString();
                 if (filterKey.substr(0, 2) != '__') {
                     var filterKeyString = localPrefix + '[' + filterKey + ']';
@@ -231,7 +230,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param options
          * @return {Object}
          */
-        parse: function(resp, options) {
+        parse: function (resp, options) {
             this.state.totalRecords = resp.options.totalRecords;
             this.state = this._checkState(this.state);
             return resp.data;
@@ -243,7 +242,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param models
          * @param options
          */
-        reset: function(models, options) {
+        reset: function (models, options) {
             this.trigger('beforeReset', this, options);
             BackbonePageableCollection.prototype.reset.apply(this, arguments);
         },
@@ -253,7 +252,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          *
          * @param {Object} state
          */
-        updateState: function(state) {
+        updateState: function (state) {
             var newState = _.extend({}, this.state, state);
             this.state = this._checkState(newState);
             this.trigger('updateState', this, this.state);
@@ -272,21 +271,21 @@ function(_, Backbone, BackbonePageableCollection, app) {
             var totalPages = state.totalPages;
 
             if (totalRecords != null && pageSize != null && currentPage != null &&
-                firstPage != null && (mode == "infinite" ? links : true)) {
+                firstPage != null && (mode == 'infinite' ? links : true)) {
 
-                state.totalRecords = totalRecords = this.finiteInt(totalRecords, "totalRecords");
-                state.pageSize = pageSize = this.finiteInt(pageSize, "pageSize");
-                state.currentPage = currentPage = this.finiteInt(currentPage, "currentPage");
-                state.firstPage = firstPage = this.finiteInt(firstPage, "firstPage");
+                state.totalRecords = totalRecords = this.finiteInt(totalRecords, 'totalRecords');
+                state.pageSize = pageSize = this.finiteInt(pageSize, 'pageSize');
+                state.currentPage = currentPage = this.finiteInt(currentPage, 'currentPage');
+                state.firstPage = firstPage = this.finiteInt(firstPage, 'firstPage');
 
                 if (pageSize < 0) {
-                    throw new RangeError("`pageSize` must be >= 0");
+                    throw new RangeError('`pageSize` must be >= 0');
                 }
 
                 state.totalPages = pageSize == 0 ? 1 : totalPages = state.totalPages = Math.ceil(totalRecords / pageSize);
 
                 if (firstPage < 0 || firstPage > 1) {
-                    throw new RangeError("`firstPage` must be 0 or 1");
+                    throw new RangeError('`firstPage` must be 0 or 1');
                 }
 
                 state.lastPage = firstPage === 0 ? totalPages - 1 : totalPages;
@@ -305,19 +304,19 @@ function(_, Backbone, BackbonePageableCollection, app) {
                     state.currentPage = currentPage = firstPage;
                 }
 
-                if (mode == "infinite") {
+                if (mode == 'infinite') {
                     if (!links[currentPage + '']) {
-                        throw new RangeError("No link found for page " + currentPage);
+                        throw new RangeError('No link found for page ' + currentPage);
                     }
                 } else if (totalPages > 0) {
                     if (firstPage === 0 && (currentPage < firstPage || currentPage >= totalPages)) {
-                        throw new RangeError("`currentPage` must be firstPage <= currentPage < totalPages if 0-based. Got " + currentPage + '.');
+                        throw new RangeError('`currentPage` must be firstPage <= currentPage < totalPages if 0-based. Got ' + currentPage + '.');
                     }
                     else if (firstPage === 1 && (currentPage < firstPage || currentPage > totalPages)) {
-                        throw new RangeError("`currentPage` must be firstPage <= currentPage <= totalPages if 1-based. Got " + currentPage + '.');
+                        throw new RangeError('`currentPage` must be firstPage <= currentPage <= totalPages if 1-based. Got ' + currentPage + '.');
                     }
                 } else if (currentPage !== firstPage ) {
-                    throw new RangeError("`currentPage` must be " + firstPage + ". Got " + currentPage + '.');
+                    throw new RangeError('`currentPage` must be ' + firstPage + '. Got ' + currentPage + '.');
                 }
             }
 
@@ -332,10 +331,10 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @return {Number}
          * @protected
          */
-        finiteInt: function(val, name) {
+        finiteInt: function (val, name) {
             val *= 1;
             if (!_.isNumber(val) || _.isNaN(val) || !_.isFinite(val) || ~~val !== val) {
-                throw new TypeError("`" + name + "` must be a finite integer");
+                throw new TypeError('`' + name + '` must be a finite integer');
             }
             return val;
         },
@@ -353,14 +352,14 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var mode = this.mode;
 
-            if (mode == "infinite" && !options.url) {
+            if (mode == 'infinite' && !options.url) {
                 options.url = this.links[state.currentPage];
             }
 
             var data = options.data || {};
 
             // set up query params
-            var url = options.url || _.result(this, "url") || '';
+            var url = options.url || _.result(this, 'url') || '';
             var qsi = url.indexOf('?');
             if (qsi != -1) {
                 _.extend(data, app.unpackFromQueryString(url.slice(qsi + 1)));
@@ -375,7 +374,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var fullCollection = this.fullCollection, links = this.links;
 
-            if (mode != "server") {
+            if (mode != 'server') {
 
                 var self = this;
                 var success = options.success;
@@ -389,7 +388,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
                     var models = col.models;
                     var currentPage = state.currentPage;
 
-                if (mode == "client") resetQuickly(fullCollection, models, opts);
+                if (mode == 'client') resetQuickly(fullCollection, models, opts);
                     else if (links[currentPage]) { // refetching a page
                         var pageSize = state.pageSize;
                         var pageStart = (state.firstPage === 0 ?
@@ -402,12 +401,12 @@ function(_, Backbone, BackbonePageableCollection, app) {
                         fullCollection.update(fullModels,
                             _.extend({silent: true, sort: false}, opts));
                         if (fullCollection.comparator) fullCollection.sort();
-                        fullCollection.trigger("reset", fullCollection, opts);
+                        fullCollection.trigger('reset', fullCollection, opts);
                     }
                     else { // fetching new page
                         fullCollection.add(models, _.extend({at: fullCollection.length,
                             silent: true}, opts));
-                        fullCollection.trigger("reset", fullCollection, opts);
+                        fullCollection.trigger('reset', fullCollection, opts);
                     }
 
                     if (success) success(col, resp, opts);
@@ -427,14 +426,14 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {Object} state
          * @return {Object}
          */
-        processQueryParams: function(data, state) {
+        processQueryParams: function (data, state) {
             state = this.processAdditionalParams(state);
             var pageablePrototype = PageableCollection.prototype;
 
             // map params except directions
-            var queryParams = this.mode == "client" ?
-                _.pick(this.queryParams, "sorters") :
-                _.omit(_.pick(this.queryParams, _.keys(pageablePrototype.queryParams)), "directions");
+            var queryParams = this.mode == 'client' ?
+                _.pick(this.queryParams, 'sorters') :
+                _.omit(_.pick(this.queryParams, _.keys(pageablePrototype.queryParams)), 'directions');
 
             var i, kvp, k, v, kvps = _.pairs(queryParams), thisCopy = _.clone(this);
             for (i = 0; i < kvps.length; i++) {
@@ -447,7 +446,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             // set sorting parameters
             if (state.sorters) {
-                _.each(state.sorters, function(direction, field) {
+                _.each(state.sorters, function (direction, field) {
                     var key = this.queryParams.sortBy.replace('%field%', field);
                     data[key] = this.queryParams.directions[direction];
                 }, this);
@@ -476,9 +475,9 @@ function(_, Backbone, BackbonePageableCollection, app) {
          * @param {String} directionValue
          * @return {String}
          */
-        getSortDirectionKey: function(directionValue) {
+        getSortDirectionKey: function (directionValue) {
             var directionKey = null;
-            _.each(this.queryParams.directions, function(value, key) {
+            _.each(this.queryParams.directions, function (value, key) {
                 if (value == directionValue) {
                     directionKey = key;
                 }
@@ -502,7 +501,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             if (this.multipleSorting) {
                 // there is always must be at least one sorted column
                 if (_.keys(state.sorters).length <= 1 && !order) {
-                    order = this.getSortDirectionKey("ASC");  // default order
+                    order = this.getSortDirectionKey('ASC');  // default order
                 }
 
                 // last sorting has the lowest priority
@@ -522,7 +521,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
             if (!order) delComp = delFullComp = true;
 
             var mode = this.mode;
-            options = _.extend({side: mode == "client" ? mode : "server", full: true},
+            options = _.extend({side: mode == 'client' ? mode : 'server', full: true},
                 options
             );
 
@@ -530,7 +529,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
 
             var full = options.full, side = options.side;
 
-            if (side == "client") {
+            if (side == 'client') {
                 if (full) {
                     if (fullCollection) fullCollection.comparator = comparator;
                     delComp = true;
@@ -540,7 +539,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
                     delFullComp = true;
                 }
             }
-            else if (side == "server" && !full) {
+            else if (side == 'server' && !full) {
                 this.comparator = comparator;
             }
 
@@ -554,7 +553,7 @@ function(_, Backbone, BackbonePageableCollection, app) {
          *
          * @return {PageableCollection}
          */
-        clone: function() {
+        clone: function () {
             var collectionOptions = {};
             collectionOptions.url = this.url;
             collectionOptions.inputName = this.inputName;

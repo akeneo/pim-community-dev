@@ -1,10 +1,11 @@
+/* global jQuery */
 (function ($) {
     'use strict';
 
     $.fn.wizard = function (options) {
-        var opts = $.extend({}, $.fn.wizard.defaults, options),
-            $steps = $(this).find('li'),
-            currentStep = opts.currentStep;
+        var opts = $.extend({}, $.fn.wizard.defaults, options);
+        var $steps = $(this).find('li');
+        var currentStep = opts.currentStep;
 
         if (!$(this).hasClass('wizard')) {
             $(this).addClass('wizard');
@@ -27,10 +28,10 @@
             if (i !== 0) {
                 $steps.eq(i).find('.progress-start').addClass('active');
             }
-            if (i != currentStep - 1) {
+            if (i !== currentStep - 1) {
                 $steps.eq(i).find('.progress-end').addClass('active');
             }
-            if (i == currentStep - 1) {
+            if (i === currentStep - 1) {
                 $steps.eq(i).append('<div class="dot"><i class="icon-circle"></i></div>');
             }
         }
