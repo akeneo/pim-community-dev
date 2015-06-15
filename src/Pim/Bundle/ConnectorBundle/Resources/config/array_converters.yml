@@ -17,12 +17,12 @@ parameters:
 
     pim_connector.array_converter.flat.product.field_converter.class: Pim\Component\Connector\ArrayConverter\Flat\Product\FieldConverter
 
-    pim_connector.array_converter.flat.product.attribute_columns_resolver.class:   Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver
-    pim_connector.array_converter.flat.product.association_columns_resolver.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver
-    pim_connector.array_converter.flat.product.columns_merger.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger
-    pim_connector.array_converter.flat.product.columns_mapper.class:               Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper
-    pim_connector.array_converter.flat.attribute_field_extractor.class:            Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
-    pim_connector.array_converter.splitter.field.class:                            Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
+    pim_connector.array_converter.flat.product.attribute_columns_resolver.class:      Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnsResolver
+    pim_connector.array_converter.flat.product.association_columns_resolver.class:    Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver
+    pim_connector.array_converter.flat.product.columns_merger.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger
+    pim_connector.array_converter.flat.product.columns_mapper.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper
+    pim_connector.array_converter.flat.product.attribute_column_info_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
+    pim_connector.array_converter.splitter.field.class:                               Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
 
 services:
     # array converters
@@ -40,7 +40,7 @@ services:
     pim_connector.array_converter.flat.product:
         class: %pim_connector.array_converter.flat.product.class%
         arguments:
-            - '@pim_connector.array_converter.flat.attribute_field_extractor'
+            - '@pim_connector.array_converter.flat.product.attribute_column_info_extractor'
             - '@pim_connector.array_converter.flat.product.value_converter.registry'
             - '@pim_connector.array_converter.flat.product.association_columns_resolver'
             - '@pim_connector.array_converter.flat.product.attribute_columns_resolver'
@@ -63,8 +63,8 @@ services:
             - '@pim_connector.array_converter.flat.product'
 
     # extractors
-    pim_connector.array_converter.flat.attribute_field_extractor:
-        class: %pim_connector.array_converter.flat.attribute_field_extractor.class%
+    pim_connector.array_converter.flat.product.attribute_column_info_extractor:
+        class: %pim_connector.array_converter.flat.product.attribute_column_info_extractor.class%
         arguments:
             - '@pim_catalog.repository.attribute'
             - '@pim_catalog.repository.channel'
@@ -155,7 +155,7 @@ services:
     pim_connector.array_converter.flat.product.columns_merger:
         class: %pim_connector.array_converter.flat.product.columns_merger.class%
         arguments:
-            - '@pim_connector.array_converter.flat.attribute_field_extractor'
+            - '@pim_connector.array_converter.flat.product.attribute_column_info_extractor'
 
     # columns mappers
     pim_connector.array_converter.flat.product.columns_mapper:
