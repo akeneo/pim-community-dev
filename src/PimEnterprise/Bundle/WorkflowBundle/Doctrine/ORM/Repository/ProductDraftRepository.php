@@ -190,6 +190,26 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDistinctAuthors()
+    {
+        $alias = 'p';
+        $authorField = $alias.'.author';
+        $queryBuilder = $this->_em->createQueryBuilder()
+            ->select($authorField)
+            ->from($this->_entityName, $alias, $authorField)
+            ->distinct(true)
+            ->orderBy($authorField);
+
+        $authors = $queryBuilder->getQuery()->getArrayResult();
+        $authorCodes = array_keys($authors);
+        ksort($authorCodes);
+
+        return $authorCodes;
+    }
+
+    /**
      * Build field name with root alias
      *
      * @param QueryBuilder $qb
