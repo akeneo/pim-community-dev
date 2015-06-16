@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Query\Filter\Operators;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
@@ -87,6 +89,72 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
         // TODO: Filter by owned categories by the user
 
         return $qb;
+    }
+
+    /**
+     * Apply tag filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param string       $operator
+     * @param mixed        $value
+     */
+    public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value)
+    {
+        $qb->leftJoin('pa.tags', 'tags');
+
+        switch ($operator) {
+            case Operators::IN_LIST:
+                $this->applyFilterInList($qb, $field, $value);
+                break;
+            case Operators::IS_EMPTY:
+                $this->applyFilterEmpty($qb, $field);
+                break;
+        }
+    }
+
+    /**
+     * Apply an in list filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param mixed        $value
+     */
+    protected function applyFilterInList(QueryBuilder $qb, $field, $value)
+    {
+        if (!empty($value)) {
+            $qb->andWhere($qb->expr()->in($field, $value));
+        }
+    }
+
+    /**
+     * Apply a is_empty filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     */
+    protected function applyFilterEmpty(QueryBuilder $qb, $field)
+    {
+        $qb->andWhere($qb->expr()->isNull($field));
+    }
+
+    /**
+     * Get the date formatted from data
+     *
+     * @param \DateTime|string $data
+     * @param bool             $endOfDay
+     *
+     * @return string
+     */
+    protected function getDateValue($data, $endOfDay = false)
+    {
+        if ($data instanceof \DateTime && true === $endOfDay) {
+            $data->setTime(23, 59, 59);
+        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
+            $data = sprintf('%s 23:59:59', $data);
+        }
+
+        return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
     }
 
     /**
