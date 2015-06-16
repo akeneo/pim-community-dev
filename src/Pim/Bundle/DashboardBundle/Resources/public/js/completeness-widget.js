@@ -10,12 +10,12 @@ define(
 
             options: {
                 completeBar: 'bar-success',
-                inCompleteBar: 'bar-warning',
+                inCompleteBar: 'bar-warning'
             },
 
             template: _.template(
                 [
-                    '<% _.each(data, function(channelResult, channel) { %>',
+                    '<% _.each(data, function (channelResult, channel) { %>',
                         '<tr class="channel">',
                             '<td>',
                                 '<a href="#" data-toggle-channel="<%= channel %>">',
@@ -32,14 +32,16 @@ define(
                             '</td>',
                             '<td>&nbsp;</td>',
                         '</tr>',
-                        '<% _.each(channelResult.locales, function(localeResult, locale) { %>',
+                        '<% _.each(channelResult.locales, function (localeResult, locale) { %>',
                             '<tr data-channel="<%= channel %>">',
                                 '<td>&nbsp;</td>',
                                 '<td><%= locale %></td>',
                                 '<td><%= localeResult.ratio %>%</td>',
                                 '<td class="progress-cell">',
                                     '<div class="progress">',
-                                        '<div class="bar <%= localeResult.ratio === 100 ? options.completeBar : options.inCompleteBar %>" style="width: <%= localeResult.ratio %>%;"></div>',
+                                        '<div class="bar ' + '<%= localeResult.ratio === 100 ? ' +
+                                            'options.completeBar : options.inCompleteBar %>" ' +
+                                            'style="width: <%= localeResult.ratio %>%;"></div>',
                                     '</div>',
                                     '<small><%= localeResult.complete %>/<%= channelResult.total %></small>',
                                 '</td>',

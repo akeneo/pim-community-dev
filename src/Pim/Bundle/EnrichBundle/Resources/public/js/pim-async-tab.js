@@ -17,7 +17,8 @@ define(
                     $target.addClass('active');
                 }
                 var loadingMask = new LoadingMask();
-                loadingMask.render().$el.appendTo($target).css({ 'position': 'absolute', 'width': '100%', 'height': '80%' });
+                loadingMask.render().$el.appendTo($target)
+                    .css({ 'position': 'absolute', 'width': '100%', 'height': '80%' });
                 loadingMask.show();
 
                 $.get($target.attr('data-url'), function (data) {

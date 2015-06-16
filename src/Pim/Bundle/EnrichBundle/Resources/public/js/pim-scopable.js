@@ -1,5 +1,16 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'oro/mediator', 'wysiwyg', 'pim/optionform', 'pim/fileinput', 'bootstrap', 'bootstrap.bootstrapswitch', 'jquery.select2'],
+    [
+        'jquery',
+        'backbone',
+        'underscore',
+        'oro/mediator',
+        'wysiwyg',
+        'pim/optionform',
+        'pim/fileinput',
+        'bootstrap',
+        'bootstrap.bootstrapswitch',
+        'jquery.select2'
+    ],
     function ($, Backbone, _, mediator, wysiwyg, optionform, fileinput) {
         'use strict';
         /**
@@ -42,9 +53,9 @@ define(
                     field.id = null;
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
                 } else if (this.$el.find('.switch').length) {
-                    var $original = this.$el.find('.switch'),
-                        $wrap = $original.clone().empty().removeClass('has-switch'),
-                        $input = $original.find('input');
+                    var $original = this.$el.find('.switch');
+                    var $wrap = $original.clone().empty().removeClass('has-switch');
+                    var $input = $original.find('input');
 
                     field.id = $input.attr('id');
                     $input.appendTo($wrap);

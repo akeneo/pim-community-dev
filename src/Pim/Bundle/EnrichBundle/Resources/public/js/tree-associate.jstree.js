@@ -8,12 +8,12 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 return;
             }
-            var self         = this,
-                currentTree  = -1,
-                id           = $el.attr('data-id'),
-                selectedTree = $el.attr('data-selected-tree'),
-                dataLocale   = $el.attr('data-datalocale'),
-                locked       = false;
+            var self         = this;
+            var currentTree  = -1;
+            var id           = $el.attr('data-id');
+            var selectedTree = $el.attr('data-selected-tree');
+            var dataLocale   = $el.attr('data-datalocale');
+            var locked       = false;
 
             this.config = {
                 core: {
@@ -46,14 +46,30 @@ define(
 
                             if ((!node || (node === -1)) && treeHasProduct) {
                                 // First load of the tree: get the checked categories
-                                return Routing.generate('pim_enrich_product_listcategories', { id: id, categoryId: currentTree, _format: 'json', dataLocale: dataLocale, context: 'associate' });
+                                return Routing.generate(
+                                    'pim_enrich_product_listcategories',
+                                    {
+                                        id: id,
+                                        categoryId: currentTree,
+                                        _format: 'json',
+                                        dataLocale: dataLocale,
+                                        context: 'associate'
+                                    }
+                                );
                             }
 
-                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale, context: 'associate' });
+                            return Routing.generate(
+                                'pim_enrich_categorytree_children',
+                                {
+                                    _format: 'json',
+                                    dataLocale: dataLocale,
+                                    context: 'associate'
+                                }
+                            );
                         },
                         data: function (node) {
-                            var data           = {},
-                                treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
+                            var data           = {};
+                            var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
                             if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');

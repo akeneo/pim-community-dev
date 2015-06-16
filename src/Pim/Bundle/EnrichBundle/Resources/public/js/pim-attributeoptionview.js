@@ -1,5 +1,15 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pim/dialog', 'jquery-ui-full'],
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/translator',
+        'routing',
+        'oro/mediator',
+        'oro/loading-mask',
+        'pim/dialog',
+        'jquery-ui-full'
+    ],
     function ($, _, Backbone, __, Routing, mediator, LoadingMask, Dialog) {
         'use strict';
 
@@ -25,10 +35,12 @@ define(
                     '<span class="handle"><i class="icon-reorder"></i></span>' +
                     '<span class="option-code"><%= item.code %></span>' +
                 '</td>' +
-                '<% _.each(locales, function(locale) { %>' +
+                '<% _.each(locales, function (locale) { %>' +
                 '<td >' +
                     '<% if (item.optionValues[locale]) { %>' +
-                        '<span title="<%= item.optionValues[locale].value %>"><%= item.optionValues[locale].value %></span>' +
+                        '<span title="<%= item.optionValues[locale].value %>">' +
+                            '<%= item.optionValues[locale].value %>' +
+                        '</span>' +
                     '<% } %>' +
                 '</td>' +
                 '<% }); %>' +
@@ -42,12 +54,14 @@ define(
                     '<input type="text" class="attribute_option_code exclude" value="<%= item.code %>"/>' +
                     '<i class="validation-tooltip hidden" data-placement="top" data-toggle="tooltip"></i>' +
                 '</td>' +
-                '<% _.each(locales, function(locale) { %>' +
+                '<% _.each(locales, function (locale) { %>' +
                 '<td class="field-cell">' +
                     '<% if (item.optionValues[locale]) { %>' +
-                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" value="<%= item.optionValues[locale].value %>"/>' +
+                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
+                            'value="<%= item.optionValues[locale].value %>"/>' +
                     '<% } else { %>' +
-                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" value=""/>' +
+                        '<input type="text" class="attribute-option-value exclude" data-locale="<%= locale %>" ' +
+                            'value=""/>' +
                     '<% } %>' +
                 '</td>' +
                 '<% }); %>' +
@@ -190,14 +204,13 @@ define(
                 );
             },
             cancelSubmit: function (e) {
-                if (e.keyCode == 13) {
+                if (e.keyCode === 13) {
                     this.updateItem();
 
                     return false;
                 }
             },
-            loadModelFromView: function ()
-            {
+            loadModelFromView: function () {
                 var attributeOptions = {};
                 var editedModel = this.model.clone();
 
@@ -248,7 +261,7 @@ define(
                 '<thead>' +
                     '<tr>' +
                         '<th><%= code_label %></th>' +
-                        '<% _.each(locales, function(locale) { %>' +
+                        '<% _.each(locales, function (locale) { %>' +
                         '<th>' +
                             '<%= locale %>' +
                         '</th>' +
@@ -314,7 +327,7 @@ define(
                 }
 
                 this.$el.sortable({
-                    items: "tbody tr",
+                    items: 'tbody tr',
                     axis: 'y',
                     connectWith: this.$el,
                     containment: this.$el,
@@ -327,7 +340,7 @@ define(
 
                         return ui;
                     },
-                    stop: _.bind(function (e, ui) {
+                    stop: _.bind(function () {
                         this.updateSorting();
                     }, this)
                 });

@@ -23,20 +23,21 @@ define(
 
             currencyTemplate: _.template(
                 '<span class="currency-header<%= small ? " small" : "" %>">' +
-                    '<% _.each(currencies, function(currency) { %>' +
+                    '<% _.each(currencies, function (currency) { %>' +
                         '<span class="currency-label"><%= currency %></span>' +
                     '<% }); %>' +
                 '</span>'
             ),
 
             template: _.template(
-                '<% _.each(data, function(item) { %>' +
-                    '<% _.each(currencies, function(currency, index) { %>' +
+                '<% _.each(data, function (item) { %>' +
+                    '<% _.each(currencies, function (currency, index) { %>' +
                         '<% if (item.label === currency) { %>' +
                             '<% if (scopable && index === 0) { %>' +
                                 '<label class="control-label add-on" title="<%= item.scope %>"' +
                                     '<% if (item.color) { %>' +
-                                        ' style="background-color:rgba(<%= item.color %>)<%= item.fontColor ? ";color:" + item.fontColor : "" %>;"' +
+                                        ' style="background-color:rgba(<%= item.color %>)' +
+                                            '<%= item.fontColor ? ";color:" + item.fontColor : "" %>;"' +
                                     '<% } %>' +
                                 '>' +
                                     '<%= item.scope[0].toUpperCase() %>' +
@@ -124,7 +125,8 @@ define(
                         scopable:     this.scopable,
                         first:        this.first,
                         collapseIcon: this.collapseIcon,
-                        inputClass:   this.currencies.length > this.inputThreshold ? this.smallInputClass : this.inputClass
+                        inputClass:   this.currencies.length > this.inputThreshold ?
+                                        this.smallInputClass : this.inputClass
                     })
                 );
 

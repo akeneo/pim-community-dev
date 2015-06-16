@@ -35,20 +35,30 @@ define(
                     '<% if (!_.isEmpty(data)) { %>',
                         '<thead>',
                             '<tr>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.date") %></th>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.type") %></th>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.profile name") %></th>',
-                                '<th class="center"><%= _.__("pim_dashboard.widget.last_operations.status") %></th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.date") %>',
+                                '</th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.type") %>',
+                                '</th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.profile name") %>',
+                                '</th>',
+                                '<th class="center">',
+                                    '<%= _.__("pim_dashboard.widget.last_operations.status") %>',
+                                '</th>',
                                 '<th></th>',
                             '</tr>',
                         '</thead>',
                         '<tbody>',
-                            '<% _.each(data, function(operation) { %>',
+                            '<% _.each(data, function (operation) { %>',
                                 '<tr>',
                                     '<td>',
                                         '<%= operation.date %>',
                                     '</td>',
-                                    '<td><%= _.__("pim_dashboard.widget.last_operations.job_type." + operation.type) %></td>',
+                                    '<td>',
+                                        '<%= _.__("pim_dashboard.widget.last_operations.job_type."+operation.type) %>',
+                                    '</td>',
                                     '<td><%= operation.label %></td>',
                                     '<td>',
                                         '<span class="label <%= operation.labelClass %> fullwidth">',
@@ -102,7 +112,7 @@ define(
                 Navigation.getInstance().setLocation(route);
             },
 
-            setShowListBtn: function (el) {
+            setShowListBtn: function () {
                 this.$showListBtn = $(this.showListBtnTemplate());
 
                 this.$el.parent().siblings('.widget-header').append(this.$showListBtn);

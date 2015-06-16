@@ -35,7 +35,9 @@ define(
 
                 // Toogle accordion icon
                 $target.find('.accordion').on('show hide', function (e) {
-                    $(e.target).siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-collapse-alt icon-expand-alt');
+                    $(e.target).siblings('.accordion-heading')
+                        .find('.accordion-toggle i')
+                        .toggleClass('icon-collapse-alt icon-expand-alt');
                 });
 
                 var $localizableIcon = $('<i>', {
@@ -79,55 +81,62 @@ define(
                     }
                 });
 
-                var secret = "38384040373937396665";
-                var input = "";
+                var secret = '38384040373937396665';
+                var input = '';
                 var timer;
                 $(document).keyup(function (e) {
                     input += e.which;
                     clearTimeout(timer);
                     timer = setTimeout(function () {
-                        input = "";
+                        input = '';
                     }, 500);
-                    if (input == secret) {
+                    if (input === secret) {
                         $(document.body).addClass('konami');
                     }
                 });
 
                 // DELETE request for delete buttons
                 $(document).on('click', '[data-dialog]', function () {
-                    var $el      = $(this),
-                        message  = $el.data('message'),
-                        title    = $el.data('title'),
-                        doAction = function () {
+                    var $el      = $(this);
+                    var message  = $el.data('message');
+                    var title    = $el.data('title');
+                    var doAction = function () {
+                        var loadingMask = new LoadingMask();
+                        loadingMask.render().$el.appendTo($(document.body)).css(
+                            {
+                                'position': 'absolute',
+                                'top': '0px',
+                                'left': '0px',
+                                'width': '100%',
+                                'height': '100%'
+                            }
+                        );
+                        loadingMask.show();
 
-                            var loadingMask = new LoadingMask();
-                            loadingMask.render().$el.appendTo($(document.body)).css({ 'position': 'absolute', 'top': '0px', 'left': '0px', 'width': '100%', 'height': '100%'});
-                            loadingMask.show();
-
-                            $.ajax({
-                                url: $el.attr('data-url'),
-                                type: 'POST',
-                                headers: { accept: 'application/json' },
-                                data: { _method: $el.data('method') },
-                                success: function () {
-                                    loadingMask.hide().$el.remove();
-                                    var navigation = Navigation.getInstance();
-                                    var targetUrl = '#url=' + $el.attr('data-redirect-url');
-                                    // If already on the desired page, make sure it is refreshed
-                                    Backbone.history.fragment = new Date().getTime();
-                                    navigation.navigate(targetUrl, { trigger: true });
-                                    navigation.addFlashMessage('success', $el.attr('data-success-message'));
-                                },
-                                error: function (xhr) {
-                                    loadingMask.hide().$el.remove();
-                                    messenger.notificationFlashMessage(
-                                        'error',
-                                        (xhr.responseJSON && xhr.responseJSON.message) ?
-                                            xhr.responseJSON.message :
-                                            $el.attr('data-error-message'));
-                                }
-                            });
-                        };
+                        $.ajax({
+                            url: $el.attr('data-url'),
+                            type: 'POST',
+                            headers: { accept: 'application/json' },
+                            data: { _method: $el.data('method') },
+                            success: function () {
+                                loadingMask.hide().$el.remove();
+                                var navigation = Navigation.getInstance();
+                                var targetUrl = '#url=' + $el.attr('data-redirect-url');
+                                // If already on the desired page, make sure it is refreshed
+                                Backbone.history.fragment = new Date().getTime();
+                                navigation.navigate(targetUrl, { trigger: true });
+                                navigation.addFlashMessage('success', $el.attr('data-success-message'));
+                            },
+                            error: function (xhr) {
+                                loadingMask.hide().$el.remove();
+                                messenger.notificationFlashMessage(
+                                    'error',
+                                    (xhr.responseJSON && xhr.responseJSON.message) ?
+                                        xhr.responseJSON.message :
+                                        $el.attr('data-error-message'));
+                            }
+                        });
+                    };
                     $el.off('click');
                     if ($el.data('dialog') === 'confirm') {
                         Dialog.confirm(message, title, doAction);
