@@ -1,4 +1,3 @@
-/* global define */
 define(['underscore', 'oro/translator', 'oro/modal'],
 function (_, __, Modal) {
     'use strict';

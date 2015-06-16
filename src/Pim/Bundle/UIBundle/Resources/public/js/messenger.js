@@ -4,52 +4,52 @@ function ($, _) {
     'use strict';
 
     var defaults = {
-            container: '',
-            delay: false,
-            template: $.noop
-        },
-        queue = [],
-        storageKey = 'flash',
+        container: '',
+        delay: false,
+        template: $.noop
+    };
+    var queue = [];
+    var storageKey = 'flash';
 
-        /**
-         * Same arguments as for Oro.NotificationMessage
-         */
-        showMessage = function (type, message, options) {
-            var opt = _.extend({}, defaults, options || {});
-            var $el = $(opt.template({type: type, message: message})).appendTo(opt.container);
-            var delay = opt.delay || (opt.flash && 5000);
-            var actions = {close: _.bind($el.alert, $el, 'close')};
-            if (delay) {
-                _.delay(actions.close, delay);
-            }
-            return actions;
-        },
+    /**
+     * Same arguments as for Oro.NotificationMessage
+     */
+    var showMessage = function (type, message, options) {
+        var opt = _.extend({}, defaults, options || {});
+        var $el = $(opt.template({type: type, message: message})).appendTo(opt.container);
+        var delay = opt.delay || (opt.flash && 5000);
+        var actions = {close: _.bind($el.alert, $el, 'close')};
+        if (delay) {
+            _.delay(actions.close, delay);
+        }
+        return actions;
+    };
 
-        /**
-         * Get flash messages from localStorage or cookie
-         */
-        getStoredMessages = function () {
-            var messages;
-            if (localStorage) {
-                messages = JSON.parse(localStorage.getItem(storageKey));
-            } else if ($.cookie) {
-                messages = JSON.parse($.cookie(storageKey));
-            }
-            return messages || [];
-        },
+    /**
+     * Get flash messages from localStorage or cookie
+     */
+    var getStoredMessages = function () {
+        var messages;
+        if (localStorage) {
+            messages = JSON.parse(localStorage.getItem(storageKey));
+        } else if ($.cookie) {
+            messages = JSON.parse($.cookie(storageKey));
+        }
+        return messages || [];
+    };
 
-        /**
-         * Set stored messages to cookie or localStorage
-         */
-        setStoredMessages = function (flashMessages) {
-            var messages = JSON.stringify(flashMessages);
-            if (localStorage) {
-                localStorage.setItem(storageKey, messages);
-            } else if ($.cookie) {
-                $.cookie(storageKey, messages);
-            }
-            return true;
-        };
+    /**
+     * Set stored messages to cookie or localStorage
+     */
+    var setStoredMessages = function (flashMessages) {
+        var messages = JSON.stringify(flashMessages);
+        if (localStorage) {
+            localStorage.setItem(storageKey, messages);
+        } else if ($.cookie) {
+            $.cookie(storageKey, messages);
+        }
+        return true;
+    };
 
     /**
      * @export oro/messenger
@@ -72,8 +72,8 @@ function ($, _) {
          * @return {Object} collection of methods - actions over message element,
          *      at the moment there's only one method 'close', allows to close the message
          */
-        notificationMessage:  function (type, message, options) {
-            var container = (options || {}).container ||  defaults.container;
+        notificationMessage: function (type, message, options) {
+            var container = (options || {}).container || defaults.container;
             var args = Array.prototype.slice.call(arguments);
             var actions = {close: $.noop};
             if (container && $(container).length) {

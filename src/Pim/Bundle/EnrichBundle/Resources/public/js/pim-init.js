@@ -13,8 +13,9 @@ define(
                 if (!$target) {
                     $target = $('body');
                 }
+                var $container = $('.scrollable-container');
                 $target.find('.fullheight').filter(':visible').each(function () {
-                    $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                    $(this).height($container.height() - $(this).position().top + $container.position().top);
                 });
             };
             var pageInit = function ($target) {

@@ -9,6 +9,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'pim/form',
         'pim/field-manager',
@@ -16,7 +17,7 @@ define(
         'oro/mediator',
         'text!pim/template/product/tab/attribute/variant-group'
     ],
-    function (_, BaseForm, FieldManager, EntityManager, mediator, variantGroupTemplate) {
+    function ($, _, BaseForm, FieldManager, EntityManager, mediator, variantGroupTemplate) {
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {

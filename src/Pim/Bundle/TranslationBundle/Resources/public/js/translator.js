@@ -2,13 +2,13 @@
 /* global define */
 define(['underscore', 'translator', 'json'],
 function (_, Translator) {
-    "use strict";
+    'use strict';
 
-    var dict = {},
-        debug = false,
-        add = Translator.add,
-        get = Translator.get,
-        fromJSON = Translator.fromJSON;
+    var dict = {};
+    var debug = false;
+    var add = Translator.add;
+    var get = Translator.get;
+    var fromJSON = Translator.fromJSON;
 
     Translator.placeHolderPrefix = '{{ ';
     Translator.placeHolderSuffix = ' }}';
@@ -44,7 +44,7 @@ function (_, Translator) {
      * @returns {Object} Translator
      */
     Translator.fromJSON = function (data) {
-        if (typeof data === "string") {
+        if (typeof data === 'string') {
             data = JSON.parse(data);
         }
         debug = data.debug || false;
@@ -61,10 +61,10 @@ function (_, Translator) {
         if (!debug) {
             return;
         }
-        var domains = Translator.defaultDomains,
-            checker = function (domain) {
-                return dict.hasOwnProperty(domain ? domain + ':' + id : id);
-            };
+        var domains = Translator.defaultDomains;
+        var checker = function (domain) {
+            return dict.hasOwnProperty(domain ? domain + ':' + id : id);
+        };
         domains = _.union([undefined], _.isArray(domains) ? domains : [domains]);
         if (!_.some(domains, checker)) {
             console.error('Untranslated: %s', id);

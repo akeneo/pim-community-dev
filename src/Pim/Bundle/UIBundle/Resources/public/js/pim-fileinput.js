@@ -11,14 +11,14 @@ define(
             }
 
             $el.on('change', function () {
-                var $input          = $(this),
-                    filename        = $input.val().split('\\').pop(),
-                    $zone           = $input.parent(),
-                    $info           = $input.siblings('.upload-info').first(),
-                    $filename       = $info.find('.upload-filename'),
-                    $removeBtn      = $input.siblings('.remove-upload'),
-                    $removeCheckbox = $input.siblings('input[type="checkbox"]'),
-                    $preview        = $info.find('.upload-preview');
+                var $input          = $(this);
+                var filename        = $input.val().split('\\').pop();
+                var $zone           = $input.parent();
+                var $info           = $input.siblings('.upload-info').first();
+                var $filename       = $info.find('.upload-filename');
+                var $removeBtn      = $input.siblings('.remove-upload');
+                var $removeCheckbox = $input.siblings('input[type="checkbox"]');
+                var $preview        = $info.find('.upload-preview');
 
                 if ($preview.prop('tagName').toLowerCase() !== 'i') {
                     var iconClass = $zone.hasClass('image') ? 'icon-camera-retro' : 'icon-file';
@@ -27,7 +27,9 @@ define(
                 }
 
                 if (filename) {
-                    var title = filename.length > maxFilenameLength ? filename.substring(0, maxFilenameLength - 3) + '...' : filename;
+                    var title = filename.length > maxFilenameLength ?
+                        filename.substring(0, maxFilenameLength - 3) + '...' :
+                        filename;
                     $filename.html(title);
                     $zone.removeClass('empty');
                     $preview.removeClass('empty').attr('title', filename);

@@ -1,3 +1,4 @@
+/* global console */
 'use strict';
 
 define(['jquery', 'underscore', 'backbone', 'routing'], function ($, _, Backbone, Routing) {

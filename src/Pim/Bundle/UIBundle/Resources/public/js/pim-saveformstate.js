@@ -3,12 +3,13 @@ define(
     function ($) {
         'use strict';
 
-        var formId, cb;
+        var formId;
+        var cb;
         function saveFormState() {
-            var $form        = $('#' + formId),
-                activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href'),
-                $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
-                activeGroup;
+            var $form        = $('#' + formId);
+            var activeTab    = $form.find('#form-navbar').find('li.active').find('a').attr('href');
+            var $activeGroup = $form.find('.tab-pane.active').find('.tab-groups').find('li.active').find('a');
+            var activeGroup;
 
             if ($activeGroup.length) {
                 activeGroup = $activeGroup.attr('href');

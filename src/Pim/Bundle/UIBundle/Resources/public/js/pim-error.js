@@ -6,20 +6,20 @@ function (_, Backbone, routing, app, Modal) {
     var defaults = {
         header: 'Server error',
         message: 'Error! Incorrect server response.',
-        forbidden_access: 'You don\'t have the permission to open this page',
-    },
+        forbidden_access: 'You don\'t have the permission to open this page'
+    };
 
     /**
      * @export oro/error
      * @name oro.error
      */
-    error = {
+    var error = {
         dispatch: function (model, xhr, options) {
             var self = error.dispatch;
             self.init(model, xhr, _.extend({}, defaults, options));
         }
-    },
-    sync = Backbone.sync;
+    };
+    var sync = Backbone.sync;
 
     // Override default Backbone.sync
     Backbone.sync = function (method, model, options) {
@@ -57,8 +57,8 @@ function (_, Backbone, routing, app, Modal) {
          * @private
          */
         _processModal: function (xhr, options) {
-            var modal,
-                message = options.message;
+            var modal;
+            var message = options.message;
             if (app.debug) {
                 message += '<br><b>Debug:</b>' + xhr.responseText;
             }

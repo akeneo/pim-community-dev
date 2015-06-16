@@ -3,8 +3,8 @@ define(
     function (Backbone, $, _, Routing) {
         'use strict';
 
-        var NotificationList = require('pim/notification-list'),
-            Indicator = require('pim/indicator');
+        var NotificationList = require('pim/notification-list');
+        var Indicator = require('pim/indicator');
 
         var Notifications = Backbone.View.extend({
             el: '#header-notification-widget',
@@ -88,7 +88,7 @@ define(
                         this.freezeCount = false;
                         return;
                     }
-                    if (this.indicator.get('value') != count) {
+                    if (this.indicator.get('value') !== count) {
                         this.indicator.set('value', count);
                         if (reset) {
                             this.collection.hasMore = true;

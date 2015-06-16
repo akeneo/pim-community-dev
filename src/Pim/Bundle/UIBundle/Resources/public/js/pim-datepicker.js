@@ -17,7 +17,7 @@ define(
                 placeholder: $field.attr('placeholder')
             });
             $picker.insertAfter($field);
-            $field.addClass('hasPicker').wrap($('<span>', {'class': 'hide'}));
+            $field.addClass('hasPicker').wrap($('<span>', { 'class': 'hide' }));
 
             $field.on('change', function () {
                 $picker.val(datetimeFormatter.formatDate($field.val()));

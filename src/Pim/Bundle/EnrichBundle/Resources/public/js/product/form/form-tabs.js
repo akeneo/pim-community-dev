@@ -64,10 +64,10 @@ define(
                 if (currentTab) {
                     this.renderExtension(currentTab);
                     var zone = this.getZone('container');
-                    this.getZone('container').appendChild(currentTab.el);
+                    zone.appendChild(currentTab.el);
                 }
 
-                var panels = this.extensions['panels'];
+                var panels = this.extensions.panels;
                 if (panels) {
                     this.renderExtension(panels);
                     this.getZone('panels').appendChild(panels.el);

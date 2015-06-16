@@ -61,7 +61,7 @@ define(
 
                 if (this.state.get('currentPanel')) {
                     var currentPanel = this.extensions[this.state.get('currentPanel')];
-                    this.renderExtension(currentPanel)
+                    this.renderExtension(currentPanel);
                     this.getZone('panel-content').appendChild(currentPanel.el);
                 }
 

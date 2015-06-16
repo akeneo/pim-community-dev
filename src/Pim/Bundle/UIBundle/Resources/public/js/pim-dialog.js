@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/navigation', 'backbone/bootstrap-modal'],
-    function ($, _, Navigation) {
+    ['jquery', 'underscore', 'backbone', 'oro/navigation', 'backbone/bootstrap-modal'],
+    function ($, _, Backbone, Navigation) {
         'use strict';
 
         /**

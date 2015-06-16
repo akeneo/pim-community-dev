@@ -1,4 +1,3 @@
-/* global define, require*/
 define(['underscore'],
 function (_) {
     'use strict';
@@ -12,7 +11,7 @@ function (_) {
          * Loads dynamic list of modules and execute callback function with passed modules
          *
          * @param {Object.<string, string>} modules where keys are formal module names and values are actual
-         * @param {function(Object)} callback
+         * @param {function (Object)} callback
          */
         loadModules: function (modules, callback) {
             var requirements = _.values(modules);

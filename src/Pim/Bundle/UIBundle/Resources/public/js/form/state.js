@@ -1,4 +1,4 @@
-/* global define */
+/* global confirm */
 define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
     function (_, Backbone, mediator, __) {
         'use strict';
@@ -38,7 +38,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
              */
             isChanged: function () {
                 if (!_.isNull(this.data)) {
-                    return this.data != this.getState();
+                    return this.data !== this.getState();
                 }
 
                 return false;
@@ -57,7 +57,7 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
                         _.reject(
                             $(this.FORM_SELECTOR).serializeArray(),
                             function (el) {
-                                return el.name == 'input_action';
+                                return el.name === 'input_action';
                             }
                         )
                     );

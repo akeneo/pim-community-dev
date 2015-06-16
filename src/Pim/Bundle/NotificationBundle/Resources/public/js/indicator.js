@@ -15,7 +15,9 @@ define(
         var IndicatorView = Backbone.View.extend({
             model: Indicator,
 
-            template: _.template('<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'),
+            template: _.template(
+                '<span class="<%= className %> <%= value ? nonEmptyClass : emptyClass %>"><%= value %></span>'
+            ),
 
             initialize: function () {
                 this.listenTo(this.model, 'change', this.render);
