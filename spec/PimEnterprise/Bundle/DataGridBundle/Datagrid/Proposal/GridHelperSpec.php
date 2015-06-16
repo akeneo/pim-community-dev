@@ -2,30 +2,24 @@
 
 namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
-use Symfony\Component\Security\Core\User\UserInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 class GridHelperSpec extends ObjectBehavior
 {
-    function let(UserManager $userManager, ObjectRepository $userRepository)
+    function let(ProductDraftRepositoryInterface $repository)
     {
-        $this->beConstructedWith($userManager);
-
-        $userManager->getRepository()->willReturn($userRepository);
+        $this->beConstructedWith($repository);
     }
 
-    function it_provides_proposal_author_choices($userRepository, UserInterface $foo, UserInterface $bar)
+    function it_provides_proposal_author_choices($repository)
     {
-        $userRepository->findAll()->willReturn([$foo, $bar]);
-        $foo->getUsername()->willReturn('foo');
-        $bar->getUsername()->willReturn('bar');
+        $repository->getDistinctAuthors()->willReturn(['bar', 'foo']);
 
         $this->getAuthorChoices()->shouldReturn(
             [
-                'foo' => 'foo',
-                'bar' => 'bar'
+                'bar' => 'bar',
+                'foo' => 'foo'
             ]
         );
     }
