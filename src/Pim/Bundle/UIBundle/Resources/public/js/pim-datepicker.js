@@ -3,7 +3,7 @@ define(
     function ($, datetimeFormatter) {
         'use strict';
 
-        var init = function(id) {
+        var init = function (id) {
             var $field = $('#' + id);
             if ($field.hasClass('hasPicker')) {
                 return;
@@ -14,7 +14,7 @@ define(
             $picker.insertAfter($field);
             $field.addClass('hasPicker').wrap($('<span>', { 'class': 'hide' }));
 
-            $field.on('change', function() {
+            $field.on('change', function () {
                 $picker.val(datetimeFormatter.formatDate($field.val()));
             });
 

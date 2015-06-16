@@ -53,7 +53,7 @@ define(
                 'click a[data-toggle-channel]': 'toggleChannel'
             },
 
-            toggleChannel: function(e) {
+            toggleChannel: function (e) {
                 e.preventDefault();
 
                 var channel = $(e.currentTarget).data('toggle-channel');
@@ -62,8 +62,8 @@ define(
                     .toggleClass('icon-caret-right icon-caret-down');
             },
 
-            _processResponse: function(data) {
-                _.each(data, function(channelResult) {
+            _processResponse: function (data) {
+                _.each(data, function (channelResult) {
                     channelResult.locales = channelResult.locales || {};
                     var divider = channelResult.total * _.keys(channelResult.locales).length;
 
@@ -71,7 +71,7 @@ define(
                         0 :
                         Math.round(channelResult.complete / divider * 100);
 
-                    _.each(channelResult.locales, function(localeResult, locale) {
+                    _.each(channelResult.locales, function (localeResult, locale) {
                         var divider = channelResult.total;
                         var ratio = divider === 0 ?
                             0 :
@@ -91,7 +91,7 @@ define(
         var instance = null;
 
         return {
-            init: function(options) {
+            init: function (options) {
                 if (!instance) {
                     instance = new CompletenessWidget(options);
                 } else if (_.has(options, 'el')) {

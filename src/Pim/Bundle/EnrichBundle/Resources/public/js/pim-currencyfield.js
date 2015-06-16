@@ -61,7 +61,7 @@ define(
             ),
 
             events: {
-                'click label i.field-toggle' : '_toggle'
+                'click label i.field-toggle': '_toggle'
             },
 
             initialize: function () {
@@ -91,7 +91,7 @@ define(
                 this.scopable = this.$el.hasClass('scopable');
                 var currencies = [];
 
-                this.$el.find(this.fieldSelector).each(function() {
+                this.$el.find(this.fieldSelector).each(function () {
                     var metadata = $(this).data('metadata');
                     currencies.push(metadata.label);
                 });
@@ -105,7 +105,7 @@ define(
 
                 var extractScope = this.scopable;
 
-                $target.find(this.fieldSelector).each(function() {
+                $target.find(this.fieldSelector).each(function () {
                     var metadata = $(this).data('metadata');
                     if (extractScope) {
                         var $root = $(this).parent().parent().parent();
@@ -143,11 +143,11 @@ define(
                 var $fields = this.$el.find('div[data-scope]');
 
                 if (this.scopable && $fields.length > 1) {
-                    var $toggleIcon = $('<i>', { 'class' : 'field-toggle ' + this.collapseIcon });
+                    var $toggleIcon = $('<i>', { 'class': 'field-toggle ' + this.collapseIcon });
                     $label.prepend($toggleIcon);
                 }
 
-                $fields.each(function() {
+                $fields.each(function () {
                     var $parent = $(this).parent();
                     $(this).insertBefore($parent);
                     $parent.remove();
@@ -166,14 +166,13 @@ define(
                 var $iconsContainer = this.$el.find('.icons-container:first');
                 $iconsContainer.insertAfter($header);
 
-                _.each(this.$el.find('.validation-tooltip'), function(tooltip) {
+                _.each(this.$el.find('.validation-tooltip'), function (tooltip) {
                     $(tooltip).appendTo($iconsContainer);
                 });
 
                 var $targets = this.$el.find('div.controls');
 
                 $targets.each(this._renderTarget.bind(this));
-
 
                 if (this.scopable) {
                     $iconsContainer.appendTo(this.$el.find('div.first .scopable-input'));
@@ -220,7 +219,7 @@ define(
             _changeDefault: function (scope) {
                 var $fields = this.$el.find('>div[data-scope]');
                 this.$el.find('.first').removeClass('first');
-                var $firstField = $fields.filter('[data-scope="'+ scope +'"]');
+                var $firstField = $fields.filter('[data-scope="' + scope + '"]');
 
                 $firstField.addClass('first').insertBefore($fields.eq(0));
 

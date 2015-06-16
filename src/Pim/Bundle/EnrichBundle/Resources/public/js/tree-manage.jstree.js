@@ -74,7 +74,7 @@ define(
                 types: {
                     max_depth: -2,
                     max_children: -2,
-                    valid_children: [ 'folder' ],
+                    valid_children: ['folder'],
                     types: {
                         'default': {
                             valid_children: 'folder'

@@ -50,7 +50,7 @@ define(
 
             $form.on('change', formUpdated);
             $(document).on('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
-            $form.on('refresh', function() {
+            $form.on('refresh', function () {
                 self.updated = false;
                 $('#entity-updated').css('opacity', 0);
             });

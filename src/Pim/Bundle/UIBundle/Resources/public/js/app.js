@@ -1,6 +1,6 @@
 /* global define */
 define(['jquery', 'underscore'],
-    function($, _) {
+    function ($, _) {
         'use strict';
 
         /**
@@ -21,7 +21,7 @@ define(['jquery', 'underscore'],
              * @param {Object} object
              * @return {String}
              */
-            packToQueryString: function(object) {
+            packToQueryString: function (object) {
                 return $.param(object);
             },
 
@@ -31,7 +31,7 @@ define(['jquery', 'underscore'],
              * @param {String} query
              * @return {Object}
              */
-            unpackFromQueryString: function(query) {
+            unpackFromQueryString: function (query) {
                 var setValue = function (root, path, value) {
                     if (path.length > 1) {
                         var dir = path.shift();
@@ -77,7 +77,7 @@ define(['jquery', 'underscore'],
              * @return {String}
              * @protected
              */
-            _decodeComponent: function(string) {
+            _decodeComponent: function (string) {
                 var result = string.replace(/\+/g, '%20');
                 result = decodeURIComponent(result);
                 return result;
@@ -95,7 +95,7 @@ define(['jquery', 'underscore'],
              * @param {Object} keys
              * @return {Object}
              */
-            invertKeys: function(object, keys) {
+            invertKeys: function (object, keys) {
                 var result = _.extend({}, object);
                 for (var key in keys) {
                     var mirrorKey, baseKey;
@@ -155,7 +155,7 @@ define(['jquery', 'underscore'],
              * @param {*} value
              * @return {*}
              */
-            deepClone: function(value) {
+            deepClone: function (value) {
                 return $.extend(true, {}, value);
             }
         };

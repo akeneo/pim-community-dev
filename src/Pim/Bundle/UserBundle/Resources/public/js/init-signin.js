@@ -1,10 +1,10 @@
 /* jshint browser:true */
 /* global require */
 require(['jquery'],
-function($) {
+function ($) {
     'use strict';
 
-    $(function() {
+    $(function () {
 
         var hashUrl = window.location.hash,
             hashUrlTag = '#url=',

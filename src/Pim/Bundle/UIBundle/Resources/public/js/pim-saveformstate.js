@@ -63,7 +63,7 @@ define(
             }
         }
 
-        return function(id, callback) {
+        return function (id, callback) {
             if (typeof Storage === 'undefined') {
                 return;
             }

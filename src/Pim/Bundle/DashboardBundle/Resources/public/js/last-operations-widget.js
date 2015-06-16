@@ -25,8 +25,8 @@ define(
             },
 
             showListBtnTemplate: _.template(
-                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">'+
-                    '<i class="icon-tasks"></i>'+
+                '<a class="pull-right" id ="btn-show-list" href="javascript:void(0);" style="color: #444">' +
+                    '<i class="icon-tasks"></i>' +
                 '</a>'
             ),
 
@@ -78,7 +78,7 @@ define(
                 'click a#btn-show-list': 'showList'
             },
 
-            followLink: function(e) {
+            followLink: function (e) {
                 e.preventDefault();
                 var route;
                 var operationType = $(e.currentTarget).data('operation-type');
@@ -102,7 +102,7 @@ define(
                 Navigation.getInstance().setLocation(route);
             },
 
-            setShowListBtn: function(el) {
+            setShowListBtn: function (el) {
                 this.$showListBtn = $(this.showListBtnTemplate());
 
                 this.$el.parent().siblings('.widget-header').append(this.$showListBtn);
@@ -111,16 +111,16 @@ define(
                 return this;
             },
 
-            showList: function(e) {
+            showList: function (e) {
                 e.preventDefault();
 
                 Navigation.getInstance().setLocation(Routing.generate('pim_enrich_job_tracker_index'));
             },
 
-            _processResponse: function(data) {
+            _processResponse: function (data) {
                 this.options.contentLoaded = true;
 
-                _.each(data, function(operation) {
+                _.each(data, function (operation) {
                     operation.labelClass = this.labelClasses[operation.status] ?
                         'label-' + this.labelClasses[operation.status]
                         : '';
@@ -143,7 +143,7 @@ define(
         var instance = null;
 
         return {
-            init: function(options) {
+            init: function (options) {
                 if (!instance) {
                     instance = new LastOperationsWidget(options);
                 } else if (_.has(options, 'el')) {

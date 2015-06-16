@@ -12,7 +12,7 @@ define(
             relatedEntity = null,
             $el           = null,
 
-            getActiveNode = function(skipVirtual) {
+            getActiveNode = function (skipVirtual) {
                 if (skipVirtual) {
                     return selectedNode > 0 ? selectedNode : selectedTree;
                 }
@@ -20,11 +20,11 @@ define(
                 return selectedNode !== 0 ? selectedNode : selectedTree;
             },
 
-            triggerUpdate = function() {
+            triggerUpdate = function () {
                 $el.trigger('tree.updated');
             },
 
-            getTreeUrl = function() {
+            getTreeUrl = function () {
                 return Routing.generate(
                     'pim_enrich_categorytree_listtree',
                     {
@@ -38,7 +38,7 @@ define(
                 );
             },
 
-            getChildrenUrl = function() {
+            getChildrenUrl = function () {
                 return Routing.generate(
                     'pim_enrich_categorytree_children',
                     {
@@ -50,18 +50,18 @@ define(
                 );
             },
 
-            selectNode = function(nodeId) {
-                $el.jstree('select_node', '#node_'+nodeId);
+            selectNode = function (nodeId) {
+                $el.jstree('select_node', '#node_' + nodeId);
             },
 
-            clearSelection = function() {
+            clearSelection = function () {
                 $el.jstree('deselect_all');
             },
 
-            createNode = function(id, target, title) {
+            createNode = function (id, target, title) {
                 var targetId = target !== null ? '#' + target : -1;
                 $el.jstree('create', targetId, 'last', {
-                    attr: { 'class': 'jstree-unclassified', id: 'node_'+id },
+                    attr: { 'class': 'jstree-unclassified', id: 'node_' + id },
                     data: { title: __(title) }
                 }, null, true);
 
@@ -75,7 +75,7 @@ define(
                 return +nodeId;
             },
 
-            getTreeConfig = function() {
+            getTreeConfig = function () {
                 return {
                     core: {
                         animation: 200
@@ -92,7 +92,7 @@ define(
                     nested_switch: {
                         state:    includeSub,
                         label:    __('jstree.include_sub'),
-                        callback: function(state) {
+                        callback: function (state) {
                             includeSub = state;
 
                             $el.jstree('instance').data.tree_selector.ajax.url = getTreeUrl();
@@ -145,7 +145,7 @@ define(
                 };
             },
 
-            initTree = function() {
+            initTree = function () {
                 $el.jstree(getTreeConfig())
                     .on('trees_loaded.jstree', onTreesLoaded)
                     .on('after_tree_loaded.jstree', afterTreeLoaded)
@@ -153,7 +153,7 @@ define(
                     .on('select_node.jstree', onSelectNode);
             },
 
-            onTreesLoaded = function(event, tree_select_id) {
+            onTreesLoaded = function (event, tree_select_id) {
                 $('#' + tree_select_id).select2({ width: '100%' });
             },
 
@@ -170,7 +170,7 @@ define(
                     selectNode(getActiveNode());
                 }
 
-                if (!$('#node_'+all).length) {
+                if (!$('#node_' + all).length) {
                     createNode(all, null, 'jstree.all');
                 }
             },
@@ -178,7 +178,7 @@ define(
             afterOpenNode = function (e, data) {
                 var $node = $(data.args[0]);
 
-                if ($node.attr('rel') === 'folder' && !$('#node_'+unclassified).length) {
+                if ($node.attr('rel') === 'folder' && !$('#node_' + unclassified).length) {
                     createNode(unclassified, $node.attr('id'), 'jstree.unclassified');
                 }
             },
@@ -202,7 +202,7 @@ define(
             };
 
         return {
-            init: function($element, state) {
+            init: function ($element, state) {
                 if (!$element || !$element.length || !_.isObject($element)) {
                     return;
                 }
@@ -217,7 +217,7 @@ define(
                 initTree();
             },
 
-            getState: function() {
+            getState: function () {
                 return {
                     selectedNode: selectedNode,
                     selectedTree: selectedTree,
@@ -225,11 +225,11 @@ define(
                 };
             },
 
-            refresh: function() {
+            refresh: function () {
                 initTree();
             },
 
-            reset: function() {
+            reset: function () {
                 if ($el) {
                     clearSelection();
                     selectedNode = all;

@@ -1,7 +1,7 @@
 /* jshint devel:true */
 /* global define */
 define(['underscore', 'translator', 'json'],
-function(_, Translator) {
+function (_, Translator) {
     "use strict";
 
     var dict = {},

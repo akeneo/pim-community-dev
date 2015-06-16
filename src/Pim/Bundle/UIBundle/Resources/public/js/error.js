@@ -1,6 +1,6 @@
 /* global define */
 define(['underscore', 'backbone', 'routing', 'oro/app', 'oro/modal'],
-function(_, Backbone, routing, app, Modal) {
+function (_, Backbone, routing, app, Modal) {
     'use strict';
 
     var defaults = {
@@ -14,7 +14,7 @@ function(_, Backbone, routing, app, Modal) {
          * @name oro.error
          */
         error = {
-            dispatch: function(model, xhr, options) {
+            dispatch: function (model, xhr, options) {
                 var self = error.dispatch;
                 self.init(model, xhr, _.extend({}, defaults, options));
             }
@@ -22,7 +22,7 @@ function(_, Backbone, routing, app, Modal) {
         sync = Backbone.sync;
 
     // Override default Backbone.sync
-    Backbone.sync = function(method, model, options) {
+    Backbone.sync = function (method, model, options) {
         options = options || {};
         if (!_.has(options, 'error')) {
             options.error = error.dispatch;
@@ -39,7 +39,7 @@ function(_, Backbone, routing, app, Modal) {
          * @param {Object} xhr
          * @param {Object} options
          */
-        init: function(model, xhr, options) {
+        init: function (model, xhr, options) {
             if (xhr.status === 401) {
                 this._processRedirect();
             } else if (xhr.readyState === 4) {
@@ -56,7 +56,7 @@ function(_, Backbone, routing, app, Modal) {
          * @param {Object} options
          * @private
          */
-        _processModal: function(xhr, options) {
+        _processModal: function (xhr, options) {
             var modal,
                 message = options.message;
             if (app.debug) {
@@ -75,7 +75,7 @@ function(_, Backbone, routing, app, Modal) {
          * Redirects to login
          * @private
          */
-        _processRedirect: function() {
+        _processRedirect: function () {
             document.location.href = routing.generate('oro_user_security_login');
         }
     });

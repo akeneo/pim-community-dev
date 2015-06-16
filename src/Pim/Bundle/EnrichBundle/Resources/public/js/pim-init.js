@@ -4,7 +4,7 @@ define(
     function ($, Backbone, __, mediator, Navigation, messenger, Dialog, saveformstate, loadTab, UI, LoadingMask) {
         'use strict';
         var initialized = false;
-        return function() {
+        return function () {
             if (initialized) {
                 return;
             }
@@ -20,7 +20,7 @@ define(
             var pageInit = function ($target) {
                 if (!$target) {
                     $target = $('body');
-                    $target.find('form.form-horizontal').each(function() {
+                    $target.find('form.form-horizontal').each(function () {
                         saveformstate($(this).attr('id'), loadTab);
                     });
                 }
@@ -60,19 +60,19 @@ define(
                     $(this).hide();
                 });
 
-                $target.find('a[data-toggle="tab"]').on('show.bs.tab', function() {
+                $target.find('a[data-toggle="tab"]').on('show.bs.tab', function () {
                     loadTab(this);
                 });
 
                 setFullHeight($target);
             };
 
-            $(function(){
-                $(document).on('tab.loaded', 'form.form-horizontal', function(e, tab) {
+            $(function () {
+                $(document).on('tab.loaded', 'form.form-horizontal', function (e, tab) {
                     pageInit($(tab));
                 });
 
-                $(document).on('shown', 'a[data-toggle="tab"]', function() {
+                $(document).on('shown', 'a[data-toggle="tab"]', function () {
                     var target = $(this).attr('href');
                     if (target && target !== '#' && target.indexOf('javascript') !== 0) {
                         setFullHeight($(target).parent());
@@ -82,10 +82,12 @@ define(
                 var secret = "38384040373937396665";
                 var input = "";
                 var timer;
-                $(document).keyup(function(e) {
+                $(document).keyup(function (e) {
                     input += e.which;
                     clearTimeout(timer);
-                    timer = setTimeout(function() { input = ""; }, 500);
+                    timer = setTimeout(function () {
+                        input = "";
+                    }, 500);
                     if (input == secret) {
                         $(document.body).addClass('konami');
                     }
@@ -105,9 +107,9 @@ define(
                             $.ajax({
                                 url: $el.attr('data-url'),
                                 type: 'POST',
-                                headers: { accept:'application/json' },
+                                headers: { accept: 'application/json' },
                                 data: { _method: $el.data('method') },
-                                success: function() {
+                                success: function () {
                                     loadingMask.hide().$el.remove();
                                     var navigation = Navigation.getInstance();
                                     var targetUrl = '#url=' + $el.attr('data-redirect-url');
@@ -116,7 +118,7 @@ define(
                                     navigation.navigate(targetUrl, { trigger: true });
                                     navigation.addFlashMessage('success', $el.attr('data-success-message'));
                                 },
-                                error: function(xhr) {
+                                error: function (xhr) {
                                     loadingMask.hide().$el.remove();
                                     messenger.notificationFlashMessage(
                                         'error',

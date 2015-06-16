@@ -9,7 +9,7 @@
     var tree_select_id = "tree_select";
 
     $.jstree.plugin("tree_selector", {
-        __init : function () {
+        __init: function () {
             this.get_container()
                 // Create the tree toolbar and load trees in tree selector
                 .bind("init.jstree", $.proxy(function () {
@@ -33,7 +33,7 @@
                     });
                     tree_select.addClass('jstree-tree-select');
 
-                    tree_select.bind('change', function() {
+                    tree_select.bind('change', function () {
                         _this.switch_tree();
                     });
 
@@ -48,7 +48,7 @@
                     if (event.namespace == 'jstree') {
                         this.switch_tree();
                     }
-                // Select the node marked as "toselect" from the server
+                    // Select the node marked as "toselect" from the server
 
                 }, this))
                 .bind("clean_node.jstree", $.proxy(function (e, data) {
@@ -65,22 +65,22 @@
                 }, this))
                 ;
         },
-        defaults : {
-            ajax : false,
-            data : false,
-            tree_selector_buttons : false,
-            no_tree_message : false,
-            node_label_field : 'code',
-            preselect_node_id : false
+        defaults: {
+            ajax: false,
+            data: false,
+            tree_selector_buttons: false,
+            no_tree_message: false,
+            node_label_field: 'code',
+            preselect_node_id: false
 
         },
-        _fn : {
-            refresh : function (obj) {
+        _fn: {
+            refresh: function (obj) {
                 this.refresh_trees();
 
                 return this.__call_old();
             },
-            switch_tree : function () {
+            switch_tree: function () {
                 // Create new root node, place it into the tree and
                 // open it if setup to auto_open_root
                 var selected_tree = this.get_tree_select().find(':selected');
@@ -111,7 +111,7 @@
 
                 this.get_container().trigger('after_tree_loaded.jstree', root_node_id);
             },
-            get_tree_select : function () {
+            get_tree_select: function () {
                 return $("#" + tree_select_id);
             },
             load_trees: function () {
@@ -156,7 +156,7 @@
                             {
                                 "data": option_text,
                                 "state": "closed",
-                                "attr" : { "id" : 'node_' + tree.id}
+                                "attr": { "id": 'node_' + tree.id}
                             }
                         ];
                     }
@@ -181,7 +181,7 @@
                     async: false,
                     dataType: 'json',
                     data: trees_url_parameters
-                }).done( function(ajax_trees) {
+                }).done(function (ajax_trees) {
                     trees = ajax_trees;
                 });
 
@@ -210,12 +210,12 @@
 
                 return node;
             },
-            refresh_trees: function() {
+            refresh_trees: function () {
                 this.get_tree_select().empty();
                 this.load_trees();
                 this.switch_tree();
             },
-            get_tree_id: function() {
+            get_tree_id: function () {
                 var root_node = this.get_container_ul().find('li')[0];
 
                 return $(root_node).attr('id');

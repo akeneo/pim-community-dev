@@ -1,10 +1,10 @@
 define(
     ['jquery', 'jquery.slimbox'],
-    function($) {
+    function ($) {
         'use strict';
 
         var maxFilenameLength = 20;
-        var init = function(id) {
+        var init = function (id) {
             var $el = $('#' + id);
             if (!$el.length) {
                 return;
@@ -27,7 +27,7 @@ define(
                 }
 
                 if (filename) {
-                    var title = filename.length > maxFilenameLength ? filename.substring(0, maxFilenameLength-3) + '...' : filename;
+                    var title = filename.length > maxFilenameLength ? filename.substring(0, maxFilenameLength - 3) + '...' : filename;
                     $filename.html(title);
                     $zone.removeClass('empty');
                     $preview.removeClass('empty').attr('title', filename);
@@ -51,9 +51,9 @@ define(
                 $el.unwrap().trigger('change');
             });
 
-            $el.parent().on('mouseover', '.upload-zone:not(.empty)', function() {
+            $el.parent().on('mouseover', '.upload-zone:not(.empty)', function () {
                 $el.attr('disabled', 'disabled');
-            }).on('mouseout', '.upload-zone:not(.empty)', function() {
+            }).on('mouseout', '.upload-zone:not(.empty)', function () {
                 $el.removeAttr('disabled');
             });
 

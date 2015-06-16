@@ -17,7 +17,6 @@ define(['underscore', 'backbone', 'oro/mediator', 'oro/translator'],
 
             data: null,
 
-
             initialize: function () {
                 mediator.once('hash_navigation_request:start', this._onDestroyHandler, this);
 

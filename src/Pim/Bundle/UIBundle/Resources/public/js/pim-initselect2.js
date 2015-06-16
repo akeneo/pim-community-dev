@@ -25,11 +25,11 @@ define(
                     $el.select2({ allowClear: true });
                 });
 
-                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
+                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
                     self.initSelect.call(self, $(this));
                 });
             },
-            initSelect: function($select) {
+            initSelect: function ($select) {
                 var selectId = $select.context.id;
                 var options = {
                         multiple: false,
@@ -92,23 +92,23 @@ define(
                         });
                     }
                 };
-                options.initSelection = function(element, callback) {
+                options.initSelection = function (element, callback) {
                     var choices = $.parseJSON($select.attr("data-choices"));
                     callback(choices);
                 };
                 $select.select2(options);
             },
-            getSelectOptions: function(data, options) {
+            getSelectOptions: function (data, options) {
                 return data;
             },
-            getAjaxParameters: function($select) {
+            getAjaxParameters: function ($select) {
                 return {};
             },
-            hasCachableResults: function($select) {
+            hasCachableResults: function ($select) {
                 return true;
             },
-            matchLocalResults: function(data, term) {
-                var matchingResults = _.filter(data.results, function(result) {
+            matchLocalResults: function (data, term) {
+                var matchingResults = _.filter(data.results, function (result) {
                     return $.fn.select2.defaults.matcher(term, result.text);
                 });
 

@@ -79,7 +79,7 @@ define(
                 types: {
                     max_depth: -2,
                     max_children: -2,
-                    valid_children: [ 'folder' ],
+                    valid_children: ['folder'],
                     types: {
                         'default': {
                             valid_children: 'folder'
@@ -126,7 +126,7 @@ define(
                             $(hiddenCategoryId).val(selected).trigger('change');
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#'+treeLinkId+' i').removeClass('gray').addClass('green');
+                            $('#' + treeLinkId + ' i').removeClass('gray').addClass('green');
                         }
                     }
                 });
@@ -136,13 +136,13 @@ define(
                         var selected = $(hiddenCategoryId).val();
                         selected = selected.split(',');
                         var id = d.rslt.obj[0].id.replace('node_', '');
-                        selected.splice($.inArray(id, selected),1);
+                        selected.splice($.inArray(id, selected), 1);
                         selected = selected.join(',');
                         $(hiddenCategoryId).val(selected).trigger('change');
                         var treeId = e.target.id;
-                        if ($('#'+treeId).jstree('get_checked').length === 0) {
+                        if ($('#' + treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#'+treeLinkId+' i').removeClass('green').addClass('gray');
+                            $('#' + treeLinkId + ' i').removeClass('green').addClass('gray');
                         }
                     }
                 });
@@ -161,12 +161,12 @@ define(
                 });
             };
 
-            this.lock = function() {
+            this.lock = function () {
                 locked = true;
                 setLocked();
             };
 
-            this.unlock = function() {
+            this.unlock = function () {
                 locked = false;
                 setLocked();
             };
