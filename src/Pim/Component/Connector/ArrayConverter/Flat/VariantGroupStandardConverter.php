@@ -111,24 +111,22 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
      */
     protected function convertField($convertedItem, $field, $data)
     {
-        switch ($field) {
-            case false !== strpos($field, 'label-', 0):
-                $labelTokens = explode('-', $field);
-                $labelLocale = $labelTokens[1];
-                $convertedItem['labels'][$labelLocale] = $data;
-                break;
-
-            case 'code':
-            case 'type':
-                $convertedItem[$field] = $data;
-                break;
-
-            case 'axis':
-                $convertedItem[$field] = explode(',', $data);
-                break;
-
-            default:
-                $convertedItem['values'][$field] = $data;
+        if (false !== strpos($field, 'label-', 0)) {
+            $labelTokens = explode('-', $field);
+            $labelLocale = $labelTokens[1];
+            $convertedItem['labels'][$labelLocale] = $data;
+        } else {
+            switch ($field) {
+                case 'code':
+                case 'type':
+                    $convertedItem[$field] = $data;
+                    break;
+                case 'axis':
+                    $convertedItem[$field] = explode(',', $data);
+                    break;
+                default:
+                    $convertedItem['values'][$field] = $data;
+            }
         }
 
         return $convertedItem;
