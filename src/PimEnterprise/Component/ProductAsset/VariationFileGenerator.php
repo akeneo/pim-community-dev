@@ -29,7 +29,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Generate the variation files, store them in the filesystem and link them to the reference:
- *      - download the raw reference file from STORAGE to /tmp
+ *      - download the raw source file (reference file or user variation file) from STORAGE to /tmp
  *      - generate the variation file
  *      - extract the metadata from the variation file
  *      - store the variation file in STORAGE
@@ -112,6 +112,61 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
+        $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+
+        $reference      = $this->retrieveReference($asset, $locale);
+        $variation      = $this->retrieveVariation($reference, $channel);
+        $referenceFile  = $this->retrieveReferenceFile($reference);
+        $outputFileName = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
+
+        $this->generateFromFile($referenceFile, $variation, $channel, $outputFileName);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateFromFile(
+        FileInterface $sourceFile,
+        VariationInterface $variation,
+        ChannelInterface $channel,
+        $outputFilename,
+        $setVariationToLocked = false
+    ) {
+        if (null === $this->rawTransformations) {
+            $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+        }
+
+        $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
+        $sourceFileInfo    = $this->rawFileFetcher->fetch($sourceFile, $storageFilesystem);
+        $variationFileInfo = $this->fileTransformer->transform(
+            $sourceFileInfo,
+            $this->rawTransformations,
+            $outputFilename
+        );
+        $variationMetadata = $this->extractMetadata($variationFileInfo);
+        $variationFile     = $this->rawFileStorer->store($variationFileInfo, $this->filesystemAlias);
+
+        $variationMetadata->setFile($variationFile);
+        $this->metadataSaver->save($variationMetadata);
+
+        $variation->setSourceFile($sourceFile);
+        $variation->setFile($variationFile);
+        $variation->setLocked($setVariationToLocked);
+        $this->variationSaver->save($variation);
+
+        $this->deleteFile($sourceFileInfo);
+    }
+
+    /**
+     * @param AssetInterface  $asset
+     * @param LocaleInterface $locale
+     *
+     * @throws \LogicException
+     *
+     * @return ReferenceInterface
+     */
+    protected function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
+    {
         if (null === $reference = $asset->getReference($locale)) {
             if (null === $locale) {
                 $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
@@ -126,60 +181,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             throw new \LogicException($msg);
         }
 
-        $this->generateFromReference($reference, $channel, $locale);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generateFromReference(
-        ReferenceInterface $reference,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    ) {
-        //TODO: check couple reference/locale
-
-        $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
-        $variation                = $this->retrieveVariation($reference, $channel);
-        $referenceFile            = $this->retrieveReferenceFile($reference);
-        $outputFileName           = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
-
-        $this->generateFromFile($referenceFile, $variation, $channel, $outputFileName);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generateFromFile(
-        FileInterface $inputFile,
-        VariationInterface $variation,
-        ChannelInterface $channel,
-        $outputFilename,
-        $setVariationToLocked = false
-    ) {
-        if (null === $this->rawTransformations) {
-            $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
-        }
-
-        $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
-        $inputFileInfo     = $this->rawFileFetcher->fetch($inputFile, $storageFilesystem);
-        $variationFileInfo = $this->fileTransformer->transform(
-            $inputFileInfo,
-            $this->rawTransformations,
-            $outputFilename
-        );
-        $variationMetadata = $this->extractMetadata($variationFileInfo);
-        $variationFile     = $this->rawFileStorer->store($variationFileInfo, $this->filesystemAlias);
-
-        $variationMetadata->setFile($variationFile);
-        $this->metadataSaver->save($variationMetadata);
-
-        $variation->setSourceFile($inputFile);
-        $variation->setFile($variationFile);
-        $variation->setLocked($setVariationToLocked);
-        $this->variationSaver->save($variation);
-
-        $this->deleteFile($inputFileInfo);
+        return $reference;
     }
 
     /**

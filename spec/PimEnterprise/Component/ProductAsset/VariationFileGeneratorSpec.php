@@ -115,57 +115,6 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $this->generateFromFile($inputFile, $variation, $ecommerce, 'my.file.txt');
     }
 
-    function it_generates_the_variation_file_from_a_reference(
-        $reference,
-        $referenceFile,
-        $ecommerce,
-        $rawFileFetcher,
-        $filesystem,
-        $channelConfiguration,
-        $fileTransformer,
-        $rawFileStorer,
-        $metadataSaver,
-        $variation,
-        $variationSaver,
-        $metadataBuilderRegistry,
-        LocaleInterface $fr,
-        \SplFileInfo $referenceFileInfo,
-        \SplFileInfo $variationFileInfo,
-        FileInterface $variationFile,
-        FileMetadataInterface $fileMetadata,
-        MetadataBuilderInterface $metadataBuilder
-    ) {
-        $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
-        touch($referencePathname);
-
-        $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
-        $referenceFileInfo->getPathname()->willReturn($referencePathname);
-
-        $referenceFile->getExtension()->willReturn('txt');
-        $referenceFile->getOriginalFilename()->willReturn('my originial file.txt');
-        $fr->getCode()->willReturn('fr_FR');
-
-        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
-
-        $rawFileFetcher->fetch($referenceFile, $filesystem)->willReturn($referenceFileInfo);
-        $fileTransformer->transform(
-            $referenceFileInfo,
-            ['t1', 't2'],
-            'my originial file-fr_FR-ecommerce.txt'
-        )->willReturn($variationFileInfo);
-        $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
-        $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
-
-        $fileMetadata->setFile($variationFile)->shouldBeCalled();
-        $metadataSaver->save($fileMetadata)->shouldBeCalled();
-        $variationSaver->save($variation)->shouldBeCalled();
-        $variation->setFile($variationFile)->shouldBeCalled();
-        $variation->setSourceFile($referenceFile)->shouldBeCalled();
-        $variation->setLocked(false)->shouldBeCalled();
-
-        $this->generateFromReference($reference, $ecommerce, $fr);
-    }
-
     function it_generates_the_variation_file_from_an_asset(
         $reference,
         $referenceFile,
@@ -246,9 +195,9 @@ class VariationFileGeneratorSpec extends ObjectBehavior
     }
 
     function it_throws_an_exception_if_the_channel_variation_configuration_can_not_be_retrieved(
+        AssetInterface $asset,
         ChannelInterface $channel,
-        $channelConfigurationRepository,
-        ReferenceInterface $reference
+        $channelConfigurationRepository
     ) {
         $channel->getId()->willReturn(12);
         $channel->getCode()->willReturn('ecommerce');
@@ -257,37 +206,42 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('No variations configuration exists for the channel "ecommerce".')
-        )->during('generateFromReference', [$reference, $channel]);
+        )->during('generateFromAsset', [$asset, $channel, null]);
     }
 
     function it_throws_an_exception_if_there_is_no_variation(
         $ecommerce,
+        AssetInterface $asset,
         ReferenceInterface $reference
     ) {
+        $asset->getReference(null)->willReturn($reference);
         $reference->getId()->willReturn(45);
         $reference->getVariation($ecommerce)->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('The reference "45" has no variation for the channel "ecommerce".')
-        )->during('generateFromReference', [$reference, $ecommerce]);
+        )->during('generateFromAsset', [$asset, $ecommerce, null]);
     }
 
-    function it_throws_an_exception_if_the_reference_has_no_file($ecommerce, $reference)
+    function it_throws_an_exception_if_the_reference_has_no_file($ecommerce, $reference, AssetInterface $asset)
     {
+        $asset->getReference(null)->willReturn($reference);
         $reference->getFile()->willReturn(null);
 
         $this->shouldThrow(
             new \LogicException('The reference "45" has no file.')
-        )->during('generateFromReference', [$reference, $ecommerce]);
+        )->during('generateFromAsset', [$asset, $ecommerce, null]);
     }
 
     function it_throws_an_exception_if_the_reference__file_is_not_on_the_filesystem(
         $ecommerce,
         $reference,
         $mountManager,
+        AssetInterface $asset,
         FileInterface $referenceFile,
         Filesystem $filesystem
     ) {
+        $asset->getReference(null)->willReturn($reference);
         $referenceFile->getKey()->willReturn('path/to/file.txt');
         $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
 
@@ -296,7 +250,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem "my_storage".')
-        )->during('generateFromReference', [$reference, $ecommerce]);
+        )->during('generateFromAsset', [$asset, $ecommerce, null]);
     }
 
 

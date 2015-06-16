@@ -11,12 +11,9 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -37,6 +34,7 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('pim:asset:generate-variation');
+        $this->setDescription('Generate the variation file for a given asset, channel and locale.');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('channel', InputArgument::REQUIRED);
         $this->addArgument('locale', InputArgument::OPTIONAL);
@@ -70,43 +68,17 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
             }
         }
 
-        if (!$asset->hasReference($locale)) {
-            $output->writeln(
-                sprintf('<error>The asset "%s" has no reference for the expected locale.</error>', $assetCode)
-            );
+        $generator = $this->getVariationFileGenerator();
+
+        try {
+            $generator->generateFromAsset($asset, $channel, $locale);
+        } catch (\Exception $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        $this->ensureVariationExists($asset, $channel, $locale);
-        $generator = $this->getVariationFileGenerator();
-        $generator->generateFromAsset($asset, $channel, $locale);
-
         return 0;
-    }
-
-    /**
-     * @param AssetInterface    $asset
-     * @param ChannelInterface  $channel
-     * @param LocaleInterface   $locale
-     *
-     * @throws \LogicException
-     */
-    protected function ensureVariationExists(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    ) {
-        if (null === $reference = $asset->getReference($locale)) {
-            throw new \LogicException(
-                sprintf('No reference for the asset "%s" with the expected locale', $asset->getCode())
-            );
-        }
-
-        if (!$reference->hasVariation($channel)) {
-            $variation = $this->getVariationBuilder()->buildOne($reference, $channel);
-            $reference->addVariation($variation);
-        }
     }
 
     /**

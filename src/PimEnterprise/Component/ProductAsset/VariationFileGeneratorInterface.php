@@ -15,7 +15,6 @@ use Akeneo\Component\FileStorage\Model\FileInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
@@ -40,21 +39,6 @@ interface VariationFileGeneratorInterface
      */
     public function generateFromAsset(
         AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    );
-
-    /**
-     * Generate the variation files from a reference.
-     *
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
-     * @param LocaleInterface    $locale
-     *
-     * @throws \LogicException
-     */
-    public function generateFromReference(
-        ReferenceInterface $reference,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     );
