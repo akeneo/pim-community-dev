@@ -140,4 +140,9 @@ interface CategoryRepositoryInterface extends
      * @return array - list of Nodes in path
      */
     public function getPath($node);
+
+    /**
+     * @return array
+     */
+    public function getTrees();
 }

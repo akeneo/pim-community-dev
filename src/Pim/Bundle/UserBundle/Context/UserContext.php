@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -31,37 +32,37 @@ class UserContext
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var CategoryManager */
-    protected $categoryManager;
-
     /** @var Request */
     protected $request;
 
     /** @var array */
     protected $userLocales;
 
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /** @var string */
     protected $defaultLocale;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param LocaleManager            $localeManager
-     * @param ChannelManager           $channelManager
-     * @param CategoryManager          $categoryManager
-     * @param string                   $defaultLocale
+     * @param SecurityContextInterface    $securityContext
+     * @param LocaleManager               $localeManager
+     * @param ChannelManager              $channelManager
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param string                      $defaultLocale
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
-        CategoryManager $categoryManager,
+        CategoryRepositoryInterface $categoryRepository,
         $defaultLocale
     ) {
-        $this->securityContext = $securityContext;
-        $this->localeManager   = $localeManager;
-        $this->channelManager  = $channelManager;
-        $this->categoryManager = $categoryManager;
-        $this->defaultLocale   = $defaultLocale;
+        $this->securityContext    = $securityContext;
+        $this->localeManager      = $localeManager;
+        $this->channelManager     = $channelManager;
+        $this->defaultLocale      = $defaultLocale;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -190,7 +191,7 @@ class UserContext
     {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        return $defaultTree ?: current($this->categoryManager->getTrees());
+        return $defaultTree ?: current($this->categoryRepository->getTrees());
     }
 
     /**

@@ -293,6 +293,14 @@ class CategoryRepository extends NestedTreeRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTrees()
+    {
+        return $this->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
      * Create a query builder with just a link to the category passed in parameter
      *
      * @param CategoryInterface $category

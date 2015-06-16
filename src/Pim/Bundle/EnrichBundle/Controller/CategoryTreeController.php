@@ -12,6 +12,8 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -50,23 +52,31 @@ class CategoryTreeController extends AbstractDoctrineController
     /** @var RemoverInterface */
     protected $categoryRemover;
 
+    /** @var CategoryFactory */
+    protected $categoryFactory;
+
+    /** @var CategoryRepositoryInterface */
+    protected $categoryRepository;
+
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerRegistry          $doctrine
-     * @param CategoryManager          $categoryManager
-     * @param UserContext              $userContext
-     * @param SecurityFacade           $securityFacade
-     * @param SaverInterface           $categorySaver
-     * @param RemoverInterface         $categoryRemover
+     * @param Request                     $request
+     * @param EngineInterface             $templating
+     * @param RouterInterface             $router
+     * @param SecurityContextInterface    $securityContext
+     * @param FormFactoryInterface        $formFactory
+     * @param ValidatorInterface          $validator
+     * @param TranslatorInterface         $translator
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ManagerRegistry             $doctrine
+     * @param CategoryManager             $categoryManager
+     * @param UserContext                 $userContext
+     * @param SecurityFacade              $securityFacade
+     * @param SaverInterface              $categorySaver
+     * @param RemoverInterface            $categoryRemover
+     * @param CategoryFactory             $categoryFactory
+     * @param CategoryRepositoryInterface $categoryRepository
      */
     public function __construct(
         Request $request,
@@ -82,7 +92,9 @@ class CategoryTreeController extends AbstractDoctrineController
         UserContext $userContext,
         SecurityFacade $securityFacade,
         SaverInterface $categorySaver,
-        RemoverInterface $categoryRemover
+        RemoverInterface $categoryRemover,
+        CategoryFactory $categoryFactory,
+        CategoryRepositoryInterface $categoryRepository
     ) {
         parent::__construct(
             $request,
@@ -96,11 +108,13 @@ class CategoryTreeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->categoryManager = $categoryManager;
-        $this->userContext     = $userContext;
-        $this->securityFacade  = $securityFacade;
-        $this->categorySaver   = $categorySaver;
-        $this->categoryRemover = $categoryRemover;
+        $this->categoryManager    = $categoryManager;
+        $this->userContext        = $userContext;
+        $this->securityFacade     = $securityFacade;
+        $this->categorySaver      = $categorySaver;
+        $this->categoryRemover    = $categoryRemover;
+        $this->categoryFactory    = $categoryFactory;
+        $this->categoryRepository = $categoryRepository;
     }
 
     /**
@@ -125,7 +139,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return [
-            'trees'          => $this->categoryManager->getTrees(),
+            'trees'          => $this->categoryRepository->getTrees(),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
@@ -193,10 +207,10 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         if ($selectNode !== null) {
-            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
+            $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
             $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         } else {
-            $categories = $this->getChildren($parent->getId());
+            $categories = $this->categoryRepository->getChildrenByParentId($parent->getId());
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         }
 
@@ -239,10 +253,10 @@ class CategoryTreeController extends AbstractDoctrineController
     {
         if ($parent) {
             $parent = $this->findCategory($parent);
-            $category = $this->categoryManager->getCategoryInstance();
+            $category = $this->categoryFactory->create();
             $category->setParent($parent);
         } else {
-            $category = $this->categoryManager->getTreeInstance();
+            $category = $this->categoryFactory->create();
         }
 
         $category->setCode($request->get('label'));
@@ -343,7 +357,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     protected function findCategory($categoryId)
     {
-        $category = $this->categoryManager->getEntityRepository()->find($categoryId);
+        $category = $this->categoryRepository->find($categoryId);
 
         if (!$category) {
             throw $this->createNotFoundException('Category not found');
@@ -362,16 +376,5 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(CategoryInterface $category)
     {
         return [];
-    }
-
-    /**
-     * @param int   $parentId
-     * @param mixed $selectNodeId
-     *
-     * @return CategoryInterface[]
-     */
-    protected function getChildren($parentId, $selectNodeId = false)
-    {
-        return $this->categoryManager->getChildren($parentId, $selectNodeId);
     }
 }
