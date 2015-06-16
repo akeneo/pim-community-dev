@@ -1,2 +1,0 @@
-parameters:
-    pim_base_connector.step.mass_edit_product_publication.class: PimEnterprise\Bundle\BaseConnectorBundle\Step\MassEditProductPublicationStep

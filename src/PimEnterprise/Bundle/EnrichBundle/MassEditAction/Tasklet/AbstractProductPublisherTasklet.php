@@ -1,27 +1,28 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
+namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
+use Pim\Bundle\BaseConnectorBundle\Step\TaskletInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Basic implementation of a product publisher/unpublisher handler
+ * Basic implementation of a product publisher/unpublisher tasklet
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-abstract class AbstractProductPublisherHandler extends AbstractConfigurableStepElement implements
-    ProductPublisherHandlerInterface,
-    StepExecutionAwareInterface
+abstract class AbstractProductPublisherTasklet extends AbstractConfigurableStepElement implements TaskletInterface
 {
     /** @var StepExecution */
     protected $stepExecution;

@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
+namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
 use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
@@ -12,14 +12,14 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
- * Unpublish handler for published products
+ * Publish tasklet for products
  *
  * @author Adrien Pétremann <adrien.petremann@akeneo.com>
  */
-class UnpublishProductHandler extends AbstractProductPublisherHandler
+class PublishProductTasklet extends AbstractProductPublisherTasklet
 {
     /** @var ProductQueryBuilderFactoryInterface */
-    protected $publishedPqbFactory;
+    protected $pqbFactory;
 
     /**
      * @param PublishedProductManager             $manager
@@ -28,7 +28,7 @@ class UnpublishProductHandler extends AbstractProductPublisherHandler
      * @param ObjectDetacherInterface             $objectDetacher
      * @param UserManager                         $userManager
      * @param SecurityContextInterface            $securityContext
-     * @param ProductQueryBuilderFactoryInterface $publishedPqbFactory
+     * @param ProductQueryBuilderFactoryInterface $pqbFactory
      */
     public function __construct(
         PublishedProductManager $manager,
@@ -37,7 +37,7 @@ class UnpublishProductHandler extends AbstractProductPublisherHandler
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
         SecurityContextInterface $securityContext,
-        ProductQueryBuilderFactoryInterface $publishedPqbFactory
+        ProductQueryBuilderFactoryInterface $pqbFactory
     ) {
         parent::__construct(
             $manager,
@@ -48,11 +48,11 @@ class UnpublishProductHandler extends AbstractProductPublisherHandler
             $securityContext
         );
 
-        $this->publishedPqbFactory = $publishedPqbFactory;
+        $this->pqbFactory = $pqbFactory;
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $configuration
      */
     public function execute(array $configuration)
     {
@@ -64,25 +64,32 @@ class UnpublishProductHandler extends AbstractProductPublisherHandler
         foreach ($paginator as $productsPage) {
             $invalidProducts = [];
             foreach ($productsPage as $index => $product) {
+                $violations = $this->validator->validate($product);
                 $isAuthorized = $this->securityContext->isGranted(Attributes::OWN, $product);
 
-                if ($isAuthorized) {
-                    $this->stepExecution->incrementSummaryInfo('mass_unpublished');
+                if (0 === $violations->count() && $isAuthorized) {
+                    $this->stepExecution->incrementSummaryInfo('mass_published');
                 } else {
-                    $invalidProducts[$index] = $product;
                     $this->stepExecution->incrementSummaryInfo('skipped_products');
-                    $this->stepExecution->addWarning(
-                        $this->getName(),
-                        'pim_enrich.mass_edit_action.unpublish.message.error',
-                        [],
-                        $product
-                    );
+                    $invalidProducts[$index] = $product;
+
+                    if (0 < $violations->count()) {
+                        $this->addWarningMessage($violations, $product);
+                    }
+                    if (!$isAuthorized) {
+                        $this->stepExecution->addWarning(
+                            $this->getName(),
+                            'pim_enrich.mass_edit_action.publish.message.error',
+                            [],
+                            $product
+                        );
+                    }
                 }
             }
 
             $productsPage = array_diff_key($productsPage, $invalidProducts);
             $this->detachProducts($invalidProducts);
-            $this->manager->unpublishAll($productsPage);
+            $this->manager->publishAll($productsPage);
             $this->detachProducts($productsPage);
         }
     }
@@ -92,6 +99,6 @@ class UnpublishProductHandler extends AbstractProductPublisherHandler
      */
     protected function getProductQueryBuilder()
     {
-        return $this->publishedPqbFactory->create();
+        return $this->pqbFactory->create();
     }
 }
