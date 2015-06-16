@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'backgrid'],
-function($, _, Backgrid) {
+function ($, _, Backgrid) {
     'use strict';
 
     /**
@@ -17,7 +16,7 @@ function($, _, Backgrid) {
         /**
          * @inheritDoc
          */
-        render: function() {
+        render: function () {
             Backgrid.BooleanCell.prototype.render.apply(this, arguments);
             this.$input = this.$el.find('input');
             if (!this.column.get('editable')) {
@@ -29,7 +28,7 @@ function($, _, Backgrid) {
         /**
          * @inheritDoc
          */
-        enterEditMode: function(e) {
+        enterEditMode: function (e) {
             Backgrid.BooleanCell.prototype.enterEditMode.apply(this, arguments);
             if (this.column.get('editable')) {
                 var $editor = this.currentEditor.$el;
@@ -41,7 +40,7 @@ function($, _, Backgrid) {
          * @param {Backgrid.Row} row
          * @param {Event} e
          */
-        onRowClicked: function(row, e) {
+        onRowClicked: function (row, e) {
             if (!this.$input.is(e.target) && !this.$el.is(e.target) && !this.$el.has(e.target).length){
                 this.enterEditMode(e);
             }

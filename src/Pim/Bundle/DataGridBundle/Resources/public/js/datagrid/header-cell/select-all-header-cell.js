@@ -1,7 +1,6 @@
-/* global define */
 define(['jquery', 'underscore', 'backgrid', 'oro/datagrid/select-row-cell'],
 function ($, _, Backgrid, SelectRowCell) {
-    "use strict";
+    'use strict';
 
     /**
      * Contains mass-selection logic
@@ -78,7 +77,7 @@ function ($, _, Backgrid, SelectRowCell) {
          *
          * @returns {{selectedModels: *, inset: boolean}}
          */
-        getSelectionState: function() {
+        getSelectionState: function () {
             return {
                 selectedModels: this.selectedModels,
                 inset: this.inset
@@ -185,7 +184,6 @@ function ($, _, Backgrid, SelectRowCell) {
          */
         render: function () {
             /*jshint multistr:true */
-            /*jslint es5: true */
             /* temp solution: start */
             // It's not clear for now, how mass selection will be designed,
             // thus implementation is done just to check functionality.

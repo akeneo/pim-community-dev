@@ -1,6 +1,5 @@
-/* global define */
 define(['oro/datagrid/datetime-cell'],
-function(DatagridDateTimeCell) {
+function (DatagridDateTimeCell) {
     'use strict';
 
     /**

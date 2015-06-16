@@ -1,6 +1,6 @@
 define(
     ['jquery', 'underscore', 'backbone', 'oro/translator'],
-    function($, _, Backbone, __) {
+    function ($, _, Backbone, __) {
         'use strict';
 
         /**
@@ -73,7 +73,7 @@ define(
                 this.originalButton.hide();
             },
 
-            execute: function() {
+            execute: function () {
                 this.originalButton.click();
             }
         });

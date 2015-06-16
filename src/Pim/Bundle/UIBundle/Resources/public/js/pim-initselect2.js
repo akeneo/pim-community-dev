@@ -1,3 +1,4 @@
+/* jshint unused:vars */
 define(
     ['jquery', 'underscore', 'jquery.select2'],
     function ($, _) {
@@ -8,16 +9,16 @@ define(
             init: function ($target) {
                 var self = this;
                 $target.find('input.select2:not(.select2-offscreen)').each(function () {
-                    var $el   = $(this),
-                        value = _.map(_.compact($el.val().split(',')), $.trim),
-                        tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
+                    var $el   = $(this);
+                    var value = _.map(_.compact($el.val().split(',')), $.trim);
+                    var tags  = _.map(_.compact($el.attr('data-tags').split(',')), $.trim);
                     tags = _.union(tags, value).sort();
                     $el.select2({ tags: tags, tokenSeparators: [',', ' '] });
                 });
 
                 $target.find('select.select2:not(.select2-offscreen)').each(function () {
-                    var $el    = $(this),
-                        $empty = $el.children('[value=""]');
+                    var $el    = $(this);
+                    var $empty = $el.children('[value=""]');
                     if ($empty.length && $empty.html()) {
                         $el.attr('data-placeholder', $empty.html());
                         $empty.html('');
@@ -25,18 +26,17 @@ define(
                     $el.select2({ allowClear: true });
                 });
 
-                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function() {
+                $target.find('input.pim-ajax-entity:not(.select2-offscreen)').each(function () {
                     self.initSelect.call(self, $(this));
                 });
             },
-            initSelect: function($select) {
+            initSelect: function ($select) {
                 var selectId = $select.context.id;
                 var options = {
-                        multiple: false,
-                        allowClear: false
-                    },
-                    self = this,
-                    values = null;
+                    multiple: false,
+                    allowClear: false
+                };
+                var self = this;
                 if ($select.attr('data-multiple')) {
                     options.multiple = true;
                 }
@@ -44,7 +44,7 @@ define(
                     if (!$select.attr('data-required')) {
                         options.allowClear = true;
                     }
-                    options.placeholder = " ";
+                    options.placeholder = ' ';
                 }
                 options.minimumInputLength = $select.attr('data-min-input-length');
                 options.query = function (options) {
@@ -68,7 +68,7 @@ define(
                         });
                     } else {
                         $.ajax({
-                            url: $select.attr("data-url"),
+                            url: $select.attr('data-url'),
                             data: {
                                 search: options.term,
                                 options: {
@@ -92,23 +92,23 @@ define(
                         });
                     }
                 };
-                options.initSelection = function(element, callback) {
-                    var choices = $.parseJSON($select.attr("data-choices"));
+                options.initSelection = function (element, callback) {
+                    var choices = $.parseJSON($select.attr('data-choices'));
                     callback(choices);
                 };
                 $select.select2(options);
             },
-            getSelectOptions: function(data, options) {
+            getSelectOptions: function (data, options) {
                 return data;
             },
-            getAjaxParameters: function($select) {
+            getAjaxParameters: function ($select) {
                 return {};
             },
-            hasCachableResults: function($select) {
+            hasCachableResults: function ($select) {
                 return true;
             },
-            matchLocalResults: function(data, term) {
-                var matchingResults = _.filter(data.results, function(result) {
+            matchLocalResults: function (data, term) {
+                var matchingResults = _.filter(data.results, function (result) {
                     return $.fn.select2.defaults.matcher(term, result.text);
                 });
 

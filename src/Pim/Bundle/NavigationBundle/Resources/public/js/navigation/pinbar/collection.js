@@ -1,6 +1,5 @@
-/* global define */
 define(['oro/navigation/collection', 'oro/navigation/pinbar/model'],
-function(NavigationCollection, PinbarModel) {
+function (NavigationCollection, PinbarModel) {
     'use strict';
 
     /**
@@ -11,21 +10,21 @@ function(NavigationCollection, PinbarModel) {
     return NavigationCollection.extend({
         model: PinbarModel,
 
-        initialize: function() {
+        initialize: function () {
             this.on('change:position', this.onPositionChange, this);
             this.on('change:url', this.onUrlChange, this);
             this.on('change:maximized', this.onStateChange, this);
         },
 
-        onPositionChange: function(item) {
+        onPositionChange: function (item) {
             this.trigger('positionChange', item);
         },
 
-        onStateChange: function(item) {
+        onStateChange: function (item) {
             this.trigger('stateChange', item);
         },
 
-        onUrlChange: function(item) {
+        onUrlChange: function (item) {
             this.trigger('urlChange', item);
         }
     });

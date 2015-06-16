@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'underscore', 'oro/mediator', 'jquery.multiselect', 'jquery.multiselect.filter'],
-function($, _, mediator) {
+function ($, _, mediator) {
     'use strict';
 
     /**
@@ -10,7 +9,7 @@ function($, _, mediator) {
      * @export oro/multiselect-decorator
      * @class  oro.MultiselectDecorator
      */
-    var MultiselectDecorator = function(options) {
+    var MultiselectDecorator = function (options) {
         this.initialize(options);
     };
 
@@ -39,7 +38,7 @@ function($, _, mediator) {
         /**
          * Initialize all required properties
          */
-        initialize: function(options) {
+        initialize: function (options) {
             if (!options.element) {
                 throw new Error("Select element must be defined");
             }
@@ -66,7 +65,7 @@ function($, _, mediator) {
             }
 
             // destroy DOM garbage after change page via hash-navigation
-            mediator.once('hash_navigation_request:start', function() {
+            mediator.once('hash_navigation_request:start', function () {
                 if (this.element.closest('body').length) {
                     this.multiselect("destroy");
                     this.element.hide();
@@ -79,7 +78,7 @@ function($, _, mediator) {
          *
          * @param {Backbone.View} view
          */
-        setViewDesign: function(view) {
+        setViewDesign: function (view) {
             view.$('.ui-multiselect').removeClass('ui-widget').removeClass('ui-state-default');
             view.$('.ui-multiselect span.ui-icon').remove();
         },
@@ -89,7 +88,7 @@ function($, _, mediator) {
          *
          * @protected
          */
-        _setDropdownDesign: function() {
+        _setDropdownDesign: function () {
             var widget = this.getWidget();
             widget.addClass('dropdown-menu');
             widget.removeClass('ui-widget-content');
@@ -102,7 +101,7 @@ function($, _, mediator) {
         /**
          * Action performed on dropdown open
          */
-        onOpenDropdown: function() {
+        onOpenDropdown: function () {
             this._setDropdownDesign();
             this.getWidget().find('input[type="search"]').focus();
             $('body').trigger('click');
@@ -113,10 +112,10 @@ function($, _, mediator) {
          *
          * @return {Number}
          */
-        getMinimumDropdownWidth: function() {
+        getMinimumDropdownWidth: function () {
             var minimumWidth = 0;
             var elements = this.getWidget().find('.ui-multiselect-checkboxes li');
-            _.each(elements, function(element) {
+            _.each(elements, function (element) {
                 var width = this._getTextWidth($(element).find('label'));
                 if (width > minimumWidth) {
                     minimumWidth = width;
@@ -133,7 +132,7 @@ function($, _, mediator) {
          * @return {Integer}
          * @protected
          */
-        _getTextWidth: function(element) {
+        _getTextWidth: function (element) {
             var html_org = element.html();
             var html_calc = '<span>' + html_org + '</span>';
             element.html(html_calc);
@@ -147,7 +146,7 @@ function($, _, mediator) {
          *
          * @return {Object}
          */
-        getWidget: function() {
+        getWidget: function () {
             return this.multiselect('widget');
         },
 
@@ -157,7 +156,7 @@ function($, _, mediator) {
          * @param functionName
          * @return {Object}
          */
-        multiselect: function(functionName) {
+        multiselect: function (functionName) {
             return this.element.multiselect(functionName);
         },
 
@@ -167,7 +166,7 @@ function($, _, mediator) {
          * @param functionName
          * @return {Object}
          */
-        multiselectfilter: function(functionName) {
+        multiselectfilter: function (functionName) {
             return this.element.multiselectfilter(functionName);
         },
 
@@ -176,7 +175,7 @@ function($, _, mediator) {
          *
          * @param {Object} button
          */
-        updateDropdownPosition: function(button) {
+        updateDropdownPosition: function (button) {
             var position = button.offset();
             this.getWidget().css({
                 top: position.top + button.outerHeight(),

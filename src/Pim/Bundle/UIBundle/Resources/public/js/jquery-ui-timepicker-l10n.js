@@ -1,6 +1,5 @@
-/* global define */
 define(['jquery', 'oro/translator', 'oro/locale-settings', 'jquery-ui-timepicker'],
-function($, __, localeSettings) {
+function ($, __, localeSettings) {
     'use strict';
 
     var locale = localeSettings.locale;
