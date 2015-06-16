@@ -58,3 +58,27 @@ datagrid:
                     data_name: pa.updatedAt
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     pimee_product_asset.code.label
+                    data_name: pa.code
+                description:
+                    type:      string
+                    label:     pimee_product_asset.description.label
+                    data_name: pa.description
+                tags:
+                    type:      product_asset_tag
+                    data_name: tags.id
+                    label:     pimee_product_asset.tags.label
+                    options:
+                        field_options:
+                            attr:
+                                empty_choice: true
+                            multiple: true
+                            choices:  '@pimee_product_asset.repository.tag->findAllCodes'
+                endOfUseAt:
+                    type:      date
+                    data_name: pa.endOfUseAt
+                    label:     pimee_product_asset.endOfUse.label

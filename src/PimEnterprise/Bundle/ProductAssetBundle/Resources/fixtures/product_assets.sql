@@ -10,3 +10,25 @@ INSERT INTO pimee_product_asset_asset (code, description, is_enabled, end_of_use
 ('AC8897',	'Yellow t-shirt female, on a boat.',	1,	NULL,	'2015-06-08 15:35:21',	'2015-06-08 15:35:21'),
 ('AC9969',	'Outdated jean collection. Printed patterns on a silk jean.\r\n',	0,	'2007-06-08 15:35:46',	'2015-06-08 15:35:46',	'2015-06-08 15:35:46'),
 ('AC6656',	'Transparent t-shirt, XXL, UnNamed brand.',	1,	NULL,	'2015-06-08 15:35:59',	'2015-06-08 15:35:59');
+
+
+INSERT INTO pimee_product_asset_asset_tag (asset_id, tag_id)
+  SELECT pimee_product_asset_asset.id, pimee_product_asset_tag.id
+  FROM pimee_product_asset_asset
+  CROSS JOIN pimee_product_asset_tag;
+
+DELETE j FROM pimee_product_asset_asset_tag j
+INNER JOIN pimee_product_asset_asset a ON (a.id = j.asset_id)
+WHERE a.code = 'AC6656';
+
+DELETE j FROM pimee_product_asset_asset_tag j
+INNER JOIN pimee_product_asset_asset a ON (a.id = j.asset_id)
+INNER JOIN pimee_product_asset_tag t ON (t.id = j.tag_id)
+WHERE a.code <> 'AC2230'
+AND t.code = 'women';
+
+DELETE j FROM pimee_product_asset_asset_tag j
+INNER JOIN pimee_product_asset_asset a ON (a.id = j.asset_id)
+INNER JOIN pimee_product_asset_tag t ON (t.id = j.tag_id)
+WHERE a.code NOT IN ('AC9856', 'AC6667')
+AND t.code IN ('lacework', 'men');

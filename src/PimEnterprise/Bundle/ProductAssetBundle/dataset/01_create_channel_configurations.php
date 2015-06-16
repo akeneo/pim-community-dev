@@ -33,8 +33,8 @@ function createConfs(array $rawConfs)
         $conf    = new \PimEnterprise\Component\ProductAsset\Model\ChannelVariationsConfiguration();
         $conf->setChannel($channel);
         $conf->setConfiguration($rawConf);
-        $helper->getEm()->persist($rawConf);
-        $helper->getEm()->flush($rawConf);
+        $helper->getEm()->persist($conf);
+        $helper->getEm()->flush($conf);
     }
 }
 

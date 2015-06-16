@@ -13,6 +13,7 @@ namespace PimEnterprise\Component\ProductAsset\Repository;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 
 /**
@@ -30,7 +31,17 @@ interface AssetRepositoryInterface extends
      *
      * @param array $parameters
      *
-     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     * @return QueryBuilder
      */
     public function createAssetDatagridQueryBuilder(array $parameters = []);
+
+    /**
+     * Apply tag filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param string       $operator
+     * @param mixed        $value
+     */
+    public function applyTagFilter(QueryBuilder $qb, $field, $operator, $value);
 }
