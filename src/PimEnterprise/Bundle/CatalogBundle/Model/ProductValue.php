@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model;
+namespace PimEnterprise\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValue as BaseProductValue;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 
 /**
- * Published product value
+ * Enterprise override of the Community product value
  *
- * @author Nicolas Dupont <nicolas@akeneo.com>
- * @ExclusionPolicy("all")
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PublishedProductValue extends AbstractProductValue implements PublishedProductValueInterface
+class ProductValue extends BaseProductValue implements ProductValueInterface
 {
     /** @var ArrayCollection */
     protected $assets;

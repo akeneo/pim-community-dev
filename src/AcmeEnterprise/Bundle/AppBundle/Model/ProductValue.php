@@ -14,11 +14,13 @@ namespace AcmeEnterprise\Bundle\AppBundle\Model;
 use Acme\Bundle\AppBundle\Entity\Color;
 use Acme\Bundle\AppBundle\Entity\Fabric;
 use Doctrine\Common\Collections\ArrayCollection;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue as PimProductValue;
+use PimEnterprise\Bundle\CatalogBundle\Model\ProductValue as PimProductValue;
 
 /**
- * Acme override of the product value
+ * Acme override of the product value/ In this example:
+ *      - "fabrics" is a new many to many relationship
+ *      - "color" is a new many to one relationship
+ *      - "myNewField" is a new field
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -26,13 +28,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue as PimProductValue;
  */
 class ProductValue extends PimProductValue
 {
-    /** @var ArrayCollection */
-    protected $assets;
-
-    /** @var array (used only in MongoDB implementation) */
-    protected $assetIds;
-
-
     /** @var ArrayCollection */
     protected $fabrics;
 
@@ -42,6 +37,8 @@ class ProductValue extends PimProductValue
     /** @var Color */
     protected $color;
 
+    /** @var string */
+    protected $myNewField;
 
     /**
      * constructor
@@ -50,42 +47,8 @@ class ProductValue extends PimProductValue
     {
         parent::__construct();
 
-        $this->assets = new ArrayCollection();
         $this->fabrics = new ArrayCollection();
     }
-
-    /**
-     * @return ArrayCollection
-     */
-    public function getAssets()
-    {
-        return $this->assets;
-    }
-
-    /**
-     * @param ArrayCollection $assets
-     */
-    public function setAssets(ArrayCollection $assets)
-    {
-        $this->assets = $assets;
-    }
-
-    /**
-     * @param AssetInterface $asset
-     */
-    public function addAsset(AssetInterface $asset)
-    {
-        $this->assets->add($asset);
-    }
-
-    /**
-     * @param AssetInterface $asset
-     */
-    public function removeAsset(AssetInterface $asset)
-    {
-        $this->assets->removeElement($asset);
-    }
-
 
     /**
      * @return ArrayCollection
@@ -133,5 +96,21 @@ class ProductValue extends PimProductValue
     public function setColor(Color $color = null)
     {
         $this->color = $color;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMyNewField()
+    {
+        return $this->myNewField;
+    }
+
+    /**
+     * @param string $myNewField
+     */
+    public function setMyNewField($myNewField)
+    {
+        $this->myNewField = $myNewField;
     }
 }
