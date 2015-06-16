@@ -109,6 +109,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setSourceFile($inputFile)->shouldBeCalled();
         $variation->setLocked(false)->shouldBeCalled();
 
         $this->generateFromFile($inputFile, $variation, $ecommerce, 'my.file.txt');
@@ -159,6 +160,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setSourceFile($referenceFile)->shouldBeCalled();
         $variation->setLocked(false)->shouldBeCalled();
 
         $this->generateFromReference($reference, $ecommerce, $fr);
@@ -211,6 +213,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver->save($fileMetadata)->shouldBeCalled();
         $variationSaver->save($variation)->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
+        $variation->setSourceFile($referenceFile)->shouldBeCalled();
         $variation->setLocked(false)->shouldBeCalled();
 
         $this->generateFromAsset($asset, $ecommerce, $fr);

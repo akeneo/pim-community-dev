@@ -74,6 +74,18 @@ interface VariationInterface
     public function setFile(FileInterface $file);
 
     /**
+     * @return FileInterface
+     */
+    public function getSourceFile();
+
+    /**
+     * @param FileInterface $file
+     *
+     * @return VariationInterface
+     */
+    public function setSourceFile(FileInterface $file);
+
+    /**
      * @return bool
      */
     public function isLocked();

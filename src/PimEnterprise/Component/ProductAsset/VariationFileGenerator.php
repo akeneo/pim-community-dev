@@ -174,6 +174,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variationMetadata->setFile($variationFile);
         $this->metadataSaver->save($variationMetadata);
 
+        $variation->setSourceFile($inputFile);
         $variation->setFile($variationFile);
         $variation->setLocked($setVariationToLocked);
         $this->variationSaver->save($variation);

@@ -15,6 +15,11 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
             joinColumn:
                 name: file_id
                 referencedColumnName: id
+        sourceFile:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
+            joinColumn:
+                name: source_file_id
+                referencedColumnName: id
     manyToOne:
         channel:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ChannelInterface
