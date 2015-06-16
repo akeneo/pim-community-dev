@@ -33,6 +33,6 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
            ))
            ->setParameter(':identifier', $identifier);
 
-        return $qb->getQuery()->getSingleResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }
