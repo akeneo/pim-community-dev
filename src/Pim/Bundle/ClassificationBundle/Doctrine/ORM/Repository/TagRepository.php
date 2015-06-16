@@ -14,4 +14,23 @@ use Pim\Component\Classification\Repository\TagRepositoryInterface;
  */
 class TagRepository extends EntityRepository implements TagRepositoryInterface
 {
+    /**
+     * Get all tags id and code
+     *
+     * @return string[]
+     */
+    public function findAllCodes()
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+        $queryBuilder->select('t.id, t.code');
+        $queryBuilder->orderBy('t.code');
+
+        $codes = [];
+
+        foreach ($queryBuilder->getQuery()->getArrayResult() as $result) {
+            $codes[$result['id']] = $result['code'];
+        }
+
+        return $codes;
+    }
 }
