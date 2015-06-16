@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Factory;
+namespace Pim\Component\Classification\Factory;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 
 /**
  * @author    Adrien Pétremann <adrien.petremann@akeneo.com>
