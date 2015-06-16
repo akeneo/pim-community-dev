@@ -202,9 +202,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
             );
         }
 
-        $configuration = $channelConfiguration->getConfiguration();
-
-        return $configuration['pipeline'];
+        return $channelConfiguration->getConfiguration();
     }
 
     /**

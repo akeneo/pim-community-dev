@@ -94,7 +94,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
         $inputFileInfo->getPathname()->willReturn($referencePathname);
 
-        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
+        $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
 
         $rawFileFetcher->fetch($inputFile, $filesystem)->willReturn($inputFileInfo);
         $fileTransformer->transform(
@@ -147,7 +147,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $referenceFile->getOriginalFilename()->willReturn('my originial file.txt');
         $fr->getCode()->willReturn('fr_FR');
 
-        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
+        $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
 
         $rawFileFetcher->fetch($referenceFile, $filesystem)->willReturn($referenceFileInfo);
         $fileTransformer->transform(
@@ -252,6 +252,4 @@ class VariationFileGeneratorSpec extends ObjectBehavior
             new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem "my_storage".')
         )->during('generateFromAsset', [$asset, $ecommerce, null]);
     }
-
-
 }
