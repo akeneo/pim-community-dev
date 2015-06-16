@@ -139,25 +139,6 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
-     * Get the date formatted from data
-     *
-     * @param \DateTime|string $data
-     * @param bool             $endOfDay
-     *
-     * @return string
-     */
-    protected function getDateValue($data, $endOfDay = false)
-    {
-        if ($data instanceof \DateTime && true === $endOfDay) {
-            $data->setTime(23, 59, 59);
-        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
-            $data = sprintf('%s 23:59:59', $data);
-        }
-
-        return $data instanceof \DateTime ? $data->format('Y-m-d H:i:s') : $data;
-    }
-
-    /**
      * Alias of the repository
      *
      * @return string

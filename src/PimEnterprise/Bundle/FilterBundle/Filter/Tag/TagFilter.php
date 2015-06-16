@@ -21,11 +21,11 @@ use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
 /**
  * Tag filter
  *
- * @author    JM Leroux <jean-marie@akeneo.com>
+ * @author JM Leroux <jean-marie@akeneo.com>
  */
 class TagFilter extends AjaxChoiceFilter
 {
-    /** @var \PimEnterprise\Bundle\FilterBundle\Filter\ProductAssetFilterUtility */
+    /** @var TagFilterAwareInterface */
     protected $util;
 
     /**

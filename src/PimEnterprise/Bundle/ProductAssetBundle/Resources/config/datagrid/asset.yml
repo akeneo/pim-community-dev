@@ -62,16 +62,16 @@ datagrid:
             columns:
                 code:
                     type:      string
-                    label:     Code
+                    label:     pimee_product_asset.code.label
                     data_name: pa.code
                 description:
                     type:      string
-                    label:     Description
+                    label:     pimee_product_asset.description.label
                     data_name: pa.description
                 tags:
                     type:      product_asset_tag
                     data_name: tags.id
-                    label:     Tags
+                    label:     pimee_product_asset.tags.label
                     options:
                         field_options:
                             attr:
@@ -81,4 +81,4 @@ datagrid:
                 endOfUseAt:
                     type:      date
                     data_name: pa.endOfUseAt
-                    label:     End of use
+                    label:     pimee_product_asset.endOfUse.label

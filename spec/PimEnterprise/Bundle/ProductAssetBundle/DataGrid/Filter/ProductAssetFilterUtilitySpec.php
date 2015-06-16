@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter;
+namespace spec\PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
@@ -12,6 +12,11 @@ class ProductAssetFilterUtilitySpec extends ObjectBehavior
     function let(AssetRepositoryInterface $assetRepositoryInterface)
     {
         $this->beConstructedWith($assetRepositoryInterface);
+    }
+
+    function it_can_filter_by_tag()
+    {
+        $this->shouldImplement('PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilterAwareInterface');
     }
 
     function it_applies_a_tag_filter(

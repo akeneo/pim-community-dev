@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter;
+namespace PimEnterprise\Bundle\ProductAssetBundle\DataGrid\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use PimEnterprise\Bundle\FilterBundle\Filter\Tag\TagFilterAwareInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
@@ -20,14 +21,12 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class ProductAssetFilterUtility extends BaseFilterUtility
+class ProductAssetFilterUtility extends BaseFilterUtility implements TagFilterAwareInterface
 {
     /** @var AssetRepositoryInterface */
     protected $repository;
 
     /**
-     * Constructor
-     *
      * @param AssetRepositoryInterface $repository
      */
     public function __construct(AssetRepositoryInterface $repository)
@@ -36,7 +35,7 @@ class ProductAssetFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * Apply filter
+     * Apply tag filter
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
