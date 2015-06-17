@@ -95,3 +95,12 @@ pim_reference_data:
     color:
         class: Acme\Bundle\AppBundle\Entity\Color
         type: simple
+
+akeneo_storage_utils:
+    mapping_overrides:
+        -
+            original: Pim\Bundle\CatalogBundle\Model\ProductValue
+            override: Acme\Bundle\AppBundle\Model\ProductValue
+        -
+            original: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            override: AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue

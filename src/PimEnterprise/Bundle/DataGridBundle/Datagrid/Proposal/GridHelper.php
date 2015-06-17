@@ -11,11 +11,7 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
  * Helper for proposal datagrid
@@ -24,53 +20,26 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  */
 class GridHelper
 {
-    /** @var UserManager $userManager */
-    protected $userManager;
-
-    /** @var SecurityContextInterface  */
-    protected $securityContext;
+    /** @var ProductDraftRepositoryInterface $draftRepository */
+    protected $draftRepository;
 
     /**
-     * @param UserManager              $userManager
-     * @param SecurityContextInterface $securityContext
+     * @param ProductDraftRepositoryInterface $draftRepository
      */
-    public function __construct(UserManager $userManager, SecurityContextInterface $securityContext)
+    public function __construct(ProductDraftRepositoryInterface $draftRepository)
     {
-        $this->userManager     = $userManager;
-        $this->securityContext = $securityContext;
+        $this->draftRepository = $draftRepository;
     }
     /**
-     * Returns available proposal author choices
+     * Returns available proposal author choices (author can be user or job instance)
      *
      * @return array
      */
     public function getAuthorChoices()
     {
-        $users = $this->userManager->getRepository()->findAll();
-
-        $choices = [];
-
-        foreach ($users as $user) {
-            $choices[$user->getUsername()] = $user->getUsername();
-        }
+        $authors = $this->draftRepository->getDistinctAuthors();
+        $choices = array_combine($authors, $authors);
 
         return $choices;
-    }
-
-    /**
-     * Returns callback that will disable approve and refuse buttons
-     * given proposal status
-     *
-     * @return callable
-     */
-    public function getActionConfigurationClosure()
-    {
-        return function (ResultRecordInterface $record) {
-            if (null !== $this->securityContext &&
-                false === $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $record->getRootEntity())
-            ) {
-                return ['approve' => false, 'refuse' => false];
-            }
-        };
     }
 }
