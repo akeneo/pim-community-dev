@@ -42,4 +42,12 @@ class Tag implements TagInterface
     {
         return $this->code;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getCode();
+    }
 }
