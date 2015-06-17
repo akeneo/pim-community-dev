@@ -33,9 +33,9 @@ define(
             },
             validationError: function (validationErrors) {
                 this.removeValidationErrors();
-                this.addValidationErrors(validationErrors);
-
-                mediator.trigger('product:action:post_validation_error');
+                this.addValidationErrors(validationErrors).then(function () {
+                    mediator.trigger('product:action:post_validation_error');
+                });
             },
             removeValidationErrors: function () {
                 var fields = FieldManager.getFields();
@@ -46,22 +46,24 @@ define(
                 });
             },
             addValidationErrors: function (data) {
-                _.each(data.values, _.bind(function (fieldErrors, attributeCode) {
-                    FieldManager.getField(attributeCode).done(_.bind(function (field) {
-                        field.addElement(
-                            'footer',
-                            'validation',
-                            new ValidationError(fieldErrors, this)
-                        );
-
-                        field.setValid(false);
-                    }, this));
-                }, this));
-
                 // Global errors with an empty property path
                 if (data[''] && data[''].message) {
                     messenger.notificationFlashMessage('error', data[''].message);
                 }
+
+                return $.when.apply($, _.map(data.values, _.bind(function (fieldErrors, attributeCode) {
+                    return FieldManager.getField(attributeCode)
+                        .done(_.bind(function (field) {
+                            field.addElement(
+                                'footer',
+                                'validation',
+                                new ValidationError(fieldErrors, this)
+                            );
+
+                            field.setValid(false);
+                        }, this)
+                    );
+                }, this)));
             },
             changeContext: function (locale, scope) {
                 if (locale) {

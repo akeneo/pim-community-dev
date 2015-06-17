@@ -127,7 +127,7 @@ define(
                     }
                 });
 
-                this.getParent().render();
+                this.trigger('copy:copy-fields:after');
             },
             startCopying: function () {
                 this.copying = true;
@@ -164,7 +164,7 @@ define(
                     copyField.selected = true;
                 });
 
-                this.getParent().render();
+                this.trigger('copy:select:after');
             },
             selectAllVisible: function () {
                 _.each(this.copyFields, _.bind(function (copyField, attributeCode) {
@@ -173,7 +173,7 @@ define(
                     }
                 }, this));
 
-                this.getParent().render();
+                this.trigger('copy:select:after');
             },
             getLocale: function () {
                 return this.locale;

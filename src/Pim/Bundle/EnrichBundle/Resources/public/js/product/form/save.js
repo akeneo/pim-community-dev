@@ -48,6 +48,10 @@ define(
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             save: function (options) {
+                _.each(FieldManager.getFields(), function (field) {
+                    field.updateModel();
+                });
+
                 var product = $.extend(true, {}, this.getData());
                 var productId = product.meta.id;
 
@@ -79,6 +83,7 @@ define(
 
                 return ProductManager
                     .save(productId, product)
+                    .done(_.bind(ProductManager.generateMissing, this))
                     .done(_.bind(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
@@ -86,6 +91,7 @@ define(
                         );
 
                         this.setData(data);
+
                         if (!options || !options.silent) {
                             mediator.trigger('product:action:post_update', data);
                         }

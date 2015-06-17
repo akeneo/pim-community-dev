@@ -19,7 +19,7 @@ define(
                 this.configured   = false;
             },
             configure: function () {
-                return $.when(_.map(this.extensions, function (extension) {
+                return $.when.apply($, _.map(this.extensions, function (extension) {
                         return extension.configure();
                     }))
                     .done(_.bind(function () {
@@ -105,6 +105,18 @@ define(
                 }
 
                 return this.zones[code];
+            },
+            triggerExtensions: function(code) {
+                _.each(this.extensions, function (extension) {
+                    extension.trigger.apply(extension, arguments);
+
+                    extension.triggerExtensions.apply(extension, arguments);
+                });
+            },
+            onExtensions: function(code, callback) {
+                _.each(this.extensions, _.bind(function (extension) {
+                    this.listenTo(extension, code, callback);
+                }, this));
             }
         });
     }

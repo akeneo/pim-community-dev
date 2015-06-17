@@ -33,8 +33,8 @@ define(
             postRender: function () {
                 this.$('.datepicker').datepicker();
             },
-            updateModel: function (event) {
-                var data = event.currentTarget.value;
+            updateModel: function () {
+                var data = this.$('input[type="text"]').get(0).value;
                 data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
 
                 this.setCurrentValue(data);

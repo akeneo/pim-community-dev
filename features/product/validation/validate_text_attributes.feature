@@ -27,8 +27,6 @@ Feature: Validate text attributes of a product
 
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@foo.com"
-    # TODO: remove the next line when the next scenario is fixed
-    Given I change the Barcode to "00000000"
     And I save the product
     When I am on the "bar" product page
     And I change the Email to "bar@foo.com"

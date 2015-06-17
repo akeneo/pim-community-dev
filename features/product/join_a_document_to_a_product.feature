@@ -10,14 +10,13 @@ Feature: Join a document to a product
       | label       | type | allowed extensions |
       | Description | file | txt                |
     And a "Car" product
-    And the "Car" product has the "description" attribute
+    And the "Car" product has the "Description" attribute
     And I am logged in as "Julia"
     And I am on the "Car" product page
 
   @ce
   Scenario: Successfully leave the document empty
     When I save the product
-    Then I should see "Product successfully updated"
 
   Scenario: Successfully upload a document
     When I attach file "akeneo.txt" to "Description"

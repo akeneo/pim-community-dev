@@ -69,10 +69,9 @@ Feature: Validate price attributes of a product
     Then I should see validation tooltip "This value should be 100 or less."
     And there should be 1 error in the "Other" tab
 
-  @skip-pef
   Scenario: Validate the type constraint of price attribute
     Given I change the "Tax" to "bar USD"
     And I change the "Tax" to "qux EUR"
     And I save the product
-    Then I should see validation tooltip "This value should be a valid number.; This value should be a valid number."
+    Then I should see validation tooltip "This value should be a valid number."
     And there should be 1 error in the "Other" tab

@@ -230,7 +230,6 @@ Feature: Validate editing common attributes of multiple products
     And attribute number_in_stock of "sandals" should be ""
     And attribute number_in_stock of "sneakers" should be ""
 
-  @skip-pef
   Scenario: Successfully mass edit a price attribute
     Given I mass-edit products boots and sneakers
     And I choose the "Edit common attributes" operation

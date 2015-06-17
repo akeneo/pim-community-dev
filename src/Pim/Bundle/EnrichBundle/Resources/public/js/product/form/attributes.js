@@ -65,11 +65,11 @@ define(
                 window.addEventListener('resize', _.bind(this.resize, this));
                 FieldManager.clearFields();
 
-                _.each(this.extensions, _.bind(function (extension) {
-                    extension.on('comparison:change', _.bind(this.comparisonChange, this));
-                    extension.on('attribute-group:change', _.bind(this.render, this));
-                    extension.on('add-attribute:add', _.bind(this.addAttributes, this));
-                }, this));
+                this.onExtensions('comparison:change', _.bind(this.comparisonChange, this));
+                this.onExtensions('attribute-group:change', _.bind(this.render, this));
+                this.onExtensions('add-attribute:add', _.bind(this.addAttributes, this));
+                this.onExtensions('copy:copy-fields:after', _.bind(this.render, this));
+                this.onExtensions('copy:select:after', _.bind(this.render, this));
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
