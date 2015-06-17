@@ -23,7 +23,7 @@ define([
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'media',
             events: {
-                'change .field-input:first .edit input[type="file"]': 'updateModel',
+                'change .edit .field-input:first input[type="file"]': 'updateModel',
                 'click  .clear-field': 'clearField',
                 'click  .open-media': 'previewImage'
             },
@@ -70,7 +70,7 @@ define([
                     ));
                 }
 
-                var input = this.$('.field-input:first .edit input[type="file"]').get(0);
+                var input = this.$('.edit .field-input:first input[type="file"]').get(0);
                 if (!input || 0 === input.files.length) {
                     return;
                 }

@@ -71,7 +71,6 @@ class AttributeNormalizer implements NormalizerInterface
                 $emptyValue = [];
                 break;
             case 'pim_catalog_text':
-            case 'pim_catalog_textarea':
                 $emptyValue = '';
                 break;
             case 'pim_catalog_boolean':
