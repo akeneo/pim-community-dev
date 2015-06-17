@@ -11,9 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,21 +19,19 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Generate the variation files of a reference.
+ * Generate the missing variation files
  *
- * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVariationFileCommand
+class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFileCommand
 {
     /**
      * {@inheritdoc}
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-variations-from-reference');
-        $this->setDescription('Generate the variation files of a reference.');
-        $this->addArgument('asset', InputArgument::REQUIRED);
-        $this->addArgument('locale', InputArgument::OPTIONAL);
+        $this->setName('pim:asset:generate-missing-variations');
+        $this->setDescription('Generate all the missing variation files.');
     }
 
     /**
@@ -44,24 +40,29 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $asset = $this->retrieveAsset($input->getArgument('asset'));
-
-            $locale = null;
-            if (null !== $localeCode = $input->getArgument('locale')) {
-                $this->retrieveLocale($localeCode);
-            }
-
-            $reference = $this->retrieveReference($asset, $locale);
+            $variations = $this->retrieveMissingVariations();
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        $processedList = $this->getVariationsCollectionFileGenerator()->generate($reference->getVariations());
+        if (0 === count($variations)) {
+            $output->writeln('<info>No missing variation</info>');
+
+            return 0;
+        }
+
+        $generator     = $this->getVariationsCollectionFileGenerator();
+        $processedList = $generator->generate($variations);
 
         foreach ($processedList as $item) {
-            $msg = $this->getGenerationMessage($asset, $item->getItem()->getChannel(), $reference->getLocale());
+            $variation = $item->getItem();
+            $msg       = $this->getGenerationMessage(
+                $variation->getAsset(),
+                $variation->getChannel(),
+                $variation->getLocale()
+            );
 
             switch ($item->getState()) {
                 case ProcessedItem::STATE_ERROR:
@@ -84,29 +85,14 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
     }
 
     /**
-     * @param AssetInterface  $asset
-     * @param LocaleInterface $locale
-     *
-     * @return ReferenceInterface
-     * @throws \LogicException
+     * @return VariationInterface[]
      */
-    protected function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
+    protected function retrieveMissingVariations()
     {
-        if (null === $reference = $asset->getReference($locale)) {
-            if (null === $locale) {
-                $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
-            } else {
-                $msg = sprintf(
-                    'The asset "%s" has no reference for the locale "%s".',
-                    $asset->getCode(),
-                    $locale->getCode()
-                );
-            }
+        $variationsRepo    = $this->getContainer()->get('pimee_product_asset.repository.variation');
+        $missingVariations = $variationsRepo->findBy(['file' => null]);
 
-            throw new \LogicException($msg);
-        }
-
-        return $reference;
+        return $missingVariations;
     }
 
     /**

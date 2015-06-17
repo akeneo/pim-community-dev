@@ -1,7 +1,7 @@
 # TODO: should not be in a services.yml file
 parameters:
-    pimee_product_asset.variation_file_generator.class: PimEnterprise\Component\ProductAsset\VariationFileGenerator
-    pimee_product_asset.from_reference_variation_files_generator.class: PimEnterprise\Component\ProductAsset\FromReferenceVariationFilesGenerator
+    pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
+    pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
 
 services:
     pimee_product_asset.variation_file_generator:
@@ -17,7 +17,7 @@ services:
             - '@pimee_product_asset.registry.metadata_builder'
             - 'storage'
 
-    pimee_product_asset.from_reference_variation_files_generator:
-            class: %pimee_product_asset.from_reference_variation_files_generator.class%
+    pimee_product_asset.variations_collection_files_generator:
+            class: %pimee_product_asset.variations_collection_files_generator.class%
             arguments:
                 - '@pimee_product_asset.variation_file_generator'

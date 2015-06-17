@@ -11,14 +11,15 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
- * Generate the variation files from a reference.
+ * Generate the variation files for a collection of variations
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class FromReferenceVariationFilesGenerator implements FromReferenceVariationFilesGeneratorInterface
+class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGeneratorInterface
 {
     protected $variationFileGenerator;
 
@@ -31,13 +32,16 @@ class FromReferenceVariationFilesGenerator implements FromReferenceVariationFile
     }
 
     /**
-     * {@inheritdoc}
+     * @param VariationInterface[] $variations
+     *
+     * @return ProcessedItemList
      */
-    public function generate(ReferenceInterface $reference)
+    public function generate(array $variations)
     {
         $processedVariations = new ProcessedItemList();
 
-        foreach ($reference->getVariations() as $variation) {
+        foreach ($variations as $variation) {
+            // TODO check instance of VariationInterface
             if (!$variation->isLocked()) {
                 try {
                     $this->variationFileGenerator->generate($variation);

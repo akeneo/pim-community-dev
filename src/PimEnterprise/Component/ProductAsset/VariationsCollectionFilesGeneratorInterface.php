@@ -11,19 +11,20 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
  * Generate the variation files from a reference.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-interface FromReferenceVariationFilesGeneratorInterface
+interface VariationsCollectionFilesGeneratorInterface
 {
     /**
-     * @param ReferenceInterface $reference
+     * @param VariationInterface[] $variations
      *
      * @return ProcessedItemList
      */
-    public function generate(ReferenceInterface $reference);
+    public function generate(array $variations);
 }

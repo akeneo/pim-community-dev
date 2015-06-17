@@ -12,7 +12,7 @@ use PimEnterprise\Component\ProductAsset\ProcessedItemList;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Prophecy\Argument;
 
-class FromReferenceVariationFilesGeneratorSpec extends ObjectBehavior
+class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 {
     public function let(VariationFileGeneratorInterface $variationFileGenerator)
     {
@@ -21,7 +21,7 @@ class FromReferenceVariationFilesGeneratorSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\FromReferenceVariationFilesGenerator');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator');
     }
 
     function it_generates_the_variation_files_from_a_reference(
@@ -43,7 +43,7 @@ class FromReferenceVariationFilesGeneratorSpec extends ObjectBehavior
         $variationFileGenerator->generate($variation2)->shouldBeCalled();
         $variationFileGenerator->generate($variation3)->shouldNotBeCalled();
 
-        $res = $this->generate($reference);
+        $res = $this->generate($reference->getVariations());
         $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
         $res->shouldBeListOfProcessedVariations();
     }
