@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
         ['jquery', 'underscore', 'datepicker', 'tinymce'],
-        function ($, _, datepicker, tinymce) {
+        function ($, _, datepicker) {
             'use strict';
 
             $(function () {
@@ -14,7 +14,7 @@
 
                     $('#{{ form.vars.id }}').attr(
                         'action',
-                        $('#{{ form.vars.id }}').attr('action') + "&action=" + action
+                        $('#{{ form.vars.id }}').attr('action') + "?action=" + action
                     );
                     tinymce.triggerSave();
                     $('#{{ form.vars.id }}').submit();

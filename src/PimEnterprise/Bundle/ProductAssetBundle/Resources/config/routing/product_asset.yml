@@ -19,7 +19,6 @@ pimee_product_asset_update:
     defaults: { _controller: pimee_product_asset.controller.produt_asset:updateAction }
     requirements:
         id: '[0-9]+'
-    methods: [POST]
 
 pimee_product_asset_upload_reference:
     path: /{assetId}/uploadReference/{id}

@@ -43,6 +43,9 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class ProductAssetController extends Controller
 {
+    /** @staticvar string */
+    const BACK_TO_GRID = 'BackGrid';
+
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
@@ -371,6 +374,10 @@ class ProductAssetController extends Controller
     protected function redirectAfterEdit(Request $request, array $params)
     {
         switch ($request->get('action')) {
+            case self::BACK_TO_GRID:
+                $route  = 'pimee_product_asset_index';
+                $params = [];
+                break;
             default:
                 $route = 'pimee_product_asset_edit';
                 break;
