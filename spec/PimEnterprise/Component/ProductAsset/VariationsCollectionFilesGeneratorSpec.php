@@ -2,10 +2,7 @@
 
 namespace spec\PimEnterprise\Component\ProductAsset;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\ProcessedItemList;
@@ -26,7 +23,6 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
 
     function it_generates_the_variation_files_from_a_reference(
         $variationFileGenerator,
-        ReferenceInterface $reference,
         VariationInterface $variation1,
         VariationInterface $variation2,
         VariationInterface $variation3
@@ -35,15 +31,13 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $variation2->isLocked()->willReturn(false);
         $variation3->isLocked()->willReturn(true);
 
-        $reference->getVariations()->willReturn([$variation1, $variation2, $variation3]);
-
         $variationFileGenerator->generate($variation2)->willThrow(new \LogicException('Impossible to build the variation'));
 
         $variationFileGenerator->generate($variation1)->shouldBeCalled();
         $variationFileGenerator->generate($variation2)->shouldBeCalled();
         $variationFileGenerator->generate($variation3)->shouldNotBeCalled();
 
-        $res = $this->generate($reference->getVariations());
+        $res = $this->generate([$variation1, $variation2, $variation3]);
         $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
         $res->shouldBeListOfProcessedVariations();
     }
