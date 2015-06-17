@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -200,7 +200,7 @@ class ProductAssetController extends Controller
                 $this->assetSaver->save($productAsset);
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
-                $this->addFlash($request, 'error', $e->getMessage());
+                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
             }
         }
 
@@ -290,8 +290,8 @@ class ProductAssetController extends Controller
      */
     protected function createAttachments(AssetInterface $productAsset)
     {
-        $channels     = $this->channelRepository->getFullChannels();
-        $references   = $productAsset->getReferences();
+        $channels   = $this->channelRepository->getFullChannels();
+        $references = $productAsset->getReferences();
 
         $attachments = [];
         foreach ($references as $refKey => $reference) {
@@ -380,13 +380,13 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Find a Asset by its id or return a 404 response
+     * Find an Asset by its id or return a 404 response
      *
      * @param int|string $id
      *
-     * @throws NotFoundHttpException
-     *
      * @return AssetInterface
+     *
+     * @throws NotFoundHttpException
      */
     protected function findProductAssetOr404($id)
     {

@@ -6,6 +6,8 @@ parameters:
 services:
     pimee_product_asset.form.type.asset:
         class: %pimee_product_asset.form.type.asset.class%
+        arguments:
+            - %pimee_product_asset.model.tag.class%
         tags:
             - { name: form.type, alias: pimee_product_asset }
 

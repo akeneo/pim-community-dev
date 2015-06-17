@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -22,6 +22,17 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class AssetType extends AbstractType
 {
+    /** @var string */
+    protected $tagClass;
+
+    /**
+     * @params string $tagClass
+     */
+    public function __construct($tagClass)
+    {
+        $this->tagClass = $tagClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +44,7 @@ class AssetType extends AbstractType
             'tags',
             'pim_ajax_asset_tag',
             [
-                'class'    => 'PimEnterprise\Component\ProductAsset\Model\Tag',
+                'class'    => $this->tagClass,
                 'multiple' => true,
                 'attr'     => ['data-tags' => '']
             ]

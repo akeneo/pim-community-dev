@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -136,7 +136,7 @@ class AjaxAssetTagTransformer implements DataTransformerInterface
         if (null === $transformedValue) {
             $entity = new $this->options['class']();
             $identifierProperties = $this->repository->getIdentifierProperties();
-            if (sizeof($identifierProperties) === 1) {
+            if (1 === count($identifierProperties)) {
                 $setMethod = sprintf('set%s', ucfirst($identifierProperties[0]));
             } else {
                 throw new \LogicException(

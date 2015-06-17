@@ -22,6 +22,7 @@ pimee_product_asset:
         flash:
             update:
                 success: Asset has been updated
+                error: Asset has not been updated. An error occurs.
     menu: Assets
     page_tab:
         title:
