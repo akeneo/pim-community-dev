@@ -106,7 +106,7 @@ define(
 
                 return this.zones[code];
             },
-            triggerExtensions: function(code) {
+            triggerExtensions: function () {
                 var options = Array.prototype.slice.call(arguments);
 
                 _.each(this.extensions, function (extension) {
@@ -114,7 +114,7 @@ define(
                     extension.triggerExtensions.apply(extension, options);
                 });
             },
-            onExtensions: function(code, callback) {
+            onExtensions: function (code, callback) {
                 _.each(this.extensions, _.bind(function (extension) {
                     this.listenTo(extension, code, callback);
                 }, this));

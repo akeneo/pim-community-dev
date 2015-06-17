@@ -44,10 +44,11 @@ define(
                 }
             },
             updateModel: function () {
+                var data;
                 if (this.attribute.wysiwyg_enabled) {
-                    var data = this.$('.field-input:first textarea:first').code();
+                    data = this.$('.field-input:first textarea:first').code();
                 } else {
-                    var data = this.$('.field-input:first textarea:first').val();
+                    data = this.$('.field-input:first textarea:first').val();
                 }
                 data = '' === data ? this.attribute.empty_value : data;
 

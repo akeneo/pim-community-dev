@@ -9,6 +9,7 @@
  */
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'pim/form',
@@ -18,7 +19,7 @@ define(
         'pim/product-edit-form/attributes/validation-error',
         'pim/user-context'
     ],
-    function (_, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
+    function ($, _, Backbone, BaseForm, mediator, messenger, FieldManager, ValidationError, UserContext) {
         return BaseForm.extend({
             initialize: function () {
                 mediator.off(null, null, 'context:product:form:validation');
