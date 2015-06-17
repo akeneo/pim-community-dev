@@ -12,6 +12,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,21 +55,24 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
             return 1;
         }
 
-        $generator = $this->getVariationFileGenerator();
+        $processedList = $this->getFromReferenceVariationFileGenerator()->generate($reference);
 
-        foreach ($reference->getVariations() as $variation) {
-            if (!$variation->isLocked()) {
-                try {
-                    $output->writeln($this->getGenerationMessage($asset, $variation->getChannel(), $locale));
-                    $generator->generateFromAsset($asset, $variation->getChannel(), $locale);
-                } catch (\Exception $e) {
-                    $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+        foreach ($processedList as $item) {
+            $msg = $this->getGenerationMessage($asset, $item->getItem()->getChannel(), $reference->getLocale());
 
-                    return 1;
-                }
-            } else {
-                $output->writeln($this->getSkippingMessage($asset, $variation->getChannel(), $locale));
+            switch ($item->getState()) {
+                case ProcessedItem::STATE_ERROR:
+                    $msg = sprintf('<error>%s\n%s</error>', $msg, $item->getReason());
+                    break;
+                case ProcessedItem::STATE_SKIPPED:
+                    $msg = sprintf('%s <comment>Skipped (%s)</comment>', $msg, $item->getReason());
+                    break;
+                default:
+                    $msg = sprintf('%s <info>Done!</info>', $msg);
+                    break;
             }
+
+            $output->writeln($msg);
         }
 
         $output->writeln('<info>Done!</info>');
@@ -100,5 +104,15 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
         }
 
         return $reference;
+    }
+
+    /**
+     * TODO: interface here
+     *
+     * @return \PimEnterprise\Component\ProductAsset\FromReferenceVariationFilesGenerator
+     */
+    protected function getFromReferenceVariationFileGenerator()
+    {
+        return $this->getContainer()->get('pimee_product_asset.from_reference_variation_files_generator');
     }
 }

@@ -14,6 +14,8 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -36,7 +38,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
-        $msg = sprintf('Generation variation file for asset "%s"', $asset->getCode());
+        $msg = sprintf('Variation for asset "%s"', $asset->getCode());
 
         if (null !== $locale) {
             $msg .= sprintf(', channel "%s" and locale "%s"...', $channel->getCode(), $locale->getCode());
@@ -46,33 +48,6 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
 
         return $msg;
     }
-
-    /**
-     * @param AssetInterface   $asset
-     * @param ChannelInterface $channel
-     * @param LocaleInterface  $locale
-     *
-     * @return string
-     */
-    protected function getSkippingMessage(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    ) {
-        $msg = sprintf('Variation for asset "%s"', $asset->getCode());
-
-        if (null !== $locale) {
-            $msg .= sprintf(', channel "%s" and locale "%s"', $channel->getCode(), $locale->getCode());
-        } else {
-            $msg .= sprintf(' and channel "%s"', $channel->getCode());
-        }
-
-        $msg .= ' is locked. Skipping...';
-
-        return $msg;
-    }
-
-
 
     /**
      * @param $assetCode
@@ -104,6 +79,55 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
         return $locale;
     }
 
+    /**
+     * @param AssetInterface  $asset
+     * @param LocaleInterface $locale
+     *
+     * @throws \LogicException
+     *
+     * @return ReferenceInterface
+     */
+    protected function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
+    {
+        if (null === $reference = $asset->getReference($locale)) {
+            if (null === $locale) {
+                $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
+            } else {
+                $msg = sprintf(
+                    'The asset "%s" has no reference for the locale "%s".',
+                    $asset->getCode(),
+                    $locale->getCode()
+                );
+            }
+
+            throw new \LogicException($msg);
+        }
+
+        return $reference;
+    }
+
+    /**
+     * @param ReferenceInterface $reference
+     * @param ChannelInterface   $channel
+     *
+     * @return VariationInterface
+     *
+     * @throws \LogicException
+     */
+    protected function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel)
+    {
+        if (null === $variation = $reference->getVariation($channel)) {
+            throw new \LogicException(
+                sprintf(
+                    'The reference "%s" has no variation for the channel "%s".',
+                    $reference->getId(),
+                    $channel->getCode()
+                )
+            );
+        }
+
+        return $variation;
+    }
 
     /**
      * @return VariationFileGeneratorInterface

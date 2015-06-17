@@ -20,9 +20,7 @@ use League\Flysystem\MountManager;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Builder\MetadataBuilderRegistry;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ChannelConfigurationRepositoryInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -65,9 +63,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /** @var MetadataBuilderRegistry */
     protected $metadaBuilderRegistry;
 
-    /** @var array */
-    protected $rawTransformations;
-
     /** @var string */
     protected $filesystemAlias;
 
@@ -104,43 +99,41 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->filesystemAlias         = $filesystemAlias;
     }
 
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function generateFromAsset(
+//        AssetInterface $asset,
+//        ChannelInterface $channel,
+//        LocaleInterface $locale = null
+//    ) {
+//        $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+//
+//        $reference      = $this->retrieveReference($asset, $locale);
+//        $variation      = $this->retrieveVariation($reference, $channel);
+//        $referenceFile  = $this->retrieveSourceFile($reference);
+//        $outputFileName = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
+//
+//        $this->generate($variation, $channel, $outputFileName);
+//    }
+
     /**
      * {@inheritdoc}
      */
-    public function generateFromAsset(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
+    public function generate(
+        VariationInterface $variation
     ) {
-        $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+        $locale             = $variation->getReference()->getLocale();
+        $channel            = $variation->getChannel();
+        $rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
+        $sourceFile         = $this->retrieveSourceFile($variation);
+        $outputFilename     = $this->buildVariationOutputFilename($sourceFile, $channel, $locale);
 
-        $reference      = $this->retrieveReference($asset, $locale);
-        $variation      = $this->retrieveVariation($reference, $channel);
-        $referenceFile  = $this->retrieveReferenceFile($reference);
-        $outputFileName = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
-
-        $this->generateFromFile($referenceFile, $variation, $channel, $outputFileName);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function generateFromFile(
-        FileInterface $sourceFile,
-        VariationInterface $variation,
-        ChannelInterface $channel,
-        $outputFilename,
-        $setVariationToLocked = false
-    ) {
-        if (null === $this->rawTransformations) {
-            $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
-        }
-
-        $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
-        $sourceFileInfo    = $this->rawFileFetcher->fetch($sourceFile, $storageFilesystem);
-        $variationFileInfo = $this->fileTransformer->transform(
+        $storageFilesystem  = $this->mountManager->getFilesystem($this->filesystemAlias);
+        $sourceFileInfo     = $this->rawFileFetcher->fetch($sourceFile, $storageFilesystem);
+        $variationFileInfo  = $this->fileTransformer->transform(
             $sourceFileInfo,
-            $this->rawTransformations,
+            $rawTransformations,
             $outputFilename
         );
         $variationMetadata = $this->extractMetadata($variationFileInfo);
@@ -151,37 +144,9 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
 
         $variation->setSourceFile($sourceFile);
         $variation->setFile($variationFile);
-        $variation->setLocked($setVariationToLocked);
         $this->variationSaver->save($variation, ['flush_only_object' => true]);
 
         $this->deleteFile($sourceFileInfo);
-    }
-
-    /**
-     * @param AssetInterface  $asset
-     * @param LocaleInterface $locale
-     *
-     * @throws \LogicException
-     *
-     * @return ReferenceInterface
-     */
-    protected function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
-    {
-        if (null === $reference = $asset->getReference($locale)) {
-            if (null === $locale) {
-                $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
-            } else {
-                $msg = sprintf(
-                    'The asset "%s" has no reference for the locale "%s".',
-                    $asset->getCode(),
-                    $locale->getCode()
-                );
-            }
-
-            throw new \LogicException($msg);
-        }
-
-        return $reference;
     }
 
     /**
@@ -206,56 +171,33 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
+     * Retrieve the source file of the variation and checks it's really present on the STORAGE virtual filesystem
      *
-     * @return VariationInterface
-     *
-     * @throws \LogicException
-     */
-    protected function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel)
-    {
-        if (null === $variation = $reference->getVariation($channel)) {
-            throw new \LogicException(
-                sprintf(
-                    'The reference "%s" has no variation for the channel "%s".',
-                    $reference->getId(),
-                    $channel->getCode()
-                )
-            );
-        }
-
-        return $variation;
-    }
-
-    /**
-     * Retrieve the reference file and checks it's really present on the STORAGE virtual filesystem
-     *
-     * @param ReferenceInterface $reference
+     * @param VariationInterface $variation
      *
      * @return FileInterface
      *
      * @throws \LogicException
      */
-    protected function retrieveReferenceFile(ReferenceInterface $reference)
+    protected function retrieveSourceFile(VariationInterface $variation)
     {
-        if (null === $referenceFile = $reference->getFile()) {
-            throw new \LogicException(sprintf('The reference "%s" has no file.', $reference->getId()));
+        if (null === $sourceFile = $variation->getSourceFile()) {
+            throw new \LogicException(sprintf('The variation "%s" has no source file.', $variation->getId()));
         }
 
         $storageFilesystem = $this->mountManager->getFilesystem($this->filesystemAlias);
 
-        if (!$storageFilesystem->has($referenceFile->getKey())) {
+        if (!$storageFilesystem->has($sourceFile->getKey())) {
             throw new \LogicException(
                 sprintf(
                     'The reference file "%s" is not present on the filesystem "%s".',
-                    $referenceFile->getKey(),
+                    $sourceFile->getKey(),
                     $this->filesystemAlias
                 )
             );
         }
 
-        return $referenceFile;
+        return $sourceFile;
     }
 
     /**

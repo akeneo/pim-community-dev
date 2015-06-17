@@ -50,6 +50,9 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
                 $this->retrieveLocale($localeCode);
             }
 
+            $reference = $this->retrieveReference($asset, $locale);
+            $variation = $this->retrieveVariation($reference, $channel);
+
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
@@ -60,7 +63,7 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
         $output->writeln($this->getGenerationMessage($asset, $channel, $locale));
 
         try {
-            $generator->generateFromAsset($asset, $channel, $locale);
+            $generator->generate($variation);
         } catch (\Exception $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 

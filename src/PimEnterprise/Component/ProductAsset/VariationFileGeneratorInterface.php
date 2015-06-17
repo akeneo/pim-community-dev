@@ -11,10 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
@@ -29,32 +25,7 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 interface VariationFileGeneratorInterface
 {
     /**
-     * Generate the variation files from an asset.
-     *
-     * @param AssetInterface $asset
-     * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
-     *
-     * @throws \LogicException
-     */
-    public function generateFromAsset(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    );
-
-    /**
-     * @param FileInterface      $file
      * @param VariationInterface $variation
-     * @param ChannelInterface   $channel
-     * @param string             $outputFilename
-     * @param bool               $setVariationToLocked
      */
-    public function generateFromFile(
-        FileInterface $file,
-        VariationInterface $variation,
-        ChannelInterface $channel,
-        $outputFilename,
-        $setVariationToLocked = false
-    );
+    public function generate(VariationInterface $variation);
 }

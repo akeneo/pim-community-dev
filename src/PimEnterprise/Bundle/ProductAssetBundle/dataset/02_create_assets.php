@@ -53,8 +53,10 @@ function truncateTables()
     $helper->truncateTable('pimee_product_asset_file_metadata');
 }
 
-function generateEmptyVariationsForReference(\PimEnterprise\Component\ProductAsset\Model\Reference $reference)
-{
+function generateEmptyVariationsForReference(
+    \PimEnterprise\Component\ProductAsset\Model\Reference $reference,
+    \Akeneo\Component\FileStorage\Model\FileInterface $referenceFile
+) {
     global $helper;
 
     $channels = $helper->getChannelRepository()->findAll();
@@ -74,6 +76,7 @@ function generateEmptyVariationsForReference(\PimEnterprise\Component\ProductAss
             $var = new \PimEnterprise\Component\ProductAsset\Model\Variation();
             $var->setReference($reference);
             $var->setChannel($channel);
+            $var->setSourceFile($referenceFile);
         }
     }
 }
@@ -97,7 +100,7 @@ function addReferenceToAsset(
     $ref->setFile($file);
     $ref->setAsset($asset);
 
-    generateEmptyVariationsForReference($ref);
+    generateEmptyVariationsForReference($ref, $file);
 }
 
 function createNewAsset($code)
