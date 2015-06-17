@@ -4,10 +4,13 @@ parameters:
     pim_catalog.entity.association.class:                 Pim\Bundle\CatalogBundle\Model\Association
     pim_catalog.entity.completeness.class:                Pim\Bundle\CatalogBundle\Model\Completeness
     pim_catalog.entity.association_type.class:            Pim\Bundle\CatalogBundle\Entity\AssociationType
+    pim_catalog.entity.association_type_translation.class: Pim\Bundle\CatalogBundle\Entity\AssociationTypeTranslation
     pim_catalog.entity.category.class:                    Pim\Bundle\CatalogBundle\Entity\Category
     pim_catalog.entity.category_translation.class:        Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
     pim_catalog.entity.group.class:                       Pim\Bundle\CatalogBundle\Entity\Group
+    pim_catalog.entity.group_translation.class:           Pim\Bundle\CatalogBundle\Entity\GroupTranslation
     pim_catalog.entity.group_type.class:                  Pim\Bundle\CatalogBundle\Entity\GroupType
+    pim_catalog.entity.group_type_translation.class:      Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation
     pim_catalog.entity.attribute.class:                   Pim\Bundle\CatalogBundle\Entity\Attribute
     pim_catalog.entity.attribute_translation.class:       Pim\Bundle\CatalogBundle\Entity\AttributeTranslation
     pim_catalog.entity.attribute_group.class:             Pim\Bundle\CatalogBundle\Entity\AttributeGroup
