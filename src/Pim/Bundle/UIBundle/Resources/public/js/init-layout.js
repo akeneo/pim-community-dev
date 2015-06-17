@@ -1,7 +1,3 @@
-/*jshint browser: true*/
-/*jslint browser: true, nomen: true, vars: true*/
-/*global require*/
-
 require(['oro/mediator'], function (mediator) {
     'use strict';
     mediator.once('tab:changed', function () {
@@ -36,7 +32,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
          * Oro Dropdown close prevent
          * ============================================================ */
         var dropdownToggles = $('.oro-dropdown-toggle');
-        dropdownToggles.click(function (e) {
+        dropdownToggles.click(function () {
             var $parent = $(this).parent().toggleClass('open');
             if ($parent.hasClass('open')) {
                 $parent.find('input[type=text]').first().focus().select();
@@ -44,8 +40,8 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
         });
 
         $('html').click(function (e) {
-            var $target = $(e.target),
-                clickingTarget = null;
+            var $target = $(e.target);
+            var clickingTarget = null;
             if ($target.hasClass('dropdown') || $target.hasClass('oro-drop')) {
                 clickingTarget = $target;
             } else {
@@ -64,7 +60,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
     /**
      * Init page layout js and hide progress bar after hash navigation request is completed
      */
-    mediator.bind("hash_navigation_request:complete", function () {
+    mediator.bind('hash_navigation_request:complete', function () {
         layout.hideProgressBar();
         layout.init();
     });
@@ -74,9 +70,9 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
      * ============================================================ */
     (function () {
         /* dynamic height for central column */
-        var debugBar = $('.sf-toolbar'),
-            anchor = $('#bottom-anchor'),
-            content = false;
+        var debugBar = $('.sf-toolbar');
+        var anchor = $('#bottom-anchor');
+        var content = false;
 
         var initializeContent = function () {
             if (!content) {
@@ -88,8 +84,8 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
         var adjustHeight = function () {
             initializeContent();
 
-            var debugBarHeight = debugBar.length && debugBar.is(':visible') ? debugBar.height() : 0,
-                anchorTop = anchor.position().top;
+            var debugBarHeight = debugBar.length && debugBar.is(':visible') ? debugBar.height() : 0;
+            var anchorTop = anchor.position().top;
 
             $(content.get().reverse()).each(function (pos, el) {
                 el = $(el);
@@ -126,7 +122,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                 .appendTo($(document.body));
         }
 
-        mediator.once("page-rendered", function () {
+        mediator.once('page-rendered', function () {
             if (debugBar.length) {
                 waitForDebugBar();
             } else {
@@ -136,7 +132,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
 
         $(window).on('resize', adjustHeight);
 
-        mediator.bind("hash_navigation_request:complete", adjustReloaded);
+        mediator.bind('hash_navigation_request:complete', adjustReloaded);
     }());
 
     /* ============================================================
@@ -152,10 +148,10 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
      * from remove.confirm.js
      * ============================================================ */
     $(function () {
-        $(document).on('click', '.remove-button', function (e) {
-            var confirm,
-                el = $(this),
-                message = el.data('message');
+        $(document).on('click', '.remove-button', function () {
+            var confirm;
+            var el = $(this);
+            var message = el.data('message');
 
             confirm = new DeleteConfirmation({
                 content: message
@@ -170,9 +166,13 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                 $.ajax({
                     url: el.data('url'),
                     type: 'DELETE',
-                    success: function (data) {
+                    success: function () {
                         el.trigger('removesuccess');
-                        messenger.addMessage('success', el.data('success-message'), {'hashNavEnabled': Navigation.isEnabled()});
+                        messenger.addMessage(
+                            'success',
+                            el.data('success-message'),
+                            {'hashNavEnabled': Navigation.isEnabled()}
+                        );
                         if (el.data('redirect')) {
                             $.isActive(true);
                             if (navigation) {
@@ -191,7 +191,8 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
 
                         messenger.notificationMessage(
                             'error',
-                            el.data('error-message') ||  __('Unexpected error occured. Please contact system administrator.')
+                            el.data('error-message') ||
+                                __('Unexpected error occured. Please contact system administrator.')
                         );
                     }
                 });

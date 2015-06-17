@@ -93,7 +93,7 @@ define(
                     return zone.dataset.dropZone;
                 });
 
-                this.zones['self'] = this.el;
+                this.zones.self = this.el;
             },
             getZone: function (code) {
                 if (!(code in this.zones)) {
