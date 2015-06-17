@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 class ApproveTasklet extends AbstractReviewTasklet
 {
+    const TASKLET_NAME = 'approve';
+
     /**
      * {@inheritdoc}
      */
@@ -24,17 +26,17 @@ class ApproveTasklet extends AbstractReviewTasklet
         $productDrafts = $this->productDraftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             if (ProductDraft::READY !== $productDraft->getStatus()) {
-                $this->skipWithWarning($this->stepExecution, 'draft_not_ready', [], $productDraft);
+                $this->skipWithWarning($this->stepExecution, self::TASKLET_NAME, 'draft_not_ready', [], $productDraft);
                 continue;
             }
 
             if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
-                $this->skipWithWarning($this->stepExecution, 'not_product_owner', [], $productDraft);
+                $this->skipWithWarning($this->stepExecution, self::TASKLET_NAME, 'not_product_owner', [], $productDraft);
                 continue;
             }
 
             if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
-                $this->skipWithWarning($this->stepExecution, 'cannot_edit_attributes', [], $productDraft);
+                $this->skipWithWarning($this->stepExecution, self::TASKLET_NAME, 'cannot_edit_attributes', [], $productDraft);
                 continue;
             }
 
@@ -44,6 +46,7 @@ class ApproveTasklet extends AbstractReviewTasklet
             } catch (ValidatorException $e) {
                 $this->skipWithWarning(
                     $this->stepExecution,
+                    self::TASKLET_NAME,
                     'invalid_draft',
                     ['%error%' => $e->getMessage()],
                     $productDraft

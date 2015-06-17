@@ -75,11 +75,11 @@ abstract class AbstractReviewTasklet implements TaskletInterface
      * @param string        $reason
      * @param mixed         $item
      */
-    protected function skipWithWarning(StepExecution $stepExecution, $reason, array $reasonParameters, $item)
+    protected function skipWithWarning(StepExecution $stepExecution, $name, $reason, array $reasonParameters, $item)
     {
         $stepExecution->incrementSummaryInfo('skipped');
         $stepExecution->addWarning(
-            'mass_review',
+            $name,
             'pimee_workflow.mass_review_action.error.' . $reason,
             $reasonParameters,
             $item

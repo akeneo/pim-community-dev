@@ -13,6 +13,8 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 class RefuseTasklet extends AbstractReviewTasklet
 {
+    const TASKLET_NAME = 'refuse';
+
     /**
      * {@inheritdoc}
      */
@@ -23,12 +25,24 @@ class RefuseTasklet extends AbstractReviewTasklet
         $productDrafts = $this->productDraftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
-                $this->skipWithWarning($this->stepExecution, 'not_product_owner', [], $productDraft);
+                $this->skipWithWarning(
+                    $this->stepExecution,
+                    self::TASKLET_NAME,
+                    'not_product_owner',
+                    [],
+                    $productDraft
+                );
                 continue;
             }
 
             if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
-                $this->skipWithWarning($this->stepExecution, 'cannot_edit_attributes', [], $productDraft);
+                $this->skipWithWarning(
+                    $this->stepExecution,
+                    self::TASKLET_NAME,
+                    'cannot_edit_attributes',
+                    [],
+                    $productDraft
+                );
                 continue;
             }
 
