@@ -13,8 +13,7 @@ services:
     pimee_datagrid.datagrid.proposal.grid_helper:
         class: %pimee_datagrid.datagrid.proposal.grid_helper.class%
         arguments:
-            - '@oro_user.manager'
-            - '@security.context'
+            - '@pimee_workflow.repository.product_draft'
 
     pimee_datagrid.datagrid.published_product.grid_helper:
         class: %pimee_datagrid.datagrid.published_product.grid_helper.class%

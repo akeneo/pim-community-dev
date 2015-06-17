@@ -1,116 +1,26 @@
 AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue:
     type: entity
-    table: acme_workflow_published_product_value
+    table: pim_workflow_published_product_value
     changeTrackingPolicy: DEFERRED_EXPLICIT
-    indexes:
-        value_idx:
-            columns:
-                - attribute_id
-                - locale_code
-                - scope_code
-        varchar_idx:
-            columns:
-                - value_string
-        integer_idx:
-            columns:
-                - value_integer
     fields:
-        id:
-            type: integer
-            id: true
-            generator:
-                strategy: AUTO
-        varchar:
+        myNewField:
             type: string
             length: 255
             nullable: true
-            column: value_string
-        integer:
-            type: integer
-            nullable: true
-            column: value_integer
-        decimal:
-            type: float
-            nullable: true
-            column: value_decimal
-        boolean:
-            type: boolean
-            nullable: true
-            column: value_boolean
-        text:
-            type: text
-            nullable: true
-            column: value_text
-        date:
-            type: date
-            nullable: true
-            column: value_date
-        datetime:
-            type: datetime
-            nullable: true
-            column: value_datetime
-        locale:
-            type: string
-            length: 20
-            nullable: true
-            column: locale_code
-        scope:
-            type: string
-            length: 100
-            nullable: true
-            column: scope_code
+            column: my_new_field
     manyToOne:
-        attribute:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\AttributeInterface
-            joinColumns:
-                attribute_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-                    nullable: false
-        option:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
-            cascade:
-                - persist
-                - refresh
-            joinColumns:
-                option_id:
-                    referencedColumnName: id
-                    onDelete: 'SET NULL'
-        entity:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
-            inversedBy: values
-            joinColumns:
-                entity_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
         color:
             targetEntity: Acme\Bundle\AppBundle\Entity\Color
             joinColumn:
                 name: color_id
                 referencedColumnName: id
     manyToMany:
-        options:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
-            cascade:
-                - refresh
-            joinTable:
-                name: acme_workflow_published_product_value_option
-                joinColumns:
-                    value_id:
-                        referencedColumnName: id
-                        nullable: true
-                        onDelete: CASCADE
-                inverseJoinColumns:
-                    option_id:
-                        referencedColumnName: id
-                        nullable: true
-                        onDelete: CASCADE
         fabrics:
             targetEntity: Acme\Bundle\AppBundle\Entity\Fabric
             cascade:
                 - refresh
             joinTable:
-                name: acme_published_catalog_product_value_fabric
+                name: pim_published_catalog_product_value_fabric
                 joinColumns:
                     value_id:
                         referencedColumnName: id
@@ -120,36 +30,3 @@ AcmeEnterprise\Bundle\AppBundle\Model\PublishedProductValue:
                     fabric_id:
                         referencedColumnName: id
                         nullable: false
-    oneToOne:
-        media:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-            inversedBy: value
-            joinColumns:
-                media_id:
-                    referencedColumnName: id
-                    onDelete: CASCADE
-        metric:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-            joinColumns:
-                metric_id:
-                    referencedColumnName: id
-                    onDelete: 'SET NULL'
-    oneToMany:
-        prices:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface
-            cascade:
-                - remove
-                - persist
-                - refresh
-            mappedBy: value
-            indexBy: currency
-            orderBy:
-                currency: ASC
