@@ -148,6 +148,8 @@ class Form extends Base
         } else {
             $groups->clickLink($group);
         }
+
+        return true;
     }
 
     public function selectAssociation($assocation)
