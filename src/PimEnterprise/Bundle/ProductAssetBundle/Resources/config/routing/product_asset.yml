@@ -14,6 +14,13 @@ pimee_product_asset_edit:
     requirements:
         id: '[0-9a-f]+'
 
+pimee_product_asset_update:
+    path: /{id}/update
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:updateAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [POST]
+
 pimee_product_asset_upload_reference:
     path: /{assetId}/uploadReference/{id}
     defaults: { _controller: pimee_product_asset.controller.produt_asset:uploadReferenceAction }

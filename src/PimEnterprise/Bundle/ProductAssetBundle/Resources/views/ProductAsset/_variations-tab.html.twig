@@ -1,25 +1,25 @@
 <div class="tab-pane" id="variations">
-    {% for attachment in attachments %}
-        <div class="row-fluid variations">
+    {#{% for attachment in attachments %}#}
+        {#<div class="row-fluid variations">#}
 
-            <h3>
-                {% if attachment.reference.locale %}
-                    {{ attachment.reference.locale.code|flag }}
-                {% endif %}
-            </h3>
+            {#<h3>#}
+                {#{% if attachment.reference.locale %}#}
+                    {#{{ attachment.reference.locale.code|flag }}#}
+                {#{% endif %}#}
+            {#</h3>#}
 
-            <ul>
-                <li>
-                    {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference.html.twig' %}
-                </li>
+            {#<ul>#}
+                {#<li>#}
+                    {#{% include 'PimEnterpriseProductAssetBundle:ProductAsset:_reference.html.twig' %}#}
+                {#</li>#}
 
-                {% for variation in attachment.variations %}
-                    <li>
-                        {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation.html.twig' %}
-                    </li>
-                {% endfor %}
-            </ul>
+                {#{% for variation in attachment.variations %}#}
+                    {#<li>#}
+                        {#{% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation.html.twig' %}#}
+                    {#</li>#}
+                {#{% endfor %}#}
+            {#</ul>#}
 
-        </div>
-    {% endfor %}
+        {#</div>#}
+    {#{% endfor %}#}
 </div>

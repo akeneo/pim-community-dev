@@ -14,13 +14,12 @@
 {% block content %}
 
     {{ form_start(form, {
-        'action': path('pimee_product_asset_edit', { id: asset.id }),
+        'action': path('pimee_product_asset_update', { id: asset.id }),
         'class': 'product-asset-edit'
     }
     ) }}
 
     {% set title = 'pimee_product_asset.enrich_asset.view.title'|trans %}
-    {# Copy dataset/stored and dataset/thumbnail folder in web/ for the demo #}
 
     {% set buttons %}
         {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_buttons.html.twig' %}
@@ -48,7 +47,7 @@
 
                 {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_global-settings-tab.html.twig' %}
 
-                {#{% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variations-tab.html.twig' %}#}
+                {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variations-tab.html.twig' %}
 
             </div>
 

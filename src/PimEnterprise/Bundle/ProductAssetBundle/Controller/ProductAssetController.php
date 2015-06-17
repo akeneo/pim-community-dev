@@ -12,12 +12,13 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
-use PimEnterprise\Bundle\ProductAssetBundle\Form\AssetType;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
@@ -29,7 +30,10 @@ use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -60,17 +64,18 @@ class ProductAssetController extends Controller
     /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
-    /** @var Form */
-    protected $assetForm;
+    /** @var SaverInterface */
+    protected $assetSaver;
 
     /**
-     * @param AssetRepositoryInterface          $assetRepository
-     * @param ReferenceRepositoryInterface      $referenceRepository
-     * @param VariationRepositoryInterface      $variationRepository
-     * @param FileMetadataRepositoryInterface   $metadataRepository
-     * @param ChannelRepositoryInterface        $channelRepository
-     * @param RawFileStorerInterface            $rawFileStorer
-     * @param VariationFileGeneratorInterface   $variationFileGenerator
+     * @param AssetRepositoryInterface        $assetRepository
+     * @param ReferenceRepositoryInterface    $referenceRepository
+     * @param VariationRepositoryInterface    $variationRepository
+     * @param FileMetadataRepositoryInterface $metadataRepository
+     * @param ChannelRepositoryInterface      $channelRepository
+     * @param RawFileStorerInterface          $rawFileStorer
+     * @param VariationFileGeneratorInterface $variationFileGenerator
+     * @param SaverInterface                  $assetSaver
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -80,7 +85,7 @@ class ProductAssetController extends Controller
         ChannelRepositoryInterface $channelRepository,
         RawFileStorerInterface $rawFileStorer,
         VariationFileGeneratorInterface $variationFileGenerator,
-        Form $assetForm
+        SaverInterface $assetSaver
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -89,7 +94,7 @@ class ProductAssetController extends Controller
         $this->channelRepository      = $channelRepository;
         $this->rawFileStorer          = $rawFileStorer;
         $this->variationFileGenerator = $variationFileGenerator;
-        $this->assetForm              = $assetForm;
+        $this->assetSaver             = $assetSaver;
     }
 
     /**
@@ -164,31 +169,127 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-//        $this->assetForm->setData(new AssetType());
-//        $this->assetForm->setData($productAsset);
         $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
 
+        $attachments = $this->createAttachments($productAsset);
+
         return [
-            'asset' => $productAsset,
-            'form'  => $assetForm
-//            'assetForm'   => $this->assetForm->createView(),
+            'asset'       => $productAsset,
+            'form'        => $assetForm,
+            'attachments' => $attachments
         ];
     }
 
     /**
-     * Edit an asset
+     * Update a product asset and redirect
      *
      * @param Request    $request
      * @param int|string $id
      *
-     * @Template
-     * @AclAncestor("pimee_product_asset_index")
+     * @return RedirectResponse
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+        $form = $this->createForm('pimee_product_asset', $productAsset);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            try {
+                $this->assetSaver->save($productAsset);
+                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            } catch (\Exception $e) {
+                $this->addFlash($request, 'error', $e->getMessage());
+            }
+        }
+
+        return $this->redirectAfterEdit($request, ['id' => $id]);
+    }
+
+    /**
+     * @param Request    $request
+     * @param int|string $assetId
+     * @param int|string $id
+     *
+     * @return RedirectResponse
+     */
+    public function uploadReferenceAction(Request $request, $assetId, $id)
+    {
+        $reference = $this->referenceRepository->find($id);
+
+        if ($request->isMethod('POST')) {
+            $form = $this->createUploadForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->get('file')->getData();
+                if (null !== $clientFile = $data->getFile()) {
+                    // TODO: Generate Metadata
+                    $uploadedFile = $this->rawFileStorer->store($clientFile, ProductAssetFileSystems::FS_STORAGE);
+                    $reference->setFile($uploadedFile);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($reference);
+                    $em->flush();
+                }
+            }
+        }
+
+        return $this->redirect($this->generateUrl('pimee_product_asset_edit', ['id' => $assetId]));
+    }
+
+    /**
+     * @param Request    $request
+     * @param int|string $assetId
+     * @param int|string $id
+     *
+     * @return RedirectResponse
+     */
+    public function uploadVariationAction(Request $request, $assetId, $id)
+    {
+        /** @var VariationInterface $variation */
+        $variation = $this->variationRepository->find($id);
+
+        if ($request->isMethod('POST')) {
+            $form = $this->createUploadForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->get('file')->getData();
+                if (null !== $clientFile = $data->getFile()) {
+                    $uploadedFile = $this->rawFileStorer->store($clientFile, ProductAssetFileSystems::FS_STORAGE);
+                    $variation->setFile($uploadedFile);
+                    $variation->setLocked(true);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($variation);
+                    $em->flush();
+
+                    // TODO: problem with this method is that 2 files are stored in
+                    // the VFS but only the previous one is used
+                    // maybe when we change the file of the variation, the other one should be softdeleted
+                    /*
+                    $this->launchVariationFileGeneration(
+                        $variation->getReference()->getAsset(),
+                        $variation->getChannel(),
+                        $variation->getReference()->getLocale()
+                    );
+                    */
+                }
+            }
+        }
+
+        return $this->redirect($this->generateUrl('pimee_product_asset_edit', ['id' => $assetId]));
+    }
+
+    /**
+     * TODO: Full method may be removed for the update variation card PIM-4073
+     *
+     * @param AssetInterface $productAsset
      *
      * @return array
      */
-    public function editOldAction(Request $request, $id)
+    protected function createAttachments(AssetInterface $productAsset)
     {
-        $productAsset = $this->findProductAssetOr404($id);
         $channels     = $this->channelRepository->getFullChannels();
         $references   = $productAsset->getReferences();
 
@@ -233,84 +334,49 @@ class ProductAssetController extends Controller
             }
         }
 
-        return [
-            'asset'       => $productAsset,
-            'attachments' => $attachments
-        ];
+        return $attachments;
     }
 
     /**
-     * @param Request    $request
-     * @param int|string $assetId
-     * @param int|string $id
+     * TODO: This one is only used for attachments, may be removed too
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return Form
      */
-    public function uploadReferenceAction(Request $request, $assetId, $id)
+    protected function createUploadForm()
     {
-        $reference = $this->referenceRepository->find($id);
-
-        if ($request->isMethod('POST')) {
-            $form = $this->createUploadForm();
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->get('file')->getData();
-                if (null !== $clientFile = $data->getFile()) {
-                    // TODO: Generate Metadata
-                    $uploadedFile = $this->rawFileStorer->store($clientFile, ProductAssetFileSystems::FS_STORAGE);
-                    $reference->setFile($uploadedFile);
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($reference);
-                    $em->flush();
-                }
-            }
-        }
-
-        return $this->redirect($this->generateUrl('pimee_product_asset_edit', ['id' => $assetId]));
+        return $this->createForm(new UploadType());
     }
 
     /**
-     * @param Request    $request
-     * @param int|string $assetId
-     * @param int|string $id
+     * Add flash message
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @param Request $request    the request
+     * @param string  $type       the flash type
+     * @param string  $message    the flash message
+     * @param array   $parameters the flash message parameters
      */
-    public function uploadVariationAction(Request $request, $assetId, $id)
+    protected function addFlash(Request $request, $type, $message, array $parameters = [])
     {
-        /** @var VariationInterface $variation */
-        $variation = $this->variationRepository->find($id);
+        $request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
+    }
 
-        if ($request->isMethod('POST')) {
-            $form = $this->createUploadForm();
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $data = $form->get('file')->getData();
-                if (null !== $clientFile = $data->getFile()) {
-                    $uploadedFile = $this->rawFileStorer->store($clientFile, ProductAssetFileSystems::FS_STORAGE);
-                    $variation->setFile($uploadedFile);
-                    $variation->setLocked(true);
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($variation);
-                    $em->flush();
-
-                    // TODO: problem with this method is that 2 files are stored in
-                    // the VFS but only the previous one is used
-                    // maybe when we change the file of the variation, the other one should be softdeleted
-                    /*
-                    $this->launchVariationFileGeneration(
-                        $variation->getReference()->getAsset(),
-                        $variation->getChannel(),
-                        $variation->getReference()->getLocale()
-                    );
-                    */
-                }
-            }
+    /**
+     * Switch case to redirect after saving a product asset from the edit form
+     *
+     * @param Request $request
+     * @param array   $params
+     *
+     * @return Response
+     */
+    protected function redirectAfterEdit(Request $request, array $params)
+    {
+        switch ($request->get('action')) {
+            default:
+                $route = 'pimee_product_asset_edit';
+                break;
         }
 
-        return $this->redirect($this->generateUrl('pimee_product_asset_edit', ['id' => $assetId]));
+        return $this->redirect($this->generateUrl($route, $params));
     }
 
     /**
@@ -318,9 +384,9 @@ class ProductAssetController extends Controller
      *
      * @param int|string $id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws NotFoundHttpException
      *
-     * @return \PimEnterprise\Component\ProductAsset\Model\AssetInterface
+     * @return AssetInterface
      */
     protected function findProductAssetOr404($id)
     {
@@ -333,14 +399,6 @@ class ProductAssetController extends Controller
         }
 
         return $productAsset;
-    }
-
-    /**
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createUploadForm()
-    {
-        return $this->createForm(new UploadType());
     }
 
     /**

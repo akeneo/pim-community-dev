@@ -19,6 +19,9 @@ pimee_product_asset:
             filetype: File type
             actions: Actions
             download: Download
+        flash:
+            update:
+                success: Asset has been updated
     menu: Assets
     page_tab:
         title:
