@@ -11,11 +11,15 @@ define([
     ) {
         return {
             getAttributesForProduct: function (product) {
-                return EntityManager.getRepository('family').findAll().then(function (families) {
-                    return !product.family ?
-                        _.keys(product.values) :
-                        _.union(_.keys(product.values), families[product.family].attributes);
-                });
+                if (!product.family) {
+                    return $.Deferred().resolve(_.keys(product.values));
+                } else {
+                    return EntityManager.getRepository('family')
+                        .find(product.family)
+                        .then(function (family) {
+                            return _.union(_.keys(product.values), family.attributes);
+                        });
+                }
             },
             getOptionalAttributes: function (product) {
                 return $.when(
@@ -28,13 +32,14 @@ define([
                             return _.findWhere(attributes, {code: attributeCode});
                         }
                     );
+
                     return optionalAttributes;
                 });
             },
             isOptional: function (attribute, product, families) {
-                return !product.family ? true : !_.contains(families[product.family].attributes, attribute);
+                return 'pim_catalog_identifier' !== attribute.type &&
+                    (!product.family ? true : !_.contains(families[product.family].attributes, attribute.code));
             },
-
             getValue: function (values, attribute, locale, scope) {
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;

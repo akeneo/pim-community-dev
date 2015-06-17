@@ -229,13 +229,17 @@ class WebUser extends RawMinkContext
 
     /**
      * @Given /^I open the history$/
+     *
+     * @throws ExpectationException
      */
     public function iOpenTheHistory()
     {
         $this->getCurrentPage()->openPanel('History');
-        $this->wait();
+        $expandButton = $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.expand-history');
+        });
 
-        $this->getCurrentPage()->find('css', '.expand-history')->click();
+        $expandButton->click();
         $this->wait();
     }
 
@@ -556,7 +560,7 @@ class WebUser extends RawMinkContext
         $field = $this->getCurrentPage()->findField($fieldName);
         $class = $field->getAttribute('class');
         if (strpos($class, 'select2-focusser') !== false) {
-            for ($i = 0; $i < 2; $i++) {
+            for ($i = 0; $i < 2; ++$i) {
                 if (!$field->getParent()) {
                     break;
                 }
@@ -568,7 +572,7 @@ class WebUser extends RawMinkContext
                 $actual = trim($field->find('css', '.select2-chosen')->getHtml());
             }
         } elseif (strpos($class, 'select2-input') !== false) {
-            for ($i = 0; $i < 4; $i++) {
+            for ($i = 0; $i < 4; ++$i) {
                 if (!$field->getParent()) {
                     break;
                 }
@@ -1170,7 +1174,11 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButton($button)
     {
-        $this->getCurrentPage()->pressButton($button);
+        $this->getMainContext()->spin(function () use ($button) {
+            $this->getCurrentPage()->pressButton($button);
+
+            return true;
+        });
         $this->wait();
     }
 

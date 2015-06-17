@@ -24,13 +24,11 @@ define([
             selected: false,
             events: {
                 'change .copy-field-selector': 'selectionChanged',
-                'click label': 'select'
+                'click': 'select'
             },
             initialize: function () {
                 this.selected = false;
                 this.field    = null;
-
-                return this;
             },
             render: function () {
                 this.$el.empty();
@@ -74,7 +72,9 @@ define([
                 this.selected = event.currentTarget.checked;
             },
             select: function () {
-                this.$('.copy-field-selector').click();
+                this.selected = !this.selected;
+
+                this.field.render();
             },
             setSelected: function (selected) {
                 this.selected = selected;

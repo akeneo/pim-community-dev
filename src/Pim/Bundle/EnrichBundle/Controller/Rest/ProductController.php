@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\Controller;
+namespace Pim\Bundle\EnrichBundle\Controller\Rest;
 
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -31,7 +31,7 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRestController
+class ProductController
 {
     /** @var ProductRepositoryInterface */
     protected $productRepository;
@@ -168,7 +168,7 @@ class ProductRestController
 
         $this->updateProduct($product, $data);
 
-        $violations = $this->validateProduct($product);
+        $violations = $this->validator->validate($product);
 
         if (0 === $violations->count()) {
             $this->productSaver->save($product);
@@ -290,24 +290,6 @@ class ProductRestController
                 );
             }
         }
-    }
-
-    /**
-     * Validates a product
-     *
-     * @param ProductInterface $product
-     *
-     * @return ConstraintViolationListInterface
-     */
-    protected function validateProduct(ProductInterface $product)
-    {
-        $violations = $this->validator->validate($product);
-
-        if (0 === $violations->count()) {
-            $violations = $this->validator->validate($product->getValues());
-        }
-
-        return $violations;
     }
 
     /**

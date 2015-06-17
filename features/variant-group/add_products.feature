@@ -66,7 +66,7 @@ Feature: Add products to a variant group
     And I confirm the deletion
     Then I edit the "sandal-white-37" product
     And I open the history
-    And I should see history:
+    And I should see history in panel:
       | version | author                                                            | property | value           |
       | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |

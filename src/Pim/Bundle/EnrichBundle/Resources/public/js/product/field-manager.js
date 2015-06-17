@@ -11,6 +11,7 @@ define(
     ['jquery', 'underscore', 'pim/entity-manager', 'pim/form-config-provider'],
     function ($, _, EntityManager, ConfigProvider) {
         var fields = {};
+        var visibleFields = {};
         var loadedModules = {};
         var getFieldForAttribute = function (attribute) {
             var deferred = $.Deferred();
@@ -70,8 +71,17 @@ define(
             getFields: function () {
                 return fields;
             },
-            clear: function () {
+            addVisibleField: function (attributeCode) {
+                visibleFields[attributeCode] = fields[attributeCode];
+            },
+            getVisibleField: function (attributeCode) {
+                return visibleFields[attributeCode];
+            },
+            clearFields: function () {
                 fields = {};
+            },
+            clearVisibleFields: function () {
+                visibleFields = {};
             }
         };
     }

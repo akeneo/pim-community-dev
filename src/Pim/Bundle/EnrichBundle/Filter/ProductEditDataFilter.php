@@ -42,6 +42,7 @@ class ProductEditDataFilter implements CollectionFilterInterface
      * @param SecurityFacade               $securityFacade
      * @param ObjectFilterInterface        $objectFilter
      * @param AttributeRepositoryInterface $attributeRepository
+     * @param LocaleRepositoryInterface    $localeRepository
      */
     public function __construct(
         SecurityFacade $securityFacade,
@@ -62,39 +63,28 @@ class ProductEditDataFilter implements CollectionFilterInterface
      */
     public function filterCollection($collection, $type, array $options = [])
     {
-        $filteredProductData = [];
+        $newProductData = [];
 
         foreach ($collection as $type => $data) {
             if ('values' === $type) {
-                $filteredProductData['values'] = $this->filterValuesData($data);
+                $newProductData['values'] = $this->filterValuesData($data);
             } else {
-                switch ($type) {
-                    case 'family':
-                        $acl = 'pim_enrich_product_change_family';
-                        break;
-                    case 'groups':
-                        $acl = 'pim_enrich_product_add_to_groups';
-                        break;
-                    case 'categories':
-                        $acl = 'pim_enrich_product_categories_view';
-                        break;
-                    case 'enabled':
-                        $acl = 'pim_enrich_product_change_state';
-                        break;
-                    case 'associations':
-                        $acl = 'pim_enrich_associations_view';
-                        break;
-                    default:
-                        $acl = null;
-                }
-
+                $acl = $this->getAclForType($type);
                 if (null === $acl || $this->securityFacade->isGranted($acl)) {
-                    $filteredProductData[$type] = $data;
+                    $newProductData[$type] = $data;
                 }
             }
         }
 
-        return $filteredProductData;
+        return $newProductData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsCollection($collection, $type, array $options = [])
+    {
+        return false;
     }
 
     /**
@@ -104,12 +94,12 @@ class ProductEditDataFilter implements CollectionFilterInterface
      */
     protected function filterValuesData($valuesData)
     {
-        $filteredValuesData = [];
+        $newValuesData = [];
 
         foreach ($valuesData as $attributeCode => $contextValues) {
             $attribute = $this->getAttribute($attributeCode);
             if (!$this->objectFilter->filterObject($attribute, 'pim.internal_api.attribute.edit')) {
-                $filteredContextValues = [];
+                $newContextValues = [];
 
                 foreach ($contextValues as $contextValue) {
                     if (null === $contextValue['locale'] ||
@@ -118,23 +108,47 @@ class ProductEditDataFilter implements CollectionFilterInterface
                             'pim.internal_api.locale.edit'
                         )
                     ) {
-                        $filteredContextValues[] = $contextValue;
+                        $newContextValues[] = $contextValue;
                     }
                 }
 
-                $filteredValuesData[$attributeCode] = $filteredContextValues;
+                $newValuesData[$attributeCode] = $newContextValues;
             }
         }
 
-        return array_filter($filteredValuesData);
+        return array_filter($newValuesData);
     }
 
     /**
-     * {@inheritdoc}
+     * Return which ACL should be used to filter data of specified type.
+     *
+     * @param string
+     *
+     * @return string|null
      */
-    public function supportsCollection($collection, $type, array $options = [])
+    protected function getAclForType($type)
     {
-        return false;
+        switch ($type) {
+            case 'family':
+                $acl = 'pim_enrich_product_change_family';
+                break;
+            case 'groups':
+                $acl = 'pim_enrich_product_add_to_groups';
+                break;
+            case 'categories':
+                $acl = 'pim_enrich_product_categories_view';
+                break;
+            case 'enabled':
+                $acl = 'pim_enrich_product_change_state';
+                break;
+            case 'associations':
+                $acl = 'pim_enrich_associations_view';
+                break;
+            default:
+                $acl = null;
+        }
+
+        return $acl;
     }
 
     /**

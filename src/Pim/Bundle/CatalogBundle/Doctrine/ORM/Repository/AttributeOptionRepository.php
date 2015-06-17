@@ -74,17 +74,11 @@ class AttributeOptionRepository extends EntityRepository implements
             if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
                 $autoSorting = $row['properties']['autoOptionSorting'];
             }
-            if ('code' === $options['type']) {
-                $results[] = array(
-                    'id'   => $row['code'],
-                    'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
-                );
-            } else {
-                $results[] = array(
-                    'id'   => $row['id'],
-                    'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
-                );
-            }
+
+            $results[] = [
+                'id'   => (isset($options['type']) && 'code' === $options['type']) ? $row['code'] : $row['id'],
+                'text' => null !== $row['label'] ? $row['label'] : sprintf('[%s]', $row['code'])
+            ];
         }
 
         if ($autoSorting) {

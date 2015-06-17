@@ -43,6 +43,8 @@ define(
             },
             initialize: function () {
                 this.model = new Backbone.Model();
+
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
                 mediator.once('hash_navigation_request:start', function (navigation) {
@@ -98,11 +100,11 @@ define(
             getTemplateParameters: function () {
                 var deferred = $.Deferred();
 
-                var objectSet = this.model.get('objectSet');
+                var objectSet     = this.model.get('objectSet');
                 var currentObject = this.getData().meta.id;
-                var index = objectSet.indexOf(currentObject);
-                var previous = objectSet[index - 1];
-                var next = objectSet[index + 1];
+                var index         = objectSet.indexOf(currentObject);
+                var previous      = objectSet[index - 1];
+                var next          = objectSet[index + 1];
 
                 var previousObject = null;
                 var nextObject = null;

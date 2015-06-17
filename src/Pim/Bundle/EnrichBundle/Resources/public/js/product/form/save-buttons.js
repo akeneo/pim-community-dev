@@ -30,6 +30,8 @@ define(
                 });
 
                 this.listenTo(this.model, 'change', this.render);
+
+                BaseForm.prototype.initialize.apply(this, arguments);
             },
             render: function () {
                 var buttons = this.model.get('buttons');

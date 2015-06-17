@@ -52,7 +52,9 @@ define(
                 this.setCurrentValue(data);
             },
             setFocus: function () {
-                this.$('textarea').first().focus();
+                if (this.attribute.wysiwyg_enabled) {
+                    this.$('textarea:first').summernote('focus');
+                }
             }
         });
     }

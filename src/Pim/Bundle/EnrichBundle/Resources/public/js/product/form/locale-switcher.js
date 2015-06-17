@@ -23,16 +23,19 @@ define(
                 'click li a': 'changeLocale'
             },
             render: function () {
-                EntityManager.getRepository('locale').findAll().done(_.bind(function (locales) {
-                    this.$el.html(
-                        this.template({
-                            locales: locales,
-                            currentLocale: _.findWhere(locales, {code: this.getParent().getLocale()}),
-                            i18n: i18n
-                        })
-                    );
-                    this.delegateEvents();
-                }, this));
+                EntityManager.getRepository('locale')
+                    .findAll()
+                    .done(_.bind(function (locales) {
+                        this.$el.html(
+                            this.template({
+                                locales: locales,
+                                currentLocale: _.findWhere(locales, {code: this.getParent().getLocale()}),
+                                i18n: i18n
+                            })
+                        );
+                        this.delegateEvents();
+                    }, this)
+                );
 
                 return this;
             },

@@ -41,15 +41,15 @@ Feature: Edit a product
     Then I should not see "Attributes"
     And I reset the "Administrator" rights
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3615
+  @javascript @jira https://akeneo.atlassian.net/browse/PIM-3615
   Scenario: Successfully edit a product description, and have attributes set to the default scope (For Sandra => mobile and Julia => ecommerce).
     Given I am logged in as "Sandra"
     And I am on the "sandal" product page
-    And the english other_name of "sandal" should be "My awesome sandals for mobile"
+    And the english mobile other_name of "sandal" should be "My awesome sandals for mobile"
     Then I logout
     And I am logged in as "Julia"
     When I am on the "sandal" product page
-    Then the english other_name of "sandal" should be "My awesome sandals"
+    Then the english ecommerce other_name of "sandal" should be "My awesome sandals"
 
   @javascript @skip-pef
   Scenario: Successfully preserve channel filter between datagrid and edit form

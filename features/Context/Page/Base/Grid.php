@@ -968,7 +968,11 @@ class Grid extends Index
      */
     public function sequentialEdit()
     {
-        $this->pressButton('Sequential Edit');
+        $this->spin(function () {
+            $this->pressButton('Sequential Edit');
+
+            return true;
+        });
     }
 
     /**

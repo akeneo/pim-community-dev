@@ -37,7 +37,10 @@ define(
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
             configure: function () {
-                this.getRoot().addTab('categories', 'Categories');
+                this.trigger('tab:register', {
+                    code: this.code,
+                    label: _.__('pim_enrich.form.product.tab.categories.title')
+                });
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },

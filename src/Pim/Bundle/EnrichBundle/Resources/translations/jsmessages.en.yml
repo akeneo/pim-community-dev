@@ -202,16 +202,22 @@ pim_enrich:
                         show_groups: Show groups
                         number_of_associations: "{{ productCount }} products and {{ groupCount }} groups"
                 attributes:
+                    title: Attributes
                     btn:
                         add: Add
                         add_attributes: Add attributes
                     info:
                         search_attributes: Search
                         no_available_attributes: There are no more attributes to add
+                categories:
+                    title: Categories
             panel:
                 completeness:
+                    title: Completeness
                     info:
                         no_family: No family defined
+                history:
+                    title: History
             switch:
                 no: No
                 yes: Yes
