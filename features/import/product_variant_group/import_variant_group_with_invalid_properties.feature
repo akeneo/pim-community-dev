@@ -26,7 +26,7 @@ Feature: Execute an import
     Then I should see "Status: FAILED"
     And I should see:
     """
-    Field "code" is expected, provided fields are "name-en_US, axis, description-en_US-tablet, color"
+    Field "code" is expected, provided fields are "type, name-en_US, axis, description-en_US-tablet, color"
     """
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
@@ -90,7 +90,7 @@ Feature: Execute an import
     Given the following CSV file to import:
     """
     code;type;axis;label-en_US
-    NOT_VG;VARIANT;"My standard not updatable group"
+    NOT_VG;VARIANT;;"My standard not updatable group"
     """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
