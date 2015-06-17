@@ -19,6 +19,7 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType('PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator');
+        $this->shouldImplement('PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface');
     }
 
     function it_generates_the_variation_files_from_a_reference(
