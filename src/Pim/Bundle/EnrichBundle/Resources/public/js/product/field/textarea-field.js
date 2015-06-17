@@ -11,22 +11,19 @@ define(
     [
         'pim/field',
         'underscore',
-        'pim/attribute-manager',
         'text!pim/template/product/field/textarea',
         'summernote'
     ],
     function (
         Field,
         _,
-        AttributeManager,
         fieldTemplate
     ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'textarea',
             events: {
-                'change textarea': 'updateModel',
-                'blur textarea': 'updateModel'
+                'change textarea:first': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
@@ -48,11 +45,11 @@ define(
             },
             updateModel: function () {
                 if (this.attribute.wysiwyg_enabled) {
-                    var data = this.$('textarea').code();
+                    var data = this.$('textarea:first').code();
                 } else {
-                    var data = this.$('textarea:first').text();
+                    var data = this.$('textarea:first').val();
                 }
-                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+                data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
             },

@@ -11,14 +11,12 @@ define(
     [
         'pim/field',
         'underscore',
-        'pim/attribute-manager',
         'text!pim/template/product/field/date',
         'bootstrap.bootstrapsdatepicker'
     ],
     function (
         Field,
         _,
-        AttributeManager,
         fieldTemplate
     ) {
         return Field.extend({
@@ -35,7 +33,7 @@ define(
             },
             updateModel: function () {
                 var data = this.$('input[type="text"]').get(0).value;
-                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+                data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
             }

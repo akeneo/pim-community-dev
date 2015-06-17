@@ -109,7 +109,7 @@ define([
                 }, this));
             },
             clearField: function () {
-                this.setCurrentValue(AttributeManager.getEmptyValue(this.attribute));
+                this.setCurrentValue(this.attribute.empty_value);
 
                 this.render();
             },

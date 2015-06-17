@@ -107,10 +107,11 @@ define(
                 return this.zones[code];
             },
             triggerExtensions: function(code) {
-                _.each(this.extensions, function (extension) {
-                    extension.trigger.apply(extension, arguments);
+                var options = Array.prototype.slice.call(arguments);
 
-                    extension.triggerExtensions.apply(extension, arguments);
+                _.each(this.extensions, function (extension) {
+                    extension.trigger.apply(extension, options);
+                    extension.triggerExtensions.apply(extension, options);
                 });
             },
             onExtensions: function(code, callback) {

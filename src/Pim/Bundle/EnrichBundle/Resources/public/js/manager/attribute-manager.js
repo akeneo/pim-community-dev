@@ -10,6 +10,12 @@ define([
         EntityManager
     ) {
         return {
+            /**
+             * Get the attributes of the given product
+             * @param  Object product
+             *
+             * @return Array
+             */
             getAttributesForProduct: function (product) {
                 if (!product.family) {
                     return $.Deferred().resolve(_.keys(product.values));
@@ -21,7 +27,14 @@ define([
                         });
                 }
             },
-            getOptionalAttributes: function (product) {
+
+            /**
+             * Get all optional attributes available for a product
+             * @param Object product
+             *
+             * @return Array
+             */
+            getAvailableOptionalAttributes: function (product) {
                 return $.when(
                     EntityManager.getRepository('attribute').findAll(),
                     this.getAttributesForProduct(product)
@@ -36,10 +49,29 @@ define([
                     return optionalAttributes;
                 });
             },
+
+            /**
+             * Check if an attribute is optional
+             * @param Object attribute
+             * @param Object product
+             * @param Array  families
+             *
+             * @return boolean
+             */
             isOptional: function (attribute, product, families) {
                 return 'pim_catalog_identifier' !== attribute.type &&
                     (!product.family ? true : !_.contains(families[product.family].attributes, attribute.code));
             },
+
+            /**
+             * Get the value in the given collection for the given lcoale and scope
+             * @param Array  values
+             * @param Object attribute
+             * @param String locale
+             * @param String scope
+             *
+             * @return {*}
+             */
             getValue: function (values, attribute, locale, scope) {
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
@@ -47,6 +79,14 @@ define([
                 return _.findWhere(values, {scope: scope, locale: locale});
             },
 
+            /**
+             * Generate a single value for the given attribute, scope and lcoale
+             * @param Object attribute
+             * @param String locale
+             * @param String scope
+             *
+             * @return {*}
+             */
             generateValue: function (attribute, locale, scope) {
                 locale = attribute.localizable ? locale : null;
                 scope  = attribute.scopable ? scope : null;
@@ -65,7 +105,8 @@ define([
              * @param locales
              * @param channels
              * @param currencies
-             * @returns {*}
+             *
+             * @return {*}
              */
             generateMissingValues: function (values, attribute, locales, channels, currencies) {
                 _.each(locales, _.bind(function (locale) {
@@ -92,6 +133,13 @@ define([
                 return values;
             },
 
+            /**
+             * Generate missing prices in the given collection for the given currencies
+             * @param Array prices
+             * @param Array currencies
+             *
+             * @return Array
+             */
             generateMissingPrices: function (prices, currencies) {
                 _.each(currencies, function (currency) {
                     var price = _.findWhere(prices, {currency: currency.code});

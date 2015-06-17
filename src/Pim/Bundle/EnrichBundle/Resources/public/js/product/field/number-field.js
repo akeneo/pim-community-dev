@@ -10,12 +10,10 @@
 define([
         'pim/field',
         'underscore',
-        'pim/attribute-manager',
         'text!pim/template/product/field/number'
     ], function (
         Field,
         _,
-        AttributeManager,
         fieldTemplate
     ) {
         return Field.extend({
@@ -37,7 +35,7 @@ define([
                         data = numericValue;
                     }
                 } else {
-                    data =  AttributeManager.getEmptyValue(this.attribute);
+                    data = this.attribute.empty_value;
                 }
 
                 this.setCurrentValue(data);

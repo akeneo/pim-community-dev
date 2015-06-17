@@ -145,9 +145,8 @@ define(
                 var product = this.getData();
 
                 promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
-                if (this.extensions['add-attribute']) {
-                    promises.push(this.extensions['add-attribute'].updateOptionalAttributes(product));
-                }
+
+                this.triggerExtensions('add-attribute:update:available-attributes');
 
                 return $.when.apply($, promises).promise();
             },
@@ -218,9 +217,7 @@ define(
                                 ),
                                 contentType: 'application/json'
                             }).then(_.bind(function () {
-                                if (this.extensions['add-attribute']) {
-                                    this.extensions['add-attribute'].updateOptionalAttributes(product);
-                                }
+                                this.triggerExtensions('add-attribute:update:available-attributes');
 
                                 delete product.values[attributeCode];
                                 delete fields[attributeCode];

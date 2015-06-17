@@ -16,10 +16,9 @@ define(
         'routing',
         'pim/attribute-option/create',
         'pim/security-context',
-        'pim/attribute-manager',
         'jquery.select2'
     ],
-    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext, AttributeManager) {
+    function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'simple-select',
@@ -92,7 +91,7 @@ define(
             },
             updateModel: function () {
                 var data = this.$('input[type="hidden"].select-field').get(0).value;
-                data = '' === data ? AttributeManager.getEmptyValue(this.attribute) : data;
+                data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
             }

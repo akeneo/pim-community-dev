@@ -28,7 +28,7 @@ define(
             state: null,
             initialize: function () {
                 this.state = new Backbone.Model({});
-                this.listenTo(this.state, 'change', this.render);
+                this.on('add-attribute:update:available-attributes', this.render);
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
@@ -39,14 +39,16 @@ define(
                 );
             },
             render: function () {
-                this.$el.empty();
-                this.$el.html(this.template({
-                    groupedAttributes: this.getGroupedAttributes(this.state.get('attributes')),
-                    locale: UserContext.get('catalogLocale')
-                }));
+                this.getAvailableAttributes().then(_.bind(function () {
+                    this.$el.empty();
+                    this.$el.html(this.template({
+                        groupedAttributes: this.getGroupedAttributes(),
+                        locale: UserContext.get('catalogLocale')
+                    }));
 
-                this.initializeSelectWidget();
-                this.delegateEvents();
+                    this.initializeSelectWidget();
+                    this.delegateEvents();
+                }, this));
 
                 return this;
             },
@@ -113,12 +115,8 @@ define(
             addAttributes: function (attributeCodes) {
                 this.trigger('add-attribute:add', {codes: attributeCodes});
             },
-            updateOptionalAttributes: function (product) {
-                return AttributeManager.getOptionalAttributes(product).then(_.bind(function (attributes) {
-                    this.state.set('attributes', attributes);
-
-                    return this.state.get('attributes');
-                }, this));
+            getAvailableAttributes: function () {
+                return AttributeManager.getAvailableOptionalAttributes(this.getData());
             },
             loadAttributeGroups: function () {
                 return EntityManager.getRepository('attributeGroup').findAll().done(_.bind(function (attributeGroups) {
