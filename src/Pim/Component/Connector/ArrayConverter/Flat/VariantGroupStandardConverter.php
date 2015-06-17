@@ -19,7 +19,7 @@ class VariantGroupStandardConverter implements StandardArrayConverterInterface
     /** @var LocaleRepositoryInterface */
     protected $localeRepository;
 
-    /** @var LocaleRepositoryInterface */
+    /** @var AttributeRepositoryInterface */
     protected $attributeRepository;
 
     /** @var ProductStandardConverter */

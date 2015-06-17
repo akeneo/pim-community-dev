@@ -69,6 +69,23 @@ connector:
                         writer:    pim_connector.writer.doctrine.variant_group
                     parameters:
                         batchSize: 1
+        csv_category_import:
+            title: pim_base_connector.jobs.csv_category_import.title
+            type:  import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_category_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_category_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_category
+                        processor: pim_connector.processor.denormalization.category.flat
+                        writer:    pim_connector.writer.doctrine.category
+                    parameters:
+                        batchSize: 1
         csv_group_import:
             title: pim_base_connector.jobs.csv_group_import.title
             type:  import
