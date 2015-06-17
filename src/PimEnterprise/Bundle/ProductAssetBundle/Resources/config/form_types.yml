@@ -1,8 +1,0 @@
-parameters:
-    pimee_product_asset.form_type.asset.class: PimEnterprise\Bundle\ProductAssetBundle\Form\AssetType
-
-services:
-    pimee_product_asset.form_type.asset:
-        class: %pimee_product_asset.form_type.asset.class%
-        tags:
-            - { name: form.type, alias: pimee_product_asset }
