@@ -23,7 +23,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'date',
             events: {
-                'change input[type="text"]:first': 'updateModel'
+                'change .field-input:first input[type="text"]': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
@@ -32,7 +32,7 @@ define(
                 this.$('.datepicker').datepicker();
             },
             updateModel: function () {
-                var data = this.$('input[type="text"]').get(0).value;
+                var data = this.$('.field-input:first input[type="text"]').get(0).value;
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);

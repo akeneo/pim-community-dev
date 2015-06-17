@@ -19,7 +19,7 @@ define([
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'price-collection',
         events: {
-            'change input[type="text"]': 'updateModel'
+            'change .field-input input[type="text"]': 'updateModel'
         },
         renderInput: function (context) {
             context.value.value = _.sortBy(context.value.value, 'currency');
@@ -28,7 +28,7 @@ define([
         },
         updateModel: function () {
             var data = [];
-            var $elements = this.$('.price-collection-field:first .price-input');
+            var $elements = this.$('.field-input .price-input');
             _.each($elements, _.bind(function (element) {
                 var $input = $(element).children('input');
 

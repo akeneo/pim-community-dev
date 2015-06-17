@@ -19,7 +19,7 @@ define([
         fieldTemplate: _.template(fieldTemplate),
         fieldType: 'metric',
         events: {
-            'change .data:first, .unit': 'updateModel'
+            'change .field-input .data, .field-input .unit': 'updateModel'
         },
         renderInput: function (context) {
             var $element = $(this.fieldTemplate(context));
@@ -41,7 +41,7 @@ define([
             this.$('.data:first').focus();
         },
         updateModel: function () {
-            var data = this.$('.data:first').val();
+            var data = this.$('.field-input .data').val();
 
             if ('' !== data) {
                 var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
@@ -51,7 +51,7 @@ define([
                 }
             }
 
-            var unit = this.$('.unit option:selected').val();
+            var unit = this.$('.field-input .unit option:selected').val();
 
             this.setCurrentValue({
                 unit: '' !== unit ? unit : this.attribute.default_metric_unit,

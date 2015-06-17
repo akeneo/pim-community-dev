@@ -23,7 +23,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'simple-select',
             events: {
-                'change input[type="hidden"].select-field:first': 'updateModel',
+                'change .field-input:first input[type="hidden"].select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
             getTemplateContext: function () {
@@ -90,7 +90,7 @@ define(
                 ).promise();
             },
             updateModel: function () {
-                var data = this.$('input[type="hidden"].select-field').get(0).value;
+                var data = this.$('.field-input:first input[type="hidden"].select-field').get(0).value;
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);

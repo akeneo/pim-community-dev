@@ -20,13 +20,13 @@ define([
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'number',
             events: {
-                'change input[type="text"]:first': 'updateModel'
+                'change .field-input input[type="text"]': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
             updateModel: function () {
-                var data = this.$('input').get(0).value;
+                var data = this.$('.field-input input[type="text"]').get(0).value;
 
                 if ('' !== data) {
                     var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);

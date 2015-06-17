@@ -23,7 +23,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'textarea',
             events: {
-                'change textarea:first': 'updateModel'
+                'change .field-input:first textarea': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
@@ -45,9 +45,9 @@ define(
             },
             updateModel: function () {
                 if (this.attribute.wysiwyg_enabled) {
-                    var data = this.$('textarea:first').code();
+                    var data = this.$('.field-input:first textarea:first').code();
                 } else {
-                    var data = this.$('textarea:first').val();
+                    var data = this.$('.field-input:first textarea:first').val();
                 }
                 data = '' === data ? this.attribute.empty_value : data;
 
@@ -55,9 +55,9 @@ define(
             },
             setFocus: function () {
                 if (this.attribute.wysiwyg_enabled) {
-                    this.$('textarea:first').summernote('focus');
+                    this.$('.field-input:first textarea').summernote('focus');
                 } else {
-                    this.$('textarea:first').focus();
+                    this.$('.field-input:first textarea').focus();
                 }
             }
         });

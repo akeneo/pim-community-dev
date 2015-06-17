@@ -39,10 +39,10 @@ define(
                 );
             },
             render: function () {
-                this.getAvailableAttributes().then(_.bind(function () {
+                this.getAvailableAttributes().then(_.bind(function (attributes) {
                     this.$el.empty();
                     this.$el.html(this.template({
-                        groupedAttributes: this.getGroupedAttributes(),
+                        groupedAttributes: this.getGroupedAttributes(attributes),
                         locale: UserContext.get('catalogLocale')
                     }));
 

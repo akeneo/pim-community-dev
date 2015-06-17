@@ -23,7 +23,7 @@ define(
             fieldTemplate: _.template(fieldTemplate),
             fieldType: 'multi-select',
             events: {
-                'change input.select-field': 'updateModel',
+                'change .field-input input.select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'
             },
             getTemplateContext: function () {
@@ -90,7 +90,7 @@ define(
                 ).promise();
             },
             updateModel: function () {
-                var data = this.$('input.select-field').get(0).value.split(',');
+                var data = this.$('.field-input input.select-field').get(0).value.split(',');
                 if (1 === data.length && '' === data[0]) {
                     data = [];
                 }
