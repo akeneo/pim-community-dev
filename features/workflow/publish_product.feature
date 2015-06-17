@@ -92,7 +92,7 @@ Feature: Publish a product
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
 
-  @javascript
+  @skip-pef @javascript
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following product:
       | sku       | family  | name-en_US |

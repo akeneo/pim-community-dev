@@ -116,6 +116,7 @@ Feature: Ensure that a published product is safe
     When I save the attribute
     Then the Options section should contain 5 options
 
+  @skip-pef
   Scenario: Successfully remove a multi-option not linked to a published product
     Given I am on the "weather_conditions" attribute page
     And I visit the "Values" tab
