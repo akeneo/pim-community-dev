@@ -48,7 +48,7 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
 
             $locale = null;
             if (null !== $localeCode = $input->getArgument('locale')) {
-                $this->retrieveLocale($localeCode);
+                $locale = $this->retrieveLocale($localeCode);
             }
 
             $reference = $this->retrieveReference($asset, $locale);
@@ -58,7 +58,7 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
             return 1;
         }
 
-        $processedList = $this->getVariationsCollectionFileGenerator()->generate($reference->getVariations());
+        $processedList = $this->getVariationsCollectionFileGenerator()->generate($reference->getVariations()->toArray());
 
         foreach ($processedList as $item) {
             $msg = $this->getGenerationMessage($asset, $item->getItem()->getChannel(), $reference->getLocale());
