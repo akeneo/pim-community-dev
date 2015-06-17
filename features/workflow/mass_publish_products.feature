@@ -45,6 +45,7 @@ Feature: Publish many products at once
     Then the grid should contain 0 elements
 
   @jira https://akeneo.atlassian.net/browse/PIM-3636
+  @skip-pef
   Scenario: Allow to mass publish two products that are associated in two ways (jackadi => unionjack, unionjack => jackadi), I should be able to publish them twice
     Given I am logged in as "Julia"
     And I edit the "unionjack" product
@@ -81,6 +82,7 @@ Feature: Publish many products at once
     And I should see product unionjack and jackadi
 
   @jira https://akeneo.atlassian.net/browse/PIM-3636
+  @skip-pef
   Scenario: Allow to mass publish two products that are associated, I should be able to publish them twice
     Given I am logged in as "Peter"
     And I edit the "unionjack" product
