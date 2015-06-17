@@ -33,23 +33,18 @@ class GroupProcessor extends AbstractProcessor
     /** @var GroupFactory */
     protected $groupFactory;
 
-    /** @var string */
-    protected $groupClass;
-
     /**
      * @param StandardArrayConverterInterface       $groupConverter
      * @param IdentifiableObjectRepositoryInterface $repository
      * @param ObjectUpdaterInterface                $groupUpdater
      * @param ValidatorInterface                    $validator
-     * @param string                                $groupClass
      */
     public function __construct(
         StandardArrayConverterInterface $groupConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $groupUpdater,
         ValidatorInterface $validator,
-        GroupFactory $groupFactory,
-        $groupClass
+        GroupFactory $groupFactory
     ) {
         parent::__construct($repository);
 
@@ -57,7 +52,6 @@ class GroupProcessor extends AbstractProcessor
         $this->groupUpdater   = $groupUpdater;
         $this->validator      = $validator;
         $this->groupFactory   = $groupFactory;
-        $this->groupClass     = $groupClass;
     }
 
     /**

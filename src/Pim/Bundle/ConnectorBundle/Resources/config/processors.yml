@@ -60,7 +60,6 @@ services:
             - '@pim_catalog.updater.variant_group'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.factory.group'
-            - %pim_catalog.entity.group.class%
 
     pim_connector.processor.denormalization.group.flat:
         class: %pim_connector.processor.denormalization.group.class%
@@ -70,4 +69,3 @@ services:
             - '@pim_catalog.updater.group'
             - '@pim_catalog.validator.product'
             - '@pim_catalog.factory.group'
-            - %pim_catalog.entity.group.class%
