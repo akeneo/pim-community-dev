@@ -44,15 +44,15 @@ class VersionNormalizer implements NormalizerInterface
     public function normalize($version, $format = null, array $context = array())
     {
         return [
-            'id'           => $version->getId(),
-            'author'       => $this->normalizeAuthor($version->getAuthor()),
-            'resource_id'  => (string) $version->getResourceId(),
-            'snapshot'     => $version->getSnapshot(),
-            'changeset'    => $version->getChangeset(),
-            'context'      => $version->getContext(),
-            'version'      => $version->getVersion(),
-            'logged_at'    => $version->getLoggedAt()->format('Y-m-d H:i:s'),
-            'pending'      => $version->isPending()
+            'id'          => $version->getId(),
+            'author'      => $this->normalizeAuthor($version->getAuthor()),
+            'resource_id' => (string) $version->getResourceId(),
+            'snapshot'    => $version->getSnapshot(),
+            'changeset'   => $version->getChangeset(),
+            'context'     => $version->getContext(),
+            'version'     => $version->getVersion(),
+            'logged_at'   => $version->getLoggedAt()->format('Y-m-d H:i:s'),
+            'pending'     => $version->isPending()
         ];
     }
 

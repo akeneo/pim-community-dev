@@ -35,6 +35,15 @@ define(
 
                 BaseForm.prototype.initialize.apply(this, arguments);
             },
+            /**
+             * {@inheritdoc}
+             */
+            configure: function () {
+                this.on('attribute-group:remove-badges', _.bind(this.removeBadges, this));
+                this.on('attribute-group:add-to-badge', _.bind(this.addToBadge, this));
+
+                return BaseForm.prototype.configure.apply(this, arguments);
+            },
             render: function () {
                 this.$el.empty();
                 this.$el.html(this.template({
@@ -83,15 +92,15 @@ define(
             getAttributeGroups: function () {
                 return this.state.get('attributeGroups');
             },
-            addToBadge: function (attributeGroup, code) {
-                if (!this.badges[attributeGroup]) {
-                    this.badges[attributeGroup] = {};
+            addToBadge: function (event) {
+                if (!this.badges[event.group]) {
+                    this.badges[event.group] = {};
                 }
-                if (!this.badges[attributeGroup][code]) {
-                    this.badges[attributeGroup][code] = 0;
+                if (!this.badges[event.group][event.code]) {
+                    this.badges[event.group][event.code] = 0;
                 }
 
-                this.badges[attributeGroup][code]++;
+                this.badges[event.group][event.code]++;
 
                 this.render();
             },

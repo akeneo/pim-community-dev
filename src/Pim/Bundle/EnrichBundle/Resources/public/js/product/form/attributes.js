@@ -51,6 +51,9 @@ define(
                 'click .remove-attribute': 'removeAttribute'
             },
             rendering: false,
+            /**
+             * {@inheritdoc}
+             */
             configure: function () {
                 this.trigger('tab:register', {
                     code: this.code,
@@ -73,6 +76,9 @@ define(
 
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
+            /**
+             * {@inheritdoc}
+             */
             render: function () {
                 if (!this.configured || this.rendering) {
                     return this;
@@ -90,7 +96,7 @@ define(
                     ).done(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
                             values,
-                            this.extensions['attribute-group-selector'].getCurrentAttributeGroup()
+                            this.extensions['pimenrich-product-attribute-group-selector'].getCurrentAttributeGroup()
                         );
 
                         var fieldPromisses = [];
@@ -118,6 +124,9 @@ define(
 
                 return this;
             },
+            /**
+             * Called to recalculate the area size
+             */
             resize: function () {
                 var productValuesContainer = this.$('.product-values');
                 if (productValuesContainer.length && this.getRoot().$el.length && productValuesContainer.offset()) {
@@ -126,6 +135,15 @@ define(
                     );
                 }
             },
+            /**
+             * Render a single field
+             * @param  Object  product
+             * @param  String  attributeCode
+             * @param  Object  values
+             * @param  Array   families
+             *
+             * @return Field
+             */
             renderField: function (product, attributeCode, values, families) {
                 return FieldManager.getField(attributeCode).then(function (field) {
                     field.setContext({
@@ -140,16 +158,25 @@ define(
                     return field;
                 });
             },
+            /**
+             * Initialize blocking elements
+             *
+             * @return Promise
+             */
             getConfig: function () {
                 var promises = [];
                 var product = this.getData();
 
-                promises.push(this.extensions['attribute-group-selector'].updateAttributeGroups(product));
+                promises.push(this.extensions['pimenrich-product-attribute-group-selector'].updateAttributeGroups(product));
 
                 this.triggerExtensions('add-attribute:update:available-attributes');
 
                 return $.when.apply($, promises).promise();
             },
+            /**
+             * Add an attribute to the entity
+             * @param Event event
+             */
             addAttributes: function (event) {
                 var attributeCodes = event.codes;
 
@@ -176,7 +203,7 @@ define(
                         }
                     });
 
-                    this.extensions['attribute-group-selector'].setCurrent(
+                    this.extensions['pimenrich-product-attribute-group-selector'].setCurrent(
                         _.findWhere(attributes, {code: _.first(attributeCodes)}).group
                     );
 
@@ -185,14 +212,16 @@ define(
                         return;
                     }
 
-                    /* jshint sub:true */
-                    /* jscs:disable requireDotNotation */
-                    this.extensions['copy'].generateCopyFields();
+                    this.triggerExtensions('comparison:update-fields');
 
                     this.setData(product);
                     this.getRoot().model.trigger('change');
                 }, this));
             },
+            /**
+             * Remove an attribute to the entity
+             * @param Event event
+             */
             removeAttribute: function (event) {
                 if (!SecurityContext.isGranted('pim_enrich_product_remove_attribute')) {
                     return;
@@ -221,9 +250,8 @@ define(
 
                                 delete product.values[attributeCode];
                                 delete fields[attributeCode];
-                                /* jshint sub:true */
-                                this.extensions['copy'].generateCopyFields();
-                                /* jscs:enable requireDotNotation */
+
+                                this.triggerExtensions('comparison:update-fields');
 
                                 this.setData(product);
 
@@ -238,21 +266,42 @@ define(
                     }, this)
                 );
             },
+            /**
+             * Set the current scope
+             * @param string scope
+             * @param Object options
+             */
             setScope: function (scope, options) {
                 UserContext.set('catalogScope', scope, options);
             },
+            /**
+             * Get the current scope
+             * @return String
+             */
             getScope: function () {
                 return UserContext.get('catalogScope');
             },
+            /**
+             * Set the current locale
+             * @param string locale
+             * @param Object options
+             */
             setLocale: function (locale, options) {
                 UserContext.set('catalogLocale', locale, options);
             },
+            /**
+             * Get the current locale
+             * @return String
+             */
             getLocale: function () {
                 return UserContext.get('catalogLocale');
             },
+            /**
+             * Called after validation error to display the badges
+             */
             postValidationError: function () {
                 this.render();
-                this.extensions['attribute-group-selector'].removeBadges();
+                this.triggerExtensions('attribute-group:remove-badges');
                 var invalidField = _.reduce(FieldManager.getFields(), function (invalidField, field) {
                     return !field.isValid() ? field : invalidField;
                 }, null);
@@ -263,12 +312,18 @@ define(
 
                 this.updateAttributeGroupBadges();
             },
+            /**
+             * Post save actions
+             */
             postSave: function () {
                 FieldManager.fields = {};
-                this.extensions['attribute-group-selector'].removeBadges();
+                this.triggerExtensions('attribute-group:remove-badges');
 
                 this.render();
             },
+            /**
+             * Update all attribute group badges
+             */
             updateAttributeGroupBadges: function () {
                 var fields = FieldManager.getFields();
 
@@ -281,7 +336,10 @@ define(
                             );
 
                             if (!field.isValid()) {
-                                this.extensions['attribute-group-selector'].addToBadge(attributeGroup, 'invalid');
+                                this.triggerExtensions('attribute-group:add-to-badge', {
+                                    group: attributeGroup,
+                                    code: 'invalid'
+                                });
                             }
                         }, this));
                     }, this));
@@ -308,8 +366,8 @@ define(
                             needRendering = true;
                         }
 
-                        if (attributeGroup !== this.extensions['attribute-group-selector'].getCurrent()) {
-                            this.extensions['attribute-group-selector'].setCurrent(attributeGroup);
+                        if (attributeGroup !== this.extensions['pimenrich-product-attribute-group-selector'].getCurrent()) {
+                            this.extensions['pimenrich-product-attribute-group-selector'].setCurrent(attributeGroup);
                             needRendering = true;
                         }
 

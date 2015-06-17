@@ -7,7 +7,7 @@
 <% } else { %>
     <div class="tabbable tabs-left">
         <div class="sidebar">
-            <ul class="nav nav-tabs" id="associations-list">
+            <ul class="nav nav-tabs tab-groups" id="associations-list">
                 <% _.each(associationTypes, function (associationType) { %>
                     <li data-association-type="<%= associationType.code %>"<% if (associationType.code === state.currentAssociationType) { %> class="active"<% } %>>
                         <a href="javascript:void(0);">
