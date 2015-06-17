@@ -102,9 +102,8 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(
-        VariationInterface $variation
-    ) {
+    public function generate(VariationInterface $variation)
+    {
         $locale             = $variation->getReference()->getLocale();
         $channel            = $variation->getChannel();
         $rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
@@ -124,7 +123,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $variationMetadata->setFile($variationFile);
         $this->metadataSaver->save($variationMetadata, ['flush_only_object' => true]);
 
-        $variation->setSourceFile($sourceFile);
         $variation->setFile($variationFile);
         $this->variationSaver->save($variation, ['flush_only_object' => true]);
 
@@ -172,7 +170,7 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         if (!$storageFilesystem->has($sourceFile->getKey())) {
             throw new \LogicException(
                 sprintf(
-                    'The reference file "%s" is not present on the filesystem "%s".',
+                    'The source file "%s" is not present on the filesystem "%s".',
                     $sourceFile->getKey(),
                     $this->filesystemAlias
                 )
@@ -183,29 +181,29 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     }
 
     /**
-     * With a file called this_is_my_reference_file.txt, it will return
-     *      this_is_my_reference_file-en_US-ecommerce.txt or
-     *      this_is_my_reference_file-ecommerce.txt
-     *
-     * @param FileInterface    $referenceFile
+     * With a file called this_is_my_source_file.txt, it will return
+     *      this_is_my_source_file-en_US-ecommerce.txt or
+     *      this_is_my_source_file-ecommerce.txt
+     * 
+     * @param FileInterface $sourceFile
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
-     *
+     * 
      * @return string
      */
     protected function buildVariationOutputFilename(
-        FileInterface $referenceFile,
+        FileInterface $sourceFile,
         ChannelInterface $channel,
         LocaleInterface $locale = null
     ) {
-        $extensionPattern = sprintf('/\.%s$/', $referenceFile->getExtension());
-        $outputFileName   = preg_replace($extensionPattern, '', $referenceFile->getOriginalFilename());
+        $extensionPattern = sprintf('/\.%s$/', $sourceFile->getExtension());
+        $outputFileName   = preg_replace($extensionPattern, '', $sourceFile->getOriginalFilename());
 
         if (null !== $locale) {
             $outputFileName = sprintf('%s-%s', $outputFileName, $locale->getCode());
         }
 
-        return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $referenceFile->getExtension());
+        return sprintf('%s-%s.%s', $outputFileName, $channel->getCode(), $sourceFile->getExtension());
     }
 
     /**
