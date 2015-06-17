@@ -1,5 +1,5 @@
 @javascript
-Feature: Filter product assets
+Feature: Sort product assets
   In order to easily manage product assets
   As a product manager
   I need to be able to sort product assets by several columns

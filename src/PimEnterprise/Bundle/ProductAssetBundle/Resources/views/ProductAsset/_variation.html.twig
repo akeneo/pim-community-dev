@@ -1,0 +1,70 @@
+<div class="row-fluid variation">
+
+    <div class="row-fluid">
+        {% if variation.entity.file %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{'pimee_product_asset.enrich_asset.view.filename'|trans}}</th>
+                    {% if 'image' in variation.entity.file.mimeType %}
+                        <th>{{'pimee_product_asset.enrich_asset.view.width'|trans}}</th>
+                        <th>{{'pimee_product_asset.enrich_asset.view.height'|trans}}</th>
+                        {#<th>{{'pimee_product_asset.enrich_asset.view.resolution'|trans}}</th>#}
+                        {#<th>{{'pimee_product_asset.enrich_asset.view.colors'|trans}}</th>#}
+                    {% endif %}
+                    <th>{{'pimee_product_asset.enrich_asset.view.filesize'|trans}}</th>
+                    <th>{{'pimee_product_asset.enrich_asset.view.filetype'|trans}}</th>
+                    <th>{{'pimee_product_asset.enrich_asset.view.actions'|trans}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{ variation.entity.file.originalFilename }}</td>
+                    {% if 'image' in variation.entity.file.mimeType %}
+                        <td>{% if variation.metadata %}{{ variation.metadata.exifSizeWidth }} px{% endif %}</td>
+                        <td>{% if variation.metadata %}{{ variation.metadata.exifSizeHeight }} px{% endif %}</td>
+                        {#<td>{% if variation.metadata %}{{ variation.metadata.exifResolution }}{% endif %}</td>#}
+                        {#<td>{% if variation.metadata %}{{ variation.metadata.exifColorSpace }}{% endif %}</td>#}
+                    {% endif %}
+                    <td>{{ variation.entity.file.size|number_format(0, '.', ' ') }} ko</td>
+                    <td>{{ variation.entity.file.mimeType }}</td>
+                    <td>
+                        <a
+                                class="btn btn-info btn-mini no-hash"
+                                download="{{ variation.entity.file.originalFilename }}"
+                                href="{{ path('pim_enrich_media_show', { 'filename': variation.entity.file.key }) }}"
+                                >
+                            {{'pimee_product_asset.enrich_asset.view.download'|trans}}
+                        </a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        {% else %}
+            <div>
+                No variation file for the channel {{ variation.entity.channel.label }}.
+            </div>
+        {% endif %}
+        {#<div class="upload{% if not variation.entity.file %}-center{% endif %}">#}
+            {#{% if variation.uploadForm is defined and variation.uploadForm is not empty %}#}
+                {#{{ form_start(variation.uploadForm, {#}
+                    {#'id': 'pimee_product_asset_upload_variation' ~ variation.entity.id,#}
+                    {#'action': path('pimee_product_asset_upload_variation', {'assetId': asset.id, 'id': variation.entity.id}),#}
+                    {#'attr': {#}
+                        {#'class': 'form-upload'#}
+                    {#}#}
+                {#}) }}#}
+
+                {#{{ elements.form_errors(variation.uploadForm) }}#}
+
+                {#<div class="row-fluid">#}
+                    {#{{ form_row(variation.uploadForm.file) }}#}
+                    {#{{ elements.submitBtn('Upload') }}#}
+                {#</div>#}
+
+                {#{{ form_end(variation.uploadForm) }}#}
+            {#{% endif %}#}
+        {#</div>#}
+    </div>
+
+</div>
