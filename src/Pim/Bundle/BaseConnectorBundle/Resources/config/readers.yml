@@ -82,6 +82,9 @@ services:
     pim_base_connector.reader.file.csv_variant_group:
         alias: pim_base_connector.reader.file.csv_product
 
+    pim_base_connector.reader.file.csv_group:
+        alias: pim_base_connector.reader.file.csv
+
     pim_base_connector.reader.file.csv_attribute_option:
         parent: pim_base_connector.reader.file.csv
         class: %pim_base_connector.reader.file.csv.class%

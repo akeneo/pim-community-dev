@@ -41,4 +41,5 @@ services:
     pim_catalog.factory.group:
         class: %pim_catalog.factory.group.class%
         arguments:
+            - '@pim_catalog.repository.group_type'
             - %pim_catalog.entity.group.class%
