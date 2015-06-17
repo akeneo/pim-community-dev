@@ -29,6 +29,7 @@ Feature: Validate textarea attributes of a product
     Then I should see validation tooltip "This value is too long. It should have 5 characters or less."
     And there should be 1 error in the "Other" tab
 
+  @unstable-app
   Scenario: Validate the max characters constraint of scopable textarea attribute
     Given I switch the scope to "ecommerce"
     And I change the Description to "information"
@@ -36,6 +37,7 @@ Feature: Validate textarea attributes of a product
     Then I should see validation tooltip "This value is too long. It should have 5 characters or less."
     And there should be 1 error in the "Other" tab
 
+  @unstable-app
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
     Given I change the Longinfo to "information"
     And I save the product
@@ -43,6 +45,7 @@ Feature: Validate textarea attributes of a product
     And there should be 1 error in the "Other" tab
 
   #To pass this scenario your navigator have to be in front (wysiwyg related)
+  @unstable-app
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
     Given I switch the scope to "ecommerce"
     And I change the Longdescription to "information"
