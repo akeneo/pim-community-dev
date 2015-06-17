@@ -99,24 +99,6 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
         $this->filesystemAlias         = $filesystemAlias;
     }
 
-//    /**
-//     * {@inheritdoc}
-//     */
-//    public function generateFromAsset(
-//        AssetInterface $asset,
-//        ChannelInterface $channel,
-//        LocaleInterface $locale = null
-//    ) {
-//        $this->rawTransformations = $this->retrieveChannelTransformationsConfiguration($channel);
-//
-//        $reference      = $this->retrieveReference($asset, $locale);
-//        $variation      = $this->retrieveVariation($reference, $channel);
-//        $referenceFile  = $this->retrieveSourceFile($reference);
-//        $outputFileName = $this->buildVariationOutputFilename($referenceFile, $channel, $locale);
-//
-//        $this->generate($variation, $channel, $outputFileName);
-//    }
-
     /**
      * {@inheritdoc}
      */

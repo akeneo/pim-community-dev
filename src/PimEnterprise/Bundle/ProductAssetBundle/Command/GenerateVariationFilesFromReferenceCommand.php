@@ -2,7 +2,9 @@
 
 /**
  * This file is part of the Akeneo PIM Enterprise Edition.
+ *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -10,6 +12,7 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use PimEnterprise\Component\ProductAsset\FromReferenceVariationFilesGeneratorInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
@@ -20,6 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Generate the variation files of a reference.
+ *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVariationFileCommand
@@ -107,9 +111,7 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
     }
 
     /**
-     * TODO: interface here
-     *
-     * @return \PimEnterprise\Component\ProductAsset\FromReferenceVariationFilesGenerator
+     * @return FromReferenceVariationFilesGeneratorInterface
      */
     protected function getFromReferenceVariationFileGenerator()
     {
