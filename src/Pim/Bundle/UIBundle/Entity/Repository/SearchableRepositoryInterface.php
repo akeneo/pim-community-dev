@@ -18,17 +18,15 @@ interface SearchableRepositoryInterface extends ObjectRepository
      *
      * The returned format must be the one expected by select2 :
      *
-     *  return array(
-     *      'results => array(
-     *          array('id' => 1, 'text' => 'Choice 1'),
-     *          array('id' => 2, 'text' => 'Choice 2'),
-     *      )
-     *  );
+     *  return [
+     *      ['id' => 1, 'text' => 'Choice 1'],
+     *      ['id' => 2, 'text' => 'Choice 2'],
+     *  ];
      *
      * @param string $search
      * @param array  $options
      *
      * @return array
      */
-    public function findBySearch($search = '', array $options = []);
+    public function findBySearch($search = null, array $options = []);
 }

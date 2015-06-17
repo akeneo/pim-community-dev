@@ -16,7 +16,7 @@ class SearchableRepository extends EntityRepository implements SearchableReposit
     /**
      * {@inheritdoc}
      */
-    public function findBySearch($search = '', array $options = [])
+    public function findBySearch($search = null, array $options = [])
     {
         if (method_exists($this, 'getAlias')) {
             $alias = $this->getAlias();
@@ -24,20 +24,11 @@ class SearchableRepository extends EntityRepository implements SearchableReposit
             $alias = 'alias';
         }
 
-        $qb = $this->createQueryBuilder($alias)
-            ->select("$alias.id, $alias.code");
+        $qb = $this->createQueryBuilder($alias);
+        $qb->select("$alias.id, $alias.code");
 
-        if ('' !== $search) {
-            $qb->where("$alias.code like :search")
-                ->setParameter('search', "%$search%");
-        }
-
-        if (isset($options['ids'])) {
-            $qb
-                ->andWhere(
-                    $qb->expr()->in("$alias.id", ':ids')
-                )
-                ->setParameter('ids', $options['ids']);
+        if (null !== $search) {
+            $qb->where("$alias.code like :search")->setParameter('search', "%$search%");
         }
 
         if (isset($options['limit'])) {
@@ -48,28 +39,13 @@ class SearchableRepository extends EntityRepository implements SearchableReposit
         }
 
         $results = [];
-        $autoSorting = null;
         foreach ($qb->getQuery()->getArrayResult() as $row) {
-            if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
-                $autoSorting = $row['properties']['autoOptionSorting'];
-            }
             $results[] = [
                 'id'   => $row['code'],
                 'text' => $row['code']
             ];
         }
 
-        if ($autoSorting) {
-            usort(
-                $results,
-                function ($first, $second) {
-                    return strcasecmp($first['text'], $second['text']);
-                }
-            );
-        }
-
-        return [
-            'results' => $results
-        ];
+        return $results;
     }
 }

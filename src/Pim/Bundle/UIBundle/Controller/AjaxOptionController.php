@@ -51,9 +51,12 @@ class AjaxOptionController
                 $query->get('options', [])
             );
         } elseif ($repository instanceof ReferenceDataRepositoryInterface) {
-            $choices['results'] = $repository->findBySearch($query->get('search'), $query->get('options', []));
+            $choices['results'] = $repository->findBySearch(
+                $query->get('search'),
+                $query->get('options', [])
+            );
         } elseif ($repository instanceof SearchableRepositoryInterface) {
-            $choices = $repository->findBySearch(
+            $choices['results'] = $repository->findBySearch(
                 $query->get('search'),
                 $query->get('options', [])
             );
