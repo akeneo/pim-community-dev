@@ -57,15 +57,15 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat.variant_group'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.variant_group'
             - '@pim_catalog.validator.product'
-            - '@pim_catalog.factory.group'
 
     pim_connector.processor.denormalization.group.flat:
         class: %pim_connector.processor.denormalization.group.class%
         arguments:
             - '@pim_connector.array_converter.flat.group'
             - '@pim_catalog.repository.group'
+            - '@pim_catalog.factory.group'
             - '@pim_catalog.updater.group'
             - '@pim_catalog.validator.product'
-            - '@pim_catalog.factory.group'
