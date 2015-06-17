@@ -1,0 +1,25 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'underscore', 'datepicker', 'tinymce'],
+        function ($, _, datepicker) {
+            'use strict';
+
+            $(function () {
+                _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
+
+                $('div.submit-form a').click(function() {
+                    var action = $(this).attr('value');
+
+                    $('#{{ form.vars.id }}').attr(
+                        'action',
+                        $('#{{ form.vars.id }}').attr('action') + "?action=" + action
+                    );
+                    tinymce.triggerSave();
+                    $('#{{ form.vars.id }}').submit();
+                });
+            });
+        }
+    );
+</script>

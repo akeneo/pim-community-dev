@@ -1,0 +1,23 @@
+parameters:
+    pimee_product_asset.form.type.asset.class:                 PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AssetType
+    pimee_product_asset.form.type.ajax_asset_tag.class:        PimEnterprise\Bundle\ProductAssetBundle\Form\Type\AjaxAssetTagType
+    pimee_product_asset.form.transformer.ajax_asset_tag.class: PimEnterprise\Bundle\ProductAssetBundle\Form\Transformer\AjaxAssetTagTransformer
+
+services:
+    pimee_product_asset.form.type.asset:
+        class: %pimee_product_asset.form.type.asset.class%
+        arguments:
+            - %pimee_product_asset.model.tag.class%
+        tags:
+            - { name: form.type, alias: pimee_product_asset }
+
+    pimee_product_asset.form.type.ajax_tag:
+        class: %pimee_product_asset.form.type.ajax_asset_tag.class%
+        arguments:
+            - '@pim_ui.form.transformer.ajax_creatable_entity.factory'
+            - '@pimee_product_asset.saver.tag'
+            - '@router'
+            - '@pim_user.context.user'
+            - %pimee_product_asset.form.transformer.ajax_asset_tag.class%
+        tags:
+            - { name: form.type, alias: pim_ajax_asset_tag }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -12,10 +12,12 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -27,7 +29,11 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
@@ -37,6 +43,9 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class ProductAssetController extends Controller
 {
+    /** @staticvar string */
+    const BACK_TO_GRID = 'BackGrid';
+
     /** @var AssetRepositoryInterface */
     protected $assetRepository;
 
@@ -58,14 +67,18 @@ class ProductAssetController extends Controller
     /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
+    /** @var SaverInterface */
+    protected $assetSaver;
+
     /**
-     * @param AssetRepositoryInterface          $assetRepository
-     * @param ReferenceRepositoryInterface      $referenceRepository
-     * @param VariationRepositoryInterface      $variationRepository
-     * @param FileMetadataRepositoryInterface   $metadataRepository
-     * @param ChannelRepositoryInterface        $channelRepository
-     * @param RawFileStorerInterface            $rawFileStorer
-     * @param VariationFileGeneratorInterface   $variationFileGenerator
+     * @param AssetRepositoryInterface        $assetRepository
+     * @param ReferenceRepositoryInterface    $referenceRepository
+     * @param VariationRepositoryInterface    $variationRepository
+     * @param FileMetadataRepositoryInterface $metadataRepository
+     * @param ChannelRepositoryInterface      $channelRepository
+     * @param RawFileStorerInterface          $rawFileStorer
+     * @param VariationFileGeneratorInterface $variationFileGenerator
+     * @param SaverInterface                  $assetSaver
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -74,7 +87,8 @@ class ProductAssetController extends Controller
         FileMetadataRepositoryInterface $metadataRepository,
         ChannelRepositoryInterface $channelRepository,
         RawFileStorerInterface $rawFileStorer,
-        VariationFileGeneratorInterface $variationFileGenerator
+        VariationFileGeneratorInterface $variationFileGenerator,
+        SaverInterface $assetSaver
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -83,6 +97,7 @@ class ProductAssetController extends Controller
         $this->channelRepository      = $channelRepository;
         $this->rawFileStorer          = $rawFileStorer;
         $this->variationFileGenerator = $variationFileGenerator;
+        $this->assetSaver             = $assetSaver;
     }
 
     /**
@@ -157,55 +172,42 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        $channels     = $this->channelRepository->getFullChannels();
-        $references   = $productAsset->getReferences();
+        $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
 
-        $attachments = [];
-        foreach ($references as $refKey => $reference) {
-            $attachments[$refKey]['reference'] = $reference;
-
-            $refFormView = $this->createUploadForm()->createView();
-            $refFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
-                'ref_%s',
-                $reference->getId()
-            );
-
-            $attachments[$refKey]['uploadForm'] = $refFormView;
-
-            foreach ($channels as $channel) {
-                $variation = $reference->getVariation($channel);
-                if (null !== $variation) {
-                    $channelCode = $channel->getCode();
-
-                    $metadata = null;
-                    if (null !== $variation->getFile()) {
-                        $metadata = $this->metadataRepository->findOneBy(
-                            [
-                                'file' => $variation->getFile()->getId()
-                            ]
-                        );
-                    }
-                    $varFormView                                                               = $this->createUploadForm(
-                    )->createView();
-                    $varFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
-                        'ref_%s_var_%s',
-                        $reference->getId(),
-                        $variation->getId()
-                    );
-
-                    $attachments[$refKey]['variations'][$channelCode] = [
-                        'entity'     => $variation,
-                        'metadata'   => $metadata,
-                        'uploadForm' => $varFormView
-                    ];
-                }
-            }
-        }
+        $attachments = $this->createAttachments($productAsset);
 
         return [
             'asset'       => $productAsset,
+            'form'        => $assetForm,
             'attachments' => $attachments
         ];
+    }
+
+    /**
+     * Update a product asset and redirect
+     *
+     * @param Request    $request
+     * @param int|string $id
+     *
+     * @return RedirectResponse
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $productAsset = $this->findProductAssetOr404($id);
+        $form = $this->createForm('pimee_product_asset', $productAsset);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            try {
+                $this->assetSaver->save($productAsset);
+                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            } catch (\Exception $e) {
+                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            }
+        }
+
+        return $this->redirectAfterEdit($request, ['id' => $id]);
     }
 
     /**
@@ -213,7 +215,7 @@ class ProductAssetController extends Controller
      * @param int|string $assetId
      * @param int|string $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function uploadReferenceAction(Request $request, $assetId, $id)
     {
@@ -244,7 +246,7 @@ class ProductAssetController extends Controller
      * @param int|string $assetId
      * @param int|string $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function uploadVariationAction(Request $request, $assetId, $id)
     {
@@ -283,13 +285,115 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * Find a Asset by its id or return a 404 response
+     * TODO: Full method may be removed for the update variation card PIM-4073
+     *
+     * @param AssetInterface $productAsset
+     *
+     * @return array
+     */
+    protected function createAttachments(AssetInterface $productAsset)
+    {
+        $channels   = $this->channelRepository->getFullChannels();
+        $references = $productAsset->getReferences();
+
+        $attachments = [];
+        foreach ($references as $refKey => $reference) {
+            $attachments[$refKey]['reference'] = $reference;
+
+            $refFormView = $this->createUploadForm()->createView();
+            $refFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
+                'ref_%s',
+                $reference->getId()
+            );
+
+            $attachments[$refKey]['uploadForm'] = $refFormView;
+
+            foreach ($channels as $channel) {
+                $variation = $reference->getVariation($channel);
+                if (null !== $variation) {
+                    $channelCode = $channel->getCode();
+
+                    $metadata = null;
+                    if (null !== $variation->getFile()) {
+                        $metadata = $this->metadataRepository->findOneBy(
+                            [
+                                'file' => $variation->getFile()->getId()
+                            ]
+                        );
+                    }
+                    $varFormView = $this->createUploadForm()->createView();
+                    $varFormView->children['file']->vars['form']->children['file']->vars['id'] = sprintf(
+                        'ref_%s_var_%s',
+                        $reference->getId(),
+                        $variation->getId()
+                    );
+
+                    $attachments[$refKey]['variations'][$channelCode] = [
+                        'entity'     => $variation,
+                        'metadata'   => $metadata,
+                        'uploadForm' => $varFormView
+                    ];
+                }
+            }
+        }
+
+        return $attachments;
+    }
+
+    /**
+     * TODO: This one is only used for attachments, may be removed too
+     *
+     * @return Form
+     */
+    protected function createUploadForm()
+    {
+        return $this->createForm(new UploadType());
+    }
+
+    /**
+     * Add flash message
+     *
+     * @param Request $request    the request
+     * @param string  $type       the flash type
+     * @param string  $message    the flash message
+     * @param array   $parameters the flash message parameters
+     */
+    protected function addFlash(Request $request, $type, $message, array $parameters = [])
+    {
+        $request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
+    }
+
+    /**
+     * Switch case to redirect after saving a product asset from the edit form
+     *
+     * @param Request $request
+     * @param array   $params
+     *
+     * @return Response
+     */
+    protected function redirectAfterEdit(Request $request, array $params)
+    {
+        switch ($request->get('action')) {
+            case self::BACK_TO_GRID:
+                $route  = 'pimee_product_asset_index';
+                $params = [];
+                break;
+            default:
+                $route = 'pimee_product_asset_edit';
+                break;
+        }
+
+        return $this->redirect($this->generateUrl($route, $params));
+    }
+
+    /**
+     * Find an Asset by its id or return a 404 response
      *
      * @param int|string $id
      *
-     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @return AssetInterface
      *
-     * @return \PimEnterprise\Component\ProductAsset\Model\AssetInterface
+     * @throws NotFoundHttpException
      */
     protected function findProductAssetOr404($id)
     {
@@ -302,14 +406,6 @@ class ProductAssetController extends Controller
         }
 
         return $productAsset;
-    }
-
-    /**
-     * @return \Symfony\Component\Form\Form
-     */
-    protected function createUploadForm()
-    {
-        return $this->createForm(new UploadType());
     }
 
     /**
