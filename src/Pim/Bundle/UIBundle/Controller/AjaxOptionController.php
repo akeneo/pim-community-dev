@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UIBundle\Controller;
 
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
+use Pim\Bundle\UIBundle\Entity\Repository\SearchableRepositoryInterface;
 use Pim\Component\ReferenceData\Repository\ReferenceDataRepositoryInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -50,7 +51,9 @@ class AjaxOptionController
                 $query->get('options', [])
             );
         } elseif ($repository instanceof ReferenceDataRepositoryInterface) {
-            $choices['results'] = $repository->findBySearch(
+            $choices['results'] = $repository->findBySearch($query->get('search'), $query->get('options', []));
+        } elseif ($repository instanceof SearchableRepositoryInterface) {
+            $choices = $repository->findBySearch(
                 $query->get('search'),
                 $query->get('options', [])
             );
