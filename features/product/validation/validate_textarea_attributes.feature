@@ -22,6 +22,7 @@ Feature: Validate textarea attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
+  @unstable-app
   Scenario: Validate the max characters constraint of textarea attribute
     Given I change the Info to "information"
     And I save the product
