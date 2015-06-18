@@ -32,20 +32,7 @@ class FileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('uploadedFile', 'file', ['required' => false])
-//            TODO: remove this if useless
-//            ->add(
-//                'removed',
-//                'checkbox',
-//                [
-//                    'required' => false,
-//                    'label'    => 'Remove file',
-//                ]
-//            )
-//            ->add('id', 'hidden')
-//            ->add('copyFrom', 'hidden')
-        ;
+        $builder->add('uploadedFile', 'file', ['required' => false]);
     }
 
     /**
