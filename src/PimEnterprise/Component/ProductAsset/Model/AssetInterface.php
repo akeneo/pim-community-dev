@@ -131,11 +131,11 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
     public function getEndOfUseAt();
 
     /**
-     * @param \Datetime $endOfUseAt
+     * @param \Datetime|null $endOfUseAt
      *
      * @return AssetInterface
      */
-    public function setEndOfUseAt(\Datetime $endOfUseAt);
+    public function setEndOfUseAt($endOfUseAt);
 
     /**
      * @return \Datetime
