@@ -20,8 +20,11 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\Reference;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\Variation;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -198,15 +201,17 @@ class ProductAssetController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $productAsset = $this->findProductAssetOr404($id);
-        $form = $this->createForm('pimee_product_asset', $productAsset);
+        $asset = $this->findProductAssetOr404($id);
+//        $assetWithoutFiles = $this->buildAssetWithoutFiles($asset);
+        $form = $this->createForm('pimee_product_asset', $asset);
 
         $form->handleRequest($request);
 
+        // TODO: check if references and variations are really validated
         if ($form->isValid()) {
             try {
-                $this->handleAssetFiles($productAsset);
-                $this->assetSaver->save($productAsset);
+                $this->handleAssetFiles($asset);
+                $this->assetSaver->save($asset);
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
                 $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
@@ -222,6 +227,8 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @return RedirectResponse
+     *
+     * TODO: delete this
      */
     public function uploadReferenceAction(Request $request, $assetId, $id)
     {
@@ -253,6 +260,8 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @return RedirectResponse
+     *
+     * TODO: delete this
      */
     public function uploadVariationAction(Request $request, $assetId, $id)
     {
@@ -291,13 +300,71 @@ class ProductAssetController extends Controller
     }
 
     /**
-     * TODO: dedicated service if needed
+     * TODO: dedicated service and clean
+     *
+     * @param AssetInterface $asset
+     *
+     * @return Asset
+     */
+    protected function buildAssetWithoutFiles(AssetInterface $asset)
+    {
+        // TODO: do not hardcode the class
+        $emptyAsset = new Asset();
+        foreach ($asset->getReferences() as $reference) {
+            // TODO: do not hardcode the class
+            $emptyReference = new Reference();
+            if (null !== $locale = $reference->getLocale()) {
+                $emptyReference->setLocale($locale);
+            }
+
+            /** @var VariationInterface $variation */
+            foreach ($reference->getVariations() as $variation) {
+                $emptyVariation = new Variation();
+                if (null !== $channel = $variation->getChannel()) {
+                    $emptyVariation->setChannel($channel);
+                }
+
+                $emptyReference->addVariation($emptyVariation);
+            }
+
+            $emptyAsset->addReference($emptyReference);
+        }
+
+        return $emptyAsset;
+    }
+
+    /**
+     * TODO: dedicated service and clean
      *
      * @param AssetInterface $asset
      */
     protected function handleAssetFiles(AssetInterface $asset)
     {
+        foreach ($asset->getReferences() as $reference) {
+            foreach ($reference->getVariations() as $variation) {
+//                if (null === $variation->getFile()->getId()) {
+                    if (null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
+                        $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+                        $variation->setFile($file);
+                        $variation->setLocked(true);
 
+                        //TODO: dispatch event to be able to launch command "pim:asset:generate-variation"
+                    } else {
+                        $variation->setFile(null);
+                    }
+//                }
+            }
+
+//            if (null === $reference->getFile()->getId()) {
+                if (null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
+                    $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+
+                    //TODO: dispatch event to be able to launch command "pim:asset:generate-variations-from-reference"
+                } else {
+                    $reference->setFile(null);
+                }
+//            }
+        }
     }
 
     /**
