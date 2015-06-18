@@ -12,14 +12,14 @@ Feature: Edit a locale specific value
     And I am logged in as "Mary"
     And I am on the "tshirt" product page
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3298
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Display the custom tax on the available locale
-    And I switch the locale to "German (Germany)"
-    And I visit the "Intern" group
+    And I switch the locale to "de_DE"
+    And I visit the "Internal" group
     Then I should see "Zollsteuer"
 
-  @jira https://akeneo.atlassian.net/browse/PIM-3298
+  @skip-pef @jira https://akeneo.atlassian.net/browse/PIM-3298
   Scenario: Don't display the custom tax on not available locale
-    And I switch the locale to "English (United States)"
+    And I switch the locale to "en_US"
     And I visit the "Internal" group
     Then I should not see "Customs tax"

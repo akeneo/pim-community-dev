@@ -1,10 +1,10 @@
 define(
     ['backbone', 'jquery', 'underscore', 'routing', 'pim/notification-list', 'pim/indicator'],
-    function(Backbone, $, _, Routing) {
+    function (Backbone, $, _, Routing) {
         'use strict';
 
-        var NotificationList = require('pim/notification-list'),
-            Indicator = require('pim/indicator');
+        var NotificationList = require('pim/notification-list');
+        var Indicator = require('pim/indicator');
 
         var Notifications = Backbone.View.extend({
             el: '#header-notification-widget',
@@ -56,7 +56,7 @@ define(
                 'click button.mark-as-read': 'markAllAsRead'
             },
 
-            markAllAsRead: function(e) {
+            markAllAsRead: function (e) {
                 e.stopPropagation();
                 e.preventDefault();
 
@@ -72,7 +72,7 @@ define(
                 });
             },
 
-            initialize: function(opts) {
+            initialize: function (opts) {
                 this.options = _.extend({}, this.options, opts);
                 this.collection = new NotificationList();
                 this.indicator  = new Indicator({
@@ -82,13 +82,13 @@ define(
                     emptyClass: this.options.indicatorEmptyClass
                 });
 
-                this.collection.on('load:unreadCount', function(count, reset) {
+                this.collection.on('load:unreadCount', function (count, reset) {
                     this.scheduleRefresh();
                     if (this.freezeCount) {
                         this.freezeCount = false;
                         return;
                     }
-                    if (this.indicator.get('value') != count) {
+                    if (this.indicator.get('value') !== count) {
                         this.indicator.set('value', count);
                         if (reset) {
                             this.collection.hasMore = true;
@@ -98,7 +98,7 @@ define(
                     }
                 }, this);
 
-                this.collection.on('mark_as_read', function(id) {
+                this.collection.on('mark_as_read', function (id) {
                     var value = null === id ? 0 : this.indicator.get('value') - 1;
                     this.indicator.set('value', value);
                     if (0 === value) {
@@ -116,7 +116,7 @@ define(
                 this.scheduleRefresh();
             },
 
-            scheduleRefresh: function() {
+            scheduleRefresh: function () {
                 if (this.refreshLocked) {
                     return;
                 }
@@ -124,23 +124,23 @@ define(
                     clearTimeout(this.refreshTimeout);
                 }
 
-                this.refreshTimeout = setTimeout(_.bind(function() {
+                this.refreshTimeout = setTimeout(_.bind(function () {
                     this.refreshLocked = true;
                     $.getJSON(Routing.generate('pim_notification_notification_count_unread'))
-                        .then(_.bind(function(count) {
+                        .then(_.bind(function (count) {
                             this.refreshLocked = false;
                             this.collection.trigger('load:unreadCount', count, true);
                         }, this));
                 }, this), this.options.refreshInterval);
             },
 
-            onOpen: function() {
+            onOpen: function () {
                 if (!this.collection.length) {
                     this.collection.loadNotifications();
                 }
             },
 
-            render: function() {
+            render: function () {
                 this.setElement($('#header-notification-widget'));
                 this.$el.html(this.template());
                 this.collection.setElement(this.$('ul'));
@@ -166,7 +166,7 @@ define(
         var notifications;
 
         return {
-            init: function(options) {
+            init: function (options) {
                 if (notifications) {
                     notifications.render();
                 } else {

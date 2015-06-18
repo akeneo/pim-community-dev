@@ -256,22 +256,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $id)
     {
-        $product = $this->findProductOr404($id);
-
-        $this->dispatch(ProductEvents::PRE_EDIT, new GenericEvent($product));
-
-        $form = $this->createForm(
-            'pim_product_edit',
-            $product,
-            $this->getEditFormOptions($product)
-        );
-
-        $this->dispatch(ProductEvents::POST_EDIT, new GenericEvent($product));
-
-        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->getProductCountByTree($product);
-
-        return $this->getProductEditTemplateParams($form, $product, $channels, $trees);
+        return [];
     }
 
     /**

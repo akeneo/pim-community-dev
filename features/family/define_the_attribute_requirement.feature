@@ -38,23 +38,24 @@ Feature: Define the attribute requirement
       | BIGBOOTS | Boots  | Big boots  | 20 EUR, 20 USD | 35   | Black |
     And I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | success | Complete         | 100%  |
-      | tablet  | English (United States) | warning | 4 missing values | 56%   |
+      | channel | locale | state   | missing_values                                  | ratio |
+      | mobile  | en_US  | success |                                                 | 100%  |
+      | tablet  | en_US  | warning | description weather_conditions rating side_view | 56%   |
     And I am on the "Boots" family page
     And I visit the "Attributes" tab
     And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     When I remove the "Rating" attribute
+    And I confirm the deletion
     Then I should not see the "Rating" attribute
     When I launched the completeness calculator
     When I am on the "BIGBOOTS" product page
-    And I visit the "Completeness" tab
+    And I open the "Completeness" panel
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message          | ratio |
-      | mobile  | English (United States) | success | Complete         | 100%  |
-      | tablet  | English (United States) | warning | 3 missing values | 63%   |
+      | channel | locale | state   | missing_values                           | ratio |
+      | mobile  | en_US  | success |                                          | 100%  |
+      | tablet  | en_US  | warning | description weather_conditions side_view | 63%   |

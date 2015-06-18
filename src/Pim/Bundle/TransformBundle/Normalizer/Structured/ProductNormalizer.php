@@ -24,6 +24,9 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     const FIELD_GROUPS = 'groups';
 
     /** @staticvar string */
+    const FIELD_VARIANT_GROUP = 'variant_group';
+
+    /** @staticvar string */
     const FIELD_CATEGORY = 'categories';
 
     /** @staticvar string */
@@ -61,10 +64,23 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $context['entity'] = 'product';
         $data = [];
 
-        $data[self::FIELD_FAMILY]   = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS]   = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
-        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : [];
-        $data[self::FIELD_ENABLED]  = $product->isEnabled();
+        if ($product->getGroupCodes()) {
+            $groups = explode(',', $product->getGroupCodes());
+            if ($product->getVariantGroup()) {
+                $variantGroup = $product->getVariantGroup()->getCode();
+                $groups = array_diff($groups, [$variantGroup]);
+            }
+        } else {
+            $groups = [];
+        }
+
+        $data[self::FIELD_FAMILY]        = $product->getFamily() ? $product->getFamily()->getCode() : null;
+        $data[self::FIELD_GROUPS]        = $groups;
+        $data[self::FIELD_VARIANT_GROUP] = $product->getVariantGroup() ? $product->getVariantGroup()->getCode() : null;
+        $data[self::FIELD_CATEGORY]      = $product->getCategoryCodes() ?
+            explode(',', $product->getCategoryCodes()) :
+            [];
+        $data[self::FIELD_ENABLED]       = $product->isEnabled();
 
         $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
 
@@ -98,7 +114,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         $values = $this->filter->filterCollection(
             $values,
-            isset($context['filter_type']) ? $context['filter_type'] : 'pim:transform:product_value:structured',
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.structured',
             $context
         );
 

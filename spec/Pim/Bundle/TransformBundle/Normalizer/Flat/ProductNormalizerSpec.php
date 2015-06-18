@@ -72,7 +72,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn('nice shoes, converse');
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
-        $filter->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())->willReturn([$sku]);
+        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
@@ -138,7 +138,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getCategoryCodes()->willReturn('nice shoes, converse');
         $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
         $product->getValues()->willReturn($values);
-        $filter->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())->willReturn([$sku]);
+        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$sku]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
@@ -192,7 +192,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
         $filter
-            ->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())
+            ->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())
             ->willReturn([$sku, $colors]);
 
         $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
@@ -247,7 +247,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $values->add($price);
 
         $product->getValues()->willReturn($values);
-        $filter->filterCollection($values, 'pim:transform:product_value:flat', Argument::cetera())->willReturn([$price]);
+        $filter->filterCollection($values, 'pim.transform.product_value.flat', Argument::cetera())->willReturn([$price]);
 
         $serializer->normalize($price, 'flat', Argument::any())->willReturn(['price-EUR' => '356.00']);
 

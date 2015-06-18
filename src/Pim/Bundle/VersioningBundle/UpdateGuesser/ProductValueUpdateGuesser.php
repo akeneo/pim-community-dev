@@ -68,9 +68,13 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
     protected function guessDeletionUpdates(EntityManager $em, $entity)
     {
         $pendings = [];
-        if ($entity instanceof ProductPriceInterface
-            || $entity instanceof ProductMediaInterface
-            || $entity instanceof MetricInterface) {
+        if ((
+                $entity instanceof ProductPriceInterface
+                || $entity instanceof ProductMediaInterface
+                || $entity instanceof MetricInterface
+            )
+            && $entity->getValue()
+        ) {
             $product = $entity->getValue()->getEntity();
             $unitOfWork = $em->getUnitOfWork();
 

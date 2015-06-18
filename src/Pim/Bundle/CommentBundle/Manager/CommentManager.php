@@ -50,6 +50,8 @@ class CommentManager implements SaverInterface, RemoverInterface
      * @param CommentSubjectInterface $subject
      *
      * @return \Doctrine\Common\Collections\ArrayCollection|\Pim\Bundle\CommentBundle\Model\CommentInterface[]
+     *
+     * @deprecated Will be removed in 1.5, please use CommentRepositoryInterface::getComments() instead.
      */
     public function getComments(CommentSubjectInterface $subject)
     {

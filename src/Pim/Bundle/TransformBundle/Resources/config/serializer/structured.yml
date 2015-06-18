@@ -101,6 +101,7 @@ services:
         class: %pim_serializer.normalizer.family.class%
         arguments:
             - '@pim_serializer.normalizer.label_translation'
+            - '@pim_catalog.filter.chained'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

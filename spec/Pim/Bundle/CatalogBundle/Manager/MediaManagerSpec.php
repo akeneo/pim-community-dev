@@ -26,6 +26,7 @@ class MediaManagerSpec extends ObjectBehavior
     {
         $media->getFile()->willReturn($newFile);
         $media->getFilename()->willReturn('my-new-file.jpg');
+        $media->getOriginalFilename()->willReturn('my-new-file.jpg');
 
         $filesystem->has('my-new-file.jpg')->willReturn(false);
         $newFile->getFilename()->willReturn('my-new-file.jpg');
@@ -43,7 +44,6 @@ class MediaManagerSpec extends ObjectBehavior
         $media->setFilename('prefix-my-new-file.jpg')->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $media->setMimeType('jpg')->shouldBeCalled();
-        $media->resetFile()->shouldBeCalled();
 
         $this->handle($media, 'prefix');
     }
@@ -52,15 +52,13 @@ class MediaManagerSpec extends ObjectBehavior
     {
         $media->getFile()->willReturn($newFile);
         $media->getFilename()->willReturn('akeneo.jpg');
+        $media->getOriginalFilename()->willReturn('akeneo.jpg');
 
         $filesystem->has('akeneo.jpg')->willReturn(true);
         $newFile->getFilename()->willReturn('akeneo.jpg');
 
         // delete the existing file
         $filesystem->has('akeneo.jpg')->willReturn(true);
-        $media->setOriginalFilename(null)->shouldBeCalled();
-        $media->setFilename(null)->shouldBeCalled();
-        $media->setMimeType(null)->shouldBeCalled();
 
         // upload
         $newFile->getPathname()->willReturn('/tmp/tmp-phpspec');
@@ -75,7 +73,6 @@ class MediaManagerSpec extends ObjectBehavior
         $media->setFilename('prefix-akeneo.jpg')->shouldBeCalled();
         $newFile->getMimeType()->willReturn('jpg');
         $media->setMimeType('jpg')->shouldBeCalled();
-        $media->resetFile()->shouldBeCalled();
 
         $this->handle($media, 'prefix');
     }
@@ -84,6 +81,7 @@ class MediaManagerSpec extends ObjectBehavior
     {
         $target->setFile(Argument::any())->shouldBeCalled();
         $source->getOriginalFilename()->willReturn('akeneo.jpg');
+        $target->getOriginalFilename()->willReturn('akeneo.jpg');
 
         // upload
         $target->getFile()->willReturn($newFile);
@@ -103,7 +101,6 @@ class MediaManagerSpec extends ObjectBehavior
         $target->getFilename()->willReturn('akeneo.jpg');
         $newFile->getMimeType()->willReturn('jpg');
         $target->setMimeType('jpg')->shouldBeCalled();
-        $target->resetFile()->shouldBeCalled();
 
         // update original file name
         $source->getOriginalFilename()->willReturn('akeneo.jpg');

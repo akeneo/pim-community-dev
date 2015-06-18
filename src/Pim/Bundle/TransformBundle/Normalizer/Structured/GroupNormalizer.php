@@ -61,7 +61,7 @@ class GroupNormalizer extends SerializerAwareNormalizer implements NormalizerInt
         if (isset($context['with_variant_group_values']) && true === $context['with_variant_group_values']) {
             $variantGroupValues = $this->normalizeVariantGroupValues($object, $format, $context);
             if (!empty($variantGroupValues)) {
-                $results += $variantGroupValues;
+                $results['values'] = $variantGroupValues;
             }
         }
 

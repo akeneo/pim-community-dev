@@ -10,6 +10,7 @@ Feature: Add reference data attributes to a product
     | boots   | boots   |
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Display available reference data attributes to a product
     Given I am on the "boots" product page
     Then I should see available attribute Heel color in group "Other"
