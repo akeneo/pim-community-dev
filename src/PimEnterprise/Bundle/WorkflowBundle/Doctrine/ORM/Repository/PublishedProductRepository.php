@@ -48,6 +48,14 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
+    public function findOneByVersionId($versionId)
+    {
+        return $this->findOneBy(['version' => $versionId]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findByOriginalProducts(array $originalProducts)
     {
         $originalIds = [];
