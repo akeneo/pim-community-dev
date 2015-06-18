@@ -48,5 +48,6 @@ pimee_product_asset:
     tags:
         label: Tags
 
-Global settings.title: Global settings
-Variations.title: Variations
+    tabs:
+        global-settings.title: Global settings
+        variations.title: Variations

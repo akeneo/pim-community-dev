@@ -34,6 +34,7 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,6 +85,7 @@ class ProductAssetController extends Controller
      * @param RawFileStorerInterface          $rawFileStorer
      * @param VariationFileGeneratorInterface $variationFileGenerator
      * @param SaverInterface                  $assetSaver
+     * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -93,7 +95,8 @@ class ProductAssetController extends Controller
         ChannelRepositoryInterface $channelRepository,
         RawFileStorerInterface $rawFileStorer,
         VariationFileGeneratorInterface $variationFileGenerator,
-        SaverInterface $assetSaver
+        SaverInterface $assetSaver,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -108,14 +111,12 @@ class ProductAssetController extends Controller
     /**
      * List of assets
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pimee_product_asset_index")
      *
      * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [];
     }
@@ -123,7 +124,6 @@ class ProductAssetController extends Controller
     /**
      * View an asset
      *
-     * @param Request    $request
      * @param int|string $id
      *
      * @Template
@@ -131,7 +131,7 @@ class ProductAssetController extends Controller
      *
      * @return array
      */
-    public function viewAction(Request $request, $id)
+    public function viewAction($id)
     {
         $productAsset = $this->findProductAssetOr404($id);
         $references   = $productAsset->getReferences();
@@ -342,28 +342,29 @@ class ProductAssetController extends Controller
     {
         foreach ($asset->getReferences() as $reference) {
             foreach ($reference->getVariations() as $variation) {
-//                if (null === $variation->getFile()->getId()) {
-                    if (null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
-                        $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
-                        $variation->setFile($file);
-                        $variation->setLocked(true);
-
-                        //TODO: dispatch event to be able to launch command "pim:asset:generate-variation"
-                    } else {
-                        $variation->setFile(null);
-                    }
-//                }
+                if (null !== $uploadedFile = $variation->getSourceFile()->getUploadedFile()) {
+                    $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+                    $variation->setSourceFile($file);
+                    $variation->setFile(null);
+                    $variation->setLocked(true);
+                    //TODO: dispatch event to be able to launch command "pim:asset:generate-variation"
+                }
+                if (null !== $variation->getFile() && null === $variation->getFile()->getId()) {
+                    $variation->setFile(null);
+                }
+                if (null !== $variation->getSourceFile() && null === $variation->getSourceFile()->getId()) {
+                    $variation->setSourceFile(null);
+                }
             }
 
-//            if (null === $reference->getFile()->getId()) {
-                if (null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
-                    $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
-
-                    //TODO: dispatch event to be able to launch command "pim:asset:generate-variations-from-reference"
-                } else {
-                    $reference->setFile(null);
-                }
-//            }
+            if (null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
+                $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+                $reference->setFile($file);
+                //TODO: dispatch event to be able to launch command "pim:asset:generate-variations-from-reference"
+            }
+            if (null !== $reference->getFile() && null === $reference->getFile()->getId()) {
+                $reference->setFile(null);
+            }
         }
     }
 
