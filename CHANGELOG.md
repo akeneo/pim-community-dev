@@ -1,5 +1,8 @@
 # 1.4.x
 
+## Technical improvements
+- Product edit form revamp
+
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
 - PIM-3296: Better display of options changes in Proposals

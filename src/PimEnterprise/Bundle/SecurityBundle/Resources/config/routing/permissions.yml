@@ -1,0 +1,6 @@
+pimee_security_permissions_rest:
+    path: /rest.{_format}
+    defaults: { _controller: pimee_security.controller.permission_rest:permissionsAction, _format: json }
+    methods: [GET]
+    requirements:
+        _format: json

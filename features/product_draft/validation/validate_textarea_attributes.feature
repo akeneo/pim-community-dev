@@ -21,6 +21,7 @@ Feature: Validate textarea attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
+  @skip-pef
   Scenario: Validate the max characters constraint of textarea attribute
     Given I change the Info to "information"
     And I save the product
@@ -28,6 +29,7 @@ Feature: Validate textarea attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the max characters constraint of scopable textarea attribute
     Given I change the "mobile Description" to "information"
     And I save the product
@@ -35,6 +37,7 @@ Feature: Validate textarea attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the max characters constraint of textarea attribute with WYSIWYG
     Given I change the "Longinfo" to "information"
     And I save the product
@@ -42,6 +45,7 @@ Feature: Validate textarea attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the max characters constraint of scopable textarea attribute with WYSIWYG
     Given I change the "mobile Longdescription" to "information"
     And I save the product

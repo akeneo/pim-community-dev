@@ -17,6 +17,7 @@ Feature: Filter product drafts
       | white-boots | ready       | Sandra |
     And I am logged in as "Julia"
 
+  @skip-pef
   Scenario: Successfully filter product drafts
     Given I edit the "black-boots" product
     When I visit the "Proposals" tab
