@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter'],
-    function ($, _, mediator, SelectFilter) {
+    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter', 'pim/user-context'],
+    function ($, _, mediator, SelectFilter, UserContext) {
         'use strict';
 
         /**
@@ -55,6 +55,15 @@ define(
              */
             hide: function () {
                 return this;
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _onValueUpdated: function (newValue) {
+                UserContext.set('catalogScope', newValue.value);
+
+                return SelectFilter.prototype._onValueUpdated.apply(this, arguments);
             },
 
             /**

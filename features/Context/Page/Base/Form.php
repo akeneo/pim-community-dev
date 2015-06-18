@@ -18,24 +18,28 @@ class Form extends Base
     /**
      * {@inheritdoc}
      */
-    public function __construct($session, $pageFactory, $parameters = array())
+    public function __construct($session, $pageFactory, $parameters = [])
     {
         parent::__construct($session, $pageFactory, $parameters);
 
         $this->elements = array_merge(
-            array(
-                'Tabs'                            => array('css' => '#form-navbar'),
-                'Oro tabs'                        => array('css' => '.navbar.scrollspy-nav'),
-                'Active tab'                      => array('css' => '.form-horizontal .tab-pane.active'),
-                'Groups'                          => array('css' => '.tab-groups'),
-                'Validation errors'               => array('css' => '.validation-tooltip'),
-                'Available attributes form'       => array('css' => '#pim_available_attributes'),
-                'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
-                'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
-                'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),
-                'Available attributes add button' => array('css' => '.pimmultiselect a.btn:contains("Add")'),
-                'Updates grid'                    => array('css' => '.tab-pane.tab-history table.grid'),
-            ),
+            [
+                'Tabs'                            => ['css' => '#form-navbar'],
+                'Oro tabs'                        => ['css' => '.navbar.scrollspy-nav'],
+                'Form tabs'                       => ['css' => '.nav-tabs.form-tabs'],
+                'Associations list'               => ['css' => '#associations-list'],
+                'Active tab'                      => ['css' => '.form-horizontal .tab-pane.active'],
+                'Panel selector'                  => ['css' => '.panel-selector'],
+                'Groups'                          => ['css' => '.tab-groups'],
+                'Form Groups'                     => ['css' => '.attribute-group-selector'],
+                'Validation errors'               => ['css' => '.validation-tooltip'],
+                'Available attributes form'       => ['css' => '#pim_available_attributes'],
+                'Available attributes button'     => ['css' => 'button:contains("Add attributes")'],
+                'Available attributes list'       => ['css' => '.pimmultiselect .ui-multiselect-checkboxes'],
+                'Available attributes search'     => ['css' => '.pimmultiselect input[type="search"]'],
+                'Available attributes add button' => ['css' => '.pimmultiselect a.btn:contains("Add")'],
+                'Updates grid'                    => ['css' => '.tab-pane.tab-history table.grid'],
+            ],
             $this->elements
         );
     }
@@ -65,9 +69,28 @@ class Form extends Base
     {
         $tabs = $this->find('css', $this->elements['Tabs']['css']);
         if (!$tabs) {
-            $tabs = $this->getElement('Oro tabs');
+            $tabs = $this->find('css', $this->elements['Oro tabs']['css']);
+        }
+        if (!$tabs) {
+            $tabs = $this->find('css', $this->elements['Form tabs']['css']);
         }
         $tabs->clickLink($tab);
+    }
+
+    /**
+     * Open the specified panel
+     *
+     * @param string $panel
+     */
+    public function openPanel($panel)
+    {
+        $elt = $this->spin(function () {
+            return $this->getElement('Panel selector');
+        });
+
+        if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
+            $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
+        }
     }
 
     /**
@@ -86,13 +109,53 @@ class Form extends Base
     }
 
     /**
+     * Get the specified tab
+     *
+     * @return NodeElement[]
+     */
+    public function getTab($tab)
+    {
+        return $this->find('css', sprintf('a:contains("%s")', $tab));
+    }
+
+    /**
      * Visit the specified group
      *
      * @param string $group
+     *
+     * @throws ElementNotFoundException
+     * @throws \Exception
      */
     public function visitGroup($group)
     {
-        $this->getElement('Groups')->clickLink($group);
+        $groups = $this->find('css', $this->elements['Groups']['css']);
+        if (!$groups) {
+            $groups = $this->getElement('Form Groups');
+
+            $groupsContainer = $groups
+                ->find('css', sprintf('.attribute-group-label:contains("%s")', $group));
+
+            $button = null;
+
+            if ($groupsContainer) {
+                $button = $groupsContainer->getParent();
+            }
+
+            if (!$button) {
+                throw new \Exception(sprintf('Could not find group "%s".', $group));
+            }
+            $button->click();
+        } else {
+            $groups->clickLink($group);
+        }
+
+        return true;
+    }
+
+    public function selectAssociation($assocation)
+    {
+        $associations = $this->find('css', $this->elements['Associations list']['css']);
+        $associations->clickLink($assocation);
     }
 
     /**
@@ -127,7 +190,7 @@ class Form extends Base
     public function getValidationErrors()
     {
         $tooltips = $this->findAll('css', $this->elements['Validation errors']['css']);
-        $errors   = array();
+        $errors   = [];
 
         foreach ($tooltips as $tooltip) {
             $errors[] = $tooltip->getAttribute('data-original-title');
@@ -148,8 +211,10 @@ class Form extends Base
      * Add available attributes
      *
      * @param array $attributes
+     *
+     * @throws \Exception
      */
-    public function addAvailableAttributes(array $attributes = array())
+    public function addAvailableAttributes(array $attributes = [])
     {
         $this->openAvailableAttributesMenu();
 
@@ -200,15 +265,19 @@ class Form extends Base
      */
     public function attachFileToField($locator, $path)
     {
-        $field = $this->findField($locator);
-
-        if (null === $field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field', 'id|name|label|value', $locator);
-        }
-
-        if ($field->getAttribute('type') !== 'file') {
-            $field = $field->getParent()->find('css', 'input[type="file"]');
-        }
+        $field = $this->spin(function () use ($locator) {
+            $field = $this->findField($locator);
+            if (null === $field) {
+                return false;
+            }
+            if ($field->getAttribute('type') === 'file') {
+                $field = $field->getParent()->find('css', 'input[type="file"]');
+            }
+            if ($field !== null) {
+                return $field;
+            }
+            echo "retry find file input" . PHP_EOL;
+        });
 
         $field->attachFile($path);
     }
@@ -304,7 +373,7 @@ class Form extends Base
             throw new \InvalidArgumentException(sprintf('Cannot find attribute "%s" field', $attribute));
         }
 
-        return $this->expand($label);
+        $this->expand($label);
     }
 
     /**
@@ -397,6 +466,7 @@ class Form extends Base
     protected function extractLabelElement($field, $element)
     {
         $subLabelContent = null;
+        $channel         = null;
         $labelContent    = $field;
 
         if (false !== strpbrk($field, '€$')) {
@@ -406,15 +476,29 @@ class Form extends Base
         }
 
         if ($element) {
-            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            $label = $this->spin(function () use ($element, $labelContent) {
+                return $element->find('css', sprintf('label:contains("%s")', $labelContent));
+            });
         } else {
-            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            $labeParts = explode(' ', $labelContent);
+            $channel   = in_array(reset($labeParts), ['mobile', 'ecommerce', 'print', 'tablet']) ?
+                reset($labeParts) :
+                null;
+
+            if (null !== $channel) {
+                $labelContent = substr($labelContent, strlen($channel . ' '));
+            }
+
+            $label = $this->spin(function () use ($labelContent) {
+                return $this->find('css', sprintf('label:contains("%s")', $labelContent));
+            });
         }
 
-        if (! $label) {
+        if (!$label) {
             $label = new \stdClass();
         }
 
+        $label->channel         = $channel;
         $label->labelContent    = $labelContent;
         $label->subLabelContent = $subLabelContent;
 
@@ -433,8 +517,12 @@ class Form extends Base
      */
     protected function getFieldType($label)
     {
-        if (null === $label || false === $label instanceof NodeElement) {
+        if (null === $label || !($label instanceof NodeElement)) {
             return null;
+        }
+
+        if (null !== $label->subLabelContent) {
+            return 'compound';
         }
 
         if ($label->hasAttribute('for')) {
@@ -463,11 +551,9 @@ class Form extends Base
             if (false !== strpos($field->getAttribute('class'), 'wysiwyg')) {
                 return 'wysiwyg';
             }
-
-            return 'text';
         }
 
-        return 'compound';
+        return 'text';
     }
 
     /**
@@ -477,12 +563,12 @@ class Form extends Base
      * $value can be a string of multiple values. Each value must be separated with comma, eg :
      * 'Hot, Dry, Fresh'
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
-    protected function fillMultiSelect2Field($label, $value)
+    protected function fillMultiSelect2Field(NodeElement $label, $value)
     {
         $allValues          = explode(',', $value);
         $selectedValues     = $label->getParent()->findAll('css', '.select2-search-choice');
@@ -545,12 +631,12 @@ class Form extends Base
     /**
      * Fills a simple (unique value) select2 field with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
-    protected function fillSelect2Field($label, $value)
+    protected function fillSelect2Field(NodeElement $label, $value)
     {
         if (trim($value)) {
             if (null !== $link = $label->getParent()->find('css', 'a.select2-choice')) {
@@ -558,10 +644,13 @@ class Form extends Base
 
                 $this->getSession()->wait(5000, '!$.active');
 
-                // Select the value in the displayed dropdown
-                if (null !== $item = $this->find('css', sprintf('#select2-drop li:contains("%s")', $value))) {
-                    return $item->click();
-                }
+                $field = $this->spin(function () use ($value) {
+                    return $this->find('css', sprintf('#select2-drop li:contains("%s")', $value));
+                });
+
+                $field->click();
+
+                return;
             }
 
             throw new \InvalidArgumentException(
@@ -573,10 +662,10 @@ class Form extends Base
     /**
      * Fills a select element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillSelectField($label, $value)
+    protected function fillSelectField(NodeElement$label, $value)
     {
         $field = $label->getParent()->find('css', 'select');
 
@@ -586,10 +675,10 @@ class Form extends Base
     /**
      * Fills a Wysiwyg editor element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillWysiwygField($label, $value)
+    protected function fillWysiwygField(NodeElement $label, $value)
     {
         $for = $label->getAttribute('for');
 
@@ -601,10 +690,10 @@ class Form extends Base
     /**
      * Fills a date field element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillDateField($label, $value)
+    protected function fillDateField(NodeElement $label, $value)
     {
         $for = $label->getAttribute('for');
 
@@ -616,11 +705,15 @@ class Form extends Base
     /**
      * Fills a text field element with $value, identified by its $label.
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      */
-    protected function fillTextField($label, $value)
+    protected function fillTextField(NodeElement $label, $value)
     {
+        if (!$label->getAttribute('for') && null !== $label->channel) {
+            $label = $label->getParent()->find('css', sprintf('[data-scope="%s"] label', $label->channel));
+        }
+
         $for   = $label->getAttribute('for');
         $field = $this->find('css', sprintf('#%s', $for));
 
@@ -635,12 +728,12 @@ class Form extends Base
      * We have a field "$" embedded inside a "Price" field
      * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
      *
-     * @param \Behat\Mink\Element\NodeElement $label
-     * @param string                          $value
+     * @param NodeElement $label
+     * @param string      $value
      *
      * @throws ElementNotFoundException
      */
-    protected function fillCompoundField($label, $value)
+    protected function fillCompoundField(NodeElement $label, $value)
     {
         if (! $label->subLabelContent) {
             throw new \InvalidArgumentException(

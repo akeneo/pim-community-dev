@@ -120,7 +120,7 @@ class MediaManager
     {
         try {
             if ($file = $media->getFile()) {
-                if ($media->getFilename() && $this->fileExists($media)) {
+                if ($media->getFilename() && $this->fileExists($media) && '' === $media->getOriginalFilename()) {
                     $this->delete($media);
                 }
                 $filename = $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename();
@@ -197,7 +197,7 @@ class MediaManager
             throw new \InvalidArgumentException(sprintf('File "%s" does not exist', $filePath));
         }
         $media = $this->factory->createMedia();
-        $media->setOriginalFilename($filename);
+        $media->setOriginalFilename(basename($filename));
         $media->setFilename($filename);
 
         if (!$isUploaded) {
@@ -327,12 +327,22 @@ class MediaManager
             $pathname = $file->getPathname();
             $this->write($filename, file_get_contents($pathname), $overwrite);
 
-            $originalFilename = $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename();
+            if ($file instanceof UploadedFile) {
+                $originalFilename = $file->getClientOriginalName();
+                $media->resetFile();
+            } elseif (false !== strpos($file->getFilename(), $media->getOriginalFilename())) {
+                $originalFilename = $media->getOriginalFilename();
+            } elseif (null !== $media->getOriginalFilename() && '' !== $media->getOriginalFilename()) {
+                $originalFilename = $media->getOriginalFilename();
+                $media->resetFile();
+            } else {
+                $originalFilename = $file->getFilename();
+                $media->resetFile();
+            }
 
             $media->setOriginalFilename($originalFilename);
             $media->setFilename($filename);
             $media->setMimeType($file->getMimeType());
-            $media->resetFile();
         }
     }
 
@@ -352,23 +362,24 @@ class MediaManager
      * Get the file path of a media
      *
      * @param ProductMediaInterface $media
+     * @param bool                  $checkFile
      *
      * @throws FileNotFoundException in case the file of the media does not exist or is not readable
      *
      * @return string|null the path of the media or null if the media has no file attached
      */
-    public function getFilePath(ProductMediaInterface $media)
+    public function getFilePath(ProductMediaInterface $media, $checkFile = true)
     {
         if (null === $media->getFilename()) {
             return null;
         }
 
-        if (!$this->fileExists($media)) {
+        if ($checkFile && !$this->fileExists($media)) {
             throw new FileNotFoundException($media->getFilename());
         }
 
         $path = $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
-        if (!is_readable($path)) {
+        if ($checkFile && !is_readable($path)) {
             throw new FileNotFoundException($path);
         }
 

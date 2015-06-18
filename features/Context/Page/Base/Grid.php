@@ -279,7 +279,13 @@ class Grid extends Index
     {
         assertContains($num, [10, 25, 50, 100], 'Only 10, 25, 50 and 100 records per page are available');
         $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
-        $element->find('css', 'button')->click();
+
+        $this->spin(function () use ($element, $num) {
+            $element->find('css', 'button')->click();
+
+            return true;
+        });
+
         $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
     }
 
@@ -968,7 +974,11 @@ class Grid extends Index
      */
     public function sequentialEdit()
     {
-        $this->pressButton('Sequential Edit');
+        $this->spin(function () {
+            $this->pressButton('Sequential Edit');
+
+            return true;
+        });
     }
 
     /**

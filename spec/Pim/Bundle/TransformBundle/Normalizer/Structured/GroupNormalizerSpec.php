@@ -143,8 +143,10 @@ class GroupNormalizerSpec extends ObjectBehavior
             'code' => 'laser_sabers',
             'type' => 'VARIANT',
             'axis' => ['light_color'],
-            'name' => 'Light saber model',
-            'size' => '120'
+            'values' => [
+                'name' => 'Light saber model',
+                'size' => '120'
+            ]
         ]);
     }
 }

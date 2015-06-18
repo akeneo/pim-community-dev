@@ -48,7 +48,7 @@ class MediaNormalizer implements NormalizerInterface
 
         return [
             'originalFilename' => $object->getOriginalFilename(),
-            'filePath'         => $this->manager->getFilePath($object),
+            'filePath'         => $this->manager->getFilePath($object, false),
         ];
     }
 
