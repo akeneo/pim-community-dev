@@ -44,15 +44,15 @@ class CategoryProcessor extends AbstractProcessor
         StandardArrayConverterInterface $categoryConverter,
         IdentifiableObjectRepositoryInterface $repository,
         ObjectUpdaterInterface $categoryUpdater,
-        ValidatorInterface $validator,
-        CategoryFactory $categoryFactory
+        CategoryFactory $categoryFactory,
+        ValidatorInterface $validator
     ) {
         parent::__construct($repository);
 
         $this->categoryConverter = $categoryConverter;
         $this->categoryUpdater   = $categoryUpdater;
-        $this->validator         = $validator;
         $this->categoryFactory   = $categoryFactory;
+        $this->validator         = $validator;
     }
 
     /**

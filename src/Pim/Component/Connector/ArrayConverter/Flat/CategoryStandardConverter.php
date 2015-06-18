@@ -2,7 +2,6 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat;
 
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Pim\Component\Connector\Exception\ArrayConversionException;
 

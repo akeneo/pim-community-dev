@@ -78,5 +78,5 @@ services:
             - '@pim_connector.array_converter.flat.category'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.updater.category'
-            - '@pim_catalog.validator.product'
             - '@pim_catalog.factory.category'
+            - '@pim_catalog.validator.product'

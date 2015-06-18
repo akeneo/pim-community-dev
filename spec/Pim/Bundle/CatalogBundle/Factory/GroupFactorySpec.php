@@ -26,7 +26,7 @@ class GroupFactorySpec extends ObjectBehavior
         $this->createGroup('VARIANT')->shouldReturnAnInstanceOf(self::GROUP_CLASS);
     }
 
-    function it_throws_an_exception_if_no_grou_types_are_found($groupTypeRepository)
+    function it_throws_an_exception_if_no_group_types_are_found($groupTypeRepository)
     {
         $groupTypeRepository->findOneByIdentifier('INVALID_GROUP_TYPE_CODE')->willReturn(null);
 

@@ -69,13 +69,13 @@ class CategoryUpdater implements ObjectUpdaterInterface
                 $translation = $category->getTranslation();
                 $translation->setLabel($label);
             }
-        }elseif ('parent' === $field) {
+        } elseif ('parent' === $field) {
             $categoryParent = $this->findParent($data);
-                if (null !== $categoryParent) {
-                    $category->setParent($categoryParent);
-                } else {
-                    throw new \InvalidArgumentException(sprintf('The parent category "%s" does not exist', $data));
-                }
+            if (null !== $categoryParent) {
+                $category->setParent($categoryParent);
+            } else {
+                throw new \InvalidArgumentException(sprintf('The parent category "%s" does not exist', $data));
+            }
         } else {
             $this->accessor->setValue($category, $field, $data);
         }

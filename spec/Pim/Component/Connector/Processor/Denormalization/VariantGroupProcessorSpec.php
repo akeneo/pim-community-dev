@@ -23,19 +23,17 @@ class VariantGroupProcessorSpec extends ObjectBehavior
     function let(
         StandardArrayConverterInterface $variantConverter,
         IdentifiableObjectRepositoryInterface $repository,
+        GroupFactory $groupFactory,
         ObjectUpdaterInterface $variantUpdater,
         ValidatorInterface $validator,
-        GroupFactory $groupFactory,
-        StepExecution $stepExecution,
-        $groupClass
+        StepExecution $stepExecution
     ) {
         $this->beConstructedWith(
             $variantConverter,
             $repository,
-            $variantUpdater,
-            $validator,
             $groupFactory,
-            $groupClass
+            $variantUpdater,
+            $validator
         );
         $this->setStepExecution($stepExecution);
     }
