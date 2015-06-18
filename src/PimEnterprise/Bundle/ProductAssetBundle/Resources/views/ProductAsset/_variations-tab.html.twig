@@ -50,10 +50,11 @@
                                 <tr>
                                     <td>{{ referenceModel.file.originalFilename }}</td>
                                     <td>
-                                        <a class="btn btn-info btn-mini no-hash"
-                                           href="">{{ 'pimee_product_asset.enrich_asset.button.upload'|trans }}</a>
-                                        <a class="btn btn-info btn-mini no-hash"
-                                           href="">{{ 'pimee_product_asset.enrich_asset.button.delete'|trans }}</a>
+                                        {{ form_row(reference.file) }}
+                                        {#<a class="btn btn-info btn-mini no-hash"#}
+                                           {#href="">{{ 'pimee_product_asset.enrich_asset.button.upload'|trans }}</a>#}
+                                        {#<a class="btn btn-info btn-mini no-hash"#}
+                                           {#href="">{{ 'pimee_product_asset.enrich_asset.button.delete'|trans }}</a>#}
                                     </td>
                                 </tr>
                                 </tbody>
@@ -98,16 +99,18 @@
                                             <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
                                             <td>{{ variationModel.file.mimeType }}</td>
                                             <td>
-                                                <a class="btn btn-info btn-mini no-hash"
-                                                   href="">{{ 'pimee_product_asset.enrich_asset.button.upload'|trans }}</a>
-                                                <a class="btn btn-info btn-mini no-hash"
-                                                   href="">{{ 'pimee_product_asset.enrich_asset.button.delete'|trans }}</a>
+                                                {{ form_row(variation.file) }}
+                                                {#<a class="btn btn-info btn-mini no-hash"#}
+                                                   {#href="">{{ 'pimee_product_asset.enrich_asset.button.upload'|trans }}</a>#}
+                                                {#<a class="btn btn-info btn-mini no-hash"#}
+                                                   {#href="">{{ 'pimee_product_asset.enrich_asset.button.delete'|trans }}</a>#}
                                             </td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 {% else %}
                                     No variation file for the channel {{ variationModel.channel.label }}.
+                                    {{ form_row(variation.file) }}
                                 {% endif %}
                             </div>
 

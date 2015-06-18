@@ -205,6 +205,7 @@ class ProductAssetController extends Controller
 
         if ($form->isValid()) {
             try {
+                $this->handleAssetFiles($productAsset);
                 $this->assetSaver->save($productAsset);
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
@@ -287,6 +288,16 @@ class ProductAssetController extends Controller
         }
 
         return $this->redirect($this->generateUrl('pimee_product_asset_edit', ['id' => $assetId]));
+    }
+
+    /**
+     * TODO: dedicated service if needed
+     *
+     * @param AssetInterface $asset
+     */
+    protected function handleAssetFiles(AssetInterface $asset)
+    {
+
     }
 
     /**
