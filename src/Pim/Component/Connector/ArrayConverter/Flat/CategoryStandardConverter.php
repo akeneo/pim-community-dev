@@ -15,17 +15,6 @@ use Pim\Component\Connector\Exception\ArrayConversionException;
  */
 class CategoryStandardConverter implements StandardArrayConverterInterface
 {
-    /** @var LocaleRepositoryInterface */
-    protected $localeRepository;
-
-    /**
-     * @param LocaleRepositoryInterface $localeRepository
-     */
-    public function __construct(LocaleRepositoryInterface $localeRepository)
-    {
-        $this->localeRepository = $localeRepository;
-    }
-
     /**
      * {@inheritdoc}
      *
@@ -75,7 +64,6 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
     protected function validate(array $item)
     {
         $this->validateRequiredFields($item, ['code']);
-        $this->validateAuthorizedFields($item, ['code', 'parent']);
     }
 
     /**
@@ -103,32 +91,6 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
                         'Field "%s" must be filled',
                         $requiredField,
                         implode(', ', array_keys($item))
-                    )
-                );
-            }
-        }
-    }
-
-    /**
-     * @param array $item
-     * @param array $authorizedFields
-     *
-     * @throws ArrayConversionException
-     */
-    protected function validateAuthorizedFields(array $item, array $authorizedFields)
-    {
-        $localeCodes = $this->localeRepository->getActivatedLocaleCodes();
-        foreach ($localeCodes as $code) {
-            $authorizedFields[] = 'label-' . $code;
-        }
-
-        foreach ($item as $field => $data) {
-            if (!in_array($field, $authorizedFields)) {
-                throw new ArrayConversionException(
-                    sprintf(
-                        'Field "%s" is provided, authorized fields are: "%s"',
-                        $field,
-                        implode(', ', $authorizedFields)
                     )
                 );
             }
