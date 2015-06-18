@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -20,6 +21,7 @@ use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -174,12 +176,15 @@ class ProductAssetController extends Controller
         $productAsset = $this->findProductAssetOr404($id);
         $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
 
-        $attachments = $this->createAttachments($productAsset);
+        $metadata = null;
+        if (null !== $productAsset) {
+            $metadata = $this->getAssetMetadata($productAsset);
+        }
 
         return [
-            'asset'       => $productAsset,
-            'form'        => $assetForm,
-            'attachments' => $attachments
+            'asset'    => $productAsset,
+            'form'     => $assetForm,
+            'metadata' => $metadata
         ];
     }
 
@@ -338,6 +343,36 @@ class ProductAssetController extends Controller
         }
 
         return $attachments;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAssetMetadata(AssetInterface $productAsset)
+    {
+        $metadata = [];
+
+        foreach ($productAsset->getReferences() as $reference) {
+            /** @var ReferenceInterface $reference */
+            $metadata['references'][$reference->getId()] = $reference->getFile() ? $this->getFileMetadata($reference->getFile()) : null;
+            foreach ($reference->getVariations() as $variation) {
+                $metadata['variations'][$variation->getId()] = $variation->getFile() ? $this->getFileMetadata($variation->getFile()) : null;
+            }
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * @param FileInterface $file
+     *
+     * @return array
+     */
+    protected function getFileMetadata(FileInterface $file)
+    {
+        $metadata = $this->metadataRepository->findOneBy(['file' => $file->getId()]);
+
+        return $metadata;
     }
 
     /**
