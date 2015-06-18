@@ -75,12 +75,13 @@ define([
                 ).then(function (attributes, locales, channels, currencies, productAttributes) {
                     var deferred = new $.Deferred();
                     var values = {};
+                    product.values = Array.isArray(product.values) && 0 === product.values.length ? {} : product.values;
 
                     _.each(productAttributes, function (attributeCode) {
                         var attribute = _.findWhere(attributes, {code: attributeCode});
 
                         values[attribute.code] = AttributeManager.generateMissingValues(
-                            (attribute.code in product.values) ? product.values[attribute.code] : [],
+                            _.has(product.values, attribute.code) ? product.values[attribute.code] : [],
                             attribute,
                             locales,
                             channels,
