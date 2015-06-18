@@ -9,6 +9,7 @@
 - Category filter is separated from other datagrid filters for performance concerns
 - Use MySQL as a non blocking session storage
 - Handle Doctrine mapping overrides smoothly (no more need to copy/paste the full mapping of an entity or a document)
+- Product edit form revamp
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
