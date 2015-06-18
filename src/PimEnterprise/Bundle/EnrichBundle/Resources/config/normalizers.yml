@@ -20,8 +20,7 @@ services:
         class: %pimee_enrich.normalizer.version.class%
         arguments:
             - '@pim_enrich.normalizer.version'
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - %pimee_workflow.entity.published_product.class%
+            - '@pimee_workflow.repository.published_product'
         tags:
             - { name: pim_internal_api_serializer.normalizer, priority: 120 }
 

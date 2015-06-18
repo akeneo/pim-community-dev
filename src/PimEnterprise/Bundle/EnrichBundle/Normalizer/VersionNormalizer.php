@@ -2,8 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Normalizer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\VersioningBundle\Model\Version;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -15,20 +14,22 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class VersionNormalizer implements NormalizerInterface
 {
-    /** @var string */
-    protected $publProductClass;
-
     /** @var NormalizerInterface */
     protected $versionNormalizer;
 
-    /** @var ManagerRegistry */
-    protected $doctrine;
+    /** @var PublishedProductRepositoryInterface */
+    protected $repository;
 
-    public function __construct(NormalizerInterface $versionNormalizer, ManagerRegistry $doctrine, $publProductClass)
-    {
+    /**
+     * @param NormalizerInterface                 $versionNormalizer
+     * @param PublishedProductRepositoryInterface $repository
+     */
+    public function __construct(
+        NormalizerInterface $versionNormalizer,
+        PublishedProductRepositoryInterface $repository
+    ) {
         $this->versionNormalizer = $versionNormalizer;
-        $this->doctrine          = $doctrine;
-        $this->publProductClass  = $publProductClass;
+        $this->repository        = $repository;
     }
 
     /**
@@ -37,11 +38,7 @@ class VersionNormalizer implements NormalizerInterface
     public function normalize($version, $format = null, array $context = array())
     {
         $normalizedVersion = $this->versionNormalizer->normalize($version, $format, $context);
-
-
-        $publishedProduct = $this->doctrine->getManagerForClass($this->publProductClass)
-                ->getRepository($this->publProductClass)
-                ->findOneBy(['version' => $version->getId()]);
+        $publishedProduct = $this->repository->findOneByVersionId($version->getId());
 
         return array_merge(
             $normalizedVersion,

@@ -46,6 +46,15 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     public function findOneByOriginalProductId($originalProductId);
 
     /**
+     * Fetch a published product by the version
+     *
+     * @param string|integer $versionId
+     *
+     * @return PublishedProductInterface
+     */
+    public function findOneByVersionId($versionId);
+
+    /**
      * Fetch many published products by a list of working copy product ids
      *
      * @param ProductInterface[] $originalProducts
