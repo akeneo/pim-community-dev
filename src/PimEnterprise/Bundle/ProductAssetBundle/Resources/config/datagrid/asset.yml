@@ -23,6 +23,11 @@ datagrid:
                 type: field
                 frontend_type: string
                 label: pimee_product_asset.description.label
+            tags:
+                label: Tags
+                type: twig
+                template: PimDataGridBundle:Property:options.html.twig
+                frontend_type: html
             enabled:
                 label:         pimee_product_asset.status.label
                 type:          twig
