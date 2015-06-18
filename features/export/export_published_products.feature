@@ -8,6 +8,7 @@ Feature: Export published products
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
+  @skip-pef
   Scenario: Successfully export published products
     Given the following job "clothing_mobile_published_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/clothing_mobile_published_product_export.csv |

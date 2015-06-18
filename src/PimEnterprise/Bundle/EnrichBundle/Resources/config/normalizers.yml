@@ -1,0 +1,34 @@
+parameters:
+    pimee_enrich.serializer.normalizer.rule_relation.class: PimEnterprise\Bundle\EnrichBundle\Normalizer\RuleRelationNormalizer
+    pimee_enrich.normalizer.version.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\VersionNormalizer
+    pimee_enrich.normalizer.product.class:                  PimEnterprise\Bundle\EnrichBundle\Normalizer\ProductNormalizer
+
+services:
+    pimee_enrich.serializer.normalizer.granted_family:
+        parent: pim_serializer.normalizer.family
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }
+
+    pimee_enrich.serializer.normalizer.rule_relation:
+        class: %pimee_enrich.serializer.normalizer.rule_relation.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 100 }
+
+    pimee_enrich.normalizer.version:
+        class: %pimee_enrich.normalizer.version.class%
+        arguments:
+            - '@pim_enrich.normalizer.version'
+            - '@pimee_workflow.repository.published_product'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }
+
+    pimee_enrich.normalizer.product:
+        class: %pimee_enrich.normalizer.product.class%
+        arguments:
+            - '@pim_enrich.normalizer.product'
+            - '@pimee_workflow.manager.published_product'
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: pim_internal_api_serializer.normalizer, priority: 120 }

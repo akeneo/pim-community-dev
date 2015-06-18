@@ -8,3 +8,7 @@ pimee_product:
 pimee_locale:
     resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_locale.yml'
     prefix: /configuration/locale
+
+pimee_rule_relation:
+    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_rule_relation.yml'
+    prefix: /rest/rule_relation/

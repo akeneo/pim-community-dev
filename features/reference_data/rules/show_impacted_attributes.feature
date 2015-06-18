@@ -33,5 +33,4 @@ Feature: On a product edit/show display impacted attributes
     And I add available attributes New sole color
     Then I should see that New sole color is a smart
     And I should see that New sole fabric is a smart
-    And I should see the smart attribute tooltip
 

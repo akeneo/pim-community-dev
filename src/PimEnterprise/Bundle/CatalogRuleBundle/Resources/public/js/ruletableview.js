@@ -1,5 +1,15 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'oro/translator', 'routing', 'oro/mediator', 'oro/loading-mask', 'pim/item/tableview', 'pimee/catalogrule/ruleitemview'],
+    [
+        'jquery',
+        'underscore',
+        'backbone',
+        'oro/translator',
+        'routing',
+        'oro/mediator',
+        'oro/loading-mask',
+        'pim/item/tableview',
+        'pimee/catalogrule/ruleitemview'
+    ],
     function ($, _, Backbone, __, Routing, mediator, LoadingMask, TableView, RuleItemView) {
         'use strict';
 
@@ -12,7 +22,7 @@ define(
 
         var ItemCollection = Backbone.Collection.extend({
             model: RuleItem,
-            initialize: function(options) {
+            initialize: function (options) {
                 this.url = options.url;
             }
         });
@@ -46,7 +56,7 @@ define(
                     '</tr>' +
                 '</tfoot>'
             ),
-            renderTemplate: function() {
+            renderTemplate: function () {
                 if (this.collection.models.length > 0) {
                     return this.template({
                         'code_label':      __('pimee_catalog_rule.attribute.list.code.label'),
@@ -58,10 +68,11 @@ define(
                         'no_rule_yet_label': __('pimee_catalog_rule.attribute.list.no_rule_yet.label')
                     });
                 }
-            },
+            }
         });
 
-        return function($element) {
+        return function ($element) {
+            /* jshint nonew:false */
             new RuleCollectionView({
                 $target: $element,
                 url: Routing.generate(

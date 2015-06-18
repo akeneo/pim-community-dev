@@ -24,6 +24,7 @@ Feature: Validate text attributes of a product
     And I am logged in as "Mary"
     And I am on the "foo" product page
 
+  @skip-pef
   Scenario: Validate the unique constraint of text attribute
     Given I change the Email to "bar@example.com"
     And I save the product
@@ -31,6 +32,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the max characters constraint of text attribute
     Given I change the Barcode to "000000000"
     And I save the product
@@ -38,6 +40,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the max characters constraint of scopable text attribute
     Given I change the "mobile Barcodes" to "000000000"
     And I save the product
@@ -45,6 +48,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the email validation rule constraint of text attribute
     Given I change the Email to "foo"
     And I save the product
@@ -52,6 +56,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the email validation rule constraint of scopable text attribute
     Given I change the "mobile Emails" to "foo"
     And I save the product
@@ -59,6 +64,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the url validation rule constraint of text attribute
     Given I change the Link to "bar"
     And I save the product
@@ -66,6 +72,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the url validation rule constraint of scopable text attribute
     Given I change the "mobile Links" to "bar"
     And I save the product
@@ -73,6 +80,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the regexp validation rule constraint of text attribute
     Given I change the Barcode to "111111"
     And I save the product
@@ -80,6 +88,7 @@ Feature: Validate text attributes of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the regexp validation rule constraint of scopable text attribute
     Given I change the "mobile Barcodes" to "111111"
     And I save the product
