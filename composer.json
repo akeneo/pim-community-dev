@@ -16,8 +16,8 @@
         }
     },
     "require": {
-        "akeneo/pim-community-dev": "dev-feature/product_edit_form",
-        "oro/platform": "dev-pim-1.4-pef@dev",
+        "akeneo/pim-community-dev": "dev-master",
+        "oro/platform": "dev-pim-1.4@dev",
         "phpspec/php-diff": "1.0.2",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0",
