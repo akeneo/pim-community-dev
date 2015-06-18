@@ -38,9 +38,10 @@ class VersionNormalizer implements NormalizerInterface
     {
         $normalizedVersion = $this->versionNormalizer->normalize($version, $format, $context);
 
+
         $publishedProduct = $this->doctrine->getManagerForClass($this->publProductClass)
                 ->getRepository($this->publProductClass)
-                ->findOneBy(['version' => $version]);
+                ->findOneBy(['version' => $version->getId()]);
 
         return array_merge(
             $normalizedVersion,
