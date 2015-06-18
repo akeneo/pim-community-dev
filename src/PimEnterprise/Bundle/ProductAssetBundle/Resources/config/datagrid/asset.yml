@@ -82,3 +82,19 @@ datagrid:
                     type:      date
                     data_name: pa.endOfUseAt
                     label:     pimee_product_asset.endOfUse.label
+        actions:
+            edit:
+                type:      tab-redirect
+                label:     Edit properties of the asset
+                tab:       pim_product_asset_global-settings
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pimee_product_asset_edit
+                params:
+                    - id
+#                    - dataLocale
