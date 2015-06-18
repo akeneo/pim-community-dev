@@ -22,4 +22,19 @@
 
         {#</div>#}
     {#{% endfor %}#}
+
+    {% for reference in form.references %}
+
+        <hr/>
+        <p>reference</p>
+        {% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig'
+        with {'path': reference.vars.data.file.key} only %}
+        {% for variation in reference.variations %}
+            <hr/>
+            <div>{{ variation.vars.data.channel.code }}</div>
+            {% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig'
+            with {'path': variation.vars.data.file.key} only %}
+        {% endfor %}
+    {% endfor %}
+
 </div>

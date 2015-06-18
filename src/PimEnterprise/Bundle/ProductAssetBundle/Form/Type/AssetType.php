@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -50,6 +49,8 @@ class AssetType extends AbstractType
             ]
         );
         $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
+
+        $builder->add('references', 'collection', array('type' => 'pimee_product_asset_reference'));
     }
 
     /**
