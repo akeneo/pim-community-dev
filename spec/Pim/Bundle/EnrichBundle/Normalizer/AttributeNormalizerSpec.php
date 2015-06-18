@@ -34,7 +34,7 @@ class AttributeNormalizerSpec extends ObjectBehavior
             'code'            => 'text',
             'id'              => 12,
             'wysiwyg_enabled' => true,
-            'empty_value'     => ''
+            'empty_value'     => null
         ]);
 
         $normalizer->normalize($price, 'json', [])->willReturn(['code' => 'boolean']);
