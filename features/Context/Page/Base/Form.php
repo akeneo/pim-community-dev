@@ -89,7 +89,7 @@ class Form extends Base
         });
 
         if (!$elt->find('css', sprintf('button.active[data-panel="%s"]', strtolower($panel)))) {
-            $elt->pressButton($panel);
+            $elt->find('css', sprintf('button[data-panel]:contains("%s")', $panel))->click();
         }
     }
 
