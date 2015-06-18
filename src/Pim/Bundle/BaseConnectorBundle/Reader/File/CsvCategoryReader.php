@@ -11,12 +11,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
  */
 class CsvCategoryReader extends CsvReader
 {
-    /** @var int */
-    protected $limit = 10;
-
-    /** @var int */
-    protected $offset = 0;
-
     /** @var \ArrayIterator */
     protected $categories;
 
