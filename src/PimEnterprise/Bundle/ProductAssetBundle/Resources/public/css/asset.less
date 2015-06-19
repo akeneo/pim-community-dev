@@ -88,7 +88,7 @@
 
             table.table {
               float: left;
-              width: 35%;
+              width: 75%;
 
               table.table {
                 thead tr th:first-child {
@@ -103,9 +103,30 @@
           }
 
           div.variation {
+
+            figure.thumbnail {
+              width: 100px;
+              height: 100px;
+              float: left;
+              padding: 2px;
+              overflow: hidden;
+              margin-right: 7%;
+
+              img {
+                max-width: 94px;
+                max-height: 94px;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+              }
+            }
+
             .variation(@color-form-info);
 
             table.table {
+              float: left;
+              width: 75%;
+
               thead tr th:first-child {
                 width: 20%;
               }

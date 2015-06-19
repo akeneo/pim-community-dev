@@ -35,7 +35,7 @@ class ReferenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'akeneo_file_storage_file');
+        $builder->add('file', 'akeneo_file_storage_file', ['required' => false]);
         $builder->add('variations', 'collection', array('type' => 'pimee_product_asset_variation'));
     }
 

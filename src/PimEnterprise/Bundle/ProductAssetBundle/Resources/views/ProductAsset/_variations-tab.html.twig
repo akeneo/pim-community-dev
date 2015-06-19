@@ -1,4 +1,4 @@
-<div class="tab-pane" id="pimee_product_asset-tabs-variations">
+<div class="tab-pane active" id="pimee_product_asset-tabs-variations">
     {% for reference in form.references %}
         {% set referenceModel = reference.vars.data %}
         <div class="row-fluid variations">
@@ -25,13 +25,13 @@
                                     <tbody>
                                     <tr>
                                         <td>{{ referenceModel.file.originalFilename }}</td>
-                                        <td>{{ form_row(reference.file) }}</td>
+                                        <td>{{ form_widget(reference.file) }}</td>
                                     </tr>
                                     </tbody>
                                 </table>
                             {% else %}
                                 No reference file for the locale {{ referenceModel.locale.code }}.
-                                {{ form_row(reference.file) }}
+                                {{ form_widget(reference.file) }}
                             {% endif %}
                         </div>
                     </div>
@@ -46,10 +46,12 @@
 
                             <div class="row-fluid">
                                 {% if variationModel.file %}
+                                    <figure class="thumbnail">{% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig'
+                                        with {'path': variationModel.file.key, 'filter': 'thumbnail'} only %}</figure>
                                     <table class="table">
                                         <thead>
                                         <tr>
-                                            <th>{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>
+                                            {#<th>{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>#}
                                             {% if 'image' in variationModel.file.mimeType %}
                                                 <th>{{ 'pimee_product_asset.enrich_asset.view.width'|trans }}</th>
                                                 <th>{{ 'pimee_product_asset.enrich_asset.view.height'|trans }}</th>
@@ -63,7 +65,7 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>{{ variationModel.file.originalFilename }}</td>
+                                            {#<td>{{ variationModel.file.originalFilename }}</td>#}
                                             {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
                                                 <td>{{ metadata.variations[variationModel.id].exifSizeWidth }} px</td>
                                                 <td>{{ metadata.variations[variationModel.id].exifSizeHeight }} px</td>
@@ -72,18 +74,19 @@
                                             {% endif %}
                                             <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
                                             <td>{{ variationModel.file.mimeType }}</td>
-                                            <td>{{ form_row(variation.source_file) }}</td>
+                                            <td>{{ form_widget(variation.file) }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
                                 {% else %}
                                     No variation file for the channel {{ variationModel.channel.label }}.
-                                    {{ form_row(variation.source_file) }}
+                                    {{ form_widget(variation.file) }}
                                 {% endif %}
                             </div>
                         </div>
                     </li>
                 {% endfor %}
+
             </ul>
         </div>
     {% endfor %}
