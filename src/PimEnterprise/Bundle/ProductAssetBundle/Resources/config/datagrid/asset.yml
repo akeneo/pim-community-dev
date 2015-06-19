@@ -28,11 +28,11 @@ datagrid:
                 type: twig
                 template: PimDataGridBundle:Property:options.html.twig
                 frontend_type: html
-            enabled:
-                label:         pimee_product_asset.status.label
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
-                frontend_type: html
+#            enabled:
+#                label:         pimee_product_asset.status.label
+#                type:          twig
+#                template:      PimDataGridBundle:Property:enabled.html.twig
+#                frontend_type: html
             endOfUseAt:
                 type: field
                 frontend_type: date
@@ -53,8 +53,8 @@ datagrid:
                     data_name: pa.code
                 description:
                     data_name: pa.description
-                enabled:
-                    data_name: pa.enabled
+#                enabled:
+#                    data_name: pa.enabled
                 endOfUseAt:
                     data_name: pa.endOfUseAt
                 createdAt:
