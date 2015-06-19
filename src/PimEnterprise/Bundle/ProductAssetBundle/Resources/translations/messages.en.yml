@@ -4,6 +4,9 @@ pimee_product_asset:
     acl_group:
         asset: Product assets
     enrich_asset:
+        button:
+            upload: Upload
+            delete: Delete
         view:
             title: Product asset
             code: Code
@@ -45,5 +48,6 @@ pimee_product_asset:
     tags:
         label: Tags
 
-Global settings.title: Global settings
-Variations.title: Variations
+    tabs:
+        global-settings.title: Global settings
+        variations.title: Variations

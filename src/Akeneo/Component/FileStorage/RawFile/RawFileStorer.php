@@ -88,7 +88,7 @@ class RawFileStorer implements RawFileStorerInterface
             throw new FileTransferException($error);
         }
 
-        $this->saver->save($file);
+        $this->saver->save($file, ['flush_only_object' => true]);
         $this->deleteRawFile($localFile);
 
         return $file;

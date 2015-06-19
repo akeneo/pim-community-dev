@@ -42,7 +42,8 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
 
         foreach ($variations as $variation) {
             // TODO check instance of VariationInterface
-            if (!$variation->isLocked()) {
+//            if (!$variation->isLocked()) {
+            if (true) {
                 try {
                     $this->variationFileGenerator->generate($variation);
                     $processedVariations->addItem($variation, ProcessedItem::STATE_SUCCESS);

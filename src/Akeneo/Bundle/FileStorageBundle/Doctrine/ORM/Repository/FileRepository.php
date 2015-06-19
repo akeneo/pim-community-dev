@@ -12,7 +12,7 @@
 namespace Akeneo\Bundle\FileStorageBundle\Doctrine\ORM\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Component\ProductAsset\Repository\FileRepositoryInterface;
+use Akeneo\Component\FileStorage\Repository\FileRepositoryInterface;
 
 /**
  * Implementation of ReferenceRepositoryInterface
