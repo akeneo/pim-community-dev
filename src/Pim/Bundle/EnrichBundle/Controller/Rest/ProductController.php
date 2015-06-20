@@ -166,6 +166,11 @@ class ProductController
             throw new BadRequestHttpException();
         }
 
+        // TODO: PEF should never update groups, no way to do so from the screen, if a product is added to
+        // another group during the save, this relation will be removed, other issue is that variant groups are never
+        // passed here, so a product is always removed from it's variant group when saved
+        unset($data['groups']);
+
         $this->updateProduct($product, $data);
 
         $violations = $this->validator->validate($product);
