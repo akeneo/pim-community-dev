@@ -1518,7 +1518,9 @@ class FixturesContext extends RawMinkContext
         $mediaManager = $this->getMediaManager();
         $allMedia     = $product->getMedia();
         foreach ($allMedia as $media) {
-            unlink($mediaManager->getFilePath($media));
+            if ($media) {
+                unlink($mediaManager->getFilePath($media));
+            }
         }
     }
 
@@ -2310,7 +2312,9 @@ class FixturesContext extends RawMinkContext
     protected function flush($object = null)
     {
         if (!$object) {
-            return $this->flushAll();
+            $this->flushAll();
+
+            return;
         }
 
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));

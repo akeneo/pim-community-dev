@@ -12,6 +12,9 @@ pim_enrich:
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
 
+pim_user:
+    resource: "@PimUserBundle/Resources/config/routing.yml"
+
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"
 
@@ -26,6 +29,9 @@ pim_pdf_generator:
 
 pim_notification:
     resource: "@PimNotificationBundle/Resources/config/routing.yml"
+
+pim_reference_data:
+    resource: "@PimReferenceDataBundle/Resources/config/routing.yml"
 
 # Oro platform
 

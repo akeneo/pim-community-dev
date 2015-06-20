@@ -1,3 +1,4 @@
+@javascript
 Feature: Join an image to a product
   In order to join an image to a product
   As a regular user
@@ -23,11 +24,10 @@ Feature: Join an image to a product
     And I save the product
     Then I should see "akeneo.jpg"
 
-  @javascript
   Scenario: Successfully display the image in a popin
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
-    And I follow "akeneo.jpg"
+    And I open "akeneo.jpg" in the current window
     Then I should see the uploaded image
 
   Scenario: Successfully remove an image
@@ -45,7 +45,6 @@ Feature: Join an image to a product
     And I save the product
     Then I should not see "akeneo.jpg"
 
-  @javascript
   Scenario: Successfully replace an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
@@ -55,7 +54,6 @@ Feature: Join an image to a product
     Then I should not see "akeneo.jpg"
     But I should see "akeneo2.jpg"
 
-  @javascript
   Scenario: Successfully replace and remove an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product

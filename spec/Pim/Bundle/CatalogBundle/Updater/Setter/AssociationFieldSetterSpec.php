@@ -60,20 +60,6 @@ class AssociationFieldSetterSpec extends ObjectBehavior
         $this->shouldThrow(
             InvalidArgumentException::associationFormatExpected(
                 'associations',
-                ['assoc_type_code' => ['products' => []]]
-            )
-        )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => ['products' => []]]]);
-
-        $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
-                'associations',
-                ['assoc_type_code' => ['groups' => []]]
-            )
-        )->during('setFieldData', [$product, 'associations', ['assoc_type_code' => ['groups' => []]]]);
-
-        $this->shouldThrow(
-            InvalidArgumentException::associationFormatExpected(
-                'associations',
                 ['assoc_type_code' => ['products' => [1], 'groups' => []]]
             )
         )->during(

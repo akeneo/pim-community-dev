@@ -70,7 +70,7 @@ services:
     pim_catalog.validator.constraint.unique_variant_axis:
         class: %pim_catalog.validator.constraint.unique_variant_axis.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
 

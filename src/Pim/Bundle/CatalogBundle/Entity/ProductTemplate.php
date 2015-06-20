@@ -34,7 +34,7 @@ class ProductTemplate implements ProductTemplateInterface
         $tmp = new ArrayCollection();
 
         foreach ($values as $value) {
-            $tmp[ProductValueKeyGenerator::getKey($value)] = $value;
+            $tmp[ProductValueKeyGenerator::getKey($value, '_')] = $value;
         }
 
         $this->values = $tmp;
@@ -50,7 +50,7 @@ class ProductTemplate implements ProductTemplateInterface
         $values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $values[ProductValueKeyGenerator::getKey($value)] = $value;
+            $values[ProductValueKeyGenerator::getKey($value, '_')] = $value;
         }
 
         return $values;

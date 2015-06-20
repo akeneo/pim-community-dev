@@ -6,7 +6,7 @@
 
 {% macro api_data_block(user) %}
 <div class="horizontal">
-    <strong class="label label-info">{{ user.api ? user.api.apiKey : 'N/A' }}</strong>
+    <label>{{ user.api ? user.api.apiKey : 'N/A' }}</label>
     {% if resource_granted('pim_user_user_edit') %}
         <a class="btn btn-small no-hash" id="btn-apigen" href="{{ path('oro_user_apigen', { id: user.id }) }}"
            data-title="{{ 'Generate key'|trans }}" data-message="{{ 'Generate key was successful. New key:'|trans }}">
@@ -68,10 +68,8 @@
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
-{% block pageActions %}{% endblock pageActions %}
-
 {% block content_data %}
-  <div class="user-profile-cols">
+  <div>
     {% set id = 'user-profile' %}
 
     {% set dataSubBlocks = [UI.attibuteRow('Email', {value: entity.email, hint: ''|trans})] %}
@@ -113,7 +111,6 @@
             'subblocks': [
                 {
                     'title': '',
-                    'useSpan': false,
                     'data': [
                         UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
                         UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
@@ -122,7 +119,6 @@
                 },
                 {
                     'title': '',
-                    'useSpan': false,
                     'data': [
                         UI.attibuteRow('User salt'|trans, entity.salt)
                     ]
@@ -149,7 +145,6 @@
                 'subblocks': [
                     {
                         'title': '',
-                        'useSpan': false,
                         'data': [additional_data]
                     }
                 ]

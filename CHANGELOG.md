@@ -10,6 +10,7 @@
 - Use MySQL as a non blocking session storage
 - Attribute imports does not support yaml files anymore, only csv files are allowed
 - Handle Doctrine mapping overrides smoothly (no more need to copy/paste the full mapping of an entity or a document)
+- Product edit form revamp
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
@@ -123,6 +124,9 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\Operator\MassEditOperatorInterface`
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
+- Remove Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface replaced by Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface
+- Remove Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface
+- Remove `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 - ProductTemplateUpdater now takes ProductPropertyUpdaterInterface as argument and not anymore ProductUpdaterInterface
 - Remove fixtures_product_yml and fixtures_association_yml from the InstallerBundle, csv format is now mandatory for products
 - ProductUpdater takes ValidatorInterface as second argument
@@ -135,6 +139,7 @@
 - Constructor of `Pim\Bundle\DatagridBundle\Manager\DatagridViewManager` has been changed
 - Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
 - Depreciate and change constructor of `Pim\Bundle\TransformBundle\Builder\FieldNameBuilder`
+- Replace the argument ProductManager by ProductRepositoryInterface in the constructor of `Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator`
 
 # 1.3.16 (2015-06-08)
 

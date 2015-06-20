@@ -1,3 +1,4 @@
+@javascript
 Feature: Order attributes
   In order to always have the same attribute fields order in each locale
   As a regular user
@@ -8,7 +9,7 @@ Feature: Order attributes
     And a "Rangers" product
     And I am logged in as "Mary"
 
-  @javascript @skip
+  @skip
   Scenario: Successfully update an attribute position
     Given I am on the "info" attribute group page
     And I visit the "Attributes" tab

@@ -5,6 +5,7 @@ namespace Context\Page\Base;
 use Behat\Mink\Element\NodeElement;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Context\SpinCapableTrait;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 
@@ -17,14 +18,25 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
  */
 class Base extends Page
 {
+    use SpinCapableTrait;
+
     protected $elements = [
         'Dialog'         => ['css' => 'div.modal'],
         'Title'          => ['css' => '.navbar-title'],
+        'Product title'  => ['css' => '.product-title'],
         'HeadTitle'      => ['css' => 'title'],
         'Flash messages' => ['css' => '.flash-messages-holder'],
         'Navigation Bar' => ['css' => 'header#oroplatform-header'],
         'Container'      => ['css' => '#container'],
     ];
+
+    /**
+     * Verify that page is loaded after login
+     */
+    public function verifyAfterLogin()
+    {
+        return true;
+    }
 
     /**
      * {@inheritdoc}
@@ -99,6 +111,8 @@ class Base extends Page
     /**
      * Get page title
      *
+     * @throws \Exception
+     *
      * @return string
      */
     public function getTitle()
@@ -110,7 +124,12 @@ class Base extends Page
         $name      = $elt->find('css', '.product-name');
 
         if (!$subtitle || !$separator || !$name) {
-            throw new \Exception('Could not find the page title');
+            $title = $this->getElement('Product title')->find('css', '.product-label')->getText();
+            if (!$title) {
+                throw new \Exception('Could not find the page title');
+            }
+
+            return $title;
         }
 
         return sprintf(
@@ -324,38 +343,5 @@ class Base extends Page
         }
 
         return $listItem;
-    }
-
-    /**
-     * @param callable $callable
-     * @param int      $wait
-     *
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function spin($callable, $wait = 60, $message = '')
-    {
-        for ($i = 0; $i < $wait; $i++) {
-            try {
-                if ($result = $callable($this)) {
-                    return $result;
-                }
-            } catch (\Exception $e) {
-                // do nothing
-            }
-
-            if ($message) {
-                printf('%s' . PHP_EOL, $message);
-            }
-            sleep(1);
-        }
-
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
-
-        throw new \Exception(
-            "Timeout thrown by ".$backtrace[1]['class']."::".$backtrace[1]['function']."()\n".
-            $backtrace[1]['file'].", line ".$backtrace[1]['line']
-        );
     }
 }

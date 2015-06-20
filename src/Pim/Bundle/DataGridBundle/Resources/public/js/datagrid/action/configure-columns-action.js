@@ -285,7 +285,7 @@ define(
                     var columnListView = new ColumnListView({collection: columnList});
 
                     var modal = new Backbone.BootstrapModal({
-                        className: 'modal column-configurator-modal',
+                        className: 'modal modal-large column-configurator-modal',
                         modalOptions: {
                             backdrop: 'static',
                             keyboard: false

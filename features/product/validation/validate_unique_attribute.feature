@@ -33,9 +33,8 @@ Feature: Validate unique attribute of a product
     When I am on the "text2" product page
     And I change the Text to "my-text"
     And I save the product
-    And I should see validation tooltip "The value my-text is already set on another product for the unique attribute text"
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    Then I should see validation tooltip "The value my-text is already set on another product for the unique attribute text"
+    And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3961
   Scenario: Validate the unique constraint of text attribute with an empty text
@@ -55,8 +54,7 @@ Feature: Validate unique attribute of a product
     And I change the Number to "12"
     And I save the product
     And I should see validation tooltip "The value 12 is already set on another product for the unique attribute number"
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3961
   Scenario: Validate the unique constraint of number attribute with an empty number
@@ -77,8 +75,7 @@ Feature: Validate unique attribute of a product
     And I change the Date to "2015/01/01"
     And I save the product
     And I should see validation tooltip "The value 2015-01-01 is already set on another product for the unique attribute date"
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   @jira https://akeneo.atlassian.net/browse/PIM-3961
   Scenario: Validate the unique constraint of date attribute with an empty date

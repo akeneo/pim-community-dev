@@ -1,3 +1,6 @@
+@import 'less/variables';
+@import 'less/mixins';
+
 .wizard li {
   position: relative;
   display: inline-block;
@@ -27,22 +30,17 @@
   width: 50%;
   height: 3px;
   background-color: @color-light_grey;
+  &.active {
+    background-color: @color-purple_light;
+  }
 }
 
 .progress-start {
   left: 0;
-
-  &.active {
-    background-color: @color-purple_light;
-  }
 }
 
 .progress-end {
   right: 0;
-
-  &.active {
-    background-color: @color-purple_light;
-  }
 }
 
 .wizard-header {

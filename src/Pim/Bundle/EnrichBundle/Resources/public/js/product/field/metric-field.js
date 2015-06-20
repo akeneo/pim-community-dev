@@ -1,0 +1,62 @@
+'use strict';
+/**
+ * Metric field
+ *
+ * @author    Julien Sanchez <julien@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+define([
+        'jquery',
+        'pim/field',
+        'underscore',
+        'pim/entity-manager',
+        'text!pim/template/product/field/metric',
+        'jquery.select2'
+        ], function ($, Field, _, EntityManager, fieldTemplate) {
+    return Field.extend({
+        fieldTemplate: _.template(fieldTemplate),
+        fieldType: 'metric',
+        events: {
+            'change .field-input .data, .field-input .unit': 'updateModel'
+        },
+        renderInput: function (context) {
+            var $element = $(this.fieldTemplate(context));
+            $element.find('.unit').select2('destroy').select2();
+
+            return $element;
+        },
+        getTemplateContext: function () {
+            return $.when(
+                Field.prototype.getTemplateContext.apply(this, arguments),
+                EntityManager.getRepository('measure').findAll()
+            ).then(function (templateContext, measures) {
+                templateContext.measures = measures;
+
+                return templateContext;
+            });
+        },
+        setFocus: function () {
+            this.$('.data:first').focus();
+        },
+        updateModel: function () {
+            var data = this.$('.field-input .data').val();
+
+            if ('' !== data) {
+                var numericValue = -1 !== data.indexOf('.') ? parseFloat(data) : parseInt(data);
+
+                if (!isNaN(numericValue)) {
+                    data = numericValue;
+                }
+            }
+
+            var unit = this.$('.field-input .unit option:selected').val();
+
+            this.setCurrentValue({
+                unit: '' !== unit ? unit : this.attribute.default_metric_unit,
+                data: '' !== data ? data : null
+            });
+        }
+    });
+});
