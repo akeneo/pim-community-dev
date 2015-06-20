@@ -12,6 +12,7 @@ Feature: Validate identifier attribute of a product
       | bar | summer_collection |
     And I am logged in as "Mary"
 
+  @skip-pef
   Scenario: Validate the unique constraint of identifier attribute
     Given I am on the "foo" product page
     And I change the SKU to "bar"
@@ -20,6 +21,7 @@ Feature: Validate identifier attribute of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the max characters constraint of identifier attribute
     Given I edit the "sku" attribute
     And I change the "Max characters" to "10"
@@ -31,6 +33,7 @@ Feature: Validate identifier attribute of a product
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
 
+  @skip-pef
   Scenario: Validate the regexp validation rule constraint of identifier attribute
     Given I edit the "sku" attribute
     And I change the "Validation rule" to "Regular expression"

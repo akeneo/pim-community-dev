@@ -119,47 +119,6 @@ class PublishedProductController extends AbstractController
     }
 
     /**
-     * Publish a product
-     *
-     * @param Request    $request
-     * @param int|string $id
-     *
-     * @Template
-     * @AclAncestor("pimee_workflow_published_product_index")
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function publishAction(Request $request, $id)
-    {
-        $product = $this->manager->findOriginalProduct($id);
-
-        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
-        if (!$isOwner) {
-            throw new AccessDeniedException();
-        }
-
-        $this->manager->publish($product);
-
-        if ($request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                [
-                    'successful' => true,
-                    'message' => $this->translator->trans('flash.product.published')
-                ]
-            );
-        }
-
-        $this->addFlash('success', 'flash.product.published');
-
-        return parent::redirectToRoute(
-            'pim_enrich_product_edit',
-            ['id' => $product->getId(), 'dataLocale' => $this->getDataLocale()]
-        );
-    }
-
-    /**
      * Unpublish a product
      *
      * @param Request    $request

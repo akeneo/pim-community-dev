@@ -1,6 +1,7 @@
 # 1.4.x
 
 ## Technical improvements
+- Product edit form revamp
 - Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for all models)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 

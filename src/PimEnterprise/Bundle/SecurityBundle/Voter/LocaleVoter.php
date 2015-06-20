@@ -19,10 +19,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * Locale voter, allows to know if products of a category can be edited or consulted by a
- * user depending on his groups
+ * Locale voter, allows to know if a locale can be edited or consulted by a user depending on his groups
  *
- * @author Julien Janvier <julien.janvier@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocaleVoter implements VoterInterface
 {
@@ -58,14 +57,14 @@ class LocaleVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $locale, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
-        if ($this->supportsClass($object) && !is_string($token->getUser())) {
+        if ($this->supportsClass($locale) && !is_string($token->getUser())) {
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
                     $result        = VoterInterface::ACCESS_DENIED;
-                    $grantedGroups = $this->extractUserGroups($attribute, $object);
+                    $grantedGroups = $this->extractUserGroups($attribute, $locale);
 
                     foreach ($grantedGroups as $group) {
                         if ($token->getUser()->hasGroup($group)) {
@@ -80,19 +79,19 @@ class LocaleVoter implements VoterInterface
     }
 
     /**
-     * Get usr groups for specific attribute and object
+     * Get usr groups for specific attribute and locale
      *
      * @param string          $attribute
-     * @param LocaleInterface $object
+     * @param LocaleInterface $locale
      *
      * @return Group[]
      */
-    protected function extractUserGroups($attribute, $object)
+    protected function extractUserGroups($attribute, $locale)
     {
         if ($attribute === Attributes::EDIT_PRODUCTS) {
-            $grantedGroups = $this->accessManager->getEditUserGroups($object);
+            $grantedGroups = $this->accessManager->getEditUserGroups($locale);
         } else {
-            $grantedGroups = $this->accessManager->getViewUserGroups($object);
+            $grantedGroups = $this->accessManager->getViewUserGroups($locale);
         }
 
         return $grantedGroups;

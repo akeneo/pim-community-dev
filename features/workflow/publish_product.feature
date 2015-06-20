@@ -80,9 +80,10 @@ Feature: Publish a product
     And I should see "Customs"
     Then I should see "100.00 EUR"
     Given the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2014-03-25    |           |
+      | product   | attribute  | value         |
+      | my-jacket | release    | 2014-03-25    |
     And I edit the "my-jacket" product
+    And I save the product
     When I press the "Publish" button
     And I confirm the publishing
     And I am on the published index page
@@ -91,7 +92,7 @@ Feature: Publish a product
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
 
-  @javascript
+  @skip-pef @javascript
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following attributes:
       | code    | label   | type        | scopable | localizable | allowedExtensions | metric_family | default_metric_unit |

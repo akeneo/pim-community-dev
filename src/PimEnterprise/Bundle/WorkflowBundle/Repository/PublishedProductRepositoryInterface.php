@@ -28,13 +28,31 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
 {
     /**
-     * Fetch a published product by the working copy product id
+     * Fetch a published product by the working copy product
      *
      * @param ProductInterface $originalProduct
      *
      * @return PublishedProductInterface
      */
     public function findOneByOriginalProduct(ProductInterface $originalProduct);
+
+    /**
+     * Fetch a published product by the working copy product id
+     *
+     * @param string|integer $originalProductId
+     *
+     * @return PublishedProductInterface
+     */
+    public function findOneByOriginalProductId($originalProductId);
+
+    /**
+     * Fetch a published product by the version
+     *
+     * @param string|integer $versionId
+     *
+     * @return PublishedProductInterface
+     */
+    public function findOneByVersionId($versionId);
 
     /**
      * Fetch many published products by a list of working copy product ids
