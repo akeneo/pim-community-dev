@@ -139,6 +139,7 @@
 - Constructor of `Pim\Bundle\DatagridBundle\Manager\DatagridViewManager` has been changed
 - Constructor of `Pim\Bundle\EnrichBundle\Manager\SequentialEditManager` has been changed
 - Depreciate and change constructor of `Pim\Bundle\TransformBundle\Builder\FieldNameBuilder`
+- Replace the argument ProductManager by ProductRepositoryInterface in the constructor of `Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator`
 
 # 1.3.16 (2015-06-08)
 

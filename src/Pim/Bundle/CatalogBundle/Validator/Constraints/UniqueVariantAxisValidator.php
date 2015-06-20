@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -19,17 +19,17 @@ use Symfony\Component\Validator\ConstraintValidator;
  */
 class UniqueVariantAxisValidator extends ConstraintValidator
 {
-    /** @var ProductManager $manager */
-    protected $manager;
+    /** @var ProductRepositoryInterface $repository */
+    protected $repository;
 
     /**
      * Constructor
      *
-     * @param ProductManager $manager
+     * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ProductManager $manager)
+    public function __construct(ProductRepositoryInterface $repository)
     {
-        $this->manager = $manager;
+        $this->repository = $repository;
     }
 
     /**
@@ -152,8 +152,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             return [];
         }
 
-        $repository = $this->manager->getProductRepository();
-        $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
+        $matchingProducts = $this->repository->findAllForVariantGroup($variantGroup, $criteria);
 
         if ($entity) {
             $matchingProducts = array_filter(
