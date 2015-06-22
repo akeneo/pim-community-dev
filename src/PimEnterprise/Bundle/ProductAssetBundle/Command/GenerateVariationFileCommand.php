@@ -12,14 +12,6 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
-use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
-class GenerateVariationFileCommand extends ContainerAwareCommand
+class GenerateVariationFileCommand extends AbstractGenerationVariationFileCommand
 {
     /**
      * {@inheritdoc}
@@ -37,6 +29,7 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('pim:asset:generate-variation');
+        $this->setDescription('Generate the variation file for a given asset, channel and locale.');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('channel', InputArgument::REQUIRED);
         $this->addArgument('locale', InputArgument::OPTIONAL);
@@ -47,105 +40,54 @@ class GenerateVariationFileCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $assetCode = $input->getArgument('asset');
-        if (null === $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode)) {
-            $output->writeln(sprintf('<error>The asset "%s" does not exist.</error>', $assetCode));
+        try {
+            $asset   = $this->retrieveAsset($input->getArgument('asset'));
+            $channel = $this->retrieveChannel($input->getArgument('channel'));
 
-            return 1;
-        }
-
-        $channelCode = $input->getArgument('channel');
-        if (null === $channel = $this->getChannelRepository()->findOneByIdentifier($channelCode)) {
-            $output->writeln(sprintf('<error>The channel "%s" does not exist.</error>', $channelCode));
-
-            return 1;
-        }
-
-        $locale = null;
-        if (null !== $localeCode = $input->getArgument('locale')) {
-            if (null === $locale = $this->getLocaleRepository()->findOneByIdentifier($localeCode)) {
-                $output->writeln(sprintf('<error>The locale "%s" does not exist.</error>', $localeCode));
-
-                return 1;
+            $locale = null;
+            if (null !== $localeCode = $input->getArgument('locale')) {
+                $this->retrieveLocale($localeCode);
             }
-        }
 
-        if (!$asset->hasReference($locale)) {
-            $output->writeln(
-                sprintf('<error>The asset "%s" has no reference for the expected locale.</error>', $assetCode)
-            );
+            $reference = $this->retrieveReference($asset, $locale);
+            $variation = $this->retrieveVariation($reference, $channel);
+
+        } catch (\LogicException $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        $this->ensureVariationExists($asset, $channel, $locale);
         $generator = $this->getVariationFileGenerator();
-        $generator->generateFromAsset($asset, $channel, $locale);
+        $output->writeln($this->getGenerationMessage($asset, $channel, $locale));
+
+        try {
+            $generator->generate($variation);
+        } catch (\Exception $e) {
+            $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+
+            return 1;
+        }
+
+        $output->writeln('<info>Done!</info>');
 
         return 0;
     }
 
+
     /**
-     * @param AssetInterface    $asset
-     * @param ChannelInterface  $channel
-     * @param LocaleInterface   $locale
+     * @param $channelCode
+     *
+     * @return ChannelInterface
      *
      * @throws \LogicException
      */
-    protected function ensureVariationExists(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    ) {
-        if (null === $reference = $asset->getReference($locale)) {
-            throw new \LogicException(
-                sprintf('No reference for the asset "%s" with the expected locale', $asset->getCode())
-            );
+    protected function retrieveChannel($channelCode)
+    {
+        if (null === $channel = $this->getChannelRepository()->findOneByIdentifier($channelCode)) {
+            throw new \LogicException(sprintf('The channel "%s" does not exist.', $channelCode));
         }
 
-        if (!$reference->hasVariation($channel)) {
-            $variation = $this->getVariationBuilder()->buildOne($reference, $channel);
-            $reference->addVariation($variation);
-        }
-    }
-
-    /**
-     * @return VariationFileGeneratorInterface
-     */
-    protected function getVariationFileGenerator()
-    {
-        return $this->getContainer()->get('pimee_product_asset.variation_file_generator');
-    }
-
-    /**
-     * @return ChannelRepositoryInterface
-     */
-    protected function getChannelRepository()
-    {
-        return $this->getContainer()->get('pim_catalog.repository.channel');
-    }
-
-    /**
-     * @return LocaleRepositoryInterface
-     */
-    protected function getLocaleRepository()
-    {
-        return $this->getContainer()->get('pim_catalog.repository.locale');
-    }
-
-    /**
-     * @return AssetRepositoryInterface
-     */
-    protected function getAssetRepository()
-    {
-        return $this->getContainer()->get('pimee_product_asset.repository.asset');
-    }
-
-    /**
-     * @return VariationBuilderInterface
-     */
-    protected function getVariationBuilder()
-    {
-        return $this->getContainer()->get('pimee_product_asset.builder.variation');
+        return $channel;
     }
 }

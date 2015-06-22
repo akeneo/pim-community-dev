@@ -241,7 +241,7 @@ class Asset implements AssetInterface
     /**
      * {@inheritdoc}
      */
-    public function setEndOfUseAt(\Datetime $endOfUseAt)
+    public function setEndOfUseAt($endOfUseAt)
     {
         $this->endOfUseAt = $endOfUseAt;
 

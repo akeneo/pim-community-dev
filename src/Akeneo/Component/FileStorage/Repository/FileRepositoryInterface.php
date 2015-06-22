@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Component\ProductAsset\Repository;
+namespace Akeneo\Component\FileStorage\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 

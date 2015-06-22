@@ -1,18 +1,7 @@
 pimee_workflow_published_product_index:
     path: /
     defaults: { _controller: pimee_workflow.controller.published_product:indexAction }
-pimee_workflow_published_product_publish:
-    path: /{id}/publish
-    defaults: { _controller: pimee_workflow.controller.published_product:publishAction }
-    requirements:
-        id: '[0-9a-f]+'
-    methods:  [POST]
-pimee_workflow_published_product_unpublish:
-    path: /{id}/unpublish
-    defaults: { _controller: pimee_workflow.controller.published_product:unpublishAction }
-    requirements:
-        id: '[0-9a-f]+'
-    methods:  [POST|GET]
+    methods:  [GET]
 pimee_workflow_published_product_view:
     path: /{id}/view
     defaults: { _controller: pimee_workflow.controller.published_product:viewAction }
@@ -23,3 +12,19 @@ pimee_workflow_published_product_completeness:
     defaults: { _controller: pimee_workflow.controller.published_product:completenessAction }
     requirements:
         id: '[0-9a-f]+'
+
+pimee_workflow_published_product_unpublish:
+    path: /{id}/unpublish
+    defaults: { _controller: pimee_workflow.controller.published_product:unpublishAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods:  [POST|GET]
+
+pimee_workflow_published_product_rest_publish:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.published_product_rest:publishAction }
+    methods:  [PUT]
+pimee_workflow_published_product_rest_unpublish:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.published_product_rest:unpublishAction }
+    methods:  [DELETE]
