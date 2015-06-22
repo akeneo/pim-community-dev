@@ -387,13 +387,27 @@ class Asset implements AssetInterface
      */
     public function getCategoryCodes()
     {
-        $codes = array();
+        $codes = [];
         foreach ($this->getCategories() as $category) {
             $codes[] = $category->getCode();
         }
         sort($codes);
 
         return implode(',', $codes);
+    }
+
+    /**
+     * @return LocaleInterface[]
+     */
+    public function getLocales()
+    {
+        $locales = [];
+
+        foreach ($this->getReferences() as $reference) {
+            $locales[$reference->getLocale()->getCode()] = $reference->getLocale();
+        }
+
+        return $locales;
     }
 
     /**

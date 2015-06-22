@@ -179,16 +179,23 @@ class ProductAssetController extends Controller
     /**
      * Edit an asset
      *
+     * @param Request    $request
      * @param int|string $id
      *
      * @AclAncestor("pimee_product_asset_index")
-     *
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
         $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
+
+        $assetLocales = $productAsset->getLocales();
+        if (null !== $request->get('locale')) {
+            $locale = $assetLocales[$request->get('locale')];
+        } else {
+            $locale = reset($assetLocales);
+        }
 
         $metadata = null;
         if (null !== $productAsset) {
@@ -196,9 +203,10 @@ class ProductAssetController extends Controller
         }
 
         return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig',[
-            'asset'    => $productAsset,
-            'form'     => $assetForm,
-            'metadata' => $metadata
+            'asset'         => $productAsset,
+            'form'          => $assetForm,
+            'metadata'      => $metadata,
+            'currentLocale' => $locale,
         ]);
     }
 

@@ -26,10 +26,30 @@
     {% endset %}
 
     {% set subtitle %}
-        {{ asset.code }}
+        <div>{{ asset.code }}</div>
     {% endset %}
 
     {% set left %}
+        <div id="locale-switcher" class="btn-group sub-title">
+                    <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                        {{ currentLocale.code|flag }}
+                        <i class="icon-caret-down"></i>
+                    </span>
+            <ul class="dropdown-menu">
+                {% for locale in asset.locales %}
+                    <li >
+                        <a href="{{ path('pimee_product_asset_edit', { 'id': asset.id, 'locale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
+                                    <span class="indicator">
+                                        {% if locale.code == currentLocale.code %}
+                                            <i class="icon-circle"></i>
+                                        {% endif %}
+                                    </span>
+                            {{ locale.code|flag }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
         <ul class="inline" xmlns="http://www.w3.org/1999/html">
             <li>{{ 'Created'|trans }}: {{ asset.createdAt ? asset.createdAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
             <li>{{ 'Last update'|trans }}: {{ asset.updatedAt ? asset.updatedAt|date("Y-m-d H:i:s") : 'N/A'|trans }}</li>
