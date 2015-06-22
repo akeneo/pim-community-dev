@@ -4,6 +4,7 @@ parameters:
     pimee_product_asset.repository.file_metadata.class:         PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\FileMetadataRepository
     pimee_product_asset.repository.reference.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\ReferenceRepository
     pimee_product_asset.repository.variation.class:             PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\VariationRepository
+    pimee_product_asset.repository.asset_category.class:        PimEnterprise\Bundle\ProductAssetBundle\Doctrine\ORM\Repository\AssetCategoryRepository
     pimee_product_asset.repository.category.class:              Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository
     pimee_product_asset.repository.tag.class:                   Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\TagRepository
 
@@ -59,6 +60,12 @@ services:
             - %pimee_product_asset.model.category.class%
         tags:
             - { name: 'pim_repository' }
+
+    pimee_product_asset.repository.asset_category:
+        class: %pimee_product_asset.repository.asset_category.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - %pimee_product_asset.model.asset.class%
 
     pimee_product_asset.repository.tag:
         class: %pimee_product_asset.repository.tag.class%
