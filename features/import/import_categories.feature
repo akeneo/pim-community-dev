@@ -11,7 +11,7 @@ Feature: Import categories
     """
     code;parent;label-en_US
     autumn_collection;2014_collection;Autumn collection
-    black_tshirts;tshirts; Black tshirts
+    black_tshirts;tshirts;Black tshirts
     """
     And the following job "clothing_category_import" configuration:
       | filePath | %file to import% |
