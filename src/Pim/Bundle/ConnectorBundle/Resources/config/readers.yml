@@ -22,6 +22,9 @@ services:
     pim_connector.reader.file.csv_variant_group:
         alias: pim_connector.reader.file.csv_product
 
+    pim_connector.reader.file.csv_category:
+        alias: pim_base_connector.reader.file.csv
+
     pim_connector.reader.file.csv_product:
         class: %pim_connector.reader.file.csv_product.class%
         arguments:
