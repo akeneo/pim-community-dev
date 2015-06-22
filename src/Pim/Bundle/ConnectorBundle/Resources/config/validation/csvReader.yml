@@ -1,4 +1,4 @@
-Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader:
+Pim\Component\Connector\Reader\File\CsvReader:
     properties:
         delimiter:
             - NotBlank: ~
@@ -19,6 +19,6 @@ Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader:
         escape:
             - NotBlank: ~
         uploadAllowed:
-            - Bool: ~
-            - True:
+            - Type: bool
+            - 'True':
                 groups: [UploadExecution]

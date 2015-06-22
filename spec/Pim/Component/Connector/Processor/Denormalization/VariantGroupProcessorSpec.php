@@ -28,13 +28,7 @@ class VariantGroupProcessorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith(
-            $variantConverter,
-            $repository,
-            $groupFactory,
-            $variantUpdater,
-            $validator
-        );
+        $this->beConstructedWith($variantConverter, $repository, $groupFactory, $variantUpdater, $validator);
         $this->setStepExecution($stepExecution);
     }
 
