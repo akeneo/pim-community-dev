@@ -659,8 +659,12 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page = $this->getCurrentPage()->open($options);
 
         // spin function to deal with invalid CSRF problems
-        $this->getMainContext()->spin(function () use ($page) {
-            $this->loginIfRequired();
+        $this->getMainContext()->spin(function () use ($page, $options) {
+            if ($this->loginIfRequired()) {
+                $page = $this->getCurrentPage()->open($options);
+                $this->wait();
+                echo 'login was required' . PHP_EOL;
+            }
 
             return $page->verifyAfterLogin();
         }, 30);
@@ -697,6 +701,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * A method that logs the user in with the previously provided credentials if required by the page
+     *
+     * @return bool true if login was required, false if not
      */
     protected function loginIfRequired()
     {
@@ -705,7 +711,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             $loginForm->fillField('_username', $this->username);
             $loginForm->fillField('_password', $this->password);
             $loginForm->pressButton('Log in');
+
+            return true;
         }
+
+        return false;
     }
 
     /**
