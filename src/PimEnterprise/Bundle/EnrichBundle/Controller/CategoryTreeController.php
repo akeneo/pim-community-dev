@@ -12,6 +12,7 @@
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -35,6 +36,50 @@ class CategoryTreeController extends BaseCategoryTreeController
 
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
+
+    /** @var ChainedFilter */
+    protected $chainedFilter;
+
+    public function __construct(
+        Request $request,
+        EngineInterface $templating,
+        RouterInterface $router,
+        SecurityContextInterface $securityContext,
+        FormFactoryInterface $formFactory,
+        ValidatorInterface $validator,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $doctrine,
+        CategoryManager $categoryManager,
+        UserContext $userContext,
+        SecurityFacade $securityFacade,
+        SaverInterface $categorySaver,
+        RemoverInterface $categoryRemover,
+        CategoryFactory $categoryFactory,
+        CategoryRepositoryInterface $categoryRepository,
+        ChainedFilter $chainedFilter
+    ) {
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $eventDispatcher,
+            $doctrine,
+            $categoryManager,
+            $userContext,
+            $securityFacade,
+            $categorySaver,
+            $categoryRemover,
+            $categoryFactory,
+            $categoryRepository
+        );
+
+        $this->chainedFilter = $chainedFilter;
+    }
 
     /**
      * Find a category from its id, trows an exception if not found or not granted
@@ -70,18 +115,30 @@ class CategoryTreeController extends BaseCategoryTreeController
      *
      * @param UserInterface $user    the user
      * @param string        $context the retrieving context
+     * @param string        $relatedEntity
      *
      * @return CategoryInterface[]
      */
-    protected function findGrantedTrees(UserInterface $user, $context)
+    protected function findGrantedTrees(UserInterface $user, $context, $relatedEntity)
     {
         $allTrees = ($context === self::CONTEXT_MANAGE);
 
-        if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
-            return $this->categoryManager->getTrees($this->getUser());
-        } else {
-            return $this->categoryManager->getAccessibleTrees($this->getUser());
+        $trees = $this->categoryRepository->getTrees();
+
+        if (!$allTrees || !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
+            $trees = $this->chainedFilter->filterCollection($trees, Attributes::VIEW_PRODUCTS);
         }
+
+        return $trees;
+//        if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
+//            return $this->categoryRepository->getTrees();
+//        } else {
+//            return $this->categoryManager->getAccessibleTrees(
+//                $user,
+//                Attributes::VIEW_PRODUCTS,
+//                $relatedEntity
+//            );
+//        }
     }
 
     /**
@@ -92,23 +149,27 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     public function listTreeAction(Request $request)
     {
-        $selectNodeId = $request->get('select_node_id', -1);
-        $context      = $request->get('context', false);
+        $selectNodeId  = $request->get('select_node_id', -1);
+        $context       = $request->get('context', false);
+        $relatedEntity = $request->get('related_entity', 'product');
+
         try {
             $selectNode = $this->findGrantedCategory($selectNodeId, $context);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getAccessibleUserTree();
+            $selectNode = $this->userContext->getAccessibleUserCategoryTree($relatedEntity);
         } catch (AccessDeniedException $e) {
-            $selectNode = $this->userContext->getAccessibleUserTree();
+            $selectNode = $this->userContext->getAccessibleUserCategoryTree($relatedEntity);
         }
 
-        return array(
-            'trees'          => $this->findGrantedTrees($this->getUser(), $context),
+        $v = [
+            'trees'          => $this->findGrantedTrees($this->getUser(), $context, $relatedEntity),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
-            'related_entity' => $this->getRequest()->get('related_entity', 'product'),
-        );
+            'related_entity' => $relatedEntity,
+        ];
+
+        return $v;
     }
     /**
      * {@inheritdoc}
@@ -119,10 +180,27 @@ class CategoryTreeController extends BaseCategoryTreeController
     {
         $context = $this->request->get('context', false);
         $allTrees = ($context === self::CONTEXT_MANAGE);
+
         if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
-            return $this->categoryManager->getChildren($parentId, $selectNodeId);
+            return $this->categoryRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
         } else {
             return $this->categoryManager->getGrantedChildren($parentId, $selectNodeId);
+        }
+    }
+
+    protected function getGrantedChildren()
+    {
+        if ($selectNodeId === false) {
+            $children = $entityRepository->getChildrenByParentId($parentId);
+        } else {
+            $children = $entityRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
+        }
+
+        foreach ($children as $indChild => $child) {
+            $category = (is_object($child)) ? $child : $child['item'];
+            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+                unset($children[$indChild]);
+            }
         }
     }
 }
