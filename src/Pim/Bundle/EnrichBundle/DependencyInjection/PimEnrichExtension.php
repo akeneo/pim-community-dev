@@ -40,6 +40,7 @@ class PimEnrichExtension extends Extension
         $loader->load('entities.yml');
         $loader->load('event_listeners.yml');
         $loader->load('factories.yml');
+        $loader->load('filters.yml');
         $loader->load('form_subscribers.yml');
         $loader->load('form_types.yml');
         $loader->load('form_factories.yml');
@@ -68,7 +69,6 @@ class PimEnrichExtension extends Extension
         $loader->load('view_elements/variant_group.yml');
         $loader->load('view_elements/group_type.yml');
         $loader->load('view_elements/mass_edit.yml');
-        $loader->load('view_elements/product.yml');
         $loader->load('view_updaters.yml');
 
         if ($config['record_mails']) {

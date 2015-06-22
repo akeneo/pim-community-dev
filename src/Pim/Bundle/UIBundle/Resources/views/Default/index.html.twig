@@ -22,18 +22,6 @@
                     require(['oro/app'], function(app){app.debug = true;});
                 {% endif %}
                 </script>
-                <!--[if lte IE 9]>
-                <link href="{{ asset('bundles/pimui/css/ie.css') }}" rel="stylesheet" media="all" />
-                <script type="text/javascript">
-                    require.config({shim: {'pimui/lib/jquery/jquery.placeholder': {deps: ['jquery']}}});
-                    require(['jquery', 'pimui/lib/html5', 'pimui/lib/jquery/jquery.placeholder'],
-                    function($){
-                        $(function() {
-                            $('input[placeholder], textarea[placeholder]').placeholder();
-                        });
-                    });
-                </script>
-                <![endif]-->
                 {% block hash_nav %}
                     {% placeholder hash_nav %}
                 {% endblock %}

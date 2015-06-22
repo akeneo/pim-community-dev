@@ -151,7 +151,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
 
         $values = $this->filter->filterCollection(
             $product->getValues(),
-            isset($context['filter_type']) ? $context['filter_type'] : 'pim:transform:product_value:flat',
+            isset($context['filter_type']) ? $context['filter_type'] : 'pim.transform.product_value.flat',
             [
                 'channels' => [$context['scopeCode']],
                 'locales'  => $context['localeCodes']

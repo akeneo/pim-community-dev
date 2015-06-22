@@ -104,6 +104,9 @@ class ProductCategoryManager
      * @param ProductInterface $product The product to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
+     *
+     * @deprecated Will be remove in 1.5, please use ProductCategoryRepositoryInterface::getProductCountByTree()
+     *             instead.
      */
     public function getProductCountByTree(ProductInterface $product)
     {

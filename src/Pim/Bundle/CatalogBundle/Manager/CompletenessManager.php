@@ -172,8 +172,17 @@ class CompletenessManager
                 $entities
             );
         };
-        $channelTemplate = array_fill_keys($getCodes($channels), array('completeness' => null, 'missing' => array()));
-        $localeCodes = $getCodes($locales);
+        $channelCodes = $getCodes($channels);
+        $localeCodes  = $getCodes($locales);
+
+        $channelTemplate = [
+            'channels' => array_fill_keys($channelCodes, array('completeness' => null, 'missing' => array())),
+            'stats'    => [
+                'total'    => 0,
+                'complete' => 0
+            ]
+        ];
+
         $completenesses = array_fill_keys($localeCodes, $channelTemplate);
 
         if (!$family) {
@@ -184,8 +193,18 @@ class CompletenessManager
         foreach ($allCompletenesses as $completeness) {
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
-            $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
+
+            $completenesslocaleCode = $locale->getCode();
+            if (isset($completenesses[$completenesslocaleCode])) {
+                $completenesses[$completenesslocaleCode]['channels'][$channel->getCode()]['completeness'] = $completeness;
+                $completenesses[$completenesslocaleCode]['stats']['total']++;
+
+                if (0 === $completeness->getMissingCount()) {
+                    $completenesses[$completenesslocaleCode]['stats']['complete']++;
+                }
+            }
         }
+
         $requirements = $this->familyRepository
             ->getFullRequirementsQB($family, $localeCode)
             ->getQuery()
@@ -227,7 +246,7 @@ class CompletenessManager
                 $missing = true;
             }
             if ($missing) {
-                $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
+                $completenesses[$localeCode]['channels'][$channel->getCode()]['missing'][] = $attribute;
             }
         }
     }
@@ -243,10 +262,10 @@ class CompletenessManager
     {
         $valueCode = $attribute->getCode();
         if ($attribute->isLocalizable()) {
-            $valueCode .= '_' .$locale;
+            $valueCode .= '-' . $locale;
         }
         if ($attribute->isScopable()) {
-            $valueCode .= '_' . $scope;
+            $valueCode .= '-' . $scope;
         }
 
         return $valueCode;

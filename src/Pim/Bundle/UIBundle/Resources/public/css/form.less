@@ -1,70 +1,5 @@
-/* Login Form *******************************************************************************************************/
-
-form.form-signin {
-  .title-box {
-    padding: 0;
-    #gradient .vertical(@color-header_top, @color-header_bottom);
-    border: 1px solid #d4d4d4;
-    .border-radius(6px 6px 0 0);
-    h1.oro-title {
-      padding: 0;
-      img {
-        vertical-align: top;
-      }
-    }
-    h2.title {
-      font-size: 20px;
-      line-height: 40px;
-      text-align: center;
-    }
-  }
-  .input-prepend {
-    margin-bottom: 3px;
-    input[type="text"],
-    input[type="password"] {
-      width: 265px;
-      color: @textColor;
-      background-color: #fbfbfb;
-    }
-    .add-on {
-      width: 36px;
-      color: @textColor;
-      #gradient .vertical(#f4f4f4, #dcdcdc);
-    }
-    .input-request {
-      border-radius: 3px;
-    }
-    #prepended-input-request {
-      width: 458px;
-    }
-  }
-  .form-row {
-    padding: 0;
-  }
-  .signin-help {
-    margin-top: 15px;
-    a {
-      font-size: 13px;
-    }
-  }
-  div.alert {
-    margin: 0;
-    .border-radius(0);
-  }
-  &.form-reset {
-    max-width: 550px;
-    .add-on {
-      width: auto;
-    }
-  }
-}
-
-.form-reset fieldset {
-  padding: 30px 33px;
-  button {
-    margin-right: 3px;
-  }
-}
+@import 'less/variables';
+@import 'less/mixins';
 
 /* Basic Form *******************************************************************************************************/
 
@@ -121,7 +56,6 @@ form.form-signin {
   text-shadow: 0 1px 0 darken(@btnPrimaryBackgroundLight, 16%);
   #gradient > .vertical(@btnPrimaryBackgroundLight, darken(@btnPrimaryBackgroundLight, 5%));
   border-color: darken(@btnPrimaryBackgroundLight, 7%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%) darken(@btnPrimaryBackgroundLight, 10%);
-  filter: dropshadow(color=darken(@btnPrimaryBackgroundLight, 42%), offx=1, offy=1);
   .box-shadow(inset 0 1px 0 0 lighten(@btnPrimaryBackgroundLight, 7%));
   .border-radius(4px);
   color: #fff;
@@ -144,7 +78,6 @@ form.form-signin {
   text-shadow: 0 1px 0 darken(@btnInfoBackgroundLight, 16%);
   #gradient > .vertical(@btnInfoBackgroundLight, darken(@btnInfoBackgroundLight, 5%));
   border-color: darken(@btnInfoBackgroundLight, 7%) darken(@btnInfoBackgroundLight, 10%) darken(@btnInfoBackgroundLight, 10%) darken(@btnInfoBackgroundLight, 10%);
-  filter: dropshadow(color=darken(@btnInfoBackgroundLight, 42%), offx=1, offy=1);
   .box-shadow(inset 0 1px 0 0 lighten(@btnInfoBackgroundLight, 7%));
   &:hover {
     #gradient > .vertical(lighten(@btnInfoBackgroundLight, 5%), darken(@btnInfoBackgroundLight, 4%));
@@ -160,6 +93,9 @@ form.form-signin {
   &.disabled {
     background-color: lighten(@btnInfoBackgroundLight, 10%);
   }
+}
+.btn.hide {
+  display: none;
 }
 
 .navbar-buttons .btn-group>.btn {
@@ -448,79 +384,6 @@ div.btn-group > .has-switch {
   }
 }
 
-/* Collapsable sidebar **********************************************************************************************/
-
-.sidebarized {
-  .sidebar-separator {
-    background-color: #f3f3f3;
-    i {
-      cursor: pointer;
-    }
-  }
-  .sidebar-controls {
-    background-color: #f7f7f7;
-    i {
-      color: @textColor;
-      cursor: pointer;
-    }
-    a, button {
-      display: block;
-      float: left;
-      width: 30px;
-      font-size: 13px;
-      color: #000;
-      text-align: center;
-      text-decoration: none;
-      background-color: #f3f3f3;
-      border: 0;
-      border-right: 1px solid #d3d3d3;
-    }
-    .btn-group .dropdown-toggle {
-      border-radius: 0;
-      .caret {
-        vertical-align: middle;
-      }
-    }
-    li {
-      text-align: left;
-    }
-    a {
-      cursor: pointer;
-    }
-  }
-  .sidebar-content {
-    background-color: #fcfcfc;
-    .sidebar-list {
-      ul {
-        margin: 0;
-        li {
-          padding: 0 10px;
-          line-height: 35px;
-          list-style: none;
-          cursor: pointer;
-          &:hover {
-            background-color: @color-grey_tab;
-          }
-          &.active, &.active:hover {
-            background-color: @color-purple_hover;
-          }
-          a {
-            display: block;
-            color: @textColor;
-            &:hover {
-              text-decoration: none;
-            }
-          }
-          span.handle {
-            float: left;
-            padding-right: 5px;
-          }
-        }
-      }
-    }
-  }
-}
-
 /* Accordion ********************************************************************************************************/
 .accordion-inner {
   td { border: none; }
@@ -528,65 +391,6 @@ div.btn-group > .has-switch {
 .accordion-inner-unbuffered {
   padding: 0;
   border-top: 1px solid #e5e5e5;
-}
-
-/* Dialog ***********************************************************************************************************/
-
-div.ui-dialog {
-  &:focus {
-    outline: none;
-  }
-  .ui-widget-content {
-    border: 1px solid #c3c3c3;
-    border-width: 1px 0;
-  }
-  .ui-dialog-titlebar {
-    margin: 0;
-    #gradient .vertical(@color-dialogHeader_top, @color-dialogHeader_bottom);
-    border: none;
-    .ui-dialog-title {
-      font-weight: bold;
-    }
-  }
-  form {
-    margin: 0;
-  }
-  .ui-dialog-buttonpane {
-    background-color: @color-grey_tab;
-    background-image: none;
-    border-top: none;
-    >div.ui-dialog-buttonset>button {
-      float: right;
-      margin: 10px 8px 12px 0;
-    }
-  }
-}
-
-.modal{
-  top: 20%;
-  background-color: @backgroundColor-white;
-}
-.modal .modal-header{
-  background-color: @color-purple_light;
-  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-  border-radius: 6px 6px 0 0;
-}
-.modal-header h3{
-  color: @backgroundColor-white;
-}
-
-.modal-primary {
-  top: 20%;
-  background-color: @backgroundColor-white;
-
-  .modal-header {
-    background-color: @color-purple_light;
-    #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
-    border-radius: 6px 6px 0 0;
-  }
-  .modal-header h3 {
-    font: @backgroundColor-white;
-  }
 }
 
 .form-inline {
@@ -678,9 +482,6 @@ table i {
     margin-top: 0;
     background-color: @color-grey_tab;
     border-bottom: 1px solid #e5e5e5;
-  }
-  .modal-header h3 {
-    background-color: @color-purple_light;
   }
 }
 
@@ -1293,18 +1094,6 @@ table#progress-table {
   }
 }
 
-.progress-disabled .bar,
-.progress .bar-disabled {
-  background-color: #cccccc;
-  background-image: -moz-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#bbbbbb), to(#cccccc));
-  background-image: -webkit-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: -o-linear-gradient(top, #bbbbbb, #cccccc);
-  background-image: linear-gradient(to bottom, #bbbbbb, #cccccc);
-  background-repeat: repeat-x;
-  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffbbbbbb', endColorstr='#ffcccccc', GradientType=0);
-}
-
 /** mass-edition *****************************************************************************************************/
 .mass-edit-form {
   padding: 25px;
@@ -1318,16 +1107,9 @@ table#progress-table {
 }
 
 /** datagrid columns configuration ***********************************************************************************/
-.column-configurator-modal {
-  width: 90%;
-  left: 5%;
-  margin-left: 0;
-  top: 5%;
-  .modal-body {
-    max-height: inherit;
-    padding: 0;
-    background-color: #edf1f2;
-  }
+.column-configurator-modal .modal-body {
+  padding: 0;
+  background-color: #edf1f2;
 }
 #column-configurator {
   h4 {
@@ -1442,51 +1224,5 @@ button.view-button {
   font-size: 13px;
   &.hide {
     display: none;
-  }
-}
-
-/** Role form ********************************************************************************************************/
-div.acl-permission {
-  display: list-item;
-  margin-left: 20px;
-  line-height: 40px;
-  list-style: none;
-  &>div[id] {
-    display: inline-block;
-  }
-}
-.acl-permission {
-  &.default-field {
-    display: none;
-  }
-  i.acl-permission-toggle {
-    padding: 5px;
-    cursor: pointer;
-    font-size: 1.5em;
-    &.granted {
-      color: #33be00;
-    }
-    &.non-granted {
-      padding: 5px 7px;
-      color: red;
-    }
-  }
-}
-i.acl-group-permission-toggle {
-  cursor: pointer;
-  font-size: 1.2em;
-  margin: 0;
-  &.icon-circle {
-    padding: 1px 7px 0 6px;
-    font-size: 1em;
-    color: #b9b9b9;
-  }
-  &.icon-ok {
-    padding: 0 5px 0 4px;
-    color: #33be00;
-  }
-  &.icon-remove {
-    padding: 0 6px;
-    color: red;
   }
 }

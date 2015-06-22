@@ -1,13 +1,13 @@
 /* jshint browser:true */
 /* global require */
 require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger'],
-function($, _, __, app, mediator, messenger) {
+function ($, _, __, app, mediator, messenger) {
     'use strict';
 
     /* ============================================================
      * from user.js
      * ============================================================ */
-    $(function() {
+    $(function () {
         function initFlashMessages() {
             messenger.setup();
         }
@@ -27,6 +27,6 @@ function($, _, __, app, mediator, messenger) {
         /**
          * Process flash messages stored in queue or storage
          */
-        mediator.on("hash_navigation_request:complete", initFlashMessages);
+        mediator.on('hash_navigation_request:complete', initFlashMessages);
     });
 });

@@ -75,7 +75,7 @@ define(
             /**
              * Get the current tree state
              */
-            _getTreeState: function() {
+            _getTreeState: function () {
                 var state = TreeView.getState();
 
                 return {
@@ -90,7 +90,7 @@ define(
             /**
              * Get initial state for the tree
              */
-            _getInitialState: function() {
+            _getInitialState: function () {
                 return {
                     selectedNode: +this.value.value.categoryId,
                     selectedTree: +this.value.value.treeId,
@@ -101,7 +101,7 @@ define(
             /**
              * Sync the tree state with the filter value
              */
-            _updateState: function() {
+            _updateState: function () {
                 this.value = this._getTreeState();
             },
 
@@ -118,21 +118,21 @@ define(
             /**
              * @inheritDoc
              */
-            _triggerUpdate: function() {
+            _triggerUpdate: function () {
                 this.trigger('update');
             },
 
             /**
              * @inheritDoc
              */
-            isEmpty: function() {
+            isEmpty: function () {
                 return _.isEqual(this.emptyValue, this._getTreeState());
             },
 
             /**
              * @inheritDoc
              */
-            reset: function() {
+            reset: function () {
                 TreeView.reset();
                 NumberFilter.prototype.reset.apply(this, arguments);
             }

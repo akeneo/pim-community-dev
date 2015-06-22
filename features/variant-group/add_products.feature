@@ -48,11 +48,11 @@ Feature: Add products to a variant group
     And I press the "Save" button
     Then the row "sandal-white-37" should be checked
     When I edit the "sandal-white-37" product
-    And I visit the "History" tab
-    And I should see history:
+    And I open the history
+    Then I should see history:
       | version | author                                                            | property | value           |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
+      | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
 
   Scenario: Successfully delete a variant group, product history should be updated without context
     Given I am on the "SANDAL" variant group page
@@ -65,17 +65,17 @@ Feature: Add products to a variant group
     And I click on the "Delete" action of the row which contains "SANDAL"
     And I confirm the deletion
     Then I edit the "sandal-white-37" product
-    And I visit the "History" tab
-    And I should see history:
+    And I open the history
+    And I should see history in panel:
       | version | author                                                            | property | value           |
       | 3       | Julia Stark - Julia@example.com                                   | groups   |                 |
       | 2       | Julia Stark - Julia@example.com (Comes from variant group SANDAL) | groups   | SANDAL          |
-      | 1       | Admin Doe - admin@example.com                                     | sku      | sandal-white-37 |
+      | 1       | Admin Doe - admin@example.com                                     | SKU      | sandal-white-37 |
 
   @jira https://akeneo.atlassian.net/browse/PIM-3736 @unstable
   Scenario: Reject product addition in a variant group, products count should be correct
     Given the following products:
-      | sku              | family  | categories        | size | color | name-en_US |
+      | SKU              | family  | categories        | size | color | name-en_US |
       | sandal-white-37  | sandals | winter_collection | 37   | white | old name   |
       | sandal-white-38  | sandals | winter_collection | 38   | white | old name   |
       | sandal-white-39  | sandals | winter_collection | 39   | white | old name   |

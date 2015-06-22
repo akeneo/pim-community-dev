@@ -8,6 +8,8 @@
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
 - Category filter is separated from other datagrid filters for performance concerns
 - Use MySQL as a non blocking session storage
+- Handle Doctrine mapping overrides smoothly (no more need to copy/paste the full mapping of an entity or a document)
+- Product edit form revamp
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
@@ -122,6 +124,9 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CategoryRepository` → `Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository`
 - Move `Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface` → `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
+- Remove Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface replaced by Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface
+- Remove Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface
+- Remove `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 - Change constructor of `Pim\Bundle\CatalogBundle\Manager\CategoryManager`, added `Pim\Component\Classification\Repository\CategoryRepositoryInterface` and `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` as third and fourth argument. 
 - Change `Pim\Bundle\CatalogBundle\Manager\CategoryManager`, updated method `getEntityRepository` to return return a `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\CategoryTreeController`, added `Pim\Bundle\CatalogBundle\Factory\CategoryFactory` and `Pim\Component\Classification\Repository\CategoryRepositoryInterface` as last arguments
