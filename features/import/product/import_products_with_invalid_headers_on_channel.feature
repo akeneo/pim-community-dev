@@ -11,7 +11,7 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-3369
   Scenario: Skip import with a not available locale for channel of a localizable attribute
     Given the following CSV file to import:
-    """
+      """
       sku;description-fr_FR-print
       SKU-001;"my name"
       """
@@ -21,4 +21,4 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "product_import" job to finish
     Then I should see "Status: FAILED"
-    And I should see "The locale \"fr_FR\" of the field \"description-fr_FR-print\" is not available in scope \"print\""
+    And I should see " The option \"description-fr_FR-print\" does not exist."
