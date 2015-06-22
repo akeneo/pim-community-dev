@@ -10,6 +10,11 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
     /** @var ProcessedItem[] */
     protected $items = [];
 
+    /**
+     * @param mixed  $item
+     * @param string $state
+     * @param null   $reason
+     */
     public function addItem($item, $state, $reason = null)
     {
         $this->items[] = new ProcessedItem($item, $state, $reason);
@@ -45,7 +50,8 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
         return count($this->items);
     }
 
-    public function offsetSet($offset, $value) {
+    public function offsetSet($offset, $value)
+    {
         if (is_null($offset)) {
             $this->items[] = $value;
         } else {
@@ -53,15 +59,18 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
         }
     }
 
-    public function offsetExists($offset) {
+    public function offsetExists($offset)
+    {
         return isset($this->items[$offset]);
     }
 
-    public function offsetUnset($offset) {
+    public function offsetUnset($offset)
+    {
         unset($this->items[$offset]);
     }
 
-    public function offsetGet($offset) {
+    public function offsetGet($offset)
+    {
         return isset($this->items[$offset]) ? $this->items[$offset] : null;
     }
 }

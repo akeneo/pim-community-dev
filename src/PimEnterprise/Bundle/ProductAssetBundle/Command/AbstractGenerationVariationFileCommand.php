@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
  * For the full copyright and license information, please view the LICENSE
@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
@@ -22,6 +23,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 /**
  * Generate the variation files of a reference.
+ *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 abstract class AbstractGenerationVariationFileCommand extends ContainerAwareCommand
@@ -50,9 +52,10 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     }
 
     /**
-     * @param $assetCode
+     * @param string $assetCode
      *
      * @return AssetInterface
+     *
      * @throws \LogicException
      */
     protected function retrieveAsset($assetCode)
@@ -68,6 +71,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      * @param $localeCode
      *
      * @return LocaleInterface
+     *
      * @throws \LogicException
      */
     protected function retrieveLocale($localeCode)
@@ -162,7 +166,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     }
 
     /**
-     * @return VariationBuilderInterfacee
+     * @return VariationBuilderInterface
      */
     protected function getVariationBuilder()
     {

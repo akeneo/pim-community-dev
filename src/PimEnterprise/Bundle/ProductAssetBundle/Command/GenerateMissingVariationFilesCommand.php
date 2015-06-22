@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -32,7 +32,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-missing-variations');
+        $this->setName('pim:asset::generate-missing-variation-files');
         $this->setDescription('Generate all the missing variation files.');
         $this->addOption(
             'asset',

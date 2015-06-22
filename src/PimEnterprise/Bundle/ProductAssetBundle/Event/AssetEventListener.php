@@ -45,7 +45,7 @@ class AssetEventListener
     {
         $pathFinder = new PhpExecutableFinder();
         $cmd = sprintf(
-            '%s %s/console pim:asset:generate-missing-variations',
+            '%s %s/console pim:asset::generate-missing-variation-files',
             $pathFinder->find(),
             $this->rootDir
         );

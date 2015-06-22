@@ -21,6 +21,7 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
@@ -258,7 +259,7 @@ class ProductAssetController extends Controller
     /**
      * @param FileInterface $file
      *
-     * @return array
+     * @return FileMetadataInterface
      */
     protected function getFileMetadata(FileInterface $file)
     {

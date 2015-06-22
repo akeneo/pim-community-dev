@@ -5,11 +5,16 @@ namespace PimEnterprise\Component\ProductAsset;
 class ProcessedItem
 {
     const STATE_SUCCESS = 'success';
-    const STATE_ERROR = 'error';
+    const STATE_ERROR   = 'error';
     const STATE_SKIPPED = 'skipped';
 
+    /** @var mixed */
     protected $item;
+
+    /** @var string */
     protected $state;
+
+    /** @var string */
     protected $reason;
 
     /**
@@ -19,8 +24,8 @@ class ProcessedItem
      */
     public function __construct($item, $state, $reason = null)
     {
-        $this->item = $item;
-        $this->state = $state;
+        $this->item   = $item;
+        $this->state  = $state;
         $this->reason = $reason;
     }
 

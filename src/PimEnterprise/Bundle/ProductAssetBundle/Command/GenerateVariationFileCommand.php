@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -51,7 +51,6 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
 
             $reference = $this->retrieveReference($asset, $locale);
             $variation = $this->retrieveVariation($reference, $channel);
-
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
