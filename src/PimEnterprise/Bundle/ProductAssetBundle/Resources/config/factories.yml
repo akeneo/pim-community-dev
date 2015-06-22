@@ -1,0 +1,5 @@
+services:
+    pimee_product_asset.factory.category:
+        class: %pim_classification.factories.category.class%
+        arguments:
+            - %pimee_product_asset.model.category.class%
