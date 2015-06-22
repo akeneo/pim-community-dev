@@ -132,10 +132,12 @@ class CategoryTreeController extends AbstractDoctrineController
     public function listTreeAction(Request $request)
     {
         $selectNodeId = $request->get('select_node_id', -1);
+        $relatedEntity = $this->getRequest()->get('related_entity', 'product');
+
         try {
             $selectNode = $this->findCategory($selectNodeId);
         } catch (NotFoundHttpException $e) {
-            $selectNode = $this->userContext->getUserTree();
+            $selectNode = $this->userContext->getUserCategoryTree($relatedEntity);
         }
 
         return [
@@ -143,7 +145,7 @@ class CategoryTreeController extends AbstractDoctrineController
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
-            'related_entity' => $this->getRequest()->get('related_entity', 'product')
+            'related_entity' => $relatedEntity
         ];
     }
 
@@ -376,5 +378,20 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(CategoryInterface $category)
     {
         return [];
+    }
+
+    /**
+     * @param int      $parentId
+     * @param int|bool $selectNodeId
+     */
+    protected function getChildren($parentId, $selectNodeId = false)
+    {
+        if ($selectNodeId !== null) {
+            $categories = $this->categoryRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
+            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
+        } else {
+            $categories = $this->categoryRepository->getChildrenByParentId($parentId);
+            $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
+        }
     }
 }
