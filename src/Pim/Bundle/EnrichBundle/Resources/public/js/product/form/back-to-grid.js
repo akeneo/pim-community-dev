@@ -10,12 +10,13 @@
 define(
     [
         'underscore',
+        'module',
         'pim/form',
         'text!pim/template/product/back-to-grid',
         'routing',
         'pim/user-context'
     ],
-    function (_, BaseForm, template, Routing, UserContext) {
+    function (_, module, BaseForm, template, Routing, UserContext) {
         return BaseForm.extend({
             className: 'btn-group',
             template: _.template(template),
@@ -28,7 +29,7 @@ define(
                 this.$el.html(
                     this.template({
                         path: Routing.generate(
-                            'pim_enrich_product_index',
+                            module.config().gridUrl,
                             {
                                 dataLocale: UserContext.get('catalogLocale')
                             }

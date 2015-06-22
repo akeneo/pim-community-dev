@@ -20,7 +20,7 @@ class CompletenessNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($completeness, $format = null, array $context = array())
+    public function normalize($completeness, $format = null, array $context = [])
     {
         return [
             'required' => $completeness->getRequiredCount(),

@@ -55,6 +55,8 @@ define(
                 this.locale = UserContext.get('catalogLocale');
                 this.scope  = UserContext.get('catalogScope');
 
+                this.on('comparison:update-fields', _.bind(this.generateCopyFields, this));
+
                 return BaseForm.prototype.configure.apply(this, arguments);
             },
             render: function () {

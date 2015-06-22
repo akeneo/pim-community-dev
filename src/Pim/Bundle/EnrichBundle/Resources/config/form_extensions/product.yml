@@ -1,213 +1,206 @@
 extensions:
-    product-edit-form:
+    pimenrich-product-edit-form:
         module: pim/product-edit-form
+
+    pimenrich-product-form-tabs:
+        module: pim/product-edit-form/form-tabs
+        parent: pimenrich-product-edit-form
+        targetZone: content
+        position: 100
 
     sequential-edit:
         module: pim/product-edit-form/sequential-edit
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: sequential
         aclResourceId: pim_enrich_product_edit_attributes
         position: 100
 
-    form-tabs:
-        module: pim/product-edit-form/form-tabs
-        parent: product-edit-form
-        targetZone: content
-        position: 100
-
-    product-label:
+    pimenrich-product-label:
         module: pim/product-edit-form/product-label
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: title
         position: 100
 
-    back-to-grid:
-        module: pim/product-edit-form/back-to-grid
-        parent: product-edit-form
-        targetZone: buttons
-        aclResourceId: pim_enrich_product_index
-        position: 80
-
-    download-pdf:
+    pimenrich-product-download-pdf:
         module: pim/product-edit-form/download-pdf
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: buttons
         aclResourceId: pim_pdf_generator_product_download
         position: 90
 
-    delete:
+    pimenrich-product-back-to-grid:
+        module: pim/product-edit-form/back-to-grid
+        parent: pimenrich-product-edit-form
+        targetZone: buttons
+        aclResourceId: pim_enrich_product_index
+        position: 80
+
+    pimenrich-product-delete-delete:
         module: pim/product-edit-form/delete
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_remove
         position: 100
 
-    status-switcher:
+    pimenrich-product-status-switcher:
         module: pim/product-edit-form/status-switcher
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: buttons
         aclResourceId: pim_enrich_product_change_state
         position: 110
 
-    save-buttons:
+    pimenrich-product-save-buttons:
         module: pim/product-edit-form/save-buttons
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: buttons
         position: 120
 
-    save:
+    pimenrich-product-save:
         module: pim/product-edit-form/save
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: buttons
         position: 0
 
-    save-and-back:
+    pimenrich-product-save-and-back:
         module: pim/product-edit-form/save-and-back
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: buttons
         position: 0
 
-    state:
+    pimenrich-product-state:
         module: pim/product-edit-form/state
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: state
         position: 900
 
-    family:
+    pimenrich-product-family:
         module: pim/product-edit-form/meta/family
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: meta
         position: 80
 
-    change-family:
-        module: pim/product-edit-form/meta/change-family
-        parent: family
-        targetZone: self
-        aclResourceId: pim_enrich_product_change_family
-        position: 100
-
-    created:
+    pimenrich-product-created:
         module: pim/product-edit-form/meta/created
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: meta
         position: 90
 
-    updated:
+    pimenrich-product-updated:
         module: pim/product-edit-form/meta/updated
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: meta
         position: 100
 
-    groups:
+    pimenrich-product-groups:
         module: pim/product-edit-form/meta/groups
-        parent: product-edit-form
+        parent: pimenrich-product-edit-form
         targetZone: meta
         position: 110
 
-    attributes:
+    pimenrich-product-attributes:
         module: pim/product-edit-form/attributes
-        parent: form-tabs
+        parent: pimenrich-product-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_edit_attributes
         position: 90
 
-    categories:
+    pimenrich-product-categories:
         module: pim/product-edit-form/categories
-        parent: form-tabs
+        parent: pimenrich-product-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_product_categories_view
         position: 100
 
-    associations:
+    pimenrich-product-associations:
         module: pim/product-edit-form/associations
-        parent: form-tabs
+        parent: pimenrich-product-form-tabs
         targetZone: container
         aclResourceId: pim_enrich_associations_view
         position: 110
 
-    panels:
+    pimenrich-product-panels:
         module: pim/product-edit-form/panel/panels
-        parent: form-tabs
+        parent: pimenrich-product-form-tabs
         targetZone: panels
         position: 100
 
-    attribute-group-selector:
+    pimenrich-product-attribute-group-selector:
         module: pim/product-edit-form/attributes/attribute-group-selector
-        parent: attributes
+        parent: pimenrich-product-attributes
         targetZone: sidebar
         position: 100
 
-    add-attribute:
+    pimenrich-product-add-attribute:
         module: pim/product-edit-form/attributes/add-attribute
-        parent: attributes
+        parent: pimenrich-product-attributes
         targetZone: other-actions
         aclResourceId: pim_enrich_product_add_attribute
         position: 90
 
-    copy:
+    pimenrich-product-pimenrich-product-copy:
         module: pim/product-edit-form/attributes/copy
-        parent: attributes
+        parent: pimenrich-product-pimenrich-product-attributes
         targetZone: header
         position: 100
 
-    scope-switcher:
+    pimenrich-product-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: attributes
+        parent: pimenrich-product-attributes
         targetZone: context-selectors
         position: 100
 
-    locale-switcher:
+    pimenrich-product-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: attributes
+        parent: pimenrich-product-attributes
         targetZone: context-selectors
         position: 110
 
-    validation:
+    pimenrich-product-validation:
         module: pim/product-edit-form/attributes/validation
-        parent: attributes
+        parent: pimenrich-product-attributes
         targetZone: header
         position: 100
 
-    variant-group:
+    pimenrich-product-variant-group:
         module: pim/product-edit-form/attributes/variant-group
-        parent: attributes
+        parent: pimenrich-product-attributes
         targetZone: self
         position: 100
 
-    completeness:
-        parent: panels
+    pimenrich-product-completeness:
         module: pim/product-edit-form/panel/completeness
+        parent: pimenrich-product-panels
         targetZone: panel-content
         position: 100
 
-    comments:
-        parent: panels
+    pimenrich-product-comments:
         module: pim/product-edit-form/panel/comments
+        parent: pimenrich-product-panels
         targetZone: panel-content
         aclResourceId: pim_enrich_product_comment
         position: 110
 
-    history:
-        parent: panels
+    pimenrich-product-history:
         module: pim/product-edit-form/panel/history
+        parent: pimenrich-product-panels
         targetZone: panel-content
         aclResourceId: pim_enrich_product_history
         position: 120
 
-    selector:
-        parent: panels
+    pimenrich-product-selector:
         module: pim/product-edit-form/panel/selector
+        parent: pimenrich-product-panels
         position: 100
 
-    copy-scope-switcher:
+    pimenrich-product-copy-scope-switcher:
         module: pim/product-edit-form/scope-switcher
-        parent: copy
+        parent: pimenrich-product-copy
         targetZone: context-selectors
         position: 100
 
-    copy-locale-switcher:
+    pimenrich-product-copy-locale-switcher:
         module: pim/product-edit-form/locale-switcher
-        parent: copy
+        parent: pimenrich-product-copy
         targetZone: context-selectors
         position: 110
 
@@ -224,3 +217,4 @@ attribute_fields:
     pim_catalog_identifier:       pim/text-field
     pim_catalog_text:             pim/text-field
     pim_catalog_textarea:         pim/textarea-field
+

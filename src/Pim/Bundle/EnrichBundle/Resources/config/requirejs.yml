@@ -11,6 +11,8 @@ config:
                 - jquery.jstree
 
     config:
+        pim/product-edit-form/back-to-grid:
+            gridUrl: pim_enrich_product_index
         pim/entity-manager:
             repositories:
                 default: pim/entity-repository
