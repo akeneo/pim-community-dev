@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Filter;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
- * Product Value filter
+ * Filter the product values according to channel codes provided in options.
  *
  * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -22,12 +22,12 @@ class ProductValueChannelFilter extends AbstractFilter implements CollectionFilt
             throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
         }
 
-        $channels = isset($options['channels']) ? $options['channels'] : [];
-        $attribute = $productValue->getAttribute();
+        $channelCodes = isset($options['channels']) ? $options['channels'] : [];
+        $attribute    = $productValue->getAttribute();
 
-        return !empty($channels) &&
+        return !empty($channelCodes) &&
             $attribute->isScopable() &&
-            !in_array($productValue->getScope(), $channels);
+            !in_array($productValue->getScope(), $channelCodes);
     }
 
     /**

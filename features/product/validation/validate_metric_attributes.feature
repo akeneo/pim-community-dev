@@ -22,64 +22,59 @@ Feature: Validate metric attributes of a product
     And I am on the "foo" product page
 
   Scenario: Validate the negative allowed constraint of metric attribute
-    Given I change the Area to "-10"
+    Given I change the Area to "-10 HECTARE"
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the negative allowed constraint of scopable metric attribute
-    Given I change the "ecommerce Length" to "-10"
+    Given I switch the scope to "ecommerce"
+    And I change the Length to "-10 METER"
     And I save the product
     Then I should see validation tooltip "This value should be 0 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of metric attribute
-    Given I change the Area to "2.7"
+    Given I change the Area to "2.7 HECTARE"
     And I save the product
     Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the decimals allowed constraint of scopable metric attribute
-    Given I change the "ecommerce Length" to "4.9"
+    Given I switch the scope to "ecommerce"
+    And I change the Length to "4.9 METER"
     And I save the product
     Then I should see validation tooltip "This value should not be a decimal."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of metric attribute
-    Given I change the Power to "-250"
+    Given I change the Power to "-250 WATT"
     And I save the product
     Then I should see validation tooltip "This value should be -200 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number min constraint of scopable metric attribute
-    Given I change the "ecommerce Speed" to "-7.5"
+    Given I switch the scope to "ecommerce"
+    And I change the Speed to "-7.5 YARD_PER_HOUR"
     And I save the product
     Then I should see validation tooltip "This value should be 5.5 or more."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of metric attribute
-    Given I change the Power to "10"
+    Given I change the Power to "10 WATT"
     And I save the product
     Then I should see validation tooltip "This value should be -100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the number max constraint of scopable metric attribute
-    Given I change the "ecommerce Speed" to "111.1"
+    Given I switch the scope to "ecommerce"
+    And I change the Speed to "111.1 YARD_PER_HOUR"
     And I save the product
     Then I should see validation tooltip "This value should be 100 or less."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab
 
   Scenario: Validate the type constraint of metric attribute
-    Given I change the Power to "bar"
+    Given I change the Power to "bar WATT"
     And I save the product
     Then I should see validation tooltip "This value should be a valid number."
-    And I should see validation tooltip "There are errors in this tab!"
-    And the "Attributes" tab should be red
+    And there should be 1 error in the "Other" tab

@@ -1,24 +1,24 @@
 define(
     ['jquery', 'jquery.slimbox'],
-    function($) {
+    function ($) {
         'use strict';
 
         var maxFilenameLength = 20;
-        var init = function(id) {
+        var init = function (id) {
             var $el = $('#' + id);
             if (!$el.length) {
                 return;
             }
 
             $el.on('change', function () {
-                var $input          = $(this),
-                    filename        = $input.val().split('\\').pop(),
-                    $zone           = $input.parent(),
-                    $info           = $input.siblings('.upload-info').first(),
-                    $filename       = $info.find('.upload-filename'),
-                    $removeBtn      = $input.siblings('.remove-upload'),
-                    $removeCheckbox = $input.siblings('input[type="checkbox"]'),
-                    $preview        = $info.find('.upload-preview');
+                var $input          = $(this);
+                var filename        = $input.val().split('\\').pop();
+                var $zone           = $input.parent();
+                var $info           = $input.siblings('.upload-info').first();
+                var $filename       = $info.find('.upload-filename');
+                var $removeBtn      = $input.siblings('.remove-upload');
+                var $removeCheckbox = $input.siblings('input[type="checkbox"]');
+                var $preview        = $info.find('.upload-preview');
 
                 if ($preview.prop('tagName').toLowerCase() !== 'i') {
                     var iconClass = $zone.hasClass('image') ? 'icon-camera-retro' : 'icon-file';
@@ -27,7 +27,9 @@ define(
                 }
 
                 if (filename) {
-                    var title = filename.length > maxFilenameLength ? filename.substring(0, maxFilenameLength-3) + '...' : filename;
+                    var title = filename.length > maxFilenameLength ?
+                        filename.substring(0, maxFilenameLength - 3) + '...' :
+                        filename;
                     $filename.html(title);
                     $zone.removeClass('empty');
                     $preview.removeClass('empty').attr('title', filename);
@@ -51,9 +53,9 @@ define(
                 $el.unwrap().trigger('change');
             });
 
-            $el.parent().on('mouseover', '.upload-zone:not(.empty)', function() {
+            $el.parent().on('mouseover', '.upload-zone:not(.empty)', function () {
                 $el.attr('disabled', 'disabled');
-            }).on('mouseout', '.upload-zone:not(.empty)', function() {
+            }).on('mouseout', '.upload-zone:not(.empty)', function () {
                 $el.removeAttr('disabled');
             });
 

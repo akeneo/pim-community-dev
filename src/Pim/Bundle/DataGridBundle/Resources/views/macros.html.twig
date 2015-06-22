@@ -61,7 +61,7 @@
                         urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
                     }
 
-                    {% if name == 'product-grid' %}
+                    {% if name ends with 'product-grid' %}
                     var categoryFilter = new CategoryFilter(urlParams, '{{ name }}');
                     {% endif %}
 

@@ -25,6 +25,7 @@ class PimEnrichBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass(new ReferenceFactory()))
             ->addCompilerPass(new Compiler\RegisterViewElementsPass(new ReferenceFactory()))
             ->addCompilerPass(new Compiler\RegisterViewUpdatersPass(new ReferenceFactory()))
+            ->addCompilerPass(new Compiler\RegisterFormExtensionsPass())
             ->addCompilerPass(new Compiler\SerializerPass('pim_internal_api_serializer'));
     }
 }

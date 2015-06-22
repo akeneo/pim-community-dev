@@ -9,6 +9,7 @@
 - Category filter is separated from other datagrid filters for performance concerns
 - Use MySQL as a non blocking session storage
 - Handle Doctrine mapping overrides smoothly (no more need to copy/paste the full mapping of an entity or a document)
+- Product edit form revamp
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
@@ -123,6 +124,9 @@
 - Remove `Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry`
 - Move `Pim\Bundle\CatalogBundle\Doctrine\ORM\Repository\CategoryRepository` → `Pim\Bundle\ClassificationBundle\Doctrine\ORM\Repository\CategoryRepository`
 - Move `Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface` → `Pim\Component\Classification\Repository\CategoryRepositoryInterface`
+- Remove Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface replaced by Pim\Bundle\CatalogBundle\Filter\CollectionFilterInterface
+- Remove Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface
+- Remove `Pim\Bundle\EnrichBundle\Controller\ProductAttributeController`
 
 # 1.3.16 (2015-06-08)
 

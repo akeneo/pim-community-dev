@@ -22,9 +22,9 @@ define(
 
                         this.setStateFromCollection(collection);
 
-                        this.$checkbox.on('click', _.bind(function() {
+                        this.$checkbox.on('click', _.bind(function () {
                             var state = this.$checkbox.is(':checked');
-                            _.each(collection.models, function(model) {
+                            _.each(collection.models, function (model) {
                                 model.set(this.columnName, state);
                             }, this);
                         }, this));
@@ -47,7 +47,7 @@ define(
                 mediator.trigger('column_form_listener:initialized', this.gridName);
             },
 
-            _explode: function(string) {
+            _explode: function (string) {
                 if (!string) {
                     return [];
                 }
@@ -58,12 +58,19 @@ define(
 
             setStateFromCollection: function (collection) {
                 var checked = true;
-                _.each(collection.models, function(model) {
+                _.each(collection.models, function (model) {
                     if (checked) {
                         checked = model.get(this.columnName);
                     }
                 }, this);
                 this.$checkbox.prop('checked', checked);
+            },
+
+            _processValue: function (id, model) {
+                OroColumnFormListener.prototype._processValue.apply(this, arguments);
+
+                var selectEvent = model.get(this.columnName) ? 'selectModel' : 'unselectModel';
+                mediator.trigger('datagrid:' + selectEvent + ':' + this.gridName, model);
             }
         });
 

@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'oro/navigation', 'backbone/bootstrap-modal'],
-    function ($, _, Navigation) {
+    ['jquery', 'underscore', 'backbone', 'oro/navigation', 'backbone/bootstrap-modal'],
+    function ($, _, Backbone, Navigation) {
         'use strict';
 
         /**
@@ -50,11 +50,11 @@ define(
                         okText: okText
                     });
 
-                    redirectModal.on('ok', function() {
+                    redirectModal.on('ok', function () {
                         Navigation.getInstance().setLocation(location);
                     });
 
-                    $('.modal-body a', redirectModal.el).on('click', function() {
+                    $('.modal-body a', redirectModal.el).on('click', function () {
                         redirectModal.close();
                     });
 
@@ -72,16 +72,28 @@ define(
              * @param function callback
              */
             confirm: function (content, title, callback) {
+                var deferred = $.Deferred();
+
+                var success = function () {
+                    deferred.resolve();
+                    (callback || $.noop)();
+                };
+                var cancel = function () {
+                    deferred.reject();
+                };
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
                     var confirm = new Backbone.BootstrapModal({
                         title: title,
                         content: content
                     });
-                    confirm.on('ok', callback);
+                    confirm.on('ok', success);
+                    confirm.on('cancel', cancel);
                     confirm.open();
-                } else if (window.confirm(content)) {
-                    callback();
+                } else {
+                    (window.confirm(content) ? success : cancel)();
                 }
+
+                return deferred.promise();
             }
         };
     }

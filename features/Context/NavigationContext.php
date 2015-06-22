@@ -4,9 +4,11 @@ namespace Context;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Behat\Behat\Context\Step;
+use Behat\Behat\Context\Step\Then;
 use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Context\Page\Base\Base;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -223,7 +225,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
+        $this->wait();
     }
 
     /**
@@ -236,7 +239,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'UserGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('UserGroup edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('UserGroup edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -249,7 +252,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'UserRole';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($label);
-        $this->openPage(sprintf('UserRole edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('UserRole edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -264,7 +267,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s show', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s show', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -278,7 +281,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'AttributeGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -291,7 +294,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -301,7 +304,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheCategoryNodeCreationPage(Category $category)
     {
-        $this->openPage('Category node creation', array('id' => $category->getId()));
+        $this->openPage('Category node creation', ['id' => $category->getId()]);
     }
 
     /**
@@ -311,7 +314,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $this->openPage('Import show', array('id' => $job->getId()));
+        $this->openPage('Import show', ['id' => $job->getId()]);
     }
 
     /**
@@ -321,8 +324,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheExportJobPage(JobInstance $job)
     {
-        $this->openPage('Export show', array('id' => $job->getId()));
-        $this->wait();
+        $this->openPage('Export show', ['id' => $job->getId()]);
     }
 
     /**
@@ -332,8 +334,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheImportJobEditPage(JobInstance $job)
     {
-        $this->openPage('Import edit', array('id' => $job->getId()));
-        $this->wait();
+        $this->openPage('Import edit', ['id' => $job->getId()]);
     }
 
     /**
@@ -343,8 +344,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmOnTheExportJobEditPage(JobInstance $job)
     {
-        $this->openPage('Export edit', array('id' => $job->getId()));
-        $this->wait();
+        $this->openPage('Export edit', ['id' => $job->getId()]);
     }
 
     /**
@@ -382,7 +382,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'ProductGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -395,7 +395,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $page   = 'VariantGroup';
         $entity = $this->getFixturesContext()->getProductGroup($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -409,7 +409,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -422,7 +422,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page   = 'AssociationType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        $this->openPage(sprintf('%s edit', $page), ['id' => $entity->getId()]);
     }
 
     /**
@@ -433,7 +433,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iLaunchTheExportJob(JobInstance $job)
     {
         $jobType = ucfirst($job->getType());
-        $this->openPage(sprintf('%s launch', $jobType), array('id' => $job->getId()));
+        $this->openPage(sprintf('%s launch', $jobType), ['id' => $job->getId()]);
     }
 
     /**
@@ -486,7 +486,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheAttributeGroupPage(AttributeGroupInterface $group)
     {
-        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
+        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(['id' => $group->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -498,7 +498,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheJobPage(JobInstance $job)
     {
         $jobPage         = sprintf('%s show', ucfirst($job->getType()));
-        $expectedAddress = $this->getPage($jobPage)->getUrl(array('id' => $job->getId()));
+        $expectedAddress = $this->getPage($jobPage)->getUrl(['id' => $job->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -509,7 +509,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheGroupTypePage(GroupTypeInterface $groupType)
     {
-        $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
+        $expectedAddress = $this->getPage('GroupType edit')->getUrl(['id' => $groupType->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -520,7 +520,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheProductGroupPage(GroupInterface $group)
     {
-        $expectedAddress = $this->getPage('ProductGroup edit')->getUrl(array('id' => $group->getId()));
+        $expectedAddress = $this->getPage('ProductGroup edit')->getUrl(['id' => $group->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -531,7 +531,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheVariantGroupPage(GroupInterface $group)
     {
-        $expectedAddress = $this->getPage('VariantGroup edit')->getUrl(array('id' => $group->getId()));
+        $expectedAddress = $this->getPage('VariantGroup edit')->getUrl(['id' => $group->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -542,7 +542,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheRolePage(Role $role)
     {
-        $expectedAddress = $this->getPage('Role edit')->getUrl(array('id' => $role->getId()));
+        $expectedAddress = $this->getPage('Role edit')->getUrl(['id' => $role->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -561,7 +561,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheFamilyPage(Family $family)
     {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $family->getId()));
+        $expectedAddress = $this->getPage('Family edit')->getUrl(['id' => $family->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -572,7 +572,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheAssociationTypePage(AssociationTypeInterface $associationType)
     {
-        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(array('id' => $associationType->getId()));
+        $expectedAddress = $this->getPage('AssociationType edit')->getUrl(['id' => $associationType->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -599,7 +599,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheCategoryEditPage(Category $category)
     {
-        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $category->getId()));
+        $expectedAddress = $this->getPage('Category edit')->getUrl(['id' => $category->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -610,7 +610,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
-        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(['id' => $category->getId()]);
         $this->assertAddress($expectedAddress);
     }
 
@@ -621,6 +621,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $expectedAddress = $this->getPage('Product index')->getUrl();
         $this->assertAddress($expectedAddress);
+        $this->wait();
     }
 
     /**
@@ -630,8 +631,9 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iShouldBeOnTheProductEditPage(Product $product)
     {
-        $expectedAddress = $this->getPage('Product edit')->getUrl(array('id' => $product->getId()));
+        $expectedAddress = $this->getPage('Product edit')->getUrl(['id' => $product->getId()]);
         $this->assertAddress($expectedAddress);
+        $this->wait();
     }
 
     /**
@@ -649,13 +651,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function openPage($page, array $options = array())
+    public function openPage($page, array $options = [])
     {
         $this->currentPage = $page;
 
+        /** @var Base $page */
         $page = $this->getCurrentPage()->open($options);
-        $this->loginIfRequired();
-        $this->wait(60000);
+
+        // spin function to deal with invalid CSRF problems
+        $this->getMainContext()->spin(function () use ($page) {
+            $this->loginIfRequired();
+
+            return $page->verifyAfterLogin();
+        }, 30);
+        $this->wait();
 
         return $page;
     }

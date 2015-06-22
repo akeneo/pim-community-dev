@@ -168,6 +168,30 @@ class LocaleHelper
     }
 
     /**
+     * Get the language from a locale code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getDisplayLanguage($code)
+    {
+        return \Locale::getDisplayLanguage($code);
+    }
+
+    /**
+     * Get the region from a locale code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getDisplayRegion($code)
+    {
+        return \Locale::getDisplayRegion($code);
+    }
+
+    /**
      * Get activated locales as choices
      *
      * @return string[]

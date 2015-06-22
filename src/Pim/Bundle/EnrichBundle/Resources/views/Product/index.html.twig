@@ -7,9 +7,10 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'jquery.sidebarize'],
-            function ($) {
+            ['jquery', 'pim/user-context', 'jquery.sidebarize'],
+            function ($, UserContext) {
                 'use strict';
+                UserContext.set('catalogLocale', '{{ dataLocale.code }}');
                 $(function() {
                     $('.has-sidebar').sidebarize();
                 });

@@ -53,7 +53,7 @@ Feature: Execute a job
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations" tab
-    And I visit the "Cross sell" group
+    And I select the "Cross sell" association
     Then I should see "2 products and 1 groups"
 
   @pim-2445

@@ -1,0 +1,34 @@
+<div class="media-uploader <%= value.value && value.value.filePath ? 'has-file' : '' %>" >
+    <div>
+        <% if (!value.value || value.value.filePath === null) { %>
+            <label class="file-uploader">
+                <input type="file" data-locale="<%= value.locale %>" data-scope="<%= value.scope %>" <%= editMode === 'view' ? 'disabled' : '' %>/>
+            </label>
+            <div class="uploader">
+                <img src="/bundles/pimui/images/upload.png" alt="upload icon"/>
+                <span><%= _.__('pim_enrich.entity.product.media.upload')%></span>
+            </div>
+        <% } else { %>
+            <div class="preview">
+                <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
+                    <div class="file"><img src="<%= mediaUrl %>"/></div>
+                <% } else { %>
+                    <div class="file"><i class="icon icon-file"></i></div>
+                <% } %>
+                <div class="info">
+                    <span class="filename" title="<%= value.value.originalFilename %>"><%= value.value.originalFilename %></span>
+                    <span class="actions">
+                        <% if ('pim_catalog_image' === attribute.type && null != mediaUrl) { %>
+                            <span class="open-media"><i class="icon icon-eye-open"></i></span>
+                        <% } %>
+                        <a href="<%= mediaUrl %>" class="download-file" download><i class="icon icon-cloud-download"></i></a>
+                        <span class="clear-field"><i class="icon icon-trash"></i></span>
+                    </span>
+                </div>
+            </div>
+        <% } %>
+    </div>
+    <div class="progress">
+      <div class="bar"></div>
+    </div>
+</div>
