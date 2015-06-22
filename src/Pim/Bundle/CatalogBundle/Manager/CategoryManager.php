@@ -27,7 +27,7 @@ class CategoryManager
     protected $categoryClass;
 
     /** @var CategoryRepositoryInterface */
-    protected $categoryRepository;
+    protected $productCategoryRepo;
 
     /** @var CategoryFactory */
     protected $categoryFactory;
@@ -35,19 +35,19 @@ class CategoryManager
     /**
      * @param ObjectManager               $om
      * @param string                      $categoryClass
-     * @param CategoryRepositoryInterface $categoryRepository
+     * @param CategoryRepositoryInterface $productCategoryRepo
      * @param CategoryFactory             $categoryFactory
      */
     public function __construct(
         ObjectManager $om,
         $categoryClass,
-        CategoryRepositoryInterface $categoryRepository,
+        CategoryRepositoryInterface $productCategoryRepo,
         CategoryFactory $categoryFactory
     ) {
-        $this->om                 = $om;
-        $this->categoryClass      = $categoryClass;
-        $this->categoryRepository = $categoryRepository;
-        $this->categoryFactory    = $categoryFactory;
+        $this->om                  = $om;
+        $this->categoryClass       = $categoryClass;
+        $this->productCategoryRepo = $productCategoryRepo;
+        $this->categoryFactory     = $categoryFactory;
     }
 
     /**
@@ -97,7 +97,7 @@ class CategoryManager
      */
     public function getEntityRepository()
     {
-        return $this->categoryRepository;
+        return $this->productCategoryRepo;
     }
 
     /**
@@ -119,7 +119,7 @@ class CategoryManager
      */
     public function getTrees()
     {
-        return $this->categoryRepository->getTrees();
+        return $this->productCategoryRepo->getTrees();
     }
 
     /**
@@ -222,7 +222,7 @@ class CategoryManager
      */
     public function getTreeByCode($code)
     {
-        return $this->categoryRepository->findOneBy(['code' => $code, 'parent' => null]);
+        return $this->productCategoryRepo->findOneBy(['code' => $code, 'parent' => null]);
     }
 
     /**
@@ -236,7 +236,7 @@ class CategoryManager
      */
     public function getCategoryByCode($code)
     {
-        return $this->categoryRepository->findOneBy(array('code' => $code));
+        return $this->productCategoryRepo->findOneBy(array('code' => $code));
     }
 
     /**
@@ -252,7 +252,7 @@ class CategoryManager
      */
     public function move($categoryId, $parentId, $prevSiblingId)
     {
-        $repo     = $this->categoryRepository;
+        $repo     = $this->productCategoryRepo;
         $category = $repo->find($categoryId);
         $parent   = $repo->find($parentId);
         $prevSibling = null;
