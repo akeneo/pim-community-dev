@@ -17,7 +17,6 @@ define([
         ], function ($, Field, _, EntityManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
-        fieldType: 'metric',
         events: {
             'change .field-input .data, .field-input .unit': 'updateModel'
         },

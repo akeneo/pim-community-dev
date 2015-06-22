@@ -12,7 +12,6 @@ define(
     function (Field, _, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
-        fieldType: 'boolean',
         events: {
             'change .field-input input[type="checkbox"]': 'updateModel'
         },

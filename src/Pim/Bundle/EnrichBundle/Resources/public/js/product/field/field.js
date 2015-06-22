@@ -31,7 +31,6 @@ define([
                 };
             },
             attribute: null,
-            fieldType: 'text',
             context: {},
             model: FieldModel,
             template: _.template(fieldTemplate),
@@ -96,7 +95,7 @@ define([
                 var deferred = $.Deferred();
 
                 deferred.resolve({
-                    type: this.fieldType,
+                    type: this.attribute.field_type,
                     label: this.attribute.label[this.context.uiLocale] ?
                         this.attribute.label[this.context.uiLocale] :
                         this.attribute.code,
