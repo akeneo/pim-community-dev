@@ -19,3 +19,15 @@ pimee_product_asset_update:
     defaults: { _controller: pimee_product_asset.controller.product_asset:updateAction }
     requirements:
         id: '[0-9]+'
+
+pimee_product_asset_reference_delete:
+    path: /reference/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteReferenceFileAction }
+    requirements:
+        id: '[0-9]+'
+
+pimee_product_asset_variation_delete:
+    path: /variation/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteVariationFileAction }
+    requirements:
+        id: '[0-9]+'

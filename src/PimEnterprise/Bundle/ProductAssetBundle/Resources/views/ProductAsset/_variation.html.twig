@@ -34,13 +34,16 @@
                         {% endif %}
                         <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
                         <td>{{ variationModel.file.mimeType }}</td>
-                        <td>{{ form_widget(variation.file) }}</td>
+                        <td><a class="btn"
+                               href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}"
+                            >Delete</a></td>
                     </tr>
                     </tbody>
                 </table>
             {% else %}
-                No variation file for the channel {{ variationModel.channel.label }}.
-                {{ form_widget(variation.file) }}
+            <div class="row-fluid variation-upload">
+                <div class="span6 variation-dropzone">{{ form_widget(variation.file) }}</div>
+            </div>
             {% endif %}
         </div>
     </div>

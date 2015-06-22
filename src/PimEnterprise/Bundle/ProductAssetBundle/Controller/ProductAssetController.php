@@ -23,6 +23,7 @@ use PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
@@ -75,6 +76,12 @@ class ProductAssetController extends Controller
     /** @var SaverInterface */
     protected $assetSaver;
 
+    /** @var SaverInterface */
+    protected $referenceSaver;
+
+    /** @var SaverInterface */
+    protected $variationSaver;
+
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
@@ -88,6 +95,7 @@ class ProductAssetController extends Controller
      * @param VariationFileGeneratorInterface $variationFileGenerator
      * @param FilesUpdaterInterface           $assetFilesUpdater
      * @param SaverInterface                  $assetSaver
+     * @param SaverInterface                  $variationSaver
      * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
@@ -100,6 +108,8 @@ class ProductAssetController extends Controller
         VariationFileGeneratorInterface $variationFileGenerator,
         FilesUpdaterInterface $assetFilesUpdater,
         SaverInterface $assetSaver,
+        SaverInterface $referenceSaver,
+        SaverInterface $variationSaver,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->assetRepository        = $assetRepository;
@@ -111,6 +121,8 @@ class ProductAssetController extends Controller
         $this->variationFileGenerator = $variationFileGenerator;
         $this->assetFilesUpdater      = $assetFilesUpdater;
         $this->assetSaver             = $assetSaver;
+        $this->referenceSaver         = $referenceSaver;
+        $this->variationSaver         = $variationSaver;
         $this->eventDispatcher        = $eventDispatcher;
     }
 
@@ -186,8 +198,10 @@ class ProductAssetController extends Controller
         $assetLocales = $productAsset->getLocales();
         if (null !== $request->get('locale')) {
             $locale = $assetLocales[$request->get('locale')];
-        } else {
+        } elseif (!empty($assetLocales)) {
             $locale = reset($assetLocales);
+        } else {
+            $locale = null;
         }
 
         $metadata = null;
@@ -234,6 +248,63 @@ class ProductAssetController extends Controller
         }
 
         return $this->redirectAfterEdit($request, ['id' => $id]);
+    }
+
+    /**
+     * Delete a variation and redirect
+     *
+     * @param Request    $request
+     * @param int|string reference $id
+     *
+     * @return RedirectResponse
+     */
+    public function deleteReferenceFileAction(Request $request, $id)
+    {
+        $reference = $this->findAssetReferenceOr404($id);
+        try {
+            $asset = $reference->getAsset();
+            $reference->setFile(null);
+            $this->referenceSaver->save($reference);
+            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+        } catch (\Exception $e) {
+            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+        }
+
+        if (null !== $reference->getLocale()) {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+        } else {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+        }
+    }
+
+    /**
+     * Delete a variation and redirect
+     *
+     * @param Request    $request
+     * @param int|string variation $id
+     *
+     * @return RedirectResponse
+     */
+    public function deleteVariationFileAction(Request $request, $id)
+    {
+        $variation = $this->findAssetVariationOr404($id);
+        try {
+            $asset = $variation->getAsset();
+            $reference = $variation->getReference();
+            $variation->setFile(null);
+            $variation->setSourceFile($reference->getFile());
+            $variation->setLocked(false);
+            $this->variationSaver->save($variation);
+            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+        } catch (\Exception $e) {
+            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+        }
+
+        if (null !== $reference->getLocale()) {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+        } else {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+        }
     }
 
     /**
@@ -324,6 +395,50 @@ class ProductAssetController extends Controller
         }
 
         return $productAsset;
+    }
+
+    /**
+     * Find a reference by its id or return a 404 response
+     *
+     * @param int|string $id
+     *
+     * @return ReferenceInterface
+     *
+     * @throws NotFoundHttpException
+     */
+    protected function findAssetReferenceOr404($id)
+    {
+        $reference = $this->referenceRepository->find($id);
+
+        if (null === $reference) {
+            throw $this->createNotFoundException(
+                sprintf('Asset $reference with id "%s" could not be found.', (string) $id)
+            );
+        }
+
+        return $reference;
+    }
+
+    /**
+     * Find a variation by its id or return a 404 response
+     *
+     * @param int|string $id
+     *
+     * @return VariationInterface
+     *
+     * @throws NotFoundHttpException
+     */
+    protected function findAssetVariationOr404($id)
+    {
+        $variation = $this->variationRepository->find($id);
+
+        if (null === $variation) {
+            throw $this->createNotFoundException(
+                sprintf('Asset variation with id "%s" could not be found.', (string) $id)
+            );
+        }
+
+        return $variation;
     }
 
     /**

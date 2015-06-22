@@ -404,7 +404,9 @@ class Asset implements AssetInterface
         $locales = [];
 
         foreach ($this->getReferences() as $reference) {
-            $locales[$reference->getLocale()->getCode()] = $reference->getLocale();
+            if (null !== $reference->getLocale()) {
+                $locales[$reference->getLocale()->getCode()] = $reference->getLocale();
+            }
         }
 
         return $locales;

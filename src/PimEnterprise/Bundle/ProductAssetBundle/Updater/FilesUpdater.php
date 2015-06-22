@@ -74,7 +74,7 @@ class FilesUpdater implements FilesUpdaterInterface
      */
     protected function updateReferenceFile(ReferenceInterface $reference)
     {
-        if (null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
+        if (null !== $reference->getFile() && null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
             $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
             $reference->setFile($file);
             $this->resetVariationsFiles($reference);
