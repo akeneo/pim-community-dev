@@ -483,7 +483,8 @@ class Edit extends Form
         }
 
         throw new ExpectationException(
-            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()), $this->getSession()
+            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()),
+            $this->getSession()
         );
     }
 

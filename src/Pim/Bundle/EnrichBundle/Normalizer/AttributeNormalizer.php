@@ -57,7 +57,7 @@ class AttributeNormalizer implements NormalizerInterface
      *
      * @return array|bool|string|null
      */
-    protected function getEmptyValue($attribute)
+    protected function getEmptyValue(AttributeInterface $attribute)
     {
         switch ($attribute->getAttributeType()) {
             case 'pim_catalog_metric':
