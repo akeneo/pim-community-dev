@@ -43,6 +43,24 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
         $res->shouldBeListOfProcessedVariations();
     }
 
+    function it_can_generate_locked_variation_files_from_a_reference(
+        $variationFileGenerator,
+        VariationInterface $variation1,
+        VariationInterface $variation2,
+        VariationInterface $variation3
+    ) {
+        $variation1->isLocked()->willReturn(false);
+        $variation2->isLocked()->willReturn(true);
+
+        $variationFileGenerator->generate($variation1)->shouldBeCalled();
+        $variationFileGenerator->generate($variation2)->shouldBeCalled();
+
+        $res = $this->generate([$variation1, $variation2], true);
+        $res->shouldReturnAnInstanceOf('PimEnterprise\Component\ProductAsset\ProcessedItemList');
+        $res->shouldHaveCount(2);
+        $res->shouldBeListOfSuccessfulProcessedVariations();
+    }
+
     public function getMatchers()
     {
         return [
@@ -54,6 +72,17 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
                     ProcessedItem::STATE_SKIPPED === $subject[2]->getState() &&
                     'Impossible to build the variation' === $subject[1]->getReason() &&
                     'The variation is locked' === $subject[2]->getReason();
+            },
+            'beListOfSuccessfulProcessedVariations' => function($processedlist) {
+                /** @var ProcessedItemList $subject */
+                $success = true;
+                foreach ($processedlist as $item) {
+                    if (ProcessedItem::STATE_SUCCESS !== $item->getState()) {
+                        $success = false;
+                        break;
+                    }
+                }
+                return $success;
             },
         ];
     }

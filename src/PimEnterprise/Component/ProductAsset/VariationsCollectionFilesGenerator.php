@@ -33,17 +33,20 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
 
     /**
      * @param VariationInterface[] $variations
+     * @param bool                 $includeLocked Process locked variations
      *
      * @return ProcessedItemList
      */
-    public function generate(array $variations)
+    public function generate(array $variations, $includeLocked = false)
     {
         $processedVariations = new ProcessedItemList();
 
         foreach ($variations as $variation) {
-            // TODO check instance of VariationInterface
-//            if (!$variation->isLocked()) {
-            if (true) {
+            if (!$variation instanceof VariationInterface) {
+                throw new \InvalidArgumentException('The collection should contains only VariationInterfaces');
+            }
+
+            if ($includeLocked || !$variation->isLocked()) {
                 try {
                     $this->variationFileGenerator->generate($variation);
                     $processedVariations->addItem($variation, ProcessedItem::STATE_SUCCESS);

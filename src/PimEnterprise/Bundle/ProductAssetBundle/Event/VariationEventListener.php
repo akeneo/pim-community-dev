@@ -27,7 +27,14 @@ class VariationEventListener
         $this->rootDir = $rootDir;
     }
 
-    public function onVariationUploaded(GenericEvent $event)
+    /**
+     * Generate all missing variations or asset missing variations
+     *
+     * @param AssetEvent $event
+     *
+     * @return AssetEvent
+     */
+    public function onVariationUploaded(AssetEvent $event)
     {
         $pathFinder = new PhpExecutableFinder();
         $cmd = sprintf(
@@ -35,6 +42,13 @@ class VariationEventListener
             $pathFinder->find(),
             $this->rootDir
         );
+
+        $asset = $event->getSubject();
+
+        if (null !== $asset) {
+            $cmd .= sprintf(' --asset=%s', $asset->getCode());
+        }
+
         exec($cmd . ' &');
 
         return $event;

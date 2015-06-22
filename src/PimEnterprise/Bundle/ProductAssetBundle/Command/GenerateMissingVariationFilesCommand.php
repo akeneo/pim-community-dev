@@ -16,10 +16,12 @@ use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Generate the missing variation files
+ * It can generate all missing variations or missing variations for a specific asset code
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -32,6 +34,13 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     {
         $this->setName('pim:asset:generate-missing-variations');
         $this->setDescription('Generate all the missing variation files.');
+        $this->addOption(
+            'asset',
+            'a',
+            InputOption::VALUE_REQUIRED,
+            'Asset identifier',
+            null
+        );
     }
 
     /**
@@ -40,21 +49,22 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         try {
-            $variations = $this->retrieveMissingVariations();
+            $assetCode         = $input->getOption('asset');
+            $missingVariations = $this->retrieveMissingVariations($assetCode);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
             return 1;
         }
 
-        if (0 === count($variations)) {
+        if (0 === count($missingVariations)) {
             $output->writeln('<info>No missing variation</info>');
 
             return 0;
         }
 
         $generator     = $this->getVariationsCollectionFileGenerator();
-        $processedList = $generator->generate($variations);
+        $processedList = $generator->generate($missingVariations, true);
 
         foreach ($processedList as $item) {
             $variation = $item->getItem();
@@ -85,12 +95,25 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     }
 
     /**
-     * @return VariationInterface[]
+     * @param int|null $assetCode
+     *
+     * @return \PimEnterprise\Component\ProductAsset\Model\VariationInterface[]
      */
-    protected function retrieveMissingVariations()
+    protected function retrieveMissingVariations($assetCode = null)
     {
-        $variationsRepo    = $this->getContainer()->get('pimee_product_asset.repository.variation');
-        $missingVariations = $variationsRepo->findBy(['file' => null]);
+        $missingVariations = [];
+
+        if (null !== $assetCode) {
+            $asset = $this->retrieveAsset($assetCode);
+            foreach ($asset->getVariations() as $variation) {
+                if (null === $variation->getFile()) {
+                    $missingVariations[] = $variation;
+                }
+            }
+        } else {
+            $variationsRepo    = $this->getContainer()->get('pimee_product_asset.repository.variation');
+            $missingVariations = $variationsRepo->findBy(['file' => null]);
+        }
 
         return $missingVariations;
     }

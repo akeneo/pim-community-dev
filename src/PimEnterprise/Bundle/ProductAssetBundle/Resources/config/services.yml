@@ -2,7 +2,6 @@
 parameters:
     pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
     pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
-    pimee_product_asset.event_listener.variation.class:              PimEnterprise\Bundle\ProductAssetBundle\Event\VariationEventListener
 
 services:
     pimee_product_asset.variation_file_generator:
@@ -22,10 +21,3 @@ services:
             class: %pimee_product_asset.variations_collection_files_generator.class%
             arguments:
                 - '@pimee_product_asset.variation_file_generator'
-
-    pimee_product_asset.event_listener.variation:
-        class: %pimee_product_asset.event_listener.variation.class%
-        arguments:
-            - '%kernel.root_dir%'
-        tags:
-            - { name: kernel.event_listener, event: pimee_product_asset.variation.upload.post, method: onVariationUploaded }

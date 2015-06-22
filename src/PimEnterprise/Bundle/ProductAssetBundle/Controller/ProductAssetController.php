@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
-use PimEnterprise\Bundle\ProductAssetBundle\Event\ReferenceEvents;
+use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\VariationEvents;
 use PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Model\Asset;
@@ -38,7 +38,6 @@ use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -94,6 +93,7 @@ class ProductAssetController extends Controller
      * @param ChannelRepositoryInterface      $channelRepository
      * @param RawFileStorerInterface          $rawFileStorer
      * @param VariationFileGeneratorInterface $variationFileGenerator
+     * @param FilesUpdaterInterface           $assetFilesUpdater
      * @param SaverInterface                  $assetSaver
      * @param EventDispatcherInterface        $eventDispatcher
      */
@@ -179,15 +179,13 @@ class ProductAssetController extends Controller
     /**
      * Edit an asset
      *
-     * @param Request    $request
      * @param int|string $id
      *
-     * @Template
      * @AclAncestor("pimee_product_asset_index")
      *
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction($id)
     {
         $productAsset = $this->findProductAssetOr404($id);
         $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
@@ -197,11 +195,11 @@ class ProductAssetController extends Controller
             $metadata = $this->getAssetMetadata($productAsset);
         }
 
-        return [
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig',[
             'asset'    => $productAsset,
             'form'     => $assetForm,
             'metadata' => $metadata
-        ];
+        ]);
     }
 
     /**
@@ -226,8 +224,8 @@ class ProductAssetController extends Controller
                 $this->assetFilesUpdater->updateAssetFiles($asset);
                 $this->assetSaver->save($asset);
                 $this->eventDispatcher->dispatch(
-                    VariationEvents::UPLOAD_POST,
-                    new GenericEvent($asset)
+                    AssetEvent::FILES_UPLOAD_POST,
+                    new AssetEvent($asset)
                     );
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
