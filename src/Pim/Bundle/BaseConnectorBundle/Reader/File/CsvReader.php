@@ -24,38 +24,19 @@ class CsvReader extends FileReader implements
     UploadedFileAwareInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     * @AssertFile(
-     *     groups={"Execution"},
-     *     allowedExtensions={"csv", "zip"}
-     * )
-     */
+    /** @var string */
     protected $filePath;
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
-     */
+    /** @var string */
     protected $delimiter = ';';
 
-    /**
-     * @Assert\NotBlank
-     * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
-     */
+    /** @var string */
     protected $enclosure = '"';
 
-    /**
-     * @Assert\NotBlank
-     */
+    /** @var string */
     protected $escape = '\\';
 
-    /**
-     * @var bool
-     *
-     * @Assert\Type(type="bool")
-     * @Assert\True(groups={"UploadExecution"})
-     */
+    /** @var bool */
     protected $uploadAllowed = false;
 
     /** @var StepExecution */
