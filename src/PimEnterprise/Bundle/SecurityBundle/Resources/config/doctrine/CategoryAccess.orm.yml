@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess:
     type: entity
     table: pimee_security_category_access
+    changeTrackingPolicy: DEFERRED_EXPLICIT
     repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
     uniqueConstraints:
         category_user_group_idx:
