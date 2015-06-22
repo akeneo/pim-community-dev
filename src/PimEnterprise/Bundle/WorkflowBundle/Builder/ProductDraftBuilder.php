@@ -88,7 +88,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
 
             foreach ($new as $index => $changes) {
                 $comparator = $this->comparatorRegistry->getAttributeComparator($attributeTypes[$code]);
-                $diffAttribute = $comparator->getChanges(
+                $diffAttribute = $comparator->compare(
                     $changes,
                     $this->getOriginalValue($originalValues, $code, $index)
                 );
