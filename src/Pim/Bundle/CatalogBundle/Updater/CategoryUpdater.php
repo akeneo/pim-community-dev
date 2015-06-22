@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\CatalogBundle\Updater;
 
+use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * Updates an attribute.
+ * Updates a category.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -21,13 +21,13 @@ class CategoryUpdater implements ObjectUpdaterInterface
     /** @var PropertyAccessor */
     protected $accessor;
 
-    /** @var CategoryRepositoryInterface */
+    /** @var IdentifiableObjectRepositoryInterface */
     protected $categoryRepository;
 
     /**
-     * @param CategoryRepositoryInterface $categoryRepository
+     * @param IdentifiableObjectRepositoryInterface $categoryRepository
      */
-    public function __construct(CategoryRepositoryInterface $categoryRepository)
+    public function __construct(IdentifiableObjectRepositoryInterface $categoryRepository)
     {
         $this->accessor           = PropertyAccess::createPropertyAccessor();
         $this->categoryRepository = $categoryRepository;
@@ -55,11 +55,9 @@ class CategoryUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param CategoryInterface $attribute
+     * @param CategoryInterface $category
      * @param string            $field
      * @param mixed             $data
-     *
-     * @throws \InvalidArgumentException
      */
     protected function setData(CategoryInterface $category, $field, $data)
     {

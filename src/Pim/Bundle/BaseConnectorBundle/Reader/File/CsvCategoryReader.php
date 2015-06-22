@@ -11,9 +11,6 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
  */
 class CsvCategoryReader extends CsvReader
 {
-    /** @var \ArrayIterator */
-    protected $categories;
-
     /**
      * Since this reader reads the whole file at once, store the executed state
      * and return null when read is called the second time to indicate completion
@@ -36,23 +33,17 @@ class CsvCategoryReader extends CsvReader
      */
     public function read()
     {
-        $category = null;
-
-        if (!$this->executed) {
-            $data = [];
-            while ($row = parent::read()) {
-                $data[] = $row;
-            }
-            $this->categories = new \ArrayIterator($data);
+        if ($this->executed) {
+            return null;
         }
         $this->executed = true;
 
+        $data = array();
 
-        if (null !== $this->categories) {
-            $category = $this->categories->current();
-            $this->categories->next();
+        while ($row = parent::read()) {
+            $data[] = $row;
         }
 
-        return $category;
+        return $data;
     }
 }

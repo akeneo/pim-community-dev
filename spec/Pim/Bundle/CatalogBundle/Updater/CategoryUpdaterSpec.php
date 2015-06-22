@@ -12,7 +12,8 @@ use Prophecy\Argument;
 
 class CategoryUpdaterSpec extends ObjectBehavior
 {
-    function let(CategoryRepositoryInterface $categoryRepository) {
+    function let(CategoryRepositoryInterface $categoryRepository)
+    {
         $this->beConstructedWith($categoryRepository);
     }
 

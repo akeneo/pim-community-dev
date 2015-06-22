@@ -18,6 +18,24 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
      * {@inheritdoc}
      *
      * Converts flat csv array to standard structured array:
+     *
+     * Before:
+     * [
+     *      'code'        => 'mycode',
+     *      'parent'      => 'master',
+     *      'label-fr_FR' => 'T-shirt super beau',
+     *      'label-en_US' => 'T-shirt very beautiful',
+     * ]
+     *
+     * After:
+     * [
+     *      'code'   => 'mycode',
+     *      'parent' => 'master',
+     *      'labels' => [
+     *          'fr_FR' => 'T-shirt super beau',
+     *          'en_US' => 'T-shirt very beautiful',
+     *      ],
+     * ]
      */
     public function convert(array $item, array $options = [])
     {
@@ -34,6 +52,7 @@ class CategoryStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
+     * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
      *

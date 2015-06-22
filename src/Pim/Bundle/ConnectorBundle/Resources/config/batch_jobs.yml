@@ -81,7 +81,7 @@ connector:
                 import:
                     title:     pim_base_connector.jobs.csv_category_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_category
+                        reader:    pim_connector.reader.file.csv_category
                         processor: pim_connector.processor.denormalization.category.flat
                         writer:    pim_connector.writer.doctrine.category
                     parameters:

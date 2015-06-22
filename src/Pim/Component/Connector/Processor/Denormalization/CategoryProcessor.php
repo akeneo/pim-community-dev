@@ -106,10 +106,10 @@ class CategoryProcessor extends AbstractProcessor
     }
 
     /**
-     * Update the variant group fields
+     * Update the category fields
      *
      * @param CategoryInterface $category
-     * @param array          $convertedItem
+     * @param array             $convertedItem
      */
     protected function updateCategory(CategoryInterface $category, array $convertedItem)
     {

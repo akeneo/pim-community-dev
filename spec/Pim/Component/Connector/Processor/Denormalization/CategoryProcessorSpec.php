@@ -168,10 +168,10 @@ class CategoryProcessorSpec extends ObjectBehavior
     {
         return [
             'original_values' => [
-                'code'                       => 'mycode',
-                'parent'                     => 'master',
-                'label-fr_FR'                => 'T-shirt super beau',
-                'label-en_US'                => 'T-shirt very beautiful',
+                'code'        => 'mycode',
+                'parent'      => 'master',
+                'label-fr_FR' => 'T-shirt super beau',
+                'label-en_US' => 'T-shirt very beautiful',
             ],
             'converted_values' => [
                 'code'         => 'mycode',

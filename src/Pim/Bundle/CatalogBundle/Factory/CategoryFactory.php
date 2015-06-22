@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Factory;
 
 /**
- * Group factory
+ * Category factory
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
