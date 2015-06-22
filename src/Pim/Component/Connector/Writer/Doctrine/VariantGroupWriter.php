@@ -58,8 +58,8 @@ class VariantGroupWriter extends BaseWriter
             'copyValues' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_base_connector.import.copyValuesToProducts.label',
-                    'help'  => 'pim_base_connector.import.copyValuesToProducts.help'
+                    'label' => 'pim_connector.import.copyValuesToProducts.label',
+                    'help'  => 'pim_connector.import.copyValuesToProducts.help'
                 ]
             ]
         ];
