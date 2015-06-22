@@ -11,15 +11,30 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
+use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
+use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
+use Pim\Component\Classification\Factory\CategoryFactory;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Overriden category controller
@@ -40,6 +55,25 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @var ChainedFilter */
     protected $chainedFilter;
 
+    /**
+     * @param Request                     $request
+     * @param EngineInterface             $templating
+     * @param RouterInterface             $router
+     * @param SecurityContextInterface    $securityContext
+     * @param FormFactoryInterface        $formFactory
+     * @param ValidatorInterface          $validator
+     * @param TranslatorInterface         $translator
+     * @param EventDispatcherInterface    $eventDispatcher
+     * @param ManagerRegistry             $doctrine
+     * @param CategoryManager             $categoryManager
+     * @param UserContext                 $userContext
+     * @param SecurityFacade              $securityFacade
+     * @param SaverInterface              $categorySaver
+     * @param RemoverInterface            $categoryRemover
+     * @param CategoryFactory             $categoryFactory
+     * @param CategoryRepositoryInterface $categoryRepository
+     * @param ChainedFilter               $chainedFilter
+     */
     public function __construct(
         Request $request,
         EngineInterface $templating,
