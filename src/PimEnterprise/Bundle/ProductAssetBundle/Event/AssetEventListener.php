@@ -15,20 +15,27 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
+ * Asset events listenener
+ *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
-class VariationEventListener
+class AssetEventListener
 {
     /** @var string */
     protected $rootDir;
 
+    /**
+     * @param string $rootDir
+     */
     public function __construct($rootDir)
     {
         $this->rootDir = $rootDir;
     }
 
     /**
-     * Generate all missing variations or asset missing variations
+     * Generate missing variations for one asset or for all assets
+     *
+     * Trigerred by AssetEvent::FILES_UPLOAD_POST
      *
      * @param AssetEvent $event
      *
