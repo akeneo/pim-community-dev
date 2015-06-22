@@ -21,6 +21,8 @@ interface ProductCategoryRepositoryInterface
      * @param ProductInterface $product The product to look for in the trees
      *
      * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
+     *
+     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductCountByTree(ProductInterface $product);
 
@@ -33,6 +35,8 @@ interface ProductCategoryRepositoryInterface
      * @param QueryBuilder      $categoryQb category query buider
      *
      * @return array
+     *
+     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
@@ -46,6 +50,8 @@ interface ProductCategoryRepositoryInterface
      * @param QueryBuilder      $categoryQb category query buider
      *
      * @return int
+     *
+     * @deprecated Will be removed in 1.5. Please use ItemCategoryRepositoryInterface.
      */
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
