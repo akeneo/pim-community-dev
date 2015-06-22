@@ -22,6 +22,7 @@ services:
             - '@security.context'
             - '@pim_catalog.repository.category'
             - '@pim_catalog.factory.category'
+            - '@pimee_product_asset.repository.category'
 
     pim_catalog.manager.product_category:
         class: %pim_catalog.manager.product_category.class%
