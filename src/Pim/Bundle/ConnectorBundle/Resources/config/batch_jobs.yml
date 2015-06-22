@@ -13,13 +13,13 @@ connector:
                 import:
                     title:     pim_base_connector.jobs.csv_product_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_product
+                        reader:    pim_connector.reader.file.csv_product
                         processor: pim_connector.processor.denormalization.product.flat
                         writer:    pim_connector.writer.doctrine.product
                 import_associations:
                     title:     pim_base_connector.jobs.csv_product_import.import_associations.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_association
+                        reader:    pim_connector.reader.file.csv_association
                         processor: pim_connector.processor.denormalization.product_association.flat
                         writer:    pim_connector.writer.doctrine.product_association
         csv_attribute_import:
@@ -34,7 +34,7 @@ connector:
                 import:
                     title:     pim_base_connector.jobs.csv_attribute_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_attribute
+                        reader:    pim_connector.reader.file.csv_attribute
                         processor: pim_connector.processor.denormalization.attribute.flat
                         writer:    pim_connector.writer.doctrine.attribute
         csv_attribute_option_import:
@@ -49,7 +49,7 @@ connector:
                 import:
                     title:     pim_base_connector.jobs.csv_attribute_option_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_attribute_option
+                        reader:    pim_connector.reader.file.csv_attribute_option
                         processor: pim_connector.processor.denormalization.attribute_option.flat
                         writer:    pim_connector.writer.doctrine.attribute_option
         csv_variant_group_import:
@@ -64,7 +64,7 @@ connector:
                 import:
                     title:     pim_base_connector.jobs.csv_variant_group_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_variant_group
+                        reader:    pim_connector.reader.file.csv_variant_group
                         processor: pim_connector.processor.denormalization.variant_group.flat
                         writer:    pim_connector.writer.doctrine.variant_group
                     parameters:
@@ -98,7 +98,7 @@ connector:
                 import:
                     title:     pim_base_connector.jobs.csv_group_import.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.csv_group
+                        reader:    pim_connector.reader.file.csv_group
                         processor: pim_connector.processor.denormalization.group.flat
                         writer:    pim_connector.writer.doctrine.group
         csv_association_type_import:
