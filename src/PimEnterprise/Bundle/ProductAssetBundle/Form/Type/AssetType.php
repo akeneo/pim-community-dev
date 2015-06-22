@@ -38,7 +38,7 @@ class AssetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('code', 'text', ['read_only' => true]);
-        $builder->add('description', 'pim_wysiwyg');
+        $builder->add('description', 'textarea', ['required' => false]);
         $builder->add(
             'tags',
             'pim_ajax_asset_tag',

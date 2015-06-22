@@ -32,7 +32,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function configure()
     {
-        $this->setName('pim:asset::generate-missing-variation-files');
+        $this->setName('pim:asset:generate-missing-variation-files');
         $this->setDescription('Generate all the missing variation files.');
         $this->addOption(
             'asset',

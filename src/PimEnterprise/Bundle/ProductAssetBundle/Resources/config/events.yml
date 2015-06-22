@@ -1,5 +1,5 @@
 parameters:
-    pimee_product_asset.event_listener.variation.class:PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventListener
+    pimee_product_asset.event_listener.variation.class: PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEventListener
 
 services:
     pimee_product_asset.event_listener.variation:

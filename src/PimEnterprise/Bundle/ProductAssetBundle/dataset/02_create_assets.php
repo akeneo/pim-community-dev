@@ -39,6 +39,42 @@ function getReferenceFilesConf()
         'akene'          => [
             'akene.jpg',
         ],
+        'autumn'         => [
+            'autumn.jpg',
+        ],
+        'bridge'         => [
+            'bridge.jpg',
+        ],
+        'dog'            => [
+            'dog.jpg',
+        ],
+        'eagle'          => [
+            'eagle.jpg',
+        ],
+        'machine'        => [
+            'machine.jpg',
+        ],
+        'man-wall'       => [
+            'man-wall.jpg',
+        ],
+        'minivan'        => [
+            'minivan.jpg',
+        ],
+        'mouette'        => [
+            'mouette.jpg',
+        ],
+        'mountain'       => [
+            'mountain.jpg',
+        ],
+        'mugs'           => [
+            'mugs.jpg',
+        ],
+        'photo'          => [
+            'photo.jpg',
+        ],
+        'tiger'          => [
+            'tiger.jpg',
+        ],
     ];
 }
 
@@ -111,16 +147,21 @@ function createNewAsset($code)
         $asset->setEndOfUseAt(new \DateTime('2050-05-25 12:12:12'));
     }
 
+    $descriptions = [
+        'Aut porro magnam numquam sapiente quidem ipsam, ea est quos maiores asperiores! Quos atque aliquid dignissimos suscipit sed neque vitae illo alias.',
+        'Et aliquid sed laborum fugiat inventore eveniet fugit error, veritatis repellendus eaque, autem molestiae soluta! Placeat natus corporis nostrum iure sapiente ipsam?',
+        'Rem ipsum impedit libero recusandae beatae. Voluptate fugit laboriosam, non laborum libero cum, quasi reprehenderit ratione assumenda in, minus perferendis eaque voluptates!',
+        'Sit voluptate reiciendis quaerat quam laudantium, maxime nulla molestias asperiores nesciunt repellat ut deserunt, explicabo eligendi est dolore iure quisquam. Sunt, nobis.',
+        'Quo eos dolores odit dolorum velit autem, inventore placeat voluptates culpa ex illo accusamus quidem earum, tenetur nam incidunt provident sit fugiat.',
+        'Minus sit dolorem, voluptatibus alias, distinctio quasi magnam ea molestiae consequatur magni voluptas ut at, cupiditate fugiat quia. Numquam animi, dolorum fuga.',
+        'Deserunt nihil odit hic, maxime vero consectetur ipsum officia inventore magni possimus nostrum totam iste at suscipit. Officia quam magnam reiciendis qui.',
+    ];
+
+    shuffle($descriptions);
+
     return $asset
         ->setCode($code)
-        ->setDescription(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam non quam ex. Duis semper' .
-            ' convallis risus at lobortis. Phasellus hendrerit auctor lectus in ullamcorper. Mauris non magna et' .
-            ' tellus tempor hendrerit. Donec at lacus fringilla, rutrum enim porttitor, consectetur erat. Donec' .
-            ' volutpat, nibh in hendrerit aliquet, sem massa vehicula eros, sed dictum augue tellus id nisi. Vivamus' .
-            ' tempus scelerisque enim, sit amet vehicula enim scelerisque eu. Integer nec ultrices magna, sit amet' .
-            ' volutpat.'
-        )
+        ->setDescription($descriptions[0])
         ->setCreatedAt(new \DateTime())
         ->setUpdatedAt(new \DateTime())
         ->setEnabled(true);
