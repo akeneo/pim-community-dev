@@ -23,22 +23,27 @@ datagrid:
                 type: field
                 frontend_type: string
                 label: pimee_product_asset.description.label
-            enabled:
-                label:         pimee_product_asset.status.label
-                type:          twig
-                template:      PimDataGridBundle:Property:enabled.html.twig
+            tags:
+                label: Tags
+                type: twig
+                template: PimDataGridBundle:Property:options.html.twig
                 frontend_type: html
+#            enabled:
+#                label:         pimee_product_asset.status.label
+#                type:          twig
+#                template:      PimDataGridBundle:Property:enabled.html.twig
+#                frontend_type: html
             endOfUseAt:
                 type: field
-                frontend_type: datetime
+                frontend_type: date
                 label: pimee_product_asset.endOfUse.label
             createdAt:
                 type: field
-                frontend_type: datetime
+                frontend_type: date
                 label: pimee_product_asset.createdAt.label
             updatedAt:
                 type: field
-                frontend_type: datetime
+                frontend_type: date
                 label: pimee_product_asset.updatedAt.label
         properties:
             id: ~
@@ -48,8 +53,8 @@ datagrid:
                     data_name: pa.code
                 description:
                     data_name: pa.description
-                enabled:
-                    data_name: pa.enabled
+#                enabled:
+#                    data_name: pa.enabled
                 endOfUseAt:
                     data_name: pa.endOfUseAt
                 createdAt:
@@ -82,3 +87,19 @@ datagrid:
                     type:      date
                     data_name: pa.endOfUseAt
                     label:     pimee_product_asset.endOfUse.label
+        actions:
+            edit:
+                type:      tab-redirect
+                label:     Edit properties of the asset
+                tab:       pim_product_asset_global-settings
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pimee_product_asset_edit
+                params:
+                    - id
+#                    - dataLocale

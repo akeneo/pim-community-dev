@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Form\Type;
 
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
@@ -39,7 +38,7 @@ class AssetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('code', 'text', ['read_only' => true]);
-        $builder->add('description', 'pim_wysiwyg');
+        $builder->add('description', 'textarea', ['required' => false]);
         $builder->add(
             'tags',
             'pim_ajax_asset_tag',
@@ -50,6 +49,8 @@ class AssetType extends AbstractType
             ]
         );
         $builder->add('endOfUseAt', 'oro_date', ['required' => false]);
+
+        $builder->add('references', 'collection', array('type' => 'pimee_product_asset_reference'));
     }
 
     /**
