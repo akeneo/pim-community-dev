@@ -27,7 +27,7 @@ class CategoryUpdaterSpec extends ObjectBehavior
         $this->shouldImplement('Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface');
     }
 
-    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
+    function it_throws_an_exception_when_trying_to_update_anything_else_than_a_category()
     {
         $this->shouldThrow(
             new \InvalidArgumentException(
