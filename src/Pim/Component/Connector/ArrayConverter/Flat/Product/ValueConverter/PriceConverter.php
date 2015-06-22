@@ -58,8 +58,13 @@ class PriceConverter extends AbstractValueConverter
             $currency = null;
         } else {
             $tokens = $this->fieldSplitter->splitUnitValue($value);
-            $priceValue = isset($tokens[0]) ? $tokens[0] : null;
-            $currency = isset($tokens[1]) ? $tokens[1] : null;
+            if (count($tokens) === 1) {
+                $priceValue = null;
+                $currency = $value;
+            } else {
+                $priceValue = isset($tokens[0]) ? $tokens[0] : null;
+                $currency = isset($tokens[1]) ? $tokens[1] : null;
+            }
         }
 
         return ['data' => $priceValue, 'currency' => $currency];
