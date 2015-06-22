@@ -1,0 +1,20 @@
+<?php
+
+namespace spec\Pim\Bundle\CatalogBundle\Factory;
+
+use PhpSpec\ObjectBehavior;
+
+class CategoryFactorySpec extends ObjectBehavior
+{
+    const CATEGORY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Category';
+
+    function let()
+    {
+        $this->beConstructedWith(self::CATEGORY_CLASS);
+    }
+
+    function it_creates_a_category()
+    {
+        $this->createCategory()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
+    }
+}

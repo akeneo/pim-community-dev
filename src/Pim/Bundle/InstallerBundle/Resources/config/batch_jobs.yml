@@ -15,8 +15,10 @@ connector:
                     title:     pim_installer.jobs.fixtures_category_csv.import.title
                     services:
                         reader:    pim_base_connector.reader.file.csv_category
-                        processor: pim_base_connector.processor.category
-                        writer:    pim_base_connector.writer.doctrine.category
+                        processor: pim_connector.processor.denormalization.category.flat
+                        writer:    pim_connector.writer.doctrine.category
+                    parameters:
+                        batchSize: 1
 
         fixtures_category_yml:
             title: pim_installer.jobs.fixtures_category_yml.title

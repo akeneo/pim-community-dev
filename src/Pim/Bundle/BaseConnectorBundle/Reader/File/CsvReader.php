@@ -268,7 +268,7 @@ class CsvReader extends FileReader implements
 
             $data = array_combine($this->fieldNames, $data);
         } else {
-            throw new \RuntimeException('An error occured while reading the csv.');
+            throw new \RuntimeException('An error occurred while reading the csv.');
         }
 
         return $data;
@@ -335,7 +335,7 @@ class CsvReader extends FileReader implements
         $status = $archive->open($this->filePath);
 
         if ($status !== true) {
-            throw new \RuntimeException(sprintf('Error "%d" occured while opening the zip archive.', $status));
+            throw new \RuntimeException(sprintf('Error "%d" occurred while opening the zip archive.', $status));
         } else {
             $targetDir = sprintf(
                 '%s/%s_%d_%s',
@@ -346,7 +346,7 @@ class CsvReader extends FileReader implements
             );
 
             if ($archive->extractTo($targetDir) !== true) {
-                throw new \RuntimeException('Error occured while extracting the zip archive.');
+                throw new \RuntimeException('Error occurred while extracting the zip archive.');
             }
 
             $archive->close();

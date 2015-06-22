@@ -4,10 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\Updater;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Model\GroupTypeInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Prophecy\Argument;
 
@@ -29,8 +27,13 @@ class GroupUpdaterSpec extends ObjectBehavior
 
     function it_throws_an_exception_when_trying_to_update_anything_else_than_a_variant_group()
     {
-        $this->shouldThrow(new \InvalidArgumentException('Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "stdClass" provided.'))->during(
-            'update', [new \stdClass(), []]
+        $this->shouldThrow(
+            new \InvalidArgumentException(
+                'Expects a "Pim\Bundle\CatalogBundle\Model\GroupInterface", "stdClass" provided.'
+            )
+        )->during(
+            'update',
+            [new \stdClass(), []]
         );
     }
 

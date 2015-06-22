@@ -9,6 +9,7 @@ parameters:
     pim_catalog.updater.attribute.class:                     Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
     pim_catalog.updater.variant_group.class:                 Pim\Bundle\CatalogBundle\Updater\VariantGroupUpdater
     pim_catalog.updater.group.class:                         Pim\Bundle\CatalogBundle\Updater\GroupUpdater
+    pim_catalog.updater.category.class:                      Pim\Bundle\CatalogBundle\Updater\CategoryUpdater
 
     pim_catalog.updater.setter.registry.class:                Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
 
@@ -106,6 +107,11 @@ services:
             - @pim_catalog.repository.attribute_group
             - '@?pim_reference_data.registry'
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+
+    pim_catalog.updater.category:
+        class: %pim_catalog.updater.category.class%
+        arguments:
+            - '@pim_catalog.repository.category'
 
     pim_catalog.updater.variant_group:
         class: %pim_catalog.updater.variant_group.class%

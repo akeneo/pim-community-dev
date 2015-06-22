@@ -60,6 +60,9 @@ services:
     pim_base_connector.reader.file.csv:
         class: %pim_base_connector.reader.file.csv.class%
 
+    pim_connector.reader.file.csv_category:
+        alias: pim_base_connector.reader.file.csv
+
     pim_base_connector.reader.file.csv_category:
         parent: pim_base_connector.reader.file.csv
         class: %pim_base_connector.reader.file.csv_category.class%
