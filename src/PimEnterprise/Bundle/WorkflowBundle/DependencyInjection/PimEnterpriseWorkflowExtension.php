@@ -31,7 +31,6 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('appliers.yml');
         $loader->load('builder.yml');
-        $loader->load('comparators.yml');
         $loader->load('connector/array_converters.yml');
         $loader->load('connector/processors.yml');
         $loader->load('connector/readers.yml');
