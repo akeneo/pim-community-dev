@@ -101,3 +101,18 @@ connector:
                         reader:    pim_base_connector.reader.file.csv_group
                         processor: pim_connector.processor.denormalization.group.flat
                         writer:    pim_connector.writer.doctrine.group
+        csv_association_type_import:
+            title: pim_base_connector.jobs.csv_association_type_import.title
+            type: import
+            steps:
+                validation:
+                    title: pim_base_connector.jobs.csv_association_type_import.validation.title
+                    class: %pim_base_connector.step.validator.class%
+                    services:
+                        charsetValidator: pim_base_connector.validator.step.charset_validator
+                import:
+                    title:     pim_base_connector.jobs.csv_association_type_import.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_association_type
+                        processor: pim_connector.processor.denormalization.association_type.flat
+                        writer:     pim_base_connector.writer.doctrine.association_type

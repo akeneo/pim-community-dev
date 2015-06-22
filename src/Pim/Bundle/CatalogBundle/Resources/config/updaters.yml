@@ -1,15 +1,16 @@
 parameters:
-    pim_catalog.updater.product.class:                       Pim\Bundle\CatalogBundle\Updater\ProductUpdater
-    pim_catalog.updater.product_property_setter.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertySetter
-    pim_catalog.updater.product_property_adder.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertyAdder
-    pim_catalog.updater.product_property_copier.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertyCopier
-    pim_catalog.updater.product_property_remover.class:      Pim\Bundle\CatalogBundle\Updater\ProductPropertyRemover
-    pim_catalog.updater.product_template.class:              Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
-    pim_catalog.updater.attribute_option.class:              Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
-    pim_catalog.updater.attribute.class:                     Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
-    pim_catalog.updater.variant_group.class:                 Pim\Bundle\CatalogBundle\Updater\VariantGroupUpdater
-    pim_catalog.updater.group.class:                         Pim\Bundle\CatalogBundle\Updater\GroupUpdater
-    pim_catalog.updater.category.class:                      Pim\Bundle\CatalogBundle\Updater\CategoryUpdater
+    pim_catalog.updater.product.class:                        Pim\Bundle\CatalogBundle\Updater\ProductUpdater
+    pim_catalog.updater.product_property_setter.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertySetter
+    pim_catalog.updater.product_property_adder.class:         Pim\Bundle\CatalogBundle\Updater\ProductPropertyAdder
+    pim_catalog.updater.product_property_copier.class:        Pim\Bundle\CatalogBundle\Updater\ProductPropertyCopier
+    pim_catalog.updater.product_property_remover.class:       Pim\Bundle\CatalogBundle\Updater\ProductPropertyRemover
+    pim_catalog.updater.product_template.class:               Pim\Bundle\CatalogBundle\Updater\ProductTemplateUpdater
+    pim_catalog.updater.attribute_option.class:               Pim\Bundle\CatalogBundle\Updater\AttributeOptionUpdater
+    pim_catalog.updater.attribute.class:                      Pim\Bundle\CatalogBundle\Updater\AttributeUpdater
+    pim_catalog.updater.variant_group.class:                  Pim\Bundle\CatalogBundle\Updater\VariantGroupUpdater
+    pim_catalog.updater.group.class:                          Pim\Bundle\CatalogBundle\Updater\GroupUpdater
+    pim_catalog.updater.category.class:                       Pim\Bundle\CatalogBundle\Updater\CategoryUpdater
+    pim_catalog.updater.association_type.class:               Pim\Bundle\CatalogBundle\Updater\AssociationTypeUpdater
 
     pim_catalog.updater.setter.registry.class:                Pim\Bundle\CatalogBundle\Updater\Setter\SetterRegistry
 
@@ -112,6 +113,11 @@ services:
         class: %pim_catalog.updater.category.class%
         arguments:
             - '@pim_catalog.repository.category'
+
+    pim_catalog.updater.association_type:
+        class: %pim_catalog.updater.association_type.class%
+        arguments:
+            - '@pim_catalog.repository.association_type'
 
     pim_catalog.updater.variant_group:
         class: %pim_catalog.updater.variant_group.class%
