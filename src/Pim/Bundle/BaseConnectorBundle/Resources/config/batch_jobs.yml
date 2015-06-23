@@ -73,19 +73,3 @@ connector:
                         reader:    pim_base_connector.reader.repository.variant_group
                         processor: pim_base_connector.processor.normalization.csv_variant_group
                         writer:    pim_base_connector.writer.file.csv_variant_group
-
-        csv_association_type_import:
-            title: pim_base_connector.jobs.csv_association_type_import.title
-            type: import
-            steps:
-                validation:
-                    title: pim_base_connector.jobs.csv_association_type_import.validation.title
-                    class: %pim_base_connector.step.validator.class%
-                    services:
-                        charsetValidator: pim_base_connector.validator.step.charset_validator
-                import:
-                    title:     pim_base_connector.jobs.csv_association_type_import.import.title
-                    services:
-                        reader:    pim_base_connector.reader.file.csv_association_type
-                        processor: pim_base_connector.processor.association_type
-                        writer:    pim_base_connector.writer.doctrine.association_type
