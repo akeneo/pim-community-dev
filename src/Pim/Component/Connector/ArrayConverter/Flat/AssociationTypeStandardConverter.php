@@ -22,17 +22,16 @@ class AssociationTypeStandardConverter implements StandardArrayConverterInterfac
      * Before:
      * [
      *      'code'        => 'mycode',
-     *      'label-fr_FR' => 'T-shirt super beau',
-     *      'label-en_US' => 'T-shirt very beautiful',
+     *      'label-fr_FR' => 'XSELL',
+     *      'label-en_US' => 'Vente croisée',
      * ]
      *
      * After:
      * [
      *      'code'   => 'mycode',
-     *      'parent' => 'master',
      *      'labels' => [
-     *          'fr_FR' => 'T-shirt super beau',
-     *          'en_US' => 'T-shirt very beautiful',
+     *          'fr_FR' => 'XSELL',
+     *          'en_US' => 'Vente croisée',
      *      ],
      * ]
      */
@@ -63,12 +62,8 @@ class AssociationTypeStandardConverter implements StandardArrayConverterInterfac
             $labelTokens = explode('-', $field);
             $labelLocale = $labelTokens[1];
             $convertedItem['labels'][$labelLocale] = $data;
-        } else {
-            switch ($field) {
-                case 'code':
-                    $convertedItem[$field] = (string) $data;
-                    break;
-            }
+        } elseif ('code' === $field) {
+            $convertedItem[$field] = (string) $data;
         }
 
         return $convertedItem;

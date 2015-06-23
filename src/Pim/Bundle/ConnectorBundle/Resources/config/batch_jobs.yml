@@ -115,4 +115,4 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_association_type
                         processor: pim_connector.processor.denormalization.association_type.flat
-                        writer:     pim_base_connector.writer.doctrine.association_type
+                        writer:    pim_connector.writer.doctrine.association_type
