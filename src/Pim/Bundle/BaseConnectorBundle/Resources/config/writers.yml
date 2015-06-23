@@ -70,3 +70,6 @@ services:
     pim_base_connector.writer.doctrine.association: '@pim_connector.writer.doctrine.product_association'
 
     pim_base_connector.writer.doctrine.category: '@pim_base_connector.writer.doctrine'
+
+    # deprecated will be removed in 1.5
+    pim_base_connector.writer.doctrine.attribute_option: '@pim_base_connector.writer.doctrine'
