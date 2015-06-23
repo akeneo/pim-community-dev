@@ -280,6 +280,7 @@ class ProductDraftController extends AbstractController
      * Launch the mass approve job
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function massApproveAction(Request $request)
@@ -288,11 +289,10 @@ class ProductDraftController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_APPROVE_JOB_CODE);
-        $params           = $this->gridParameterParser->parse($request);
-        $rawConfiguration = $this->getJobRawConfiguration($params['values']);
-
-        $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+        $this->launchMassReviewJob(
+            self::MASS_APPROVE_JOB_CODE,
+            $this->parseGridParameters($request)
+        );
 
         return new JsonResponse(
             [
@@ -306,6 +306,7 @@ class ProductDraftController extends AbstractController
      * Launch the mass refuse job
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function massRefuseAction(Request $request)
@@ -314,11 +315,10 @@ class ProductDraftController extends AbstractController
             throw new NotFoundHttpException();
         }
 
-        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier(self::MASS_REFUSE_JOB_CODE);
-        $params           = $this->gridParameterParser->parse($request);
-        $rawConfiguration = $this->getJobRawConfiguration($params['values']);
-
-        $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+        $this->launchMassReviewJob(
+            self::MASS_REFUSE_JOB_CODE,
+            $this->parseGridParameters($request)
+        );
 
         return new JsonResponse(
             [
@@ -329,16 +329,29 @@ class ProductDraftController extends AbstractController
     }
 
     /**
-     * Transform parameters to be used by the mass review jobs
+     * Launch the specified mass review job
      *
-     * @param array $draftIds
-     * @return string
+     * @param string  $jobCode
+     * @param array   $params
      */
-    protected function getJobRawConfiguration(array $draftIds)
+    protected function launchMassReviewJob($jobCode, array $params)
     {
-        return addslashes(
-            json_encode(['draftIds' => $draftIds])
-        );
+        $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier($jobCode);
+        $rawConfiguration = addslashes(json_encode(['draftIds' => $params['values']]));
+
+        $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+    }
+
+    /**
+     * Transform the query string build by the Oro grid into a usable array
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    protected function parseGridParameters(Request $request)
+    {
+        return $this->gridParameterParser->parse($request);
     }
 
     /**
