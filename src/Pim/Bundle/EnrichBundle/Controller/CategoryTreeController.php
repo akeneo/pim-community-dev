@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -20,6 +21,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -164,6 +166,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
+        // TODO: Change this in PIM-4409
         $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
 
         return new JsonResponse(['status' => 1]);
@@ -208,12 +211,12 @@ class CategoryTreeController extends AbstractDoctrineController
             $selectNode = null;
         }
 
-        if ($selectNode !== null) {
-            $categories = $this->categoryRepository->getChildrenTreeByParentId($parent->getId(), $selectNode->getId());
-            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
-        } else {
-            $categories = $this->categoryRepository->getChildrenByParentId($parent->getId());
+        if (null === $selectNode) {
+            $categories = $this->getChildren($parent->getId());
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
+        } else {
+            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
+            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         }
 
         return $this->render(
@@ -383,15 +386,17 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * @param int      $parentId
      * @param int|bool $selectNodeId
+     *
+     * @return array|ArrayCollection
      */
     protected function getChildren($parentId, $selectNodeId = false)
     {
-        if ($selectNodeId !== null) {
+        if (false !== $selectNodeId) {
             $categories = $this->categoryRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
-            $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         } else {
             $categories = $this->categoryRepository->getChildrenByParentId($parentId);
-            $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         }
+
+        return $categories;
     }
 }
