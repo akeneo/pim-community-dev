@@ -1,0 +1,3 @@
+config:
+    paths:
+        pimee/productasset/variations: pimenterpriseproductasset/js/form/variations

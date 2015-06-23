@@ -12,7 +12,6 @@
 {% endif %}
 
 {% block content %}
-
     {{ form_start(form, {
         'action': path('pimee_product_asset_update', { id: asset.id }),
         'class': 'product-asset-edit'
@@ -51,4 +50,14 @@
         </div>
     </div>
     {{ form_end(form) }}
+
+    <script>
+        require(
+                ['pimee/productasset/variations'],
+                function (AssetVariationsForm) {
+                    'use strict';
+                    var variations = new AssetVariationsForm();
+                }
+        );
+    </script>
 {% endblock %}
