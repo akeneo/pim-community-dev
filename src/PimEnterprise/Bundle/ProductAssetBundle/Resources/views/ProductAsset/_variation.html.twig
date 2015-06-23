@@ -41,9 +41,21 @@
                     </tbody>
                 </table>
             {% else %}
-            <div class="row-fluid variation-upload">
-                <div class="span6 variation-dropzone">{{ form_widget(variation.file) }}</div>
-            </div>
+                <div class="media-uploader" style="width: 50%;">
+                    <div>
+                        <label class="file-uploader">
+                            {{ form_widget(variation.file) }}
+                        </label>
+                        <div class="uploader">
+                            <img src="/bundles/pimui/images/upload.png" alt="upload icon">
+                            <span>Drag and drop to upload or click here</span>
+                        </div>
+
+                    </div>
+                    <div class="progress">
+                        <div class="bar"></div>
+                    </div>
+                </div>
             {% endif %}
         </div>
     </div>

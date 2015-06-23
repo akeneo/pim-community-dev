@@ -51,7 +51,21 @@
                             </tbody>
                         </table>
                     {% else %}
-                        {{ form_widget(reference.file) }}
+                        <div class="media-uploader ">
+                            <div>
+                                <label class="file-uploader">
+                                    {{ form_widget(reference.file) }}
+                                </label>
+                                <div class="uploader">
+                                    <img src="/bundles/pimui/images/upload.png" alt="upload icon">
+                                    <span>Drag and drop to upload or click here</span>
+                                </div>
+
+                            </div>
+                            <div class="progress">
+                                <div class="bar"></div>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>
