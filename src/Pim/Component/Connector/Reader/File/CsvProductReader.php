@@ -25,9 +25,8 @@ class CsvProductReader extends CsvReader
     /**
      * @param AttributeRepositoryInterface $attributeRepository
      */
-    public function __construct(
-        AttributeRepositoryInterface $attributeRepository
-    ) {
+    public function __construct(AttributeRepositoryInterface $attributeRepository)
+    {
         $this->attributeRepository = $attributeRepository;
     }
 

@@ -5,7 +5,7 @@ namespace Pim\Component\Connector\Item;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\BaseConnectorBundle\Exception\CharsetException;
+use Pim\Component\Connector\Exception\CharsetException;
 
 /**
  * Check the encoding of a file.
@@ -46,7 +46,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     /**
      * Validate that the file is correctly encoded in the provided charset.
      *
-     * @throws \Pim\Bundle\BaseConnectorBundle\Exception\CharsetException
+     * @throws CharsetException
      * @throws \Exception
      */
     public function validate()
@@ -66,7 +66,7 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     /**
      * Validate that the file is correctly encoded in the provided charset.
      *
-     * @throws \Pim\Bundle\BaseConnectorBundle\Exception\CharsetException
+     * @throws CharsetException
      * @throws \Exception
      */
     protected function validateEncoding()
@@ -117,12 +117,12 @@ class CharsetValidator extends AbstractConfigurableStepElement implements StepEx
     public function getConfigurationFields()
     {
         return [
-            'filePath' => array(
-                'options' => array(
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_connector.import.filePath.label',
                     'help'  => 'pim_connector.import.filePath.help'
-                )
-            ),
+                ]
+            ],
         ];
     }
 

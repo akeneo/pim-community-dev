@@ -7,6 +7,9 @@ services:
     pim_connector.reader.file.csv:
         class: %pim_connector.reader.file.csv.class%
 
+    pim_connector.reader.file.csv_association_type:
+        alias: pim_connector.reader.file.csv
+
     pim_connector.reader.file.csv_association:
         alias: pim_connector.reader.file.csv
 

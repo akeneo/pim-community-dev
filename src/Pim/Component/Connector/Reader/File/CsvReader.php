@@ -70,14 +70,14 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     public function getUploadedFileConstraints()
     {
-        return array(
+        return [
             new Assert\NotBlank(),
             new AssertFile(
-                array(
-                    'allowedExtensions' => array('csv', 'zip')
-                )
+                [
+                    'allowedExtensions' => ['csv', 'zip']
+                ]
             )
-        );
+        ];
     }
 
     /**
@@ -228,7 +228,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
         $data = $this->csv->fgetcsv();
 
         if (false !== $data) {
-            if ($data === array(null) || $data === null) {
+            if ([null] === $data || null === $data) {
                 return null;
             }
             if ($this->stepExecution) {
@@ -239,12 +239,12 @@ class CsvReader extends AbstractConfigurableStepElement implements
                 throw new InvalidItemException(
                     'pim_connector.steps.csv_reader.invalid_item_columns_count',
                     $data,
-                    array(
+                    [
                         '%totalColumnsCount%' => count($this->fieldNames),
                         '%itemColumnsCount%'  => count($data),
                         '%csvPath%'           => $this->csv->getRealPath(),
                         '%lineno%'            => $this->csv->key()
-                    )
+                    ]
                 );
             }
 
@@ -261,39 +261,39 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'filePath' => array(
-                'options' => array(
+        return [
+            'filePath' => [
+                'options' => [
                     'label' => 'pim_connector.import.filePath.label',
                     'help'  => 'pim_connector.import.filePath.help'
-                )
-            ),
-            'uploadAllowed' => array(
+                ]
+            ],
+            'uploadAllowed' => [
                 'type'    => 'switch',
-                'options' => array(
+                'options' => [
                     'label' => 'pim_connector.import.uploadAllowed.label',
                     'help'  => 'pim_connector.import.uploadAllowed.help'
-                )
-            ),
-            'delimiter' => array(
-                'options' => array(
+                ]
+            ],
+            'delimiter' => [
+                'options' => [
                     'label' => 'pim_connector.import.delimiter.label',
                     'help'  => 'pim_connector.import.delimiter.help'
-                )
-            ),
-            'enclosure' => array(
-                'options' => array(
+                ]
+            ],
+            'enclosure' => [
+                'options' => [
                     'label' => 'pim_connector.import.enclosure.label',
                     'help'  => 'pim_connector.import.enclosure.help'
-                )
-            ),
-            'escape' => array(
-                'options' => array(
+                ]
+            ],
+            'escape' => [
+                'options' => [
                     'label' => 'pim_connector.import.escape.label',
                     'help'  => 'pim_connector.import.escape.help'
-                )
-            ),
-        );
+                ]
+            ],
+        ];
     }
 
     /**
@@ -316,7 +316,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
         $status = $archive->open($this->filePath);
 
-        if ($status !== true) {
+        if (true !== $status) {
             throw new \RuntimeException(sprintf('Error "%d" occurred while opening the zip archive.', $status));
         } else {
             $targetDir = sprintf(
@@ -366,7 +366,8 @@ class CsvReader extends AbstractConfigurableStepElement implements
      */
     protected function initializeRead()
     {
-        if (mime_content_type($this->filePath) === 'application/zip') {
+        // TODO mime_content_type is deprecated, use Symfony\Component\HttpFoundation\File\MimeTypeMimeTypeGuesser?
+        if ('application/zip' === mime_content_type($this->filePath)) {
             $this->extractZipArchive();
         }
 

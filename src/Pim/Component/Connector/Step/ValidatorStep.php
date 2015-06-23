@@ -33,7 +33,7 @@ class ValidatorStep extends AbstractStep
      */
     public function getConfiguration()
     {
-        $configuration = array();
+        $configuration = [];
         foreach ($this->getConfigurableStepElements() as $stepElement) {
             if ($stepElement instanceof AbstractConfigurableStepElement) {
                 foreach ($stepElement->getConfiguration() as $key => $value) {
@@ -64,7 +64,7 @@ class ValidatorStep extends AbstractStep
      */
     public function getConfigurableStepElements()
     {
-        return array('charsetValidator' => $this->getCharsetValidator());
+        return ['charsetValidator' => $this->getCharsetValidator()];
     }
 
     /**
