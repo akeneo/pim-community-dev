@@ -10,6 +10,7 @@ Feature: Add attributes to a product
       | jacket | jackets |
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully display only attributes I have edit permissions access
     Given I am on the "jacket" product page
     Then I should see available attribute Width in group "Sizes"

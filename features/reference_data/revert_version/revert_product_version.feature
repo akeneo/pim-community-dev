@@ -30,20 +30,20 @@ Feature: Revert a product to a previous version
     And I fill in the following information:
       | Main color | Green |
     Then I save the product
-    And I visit the "History" tab
+    And I open the history
     And I should see history:
       | version | property   | value |
-      | 2       | main_color | green |
+      | 2       | Main color | green |
     When I visit the "Attributes" tab
     And I visit the "Other" group
     And I fill in the following information:
       | Main color | [blue] |
     Then I save the product
-    And I visit the "History" tab
+    And I open the history
     And I should see history:
       | version | property   | value |
-      | 3       | main_color | blue  |
-    When I click on the "Revert to this version" action of the row which contains "sku: red-heels"
+      | 3       | Main color | blue  |
+    When I revert the product version number 1
     Then the product "red-heels" should have the following values:
       | main_color | [red] |
 
@@ -52,12 +52,12 @@ Feature: Revert a product to a previous version
     And I add available attribute color
     And I visit the "Other" group
     And I fill in the following information:
-      | Main fabric | [neoprene],Cashmerewool |
+      | Main fabric | Cashmerewool, [neoprene] |
     Then I save the product
-    And I visit the "History" tab
+    And I open the history
     And I should see history:
       | version | property    | value                 |
-      | 2       | main_fabric | cashmerewool,neoprene |
-    When I click on the "Revert to this version" action of the row which contains "sku: red-heels"
+      | 2       | Main fabric | cashmerewool,neoprene |
+    When I revert the product version number 1
     Then the product "red-heels" should have the following values:
       | main_fabric | Cashmerewool, [neoprene], Silk |

@@ -36,6 +36,7 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('form_types.yml');
         $loader->load('mass_actions.yml');
+        $loader->load('normalizers.yml');
         $loader->load('parameters.yml');
         $loader->load('processors.yml');
         $loader->load('twig.yml');
