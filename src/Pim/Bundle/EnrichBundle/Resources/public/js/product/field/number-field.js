@@ -18,7 +18,6 @@ define([
     ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
-            fieldType: 'number',
             events: {
                 'change .field-input input[type="text"]': 'updateModel'
             },

@@ -21,7 +21,6 @@ define(
     ) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
-            fieldType: 'date',
             events: {
                 'change .field-input:first input[type="text"]': 'updateModel'
             },
