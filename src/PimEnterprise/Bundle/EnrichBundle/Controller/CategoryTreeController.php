@@ -145,37 +145,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     }
 
     /**
-     * Find granted trees
-     *
-     * @param UserInterface $user    the user
-     * @param string        $context the retrieving context
-     * @param string        $relatedEntity
-     *
-     * @return CategoryInterface[]
-     */
-    protected function findGrantedTrees(UserInterface $user, $context, $relatedEntity)
-    {
-        $allTrees = ($context === self::CONTEXT_MANAGE);
-
-        $trees = $this->categoryRepository->getTrees();
-
-        if (!$allTrees || !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
-            $trees = $this->chainedFilter->filterCollection($trees, Attributes::VIEW_PRODUCTS);
-        }
-
-        return $trees;
-//        if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
-//            return $this->categoryRepository->getTrees();
-//        } else {
-//            return $this->categoryManager->getAccessibleTrees(
-//                $user,
-//                Attributes::VIEW_PRODUCTS,
-//                $relatedEntity
-//            );
-//        }
-    }
-
-    /**
      * {@inheritdoc}
      *
      * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
@@ -195,8 +164,15 @@ class CategoryTreeController extends BaseCategoryTreeController
             $selectNode = $this->userContext->getAccessibleUserCategoryTree($relatedEntity);
         }
 
+        // TODO: In PIM-4292, check the right permissions depending on $context
+        $trees = $this->categoryRepository->getTrees();
+        $grantedTrees = $this->chainedFilter->filterCollection(
+            $trees,
+            sprintf('pim.internal_api.%s_category.view', $relatedEntity)
+        );
+
         $v = [
-            'trees'          => $this->findGrantedTrees($this->getUser(), $context, $relatedEntity),
+            'trees'          => $grantedTrees,
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
@@ -210,31 +186,17 @@ class CategoryTreeController extends BaseCategoryTreeController
      *
      * Override parent to use only granted categories
      */
-    protected function getChildren($parentId, $selectNodeId = false)
+    protected function getChildren($parentId, $selectNodeId = false, $relatedEntity = 'product')
     {
-        $context = $this->request->get('context', false);
-        $allTrees = ($context === self::CONTEXT_MANAGE);
+        $categories = parent::getChildren($parentId, $selectNodeId);
 
-        if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
-            return $this->categoryRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
-        } else {
-            return $this->categoryManager->getGrantedChildren($parentId, $selectNodeId);
-        }
-    }
+        return $this->chainedFilter->filterCollection(
+            $categories,
+            sprintf('pim.internal_api.%s_category.view', $relatedEntity)
+        );
 
-    protected function getGrantedChildren()
-    {
-        if ($selectNodeId === false) {
-            $children = $entityRepository->getChildrenByParentId($parentId);
-        } else {
-            $children = $entityRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
-        }
-
-        foreach ($children as $indChild => $child) {
-            $category = (is_object($child)) ? $child : $child['item'];
-            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
-                unset($children[$indChild]);
-            }
-        }
+        // TODO: In PIM-4292, check the right permissions depending on $context
+        // $context = $this->request->get('context', false);
+        // $this->securityFacade->isGranted('pim_enrich_category_edit')
     }
 }
