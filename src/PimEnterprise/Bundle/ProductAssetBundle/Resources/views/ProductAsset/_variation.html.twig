@@ -34,9 +34,9 @@
                         {% endif %}
                         <td>{{ variationModel.file.size|number_format(0, '.', ' ') }} ko</td>
                         <td>{{ variationModel.file.mimeType }}</td>
-                        <td><a class="btn"
-                               href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}"
-                            >{{ 'btn.delete'|trans }}</a></td>
+                        <td><button class="btn delete"
+                               data-href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}"
+                            >{{ 'btn.delete'|trans }}</button></td>
                     </tr>
                     </tbody>
                 </table>
