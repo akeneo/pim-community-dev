@@ -16,7 +16,7 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
+// TODO use base updater interface instead
 class FilesUpdater implements FilesUpdaterInterface
 {
     /** @var RawFileStorerInterface */
