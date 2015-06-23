@@ -297,7 +297,7 @@ class ProductDraftController extends AbstractController
         return new JsonResponse(
             [
                 'successful' => true,
-                'message'    => $this->getTranslator()->trans('flash.product_draft.mass_approve.pending')
+                'message'    => $this->getTranslator()->trans('flash.product_draft.mass_approve.launched')
             ]
         );
     }
@@ -323,7 +323,7 @@ class ProductDraftController extends AbstractController
         return new JsonResponse(
             [
                 'successful' => true,
-                'message'    => $this->getTranslator()->trans('flash.product_draft.mass_refuse.pending')
+                'message'    => $this->getTranslator()->trans('flash.product_draft.mass_refuse.launched')
             ]
         );
     }
