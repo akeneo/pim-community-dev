@@ -3,6 +3,7 @@
 namespace Context;
 
 use Context\NavigationContext as BaseNavigationContext;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * Navigation context
@@ -13,9 +14,11 @@ use Context\NavigationContext as BaseNavigationContext;
 class EnterpriseNavigationContext extends BaseNavigationContext
 {
     protected $enterprisePageMapping = [
-        'published' => 'Published index',
-        'proposals' => 'Proposal index',
-        'product assets' => 'ProductAsset index'
+        'published'      => 'Published index',
+        'proposals'      => 'Proposal index',
+        'product assets' => 'ProductAsset index',
+        'assets'         => 'ProductAsset index',
+        'asset edit'     => 'ProductAsset edit'
     ];
 
     /**
@@ -32,6 +35,28 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     public function iShouldBeOnThePublishedProductsPage()
     {
         $expectedAddress = $this->getPage('Published index')->getUrl();
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param string $asset
+     *
+     * @Given /^I should be on the "([^"]+)" asset edit page$/
+     */
+    public function iShouldBeOnTheAssetEditPage($assetCode)
+    {
+        $asset = $this->getMainContext()->getSubcontext('fixtures')->getProductAsset($assetCode);
+
+        $expectedAddress = $this->getPage('ProductAsset edit')->getUrl(['id' => $asset->getId()]);
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @Given /^I should be on the assets page$/
+     */
+    public function iShouldBeOnTheAssetsPage()
+    {
+        $expectedAddress = $this->getPage('ProductAsset index')->getUrl();
         $this->assertAddress($expectedAddress);
     }
 }
