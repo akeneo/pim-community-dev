@@ -47,8 +47,8 @@ class AssociationTypeUpdaterSpec extends ObjectBehavior
         $associationType->getId()->willReturn(null);
 
         $values = [
-            'code'         => 'mycode',
-            'labels'       => [
+            'code'   => 'mycode',
+            'labels' => [
                 'fr_FR' => 'Vente croisée',
             ],
         ];
