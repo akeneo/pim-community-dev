@@ -25,6 +25,8 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Category access repository
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
+ *
+ * TODO: It must be entity agnostic for PIM-4292.
  */
 class CategoryAccessRepository extends EntityRepository
 {
