@@ -201,7 +201,7 @@ class CategoryTreeController extends AbstractDoctrineController
         try {
             $selectNode = $this->findCategory($selectNodeId);
 
-            if (!$this->categoryManager->isAncestor($parent, $selectNode)) {
+            if (!$this->categoryRepository->isAncestor($parent, $selectNode)) {
                 $selectNode = null;
             }
         } catch (NotFoundHttpException $e) {

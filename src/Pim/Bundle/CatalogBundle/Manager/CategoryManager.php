@@ -280,22 +280,10 @@ class CategoryManager
      *
      * @return bool
      *
-     * TODO: To MOVE in the repo. (With SQL format?)
+     * @deprecated Please use CategoryRepositoryInterface::isAncestor() instead
      */
     public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
-        $childPath = $this->getEntityRepository()->getPath($childNode);
-        //Removing last part of the path as it's the node itself
-        //which cannot be is own ancestor
-        array_pop($childPath);
-        $childCount = 0;
-        $parentFound = false;
-
-        while ($childCount < count($childPath) && (!$parentFound)) {
-            $parentFound = ($childPath[$childCount]->getId() === $parentNode->getId());
-            $childCount++;
-        }
-
-        return $parentFound;
+        return $this->productCategoryRepo->isAncestor($parentNode, $childNode);
     }
 }

@@ -145,4 +145,14 @@ interface CategoryRepositoryInterface extends
      * @return array
      */
     public function getTrees();
+
+    /**
+     * Check if a parent node is an ancestor of a child node
+     *
+     * @param CategoryInterface $parentNode
+     * @param CategoryInterface $childNode
+     *
+     * @return bool
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode);
 }

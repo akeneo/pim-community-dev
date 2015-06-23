@@ -315,4 +315,17 @@ class CategoryRepository extends NestedTreeRepository implements
 
         return $qb;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $sameRoot = $parentNode->getRoot() === $childNode->getRoot();
+
+        $isAncestor = $childNode->getLeft() > $parentNode->getLeft()
+            && $childNode->getRight() < $parentNode->getRight();
+
+        return $sameRoot && $isAncestor;
+    }
 }
