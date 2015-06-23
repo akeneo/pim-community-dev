@@ -1,7 +1,29 @@
 <div class="row-fluid variations">
-    <h3>{% if reference.vars.data.locale %}
-            {{ referenceModel.locale.code|flag }}
-        {% endif %}</h3>
+    <h3>
+        {% if currentLocale is not null %}
+            <div id="locale-switcher" class="btn-group sub-title">
+                    <span class="dropdown-toggle" data-toggle="dropdown">
+                        {{ currentLocale.code|flag }}
+                        <i class="icon-caret-down"></i>
+                    </span>
+                <ul class="dropdown-menu">
+                    {% for locale in asset.locales %}
+                        <li>
+                            <a href="{{ path('pimee_product_asset_edit', { 'id': asset.id, 'locale': locale.code }) }}"
+                               title="{{ locale_label(locale.code) }}">
+                                    <span class="indicator">
+                                        {% if locale.code == currentLocale.code %}
+                                            <i class="icon-circle"></i>
+                                        {% endif %}
+                                    </span>
+                                {{ locale.code|flag }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </h3>
 
     <ul>
         <li>
