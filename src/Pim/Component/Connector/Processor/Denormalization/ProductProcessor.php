@@ -192,26 +192,26 @@ class ProductProcessor extends AbstractProcessor
             'enabled' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_base_connector.import.enabled.label',
-                    'help'  => 'pim_base_connector.import.enabled.help'
+                    'label' => 'pim_connector.import.enabled.label',
+                    'help'  => 'pim_connector.import.enabled.help'
                 ]
             ],
             'categoriesColumn' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.categoriesColumn.label',
-                    'help'  => 'pim_base_connector.import.categoriesColumn.help'
+                    'label' => 'pim_connector.import.categoriesColumn.label',
+                    'help'  => 'pim_connector.import.categoriesColumn.help'
                 ]
             ],
             'familyColumn' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.familyColumn.label',
-                    'help'  => 'pim_base_connector.import.familyColumn.help'
+                    'label' => 'pim_connector.import.familyColumn.label',
+                    'help'  => 'pim_connector.import.familyColumn.help'
                 ]
             ],
             'groupsColumn' => [
                 'options' => [
-                    'label' => 'pim_base_connector.import.groupsColumn.label',
-                    'help'  => 'pim_base_connector.import.groupsColumn.help'
+                    'label' => 'pim_connector.import.groupsColumn.label',
+                    'help'  => 'pim_connector.import.groupsColumn.help'
                 ]
             ],
         ];

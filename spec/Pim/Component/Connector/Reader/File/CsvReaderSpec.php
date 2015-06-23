@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\File;
+namespace spec\Pim\Component\Connector\Reader\File;
 
 use PhpSpec\ObjectBehavior;
 

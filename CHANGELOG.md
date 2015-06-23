@@ -6,11 +6,12 @@
 - Revamp the Readers, Processors and Writers to import data, make them more simple and re-useable
 - Use DEFERRED_EXPLICIT as Doctrine changeTrackingPolicy (for all models)
 - Continue to group persist()/flush() to the dedicated layer (SaverInterface) to avoid to have them everywhere in the stack
-- Category filter is separated from other datagrid filters for performance concerns
+- Category filter is separated from other datagrid filters for performance concerns (parallel ajax requests)
 - Use MySQL as a non blocking session storage
-- Attribute imports does not support yaml files anymore, only csv files are allowed
 - Handle Doctrine mapping overrides smoothly (no more need to copy/paste the full mapping of an entity or a document)
-- Product edit form revamp
+- Product edit form revamp to handle lot of attributes, locales and channels per product
+- Re-work the import/export engine by introducing a new Connector (component+bundle), the old one is deprecated but still useable
+- Re-work the installer to use the new import engine (remove the yml format for fixtures)
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission

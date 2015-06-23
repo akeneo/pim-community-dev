@@ -1,8 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Exception;
-
-use Pim\Component\Connector\Exception\CharsetException as NewCharsetException;
+namespace Pim\Component\Connector\Exception;
 
 /**
  * Exception thrown when a file is not well encoded.
@@ -11,6 +9,6 @@ use Pim\Component\Connector\Exception\CharsetException as NewCharsetException;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CharsetException extends NewCharsetException
+class CharsetException extends \Exception
 {
 }

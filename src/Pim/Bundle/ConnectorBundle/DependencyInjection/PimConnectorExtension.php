@@ -24,11 +24,14 @@ class PimConnectorExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('array_converters.yml');
         $loader->load('factories.yml');
+        $loader->load('items.yml');
         $loader->load('job_launchers.yml');
         $loader->load('models.yml');
         $loader->load('processors.yml');
+        $loader->load('readers.yml');
         $loader->load('repositories.yml');
         $loader->load('savers.yml');
+        $loader->load('steps.yml');
         $loader->load('writers.yml');
     }
 }
