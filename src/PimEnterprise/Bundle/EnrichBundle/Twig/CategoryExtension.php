@@ -29,17 +29,22 @@ class CategoryExtension extends BaseCategoryExtension
     /** @var ItemCategoryRepositoryInterface */
     protected $itemAssetCatRepo;
 
+    /** @var ItemCategoryRepositoryInterface */
+    protected $itemPublishedCatRepo;
+
     public function __construct(
         CategoryRepositoryInterface $productCategoryRepo,
         ItemCategoryRepositoryInterface $itemProductCatRepo,
         CategoryRepositoryInterface $assetCategoryRepo,
         ItemCategoryRepositoryInterface $itemAssetCatRepo,
+        ItemCategoryRepositoryInterface $itemPublishedCatRepo,
         $productsLimitForRemoval = null
     ) {
         parent::__construct($productCategoryRepo, $itemProductCatRepo, $assetCategoryRepo);
 
-        $this->assetCategoryRepo = $assetCategoryRepo;
-        $this->itemAssetCatRepo = $itemAssetCatRepo;
+        $this->assetCategoryRepo    = $assetCategoryRepo;
+        $this->itemAssetCatRepo     = $itemAssetCatRepo;
+        $this->itemPublishedCatRepo = $itemPublishedCatRepo;
     }
 
     /**
@@ -74,8 +79,11 @@ class CategoryExtension extends BaseCategoryExtension
      */
     protected function getRelatedEntityRepo($relatedEntity)
     {
-        if ('asset' === $relatedEntity) {
-            return $this->assetCategoryRepo;
+        switch ($relatedEntity) {
+            case 'asset':
+                return $this->assetCategoryRepo;
+            case 'published_product':
+                return $this->productCategoryRepo;
         }
 
         return parent::getRelatedEntityRepo($relatedEntity);
@@ -86,8 +94,11 @@ class CategoryExtension extends BaseCategoryExtension
      */
     protected function getRelatedCategoryEntityRepo($relatedEntity)
     {
-        if ('asset' === $relatedEntity) {
-            return $this->itemAssetCatRepo;
+        switch ($relatedEntity) {
+            case 'asset':
+                return $this->itemAssetCatRepo;
+            case 'published_product':
+                return $this->itemPublishedCatRepo;
         }
 
         return parent::getRelatedCategoryEntityRepo($relatedEntity);

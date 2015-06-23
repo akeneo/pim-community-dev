@@ -181,6 +181,7 @@ class CategoryTreeController extends BaseCategoryTreeController
 
         return $v;
     }
+
     /**
      * {@inheritdoc}
      *

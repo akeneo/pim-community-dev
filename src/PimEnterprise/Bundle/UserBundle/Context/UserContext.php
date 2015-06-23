@@ -32,6 +32,9 @@ class UserContext extends BaseUserContext
     /** @staticvar string */
     const USER_ASSET_CATEGORY_TYPE = 'asset';
 
+    /** @staticvar string */
+    const USER_PUBLISHED_PRODUCT_CATEGORY_TYPE = 'published_product';
+
     /** @var CategoryManager */
     protected $categoryManager;
 
@@ -130,6 +133,7 @@ class UserContext extends BaseUserContext
     {
         switch ($relatedEntity) {
             case static::USER_PRODUCT_CATEGORY_TYPE:
+            case static::USER_PUBLISHED_PRODUCT_CATEGORY_TYPE:
                 return $this->getAccessibleUserProductCategoryTree();
             case static::USER_ASSET_CATEGORY_TYPE:
                 return $this->getAccessibleUserAssetCategoryTree();
