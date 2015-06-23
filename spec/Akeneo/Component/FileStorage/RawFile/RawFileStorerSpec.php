@@ -45,7 +45,7 @@ class RawFileStorerSpec extends ObjectBehavior
 
         $fs->writeStream(Argument::any(), Argument::any())->shouldBeCalled();
 
-        $saver->save($file)->shouldBeCalled();
+        $saver->save($file, ['flush_only_object' => true])->shouldBeCalled();
         $this->store($rawFile, 'destination');
     }
 
