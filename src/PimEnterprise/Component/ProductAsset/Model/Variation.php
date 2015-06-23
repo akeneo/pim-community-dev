@@ -145,7 +145,7 @@ class Variation implements VariationInterface
     /**
      * {@inheritdoc}
      */
-    public function setSourceFile(FileInterface $file)
+    public function setSourceFile(FileInterface $file = null)
     {
         $this->sourceFile = $file;
 

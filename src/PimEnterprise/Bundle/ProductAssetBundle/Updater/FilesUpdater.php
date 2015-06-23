@@ -16,7 +16,7 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-// TODO use base updater interface instead
+
 class FilesUpdater implements FilesUpdaterInterface
 {
     /** @var RawFileStorerInterface */
@@ -38,6 +38,8 @@ class FilesUpdater implements FilesUpdaterInterface
     }
 
     /**
+     * Update all asset's files : reference and variations
+     *
      * @param AssetInterface $asset
      */
     public function updateAssetFiles(AssetInterface $asset)
@@ -51,6 +53,8 @@ class FilesUpdater implements FilesUpdaterInterface
     }
 
     /**
+     * Update a variation file with an uploaded file
+     *
      * @param VariationInterface $variation
      */
     protected function updateVariationFile(VariationInterface $variation)
@@ -70,6 +74,8 @@ class FilesUpdater implements FilesUpdaterInterface
     }
 
     /**
+     * Update a reference file with an uploaded file
+     *
      * @param ReferenceInterface $reference
      */
     protected function updateReferenceFile(ReferenceInterface $reference)
@@ -77,7 +83,7 @@ class FilesUpdater implements FilesUpdaterInterface
         if (null !== $reference->getFile() && null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
             $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
             $reference->setFile($file);
-            $this->resetVariationsFiles($reference);
+            $this->resetAllVariationsFiles($reference);
         }
         if (null !== $reference->getFile() && null === $reference->getFile()->getId()) {
             $reference->setFile(null);
@@ -85,15 +91,48 @@ class FilesUpdater implements FilesUpdaterInterface
     }
 
     /**
-     * @param ReferenceInterface $reference
+     * {@inheritdoc}
      */
-    protected function resetVariationsFiles(ReferenceInterface $reference)
+    public function resetAllVariationsFiles(ReferenceInterface $reference, $skipLocked = true)
     {
         foreach ($reference->getVariations() as $variation) {
-            if (!$variation->isLocked()) {
+            if (!$skipLocked || !$variation->isLocked()) {
                 $variation->setFile(null);
+                $variation->setLocked(false);
                 $variation->setSourceFile($reference->getFile());
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resetVariationFile(VariationInterface $variation)
+    {
+        $reference = $variation->getReference();
+
+        if (null !== $reference->getFile()) {
+            $variation->setFile(null);
+            $variation->setSourceFile($reference->getFile());
+            $variation->setLocked(false);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteReferenceFile(ReferenceInterface $reference)
+    {
+        $reference->setFile(null);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteVariationFile(VariationInterface $variation)
+    {
+        $variation->setFile(null);
+        $variation->setSourceFile(null);
+        $variation->setLocked(true);
     }
 }

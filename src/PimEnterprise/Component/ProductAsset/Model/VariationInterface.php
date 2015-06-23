@@ -83,7 +83,7 @@ interface VariationInterface
      *
      * @return VariationInterface
      */
-    public function setSourceFile(FileInterface $file);
+    public function setSourceFile(FileInterface $file = null);
 
     /**
      * @return bool

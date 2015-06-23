@@ -97,7 +97,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     /**
      * @param int|null $assetCode
      *
-     * @return \PimEnterprise\Component\ProductAsset\Model\VariationInterface[]
+     * @return VariationInterface[]
      */
     protected function retrieveMissingVariations($assetCode = null)
     {
@@ -106,13 +106,13 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
         if (null !== $assetCode) {
             $asset = $this->retrieveAsset($assetCode);
             foreach ($asset->getVariations() as $variation) {
-                if (null === $variation->getFile()) {
+                if (null === $variation->getFile() && null !== $variation->getSourceFile()) {
                     $missingVariations[] = $variation;
                 }
             }
         } else {
             $variationsRepo    = $this->getContainer()->get('pimee_product_asset.repository.variation');
-            $missingVariations = $variationsRepo->findBy(['file' => null]);
+            $missingVariations = $variationsRepo->findNotGenerated();
         }
 
         return $missingVariations;

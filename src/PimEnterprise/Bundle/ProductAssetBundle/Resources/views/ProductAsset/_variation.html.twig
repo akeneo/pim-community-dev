@@ -36,24 +36,32 @@
                         <td>{{ variationModel.file.mimeType }}</td>
                         <td><a class="btn"
                                href="{{ path('pimee_product_asset_variation_delete', {'id': variationModel.id}) }}"
-                            >Delete</a></td>
+                            >{{ 'btn.delete'|trans }}</a></td>
                     </tr>
                     </tbody>
                 </table>
             {% else %}
-                <div class="media-uploader" style="width: 50%;">
+                <div class="media-uploader span6">
                     <div>
                         <label class="file-uploader">
                             {{ form_widget(variation.file) }}
                         </label>
                         <div class="uploader">
                             <img src="/bundles/pimui/images/upload.png" alt="upload icon">
-                            <span>Drag and drop to upload or click here</span>
+                            <span>{{ 'btn.drag_or_upload'|trans }}</span>
                         </div>
 
                     </div>
-                    <div class="progress">
-                        <div class="bar"></div>
+                </div>
+                <div class="media-uploader span6">
+                    <div>
+                        <a href="{{ path('pimee_product_asset_variation_reset', {'id': variationModel.id}) }}"
+                           class="file-uploader"></a>
+                        <div class="uploader">
+                            <img src="/bundles/pimui/images/upload.png" alt="upload icon">
+                            <span>{{ 'pimee_product_asset.enrich_asset.button.generate_from_reference'|trans }}</span>
+                        </div>
+
                     </div>
                 </div>
             {% endif %}

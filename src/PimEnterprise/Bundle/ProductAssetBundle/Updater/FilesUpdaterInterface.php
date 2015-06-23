@@ -12,6 +12,8 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Updater;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 interface FilesUpdaterInterface
@@ -29,4 +31,33 @@ interface FilesUpdaterInterface
      * @param AssetInterface $asset
      */
     public function updateAssetFiles(AssetInterface $asset);
+
+    /**
+     * Delete file from reference
+     *
+     * @param ReferenceInterface $reference
+     */
+    public function deleteReferenceFile(ReferenceInterface $reference);
+
+    /**
+     * Delete file from variation
+     *
+     * @param VariationInterface $variation
+     */
+    public function deleteVariationFile(VariationInterface $variation);
+
+    /**
+     * Reset variations files with the reference
+     *
+     * @param ReferenceInterface $reference
+     * @param bool               $skipLocked Skip locked variations or not
+     */
+    public function resetAllVariationsFiles(ReferenceInterface $reference, $skipLocked = true);
+
+    /**
+     * Reset variation file with its reference
+     *
+     * @param VariationInterface $variation
+     */
+    public function resetVariationFile(VariationInterface $variation);
 }

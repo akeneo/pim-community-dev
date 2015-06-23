@@ -7,6 +7,8 @@ pimee_product_asset:
         button:
             upload: Upload
             delete: Delete
+            generate_from_reference: Generate from reference
+            reset_variations: Reset variations
         view:
             title: Product asset
             code: Code

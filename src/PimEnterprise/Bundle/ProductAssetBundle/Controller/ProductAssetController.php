@@ -11,7 +11,6 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -64,9 +63,6 @@ class ProductAssetController extends Controller
     /** @var VariationRepositoryInterface */
     protected $variationRepository;
 
-    /** @var RawFileStorerInterface */
-    protected $rawFileStorer;
-
     /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
@@ -91,10 +87,10 @@ class ProductAssetController extends Controller
      * @param VariationRepositoryInterface    $variationRepository
      * @param FileMetadataRepositoryInterface $metadataRepository
      * @param ChannelRepositoryInterface      $channelRepository
-     * @param RawFileStorerInterface          $rawFileStorer
      * @param VariationFileGeneratorInterface $variationFileGenerator
      * @param FilesUpdaterInterface           $assetFilesUpdater
      * @param SaverInterface                  $assetSaver
+     * @param SaverInterface                  $referenceSaver
      * @param SaverInterface                  $variationSaver
      * @param EventDispatcherInterface        $eventDispatcher
      */
@@ -104,7 +100,6 @@ class ProductAssetController extends Controller
         VariationRepositoryInterface $variationRepository,
         FileMetadataRepositoryInterface $metadataRepository,
         ChannelRepositoryInterface $channelRepository,
-        RawFileStorerInterface $rawFileStorer,
         VariationFileGeneratorInterface $variationFileGenerator,
         FilesUpdaterInterface $assetFilesUpdater,
         SaverInterface $assetSaver,
@@ -117,7 +112,6 @@ class ProductAssetController extends Controller
         $this->variationRepository    = $variationRepository;
         $this->metadataRepository     = $metadataRepository;
         $this->channelRepository      = $channelRepository;
-        $this->rawFileStorer          = $rawFileStorer;
         $this->variationFileGenerator = $variationFileGenerator;
         $this->assetFilesUpdater      = $assetFilesUpdater;
         $this->assetSaver             = $assetSaver;
@@ -261,13 +255,14 @@ class ProductAssetController extends Controller
     public function deleteReferenceFileAction(Request $request, $id)
     {
         $reference = $this->findAssetReferenceOr404($id);
+        $asset = $reference->getAsset();
+
         try {
-            $asset = $reference->getAsset();
-            $reference->setFile(null);
+            $this->assetFilesUpdater->deleteReferenceFile($reference);
             $this->referenceSaver->save($reference);
-            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_reference.flash.delete.success');
         } catch (\Exception $e) {
-            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_reference.flash.delete.error');
         }
 
         if (null !== $reference->getLocale()) {
@@ -288,13 +283,77 @@ class ProductAssetController extends Controller
     public function deleteVariationFileAction(Request $request, $id)
     {
         $variation = $this->findAssetVariationOr404($id);
+        $asset = $variation->getAsset();
+        $reference = $variation->getReference();
+
         try {
-            $asset = $variation->getAsset();
-            $reference = $variation->getReference();
-            $variation->setFile(null);
-            $variation->setSourceFile($reference->getFile());
-            $variation->setLocked(false);
+            $this->assetFilesUpdater->deleteVariationFile($variation);
             $this->variationSaver->save($variation);
+            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_variation.flash.delete.success');
+        } catch (\Exception $e) {
+            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_variation.flash.delete.error');
+        }
+
+        if (null !== $reference->getLocale()) {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+        } else {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+        }
+    }
+
+    /**
+     * Reset a variation file with the reference and redirect
+     *
+     * @param Request    $request
+     * @param int|string variation $id
+     *
+     * @return RedirectResponse
+     */
+    public function resetVariationFileAction(Request $request, $id)
+    {
+        $variation = $this->findAssetVariationOr404($id);
+        $asset = $variation->getAsset();
+        $reference = $variation->getReference();
+
+        try {
+            $this->assetFilesUpdater->resetVariationFile($variation);
+            $this->variationSaver->save($variation);
+            $this->eventDispatcher->dispatch(
+                AssetEvent::FILES_UPLOAD_POST,
+                new AssetEvent($asset)
+            );
+            $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+        } catch (\Exception $e) {
+            $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+        }
+
+        if (null !== $reference->getLocale()) {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+        } else {
+            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+        }
+    }
+
+    /**
+     * Delete a variation and redirect
+     *
+     * @param Request    $request
+     * @param int|string variation $id
+     *
+     * @return RedirectResponse
+     */
+    public function resetVariationsFilesAction(Request $request, $id)
+    {
+        $reference = $this->findAssetReferenceOr404($id);
+        $asset = $reference->getAsset();
+
+        try {
+            $this->assetFilesUpdater->resetAllVariationsFiles($reference, false);
+            $this->assetSaver->save($asset);
+            $this->eventDispatcher->dispatch(
+                AssetEvent::FILES_UPLOAD_POST,
+                new AssetEvent($asset)
+            );
             $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
         } catch (\Exception $e) {
             $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
