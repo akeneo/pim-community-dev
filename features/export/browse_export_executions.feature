@@ -7,6 +7,7 @@ Feature: Browse export executions
   Scenario: Successfully view, sort and filter export executions
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
+    When I am on the exports page
     And I launch the "footwear_product_export" export job
     And I launch the "footwear_category_export" export job
     And I launch the "footwear_attribute_export" export job
