@@ -1,0 +1,3 @@
+pimee_security:
+    resource: '@PimEnterpriseSecurityBundle/Resources/config/routing/permissions.yml'
+    prefix: /permissions

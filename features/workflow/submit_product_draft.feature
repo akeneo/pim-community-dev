@@ -132,7 +132,7 @@ Feature: Submit a modification on a product draft
     But the "Handmade" checkbox should be checked
     And I should see that Handmade is a modified value
 
-  @skip
+  @skip @skip-pef
   Scenario: Successfully accept a date attribute modification on a product draft
     When I change the "ecommerce Release date" to "2014-05-20"
     And I save the product

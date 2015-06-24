@@ -105,4 +105,9 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return ProductDraft[]|null
      */
     public function findByIds(array $ids);
+
+    /**
+     * @return string[]
+     */
+    public function getDistinctAuthors();
 }

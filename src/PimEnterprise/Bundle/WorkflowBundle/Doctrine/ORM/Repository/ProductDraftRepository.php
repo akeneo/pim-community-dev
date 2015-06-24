@@ -91,7 +91,8 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         $qb
             ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author')
             ->from($this->_entityName, 'p', 'p.id')
-            ->join('p.product', 'product');
+            ->join('p.product', 'product')
+            ->groupBy('p.id');
 
         if (isset($parameters['currentUser'])) {
             $user = $parameters['currentUser'];
@@ -190,7 +191,7 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     }
 
     /**
-     * {@inheritdoc}*
+     * {@inheritdoc}
      */
     public function findByIds(array $ids)
     {
@@ -198,6 +199,26 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         $qb->where($qb->expr()->in('d.id', $ids));
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDistinctAuthors()
+    {
+        $alias = 'p';
+        $authorField = $alias.'.author';
+        $queryBuilder = $this->_em->createQueryBuilder()
+            ->select($authorField)
+            ->from($this->_entityName, $alias, $authorField)
+            ->distinct(true)
+            ->orderBy($authorField);
+
+        $authors = $queryBuilder->getQuery()->getArrayResult();
+        $authorCodes = array_keys($authors);
+        ksort($authorCodes);
+
+        return $authorCodes;
     }
 
     /**
