@@ -21,9 +21,25 @@ use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
 class AssertionContext extends RawMinkContext
 {
     /**
+     * Checks, that page contains specified text.
+     *
+     * @Then /^(?:|I )should see the text "(?P<text>(?:[^"]|\\")*)"$/
+     */
+    public function assertPageContainsText($text)
+    {
+        $this->getMainContext()->spin(function () use ($text) {
+            $this->assertSession()->pageTextContains($text);
+
+            return true;
+        });
+    }
+
+    /**
      * @param string $expectedTitle
      *
      * @Then /^I should see the title "([^"]*)"$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheTitle($expectedTitle)
     {
@@ -104,6 +120,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fields
      *
      * @Then /^I should see the (.*) fields?$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeTheFields($fields)
     {
@@ -123,6 +141,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fields
      *
      * @Then /^I should not see the (.*) fields?$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldNotSeeTheFields($fields)
     {
@@ -142,6 +162,8 @@ class AssertionContext extends RawMinkContext
      * @param string $fields
      *
      * @Given /^the fields? (.*) should be disabled$/
+     *
+     * @throws ExpectationException
      */
     public function theFieldsShouldBeDisabled($fields)
     {
@@ -150,8 +172,6 @@ class AssertionContext extends RawMinkContext
             $field = $this->getCurrentPage()->findField($fieldName);
             if (!$field) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
-
-                return;
             }
             if (!$field->hasAttribute('disabled')) {
                 throw $this->createExpectationException(sprintf('Expecting field "%s" to be disabled.', $fieldName));
@@ -165,6 +185,8 @@ class AssertionContext extends RawMinkContext
      * @Then /^I should see (?:a )?flash message "([^"]*)"$/
      *
      * @throws ExpectationException
+     *
+     * @return bool
      */
     public function iShouldSeeFlashMessage($text)
     {
@@ -214,6 +236,8 @@ class AssertionContext extends RawMinkContext
      * @param string $link
      *
      * @Then /^I should not see the "([^"]*)" link$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldNotSeeTheLink($link)
     {
@@ -226,9 +250,17 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $table
      *
      * @Then /^I should see history:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeHistory(TableNode $table)
     {
+        if ($this->getCurrentPage()->find('css', '.panel-container')) {
+            $this->iShouldSeeHistoryInPanel($table);
+
+            return;
+        }
+
         $updates = [];
         $rows    = $this->getCurrentPage()->getHistoryRows();
         foreach ($rows as $row) {
@@ -295,48 +327,128 @@ class AssertionContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Then /^I should see this exact history:$/
+     * @Then /^I should see history in panel:$/
+     *
+     * @throws ExpectationException
      */
-    public function iShouldSeeThisExactHistory(TableNode $table)
+    public function iShouldSeeHistoryInPanel(TableNode $table)
     {
-        $actualUpdates = [];
-        $rows          = $this->getCurrentPage()->getHistoryRows();
-        foreach ($rows as $row) {
-            $version = (int) $row->find('css', 'td.number-cell')->getHtml();
-            $allData = $row->findAll('css', 'td>ul');
+        $block = $this->getMainContext()->spin(function () {
+            return $this->getCurrentPage()->find('css', '.history-block');
+        });
 
-            $beforeData = str_replace(" ", "", strip_tags($allData[0]->getHtml()));
-            $beforeData = explode("\n", $beforeData);
-            foreach ($beforeData as $dataItem) {
-                if ("" !== $dataItem) {
-                    list($property, $value)            = explode(':', $dataItem);
-                    $actualUpdates[$version.$property] = [
-                        'version'  => $version,
-                        'property' => $property,
-                        'before'   => $value
-                    ];
+        foreach ($table->getHash() as $data) {
+            $row = $this->getMainContext()->spin(function () use ($block, $data) {
+                return $block->find('css', 'tr[data-version="' . $data['version'] . '"]');
+            });
+
+            if (!$row) {
+                throw $this->createExpectationException(
+                    sprintf('Expecting to see history row for version %s, not found', $data['version'])
+                );
+            }
+            if (!$row->hasClass('expanded')) {
+                $row->click();
+            }
+            if (isset($data['author'])) {
+                $author = $row->find('css', 'td.author')->getText();
+                assertEquals(
+                    $data['author'],
+                    $author,
+                    sprintf(
+                        'Expecting the author of version %s to be %s, got %s',
+                        $data['version'],
+                        $data['author'],
+                        $author
+                    )
+                );
+            }
+
+            $changeset = $row->getParent()->find('css', 'tr.changeset:not(.hide) tbody');
+            if (!$changeset) {
+                throw $this->createExpectationException(
+                    sprintf('No changeset found for version %s', $data['version'])
+                );
+            }
+            $changesetRows = $changeset->findAll('css', 'tr');
+            if (!$changesetRows) {
+                throw $this->createExpectationException(
+                    sprintf('No changeset rows found for version %s', $data['version'])
+                );
+            }
+
+            $matchingRow = null;
+            $parsedText = '';
+            foreach ($changesetRows as $row) {
+                $innerHtml = $row->find('css', 'td:first-of-type')->getHtml();
+                $parsedText = trim(preg_replace('/(<[^>]+>)+/', ' ', $innerHtml));
+                if ($parsedText === $data['property']) {
+                    $matchingRow = $row;
+                    break;
                 }
             }
 
-            $afterData = str_replace(" ", "", strip_tags($allData[1]->getHtml()));
-            $afterData = explode("\n", $afterData);
-            foreach ($afterData as $dataItem) {
-                if ("" !== $dataItem) {
-                    list($property, $value)                     = explode(':', $dataItem);
-                    $actualUpdates[$version.$property]['after'] = $value;
-                }
+            if (!$matchingRow) {
+                throw $this->createExpectationException(
+                    sprintf('No row found for property %s, found %s', $data['property'], $parsedText)
+                );
+            }
+
+            $newValue = isset($data['value']) ? $data['value'] : $data['after'];
+            $oldValue = isset($data['before']) ? $data['before'] : null;
+
+            if ($matchingRow->find('css', 'td:nth-of-type(2)')->getText() !== $oldValue && $oldValue) {
+                throw $this->createExpectationException(
+                    sprintf('Wrong old value in row %s, expected %s', $data['property'], $newValue)
+                );
+            }
+
+            if (
+                !preg_match(
+                    sprintf('/^%s$/', $newValue),
+                    $actual = $matchingRow->find('css', 'td:last-of-type')->getText()
+                )
+            ) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Wrong new value in row %s, expected %s, got %s',
+                        $data['property'],
+                        $newValue,
+                        $actual
+                    )
+                );
             }
         }
-        $actualUpdates   = array_values($actualUpdates);
-        $expectedUpdates = $table->getHash();
+    }
 
-        assertEquals($actualUpdates, $expectedUpdates);
+    /**
+     * @param $version
+     *
+     * @Then /^the version (\d+) should be marked as published$/
+     *
+     * @throws ExpectationException
+     */
+    public function versionShouldBeMarkedAsPublished($version)
+    {
+        $row = $this->getCurrentPage()->find('css', '.history-block tr[data-version="' . $version . '"]');
+        if (!$row) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see history row for version %s, not found', $version)
+            );
+        }
+        if (!$row->find('css', '.label-published')) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see version %d marked as published, but is not', $version)
+            );
+        }
     }
 
     /**
      * @param string $fileName
      *
      * @Given /^file "([^"]*)" should exist$/
+     *
+     * @throws ExpectationException
      */
     public function fileShouldExist($fileName)
     {
@@ -351,6 +463,8 @@ class AssertionContext extends RawMinkContext
      * @param int    $rows
      *
      * @Given /^file "([^"]*)" should contain (\d+) rows$/
+     *
+     * @throws ExpectationException
      */
     public function fileShouldContainRows($fileName, $rows)
     {
@@ -463,6 +577,8 @@ class AssertionContext extends RawMinkContext
      * @param TableNode $table
      *
      * @Given /^I should see notifications?:$/
+     *
+     * @throws ExpectationException
      */
     public function iShouldSeeNotifications(TableNode $table)
     {
@@ -521,14 +637,14 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeThatAttributeIsInheritedFromVariantGroup($attribute)
     {
-        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
-        foreach ($icons as $icon) {
-            if ($icon->hasClass('icon-lock')) {
-                return true;
-            }
-        }
+        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
+        $error = $footer->find('css', '*:contains("Updated by variant group")');
 
-        throw $this->createExpectationException('Affected by a variant group icon was not found');
+        if (!$error) {
+            throw $this->createExpectationException(
+                'Affected by a variant group error was not found'
+            );
+        }
     }
 
     /**
@@ -542,14 +658,14 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeThatAttributeIsNotInheritedFromVariantGroup($attribute)
     {
-        $icons = $this->getCurrentPage()->findFieldIcons($attribute);
-        foreach ($icons as $icon) {
-            if (!$icon->hasClass('icon-lock')) {
-                return true;
-            }
-        }
+        $footer = $this->getCurrentPage()->findFieldFooter($attribute);
+        $error = $footer->find('css', '*:contains("Updated by variant group")');
 
-        throw $this->createExpectationException('Affected by a variant group icon is found and it should not');
+        if ($error) {
+            throw $this->createExpectationException(
+                'Affected by a variant group error was found'
+            );
+        }
     }
 
     /**

@@ -147,6 +147,8 @@ class GroupManager
      * @param GroupInterface $group
      * @param int            $maxResults
      *
+     * @deprecated will be removed in 1.5
+     *
      * @return array
      */
     public function getProductList(GroupInterface $group, $maxResults)

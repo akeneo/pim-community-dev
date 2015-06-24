@@ -29,6 +29,6 @@ Feature: Remove a product
   Scenario: Successfully delete a product from the edit form
     Given I am on the "boots" product page
     And I press the "Delete" button
-    Then I should see "Delete confirmation"
+    Then I should see "Confirm deletion"
     And I confirm the removal
     Then I should not see product boots

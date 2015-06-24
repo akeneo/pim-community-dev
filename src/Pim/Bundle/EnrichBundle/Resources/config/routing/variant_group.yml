@@ -35,3 +35,15 @@ pim_enrich_variant_group_remove_attribute:
         groupId: \d+
         attributeId: \d+
     methods: [DELETE]
+
+pim_enrich_variant_group_rest_index:
+    path: /rest
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:indexAction, _format: json }
+    methods: [GET]
+
+pim_enrich_variant_group_rest_get:
+    path: /rest/{identifier}
+    defaults: { _controller: pim_enrich.controller.rest.variant_group:getAction, _format: json }
+    requirements:
+        identifier: '[a-zA-Z0-9_]+'
+    methods: [GET]

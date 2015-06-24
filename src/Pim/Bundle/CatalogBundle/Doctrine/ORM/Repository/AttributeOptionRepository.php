@@ -69,14 +69,16 @@ class AttributeOptionRepository extends EntityRepository implements
 
         $results = array();
         $autoSorting = null;
+
         foreach ($qb->getQuery()->getArrayResult() as $row) {
             if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
                 $autoSorting = $row['properties']['autoOptionSorting'];
             }
-            $results[] = array(
-                'id'   => $row['id'],
-                'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
-            );
+
+            $results[] = [
+                'id'   => (isset($options['type']) && 'code' === $options['type']) ? $row['code'] : $row['id'],
+                'text' => null !== $row['label'] ? $row['label'] : sprintf('[%s]', $row['code'])
+            ];
         }
 
         if ($autoSorting) {

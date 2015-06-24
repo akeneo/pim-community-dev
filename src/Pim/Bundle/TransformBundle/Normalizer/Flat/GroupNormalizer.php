@@ -14,10 +14,23 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
  */
 class GroupNormalizer extends Structured\GroupNormalizer
 {
-    /**
-     * @var array
-     */
+    /** @var string[] */
     protected $supportedFormats = array('csv');
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        $result = parent::normalize($object, $format, $context);
+
+        if (isset($result['values'])) {
+            $result = $result + $result['values'];
+            unset($result['values']);
+        }
+
+        return $result;
+    }
 
     /**
      * {@inheritdoc}

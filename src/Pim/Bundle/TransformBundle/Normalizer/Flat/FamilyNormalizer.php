@@ -14,15 +14,13 @@ use Pim\Bundle\TransformBundle\Normalizer\Structured;
  */
 class FamilyNormalizer extends Structured\FamilyNormalizer
 {
-    /**
-     * @var array
-     */
+    /** @var string[] */
     protected $supportedFormats = array('csv');
 
     /**
      * {@inheritdoc}
      */
-    protected function normalizeAttributes(FamilyInterface $family)
+    protected function normalizeAttributes(FamilyInterface $family, array $context = [])
     {
         $attributes = parent::normalizeAttributes($family);
 

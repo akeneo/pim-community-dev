@@ -20,4 +20,4 @@ Feature: Classify a product
     And I click on the "Summer collection" category
     And I click on the "Winter collection" category
     And I press the "Save" button
-    Then I should see "2014 collection (2)"
+    Then the categories of "tea" should be "summer_collection and winter_collection"
