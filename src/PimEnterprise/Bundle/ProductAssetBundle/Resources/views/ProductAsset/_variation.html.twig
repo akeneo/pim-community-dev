@@ -11,8 +11,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        {#<th>{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>#}
-                        {% if 'image' in variationModel.file.mimeType %}
+                        {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
                             <th>{{ 'pimee_product_asset.enrich_asset.view.width'|trans }}</th>
                             <th>{{ 'pimee_product_asset.enrich_asset.view.height'|trans }}</th>
                             <th>{{ 'pimee_product_asset.enrich_asset.view.resolution'|trans }}</th>
@@ -25,7 +24,6 @@
                     </thead>
                     <tbody>
                     <tr>
-                        {#<td>{{ variationModel.file.originalFilename }}</td>#}
                         {% if 'image' in variationModel.file.mimeType and metadata.variations[variationModel.id] %}
                             <td>{{ metadata.variations[variationModel.id].exifSizeWidth }} px</td>
                             <td>{{ metadata.variations[variationModel.id].exifSizeHeight }} px</td>

@@ -5,19 +5,21 @@ define(
         'backbone',
         'oro/delete-confirmation',
         'oro/translator',
-        'oro/navigation'
+        'oro/navigation',
+        'pimee/productasset/uploader'
     ],
-    function ($, _, Backbone, DeleteConfirmation, t, Navigation) {
+    function ($, _, Backbone, DeleteConfirmation, t, Navigation, Uploader) {
         'use strict';
 
-        var AssetVariations = Backbone.View.extend({
-            initialize: function() {
-                this.$el = $("#pimee_product_asset-tabs-variations");
-            },
+        return Backbone.View.extend({
+            el: "#pimee_product_asset-tabs-variations",
+            uploader: undefined,
             events: {
                 "click .delete": "confirmDelete",
-                "click .reset-variations": "confirmResetVariations",
-                "change input[type=file]": "fileReadyForUpload"
+                "click .reset-variations": "confirmResetVariations"
+            },
+            initialize: function() {
+                this.uploader = new Uploader();
             },
             confirmDelete: function (event) {
                 event.preventDefault();
@@ -33,13 +35,6 @@ define(
                 var confirmation = this.getConfirmDialog('Are you sure you want to reset all variations ?', targetUrl, 'reset.variations');
                 confirmation.open();
             },
-            fileReadyForUpload: function (event) {
-                event.preventDefault();
-                var file = event.currentTarget;
-                var container = $(file).parent();
-                console.log(this.basename(file.value));
-                console.log(container);
-            },
             getConfirmDialog: function (message, targetUrl, title) {
                 var options = {
                     content: t(message)
@@ -52,12 +47,7 @@ define(
                     Navigation.getInstance().setLocation(targetUrl);
                 });
                 return confirmModal;
-            },
-            basename: function (path) {
-                return path.replace(/\\/g, '/').replace(/.*\//, '');
             }
         });
-
-        return AssetVariations;
     }
 );
