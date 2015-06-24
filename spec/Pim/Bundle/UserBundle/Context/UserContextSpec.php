@@ -3,12 +3,12 @@
 namespace spec\Pim\Bundle\UserBundle\Context;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -19,7 +19,6 @@ class UserContextSpec extends ObjectBehavior
         SecurityContextInterface $securityContext,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
-        CategoryManager $categoryManager,
         TokenInterface $token,
         User $user,
         LocaleInterface $en,
@@ -28,7 +27,8 @@ class UserContextSpec extends ObjectBehavior
         ChannelInterface $ecommerce,
         ChannelInterface $mobile,
         CategoryInterface $firstTree,
-        CategoryInterface $secondTree
+        CategoryInterface $secondTree,
+        CategoryRepositoryInterface $productCategoryRepo
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
@@ -47,9 +47,9 @@ class UserContextSpec extends ObjectBehavior
 
         $localeManager->getActiveLocales()->willReturn([$en, $fr, $de]);
         $channelManager->getChannels()->willReturn([$mobile, $ecommerce]);
-        $categoryManager->getTrees()->willReturn([$firstTree, $secondTree]);
+        $productCategoryRepo->getTrees()->willReturn([$firstTree, $secondTree]);
 
-        $this->beConstructedWith($securityContext, $localeManager, $channelManager, $categoryManager, 'en_US');
+        $this->beConstructedWith($securityContext, $localeManager, $channelManager, $productCategoryRepo, 'en_US');
     }
 
     function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)
