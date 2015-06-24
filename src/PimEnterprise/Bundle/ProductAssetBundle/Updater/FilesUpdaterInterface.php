@@ -64,4 +64,11 @@ interface FilesUpdaterInterface
      * @param VariationInterface $variation
      */
     public function resetVariationFile(VariationInterface $variation);
+
+    /**
+     * Reset all asset's uploaded files
+     *
+     * @param AssetInterface $asset
+     */
+    public function resetAllUploadedFiles(AssetInterface $asset);
 }

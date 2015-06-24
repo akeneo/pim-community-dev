@@ -14,6 +14,7 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
@@ -185,9 +186,8 @@ class ProductAssetController extends Controller
     public function editAction(Request $request, $id)
     {
         $productAsset = $this->findProductAssetOr404($id);
-        $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
-
         $assetLocales = $productAsset->getLocales();
+
         if (null !== $request->get('locale')) {
             $locale = $assetLocales[$request->get('locale')];
         } elseif (!empty($assetLocales)) {
@@ -196,6 +196,28 @@ class ProductAssetController extends Controller
             $locale = null;
         }
 
+        $assetForm    = $this->createForm('pimee_product_asset', $productAsset);
+
+        $assetForm->handleRequest($request);
+
+        if ($assetForm->isValid()) {
+            try {
+                $this->assetFilesUpdater->updateAssetFiles($productAsset);
+                $this->assetSaver->save($productAsset);
+                $this->eventDispatcher->dispatch(
+                    AssetEvent::FILES_UPLOAD_POST,
+                    new AssetEvent($productAsset)
+                );
+                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
+            } catch (\Exception $e) {
+                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
+            }
+            return $this->redirectAfterEdit($request, ['id' => $id]);
+        } elseif ($assetForm->isSubmitted()) {
+            $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
+        }
+
+
         $metadata = null;
         if (null !== $productAsset) {
             $metadata = $this->getAssetMetadata($productAsset);
@@ -203,43 +225,10 @@ class ProductAssetController extends Controller
 
         return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
             'asset'         => $productAsset,
-            'form'          => $assetForm,
+            'form'          => $assetForm->createView(),
             'metadata'      => $metadata,
             'currentLocale' => $locale,
         ]);
-    }
-
-    /**
-     * Update a product asset and redirect
-     *
-     * @param Request    $request
-     * @param int|string $id
-     *
-     * @return RedirectResponse
-     */
-    public function updateAction(Request $request, $id)
-    {
-        $asset = $this->findProductAssetOr404($id);
-        $form  = $this->createForm('pimee_product_asset', $asset);
-
-        $form->handleRequest($request);
-
-        // TODO: check if references and variations are really validated
-        if ($form->isValid()) {
-            try {
-                $this->assetFilesUpdater->updateAssetFiles($asset);
-                $this->assetSaver->save($asset);
-                $this->eventDispatcher->dispatch(
-                    AssetEvent::FILES_UPLOAD_POST,
-                    new AssetEvent($asset)
-                );
-                $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
-            } catch (\Exception $e) {
-                $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
-            }
-        }
-
-        return $this->redirectAfterEdit($request, ['id' => $id]);
     }
 
     /**

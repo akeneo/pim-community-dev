@@ -39,7 +39,7 @@
                     </tbody>
                 </table>
             {% else %}
-                <div class="asset-uploader media-uploader span6">
+                <div class="asset-uploader media-uploader span6{% if not variation.file.uploadedFile.vars.valid %} error{% endif %}">
                         <label class="file-uploader">
                             {{ form_widget(variation.file) }}
                         </label>

@@ -137,4 +137,28 @@ class FilesUpdater implements FilesUpdaterInterface
         $variation->setSourceFile(null);
         $variation->setLocked(true);
     }
+
+    public function resetAllUploadedFiles(AssetInterface $asset)
+    {
+        foreach ($asset->getReferences() as $reference) {
+            $referenceFile = $reference->getFile();
+            if (null !== $referenceFile) {
+                if (null === $referenceFile->getId()) {
+                    $reference->setFile(null);
+                } else {
+                    $referenceFile->setUploadedFile(null);
+                }
+            }
+            foreach ($reference->getVariations() as $variation) {
+                $variationFile = $variation->getFile();
+                if (null !== $variationFile) {
+                    if (null === $variationFile->getId()) {
+                        $variation->setFile(null);
+                    } else {
+                        $variationFile->setUploadedFile(null);
+                    }
+                }
+            }
+        }
+    }
 }
