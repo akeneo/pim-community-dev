@@ -12,11 +12,11 @@ define(
         'use strict';
 
         return Backbone.View.extend({
-            el: "#pimee_product_asset-tabs-variations",
+            el: '#pimee_product_asset-tabs-variations',
             uploader: undefined,
             events: {
-                "click .delete": "confirmDelete",
-                "click .reset-variations": "confirmResetVariations"
+                'click .delete': 'confirmDelete',
+                'click .reset-variations': 'confirmResetVariations'
             },
             initialize: function() {
                 this.uploader = new Uploader();
@@ -32,7 +32,11 @@ define(
                 event.preventDefault();
                 var button = event.currentTarget;
                 var targetUrl = $(button).data('href');
-                var confirmation = this.getConfirmDialog('Are you sure you want to reset all variations ?', targetUrl, 'reset.variations');
+                var confirmation = this.getConfirmDialog(
+                    'Are you sure you want to reset all variations ?',
+                    targetUrl,
+                    'reset.variations'
+                );
                 confirmation.open();
             },
             getConfirmDialog: function (message, targetUrl, title) {

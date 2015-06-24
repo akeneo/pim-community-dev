@@ -33,8 +33,7 @@ class AssetEventListener
 
     /**
      * Generate missing variations for one asset or for all assets
-     *
-     * Trigerred by AssetEvent::FILES_UPLOAD_POST
+     * Triggered by AssetEvent::FILES_UPLOAD_POST
      *
      * @param AssetEvent $event
      *

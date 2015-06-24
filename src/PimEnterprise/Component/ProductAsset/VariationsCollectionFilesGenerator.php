@@ -21,6 +21,7 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
  */
 class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGeneratorInterface
 {
+    /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
     /**
@@ -32,12 +33,9 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
     }
 
     /**
-     * @param VariationInterface[] $variations
-     * @param bool                 $includeLocked Process locked variations
-     *
-     * @return ProcessedItemList
+     * {@inheritdoc}
      */
-    public function generate(array $variations, $includeLocked = false)
+    public function generate(array $variations, $force = false)
     {
         $processedVariations = new ProcessedItemList();
 
@@ -46,7 +44,7 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
                 throw new \InvalidArgumentException('The collection should contains only VariationInterfaces');
             }
 
-            if ($includeLocked || !$variation->isLocked()) {
+            if ($force || !$variation->isLocked()) {
                 try {
                     $this->variationFileGenerator->generate($variation);
                     $processedVariations->addItem($variation, ProcessedItem::STATE_SUCCESS);

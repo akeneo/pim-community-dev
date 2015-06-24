@@ -23,8 +23,9 @@ interface VariationsCollectionFilesGeneratorInterface
 {
     /**
      * @param VariationInterface[] $variations
+     * @param bool                 $force Process locked variations
      *
      * @return ProcessedItemList
      */
-    public function generate(array $variations);
+    public function generate(array $variations, $force = false);
 }

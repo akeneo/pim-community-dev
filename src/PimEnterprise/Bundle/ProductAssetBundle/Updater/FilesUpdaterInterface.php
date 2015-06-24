@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -16,6 +17,9 @@ use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ */
 interface FilesUpdaterInterface
 {
     /**
@@ -50,9 +54,9 @@ interface FilesUpdaterInterface
      * Reset variations files with the reference
      *
      * @param ReferenceInterface $reference
-     * @param bool               $skipLocked Skip locked variations or not
+     * @param bool               $force Force to process even locked variations
      */
-    public function resetAllVariationsFiles(ReferenceInterface $reference, $skipLocked = true);
+    public function resetAllVariationsFiles(ReferenceInterface $reference, $force = false);
 
     /**
      * Reset variation file with its reference

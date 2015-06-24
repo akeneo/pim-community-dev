@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -200,7 +201,7 @@ class ProductAssetController extends Controller
             $metadata = $this->getAssetMetadata($productAsset);
         }
 
-        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig',[
+        return $this->render('PimEnterpriseProductAssetBundle:ProductAsset:edit.html.twig', [
             'asset'         => $productAsset,
             'form'          => $assetForm,
             'metadata'      => $metadata,
@@ -231,7 +232,7 @@ class ProductAssetController extends Controller
                 $this->eventDispatcher->dispatch(
                     AssetEvent::FILES_UPLOAD_POST,
                     new AssetEvent($asset)
-                    );
+                );
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
                 $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
@@ -263,7 +264,10 @@ class ProductAssetController extends Controller
         }
 
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+            return $this->redirectAfterEdit($request, [
+                'id' => $asset->getId(),
+                'locale' => $reference->getLocale()->getCode()
+            ]);
         } else {
             return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
         }
@@ -292,7 +296,10 @@ class ProductAssetController extends Controller
         }
 
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+            return $this->redirectAfterEdit($request, [
+                'id' => $asset->getId(),
+                'locale' => $reference->getLocale()->getCode()
+            ]);
         } else {
             return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
         }
@@ -324,15 +331,17 @@ class ProductAssetController extends Controller
             $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
         }
 
+        $parameters = ['id' => $asset->getId()];
+
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
-        } else {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+            $parameters['locale'] = $reference->getLocale()->getCode();
         }
+
+        return $this->redirectAfterEdit($request, $parameters);
     }
 
     /**
-     * Delete a variation and redirect
+     * Reset all variation files with the reference file and redirect
      *
      * @param Request    $request
      * @param int|string variation $id
@@ -345,7 +354,7 @@ class ProductAssetController extends Controller
         $asset = $reference->getAsset();
 
         try {
-            $this->assetFilesUpdater->resetAllVariationsFiles($reference, false);
+            $this->assetFilesUpdater->resetAllVariationsFiles($reference, true);
             $this->assetSaver->save($asset);
             $this->eventDispatcher->dispatch(
                 AssetEvent::FILES_UPLOAD_POST,
@@ -357,7 +366,10 @@ class ProductAssetController extends Controller
         }
 
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId(), 'locale' => $reference->getLocale()->getCode()]);
+            return $this->redirectAfterEdit($request, [
+                'id' => $asset->getId(),
+                'locale' => $reference->getLocale()->getCode()
+            ]);
         } else {
             return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
         }
@@ -373,10 +385,12 @@ class ProductAssetController extends Controller
         $metadata = [];
 
         foreach ($productAsset->getReferences() as $reference) {
-            /** @var ReferenceInterface $reference */
-            $metadata['references'][$reference->getId()] = $reference->getFile() ? $this->getFileMetadata($reference->getFile()) : null;
+            $referenceFileMeta = $reference->getFile() ? $this->getFileMetadata($reference->getFile()) : null;
+            $metadata['references'][$reference->getId()] = $referenceFileMeta;
+
             foreach ($reference->getVariations() as $variation) {
-                $metadata['variations'][$variation->getId()] = $variation->getFile() ? $this->getFileMetadata($variation->getFile()) : null;
+                $variationFileMeta = $variation->getFile() ? $this->getFileMetadata($variation->getFile()) : null;
+                $metadata['variations'][$variation->getId()] = $variationFileMeta;
             }
         }
 
@@ -436,9 +450,9 @@ class ProductAssetController extends Controller
      *
      * @param int|string $id
      *
-     * @return AssetInterface
-     *
      * @throws NotFoundHttpException
+     *
+     * @return AssetInterface
      */
     protected function findProductAssetOr404($id)
     {
@@ -458,9 +472,9 @@ class ProductAssetController extends Controller
      *
      * @param int|string $id
      *
-     * @return ReferenceInterface
-     *
      * @throws NotFoundHttpException
+     *
+     * @return ReferenceInterface
      */
     protected function findAssetReferenceOr404($id)
     {
@@ -468,7 +482,7 @@ class ProductAssetController extends Controller
 
         if (null === $reference) {
             throw $this->createNotFoundException(
-                sprintf('Asset $reference with id "%s" could not be found.', (string) $id)
+                sprintf('Asset reference with id "%s" could not be found.', (string) $id)
             );
         }
 
@@ -480,9 +494,9 @@ class ProductAssetController extends Controller
      *
      * @param int|string $id
      *
-     * @return VariationInterface
-     *
      * @throws NotFoundHttpException
+     *
+     * @return VariationInterface
      */
     protected function findAssetVariationOr404($id)
     {

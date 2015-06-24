@@ -15,8 +15,8 @@ define(
             el: '.asset-uploader',
 
             events: {
-                "change input[type=file]": 'onFileChanged',
-                "click .icon-trash": 'resetFile'
+                'change input[type=file]': 'onFileChanged',
+                'click .icon-trash': 'resetFile'
             },
 
             /**

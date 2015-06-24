@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -20,7 +21,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
  */
 final class AssetEvent extends GenericEvent
 {
-    /** @var string Event trigerred afer assets files have been uploaded */
+    /** @var string Event triggered after upload of assets files */
     const FILES_UPLOAD_POST = 'pimee_product_asset.asset.files_upload.post';
 
     /**

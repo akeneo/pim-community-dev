@@ -77,9 +77,9 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
     /**
      * @param $channelCode
      *
-     * @return ChannelInterface
-     *
      * @throws \LogicException
+     *
+     * @return ChannelInterface
      */
     protected function retrieveChannel($channelCode)
     {

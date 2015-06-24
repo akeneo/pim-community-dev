@@ -54,9 +54,9 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     /**
      * @param string $assetCode
      *
-     * @return AssetInterface
-     *
      * @throws \LogicException
+     *
+     * @return AssetInterface
      */
     protected function retrieveAsset($assetCode)
     {
@@ -70,9 +70,9 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     /**
      * @param $localeCode
      *
-     * @return LocaleInterface
-     *
      * @throws \LogicException
+     *
+     * @return LocaleInterface
      */
     protected function retrieveLocale($localeCode)
     {
@@ -114,9 +114,9 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      * @param ReferenceInterface $reference
      * @param ChannelInterface   $channel
      *
-     * @return VariationInterface
-     *
      * @throws \LogicException
+     *
+     * @return VariationInterface
      */
     protected function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel)
     {

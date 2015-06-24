@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
@@ -17,6 +18,8 @@ use Symfony\Component\Process\PhpExecutableFinder;
  *
  * @package PimEnterprise\Bundle\ProductAssetBundle\JobLauncher
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ *
+ * TODO: Maybe find another namespace / location.
  */
 class CommandLauncher
 {
