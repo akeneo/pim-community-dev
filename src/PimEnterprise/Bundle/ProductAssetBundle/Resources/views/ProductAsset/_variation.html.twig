@@ -39,7 +39,7 @@
                     </tbody>
                 </table>
             {% else %}
-                <div class="media-uploader span6">
+                <div class="asset-uploader media-uploader span6">
                     <div>
                         <label class="file-uploader">
                             {{ form_widget(variation.file) }}
@@ -48,7 +48,7 @@
                             <img src="/bundles/pimui/images/upload.png" alt="upload icon">
                             <span>{{ 'btn.drag_or_upload'|trans }}</span>
                         </div>
-
+                        <div class="clear-fix"></div>
                     </div>
                 </div>
                 <div class="media-uploader span6">

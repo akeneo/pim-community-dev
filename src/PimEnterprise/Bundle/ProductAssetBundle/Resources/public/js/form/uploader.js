@@ -8,11 +8,15 @@ define(
     function ($, _, Backbone, t) {
         'use strict';
 
+        var filePrompt = '<span><%= message %></span>';
+        var fileInfo   = '<span><%= message %></span><i class="icon icon-trash" style="z-index: 50";></i>';
+
         return Backbone.View.extend({
-            el: '.media-uploader',
+            el: '.asset-uploader',
 
             events: {
-                "change input[type=file]": 'onFileChanged'
+                "change input[type=file]": 'onFileChanged',
+                "click .icon-trash": 'resetFile'
             },
 
             /**
@@ -22,20 +26,45 @@ define(
             onFileChanged: function (event) {
                 event.preventDefault();
                 var file = event.currentTarget;
-                var basename = this.basename(file.value);
-                var $inputContainer = this.getUploaderContainer(file);
-                var $label = $inputContainer.find('div.uploader span');
-                $label.text(basename);
-                var $iconContainer = $inputContainer.find('div.icons-container');
-                $iconContainer.append('<i class="icon icon-trash"></i>');
-                $iconContainer.css('opacity', 'none');
+                this.setFileInformations(file);
             },
 
             /**
-             * Find the container of changed input file
+             * Change uploader view when changed
+             * @param event
              */
-            getUploaderContainer: function (fileInput) {
-                return $(fileInput).closest('.media-uploader');
+            setFileInformations: function (file) {
+                var $inputContainer = this.getUploaderContainer(file);
+                var $label = $inputContainer.find('.uploader span');
+                if (file.value) {
+                    var basename = this.basename(file.value);
+                    $label.replaceWith(_.template(fileInfo, {message: basename}));
+                } else {
+                    $label.replaceWith(_.template(filePrompt, {message: t('pim_enrich.entity.product.media.upload')}));
+                    $inputContainer.find('.uploader').find('i').remove();
+                }
+            },
+
+            /**
+             * Reset a file input
+             *
+             * @param event
+             */
+            resetFile: function (event) {
+                event.stopPropagation();
+                var $inputContainer = this.getUploaderContainer(event.currentTarget);
+                var file = $inputContainer.find('input');
+                console.log(file.val());
+                file.val('');
+                this.setFileInformations(file);
+                console.log(file.val());
+            },
+
+            /**
+             * Find the global container of an element
+             */
+            getUploaderContainer: function (childElement) {
+                return $(childElement).closest('.asset-uploader');
             },
 
             /**
