@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Launcher\JobLauncherInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
@@ -281,24 +282,20 @@ class ProductDraftController extends AbstractController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return RedirectResponse
      */
     public function massApproveAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            throw new NotFoundHttpException();
-        }
-
-        $this->launchMassReviewJob(
+        $jobExecution = $this->launchMassReviewJob(
             self::MASS_APPROVE_JOB_CODE,
             $this->parseGridParameters($request)
         );
 
-        return new JsonResponse(
-            [
-                'successful' => true,
-                'message'    => $this->getTranslator()->trans('flash.product_draft.mass_approve.launched')
-            ]
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_job_tracker_show',
+                ['id' => $jobExecution->getId()]
+            )
         );
     }
 
@@ -307,39 +304,39 @@ class ProductDraftController extends AbstractController
      *
      * @param Request $request
      *
-     * @return JsonResponse
+     * @return RedirectResponse
      */
     public function massRefuseAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            throw new NotFoundHttpException();
-        }
-
-        $this->launchMassReviewJob(
+        $jobExecution = $this->launchMassReviewJob(
             self::MASS_REFUSE_JOB_CODE,
             $this->parseGridParameters($request)
         );
 
-        return new JsonResponse(
-            [
-                'successful' => true,
-                'message'    => $this->getTranslator()->trans('flash.product_draft.mass_refuse.launched')
-            ]
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_job_tracker_show',
+                ['id' => $jobExecution->getId()]
+            )
         );
     }
 
     /**
      * Launch the specified mass review job
      *
-     * @param string  $jobCode
-     * @param array   $params
+     * @param string $jobCode
+     * @param array  $params
+     *
+     * @return JobExecution
      */
     protected function launchMassReviewJob($jobCode, array $params)
     {
         $jobInstance      = $this->jobInstanceRepository->findOneByIdentifier($jobCode);
         $rawConfiguration = addslashes(json_encode(['draftIds' => $params['values']]));
 
-        $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+        $jobExecution = $this->simpleJobLauncher->launch($jobInstance, $this->getUser(), $rawConfiguration);
+
+        return $jobExecution;
     }
 
     /**

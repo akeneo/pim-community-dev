@@ -52,10 +52,6 @@ flash:
             error: The proposal can't be applied due to the following error. %error%
         refuse:
             success: The proposal has been refused.
-        mass_approve:
-            launched: The product drafts approval job is currently running.
-        mass_refuse:
-            launched: The product drafts refusal job is currently running.
 
 pim_menu:
     item:

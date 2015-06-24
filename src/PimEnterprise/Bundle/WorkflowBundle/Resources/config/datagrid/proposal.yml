@@ -54,16 +54,14 @@ datagrid:
                 link: refuse_link
         mass_actions:
             mass_approve:
-                type: ajax
+                type: redirect
                 label: pimee_workflow.product_draft.mass_review_action.approve
-                handler: review
                 confirmation: true
                 route: pimee_workflow_product_draft_mass_approve
                 icon: ok
             mass_refuse:
-                type: ajax
+                type: redirect
                 label: pimee_workflow.product_draft.mass_review_action.refuse
-                handler: review
                 confirmation: true
                 route: pimee_workflow_product_draft_mass_refuse
                 icon: remove
