@@ -1,15 +1,17 @@
 <?php
 
-namespace Pim\Component\Catalog\Comparator;
+namespace Pim\Component\Catalog\Comparator\Attribute;
+
+use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**
- * Comparator which calculate change set for scalars
+ * Comparator which calculate change set for booleans
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    JM Leroux <jean-marie.leroux@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ScalarComparator implements ComparatorInterface
+class BooleanComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -17,11 +19,7 @@ class ScalarComparator implements ComparatorInterface
     public function supports($type)
     {
         return in_array($type, [
-            'pim_catalog_date',
-            'pim_catalog_identifier',
-            'pim_catalog_number',
-            'pim_catalog_text',
-            'pim_catalog_textarea'
+            'pim_catalog_boolean',
         ]);
     }
 
@@ -33,6 +31,10 @@ class ScalarComparator implements ComparatorInterface
         $default = ['locale' => null, 'scope' => null, 'value' => null];
         $originals = array_merge($default, $originals);
 
-        return $data['value'] !== $originals['value'] ? $data : null;
+        if ((bool) $originals['value'] === (bool) $data['value']) {
+            return null;
+        }
+
+        return $data;
     }
 }

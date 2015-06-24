@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog\Comparator;
+namespace Pim\Component\Catalog\Comparator\Attribute;
+
+use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**
  * Comparator which calculate change set for collections of options

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Comparator;
+namespace spec\Pim\Component\Catalog\Comparator\Attribute;
 
 use PhpSpec\ObjectBehavior;
 
