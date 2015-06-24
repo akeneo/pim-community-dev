@@ -1,7 +1,8 @@
+{# TODO buttons style #}
 <div class="row-fluid variations">
     <h3>
         {% if currentLocale is not null %}
-            <div id="locale-switcher" class="btn-group sub-title">
+            <div id="locale-switcher" class="btn-group">
                     <span class="dropdown-toggle" data-toggle="dropdown">
                         {{ currentLocale.code|flag }}
                         <i class="icon-caret-down"></i>
@@ -56,19 +57,13 @@
                             </tbody>
                         </table>
                     {% else %}
-                        <div class="media-uploader ">
-                            <div>
-                                <label class="file-uploader">
-                                    {{ form_widget(reference.file) }}
-                                </label>
-                                <div class="uploader">
-                                    <img src="/bundles/pimui/images/upload.png" alt="upload icon">
-                                    <span>{{ 'btn.drag_or_upload'|trans }}</span>
-                                </div>
-
-                            </div>
-                            <div class="progress">
-                                <div class="bar"></div>
+                        <div class="asset-uploader media-uploader ">
+                            <label class="file-uploader">
+                                {{ form_widget(reference.file) }}
+                            </label>
+                            <div class="uploader">
+                                <img src="/bundles/pimui/images/upload.png" alt="upload icon">
+                                <span>{{ 'btn.drag_or_upload'|trans }}</span>
                             </div>
                         </div>
                     {% endif %}

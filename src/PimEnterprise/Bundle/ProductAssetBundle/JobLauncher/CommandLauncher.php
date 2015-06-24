@@ -65,6 +65,8 @@ class CommandLauncher
             $cmd .= ' &';
         }
 
-        exec($cmd);
+        $result = exec($cmd);
+
+        return null;
     }
 }

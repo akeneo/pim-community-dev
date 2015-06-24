@@ -1,0 +1,24 @@
+Akeneo\Component\FileStorage\Model\File:
+    properties:
+        uploadedFile:
+            - File:
+                maxSize: 1024k
+                mimeTypes: [image/jpg, image/jpeg, application/x-pdf]
+                mimeTypesMessage: Type de fichier invalide
+
+PimEnterprise\Component\ProductAsset\Model\Asset:
+    properties:
+        description:
+            - NotNull: ~
+        references:
+            - Valid: ~
+
+PimEnterprise\Component\ProductAsset\Model\Reference:
+    properties:
+        variations:
+            - Valid: ~
+
+PimEnterprise\Component\ProductAsset\Model\Variation:
+    properties:
+        file:
+            - Valid: ~

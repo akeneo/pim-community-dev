@@ -8,7 +8,7 @@ define(
     function ($, _, Backbone, t) {
         'use strict';
 
-        var filePrompt = '<span><%= message %></span>';
+        var filePrompt = '<img src="/bundles/pimui/images/upload.png" alt="upload icon"><span><%= message %></span>';
         var fileInfo   = '<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>';
 
         return Backbone.View.extend({
@@ -35,13 +35,14 @@ define(
              */
             setFileInformations: function (file) {
                 var $inputContainer = this.getUploaderContainer(file);
-                var $label = $inputContainer.find('.uploader span');
+                var $label = $inputContainer.find('.uploader');
                 if (file.value) {
                     var basename = this.basename(file.value);
-                    $label.replaceWith(_.template(fileInfo, {message: basename}));
+                    $label.empty();
+                    $label.append(_.template(fileInfo, {message: basename}));
                 } else {
-                    $label.replaceWith(_.template(filePrompt, {message: t('pim_enrich.entity.product.media.upload')}));
-                    $inputContainer.find('.uploader').find('i').remove();
+                    $label.empty();
+                    $label.append(_.template(filePrompt, {message: t('pim_enrich.entity.product.media.upload')}));
                 }
             },
 
