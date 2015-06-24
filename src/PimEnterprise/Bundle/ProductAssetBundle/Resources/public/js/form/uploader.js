@@ -9,7 +9,7 @@ define(
         'use strict';
 
         var filePrompt = '<span><%= message %></span>';
-        var fileInfo   = '<span><%= message %></span><i class="icon icon-trash" style="z-index: 50";></i>';
+        var fileInfo   = '<span><%= message %>&nbsp;<i class="icon icon-trash"></i></span>';
 
         return Backbone.View.extend({
             el: '.asset-uploader',
