@@ -21,10 +21,27 @@ interface RegistryInterface
     public function getAttributeComparator($attributeType);
 
     /**
-     * Add a comparator to the chain of comparators
+     * Add a comparator for attribute to the chain of comparators
      *
      * @param ComparatorInterface $comparator
      * @param int                 $priority
      */
     public function addAttributeComparator(ComparatorInterface $comparator, $priority);
+
+    /**
+     * @param string $field
+     *
+     * @throws \LogicException
+     *
+     * @return ComparatorInterface
+     */
+    public function getFieldComparator($field);
+
+    /**
+     * Add a comparator for product's field to the chain of comparators
+     *
+     * @param ComparatorInterface $comparator
+     * @param int                 $priority
+     */
+    public function addFieldComparator(ComparatorInterface $comparator, $priority);
 }
