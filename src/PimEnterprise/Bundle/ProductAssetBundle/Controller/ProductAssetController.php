@@ -13,8 +13,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
@@ -35,7 +33,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Asset controller
@@ -498,31 +495,5 @@ class ProductAssetController extends Controller
         }
 
         return $variation;
-    }
-
-    /**
-     * @param AssetInterface    $asset
-     * @param ChannelInterface  $channel
-     * @param LocaleInterface   $locale
-     *
-     * @throws \Exception
-     */
-    protected function launchVariationFileGeneration(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    ) {
-        $rootDir = $this->container->getParameter('kernel.root_dir');
-        $pathFinder = new PhpExecutableFinder();
-        $cmd = sprintf(
-            '%s %s/console pim:asset:generate-variation %s %s %s',
-            $pathFinder->find(),
-            $rootDir,
-            $asset->getCode(),
-            $channel->getCode(),
-            null !== $locale ? $locale->getCode() : ''
-        );
-
-        exec($cmd . ' &');
     }
 }

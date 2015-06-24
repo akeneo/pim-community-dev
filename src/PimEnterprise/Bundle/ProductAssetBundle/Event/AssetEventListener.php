@@ -11,8 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\Process\PhpExecutableFinder;
+use PimEnterprise\Bundle\ProductAssetBundle\JobLauncher\CommandLauncher;
 
 /**
  * Asset events listenener
@@ -21,15 +20,15 @@ use Symfony\Component\Process\PhpExecutableFinder;
  */
 class AssetEventListener
 {
-    /** @var string */
-    protected $rootDir;
+    /** @var CommandLauncher */
+    protected $launcher;
 
     /**
-     * @param string $rootDir
+     * @param CommandLauncher $launcher
      */
-    public function __construct($rootDir)
+    public function __construct(CommandLauncher $launcher)
     {
-        $this->rootDir = $rootDir;
+        $this->launcher = $launcher;
     }
 
     /**
@@ -41,14 +40,9 @@ class AssetEventListener
      *
      * @return AssetEvent
      */
-    public function onVariationUploaded(AssetEvent $event)
+    public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $pathFinder = new PhpExecutableFinder();
-        $cmd = sprintf(
-            '%s %s/console pim:asset:generate-missing-variation-files',
-            $pathFinder->find(),
-            $this->rootDir
-        );
+        $cmd = 'pim:asset:generate-missing-variation-files';
 
         $asset = $event->getSubject();
 
@@ -56,7 +50,7 @@ class AssetEventListener
             $cmd .= sprintf(' --asset=%s', $asset->getCode());
         }
 
-        exec($cmd . ' &');
+        $this->launcher->launchCommand($cmd);
 
         return $event;
     }
