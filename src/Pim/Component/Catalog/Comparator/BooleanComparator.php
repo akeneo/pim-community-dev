@@ -24,7 +24,7 @@ class BooleanComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function compare(array $data, array $originals)
+    public function compare($data, $originals)
     {
         $default = ['locale' => null, 'scope' => null, 'value' => null];
         $originals = array_merge($default, $originals);
