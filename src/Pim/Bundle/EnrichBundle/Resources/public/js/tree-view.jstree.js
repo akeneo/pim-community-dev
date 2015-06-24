@@ -162,10 +162,10 @@ define(
                 .on('select_node.jstree', onSelectNode);
         };
 
-        var getRoute = function(routeName) {
+        var getRoute = function (routeName) {
             return categoryBaseRoute + '_' + routeName;
         };
-            
+
         var onTreesLoaded = function (event, tree_select_id) {
             $('#' + tree_select_id).select2({ width: '100%' });
         };
@@ -215,7 +215,7 @@ define(
         };
 
         return {
-            init: function($element, state, baseRoute) {
+            init: function ($element, state, baseRoute) {
                 if (!$element || !$element.length || !_.isObject($element)) {
                     return;
                 }
