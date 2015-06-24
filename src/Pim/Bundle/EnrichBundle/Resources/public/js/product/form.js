@@ -19,13 +19,13 @@ define(
                 this.configured   = false;
             },
             configure: function () {
-                return $.when.apply($, _.map(this.extensions, function (extension) {
-                        return extension.configure();
-                    }))
-                    .done(_.bind(function () {
-                        this.configured = true;
-                    }, this)
-                );
+                var extensionPromises = _.map(this.extensions, function (extension) {
+                    return extension.configure();
+                });
+
+                return $.when.apply($, extensionPromises).then(_.bind(function () {
+                    this.configured = true;
+                }, this));
             },
             addExtension: function (code, extension, zone, position) {
                 extension.setParent(this);
