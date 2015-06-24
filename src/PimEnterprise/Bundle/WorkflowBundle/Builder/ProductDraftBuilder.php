@@ -76,7 +76,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      */
     public function build(ProductInterface $product, $username)
     {
-        $newValues = $this->normalizer->normalize($product->getValues(), 'json');
+        $newValues = $this->normalizer->normalize($product->getValues(), 'json', ['entity' => 'product']);
         $originalValues = $this->getOriginalValues($product);
         $attributeTypes = $this->attributeRepository->getAttributeTypeByCodes(array_keys($newValues));
 
@@ -149,7 +149,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
             }
         }
 
-        return $this->normalizer->normalize($originalValues, 'json');
+        return $this->normalizer->normalize($originalValues, 'json', ['entity' => 'product']);
     }
 
     /**
