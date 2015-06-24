@@ -28,6 +28,7 @@ pimee_enrich:
                 publish: Publish
                 publish_this_version: Publish this version
                 unpublish: Unpublish
+                save_draft: Save draft
             flash:
                 product_unpublished: Product successfully unpublished
                 product_published: Product successfully published
@@ -47,3 +48,14 @@ pimee_enrich:
                 unpublish:
                     title: Unpublish this product
                     content: Are you sure you want to unpublish this product?
+            info:
+                update_successful: Product working copy has been updated
+        product_draft:
+            info:
+                update_successful: Product draft has been successfully saved
+                update_failed: Product draft could not be updated
+            flash:
+                sent_for_approval: Product draft sent for approval
+            btn:
+                send_for_approval: Send for approval
+                sent_for_approval: Sent for approval
