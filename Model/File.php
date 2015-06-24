@@ -193,7 +193,7 @@ class File implements FileInterface
     /**
      * {@inheritdoc}
      */
-    public function setUploadedFile(UploadedFile $uploadedFile)
+    public function setUploadedFile(UploadedFile $uploadedFile = null)
     {
         $this->uploadedFile = $uploadedFile;
 
