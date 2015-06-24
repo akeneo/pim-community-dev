@@ -59,7 +59,11 @@ define(
             setData: function (data, options) {
                 options = options || {};
 
+                this.getRoot().trigger('pre_set_data', {data: data});
+
                 this.getRoot().model.set(data, options);
+
+                this.getRoot().trigger('post_set_data', {data: data});
 
                 return this;
             },
