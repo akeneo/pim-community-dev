@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\UserBundle\Context;
 
+use Pim\Bundle\CatalogBundle\Filter\ChainedFilter;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface as CatalogCategoryInterface;
@@ -18,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use Pim\Component\Classification\Model\CategoryInterface;
 use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
-use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -35,11 +35,11 @@ class UserContext extends BaseUserContext
     /** @staticvar string */
     const USER_PUBLISHED_PRODUCT_CATEGORY_TYPE = 'published_product';
 
-    /** @var CategoryManager */
-    protected $categoryManager;
-
     /** @var CategoryRepositoryInterface */
     protected $assetCategoryRepo;
+
+    /** @var ChainedFilter */
+    protected $chainedFilter;
 
     /**
      * @param SecurityContextInterface    $securityContext
@@ -47,6 +47,7 @@ class UserContext extends BaseUserContext
      * @param ChannelManager              $channelManager
      * @param CategoryRepositoryInterface $productCategoryRepo
      * @param CategoryRepositoryInterface $assetCategoryRepo
+     * @param ChainedFilter               $chainedFilter
      * @param string                      $defaultLocale
      */
     function __construct(
@@ -55,11 +56,13 @@ class UserContext extends BaseUserContext
         ChannelManager $channelManager,
         CategoryRepositoryInterface $productCategoryRepo,
         CategoryRepositoryInterface $assetCategoryRepo,
+        ChainedFilter $chainedFilter,
         $defaultLocale
     ) {
         parent::__construct($securityContext, $localeManager, $channelManager, $productCategoryRepo, $defaultLocale);
 
         $this->assetCategoryRepo = $assetCategoryRepo;
+        $this->chainedFilter     = $chainedFilter;
     }
 
     /**
@@ -128,6 +131,9 @@ class UserContext extends BaseUserContext
      * @param string $relatedEntity
      *
      * @return CategoryInterface|null
+     *
+     * TODO: In permission reunification (PIM-4292), remove dedicated method and use a single
+     *       method to get trees then filter with the right filter.
      */
     public function getAccessibleUserCategoryTree($relatedEntity)
     {
@@ -157,20 +163,34 @@ class UserContext extends BaseUserContext
             return $defaultTree;
         }
 
-        $trees = $this->categoryManager->getAccessibleTrees($this->getUser());
+        $trees = $this->productCategoryRepo->getTrees();
+        $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.product_category.view');
 
-        if (count($trees)) {
-            return current($trees);
+        if (count($grantedTrees)) {
+            return current($grantedTrees);
         }
 
-        throw new \LogicException('User should have a default tree');
+        throw new \LogicException('User should have a product default tree');
     }
 
     /**
+     * Get accessible user asset category tree
+     *
+     * @throws \LogicException
+     *
      * @return CategoryInterface
      */
     public function getAccessibleUserAssetCategoryTree()
     {
-        return $this->assetCategoryRepo->findOneBy(['id' => 1]);
+        // TODO: Get the default asset category tree
+
+        $trees = $this->assetCategoryRepo->getTrees();
+        $grantedTrees = $this->chainedFilter->filterCollection($trees, 'pim.internal_api.asset_category.view');
+
+        if (count($grantedTrees)) {
+            return current($grantedTrees);
+        }
+
+        throw new \LogicException('User should have an asset default tree');
     }
 }
