@@ -263,14 +263,13 @@ class ProductAssetController extends Controller
             $this->addFlash($request, 'error', 'pimee_product_asset.enrich_reference.flash.delete.error');
         }
 
+        $parameters = ['id' => $asset->getId()];
+
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, [
-                'id' => $asset->getId(),
-                'locale' => $reference->getLocale()->getCode()
-            ]);
-        } else {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+            $parameters['locale'] = $reference->getLocale()->getCode();
         }
+
+        return $this->redirectAfterEdit($request, $parameters);
     }
 
     /**
@@ -295,14 +294,13 @@ class ProductAssetController extends Controller
             $this->addFlash($request, 'error', 'pimee_product_asset.enrich_variation.flash.delete.error');
         }
 
+        $parameters = ['id' => $asset->getId()];
+
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, [
-                'id' => $asset->getId(),
-                'locale' => $reference->getLocale()->getCode()
-            ]);
-        } else {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+            $parameters['locale'] = $reference->getLocale()->getCode();
         }
+
+        return $this->redirectAfterEdit($request, $parameters);
     }
 
     /**
@@ -365,14 +363,13 @@ class ProductAssetController extends Controller
             $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
         }
 
+        $parameters = ['id' => $asset->getId()];
+
         if (null !== $reference->getLocale()) {
-            return $this->redirectAfterEdit($request, [
-                'id' => $asset->getId(),
-                'locale' => $reference->getLocale()->getCode()
-            ]);
-        } else {
-            return $this->redirectAfterEdit($request, ['id' => $asset->getId()]);
+            $parameters['locale'] = $reference->getLocale()->getCode();
         }
+
+        return $this->redirectAfterEdit($request, $parameters);
     }
 
     /**
