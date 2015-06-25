@@ -91,6 +91,7 @@ for FEATURE in $FEATURES; do
                 if [ $? -ne 0 ]; then
                     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
                     export SYMFONY__UPLOAD__DIR=product_$PROC
+                    export SYMFONY__STORAGE__DIR=file_storage_$PROC
                     export SYMFONY__MONGODB__DATABASE=$DB_PREFIX$PROC
                     DATE=`date +'%F %T̀'`
                     echo "[$DATE] Executing feature $FEATURE_NAME with proc $PROC" | tee -a $OUTPUT
