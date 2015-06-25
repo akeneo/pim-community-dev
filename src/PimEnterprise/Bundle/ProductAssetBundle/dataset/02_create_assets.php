@@ -4,7 +4,13 @@ require_once __DIR__ . '/../../../../../vendor/autoload.php';
 require_once __DIR__ . '/../../../../../app/AppKernel.php';
 require_once __DIR__ . '/Helper.php';
 
-$kernel = new AppKernel('dev', true);
+$environment = 'dev';
+
+if (isset($argv[1]) && 'behat' === $argv[1]) {
+    $environment = 'behat';
+}
+
+$kernel = new AppKernel($environment, true);
 $kernel->loadClassCache();
 $kernel->boot();
 
@@ -13,9 +19,10 @@ truncateTables();
 
 foreach (getReferenceFilesConf() as $assetCode => $referenceFiles) {
     echo "Creating asset $assetCode...\n";
-    $asset = createNewAsset($assetCode);
+    $asset = createNewAsset($assetCode, $environment);
     foreach ($referenceFiles as $localeCode => $filename) {
-        $file       = new \SplFileInfo(__DIR__ . '/' . $filename);
+        copy(__DIR__ . '/' . $filename, '/tmp/' . $filename);
+        $file       = new \SplFileInfo('/tmp/' . $filename);
         $localeCode = is_int($localeCode) ? null : $localeCode;
         echo "Adding reference (locale=$localeCode)...\n";
         addReferenceToAsset($asset, $file, $localeCode);
@@ -139,7 +146,7 @@ function addReferenceToAsset(
     generateEmptyVariationsForReference($ref, $file);
 }
 
-function createNewAsset($code)
+function createNewAsset($code, $environment = 'dev')
 {
     $asset = new \PimEnterprise\Component\ProductAsset\Model\Asset();
 
@@ -159,10 +166,84 @@ function createNewAsset($code)
 
     shuffle($descriptions);
 
-    return $asset
+    $asset
         ->setCode($code)
         ->setDescription($descriptions[0])
         ->setCreatedAt(new \DateTime())
         ->setUpdatedAt(new \DateTime())
         ->setEnabled(true);
+
+    if ('behat' === $environment) {
+        $values = getBehatAssetValues()[$code];
+        $asset->setDescription($values['description']);
+        $asset->setEndOfUseAt($values['endOfUseAt']);
+    }
+
+    return $asset;
+}
+
+function getBehatAssetValues()
+{
+    return [
+        'paint'          => [
+            'description' => 'Photo of a paint.',
+            'endOfUseAt'  => new \DateTime('2006-05-12 00:00:01')
+        ],
+        'chicagoskyline' => [
+            'description' => 'This is chicago!',
+            'endOfUseAt'  => null
+        ],
+        'akene'          => [
+            'description' => 'Because Akeneo',
+            'endOfUseAt'  => new \DateTime('2015-08-01 00:00:01')
+        ],
+        'autumn'         => [
+            'description' => 'Leaves and water',
+            'endOfUseAt'  => new \DateTime('2015-12-01 00:00:01')
+        ],
+        'bridge'         => [
+            'description' => 'Architectural bridge of a city, above water',
+            'endOfUseAt'  => null
+        ],
+        'dog'            => [
+            'description' => 'Obviously not a cat, but still an animal',
+            'endOfUseAt'  => new \DateTime('2006-05-12 00:00:01')
+        ],
+        'eagle'          => [
+            'description' => '',
+            'endOfUseAt'  => null
+        ],
+        'machine'        => [
+            'description' => 'A big machine',
+            'endOfUseAt'  => null
+        ],
+        'man-wall'       => [
+            'description' => '',
+            'endOfUseAt'  => null
+        ],
+        'minivan'        => [
+            'description' => 'My car',
+            'endOfUseAt'  => null
+        ],
+        'mouette'        => [
+            'description' => 'Majestic animal',
+            'endOfUseAt'  => null
+        ],
+        'mountain'       => [
+            'description' => '',
+            'endOfUseAt'  => null
+        ],
+        'mugs'           => [
+            'description' => '',
+            'endOfUseAt'  => null
+        ],
+        'photo'          => [
+            'description' => '',
+            'endOfUseAt'  => null
+        ],
+        'tiger'          => [
+            'description' => 'Tiger of bengal, taken by J. Josh',
+            'endOfUseAt'  => new \DateTime('2050-01-25 00:00:01')
+        ],
+    ];
 }
