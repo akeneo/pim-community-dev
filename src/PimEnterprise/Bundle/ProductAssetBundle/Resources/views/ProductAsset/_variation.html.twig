@@ -39,27 +39,12 @@
                     </tbody>
                 </table>
             {% else %}
-                <div class="asset-uploader media-uploader span6{% if not variation.file.uploadedFile.vars.valid %} error{% endif %}">
-                        <label class="file-uploader">
-                            {{ form_widget(variation.file) }}
-                        </label>
-                        <div class="uploader">
-                            <img src="/bundles/pimui/images/upload.png" alt="upload icon">
-                            <span>{{ 'btn.drag_or_upload'|trans }}</span>
-                        </div>
-                        <div class="clear-fix"></div>
-                </div>
-                <div class="media-uploader span6">
-                    <div>
-                        <a href="{{ path('pimee_product_asset_variation_reset', {'id': variationModel.id}) }}"
-                           class="file-uploader"></a>
-                        <div class="uploader">
-                            <img src="/bundles/pimui/images/icon_gear.png" alt="upload icon">
-                            <span>{{ 'pimee_product_asset.enrich_asset.button.generate_from_reference'|trans }}</span>
-                        </div>
-
-                    </div>
-                </div>
+                {% if not referenceModel.file is null %}
+                    {{ pamMacros.renderUploadZone(variation.file, 'span6') }}
+                    {{ pamMacros.renderGenerateFromReferenceZone(variationModel.id) }}
+                {% else %}
+                    {{ pamMacros.renderUploadZone(variation.file, 'span12') }}
+                {% endif %}
             {% endif %}
         </div>
     </div>

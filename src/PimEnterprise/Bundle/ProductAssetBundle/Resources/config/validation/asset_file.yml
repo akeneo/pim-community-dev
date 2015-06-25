@@ -7,6 +7,8 @@ PimEnterprise\Component\ProductAsset\Model\Asset:
 
 PimEnterprise\Component\ProductAsset\Model\Reference:
     properties:
+        file:
+            - Valid: ~
         variations:
             - Valid: ~
 
@@ -18,4 +20,5 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
 Akeneo\Component\FileStorage\Model\File:
     properties:
         uploadedFile:
-            - File: ~
+            - File:
+                maxSize: 1024k

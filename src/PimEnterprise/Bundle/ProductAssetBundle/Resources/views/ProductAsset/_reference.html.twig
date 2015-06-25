@@ -1,4 +1,5 @@
-{# TODO buttons style #}
+{% import '@PimEnterpriseProductAsset/ProductAsset/macros.html.twig' as pamMacros %}
+
 <div class="row-fluid variations">
     <h3>
         {% if currentLocale is not null %}
@@ -57,15 +58,7 @@
                             </tbody>
                         </table>
                     {% else %}
-                        <div class="asset-uploader media-uploader ">
-                            <label class="file-uploader">
-                                {{ form_widget(reference.file) }}
-                            </label>
-                            <div class="uploader">
-                                <img src="/bundles/pimui/images/upload.png" alt="upload icon">
-                                <span>{{ 'btn.drag_or_upload'|trans }}</span>
-                            </div>
-                        </div>
+                        {{ pamMacros.renderUploadZone(reference.file, 'span12') }}
                     {% endif %}
                 </div>
             </div>

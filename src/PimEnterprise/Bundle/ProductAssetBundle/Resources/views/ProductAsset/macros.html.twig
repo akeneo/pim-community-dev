@@ -1,0 +1,33 @@
+{% macro renderUploadZone(fileElement, spanClass = 'span6') %}
+    {% set isValid = fileElement.uploadedFile.vars.valid %}
+    <div class="asset-uploader media-uploader {{ spanClass }}{% if not isValid %} error{% endif %}">
+        <label class="file-uploader">
+            {{ form_widget(fileElement) }}
+        </label>
+        <div class="uploader">
+            <img src="/bundles/pimui/images/upload.png" alt="upload icon">
+            <span>{{ 'btn.drag_or_upload'|trans }}</span>
+        </div>
+        {% if not isValid %}
+            <div class="errors">
+                {% for error in  fileElement.uploadedFile.vars.errors %}
+                {{ error.message|trans }}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <div class="clear-fix"></div>
+    </div>
+{% endmacro %}
+
+{% macro renderGenerateFromReferenceZone(variationId) %}
+<div class="media-uploader span6">
+    <div>
+        <a href="{{ path('pimee_product_asset_variation_reset', {'id': variationId}) }}"
+           class="file-uploader"></a>
+        <div class="uploader">
+            <img src="/bundles/pimui/images/icon_gear.png" alt="upload icon">
+            <span>{{ 'pimee_product_asset.enrich_asset.button.generate_from_reference'|trans }}</span>
+        </div>
+    </div>
+</div>
+{% endmacro %}
