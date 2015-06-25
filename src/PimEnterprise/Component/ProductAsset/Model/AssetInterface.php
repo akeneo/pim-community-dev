@@ -60,7 +60,7 @@ interface AssetInterface extends ReferenceDataInterface, TagAwareInterface, Cate
     public function getReferences();
 
     /**
-     * @return ArrayCollection of LocaleInterface
+     * @return LocaleInterface[]|ArrayCollection of LocaleInterface
      */
     public function getLocales();
 

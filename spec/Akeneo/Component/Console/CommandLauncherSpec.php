@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\JobLauncher;
+namespace spec\Akeneo\Component\Console;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -14,6 +14,6 @@ class CommandLauncherSpec extends ObjectBehavior
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\JobLauncher\CommandLauncher');
+        $this->shouldHaveType('Akeneo\Component\Console\CommandLauncher');
     }
 }

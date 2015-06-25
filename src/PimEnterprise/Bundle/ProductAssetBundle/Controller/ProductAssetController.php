@@ -241,7 +241,7 @@ class ProductAssetController extends Controller
      */
     public function deleteReferenceFileAction(Request $request, $id)
     {
-        $reference = $this->findAssetReferenceOr404($id);
+        $reference = $this->findReferenceOr404($id);
         $asset = $reference->getAsset();
 
         try {
@@ -271,7 +271,7 @@ class ProductAssetController extends Controller
      */
     public function deleteVariationFileAction(Request $request, $id)
     {
-        $variation = $this->findAssetVariationOr404($id);
+        $variation = $this->findVariationOr404($id);
         $asset = $variation->getAsset();
         $reference = $variation->getReference();
 
@@ -302,7 +302,7 @@ class ProductAssetController extends Controller
      */
     public function resetVariationFileAction(Request $request, $id)
     {
-        $variation = $this->findAssetVariationOr404($id);
+        $variation = $this->findVariationOr404($id);
         $asset = $variation->getAsset();
         $reference = $variation->getReference();
 
@@ -337,7 +337,7 @@ class ProductAssetController extends Controller
      */
     public function resetVariationsFilesAction(Request $request, $id)
     {
-        $reference = $this->findAssetReferenceOr404($id);
+        $reference = $this->findReferenceOr404($id);
         $asset = $reference->getAsset();
 
         try {
@@ -465,7 +465,7 @@ class ProductAssetController extends Controller
      *
      * @return ReferenceInterface
      */
-    protected function findAssetReferenceOr404($id)
+    protected function findReferenceOr404($id)
     {
         $reference = $this->referenceRepository->find($id);
 
@@ -487,7 +487,7 @@ class ProductAssetController extends Controller
      *
      * @return VariationInterface
      */
-    protected function findAssetVariationOr404($id)
+    protected function findVariationOr404($id)
     {
         $variation = $this->variationRepository->find($id);
 

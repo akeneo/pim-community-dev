@@ -9,17 +9,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\JobLauncher;
+namespace Akeneo\Component\Console;
 
 use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
- * Job launcher for PAM commands
+ * Job launcher for commands
  *
- * @package PimEnterprise\Bundle\ProductAssetBundle\JobLauncher
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
- *
- * TODO: Maybe find another namespace / location.
  */
 class CommandLauncher
 {
@@ -52,7 +49,7 @@ class CommandLauncher
      *
      * @return null
      */
-    public function launchCommand($command, $background = true)
+    public function execute($command, $background = true)
     {
         $cmd = sprintf(
             '%s %s/console %s',
@@ -65,7 +62,7 @@ class CommandLauncher
             $cmd .= ' &';
         }
 
-        $result = exec($cmd);
+        exec($cmd);
 
         return null;
     }

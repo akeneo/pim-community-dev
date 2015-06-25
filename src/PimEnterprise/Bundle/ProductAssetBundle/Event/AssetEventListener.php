@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
-use PimEnterprise\Bundle\ProductAssetBundle\JobLauncher\CommandLauncher;
+use Akeneo\Component\Console\CommandLauncher;
 
 /**
  * Asset events listenener
@@ -49,7 +49,7 @@ class AssetEventListener
             $cmd .= sprintf(' --asset=%s', $asset->getCode());
         }
 
-        $this->launcher->launchCommand($cmd);
+        $this->launcher->execute($cmd);
 
         return $event;
     }

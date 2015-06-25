@@ -65,7 +65,6 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
     {
         return [
             'beListOfProcessedVariations' => function($subject) {
-                /** @var ProcessedItemList $subject */
                 return 3 === count($subject) &&
                     ProcessedItem::STATE_SUCCESS === $subject[0]->getState() &&
                     ProcessedItem::STATE_ERROR === $subject[1]->getState() &&
@@ -74,7 +73,6 @@ class VariationsCollectionFilesGeneratorSpec extends ObjectBehavior
                     'The variation is locked' === $subject[2]->getReason();
             },
             'beListOfSuccessfulProcessedVariations' => function($processedlist) {
-                /** @var ProcessedItemList $subject */
                 $success = true;
                 foreach ($processedlist as $item) {
                     if (ProcessedItem::STATE_SUCCESS !== $item->getState()) {

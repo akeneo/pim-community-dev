@@ -2,7 +2,7 @@
 parameters:
     pimee_product_asset.variation_file_generator.class:              PimEnterprise\Component\ProductAsset\VariationFileGenerator
     pimee_product_asset.variations_collection_files_generator.class: PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGenerator
-    pimee_product_asset.command_launcher.class:                      PimEnterprise\Bundle\ProductAssetBundle\JobLauncher\CommandLauncher
+    pimee_product_asset.command_launcher.class:                      Akeneo\Component\Console\CommandLauncher
 
 services:
     pimee_product_asset.variation_file_generator:
