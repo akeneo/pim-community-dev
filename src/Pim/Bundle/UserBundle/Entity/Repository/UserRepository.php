@@ -27,10 +27,7 @@ class UserRepository extends EntityRepository implements UserRepositoryInterface
     public function findOneByIdentifier($identifier)
     {
         $qb = $this->createQueryBuilder('u');
-        $qb->where($qb->expr()->orX(
-               $qb->expr()->eq('u.username', ':identifier'),
-               $qb->expr()->eq('u.email', ':identifier')
-           ))
+        $qb->where('u.username = :identifier OR u.email = :identifier')
            ->setParameter(':identifier', $identifier);
 
         return $qb->getQuery()->getOneOrNullResult();
