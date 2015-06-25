@@ -12,6 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
@@ -33,30 +35,38 @@ class RefuseTasklet extends AbstractReviewTasklet
 
         $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
-            if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            try {
+                $this->refuseDraft($productDraft);
+                $this->stepExecution->incrementSummaryInfo('refused');
+            } catch (DraftNotReviewableException $e) {
                 $this->skipWithWarning(
                     $this->stepExecution,
                     self::TASKLET_NAME,
-                    'not_product_owner',
+                    $e->getMessage(),
                     [],
                     $productDraft
                 );
-                continue;
             }
-
-            if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
-                $this->skipWithWarning(
-                    $this->stepExecution,
-                    self::TASKLET_NAME,
-                    'cannot_edit_attributes',
-                    [],
-                    $productDraft
-                );
-                continue;
-            }
-
-            $this->productDraftManager->refuse($productDraft);
-            $this->stepExecution->incrementSummaryInfo('refused');
         }
+    }
+
+    /**
+     * Refuse a draft
+     *
+     * @param ProductDraft $productDraft
+     *
+     * @throws DraftNotReviewableException If draft cannot be refused
+     */
+    protected function refuseDraft(ProductDraft $productDraft)
+    {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
+            throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
+        }
+
+        if (!$this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft)) {
+            throw new DraftNotReviewableException(self::ERROR_CANNOT_EDIT_ATTR);
+        }
+
+        $this->productDraftManager->refuse($productDraft);
     }
 }

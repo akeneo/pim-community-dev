@@ -26,6 +26,18 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 abstract class AbstractReviewTasklet implements TaskletInterface
 {
+    /** @staticvar string */
+    const ERROR_DRAFT_NOT_READY = 'draft_not_ready';
+
+    /** @staticvar string */
+    const ERROR_NOT_PRODUCT_OWNER = 'not_product_owner';
+
+    /** @staticvar string */
+    const ERROR_CANNOT_EDIT_ATTR = 'cannot_edit_attributes';
+
+    /** @staticvar string */
+    const ERROR_INVALID_DRAFT = 'invalid_draft';
+
     /** @var StepExecution */
     protected $stepExecution;
 
