@@ -63,3 +63,13 @@ connector:
                         reader:    pim_base_connector.reader.repository.group
                         processor: pim_base_connector.processor.normalization.csv_group
                         writer:    pim_base_connector.writer.file
+        csv_variant_group_export:
+            title: pim_base_connector.jobs.csv_variant_group_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_variant_group_export.export.title
+                    services:
+                        reader:    pim_base_connector.reader.repository.variant_group
+                        processor: pim_base_connector.processor.normalization.csv_variant_group
+                        writer:    pim_base_connector.writer.file.csv_variant_group

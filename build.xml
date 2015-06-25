@@ -24,8 +24,8 @@
         -->
         <delete file="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
         <delete file="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
-        <copy file="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
-        <copy file="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/features/Context/fixtures/base_connector_deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/features/Context/fixtures/connector_deprecated_batch_jobs.yml" tofile="${basedir}/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
     </target>
 
     <target name="clean" description="Cleanup build artifacts">
