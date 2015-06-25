@@ -8,7 +8,7 @@ services:
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
-            - '@pim_user.repository.user'
+            - '@pim_user.provider.user'
             - '@security.context'
 
     pimee_workflow.mass_review_tasklet.refuse_draft:
@@ -16,5 +16,5 @@ services:
         arguments:
             - '@pimee_workflow.repository.product_draft'
             - '@pimee_workflow.manager.product_draft'
-            - '@pim_user.repository.user'
+            - '@pim_user.provider.user'
             - '@security.context'

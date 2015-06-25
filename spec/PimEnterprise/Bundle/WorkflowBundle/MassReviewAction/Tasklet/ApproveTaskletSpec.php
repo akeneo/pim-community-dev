@@ -4,10 +4,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
@@ -21,20 +21,20 @@ class ApproveTaskletSpec extends ObjectBehavior
     function let(
         ProductDraftRepositoryInterface $productDraftRepository,
         ProductDraftManager $productDraftManager,
-        UserRepositoryInterface $userRepository,
+        UserProviderInterface $userProvider,
         SecurityContextInterface $securityContext
     ) {
         $this->beConstructedWith(
             $productDraftRepository,
             $productDraftManager,
-            $userRepository,
+            $userProvider,
             $securityContext
         );
     }
 
     function it_approves_valid_proposals(
         $productDraftRepository,
-        $userRepository,
+        $userProvider,
         $securityContext,
         UserInterface $userJulia,
         StepExecution $stepExecution,
@@ -46,7 +46,7 @@ class ApproveTaskletSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
-        $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
+        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
@@ -70,7 +70,7 @@ class ApproveTaskletSpec extends ObjectBehavior
 
     function it_skips_proposals_if_not_ready(
         $productDraftRepository,
-        $userRepository,
+        $userProvider,
         $securityContext,
         UserInterface $userJulia,
         StepExecution $stepExecution,
@@ -82,7 +82,7 @@ class ApproveTaskletSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
-        $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
+        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
@@ -108,7 +108,7 @@ class ApproveTaskletSpec extends ObjectBehavior
 
     function it_skips_proposals_if_user_does_not_own_the_product(
         $productDraftRepository,
-        $userRepository,
+        $userProvider,
         $securityContext,
         UserInterface $userJulia,
         StepExecution $stepExecution,
@@ -120,7 +120,7 @@ class ApproveTaskletSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
-        $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
+        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
@@ -146,7 +146,7 @@ class ApproveTaskletSpec extends ObjectBehavior
 
     function it_skips_proposals_if_user_cannot_edit_the_attributes(
         $productDraftRepository,
-        $userRepository,
+        $userProvider,
         $securityContext,
         UserInterface $userJulia,
         StepExecution $stepExecution,
@@ -158,7 +158,7 @@ class ApproveTaskletSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
-        $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
+        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
@@ -185,7 +185,7 @@ class ApproveTaskletSpec extends ObjectBehavior
     function it_skips_invalid_proposals(
         $productDraftRepository,
         $productDraftManager,
-        $userRepository,
+        $userProvider,
         $securityContext,
         UserInterface $userJulia,
         StepExecution $stepExecution,
@@ -197,7 +197,7 @@ class ApproveTaskletSpec extends ObjectBehavior
     ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
-        $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
+        $userProvider->loadUserByUsername('julia')->willReturn($userJulia);
         $userJulia->getRoles()->willReturn(['ProductOwner']);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 

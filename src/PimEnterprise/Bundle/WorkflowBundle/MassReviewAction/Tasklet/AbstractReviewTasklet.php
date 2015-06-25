@@ -13,11 +13,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\BaseConnectorBundle\Step\TaskletInterface;
-use Pim\Bundle\UserBundle\Entity\Repository\UserRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 /**
  * Basic implementation of a product draft mass review tasklet
@@ -35,8 +35,8 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     /** @var ProductDraftManager */
     protected $productDraftManager;
 
-    /** @var  UserRepositoryInterface */
-    protected $userRepository;
+    /** @var  UserProviderInterface */
+    protected $userProvider;
 
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -44,12 +44,12 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
         ProductDraftManager $productDraftManager,
-        UserRepositoryInterface $userRepository,
+        UserProviderInterface $userProvider,
         SecurityContextInterface $securityContext
     ) {
         $this->draftRepository     = $draftRepository;
         $this->productDraftManager = $productDraftManager;
-        $this->userRepository      = $userRepository;
+        $this->userProvider        = $userProvider;
         $this->securityContext     = $securityContext;
     }
 
@@ -71,7 +71,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected function initSecurityContext(StepExecution $stepExecution)
     {
         $username = $stepExecution->getJobExecution()->getUser();
-        $user = $this->userRepository->findOneByIdentifier($username);
+        $user = $this->userProvider->loadUserByUsername($username);
 
         $token = new UsernamePasswordToken($user, null, 'main', $user->getRoles());
         $this->securityContext->setToken($token);
