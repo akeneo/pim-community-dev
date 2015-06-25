@@ -16,6 +16,8 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
  * A context for creating entities
@@ -236,6 +238,84 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     public function getEntities()
     {
         return array_merge($this->entities, $this->enterpriseEntities);
+    }
+
+    /**
+     * @Then /^the asset "([^"]*)" should have the following values:$/
+     */
+    public function theAssetShouldHaveTheFollowingValues($identifier, TableNode $table)
+    {
+        $this->clearUOW();
+        $asset = $this->getAssetRepository()->findOneByIdentifier($identifier);
+
+        foreach ($table->getRowsHash() as $rawCode => $expectedValue) {
+            $getter = 'get' . ucfirst($rawCode);
+            $assetValue = $asset->$getter();
+
+            switch ($rawCode) {
+                case 'description':
+                    if ('' === $expectedValue) {
+                        assertEmpty((string) $assetValue);
+                    } else {
+                        assertEquals($expectedValue, $assetValue);
+                    }
+                    break;
+                case 'tags':
+                    if ('' === $expectedValue) {
+                        assertEquals([], $assetValue->toArray());
+                    } else {
+                        $expectedValue = explode(',', $expectedValue);
+                        $tags = array_map(function($tag) {
+                            return $tag->getCode();
+                        }, $assetValue->toArray());
+                        assertTrue(0 === count(array_diff($expectedValue, $tags)));
+                    }
+                    break;
+                case 'endOfUseAt':
+                    if ('' === $expectedValue) {
+                        assertEquals(null, $assetValue);
+                    } else {
+                        assertEquals($expectedValue, $assetValue->format('Y-m-d'));
+                    }
+                    break;
+                default:
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Could not find value "%s" for asset with code "%s"',
+                            $rawCode,
+                            $identifier
+                        )
+                    );
+            }
+        }
+    }
+
+    /**
+     * @param $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return AssetInterface
+     */
+    public function getAsset($code)
+    {
+        $asset = $this->getAssetRepository()->findOneByIdentifier($code);
+
+        if (!$asset) {
+            throw new \InvalidArgumentException(sprintf('Could not find a product asset with code "%s"', $code));
+        }
+
+        $this->refresh($asset);
+
+        return $asset;
+    }
+
+    /**
+     * @return AssetRepositoryInterface
+     */
+    protected function getAssetRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.asset');
     }
 
     /**
