@@ -2,6 +2,7 @@
 
 define(
     [
+        'jquery',
         'underscore',
         'oro/mediator',
         'pim/form',
@@ -9,11 +10,13 @@ define(
         'oro/navigation',
         'oro/loading-mask',
         'pim/product-manager',
+        'pimee/permission-manager',
         'pimee/published-product-manager',
         'routing',
         'pim/dialog'
     ],
     function (
+        $,
         _,
         mediator,
         BaseForm,
@@ -21,6 +24,7 @@ define(
         Navigation,
         LoadingMask,
         ProductManager,
+        PermissionManager,
         PublishedProductManager,
         Routing,
         Dialog
@@ -35,9 +39,22 @@ define(
             configure: function () {
                 mediator.on('product:action:post_update', _.bind(this.render, this));
 
-                return BaseForm.prototype.configure.apply(this, arguments);
+                return $.when(
+                    PermissionManager.getPermissions().then(_.bind(function (permissions) {
+                        this.permissions = permissions;
+                    }, this)),
+                    BaseForm.prototype.configure.apply(this, arguments)
+                );
             },
             render: function () {
+                var categories = this.getData().categories;
+                var isOwner = !categories.length ||
+                    !!_.intersection(this.permissions.categories.OWN_PRODUCTS, categories).length;
+
+                if (!isOwner) {
+                    return this.remove();
+                }
+
                 this.$el.html(this.template({
                     'product': this.getData()
                 }));
