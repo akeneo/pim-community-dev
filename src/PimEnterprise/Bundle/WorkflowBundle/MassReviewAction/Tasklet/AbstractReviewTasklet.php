@@ -30,7 +30,7 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected $stepExecution;
 
     /** @var ProductDraftRepositoryInterface */
-    protected $productDraftRepository;
+    protected $draftRepository;
 
     /** @var ProductDraftManager */
     protected $productDraftManager;
@@ -42,15 +42,15 @@ abstract class AbstractReviewTasklet implements TaskletInterface
     protected $securityContext;
 
     public function __construct(
-        ProductDraftRepositoryInterface $productDraftRepository,
+        ProductDraftRepositoryInterface $draftRepository,
         ProductDraftManager $productDraftManager,
         UserRepositoryInterface $userRepository,
         SecurityContextInterface $securityContext
     ) {
-        $this->productDraftRepository = $productDraftRepository;
-        $this->productDraftManager    = $productDraftManager;
-        $this->userRepository         = $userRepository;
-        $this->securityContext        = $securityContext;
+        $this->draftRepository     = $draftRepository;
+        $this->productDraftManager = $productDraftManager;
+        $this->userRepository      = $userRepository;
+        $this->securityContext     = $securityContext;
     }
 
     /**

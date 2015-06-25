@@ -43,8 +43,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductDraft $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
-    )
-    {
+    ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
@@ -78,8 +77,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductDraft $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
-    )
-    {
+    ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);
@@ -115,8 +113,7 @@ class RefuseTaskletSpec extends ObjectBehavior
         ProductDraft $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
-    )
-    {
+    ) {
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
         $userRepository->findOneByIdentifier('julia')->willReturn($userJulia);

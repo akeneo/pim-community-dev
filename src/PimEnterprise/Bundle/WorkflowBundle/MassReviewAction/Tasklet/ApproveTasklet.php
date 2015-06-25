@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 
-use Pim\Bundle\BaseConnectorBundle\Step\TaskletInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Symfony\Component\Validator\Exception\ValidatorException;
@@ -23,6 +22,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 class ApproveTasklet extends AbstractReviewTasklet
 {
+    /** @staticvar string */
     const TASKLET_NAME = 'approve';
 
     /**
@@ -32,7 +32,7 @@ class ApproveTasklet extends AbstractReviewTasklet
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $productDrafts = $this->productDraftRepository->findByIds($configuration['draftIds']);
+        $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             if (ProductDraft::READY !== $productDraft->getStatus()) {
                 $this->skipWithWarning($this->stepExecution, self::TASKLET_NAME, 'draft_not_ready', [], $productDraft);

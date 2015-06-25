@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 
-use Pim\Bundle\BaseConnectorBundle\Step\TaskletInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
@@ -22,6 +21,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
  */
 class RefuseTasklet extends AbstractReviewTasklet
 {
+    /** @staticvar string */
     const TASKLET_NAME = 'refuse';
 
     /**
@@ -31,7 +31,7 @@ class RefuseTasklet extends AbstractReviewTasklet
     {
         $this->initSecurityContext($this->stepExecution);
 
-        $productDrafts = $this->productDraftRepository->findByIds($configuration['draftIds']);
+        $productDrafts = $this->draftRepository->findByIds($configuration['draftIds']);
         foreach ($productDrafts as $productDraft) {
             if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
                 $this->skipWithWarning(
