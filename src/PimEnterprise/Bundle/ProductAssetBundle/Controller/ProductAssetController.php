@@ -14,7 +14,6 @@ namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
@@ -412,7 +411,7 @@ class ProductAssetController extends Controller
      * Switch case to redirect after saving a product asset from the edit form
      *
      * @param Request $request
-     * @param array   $params
+     * @param array   $params Request parameters
      *
      * @return Response
      */
@@ -424,6 +423,9 @@ class ProductAssetController extends Controller
                 $params = [];
                 break;
             default:
+                if (null !== $request->get('locale')) {
+                    $params['locale'] = $request->get('locale');
+                }
                 $route = 'pimee_product_asset_edit';
                 break;
         }
