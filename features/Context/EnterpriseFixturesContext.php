@@ -110,6 +110,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             );
             $productDraft->setStatus($data['status'] === 'ready' ? ProductDraft::READY : ProductDraft::IN_PROGRESS);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
+
+            if (isset($data['result'])) {
+                $productDraft->setChanges(json_decode($data['result'], true));
+            }
+
             $manager->persist($productDraft);
         }
         $manager->flush();

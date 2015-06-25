@@ -197,3 +197,13 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/products-quick-export.csv
+    approve_product_draft:
+        connector: Akeneo Mass Review Connector
+        alias:     approve_product_draft
+        label:     Mass approve product drafts
+        type:      mass_edit
+    refuse_product_draft:
+        connector: Akeneo Mass Review Connector
+        alias:     refuse_product_draft
+        label:     Mass refuse product drafts
+        type:      mass_edit
