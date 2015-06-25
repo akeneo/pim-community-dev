@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 
 /**
  * Converts a flat field to a structured one

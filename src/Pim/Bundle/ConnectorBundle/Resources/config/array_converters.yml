@@ -25,7 +25,7 @@ parameters:
     pim_connector.array_converter.flat.product.columns_merger.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMerger
     pim_connector.array_converter.flat.product.columns_mapper.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\ColumnsMapper
     pim_connector.array_converter.flat.product.attribute_column_info_extractor.class: Pim\Component\Connector\ArrayConverter\Flat\Product\AttributeColumnInfoExtractor
-    pim_connector.array_converter.splitter.field.class:                               Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter
+    pim_connector.array_converter.flat.product.field_splitter.class:                  Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter
 
 services:
     # array converters
@@ -92,7 +92,7 @@ services:
     pim_connector.array_converter.flat.product.value_converter.abstract:
         class: %pim_connector.array_converter.flat.product.value_converter.abstract.class%
         arguments:
-            - '@pim_connector.array_converter.splitter.field'
+            - '@pim_connector.array_converter.flat.product.field_splitter'
 
     pim_connector.array_converter.flat.product.value_converter.price:
         class: %pim_connector.array_converter.flat.product.value_converter.price.class%
@@ -146,7 +146,7 @@ services:
     pim_connector.array_converter.flat.product.field_converter:
         class: %pim_connector.array_converter.flat.product.field_converter.class%
         arguments:
-            - '@pim_connector.array_converter.splitter.field'
+            - '@pim_connector.array_converter.flat.product.field_splitter'
             - '@pim_connector.array_converter.flat.product.association_columns_resolver'
 
     # columns resolvers
@@ -163,8 +163,8 @@ services:
             - '@pim_catalog.repository.association_type'
 
     # splitters
-    pim_connector.array_converter.splitter.field:
-        class: %pim_connector.array_converter.splitter.field.class%
+    pim_connector.array_converter.flat.product.field_splitter:
+        class: %pim_connector.array_converter.flat.product.field_splitter.class%
 
     # columns mergers
     pim_connector.array_converter.flat.product.columns_merger:

@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 
 /**
  * Converts flat media value into structured one.
