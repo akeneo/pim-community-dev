@@ -10,9 +10,23 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
+    <target name="build-behat-deprecated" depends="prepare,composer,vendors,prepare-deprecated-behat,install-all-behat,behat"/>
+
     <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
     <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+
+    <target name="prepare-deprecated-behat" description="Build deprecated behats">
+        <!--
+            In order to keep old import behats with deprecated processor, writer, and reader, we delete
+            the new config file and replace this one with the old one, and we also delete the one in
+            connector bundle to avoid this one to be also called.
+        -->
+        <delete file="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+        <delete file="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/vendor/akeneo/pim-community-dev/features/Context/fixtures/base_connector_deprecated_batch_jobs.yml" tofile="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/BaseConnectorBundle/Resources/config/batch_jobs.yml" />
+        <copy file="${basedir}/vendor/akeneo/pim-community-dev/features/Context/fixtures/connector_deprecated_batch_jobs.yml" tofile="${basedir}/vendor/akeneo/pim-community-dev/src/Pim/Bundle/ConnectorBundle/Resources/config/batch_jobs.yml" />
+    </target>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
