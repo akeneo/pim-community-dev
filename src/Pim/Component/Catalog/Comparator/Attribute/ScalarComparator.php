@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Component\Catalog\Comparator;
+namespace Pim\Component\Catalog\Comparator\Attribute;
+
+use Pim\Component\Catalog\Comparator\ComparatorInterface;
 
 /**
  * Comparator which calculate change set for scalars
@@ -28,7 +30,7 @@ class ScalarComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function compare(array $data, array $originals)
+    public function compare($data, $originals)
     {
         $default = ['locale' => null, 'scope' => null, 'value' => null];
         $originals = array_merge($default, $originals);

@@ -35,5 +35,16 @@ class RegisterComparatorsPass implements CompilerPassInterface
                 ]
             );
         }
+
+        foreach ($container->findTaggedServiceIds('pim_catalog.field.comparator') as $id => $attribute) {
+            $container->getDefinition($id)->setPublic(false);
+            $definition->addMethodCall(
+                'addFieldComparator',
+                [
+                    new Reference($id),
+                    isset($attribute[0]['priority']) ? $attribute[0]['priority'] : 0
+                ]
+            );
+        }
     }
 }

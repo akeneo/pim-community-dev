@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Comparator;
+namespace spec\Pim\Component\Catalog\Comparator\Attribute;
 
 use PhpSpec\ObjectBehavior;
 
@@ -25,7 +25,7 @@ class MediaComparatorSpec extends ObjectBehavior
         $originals = ['value' => ['filePath' => null]];
 
         $return = $changes;
-        $return['value']['filename'] = 'Comparator';
+        $return['value']['filename'] = 'Attribute';
         $this->compare($changes, $originals)->shouldReturn($return);
     }
 

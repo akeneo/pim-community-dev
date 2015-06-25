@@ -14,6 +14,9 @@ class ComparatorRegistry implements RegistryInterface
     /** @staticvar string */
     const COMPARATOR_ATTRIBUTE = 'attribute';
 
+    /** @staticvar string */
+    const COMPARATOR_FIELD = 'field';
+
     /** @var ComparatorInterface[] */
     protected $comparators = [];
 
@@ -43,6 +46,34 @@ class ComparatorRegistry implements RegistryInterface
     public function addAttributeComparator(ComparatorInterface $comparator, $priority)
     {
         $this->comparators[self::COMPARATOR_ATTRIBUTE][$priority][] = $comparator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFieldComparator($field)
+    {
+        foreach ($this->getComparators(self::COMPARATOR_FIELD) as $comparator) {
+            if ($comparator->supports($field)) {
+                return $comparator;
+            }
+        }
+
+        throw new \LogicException(
+            sprintf(
+                'Cannot compare value of field "%s". ' .
+                'Please check that a comparator exists for such field.',
+                $field
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldComparator(ComparatorInterface $comparator, $priority)
+    {
+        $this->comparators[self::COMPARATOR_FIELD][$priority][] = $comparator;
     }
 
     /**

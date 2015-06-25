@@ -1,12 +1,15 @@
 parameters:
-    pim_catalog.comparator.registry.class: Pim\Component\Catalog\Comparator\ComparatorRegistry
-    pim_catalog.comparator.media.class:    Pim\Component\Catalog\Comparator\MediaComparator
-    pim_catalog.comparator.prices.class:   Pim\Component\Catalog\Comparator\PricesComparator
-    pim_catalog.comparator.metric.class:   Pim\Component\Catalog\Comparator\MetricComparator
-    pim_catalog.comparator.option.class:   Pim\Component\Catalog\Comparator\OptionComparator
-    pim_catalog.comparator.options.class:  Pim\Component\Catalog\Comparator\OptionsComparator
-    pim_catalog.comparator.scalar.class:   Pim\Component\Catalog\Comparator\ScalarComparator
-    pim_catalog.comparator.boolean.class:  Pim\Component\Catalog\Comparator\BooleanComparator
+    pim_catalog.comparator.registry.class:          Pim\Component\Catalog\Comparator\ComparatorRegistry
+    pim_catalog.comparator.attribute.media.class:   Pim\Component\Catalog\Comparator\Attribute\MediaComparator
+    pim_catalog.comparator.attribute.prices.class:  Pim\Component\Catalog\Comparator\Attribute\PricesComparator
+    pim_catalog.comparator.attribute.metric.class:  Pim\Component\Catalog\Comparator\Attribute\MetricComparator
+    pim_catalog.comparator.attribute.option.class:  Pim\Component\Catalog\Comparator\Attribute\OptionComparator
+    pim_catalog.comparator.attribute.options.class: Pim\Component\Catalog\Comparator\Attribute\OptionsComparator
+    pim_catalog.comparator.attribute.scalar.class:  Pim\Component\Catalog\Comparator\Attribute\ScalarComparator
+    pim_catalog.comparator.attribute.boolean.class: Pim\Component\Catalog\Comparator\Attribute\BooleanComparator
+    pim_catalog.comparator.field.boolean.class:     Pim\Component\Catalog\Comparator\Field\BooleanComparator
+    pim_catalog.comparator.field.scalar.class:      Pim\Component\Catalog\Comparator\Field\ScalarComparator
+    pim_catalog.comparator.field.array.class:       Pim\Component\Catalog\Comparator\Field\ArrayComparator
 
 services:
     pim_catalog.comparator.registry:
@@ -16,37 +19,55 @@ services:
     ##
     # Comparators of product values
     ##
-    pim_catalog.comparator.media:
-        class: %pim_catalog.comparator.media.class%
+    pim_catalog.comparator.attribute.media:
+        class: %pim_catalog.comparator.attribute.media.class%
         tags:
             - { name: pim_catalog.attribute.comparator }
 
-    pim_catalog.comparator.prices:
-        class: %pim_catalog.comparator.prices.class%
+    pim_catalog.comparator.attribute.prices:
+        class: %pim_catalog.comparator.attribute.prices.class%
         tags:
             - { name: pim_catalog.attribute.comparator }
 
-    pim_catalog.comparator.metric:
-        class: %pim_catalog.comparator.metric.class%
+    pim_catalog.comparator.attribute.metric:
+        class: %pim_catalog.comparator.attribute.metric.class%
         tags:
             - { name: pim_catalog.attribute.comparator }
 
-    pim_catalog.comparator.option:
-        class: %pim_catalog.comparator.option.class%
+    pim_catalog.comparator.attribute.option:
+        class: %pim_catalog.comparator.attribute.option.class%
         tags:
             - { name: pim_catalog.attribute.comparator }
 
-    pim_catalog.comparator.options:
-        class: %pim_catalog.comparator.options.class%
+    pim_catalog.comparator.attribute.options:
+        class: %pim_catalog.comparator.attribute.options.class%
         tags:
             - { name: pim_catalog.attribute.comparator }
 
-    pim_catalog.comparator.boolean:
-        class: %pim_catalog.comparator.boolean.class%
+    pim_catalog.comparator.attribute.boolean:
+        class: %pim_catalog.comparator.attribute.boolean.class%
         tags:
             - { name: pim_catalog.attribute.comparator, priority: -100 }
 
-    pim_catalog.comparator.scalar:
-        class: %pim_catalog.comparator.scalar.class%
+    pim_catalog.comparator.attribute.scalar:
+        class: %pim_catalog.comparator.attribute.scalar.class%
         tags:
             - { name: pim_catalog.attribute.comparator, priority: -128 }
+
+    ##
+    # Comparators of product's field
+    ##
+    pim_catalog.comparator.field.boolean:
+        class: %pim_catalog.comparator.field.boolean.class%
+        tags:
+            - { name: pim_catalog.field.comparator }
+
+    pim_catalog.comparator.field.array:
+        class: %pim_catalog.comparator.field.array.class%
+        tags:
+            - { name: pim_catalog.field.comparator }
+
+    pim_catalog.comparator.field.scalar:
+        class: %pim_catalog.comparator.field.scalar.class%
+        tags:
+            - { name: pim_catalog.field.comparator, priority: -128 }
