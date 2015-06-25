@@ -7,7 +7,7 @@ Feature: Filter product assets
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
-    And I am on the product assets page
+    And I am on the assets page
 
   Scenario: Successfully sort product assets
     And I should be able to use the following filters:

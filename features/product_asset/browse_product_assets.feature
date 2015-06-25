@@ -7,7 +7,7 @@ Feature: Browse product assets
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
-    And I am on the product assets page
+    And I am on the assets page
 
   Scenario: Successfully display product assets
     Then the grid should contain 11 elements

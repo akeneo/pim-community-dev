@@ -7,7 +7,7 @@ Feature: Sort product assets
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
-    And I am on the product assets page
+    And I am on the assets page
 
   Scenario: Successfully sort product assets
     And I should be able to sort the rows by code, description, status, end of use, created at and last updated at
