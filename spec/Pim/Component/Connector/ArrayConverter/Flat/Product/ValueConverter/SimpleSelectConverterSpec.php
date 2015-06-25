@@ -4,7 +4,7 @@ namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverte
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
-use Pim\Component\Connector\ArrayConverter\Flat\Product\Splitter\FieldSplitter;
+use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 
 class SimpleSelectConverterSpec extends ObjectBehavior
 {
