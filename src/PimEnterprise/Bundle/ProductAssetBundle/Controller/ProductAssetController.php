@@ -213,6 +213,7 @@ class ProductAssetController extends Controller
             }
             return $this->redirectAfterEdit($request, ['id' => $id]);
         } elseif ($assetForm->isSubmitted()) {
+            // TODO find a better way
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
 
