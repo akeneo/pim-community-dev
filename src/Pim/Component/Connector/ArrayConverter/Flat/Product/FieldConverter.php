@@ -2,7 +2,7 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
-use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
  * Converts a flat field to a structured one
@@ -19,14 +19,22 @@ class FieldConverter
     /** @var FieldSplitter */
     protected $fieldSplitter;
 
+    /** @var GroupTypeRepositoryInterface */
+    protected $groupTypeRepository;
+
     /**
-     * @param FieldSplitter              $fieldSplitter
-     * @param AssociationColumnsResolver $assocFieldResolver
+     * @param FieldSplitter                $fieldSplitter
+     * @param AssociationColumnsResolver   $assocFieldResolver
+     * @param GroupTypeRepositoryInterface $groupTypeRepository
      */
-    public function __construct(FieldSplitter $fieldSplitter, AssociationColumnsResolver $assocFieldResolver)
-    {
-        $this->assocFieldResolver = $assocFieldResolver;
-        $this->fieldSplitter      = $fieldSplitter;
+    public function __construct(
+        FieldSplitter $fieldSplitter,
+        AssociationColumnsResolver $assocFieldResolver,
+        GroupTypeRepositoryInterface $groupTypeRepository
+    ) {
+        $this->assocFieldResolver  = $assocFieldResolver;
+        $this->fieldSplitter       = $fieldSplitter;
+        $this->groupTypeRepository = $groupTypeRepository;
     }
 
     /**
@@ -48,8 +56,10 @@ class FieldConverter
             list($associationTypeCode, $associatedWith) = $this->fieldSplitter->splitFieldName($column);
 
             return ['associations' => [$associationTypeCode => [$associatedWith => $value]]];
-        } elseif (in_array($column, ['categories', 'groups'])) {
+        } elseif (in_array($column, ['categories'])) {
             return [$column => $this->fieldSplitter->splitCollection($value)];
+        } elseif (in_array($column, ['groups'])) {
+            return $this->extractVariantGroup($value);
         } elseif ('enabled' === $column) {
             return [$column => (bool) $value];
         } elseif ('family' === $column) {
@@ -71,5 +81,29 @@ class FieldConverter
         $fields = array_merge(['categories', 'groups', 'enabled', 'family'], $associationFields);
 
         return in_array($column, $fields);
+    }
+
+    /**
+     * Extract a variant group from column "groups"
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    protected function extractVariantGroup($value)
+    {
+        $data = [];
+        $groups = $this->fieldSplitter->splitCollection($value);
+
+        foreach ($groups as $group) {
+            $isVariant = $this->groupTypeRepository->getTypeByGroup($group);
+            if ('1' === $isVariant) {
+                $data['variant_group'] = $group;
+            } else {
+                $data['groups'][] = $group;
+            }
+        }
+
+        return $data;
     }
 }

@@ -1,16 +1,20 @@
 <?php
 
-namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
+namespace spec\Pim\Component\Connector\ArrayConverter\Flat\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\AssociationColumnsResolver;
 use Pim\Component\Connector\ArrayConverter\Flat\Product\FieldSplitter;
 
 class FieldConverterSpec extends ObjectBehavior
 {
-    function let(FieldSplitter $fieldSplitter, AssociationColumnsResolver $assocFieldResolver)
-    {
-        $this->beConstructedWith($fieldSplitter, $assocFieldResolver);
+    function let(
+        FieldSplitter $fieldSplitter,
+        AssociationColumnsResolver $assocFieldResolver,
+        GroupTypeRepositoryInterface $groupTypeRepository
+    ) {
+        $this->beConstructedWith($fieldSplitter, $assocFieldResolver, $groupTypeRepository);
     }
 
     function it_supports_converter_column($assocFieldResolver)
@@ -45,5 +49,23 @@ class FieldConverterSpec extends ObjectBehavior
         $this->convert('groups', 'group1,group2')->shouldReturn(['groups' => ['group1', 'group2']]);
 
         $this->convert('X_SELL-groups', 'value,test')->shouldReturn(['associations' => ['X_SELL' => ['groups' => ['value', 'test']]]]);
+    }
+
+    function it_extracts_variant_group_from_column_group($assocFieldResolver, $fieldSplitter, $groupTypeRepository)
+    {
+        $assocFieldResolver->resolveAssociationColumns()->willReturn(['X_SELL-groups', 'associations']);
+        $fieldSplitter->splitCollection('group1,variant_group1,group2')->willReturn([
+            'group1',
+            'variant_group1',
+            'group2'
+        ]);
+        $groupTypeRepository->getTypeByGroup('variant_group1')->willReturn('1');
+        $groupTypeRepository->getTypeByGroup('group1')->willReturn('0');
+        $groupTypeRepository->getTypeByGroup('group2')->willReturn('0');
+
+        $this->convert('groups', 'group1,variant_group1,group2')->shouldReturn([
+            'groups'        => ['group1', 'group2'],
+            'variant_group' => 'variant_group1'
+        ]);
     }
 }
