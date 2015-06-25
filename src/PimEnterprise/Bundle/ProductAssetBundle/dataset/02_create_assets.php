@@ -16,6 +16,7 @@ $kernel->boot();
 
 $helper = new Helper($kernel->getContainer());
 truncateTables();
+$helper->cleanFilesystem();
 
 foreach (getReferenceFilesConf() as $assetCode => $referenceFiles) {
     echo "Creating asset $assetCode...\n";
