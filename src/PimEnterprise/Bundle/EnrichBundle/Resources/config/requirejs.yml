@@ -1,9 +1,9 @@
 config:
     config:
-        pim/entity-manager:
-            repositories:
-                productDraft:
-                    module: pimee/product-draft-repository
+        pim/fetcher-registry:
+            fetchers:
+                product-draft:
+                    module: pimee/product-draft-fetcher
                     options:
                         urls:
                             get: pimee_workflow_product_draft_rest_get
@@ -14,7 +14,7 @@ config:
         pimee/permission-manager:         pimenterpriseenrich/js/product/permission-manager
         pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager
         pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager
-        pimee/product-draft-repository:   pimenterpriseenrich/js/repository/product-draft-repository
+        pimee/product-draft-fetcher:      pimenterpriseenrich/js/fetcher/product-draft-fetcher
 
 
         # Form extensions
