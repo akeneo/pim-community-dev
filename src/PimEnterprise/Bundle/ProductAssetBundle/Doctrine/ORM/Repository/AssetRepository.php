@@ -76,6 +76,26 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
+     * @param string $code
+     *
+     * @return array
+     */
+    public function findSimilarCodes($code)
+    {
+        $qb = $this->createQueryBuilder($this->getAlias());
+        $qb
+            ->select(sprintf('%s.code', $this->getAlias()))
+            ->andWhere(sprintf('%s.code LIKE :pattern', $this->getAlias()))
+            ->orWhere(sprintf('%s.code = :code', $this->getAlias()))
+            ->setParameters([
+                ':pattern' => sprintf("%s_%s", $code, '%'),
+                ':code'    => $code
+            ]);
+
+        return $qb->getQuery()->getScalarResult();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function createAssetDatagridQueryBuilder(array $parameters = [])
