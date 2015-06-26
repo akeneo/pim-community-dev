@@ -3,6 +3,7 @@ parameters:
     pim_enrich.filter.product_value.locale.class:  Pim\Bundle\CatalogBundle\Filter\ProductValueLocaleFilter
     pim_enrich.filter.product_value.channel.class: Pim\Bundle\CatalogBundle\Filter\ProductValueChannelFilter
     pim_catalog.filter.product.class:              Pim\Component\Catalog\Filter\ProductFilter
+    pim_catalog.filter.product_association.class:  Pim\Component\Catalog\Filter\ProductAssociationFilter
 
 services:
     pim_catalog.filter.chained:
@@ -29,3 +30,9 @@ services:
             - '@pim_catalog.comparator.registry'
             - '@pim_catalog.repository.attribute'
             - ['family', 'enabled', 'groups', 'variant_group', 'categories']
+
+    pim_catalog.filter.product_association:
+        class: %pim_catalog.filter.product_association.class%
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.comparator.registry'
