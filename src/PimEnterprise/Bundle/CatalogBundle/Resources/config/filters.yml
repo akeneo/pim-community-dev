@@ -1,30 +1,80 @@
 parameters:
-    pim_catalog.filter.attribute_right.class:                     PimEnterprise\Bundle\CatalogBundle\Filter\AttributeRightFilter
-    pim_catalog.filter.product_value.attribute_group_right.class: PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter
-    pim_catalog.filter.product_value.locale_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter
+    pim_catalog.filter.attribute_view_right.class:                PimEnterprise\Bundle\CatalogBundle\Filter\AttributeViewRightFilter
+    pim_catalog.filter.attribute_edit_right.class:                PimEnterprise\Bundle\CatalogBundle\Filter\AttributeEditRightFilter
+    pim_catalog.filter.attribute_group_view_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\AttributeGroupViewRightFilter
+    pim_catalog.filter.product_value_attribute_group_right.class: PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueAttributeGroupRightFilter
+    pim_catalog.filter.product_value_locale_right.class:          PimEnterprise\Bundle\CatalogBundle\Filter\ProductValueLocaleRightFilter
+    pim_catalog.filter.product_right_view.class:                  PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightViewFilter
+    pim_catalog.filter.product_right_edit.class:                  PimEnterprise\Bundle\CatalogBundle\Filter\ProductRightEditFilter
+    pim_catalog.filter.locale_view_right.class:                   PimEnterprise\Bundle\CatalogBundle\Filter\LocaleViewRightFilter
+    pim_catalog.filter.locale_edit_right.class:                   PimEnterprise\Bundle\CatalogBundle\Filter\LocaleEditRightFilter
 
 services:
-    pim_catalog.filter.attribute_right:
-        class: %pim_catalog.filter.attribute_right.class%
+    pim_catalog.filter.attribute_view_right:
+        class: %pim_catalog.filter.attribute_view_right.class%
         arguments:
             - '@security.context'
         tags:
-            - { name: pim_catalog.filter.collection, type: pim:internal_api:attribute:view }
-            - { name: pim_catalog.filter.object, type: pim:internal_api:attribute:view }
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.view }
 
-    pim_catalog.filter.product_value.attribute_group_right:
-        class: %pim_catalog.filter.product_value.attribute_group_right.class%
+    pim_catalog.filter.attribute_edit_right:
+        class: %pim_catalog.filter.attribute_edit_right.class%
         arguments:
             - '@security.context'
         tags:
-            - { name: pim_catalog.filter.collection, type: pim:internal_api:product_value:view }
-            - { name: pim_catalog.filter.collection, type: pim:external_api:product:view }
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute.edit }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute.edit }
 
-    pim_catalog.filter.product_value.locale_right:
-        class: %pim_catalog.filter.product_value.locale_right.class%
+    pim_catalog.filter.attribute_group_view_right:
+        class: %pim_catalog.filter.attribute_group_view_right.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.attribute_group.view }
+            - { name: pim_catalog.filter.object, type: pim.internal_api.attribute_group.view }
+
+    pim_catalog.filter.product_value_attribute_group_right:
+        class: %pim_catalog.filter.product_value_attribute_group_right.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
+            - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+
+    pim_catalog.filter.product_value_locale_right:
+        class: %pim_catalog.filter.product_value_locale_right.class%
         arguments:
             - '@security.context'
             - '@pim_catalog.manager.locale'
         tags:
-            - { name: pim_catalog.filter.collection, type: pim:internal_api:product_value:view }
-            - { name: pim_catalog.filter.collection, type: pim:external_api:product:view }
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.product_value.view }
+            - { name: pim_catalog.filter.collection, type: pim.external_api.product.view }
+
+    pim_catalog.filter.product_right_view:
+        class: %pim_catalog.filter.product_right_view.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.product.view }
+
+    pim_catalog.filter.product_right_edit:
+        class: %pim_catalog.filter.product_right_edit.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.product.edit }
+
+    pim_catalog.filter.locale_view_right:
+        class: %pim_catalog.filter.locale_view_right.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.collection, type: pim.internal_api.locale.view }
+
+    pim_catalog.filter.locale_edit_right:
+        class: %pim_catalog.filter.locale_edit_right.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: pim_catalog.filter.object, type: pim.internal_api.locale.edit }

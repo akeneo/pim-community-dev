@@ -20,13 +20,11 @@ Feature: Display the product history
     And I fill in the following information:
       | SKU | sandals-001-bis |
     And I save the product
-    When I visit the "History" tab
+    When I open the history
     Then there should be 3 update
     And I should see history:
       | version | property   | value           |
-      | 1       | sku        | sandals-001     |
-      | 2       | name-en_US | BG sandals      |
-      | 3       | sku        | sandals-001-bis |
-    Then the row "BG sandals" should contain:
-      | column    | value     |
-      | published | Published |
+      | 1       | SKU        | sandals-001     |
+      | 2       | Name en    | BG sandals      |
+      | 3       | SKU        | sandals-001-bis |
+    And the version 2 should be marked as published

@@ -1,4 +1,4 @@
-#permission-changes {
+.permission-changes {
   color: #777;
 }
 
@@ -80,4 +80,29 @@
 .icon-code-fork.from-smart {
   margin: 0;
   padding: 0 5px;
+}
+
+.label-published {
+  margin-left: 5px;
+  text-transform: uppercase;
+  background: #4a90e2;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.btn-publish {
+  &:not(.disabled) {
+    background-color: #4a90e2;
+    color: white;
+    border: 1px solid #276dbf;
+  }
+
+  i {
+    margin-right: 8px;
+    margin-left: -5px;
+  }
+}
+
+.meta .published-version {
+  flex-shrink: 0;
 }

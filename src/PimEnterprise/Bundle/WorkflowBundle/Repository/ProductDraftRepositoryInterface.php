@@ -95,4 +95,9 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]|null
      */
     public function findByProduct(ProductInterface $product);
+
+    /**
+     * @return string[]
+     */
+    public function getDistinctAuthors();
 }

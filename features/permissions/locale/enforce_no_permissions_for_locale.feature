@@ -1,3 +1,4 @@
+
 Feature: Enforce no permissions for a locale
   In order to be able to prevent some users from viewing product data in some locales
   As an administrator
@@ -19,6 +20,7 @@ Feature: Enforce no permissions for a locale
     Then I should be on the homepage
     And I should see "You don't have access to product data in any activated locale, please contact your administrator"
 
+  @javascript
   Scenario: Display only available locales in the locale switcher
     Given the following locale accesses:
       | locale | user group | access |
@@ -26,15 +28,15 @@ Feature: Enforce no permissions for a locale
       | fr_FR  | Manager    | none   |
     And I am logged in as "Julia"
     When I am on the products page
-    Then the locale switcher should contain the following items:
-      | language                | label |
-      | English (United States) |       |
-      | German (Germany)        |       |
+    Then the grid locale switcher should contain the following items:
+      | language  | locale | flag    |
+      | en   | en_US  | flag-us |
+      | de   | de_DE  | flag-de |
     When I edit the "foo" product
     Then the locale switcher should contain the following items:
-      | language                | label |
-      | English (United States) |       |
-      | German (Germany)        |       |
+      | language  | locale | flag    |
+      | English   | en_US  | flag-us |
+      | German    | de_DE  | flag-de |
 
   @javascript
   Scenario: Display product view or edit page depending on user's rights
@@ -42,8 +44,7 @@ Feature: Enforce no permissions for a locale
       | locale | user group | access |
       | en_US  | Manager    | view   |
     And I am logged in as "Julia"
-    When I am on the products page
-    And I click on the "foo" row
+    When I edit the "foo" product
     Then I should not see the "Save working copy" button
-    When I switch the locale to "German (Germany)"
+    When I switch the locale to "de_DE"
     Then I should see the "Save working copy" button

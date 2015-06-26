@@ -36,5 +36,6 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('subscribers.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('form_types.yml');
+        $loader->load('controllers.yml');
     }
 }

@@ -26,6 +26,7 @@ Feature: Send a product draft for approval
     Then its status should be "Waiting for approval"
     And I should see "Sent for approval"
 
+  @skip-pef
   Scenario: Fail to send a non existing product draft for approval
     Then I should not see "Send for approval"
 

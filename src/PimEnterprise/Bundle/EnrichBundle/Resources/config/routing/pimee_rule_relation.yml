@@ -1,0 +1,6 @@
+pimee_enrich_rule_relation_get:
+    path: /{relationType}
+    defaults: { _controller: pimee_enrich.controller.rule_relation:indexAction }
+    requirements:
+        relationType: '[a-z]+'
+    methods: [GET]

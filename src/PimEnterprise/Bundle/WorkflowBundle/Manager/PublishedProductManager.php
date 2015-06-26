@@ -78,6 +78,18 @@ class PublishedProductManager
     }
 
     /**
+     * Find the published product by its original product
+     *
+     * @param ProductInterface $product
+     *
+     * @return PublishedProductInterface
+     */
+    public function findPublishedProductByOriginalId($productId)
+    {
+        return $this->repository->findOneByOriginalProductId($productId);
+    }
+
+    /**
      * Find the published product by its original id
      *
      * @param ProductInterface $product

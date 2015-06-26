@@ -57,12 +57,12 @@ Feature: Publish a product
       | code | label-en_US | attributes                                               |
       | baz  | Baz         | sku, release, available, max_length, popularity, customs |
     And the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2013-02-02    |           |
-      | my-jacket | available  | 2013-02-02    | ecommerce |
-      | my-jacket | max_length | 25 CENTIMETER | ecommerce |
-      | my-jacket | popularity | 9             | ecommerce |
-      | my-jacket | customs    | 100 EUR       | ecommerce |
+      | product   | attribute  | value         | scope  |
+      | my-jacket | release    | 2013-02-02    |        |
+      | my-jacket | available  | 2013-02-02    | mobile |
+      | my-jacket | max_length | 25 CENTIMETER | mobile |
+      | my-jacket | popularity | 9             | mobile |
+      | my-jacket | customs    | 100 EUR       | mobile |
     And I edit the "my-jacket" product
     When I press the "Publish" button
     And I confirm the publishing
@@ -80,9 +80,10 @@ Feature: Publish a product
     And I should see "Customs"
     Then I should see "100.00 EUR"
     Given the following product values:
-      | product   | attribute  | value         | scope     |
-      | my-jacket | release    | 2014-03-25    |           |
+      | product   | attribute  | value         |
+      | my-jacket | release    | 2014-03-25    |
     And I edit the "my-jacket" product
+    And I save the product
     When I press the "Publish" button
     And I confirm the publishing
     And I am on the published index page
@@ -91,7 +92,7 @@ Feature: Publish a product
     And I am on the "my-jacket" published show page
     And I should see "March 25, 2014"
 
-  @javascript
+  @skip-pef @javascript
   Scenario: Fail to delete attribute options if it's used by a published product
     Given the following product:
       | sku       | family  | name-en_US |

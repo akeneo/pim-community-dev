@@ -14,3 +14,48 @@ permission-changes:
     job profile:
         grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong>
         revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
+
+pimee_enrich:
+    entity:
+        product:
+            history:
+                published: Published
+                revert:    Restore
+                published: Published
+            smart_attribute:
+                come_from: "This attribute can be updated by a rule:"
+            btn:
+                publish: Publish
+                publish_this_version: Publish this version
+                unpublish: Unpublish
+                save_draft: Save draft
+            flash:
+                product_unpublished: Product successfully unpublished
+                product_published: Product successfully published
+                product_not_published: Failed to publish this product
+                product_not_unpublished: Failed to unpublish this product
+                product_reverted: Product successfully reverted
+            meta:
+                published: Published version
+                owner_groups: Owner groups
+            confirmation:
+                revert:
+                    title: Revert confirmation
+                    content: Are you sure you want to revert the product to this version?
+                publish:
+                    title: Publish this product
+                    content: Are you sure you want to publish this product?
+                unpublish:
+                    title: Unpublish this product
+                    content: Are you sure you want to unpublish this product?
+            info:
+                update_successful: Product working copy has been updated
+        product_draft:
+            info:
+                update_successful: Product draft has been successfully saved
+                update_failed: Product draft could not be updated
+            flash:
+                sent_for_approval: Product draft sent for approval
+            btn:
+                send_for_approval: Send for approval
+                sent_for_approval: Sent for approval

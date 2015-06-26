@@ -171,6 +171,27 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getDistinctAuthors()
+    {
+        $qb = $this->createQueryBuilder('ProductDraft');
+
+        $authors = $qb
+            ->distinct('author')
+            ->getQuery()
+            ->execute();
+
+        $authorCodes = [];
+        if ($authors->count() > 0) {
+            $authorCodes = $authors->toArray();
+            ksort($authorCodes);
+        }
+
+        return $authorCodes;
+    }
+
+    /**
      * Creates a QB with proposals that are approvable by the user
      *
      * @param UserInterface $user

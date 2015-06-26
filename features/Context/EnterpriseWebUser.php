@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\TableNode;
 use Behat\Mink\Driver\Selenium2Driver;
 use Context\WebUser as BaseWebUser;
 
@@ -79,4 +80,15 @@ class EnterpriseWebUser extends BaseWebUser
             );
         }
     }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^the grid locale switcher should contain the following items:$/
+     */
+    public function theGridLocaleSwitcherShouldContainTheFollowingItems(TableNode $table, $page = 'index')
+    {
+        return parent::theLocaleSwitcherShouldContainTheFollowingItems($table, $page);
+    }
+
 }

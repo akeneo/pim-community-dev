@@ -30,6 +30,7 @@ Feature: Define permissions for an attribute group
     Then the product Name should be "baz"
     Then the product Manufacturer should be "Converse"
 
+  @javascript
   Scenario: Successfully disable read-only fields for an attribute group
     Given I visit the "Permissions" tab
     And I fill in the following information:

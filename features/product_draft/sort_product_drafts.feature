@@ -17,6 +17,7 @@ Feature: Sort product drafts
       | white-boots | ready       | Mary   |
     And I am logged in as "Julia"
 
+  @skip-pef
   Scenario: Successfully sort product drafts in the grid
     Given I edit the "black-boots" product
     When I visit the "Proposals" tab

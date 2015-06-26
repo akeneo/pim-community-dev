@@ -17,7 +17,7 @@
     },
     "require": {
         "akeneo/pim-community-dev": "dev-feature/pam",
-        "oro/platform": "dev-pim-1.4",
+        "oro/platform": "dev-pim-1.4@dev",
         "phpspec/php-diff": "1.0.2",
         "doctrine/migrations": "1.0.0-alpha3@alpha",
         "doctrine/doctrine-migrations-bundle": "1.0.0",

@@ -23,7 +23,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
  *
  * @author Julien Sanchez <julien@akeneo.com>
  */
-class AttributeRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
+class AttributeViewRightFilter extends AbstractFilter implements CollectionFilterInterface, ObjectFilterInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -54,13 +54,5 @@ class AttributeRightFilter extends AbstractFilter implements CollectionFilterInt
     public function supportsObject($object, $type, array $options = [])
     {
         return $object instanceof AttributeInterface;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsCollection($collection, $type, array $options = [])
-    {
-        return 'pim:attribute:view' === $type && parent::supportsCollection($collection, $type, $options);
     }
 }

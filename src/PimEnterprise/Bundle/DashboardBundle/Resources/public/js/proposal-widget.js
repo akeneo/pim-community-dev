@@ -28,7 +28,7 @@ define(
                             '</tr>',
                         '</thead>',
                         '<tbody>',
-                            '<% _.each(data, function(proposal) { %>',
+                            '<% _.each(data, function (proposal) { %>',
                                 '<tr>',
                                     '<td>',
                                         '<%= proposal.createdAt %>',
@@ -40,7 +40,8 @@ define(
                                         '</a>',
                                     '</td>',
                                     '<td>',
-                                        '<a class="btn btn-mini" href="javascript:void(0);" data-id="<%= proposal.productId %>" data-redirecttab="#proposals">',
+                                        '<a class="btn btn-mini" href="javascript:void(0);" ',
+                                            'data-id="<%= proposal.productId %>" data-redirecttab="#proposals">',
                                             '<%= _.__("pimee_dashboard.widget.product_drafts.review") %>',
                                         '</a>',
                                     '</td>',
@@ -57,7 +58,8 @@ define(
 
             viewAllLinkTemplate: _.template(
                 [
-                    '<a href="javascript:void(0);" class="btn btn-mini btn-transparent pull-right" style="margin-right:5px;">',
+                    '<a href="javascript:void(0);" class="btn btn-mini btn-transparent pull-right" ',
+                        'style="margin-right:5px;">',
                         '<%= _.__("pimee_dashboard.widget.product_drafts.view_all") %>',
                     '</a>'
                 ].join('')
@@ -67,7 +69,7 @@ define(
                 'click a': 'followLink'
             },
 
-            followLink: function(e) {
+            followLink: function (e) {
                 e.preventDefault();
 
                 if ($(e.currentTarget).data('redirecttab')) {
@@ -82,7 +84,7 @@ define(
                 );
             },
 
-            setElement: function() {
+            setElement: function () {
                 AbstractWidget.prototype.setElement.apply(this, arguments);
 
                 this._createViewAllLink();
@@ -90,7 +92,7 @@ define(
                 return this;
             },
 
-            _createViewAllLink: function() {
+            _createViewAllLink: function () {
                 if (this.$viewAllLink) {
                     this.$viewAllLink.remove();
                 }
@@ -101,7 +103,7 @@ define(
                 this.$el.parent().siblings('.widget-header').append(this.$viewAllLink.hide());
             },
 
-           _afterLoad: function() {
+            _afterLoad: function () {
                 AbstractWidget.prototype._afterLoad.apply(this, arguments);
 
                 if (_.isEmpty(this.data)) {
@@ -113,14 +115,14 @@ define(
                 return this;
             },
 
-            viewAll: function() {
+            viewAll: function () {
                 Navigation.getInstance().setLocation(Routing.generate('pimee_workflow_proposal_index'));
             },
 
-            _processResponse: function(data) {
+            _processResponse: function (data) {
                 this.options.contentLoaded = true;
 
-                _.each(data, function(proposal) {
+                _.each(data, function (proposal) {
                     if (proposal.createdAt) {
                         var date = moment(new Date(proposal.createdAt * 1000));
                         if (date.isValid()) {
@@ -137,7 +139,7 @@ define(
         var instance = null;
 
         return {
-            init: function(options) {
+            init: function (options) {
                 if (!instance) {
                     instance = new ProposalWidget(options);
                 } else if (_.has(options, 'el')) {

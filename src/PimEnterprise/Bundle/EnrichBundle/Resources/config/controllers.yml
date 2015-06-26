@@ -4,6 +4,7 @@ parameters:
     pim_enrich.controller.sequential_edit.class:  PimEnterprise\Bundle\EnrichBundle\Controller\SequentialEditController
     pim_enrich.controller.mass_edit_action.class: PimEnterprise\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.locale.class:           PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController
+    pimee_enrich.controller.rule_relation.class:  PimEnterprise\Bundle\EnrichBundle\Controller\RuleRelationController
 
 services:
     # overriden to add security checks and use a smarter product saver which update draft or working copy
@@ -23,3 +24,24 @@ services:
             - '@pim_enrich.manager.sequential_edit'
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
+
+    pim_enrich.controller.rest.product:
+        class: %pim_enrich.controller.rest.product.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.product'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_internal_api_serializer'
+            - '@pim_validator'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.builder.product'
+
+    pimee_enrich.controller.rule_relation:
+        class: %pimee_enrich.controller.rule_relation.class%
+        arguments:
+            - '@pimee_catalog_rule.repository.rule_relation'
+            - '@pim_internal_api_serializer'
+            - '@pim_catalog.resolver.fqcn'
