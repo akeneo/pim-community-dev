@@ -458,14 +458,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return AssetRepositoryInterface
-     */
-    protected function getAssetRepository()
-    {
-        return $this->getContainer()->get('pimee_product_asset.repository.asset');
-    }
-
-    /**
      * @param string $sku
      *
      * @throws \InvalidArgumentException
