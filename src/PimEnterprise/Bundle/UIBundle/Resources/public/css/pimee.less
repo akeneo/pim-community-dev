@@ -106,3 +106,65 @@
 .meta .published-version {
   flex-shrink: 0;
 }
+
+.asset-gallery {
+  border: 1px solid #ccc;
+
+  header {
+    background-color: #f3f3f3;
+    padding: 5px;
+
+    .btn {
+      background-image: none;
+      padding: 3px 15px;
+      height: 35px;
+      text-shadow: none;
+      box-shadow: none;
+    }
+  }
+
+  ul {
+    padding: 10px 0 0 10px;
+    margin: 0;
+
+    li {
+      list-style: none;
+      display: block;
+      float: left;
+      margin: 0 10px 10px 0;
+      padding: 9px;
+      width: 180px;
+      height: 160px;
+      border: 1px solid #ddd;
+      border-radius: 1px;
+
+      footer {
+        padding: 5px;
+        font-size: 11px;
+        text-align: center;
+        line-height: 14px;
+      }
+
+      .asset-thumbnail {
+        width: 160px;
+        height: 110px;
+
+        background-size: 100% auto;
+        background-position: center center;
+      }
+    }
+  }
+}
+
+.modal-asset {
+  width: 90%;
+  height: 90%;
+  top: 5%;
+  left: 5%;
+  margin: 0;
+
+  .modal-body {
+    height: 90%;
+    max-height: none;
+  }
+}

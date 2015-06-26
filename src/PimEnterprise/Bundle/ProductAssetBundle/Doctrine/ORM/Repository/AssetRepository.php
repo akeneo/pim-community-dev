@@ -114,6 +114,24 @@ class AssetRepository extends EntityRepository implements AssetRepositoryInterfa
     }
 
     /**
+     * Find assets by identifiers
+     *
+     * @param array $identifiers
+     *
+     * @return ArrayCollection
+     */
+    public function findByIdentifiers(array $identifiers = [])
+    {
+        $qb = $this->createQueryBuilder($this->getAlias());
+
+        return $qb->select($this->getAlias())
+            ->where($this->getAlias() . '.code IN (:identifiers)')
+            ->setParameter('identifiers', $identifiers)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
      * Apply an in list filter
      *
      * @param QueryBuilder $qb

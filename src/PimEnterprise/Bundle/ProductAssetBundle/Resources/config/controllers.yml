@@ -1,8 +1,9 @@
 parameters:
     pimee_product_asset.controller.produt_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\ProductAssetController
+    pimee_product_asset.controller.rest.product_asset.class: PimEnterprise\Bundle\ProductAssetBundle\Controller\Rest\ProductAssetController
 
 services:
-    pimee_product_asset.controller.produt_asset:
+    pimee_product_asset.controller.product_asset:
         class: %pimee_product_asset.controller.produt_asset.class%
         arguments:
             - '@pimee_product_asset.repository.asset'
@@ -16,3 +17,9 @@ services:
             - '@event_dispatcher'
         calls:
             - [ setContainer, [ @service_container ] ]
+
+    pimee_product_asset.controller.rest.product_asset:
+        class: %pimee_product_asset.controller.rest.product_asset.class%
+        arguments:
+            - '@pimee_product_asset.repository.asset'
+            - '@pim_serializer'

@@ -1,0 +1,5 @@
+pimee_product_asset:
+    form:
+        product:
+            asset:
+                add: Add files

@@ -1,0 +1,8 @@
+parameters:
+    pimee_product_asset.provider.field.asset_collection.class: PimEnterprise\Bundle\ProductAssetBundle\Provider\Field\AssetCollectionFieldProvider
+
+services:
+    pimee_product_asset.provider.field.asset_collection:
+        class: %pimee_product_asset.provider.field.asset_collection.class%
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }

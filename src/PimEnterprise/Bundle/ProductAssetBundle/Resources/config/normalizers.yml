@@ -1,0 +1,8 @@
+parameters:
+    pim_product_asset.normalizer.asset.class: PimEnterprise\Component\ProductAsset\Normalizer\AssetNormalizer
+
+services:
+    pim_product_asset.normalizer.asset:
+        class: %pim_product_asset.normalizer.asset.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }

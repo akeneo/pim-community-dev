@@ -1,0 +1,6 @@
+attribute_fields:
+    akeneo-asset-collection-field: pam/asset-collection-field
+
+extensions:
+    picker-asset-grid:
+        module: pam/picker/asset-grid

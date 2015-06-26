@@ -1,0 +1,19 @@
+config:
+    paths:
+        # Fields
+        pam/asset-collection-field: pimenterpriseproductasset/js/product/field/asset-collection-field
+
+        # Templates
+        pam/template/product/field/asset-collection: pimenterpriseproductasset/templates/product/field/asset-collection.html
+        pam/template/picker/asset-grid: pimenterpriseproductasset/templates/picker/asset-grid.html
+
+        # Extensions
+        pam/picker/asset-grid: pimenterpriseproductasset/js/picker/asset-grid
+    config:
+        pim/fetcher-registry:
+            fetchers:
+                asset:
+                    module: pim/base-fetcher
+                    options:
+                        urls:
+                            list: pimee_product_asset_rest_index
