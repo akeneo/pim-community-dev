@@ -16,21 +16,21 @@ define(
         var getFieldForAttribute = function (attribute) {
             var deferred = $.Deferred();
 
-            if (loadedModules[attribute.type]) {
-                deferred.resolve(loadedModules[attribute.type]);
+            if (loadedModules[attribute.field_type]) {
+                deferred.resolve(loadedModules[attribute.field_type]);
 
                 return deferred.promise();
             }
 
             ConfigProvider.getAttributeFields().done(function (attributeFields) {
-                var fieldModule = attributeFields[attribute.type];
+                var fieldModule = attributeFields[attribute.field_type];
 
                 if (!fieldModule) {
-                    throw new Error('No field defined for attribute type "' + attribute.type + '"');
+                    throw new Error('No field defined for attribute type "' + attribute.field_type + '"');
                 }
 
                 require([fieldModule], function (Field) {
-                    loadedModules[attribute.type] = Field;
+                    loadedModules[attribute.field_type] = Field;
                     deferred.resolve(Field);
                 });
             });

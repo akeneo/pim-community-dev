@@ -33,6 +33,8 @@ define(
     ) {
         return BaseForm.extend({
             className: 'btn-group',
+            updateSuccessMessage: _.__('pim_enrich.entity.product.info.update_successful'),
+            updateFailureMessage: _.__('pim_enrich.entity.product.info.update_failed'),
             configure: function () {
                 if ('save-buttons' in this.parent.extensions) {
                     this.parent.extensions['save-buttons'].addButton({
@@ -87,7 +89,7 @@ define(
                     .done(_.bind(function (data) {
                         messenger.notificationFlashMessage(
                             'success',
-                            _.__('pim_enrich.entity.product.info.update_successful')
+                            this.updateSuccessMessage
                         );
 
                         this.setData(data);
@@ -111,7 +113,7 @@ define(
 
                         messenger.notificationFlashMessage(
                             'error',
-                            _.__('pim_enrich.entity.product.info.update_failed')
+                            this.updateFailureMessage
                         );
                     }).always(function () {
                         loadingMask.hide().$el.remove();
