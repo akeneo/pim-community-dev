@@ -100,20 +100,20 @@ connector:
                         processor: pim_connector.processor.denormalization.attribute.flat
                         writer:    pim_connector.writer.doctrine.attribute
 
-        fixtures_attribute_options_yml:
-            title: pim_installer.jobs.fixtures_attribute_options_yml.title
+        fixtures_attribute_options_csv:
+            title: pim_installer.jobs.fixtures_attribute_options_csv.title
             type:  fixtures
             steps:
                 validation:
-                    title: pim_base_connector.jobs.fixtures_attribute_options_yml.validation.title
+                    title: pim_base_connector.jobs.fixtures_attribute_options_csv.validation.title
                     class: %pim_base_connector.step.validator.class%
                     services:
                         charsetValidator: pim_base_connector.validator.step.charset_validator
                 import:
-                    title:     pim_installer.jobs.fixtures_attribute_options_yml.import.title
+                    title:     pim_installer.jobs.fixtures_attribute_options_csv.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
-                        processor: pim_connector.processor.denormalization.attribute_option.structured
+                        reader:    pim_connector.reader.file.csv_attribute_option
+                        processor: pim_connector.processor.denormalization.attribute_option.flat
                         writer:    pim_connector.writer.doctrine.attribute_option
 
         fixtures_family_yml:

@@ -14,16 +14,6 @@ jobs:
             circularRefsChecked: true
             uploadAllowed: true
 
-    fixtures_category_yml:
-        order: 30
-        connector: Data fixtures
-        alias:     fixtures_category_yml
-        label:     Categories data fixtures
-        type:      fixtures
-        configuration:
-            filePath: categories.yml
-            multiple: true
-
     fixtures_attribute_group_yml:
         order: 30
         connector: Data fixtures
@@ -74,14 +64,14 @@ jobs:
             filePath: attributes.csv
             multiple: false
 
-    fixtures_attribute_options_yml:
+    fixtures_attribute_options_csv:
         order: 50
         connector: Data fixtures
-        alias:     fixtures_attribute_options_yml
+        alias:     fixtures_attribute_options_csv
         label:     Attribute options data fixtures
         type:      fixtures
         configuration:
-            filePath: attribute_options.yml
+            filePath: attribute_options.csv
             multiple: false
 
     fixtures_family_yml:
@@ -133,16 +123,6 @@ jobs:
             mediaAttributes:
                 - 'pdf_description'
                 - 'picture'
-
-    fixtures_association_yml:
-        order: 90
-        connector: Data fixtures
-        alias:     fixtures_association_yml
-        label:     Associations data fixtures
-        type:      fixtures
-        configuration:
-            filePath: associations.yml
-            multiple: false
 
     fixtures_job_yml:
         order: 100
