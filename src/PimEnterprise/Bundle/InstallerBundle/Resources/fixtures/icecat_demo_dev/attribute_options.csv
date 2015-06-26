@@ -1,0 +1,73 @@
+attribute;code;sort_order;label-de_DE;label-en_US;label-fr_FR
+maximum_print_size;210_x_1219_mm;1;"210 x 1219 mm";"210 x 1219 mm";"210 x 1219 mm"
+maximum_print_size;215_x_355_mm;2;"215 x 355 mm";"215 x 355 mm";"215 x 355 mm"
+maximum_print_size;216_x_406_4_mm;3;"216 x 406.4 mm";"216 x 406.4 mm";"216 x 406.4 mm"
+maximum_print_size;216_x_432_mm;4;"216 x 432 mm";"216 x 432 mm";"216 x 432 mm"
+maximum_print_size;297_x_432_mm;5;"297 x 432 mm";"297 x 432 mm";"297 x 432 mm"
+maximum_print_size;a3_297_x_420_mm_;6;"A3 (297 x 420 mm)";"A3 (297 x 420 mm)";"A3 (297 x 420 mm)"
+maximum_print_size;a4_210_x_297_mm_;7;"A4 (210 x 297 mm)";"A4 (210 x 297 mm)";"A4 (210 x 297 mm)"
+maximum_print_size;a4_letter_216_x_297_mm_;8;"A4 / Letter (216 x 297 mm)";"A4 / Letter (216 x 297 mm)";"A4 / Letter (216 x 297 mm)"
+maximum_print_size;din_a3_310_x_437_mm_;9;"DIN A3 (310 x 437 mm)";"DIN A3 (310 x 437 mm)";"DIN A3 (310 x 437 mm)"
+maximum_print_size;legal_216_x_356_mm_;10;"Legal (216 x 356 mm)";"Legal (216 x 356 mm)";"Legal (216 x 356 mm)"
+sensor_type;ccd;1;CCD;CCD;CCD
+sensor_type;cmos;2;CMOS;CMOS;CMOS
+camera_type;bridge;1;Bridge;Bridge;Bridge
+camera_type;compact;2;Compact;Compact;Compact
+camera_type;milc;3;MILC;MILC;MILC
+camera_type;milc_body;4;"MILC Body";"MILC Body";"MILC Body"
+camera_type;slr_body;5;"SLR Body";"SLR Body";"SLR Body"
+camera_type;slr_kit;6;"SLR Kit";"SLR Kit";"SLR Kit"
+headphone_connectivity;6_3mm;1;6.3mm;6.3mm;6.3mm
+maximum_video_resolution;1280_x_1024;1;"1280 x 1024";"1280 x 1024";"1280 x 1024"
+maximum_video_resolution;1280_x_720;2;"1280 x 720";"1280 x 720";"1280 x 720"
+maximum_video_resolution;1280_x_960;3;"1280 x 960";"1280 x 960";"1280 x 960"
+maximum_video_resolution;1600_x_1200;4;"1600 x 1200";"1600 x 1200";"1600 x 1200"
+maximum_video_resolution;1920_x_1080;5;"1920 x 1080";"1920 x 1080";"1920 x 1080"
+maximum_video_resolution;2560_x_1920;6;"2560 x 1920";"2560 x 1920";"2560 x 1920"
+maximum_video_resolution;2560_x_2048;7;"2560 x 2048";"2560 x 2048";"2560 x 2048"
+maximum_video_resolution;320_x_240;8;"320 x 240";"320 x 240";"320 x 240"
+maximum_video_resolution;640_x_480;9;"640 x 480";"640 x 480";"640 x 480"
+maximum_video_resolution;800_x_600;10;"800 x 600";"800 x 600";"800 x 600"
+multifunctional_functions;copy;1;copy;copy;copy
+multifunctional_functions;fax;2;fax;fax;fax
+multifunctional_functions;n;3;N;N;N
+multifunctional_functions;print;4;print;print;print
+multifunctional_functions;scan;5;scan;scan;scan
+container_material;earthenware;1;Tonwaren;Earthenware;Faïence
+container_material;porcelain;2;Porzellan;Porcelain;Porcelaine
+container_material;ceramic;3;Keramisch;Ceramic;Céramique
+main_color;white;1;Weiß;White;Blanc
+main_color;black;2;Schwarz;Black;Noir
+main_color;grey;3;Grau;Grey;Gris
+main_color;blue;4;Blau;Blue;Bleu
+main_color;purple;5;Lila;Purple;Violet
+main_color;orange;6;Orange;Orange;Orange
+secondary_color;white;1;Weiß;White;Blanc
+secondary_color;black;2;Schwarz;Black;Noir
+secondary_color;grey;3;Grau;Grey;Gris
+secondary_color;yellow;4;Gelb;Yellow;Jaune
+secondary_color;orange;5;Orange;Orange;Orange
+secondary_color;red;6;Rot;Red;Rouge
+secondary_color;green;7;Grün;Green;Vert
+secondary_color;blue;8;Blau;Blue;Bleu
+secondary_color;purple;9;Lila;Purple;Violet
+clothing_size;xs;1;XS;XS;XS
+clothing_size;s;2;S;S;S
+clothing_size;m;3;M;M;M
+clothing_size;l;4;L;L;L
+clothing_size;xl;5;XL;XL;XL
+clothing_size;xxl;6;XXL;XXL;XXL
+tshirt_materials;cotton;1;"100% Baumwolle";"100% Cotton";"100% Coton"
+tshirt_materials;polyester;2;Polyester;Polyester;Polyester
+tshirt_materials;polycotton;3;Poly/Bauwolle;Poly/Cotton;Poly/Coton
+tshirt_materials;wool;4;Wolle;Wool;Laine
+tshirt_materials;organic_cotton;5;"Bio Baumwolle";"Organic Cotton";"Coton Bio"
+tshirt_materials;recycled_materials;6;Recycling-Materialien;"Recycled materials";"Matières recyclées"
+tshirt_style;turtleneck;1;Rollkragen;Turtleneck;"Col roulé"
+tshirt_style;vneck;2;V-Ausschnitt;"V neck";"Col en V"
+tshirt_style;sportwear;3;"Sport Verschleiß";"Sport wear";Sportif
+tshirt_style;crewneck;4;Rundhalsausschnitt;Crewneck;"Col ras du cou"
+tshirt_style;long_sleeve;5;"Lange Ärmel";"Long sleeve";"Manches longues"
+tshirt_style;short_sleeve;6;"Kurze Ärmel";"Short sleeve";"Manches courtes"
+camera_brand;canon_brand;1;Canon;Canon;Canon
+camera_brand;nikon_brand;2;Nikon;Nikon;Nikon
