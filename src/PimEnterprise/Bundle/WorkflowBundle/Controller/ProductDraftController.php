@@ -245,39 +245,6 @@ class ProductDraftController extends AbstractController
     }
 
     /**
-     * Mark a product draft as ready
-     *
-     * @param int|string $id
-     *
-     * @throws NotFoundHttpException
-     * @throws AccessDeniedHttpException
-     *
-     * @return RedirectResponse
-     */
-    public function readyAction($id)
-    {
-        if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
-        }
-
-        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
-            throw new AccessDeniedHttpException();
-        }
-
-        $this->manager->markAsReady($productDraft);
-
-        return $this->redirect(
-            $this->generateUrl(
-                'pim_enrich_product_edit',
-                [
-                    'id'         => $productDraft->getProduct()->getId(),
-                    'dataLocale' => $this->getCurrentLocaleCode()
-                ]
-            )
-        );
-    }
-
-    /**
      * Launch the mass approve job
      *
      * @param Request $request

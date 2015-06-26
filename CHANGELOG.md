@@ -37,6 +37,7 @@
 - Replace UserManager argument by ProductDraftRepositoryInterface in `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`
 - Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController`
 - Add `findByIds` method to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`
+- Add a `getGrantedCategoryCodes` method in `PimEnterprise/Bundle/SecurityBundle/Entity/Repository/CategoryAccessRepository`
 
 # 1.3.16 (2015-06-08)
 

@@ -2,6 +2,7 @@ parameters:
     pimee_workflow.controller.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
     pimee_workflow.controller.published_product_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductRestController
+    pimee_workflow.controller.product_draft_rest.class: PimEnterprise\Bundle\WorkflowBundle\Controller\Rest\ProductDraftController
 
 services:
     pimee_workflow.controller.product_draft:
@@ -33,3 +34,13 @@ services:
         arguments:
             - '@security.context'
             - '@pimee_workflow.manager.published_product'
+
+    pimee_workflow.controller.product_draft_rest:
+        class: %pimee_workflow.controller.product_draft_rest.class%
+        arguments:
+            - '@security.context'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
+            - '@pim_catalog.repository.product'
+            - '@pim_internal_api_serializer'
+            - '@pim_user.context.user'

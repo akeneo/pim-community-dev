@@ -1,9 +1,21 @@
 config:
+    config:
+        pim/entity-manager:
+            repositories:
+                productDraft:
+                    module: pimee/product-draft-repository
+                    options:
+                        urls:
+                            get: pimee_workflow_product_draft_rest_get
+                            ready: pimee_workflow_product_draft_ready
+
     paths:
         pimee/manage-permissions:         pimenterpriseenrich/js/manage-permissions
         pimee/permission-manager:         pimenterpriseenrich/js/product/permission-manager
         pimee/rule-manager:               pimenterpriseenrich/js/product/rule-manager
         pimee/published-product-manager:  pimenterpriseenrich/js/product/published-product-manager
+        pimee/product-draft-repository:   pimenterpriseenrich/js/repository/product-draft-repository
+
 
         # Form extensions
         pimee/product-edit-form/attributes/smart-attribute:           pimenterpriseenrich/js/product/form/attributes/smart-attribute
@@ -14,11 +26,14 @@ config:
         pimee/product-edit-form/publish:                              pimenterpriseenrich/js/product/form/publish
         pimee/product-edit-form/meta/published:                       pimenterpriseenrich/js/product/form/meta/published
         pimee/product-edit-form/meta/owner-groups:                    pimenterpriseenrich/js/product/form/meta/owner-groups
+        pimee/product-edit-form/save:                                 pimenterpriseenrich/js/product/form/save
+        pimee/product-edit-form/draft:                                pimenterpriseenrich/js/product/form/draft
 
         # Templates
         pimee/template/product/tab/attribute/smart-attribute:           pimenterpriseenrich/templates/product/tab/attributes/smart-attribute.html
         pimee/template/product/panel/history/published:                 pimenterpriseenrich/templates/product/panel/history/published.html
         pimee/template/product/panel/history/revert:                    pimenterpriseenrich/templates/product/panel/history/revert.html
         pimee/template/product/publish:                                 pimenterpriseenrich/templates/product/publish.html
+        pimee/template/product/submit-draft:                            pimenterpriseenrich/templates/product/submit-draft.html
         pimee/template/product/meta/published:                          pimenterpriseenrich/templates/product/meta/published.html
         pimee/template/product/meta/owner-groups:                       pimenterpriseenrich/templates/product/meta/owner-groups.html
