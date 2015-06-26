@@ -12,6 +12,7 @@
 - Product edit form revamp to handle lot of attributes, locales and channels per product
 - Re-work the import/export engine by introducing a new Connector (component+bundle), the old one is deprecated but still useable
 - Re-work the installer to use the new import engine (remove the yml format for fixtures)
+- Remove the yml category and association fixtures
 
 ## Bug fixes
 - PIM-3874: clicking a category gives an error with only "list categories" permission
