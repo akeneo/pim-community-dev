@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\Behat\Context\Step;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Context\Page\Asset\Edit;
 use SensioLabs\Behat\PageObjectExtension\PageObject\Page;
@@ -34,6 +35,27 @@ class EnterpriseAssetContext extends RawMinkContext
     {
         if (null === $channel) {
             $this->getCurrentPage()->findReferenceUploadZone();
+        }
+    }
+
+    /**
+     * @Then /^I should( not)? be able to generate (\S+) from reference$/
+     *
+     * @param bool $not
+     * @param      $channel
+     *
+     * @throws ElementNotFoundException
+     */
+    public function iCanGenerateChannel($not = false, $channel)
+    {
+        try {
+            $this->getCurrentPage()->findVariationGenerateZone($channel);
+        } catch (ElementNotFoundException $e) {
+            if ($not) {
+                // do nothing
+            } else {
+                throw $e;
+            }
         }
     }
 

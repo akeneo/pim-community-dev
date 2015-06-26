@@ -63,20 +63,55 @@ class Edit extends Form
         $elt->click();
     }
 
-    public function deleteReference() {
+    public function deleteReference()
+    {
         $deleteButton = $this->find('css', 'div.reference button.delete');
         if (!$deleteButton) {
             throw new ElementNotFoundException($this->getSession(), 'delete reference button');
         }
         $deleteButton->click();
+
         return true;
     }
 
-    public function findReferenceUploadZone() {
+    public function findReferenceUploadZone()
+    {
         $uploadZone = $this->find('css', 'div.reference .asset-uploader');
         if (!$uploadZone) {
             throw new ElementNotFoundException($this->getSession(), 'reference upload zone');
         }
+
         return true;
+    }
+
+    public function findVariationGenerateZone($channel)
+    {
+        $variationContainer = $this->findVariationContainer($channel);
+
+        $generateZone = $variationContainer->find('css', 'span:contains("Generate from reference")');
+
+        if (!$generateZone) {
+            throw new ElementNotFoundException($this->getSession(), sprintf('variation %s generate zone', $channel));
+        }
+
+        return true;
+    }
+
+    public function findVariationContainer($channel)
+    {
+        $allVariationsContainer = $this->findAll('css', 'div.variation');
+
+        if (!$allVariationsContainer) {
+            throw new ElementNotFoundException($this->getSession(), 'variation containers');
+        }
+
+        foreach ($allVariationsContainer as $container) {
+            $title = $this->find('css', sprintf('h4:contains("%s")', $channel));
+            if (null !== $title) {
+                return $container;
+            }
+        }
+
+        throw new ElementNotFoundException($this->getSession(), sprintf('variation %s container', $channel));
     }
 }
