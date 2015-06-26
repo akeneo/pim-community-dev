@@ -11,11 +11,6 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
-use Akeneo\Component\FileStorage\Model\FileInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
-use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
-use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
-use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 
 /**
@@ -23,54 +18,12 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
  *
  * Generate the variation files, store them in the filesystem and link them to the reference.
  *
- * TODO: maybe we'll need some generateMissing() functions
- *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface VariationFileGeneratorInterface
 {
     /**
-     * Generate the variation files from an asset.
-     *
-     * @param AssetInterface $asset
-     * @param ChannelInterface      $channel
-     * @param LocaleInterface       $locale
-     *
-     * @throws \LogicException
-     */
-    public function generateFromAsset(
-        AssetInterface $asset,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    );
-
-    /**
-     * Generate the variation files from a reference.
-     *
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
-     * @param LocaleInterface    $locale
-     *
-     * @throws \LogicException
-     */
-    public function generateFromReference(
-        ReferenceInterface $reference,
-        ChannelInterface $channel,
-        LocaleInterface $locale = null
-    );
-
-    /**
-     * @param FileInterface      $file
      * @param VariationInterface $variation
-     * @param ChannelInterface   $channel
-     * @param string             $outputFilename
-     * @param bool               $setVariationToLocked
      */
-    public function generateFromFile(
-        FileInterface $file,
-        VariationInterface $variation,
-        ChannelInterface $channel,
-        $outputFilename,
-        $setVariationToLocked = false
-    );
+    public function generate(VariationInterface $variation);
 }

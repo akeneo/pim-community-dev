@@ -3,6 +3,7 @@ oro_menu_config:
         pim_asset_tab:
             label: pimee_product_asset.menu
             route: pimee_product_asset_index
+            aclResourceId: pimee_product_asset_index
             extras:
                 routes: ['/^pimee_product_asset_\w+$/']
                 position: 80

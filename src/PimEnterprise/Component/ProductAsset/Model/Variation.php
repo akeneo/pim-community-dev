@@ -33,6 +33,9 @@ class Variation implements VariationInterface
     /** @var FileInterface */
     protected $file;
 
+    /** @var FileInterface */
+    protected $sourceFile;
+
     /** @var bool */
     protected $locked;
 
@@ -124,9 +127,27 @@ class Variation implements VariationInterface
     /**
      * {@inheritdoc}
      */
-    public function setFile(FileInterface $file)
+    public function setFile(FileInterface $file = null)
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSourceFile()
+    {
+        return $this->sourceFile;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setSourceFile(FileInterface $file)
+    {
+        $this->sourceFile = $file;
 
         return $this;
     }

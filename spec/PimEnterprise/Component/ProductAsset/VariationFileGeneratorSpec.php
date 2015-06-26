@@ -39,21 +39,23 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         ChannelInterface $ecommerce,
         ReferenceInterface $reference,
         VariationInterface $variation,
-        FileInterface $referenceFile,
-        Filesystem $filesystem
+        FileInterface $sourceFile,
+        VariationInterface $variation,
+        Filesystem $filesystem,
+        LocaleInterface $en_US
     ) {
         $channelConfigurationRepository->findOneBy(Argument::any())->willReturn($channelConfiguration);
-
         $ecommerce->getId()->willReturn(12);
         $ecommerce->getCode()->willReturn('ecommerce');
-
-        $reference->getId()->willReturn(45);
-        $reference->getVariation($ecommerce)->willReturn($variation);
-        $reference->getFile()->willReturn($referenceFile);
-
-        $referenceFile->getKey()->willReturn('path/to/my_original_file.txt');
-        $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
-
+        $reference->getLocale()->willReturn($en_US);
+        $variation->getReference()->willReturn($reference);
+        $variation->getChannel()->willReturn($ecommerce);
+        $variation->getId()->willReturn(16);
+        $variation->getSourceFile()->willReturn($sourceFile);
+        $sourceFile->getKey()->willReturn('path/to/my_original_file.txt');
+        $sourceFile->getExtension()->willReturn('txt');
+        $sourceFile->getOriginalFilename()->willReturn('my_original_file.txt');
+        $sourceFile->getStorage()->willReturn(self::STORAGE_FS);
         $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
         $filesystem->has('path/to/my_original_file.txt')->willReturn(true);
 
@@ -70,8 +72,7 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         );
     }
 
-    function it_generates_the_variation_file_from_a_file(
-        $ecommerce,
+    function it_generates_the_variation(
         $rawFileFetcher,
         $filesystem,
         $channelConfiguration,
@@ -80,8 +81,8 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataSaver,
         $variation,
         $variationSaver,
+        $sourceFile,
         $metadataBuilderRegistry,
-        FileInterface $inputFile,
         \SplFileInfo $inputFileInfo,
         \SplFileInfo $variationFileInfo,
         FileInterface $variationFile,
@@ -94,158 +95,30 @@ class VariationFileGeneratorSpec extends ObjectBehavior
         $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
         $inputFileInfo->getPathname()->willReturn($referencePathname);
 
-        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
+        $channelConfiguration->getConfiguration()->willReturn(['t1', 't2']);
 
-        $rawFileFetcher->fetch($inputFile, $filesystem)->willReturn($inputFileInfo);
+        $rawFileFetcher->fetch($sourceFile, $filesystem)->willReturn($inputFileInfo);
         $fileTransformer->transform(
             $inputFileInfo,
             ['t1', 't2'],
-            'my.file.txt'
+            'my_original_file--ecommerce.txt'
         )->willReturn($variationFileInfo);
         $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
         $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
 
         $fileMetadata->setFile($variationFile)->shouldBeCalled();
-        $metadataSaver->save($fileMetadata)->shouldBeCalled();
-        $variationSaver->save($variation)->shouldBeCalled();
+        $metadataSaver->save($fileMetadata, ['flush_only_object' => true])->shouldBeCalled();
+        $variationSaver->save($variation, ['flush_only_object' => true])->shouldBeCalled();
         $variation->setFile($variationFile)->shouldBeCalled();
-        $variation->setLocked(false)->shouldBeCalled();
 
-        $this->generateFromFile($inputFile, $variation, $ecommerce, 'my.file.txt');
-    }
-
-    function it_generates_the_variation_file_from_a_reference(
-        $reference,
-        $referenceFile,
-        $ecommerce,
-        $rawFileFetcher,
-        $filesystem,
-        $channelConfiguration,
-        $fileTransformer,
-        $rawFileStorer,
-        $metadataSaver,
-        $variation,
-        $variationSaver,
-        $metadataBuilderRegistry,
-        LocaleInterface $fr,
-        \SplFileInfo $referenceFileInfo,
-        \SplFileInfo $variationFileInfo,
-        FileInterface $variationFile,
-        FileMetadataInterface $fileMetadata,
-        MetadataBuilderInterface $metadataBuilder
-    ) {
-        $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
-        touch($referencePathname);
-
-        $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
-        $referenceFileInfo->getPathname()->willReturn($referencePathname);
-
-        $referenceFile->getExtension()->willReturn('txt');
-        $referenceFile->getOriginalFilename()->willReturn('my originial file.txt');
-        $fr->getCode()->willReturn('fr_FR');
-
-        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
-
-        $rawFileFetcher->fetch($referenceFile, $filesystem)->willReturn($referenceFileInfo);
-        $fileTransformer->transform(
-            $referenceFileInfo,
-            ['t1', 't2'],
-            'my originial file-fr_FR-ecommerce.txt'
-        )->willReturn($variationFileInfo);
-        $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
-        $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
-
-        $fileMetadata->setFile($variationFile)->shouldBeCalled();
-        $metadataSaver->save($fileMetadata)->shouldBeCalled();
-        $variationSaver->save($variation)->shouldBeCalled();
-        $variation->setFile($variationFile)->shouldBeCalled();
-        $variation->setLocked(false)->shouldBeCalled();
-
-        $this->generateFromReference($reference, $ecommerce, $fr);
-    }
-
-    function it_generates_the_variation_file_from_an_asset(
-        $reference,
-        $referenceFile,
-        $ecommerce,
-        $rawFileFetcher,
-        $filesystem,
-        $channelConfiguration,
-        $fileTransformer,
-        $rawFileStorer,
-        $metadataSaver,
-        $variation,
-        $variationSaver,
-        $metadataBuilderRegistry,
-        LocaleInterface $fr,
-        AssetInterface $asset,
-        \SplFileInfo $referenceFileInfo,
-        \SplFileInfo $variationFileInfo,
-        FileInterface $variationFile,
-        FileMetadataInterface $fileMetadata,
-        MetadataBuilderInterface $metadataBuilder
-    ) {
-        $referencePathname = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid();
-        touch($referencePathname);
-
-        $asset->getReference($fr)->willReturn($reference);
-        $metadataBuilderRegistry->getByFile($variationFileInfo)->willReturn($metadataBuilder);
-        $referenceFileInfo->getPathname()->willReturn($referencePathname);
-
-        $referenceFile->getExtension()->willReturn('txt');
-        $referenceFile->getOriginalFilename()->willReturn('my originial file.txt');
-        $fr->getCode()->willReturn('fr_FR');
-
-        $channelConfiguration->getConfiguration()->willReturn(['pipeline' => ['t1', 't2']]);
-
-        $rawFileFetcher->fetch($referenceFile, $filesystem)->willReturn($referenceFileInfo);
-        $fileTransformer->transform(
-            $referenceFileInfo,
-            ['t1', 't2'],
-            'my originial file-fr_FR-ecommerce.txt'
-        )->willReturn($variationFileInfo);
-        $metadataBuilder->build($variationFileInfo)->willReturn($fileMetadata);
-        $rawFileStorer->store($variationFileInfo, self::STORAGE_FS)->willReturn($variationFile);
-
-        $fileMetadata->setFile($variationFile)->shouldBeCalled();
-        $metadataSaver->save($fileMetadata)->shouldBeCalled();
-        $variationSaver->save($variation)->shouldBeCalled();
-        $variation->setFile($variationFile)->shouldBeCalled();
-        $variation->setLocked(false)->shouldBeCalled();
-
-        $this->generateFromAsset($asset, $ecommerce, $fr);
-    }
-
-    function it_throws_an_exception_if_the_asset_has_no_reference_for_a_locale(
-        $ecommerce,
-        AssetInterface $asset,
-        LocaleInterface $fr
-    ) {
-        $fr->getCode()->willReturn('fr_FR');
-        $asset->getCode()->willReturn('asset1');
-        $asset->getReference($fr)->willReturn(null);
-
-        $this->shouldThrow(
-            new \LogicException('The asset "asset1" has no reference for the locale "fr_FR".')
-        )->during('generateFromAsset', [$asset, $ecommerce, $fr]);
-    }
-
-    function it_throws_an_exception_if_the_asset_has_no_unlocalized_reference(
-        $ecommerce,
-        AssetInterface $asset
-    ) {
-        $asset->getCode()->willReturn('asset1');
-        $asset->getReference(null)->willReturn(null);
-
-        $this->shouldThrow(
-            new \LogicException('The asset "asset1" has no reference without locale.')
-        )->during('generateFromAsset', [$asset, $ecommerce]);
+        $this->generate($variation);
     }
 
     function it_throws_an_exception_if_the_channel_variation_configuration_can_not_be_retrieved(
+        AssetInterface $asset,
+        VariationInterface $variation,
         ChannelInterface $channel,
-        $channelConfigurationRepository,
-        ReferenceInterface $reference
+        $channelConfigurationRepository
     ) {
         $channel->getId()->willReturn(12);
         $channel->getCode()->willReturn('ecommerce');
@@ -254,47 +127,26 @@ class VariationFileGeneratorSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('No variations configuration exists for the channel "ecommerce".')
-        )->during('generateFromReference', [$reference, $channel]);
+        )->during('generate', [$variation]);
     }
 
-    function it_throws_an_exception_if_there_is_no_variation(
-        $ecommerce,
-        ReferenceInterface $reference
-    ) {
-        $reference->getId()->willReturn(45);
-        $reference->getVariation($ecommerce)->willReturn(null);
-
-        $this->shouldThrow(
-            new \LogicException('The reference "45" has no variation for the channel "ecommerce".')
-        )->during('generateFromReference', [$reference, $ecommerce]);
-    }
-
-    function it_throws_an_exception_if_the_reference_has_no_file($ecommerce, $reference)
+    function it_throws_an_exception_if_the_variation_has_no_source_file($reference, $variation)
     {
-        $reference->getFile()->willReturn(null);
+        $variation->getSourceFile()->willReturn(null);
 
         $this->shouldThrow(
-            new \LogicException('The reference "45" has no file.')
-        )->during('generateFromReference', [$reference, $ecommerce]);
+            new \LogicException('The variation "16" has no source file.')
+        )->during('generate', [$variation]);
     }
 
-    function it_throws_an_exception_if_the_reference__file_is_not_on_the_filesystem(
-        $ecommerce,
-        $reference,
-        $mountManager,
-        FileInterface $referenceFile,
-        Filesystem $filesystem
+    function it_throws_an_exception_if_the_source_file_is_not_on_the_filesystem(
+        $variation,
+        $filesystem
     ) {
-        $referenceFile->getKey()->willReturn('path/to/file.txt');
-        $referenceFile->getStorage()->willReturn(self::STORAGE_FS);
-
-        $mountManager->getFilesystem(self::STORAGE_FS)->willReturn($filesystem);
-        $filesystem->has('path/to/file.txt')->willReturn(false);
+        $filesystem->has('path/to/my_original_file.txt')->willReturn(false);
 
         $this->shouldThrow(
-            new \LogicException('The reference file "path/to/file.txt" is not present on the filesystem "my_storage".')
-        )->during('generateFromReference', [$reference, $ecommerce]);
+            new \LogicException('The source file "path/to/my_original_file.txt" is not present on the filesystem "my_storage".')
+        )->during('generate', [$variation]);
     }
-
-
 }

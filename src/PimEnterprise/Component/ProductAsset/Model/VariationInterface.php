@@ -71,7 +71,19 @@ interface VariationInterface
      *
      * @return VariationInterface
      */
-    public function setFile(FileInterface $file);
+    public function setFile(FileInterface $file = null);
+
+    /**
+     * @return FileInterface
+     */
+    public function getSourceFile();
+
+    /**
+     * @param FileInterface $file
+     *
+     * @return VariationInterface
+     */
+    public function setSourceFile(FileInterface $file);
 
     /**
      * @return bool

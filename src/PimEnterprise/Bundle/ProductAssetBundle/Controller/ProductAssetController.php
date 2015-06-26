@@ -11,6 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Controller;
 
+use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -19,7 +20,11 @@ use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\Reference;
+use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
+use PimEnterprise\Component\ProductAsset\Model\Variation;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
@@ -29,6 +34,7 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -79,6 +85,7 @@ class ProductAssetController extends Controller
      * @param RawFileStorerInterface          $rawFileStorer
      * @param VariationFileGeneratorInterface $variationFileGenerator
      * @param SaverInterface                  $assetSaver
+     * @param EventDispatcherInterface        $eventDispatcher
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -88,7 +95,8 @@ class ProductAssetController extends Controller
         ChannelRepositoryInterface $channelRepository,
         RawFileStorerInterface $rawFileStorer,
         VariationFileGeneratorInterface $variationFileGenerator,
-        SaverInterface $assetSaver
+        SaverInterface $assetSaver,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -103,14 +111,12 @@ class ProductAssetController extends Controller
     /**
      * List of assets
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pimee_product_asset_index")
      *
      * @return array
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return [];
     }
@@ -118,7 +124,6 @@ class ProductAssetController extends Controller
     /**
      * View an asset
      *
-     * @param Request    $request
      * @param int|string $id
      *
      * @Template
@@ -126,7 +131,7 @@ class ProductAssetController extends Controller
      *
      * @return array
      */
-    public function viewAction(Request $request, $id)
+    public function viewAction($id)
     {
         $productAsset = $this->findProductAssetOr404($id);
         $references   = $productAsset->getReferences();
@@ -174,12 +179,15 @@ class ProductAssetController extends Controller
         $productAsset = $this->findProductAssetOr404($id);
         $assetForm    = $this->createForm('pimee_product_asset', $productAsset)->createView();
 
-        $attachments = $this->createAttachments($productAsset);
+        $metadata = null;
+        if (null !== $productAsset) {
+            $metadata = $this->getAssetMetadata($productAsset);
+        }
 
         return [
-            'asset'       => $productAsset,
-            'form'        => $assetForm,
-            'attachments' => $attachments
+            'asset'    => $productAsset,
+            'form'     => $assetForm,
+            'metadata' => $metadata
         ];
     }
 
@@ -193,14 +201,17 @@ class ProductAssetController extends Controller
      */
     public function updateAction(Request $request, $id)
     {
-        $productAsset = $this->findProductAssetOr404($id);
-        $form = $this->createForm('pimee_product_asset', $productAsset);
+        $asset = $this->findProductAssetOr404($id);
+//        $assetWithoutFiles = $this->buildAssetWithoutFiles($asset);
+        $form = $this->createForm('pimee_product_asset', $asset);
 
         $form->handleRequest($request);
 
+        // TODO: check if references and variations are really validated
         if ($form->isValid()) {
             try {
-                $this->assetSaver->save($productAsset);
+                $this->handleAssetFiles($asset);
+                $this->assetSaver->save($asset);
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
             } catch (\Exception $e) {
                 $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
@@ -216,6 +227,8 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @return RedirectResponse
+     *
+     * TODO: delete this
      */
     public function uploadReferenceAction(Request $request, $assetId, $id)
     {
@@ -247,6 +260,8 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @return RedirectResponse
+     *
+     * TODO: delete this
      */
     public function uploadVariationAction(Request $request, $assetId, $id)
     {
@@ -282,6 +297,75 @@ class ProductAssetController extends Controller
         }
 
         return $this->redirect($this->generateUrl('pimee_product_asset_edit', ['id' => $assetId]));
+    }
+
+    /**
+     * TODO: dedicated service and clean
+     *
+     * @param AssetInterface $asset
+     *
+     * @return Asset
+     */
+    protected function buildAssetWithoutFiles(AssetInterface $asset)
+    {
+        // TODO: do not hardcode the class
+        $emptyAsset = new Asset();
+        foreach ($asset->getReferences() as $reference) {
+            // TODO: do not hardcode the class
+            $emptyReference = new Reference();
+            if (null !== $locale = $reference->getLocale()) {
+                $emptyReference->setLocale($locale);
+            }
+
+            /** @var VariationInterface $variation */
+            foreach ($reference->getVariations() as $variation) {
+                $emptyVariation = new Variation();
+                if (null !== $channel = $variation->getChannel()) {
+                    $emptyVariation->setChannel($channel);
+                }
+
+                $emptyReference->addVariation($emptyVariation);
+            }
+
+            $emptyAsset->addReference($emptyReference);
+        }
+
+        return $emptyAsset;
+    }
+
+    /**
+     * TODO: dedicated service and clean
+     *
+     * @param AssetInterface $asset
+     */
+    protected function handleAssetFiles(AssetInterface $asset)
+    {
+        foreach ($asset->getReferences() as $reference) {
+            foreach ($reference->getVariations() as $variation) {
+                if (null !== $uploadedFile = $variation->getSourceFile()->getUploadedFile()) {
+                    $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+                    $variation->setSourceFile($file);
+                    $variation->setFile(null);
+                    $variation->setLocked(true);
+                    //TODO: dispatch event to be able to launch command "pim:asset:generate-variation"
+                }
+                if (null !== $variation->getFile() && null === $variation->getFile()->getId()) {
+                    $variation->setFile(null);
+                }
+                if (null !== $variation->getSourceFile() && null === $variation->getSourceFile()->getId()) {
+                    $variation->setSourceFile(null);
+                }
+            }
+
+            if (null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
+                $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+                $reference->setFile($file);
+                //TODO: dispatch event to be able to launch command "pim:asset:generate-variations-from-reference"
+            }
+            if (null !== $reference->getFile() && null === $reference->getFile()->getId()) {
+                $reference->setFile(null);
+            }
+        }
     }
 
     /**
@@ -338,6 +422,36 @@ class ProductAssetController extends Controller
         }
 
         return $attachments;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getAssetMetadata(AssetInterface $productAsset)
+    {
+        $metadata = [];
+
+        foreach ($productAsset->getReferences() as $reference) {
+            /** @var ReferenceInterface $reference */
+            $metadata['references'][$reference->getId()] = $reference->getFile() ? $this->getFileMetadata($reference->getFile()) : null;
+            foreach ($reference->getVariations() as $variation) {
+                $metadata['variations'][$variation->getId()] = $variation->getFile() ? $this->getFileMetadata($variation->getFile()) : null;
+            }
+        }
+
+        return $metadata;
+    }
+
+    /**
+     * @param FileInterface $file
+     *
+     * @return array
+     */
+    protected function getFileMetadata(FileInterface $file)
+    {
+        $metadata = $this->metadataRepository->findOneBy(['file' => $file->getId()]);
+
+        return $metadata;
     }
 
     /**

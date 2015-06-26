@@ -27,3 +27,12 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
             join_column:
                 name: reference_id
                 referencedColumnName: id
+        sourceFile:
+            targetEntity: Akeneo\Component\FileStorage\Model\FileInterface
+            joinColumn:
+                name: source_file_id
+                referencedColumnName: id
+            cascade:
+                - persist
+                - refresh
+                - detach
