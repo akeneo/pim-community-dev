@@ -23,12 +23,16 @@ class CommandLauncher
     /** @var string Application root directory */
     protected $rootDir;
 
+    /** @var string Application exceution environment */
+    protected $environment;
+
     /**
      * @param string $rootDir
      */
-    public function __construct($rootDir)
+    public function __construct($rootDir, $environment)
     {
-        $this->rootDir = $rootDir;
+        $this->rootDir     = $rootDir;
+        $this->environment = $environment;
     }
 
     /**
@@ -52,9 +56,10 @@ class CommandLauncher
     public function execute($command, $background = true)
     {
         $cmd = sprintf(
-            '%s %s/console %s',
+            '%s %s/console --env=%s %s',
             $this->getPhp(),
             $this->rootDir,
+            $this->environment,
             $command
         );
 

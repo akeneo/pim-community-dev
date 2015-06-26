@@ -63,13 +63,50 @@ class Edit extends Form
         $elt->click();
     }
 
-    public function deleteReference()
+    public function deleteReferenceFile()
     {
         $deleteButton = $this->find('css', 'div.reference button.delete');
         if (!$deleteButton) {
             throw new ElementNotFoundException($this->getSession(), 'delete reference button');
         }
         $deleteButton->click();
+
+        return true;
+    }
+
+    public function generateVariationFile($channel)
+    {
+        $variationContainer = $this->findVariationContainer($channel);
+
+        $generateButton = $variationContainer->find('css', '.asset-generator a');
+        if (!$generateButton) {
+            throw new ElementNotFoundException($this->getSession(), 'generate variation button');
+        }
+        $generateButton->click();
+
+        return true;
+    }
+
+    public function deleteVariationFile($channel)
+    {
+        $variationContainer = $this->findVariationContainer($channel);
+
+        $deleteButton = $variationContainer->find('css', 'div.variation button.delete');
+        if (!$deleteButton) {
+            throw new ElementNotFoundException($this->getSession(), 'delete variation button');
+        }
+        $deleteButton->click();
+
+        return true;
+    }
+
+    public function resetVariationsFiles()
+    {
+        $resetButton = $this->find('css', 'div.reference button.reset-variations');
+        if (!$resetButton) {
+            throw new ElementNotFoundException($this->getSession(), 'reset button');
+        }
+        $resetButton->click();
 
         return true;
     }

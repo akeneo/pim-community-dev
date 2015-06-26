@@ -27,3 +27,4 @@ services:
         class: %pimee_product_asset.command_launcher.class%
         arguments:
           - '%kernel.root_dir%'
+          - '%kernel.environment%'

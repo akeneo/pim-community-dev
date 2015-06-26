@@ -20,16 +20,34 @@ class EnterpriseAssetContext extends RawMinkContext
      * @Then /^I delete the reference file$/
      * @Then /^I delete the (\S+) variation file$/
      */
-    public function iDeleteTheReferenceFile($channel = null)
+    public function iDeleteTheFile($channel = null)
     {
         if (null === $channel) {
-            $this->getCurrentPage()->deleteReference();
+            $this->getCurrentPage()->deleteReferenceFile();
+        } else {
+            $this->getCurrentPage()->deleteVariationFile($channel);
         }
     }
 
     /**
-     * @Then /^I can upload a reference file$/
-     * @Then /^I can upload a (\S+) variation file$/
+     * @Then /^I reset variations files$/
+     */
+    public function iResetVariationsFiles()
+    {
+        $this->getCurrentPage()->resetVariationsFiles();
+    }
+
+    /**
+     * @Then /^I generate (\S+) variation from reference$/
+     */
+    public function iGenerateVariationFile($channel)
+    {
+        $this->getCurrentPage()->generateVariationFile($channel);
+    }
+
+    /**
+     * @Then /^I should see the reference upload zone$/
+     * @Then /^I should see the (\S+) variation upload zone$/
      */
     public function iCanUploadAssetFile($channel = null)
     {
