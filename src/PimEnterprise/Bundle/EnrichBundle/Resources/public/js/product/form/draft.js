@@ -9,7 +9,7 @@ define(
         'pim/form',
         'text!pimee/template/product/submit-draft',
         'pimee/permission-manager',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'oro/messenger'
     ],
     function (
@@ -20,7 +20,7 @@ define(
         BaseForm,
         template,
         PermissionManager,
-        EntityManager,
+        FetcherRegistry,
         messenger
     ) {
         return BaseForm.extend({
@@ -56,12 +56,14 @@ define(
                     return;
                 }
 
-                EntityManager.getRepository('productDraft').get(event.data.meta.id).then(_.bind(function (data) {
-                    this.updateProductDraft(data);
-                }, this));
+                FetcherRegistry.getFetcher('product-draft')
+                    .fetchForProduct(event.data.meta.id)
+                    .then(_.bind(function (data) {
+                        this.updateProductDraft(data);
+                    }, this));
             },
             reloadProductDraft: function (data) {
-                EntityManager.getRepository('productDraft').clear(data.meta.id);
+                FetcherRegistry.getFetcher('product-draft').clear(data.meta.id);
                 this.loadProductDraft({data: this.getData()});
             },
             updateProductDraft: function (data) {
@@ -99,7 +101,7 @@ define(
                 return this;
             },
             submitDraft: function () {
-                EntityManager.getRepository('productDraft').sendForApproval(this.draft.toJSON()).done(
+                FetcherRegistry.getFetcher('product-draft').sendForApproval(this.draft.toJSON()).done(
                     _.bind(function (data) {
                         this.updateProductDraft(data);
 
