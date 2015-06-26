@@ -49,10 +49,12 @@ class EnterpriseAssetContext extends RawMinkContext
      * @Then /^I should see the reference upload zone$/
      * @Then /^I should see the (\S+) variation upload zone$/
      */
-    public function iCanUploadAssetFile($channel = null)
+    public function iShouldSeeFileUploadZone($channel = null)
     {
         if (null === $channel) {
             $this->getCurrentPage()->findReferenceUploadZone();
+        } else {
+            $this->getCurrentPage()->findVariationUploadZone($channel);
         }
     }
 
@@ -75,6 +77,41 @@ class EnterpriseAssetContext extends RawMinkContext
                 throw $e;
             }
         }
+    }
+
+    /**
+     * @Given /^I upload the reference file (\S+)$/
+     */
+    public function iUploadTheReferenceFile($file)
+    {
+        $this->iUploadTheAssetFile($file);
+    }
+
+    /**
+     * @Given /^I upload the (\S+) variation file (\S+)$/
+     */
+    public function iUploadTheVariationFile($channel, $file)
+    {
+        $this->iUploadTheAssetFile($file, $channel);
+    }
+
+    protected function iUploadTheAssetFile($file = null, $channel = null)
+    {
+        if ($this->getMinkParameter('files_path')) {
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+            if (is_file($fullPath)) {
+                $file = $fullPath;
+            }
+        }
+
+        if (null === $channel) {
+            $uploadZone = $this->getCurrentPage()->findReferenceUploadZone();
+        } else {
+            $uploadZone = $this->getCurrentPage()->findVariationUploadZone($channel);
+        }
+
+        $field = $uploadZone->find('css', 'input[type="file"]');
+        $field->attachFile($fullPath);
     }
 
     /**

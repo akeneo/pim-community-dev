@@ -114,11 +114,24 @@ class Edit extends Form
     public function findReferenceUploadZone()
     {
         $uploadZone = $this->find('css', 'div.reference .asset-uploader');
+
         if (!$uploadZone) {
             throw new ElementNotFoundException($this->getSession(), 'reference upload zone');
         }
 
-        return true;
+        return $uploadZone;
+    }
+
+    public function findVariationUploadZone($channel)
+    {
+        $variationContainer = $this->findVariationContainer($channel);
+        $uploadZone = $variationContainer->find('css', 'div.variation .asset-uploader');
+
+        if (!$uploadZone) {
+            throw new ElementNotFoundException($this->getSession(), 'variation upload zone');
+        }
+
+        return $uploadZone;
     }
 
     public function findVariationGenerateZone($channel)

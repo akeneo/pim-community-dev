@@ -15,7 +15,6 @@ Feature: Edit product assets variations
     And I should see the Tablet variation upload zone
     And I should be able to generate Mobile from reference
     And I should be able to generate Tablet from reference
-
     Given I delete the reference file
     And I confirm the deletion
     Then I should see the reference upload zone
@@ -23,6 +22,14 @@ Feature: Edit product assets variations
     And I should see the Tablet variation upload zone
     And I should not be able to generate Mobile from reference
     And I should not be able to generate Tablet from reference
+
+  Scenario: Successfully upload a localized variation file
+    When I am on the "chicagoskyline" asset page
+    And I visit the "Variations" tab
+    And I switch the locale to "German (Germany)"
+    And I upload the Mobile variation file akeneo.jpg
+    And I save the asset
+    # TODO: Check the file
 
   Scenario: Successfully delete variation file
     Given I generate missing variations for asset bridge
@@ -55,5 +62,3 @@ Feature: Edit product assets variations
     Then I should be able to generate Mobile from reference
     Given I generate Mobile variation from reference
     Then I should be able to generate Mobile from reference
-
-    And I wait 20 seconds
