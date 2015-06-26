@@ -108,7 +108,7 @@ class ProductAssociationFilter implements ProductFilterInterface
      */
     protected function getOriginalProduct(ProductInterface $product)
     {
-        $originalProduct = $this->normalizer->normalize($product, 'json');
+        $originalProduct = $this->normalizer->normalize($product, 'json', ['only_associations' => true]);
 
         return isset($originalProduct[self::ASSOCIATIONS_FIELD]) ? $originalProduct[self::ASSOCIATIONS_FIELD] : [];
     }
