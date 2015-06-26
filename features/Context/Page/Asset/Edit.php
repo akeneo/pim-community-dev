@@ -2,6 +2,7 @@
 
 namespace Context\Page\Asset;
 
+use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
 
 /**
@@ -60,5 +61,14 @@ class Edit extends Form
             throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
         }
         $elt->click();
+    }
+
+    public function deleteReference() {
+        $deleteButton = $this->find('css', 'div.reference button.delete');
+        if (!$deleteButton) {
+            throw new ElementNotFoundException($this->getSession(), 'delete reference button');
+        }
+        $deleteButton->click();
+        return true;
     }
 }
