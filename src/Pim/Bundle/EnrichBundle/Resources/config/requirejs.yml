@@ -170,6 +170,7 @@ config:
         pim/simple-select-field:            pimenrich/js/product/field/simple-select-field
         pim/text-field:                     pimenrich/js/product/field/text-field
         pim/textarea-field:                 pimenrich/js/product/field/textarea-field
+        pim/wysiwyg-field:                  pimenrich/js/product/field/wysiwyg-field
 
         # Templates
         pim/template/product/form:                                   pimenrich/templates/product/form.html

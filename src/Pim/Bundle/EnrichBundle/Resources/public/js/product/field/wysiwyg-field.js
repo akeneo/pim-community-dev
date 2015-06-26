@@ -11,7 +11,8 @@ define(
     [
         'pim/field',
         'underscore',
-        'text!pim/template/product/field/textarea'
+        'text!pim/template/product/field/textarea',
+        'summernote'
     ],
     function (
         Field,
@@ -26,14 +27,29 @@ define(
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
+            postRender: function () {
+                if (this.attribute.wysiwyg_enabled) {
+                    this.$('textarea').summernote({
+                        disableResizeEditor: true,
+                        height: 200,
+                        iconPrefix: 'icon-',
+                        toolbar: [
+                            ['font', ['bold', 'italic', 'underline', 'clear']],
+                            ['para', ['ul', 'ol']],
+                            ['insert', ['link']],
+                            ['view', ['codeview']]
+                        ]
+                    }).on('summernote.blur', _.bind(this.updateModel, this));
+                }
+            },
             updateModel: function () {
-                var data = this.$('.field-input:first textarea:first').val();
+                var data = this.$('.field-input:first textarea:first').code();
                 data = '' === data ? this.attribute.empty_value : data;
 
                 this.setCurrentValue(data);
             },
             setFocus: function () {
-                this.$('.field-input:first textarea').focus();
+                this.$('.field-input:first textarea').summernote('focus');
             }
         });
     }

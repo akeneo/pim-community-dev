@@ -17,7 +17,6 @@ define([
     function ($, Field, _, EntityManager, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
-        fieldType: 'price-collection',
         events: {
             'change .field-input input[type="text"]': 'updateModel'
         },

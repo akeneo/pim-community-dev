@@ -212,15 +212,14 @@ extensions:
         position: 110
 
 attribute_fields:
-    pim_catalog_boolean:          pim/boolean-field
-    pim_catalog_date:             pim/date-field
-    pim_catalog_file:             pim/media-field
-    pim_catalog_image:            pim/media-field
-    pim_catalog_metric:           pim/metric-field
-    pim_catalog_multiselect:      pim/multi-select-field
-    pim_catalog_number:           pim/number-field
-    pim_catalog_price_collection: pim/price-collection-field
-    pim_catalog_simpleselect:     pim/simple-select-field
-    pim_catalog_identifier:       pim/text-field
-    pim_catalog_text:             pim/text-field
-    pim_catalog_textarea:         pim/textarea-field
+    akeneo-switch-field:           pim/boolean-field
+    akeneo-datepicker-field:       pim/date-field
+    akeneo-media-uploader-field:   pim/media-field
+    akeneo-metric-field:           pim/metric-field
+    akeneo-multi-select-field:     pim/multi-select-field
+    akeneo-number-field:           pim/number-field
+    akeneo-price-collection-field: pim/price-collection-field
+    akeneo-simple-select-field:    pim/simple-select-field
+    akeneo-text-field:             pim/text-field
+    akeneo-textarea-field:         pim/textarea-field
+    akeneo-wysiwyg-field:          pim/wysiwyg-field

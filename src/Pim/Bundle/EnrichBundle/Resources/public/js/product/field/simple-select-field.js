@@ -21,7 +21,6 @@ define(
     function ($, Field, _, fieldTemplate, Routing, createOption, SecurityContext) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
-            fieldType: 'simple-select',
             events: {
                 'change .field-input:first input[type="hidden"].select-field': 'updateModel',
                 'click .add-attribute-option': 'createOption'

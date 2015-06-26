@@ -353,25 +353,27 @@ class Edit extends Form
             $formFieldWrapper = $fieldContainer->find('css', 'div.form-field');
         }
 
-        if ($formFieldWrapper->hasClass('date-field')) {
+        if ($formFieldWrapper->hasClass('akeneo-datepicker-field')) {
             return 'date';
-        } elseif ($formFieldWrapper->hasClass('metric-field')) {
+        } elseif ($formFieldWrapper->hasClass('akeneo-metric-field')) {
             return 'metric';
-        } elseif ($formFieldWrapper->hasClass('multi-select-field') ||
-            $formFieldWrapper->hasClass('reference-multi-select-field')
+        } elseif ($formFieldWrapper->hasClass('akeneo-multi-select-field') ||
+            $formFieldWrapper->hasClass('akeneo-multi-select-reference-data-field')
         ) {
             return 'multiSelect';
-        } elseif ($formFieldWrapper->hasClass('number-field')) {
+        } elseif ($formFieldWrapper->hasClass('akeneo-number-field')) {
             return 'number';
-        } elseif ($formFieldWrapper->hasClass('price-collection-field')) {
+        } elseif ($formFieldWrapper->hasClass('akeneo-price-collection-field')) {
             return 'price';
-        } elseif ($formFieldWrapper->hasClass('simple-select-field') ||
-            $formFieldWrapper->hasClass('reference-simple-select-field')
+        } elseif ($formFieldWrapper->hasClass('akeneo-simple-select-field') ||
+            $formFieldWrapper->hasClass('akeneo-simple-select-reference-data-field')
         ) {
             return 'select';
-        } elseif ($formFieldWrapper->hasClass('text-field')) {
+        } elseif ($formFieldWrapper->hasClass('akeneo-text-field')) {
             return 'text';
-        } elseif ($formFieldWrapper->hasClass('textarea-field')) {
+        } elseif ($formFieldWrapper->hasClass('akeneo-textarea-field') ||
+            $formFieldWrapper->hasClass('akeneo-wysiwyg-field')
+        ) {
             return 'textArea';
         } else {
             return parent::getFieldType($fieldContainer);
@@ -483,7 +485,8 @@ class Edit extends Form
         }
 
         throw new ExpectationException(
-            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()), $this->getSession()
+            sprintf('Could not find select2 widget inside %s', $fieldContainer->getParent()->getHtml()),
+            $this->getSession()
         );
     }
 
@@ -497,8 +500,8 @@ class Edit extends Form
     {
         // clear multi select first
         $containerClasses = $fieldContainer->getAttribute('class');
-        if (preg_match('/(\S+\-multi\-select\-field) /', $containerClasses, $matches)) {
-            $select2Selector = sprintf('.%s div.field-input > input', $matches[1]);
+        if (preg_match('/akeneo-multi-select(-reference-data)?-field/', $containerClasses, $matches)) {
+            $select2Selector = sprintf('.%s div.field-input > input', $matches[0]);
             $script = sprintf('$("%s").select2("val", "");$("%1$s").trigger("change");', $select2Selector);
             $this->getSession()->executeScript($script);
         }
@@ -515,7 +518,7 @@ class Edit extends Form
             $this->getSession()->wait(1000);
 
             $item = $this->spin(function () use ($value) {
-                return $this->find('css', sprintf('.select2-drop li:contains("%s")', $value));
+                return $this->find('css', sprintf('.select2-drop li:contains("%s"):not(.select2-selected)', $value));
             });
 
             // Select the value in the displayed dropdown
