@@ -10,13 +10,17 @@ use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 use Pim\Bundle\CatalogBundle\Query\Filter\FieldFilterHelper;
-use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
+use Pim\Component\Classification\Repository\TagRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Component\ProductAsset\Model\Asset;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
+use PimEnterprise\Component\ProductAsset\Model\Tag;
+use PimEnterprise\Component\ProductAsset\Model\TagInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 
 /**
@@ -230,6 +234,149 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     public function theFollowingLocaleAccesses(TableNode $table)
     {
         $this->createAccesses($table, 'locale');
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following assets?:$/
+     */
+    public function theFollowingAssets(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createAsset($data);
+        }
+    }
+
+    /**
+     * @param string $code
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return AssetInterface
+     */
+    public function getProductAsset($code)
+    {
+        $asset = $this->getAssetRepository()->findOneByIdentifier($code);
+
+        if (null === $asset) {
+            throw new \InvalidArgumentException(sprintf('Could not find an asset with code "%s"', $code));
+        }
+
+        $this->refresh($asset);
+
+        return $asset;
+    }
+
+    /**
+     * @param array|string $data
+     *
+     * @throws \Exception
+     *
+     * @return AssetInterface
+     *
+     * @Given /^a "([^"]+)" asset$/
+     */
+    public function createAsset($data)
+    {
+        $asset = new Asset();
+
+        if (is_string($data)) {
+            $asset->setCode($data);
+        } else {
+            if (isset($data['code']) && is_string($data['code'])) {
+                $asset->setCode($data['code']);
+            }
+            if (isset($data['description'])) {
+                $asset->setDescription($data['description']);
+            }
+            if (isset($data['enabled']) && in_array($data['enabled'], ['yes', 'no'])) {
+                $isEnabled = ('yes' === $data['enabled']);
+                $asset->setEnabled($isEnabled);
+            }
+            if (isset($data['tags'])) {
+                $tags = explode(',', $data['tags']);
+                foreach ($tags as $code) {
+                    $tag = $this->createTag(trim($code));
+                    $asset->addTag($tag);
+                }
+            }
+            if (isset($data['categories'])) {
+                $categories = explode(',', $data['categories']);
+                foreach ($categories as $code) {
+                    $category = $this->getCategoryRepository()->findOneByIdentifier(trim($code));
+                    if (null === $category) {
+                        throw new \Exception("\"$code\" category not found");
+                    }
+                    $asset->addCategory($category);
+                }
+            }
+            if (isset($data['end of use at'])) {
+                $endDate = new \DateTime($data['end of use at']);
+                $asset->setEndOfUseAt($endDate);
+            }
+            if (isset($data['created at'])) {
+                $created = new \DateTime($data['created at']);
+            } else {
+                $created = new \DateTime('now');
+            }
+            $asset->setCreatedAt($created);
+            if (isset($data['updated at'])) {
+                $updated = new \DateTime($data['updated at']);
+            } else {
+                $updated = new \DateTime('now');
+            }
+            $asset->setUpdatedAt($updated);
+
+            // TODO: References and variations
+        }
+
+        $this->getAssetSaver()->save($asset);
+
+        return $asset;
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following tags?:$/
+     */
+    public function theFollowingTags(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createTag($data);
+        }
+    }
+
+    /**
+     * @param string|array $data
+     *
+     * @return TagInterface
+     *
+     * @throws \Exception
+     *
+     * @Given /^a "([^"]+)" tag$/
+     */
+    public function createTag($data)
+    {
+        if (is_string($data)) {
+            $code = $data;
+        } elseif (isset($data['code'])) {
+            $code = $data['code'];
+        } else {
+            throw new \Exception('A tag must have a code.');
+        }
+
+        $repo = $this->getTagRepository();
+        $tag  = $repo->findOneByIdentifier($code);
+
+        if (null === $tag) {
+            $tag = new Tag();
+            $tag->setCode($code);
+            $this->getAssetTagSaver()->save($tag);
+        }
+
+        return $tag;
     }
 
     /**
@@ -459,6 +606,22 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getCategoryRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
+     * @return TagRepositoryInterface
+     */
+    protected function getTagRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.tag');
+    }
+
+    /**
+     * @return AssetRepositoryInterface
+     */
+    protected function getAssetRepository()
+    {
+        return $this->getContainer()->get('pimee_product_asset.repository.asset');
     }
 
     /**
@@ -728,6 +891,22 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getRuleSaver()
     {
         return $this->getContainer()->get('akeneo_rule_engine.saver.rule_definition');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAssetSaver()
+    {
+        return $this->getContainer()->get('pimee_product_asset.saver.asset');
+    }
+
+    /**
+     * @return SaverInterface
+     */
+    protected function getAssetTagSaver()
+    {
+        return $this->getContainer()->get('pimee_product_asset.saver.tag');
     }
 
     /**

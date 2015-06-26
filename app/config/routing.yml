@@ -45,11 +45,11 @@ pim_reference_data:
 pim_catalog_rule:
     resource: "@PimEnterpriseCatalogRuleBundle/Resources/config/routing.yml"
 
-pim_security:
-    resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
-
 pimee_product_asset:
     resource: "@PimEnterpriseProductAssetBundle/Resources/config/routing.yml"
+
+pim_security:
+    resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
 
 # Oro platform
 

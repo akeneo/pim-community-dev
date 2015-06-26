@@ -3,28 +3,21 @@
 define(
     [
         'jquery',
+        'underscore',
         'routing'
     ],
-    function ($, Routing) {
-        var permissions = {};
+    function ($, _, Routing) {
         var promise = null;
 
         return {
             getPermissions: function () {
-                if (promise) {
-                    return promise.promise();
+                if (!promise) {
+                    promise = $.getJSON(
+                        Routing.generate('pimee_security_permissions_rest')
+                    ).then(_.identity).promise();
                 }
 
-                promise = $.Deferred();
-
-                $.getJSON(
-                    Routing.generate('pimee_security_permissions_rest')
-                ).done(function (data) {
-                    permissions = data;
-                    promise.resolve(permissions);
-                });
-
-                return promise.promise();
+                return promise;
             }
         };
     }
