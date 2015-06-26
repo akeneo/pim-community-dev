@@ -136,7 +136,9 @@ function addReferenceToAsset(
 
     if (null !== $localeCode) {
         $locale = $helper->getLocaleRepository()->findOneByIdentifier($localeCode);
-        $ref->setLocale($locale);
+        if (null !== $locale) {
+            $ref->setLocale($locale);
+        }
     }
 
     $file = $helper->getRawFileStorer()->store($file, 'storage');

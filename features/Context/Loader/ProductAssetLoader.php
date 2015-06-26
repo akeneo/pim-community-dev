@@ -25,6 +25,14 @@ class ProductAssetLoader
 
         exec(
             sprintf(
+                '%s %s/01_create_channel_configurations.php behat',
+                $pathFinder->find(),
+                __DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'
+            )
+        );
+
+        exec(
+            sprintf(
                 '%s %s/02_create_assets.php behat',
                 $pathFinder->find(),
                 __DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'
