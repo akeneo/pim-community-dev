@@ -12,13 +12,13 @@ define(
         'underscore',
         'backbone',
         'pim/form',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'text!pim/template/product/meta/change-family-modal',
         'pim/user-context',
         'backbone/bootstrap-modal',
         'jquery.select2'
     ],
-    function (_, Backbone, BaseForm, EntityManager, modalTemplate, UserContext) {
+    function (_, Backbone, BaseForm, FetcherRegistry, modalTemplate, UserContext) {
         var FormView = BaseForm.extend({
             tagName: 'i',
             className: 'icon-pencil',
@@ -32,7 +32,7 @@ define(
                 return BaseForm.prototype.render.apply(this, arguments);
             },
             showModal: function () {
-                EntityManager.getRepository('family').findAll().done(_.bind(function (families) {
+                FetcherRegistry.getFetcher('family').fetchAll().done(_.bind(function (families) {
                     var familyModal = new Backbone.BootstrapModal({
                         allowCancel: true,
                         title: _.__('pim_enrich.form.product.change_family.modal.title'),

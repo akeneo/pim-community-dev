@@ -8,8 +8,8 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['jquery', 'underscore', 'pim/entity-manager', 'pim/form-config-provider'],
-    function ($, _, EntityManager, ConfigProvider) {
+    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-config-provider'],
+    function ($, _, FetcherRegistry, ConfigProvider) {
         var fields = {};
         var visibleFields = {};
         var loadedModules = {};
@@ -48,7 +48,7 @@ define(
                     return deferred.promise();
                 }
 
-                EntityManager.getRepository('attribute').find(attributeCode).done(function (attribute) {
+                FetcherRegistry.getFetcher('attribute').fetch(attributeCode).done(function (attribute) {
                     getFieldForAttribute(attribute).done(function (Field) {
                         fields[attributeCode] = new Field(attribute);
                         deferred.resolve(fields[attributeCode]);

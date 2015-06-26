@@ -22,25 +22,23 @@ define(
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
             events: {
-                'change .field-input:first textarea': 'updateModel'
+                'change .field-input:first textarea:first': 'updateModel'
             },
             renderInput: function (context) {
                 return this.fieldTemplate(context);
             },
             postRender: function () {
-                if (this.attribute.wysiwyg_enabled) {
-                    this.$('textarea').summernote({
-                        disableResizeEditor: true,
-                        height: 200,
-                        iconPrefix: 'icon-',
-                        toolbar: [
-                            ['font', ['bold', 'italic', 'underline', 'clear']],
-                            ['para', ['ul', 'ol']],
-                            ['insert', ['link']],
-                            ['view', ['codeview']]
-                        ]
-                    }).on('summernote.blur', _.bind(this.updateModel, this));
-                }
+                this.$('textarea').summernote({
+                    disableResizeEditor: true,
+                    height: 200,
+                    iconPrefix: 'icon-',
+                    toolbar: [
+                        ['font', ['bold', 'italic', 'underline', 'clear']],
+                        ['para', ['ul', 'ol']],
+                        ['insert', ['link']],
+                        ['view', ['codeview']]
+                    ]
+                }).on('summernote.blur', _.bind(this.updateModel, this));
             },
             updateModel: function () {
                 var data = this.$('.field-input:first textarea:first').code();
@@ -49,7 +47,7 @@ define(
                 this.setCurrentValue(data);
             },
             setFocus: function () {
-                this.$('.field-input:first textarea').summernote('focus');
+                this.$('.field-input:first textarea:first').summernote('focus');
             }
         });
     }

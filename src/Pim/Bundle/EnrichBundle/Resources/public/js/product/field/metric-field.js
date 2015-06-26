@@ -11,10 +11,10 @@ define([
         'jquery',
         'pim/field',
         'underscore',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'text!pim/template/product/field/metric',
         'jquery.select2'
-        ], function ($, Field, _, EntityManager, fieldTemplate) {
+        ], function ($, Field, _, FetcherRegistry, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
@@ -29,7 +29,7 @@ define([
         getTemplateContext: function () {
             return $.when(
                 Field.prototype.getTemplateContext.apply(this, arguments),
-                EntityManager.getRepository('measure').findAll()
+                FetcherRegistry.getFetcher('measure').fetchAll()
             ).then(function (templateContext, measures) {
                 templateContext.measures = measures;
 

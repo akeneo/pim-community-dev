@@ -54,10 +54,10 @@
                     </div>
                     <script>
                         require(
-                            ['jquery', 'pim/entity-manager', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog'],
-                            function($, EntityManager, FormBuilder, ProductManager, UserContext, Dialog) {
+                            ['jquery', 'pim/fetcher-registry', 'pim/form-builder', 'pim/product-manager', 'pim/user-context', 'pim/dialog'],
+                            function($, FetcherRegistry, FormBuilder, ProductManager, UserContext, Dialog) {
                                 $(function() {
-                                    EntityManager.initialize().done(function () {
+                                    FetcherRegistry.initialize().done(function () {
                                         $.when(
                                             FormBuilder.build('pim/product-edit-form'),
                                             ProductManager.get('{{ productId }}')

@@ -5,13 +5,13 @@ define([
         'underscore',
         'routing',
         'pim/attribute-manager',
-        'pim/entity-manager'
+        'pim/fetcher-registry'
     ], function (
         $,
         _,
         Routing,
         AttributeManager,
-        EntityManager
+        FetcherRegistry
     ) {
         return {
             productValues: null,
@@ -67,10 +67,10 @@ define([
             },
             generateMissing: function (product) {
                 return $.when(
-                    EntityManager.getRepository('attribute').findAll(),
-                    EntityManager.getRepository('locale').findAll(),
-                    EntityManager.getRepository('channel').findAll(),
-                    EntityManager.getRepository('currency').findAll(),
+                    FetcherRegistry.getFetcher('attribute').fetchAll(),
+                    FetcherRegistry.getFetcher('locale').fetchAll(),
+                    FetcherRegistry.getFetcher('channel').fetchAll(),
+                    FetcherRegistry.getFetcher('currency').fetchAll(),
                     AttributeManager.getAttributesForProduct(product)
                 ).then(function (attributes, locales, channels, currencies, productAttributes) {
                     var deferred = new $.Deferred();
