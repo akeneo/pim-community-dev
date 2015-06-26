@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Component\Catalog\Filter;
+namespace spec\Pim\Component\Catalog\Comparator\Filter;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -17,7 +17,7 @@ class ProductAssociationFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Filter\ProductFilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface');
     }
 
     function it_returns_all_associations_on_a_new_product(
