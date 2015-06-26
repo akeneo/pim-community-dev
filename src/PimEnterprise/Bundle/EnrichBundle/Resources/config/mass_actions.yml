@@ -4,8 +4,8 @@ parameters:
     pim_enrich.mass_edit_action.edit_common_attributes.class:       PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
     pim_enrich.mass_edit_action.classify.class:                     PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
 
-    pimee_enrich.mass_edit_handler.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\PublishProductHandler
-    pimee_enrich.mass_edit_handler.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler\UnpublishProductHandler
+    pimee_enrich.mass_edit_tasklet.publish_product.class:           PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\PublishProductTasklet
+    pimee_enrich.mass_edit_tasklet.unpublish_product.class:         PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet\UnpublishProductTasklet
 
 services:
     # Published products operation
@@ -62,8 +62,8 @@ services:
                 acl: pim_enrich_product_categories_view
                 datagrid: product-grid
 
-    pim_enrich.mass_edit_handler.publish_product:
-        class: %pimee_enrich.mass_edit_handler.publish_product.class%
+    pim_enrich.mass_edit_tasklet.publish_product:
+        class: %pimee_enrich.mass_edit_tasklet.publish_product.class%
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'
@@ -73,8 +73,8 @@ services:
             - '@security.context'
             - '@pim_catalog.query.product_query_builder_factory'
 
-    pim_enrich.mass_edit_handler.unpublish_product:
-        class: %pimee_enrich.mass_edit_handler.unpublish_product.class%
+    pim_enrich.mass_edit_tasklet.unpublish_product:
+        class: %pimee_enrich.mass_edit_tasklet.unpublish_product.class%
         arguments:
             - '@pimee_workflow.manager.published_product'
             - '@pim_enrich.product.paginator'

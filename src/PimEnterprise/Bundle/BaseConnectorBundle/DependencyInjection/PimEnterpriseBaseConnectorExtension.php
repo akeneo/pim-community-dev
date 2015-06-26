@@ -32,6 +32,5 @@ class PimEnterpriseBaseConnectorExtension extends Extension
         $loader->load('readers.yml');
         $loader->load('processors.yml');
         $loader->load('guessers.yml');
-        $loader->load('steps.yml');
     }
 }

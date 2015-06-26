@@ -2,6 +2,7 @@
 
 ## Technical improvements
 - Product edit form revamp
+- Mass approve or refuse proposals
 
 ## Bug fixes
 - PIM-3933: Add missing translation keys for published products
@@ -34,6 +35,8 @@
 - Move PimEnterprise/Bundle/WorkflowBundle/Doctrine/ORM/{ → Repository}/PublishedProductRepository
 - Add ProductBuilderInterface argument of the constructor of PimEnterprise/Bundle/CatalogRuleBundle/Validator/Constraints/ProductRule/ValueActionValidator
 - Replace UserManager argument by ProductDraftRepositoryInterface in `PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposal\GridHelper`
+- Change constructor of `PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController`
+- Add `findByIds` method to `PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface`
 - Add a `getGrantedCategoryCodes` method in `PimEnterprise/Bundle/SecurityBundle/Entity/Repository/CategoryAccessRepository`
 
 # 1.3.16 (2015-06-08)
