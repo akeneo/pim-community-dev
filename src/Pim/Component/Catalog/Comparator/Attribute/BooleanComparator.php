@@ -31,7 +31,10 @@ class BooleanComparator implements ComparatorInterface
         $default = ['locale' => null, 'scope' => null, 'value' => null];
         $originals = array_merge($default, $originals);
 
-        if ((bool) $originals['value'] === (bool) $data['value']) {
+        $isNull = null === $originals['value'] && null === $data['value'];
+        $isEquals = (bool) $originals['value'] === (bool) $data['value'];
+
+        if ($isNull || $isEquals) {
             return null;
         }
 
