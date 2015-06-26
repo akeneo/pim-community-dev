@@ -71,4 +71,12 @@ class Edit extends Form
         $deleteButton->click();
         return true;
     }
+
+    public function findReferenceUploadZone() {
+        $uploadZone = $this->find('css', 'div.reference .asset-uploader');
+        if (!$uploadZone) {
+            throw new ElementNotFoundException($this->getSession(), 'reference upload zone');
+        }
+        return true;
+    }
 }

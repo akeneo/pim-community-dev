@@ -17,19 +17,24 @@ class EnterpriseAssetContext extends RawMinkContext
 {
     /**
      * @Then /^I delete the reference file$/
-     * @Then /^I delete the (channel) variation file$/
+     * @Then /^I delete the (\S+) variation file$/
      */
-    public function iDeleteTheReferenceFile()
+    public function iDeleteTheReferenceFile($channel = null)
     {
-        $this->getCurrentPage()->deleteReference();
+        if (null === $channel) {
+            $this->getCurrentPage()->deleteReference();
+        }
     }
 
     /**
      * @Then /^I can upload a reference file$/
+     * @Then /^I can upload a (\S+) variation file$/
      */
-    public function iCanUploadAssetFile()
+    public function iCanUploadAssetFile($channel = null)
     {
-        $this->getCurrentPage()->deleteReference();
+        if (null === $channel) {
+            $this->getCurrentPage()->findReferenceUploadZone();
+        }
     }
 
     /**

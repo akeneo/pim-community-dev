@@ -14,5 +14,5 @@ Feature: Edit product assets variations
     And I visit the "Variations" tab
     And I delete the reference file
     And I confirm the deletion
-    And I wait 50 seconds
+    Then I can upload a reference file
 
