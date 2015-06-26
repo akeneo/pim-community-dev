@@ -23,4 +23,11 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
      * @return mixed
      */
     public function createDatagridQueryBuilder();
+
+    /***
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getTypeByGroup($code);
 }

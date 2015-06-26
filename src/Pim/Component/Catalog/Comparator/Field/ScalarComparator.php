@@ -26,7 +26,7 @@ class ScalarComparator implements ComparatorInterface
      */
     public function compare($data, $originals)
     {
-        if ($originals === $data) {
+        if ((string) $originals === (string) $data) {
             return null;
         }
 

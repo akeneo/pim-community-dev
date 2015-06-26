@@ -148,6 +148,7 @@ services:
         arguments:
             - '@pim_connector.array_converter.flat.product.field_splitter'
             - '@pim_connector.array_converter.flat.product.association_columns_resolver'
+            - '@pim_catalog.repository.group_type'
 
     # columns resolvers
     pim_connector.array_converter.flat.product.attribute_columns_resolver:

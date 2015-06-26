@@ -18,7 +18,7 @@ class ArrayComparator implements ComparatorInterface
      */
     public function supports($column)
     {
-        return in_array($column, ['categories', 'groups']);
+        return in_array($column, ['categories', 'groups', 'associations']);
     }
 
     /**

@@ -29,6 +29,9 @@ class OptionsComparator implements ComparatorInterface
         $default = ['locale' => null, 'scope' => null, 'value' => []];
         $originals = array_merge($default, $originals);
 
+        sort($data['value']);
+        sort($originals['value']);
+
         $codes = [];
         foreach ($data['value'] as $index => $attribute) {
             if (!isset($originals['value'][$index]) || $attribute !== $originals['value'][$index]) {
