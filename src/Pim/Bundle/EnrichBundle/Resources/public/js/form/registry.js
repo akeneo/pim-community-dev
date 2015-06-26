@@ -7,7 +7,6 @@ define(
             return ConfigProvider.getExtensionMap().then(function (extensionMap) {
                 var form = _.first(_.where(extensionMap, { module: formName }));
                 var meta = {
-                    zones: form.zones,
                     extensions: _.where(extensionMap, { parent: form.code })
                 };
 

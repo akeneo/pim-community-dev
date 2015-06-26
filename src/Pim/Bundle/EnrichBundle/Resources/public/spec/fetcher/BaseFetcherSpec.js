@@ -2,30 +2,34 @@
 'use strict';
 
 define(
-    ['jquery', 'pim/entity-repository', 'routing'],
-    function ($, EntityRepository, Routing) {
-        describe('Entity repository', function () {
+    ['jquery', 'pim/base-fetcher', 'routing'],
+    function ($, BaseFetcher, Routing) {
+        describe('Base fetcher', function () {
 
             var urls = {
                 list: 'list_route'
             };
 
-            var repository = new EntityRepository({ urls: urls });
+            var fetcher = new BaseFetcher({ urls: urls });
 
             it('provides a method to list all entities', function () {
-                expect(repository.findAll).toBeDefined();
+                expect(fetcher.fetchAll).toBeDefined();
             });
 
             it('provides a method to get a single entity', function () {
-                expect(repository.find).toBeDefined();
+                expect(fetcher.fetch).toBeDefined();
+            });
+
+            it('provides a method to get a collection of entities', function () {
+                expect(fetcher.fetchByIdentifiers).toBeDefined();
             });
 
             it('provides a method to clear cached results', function () {
-                expect(repository.clear).toBeDefined();
+                expect(fetcher.clear).toBeDefined();
             });
 
             it('provides an extension point', function () {
-                expect(EntityRepository.extend).toBeDefined();
+                expect(BaseFetcher.extend).toBeDefined();
             });
 
             it('can load the requested entity list', function () {
@@ -34,7 +38,7 @@ define(
                 spyOn($, 'getJSON').and.returnValue($.Deferred().resolve('foo').promise());
 
                 var result = null;
-                repository.findAll().done(function (data) {
+                fetcher.fetchAll().done(function (data) {
                     result = data;
                 });
                 expect(Routing.generate).toHaveBeenCalledWith('list_route');
@@ -47,7 +51,7 @@ define(
                 spyOn($, 'getJSON');
 
                 var result = null;
-                repository.findAll().done(function (data) {
+                fetcher.fetchAll().done(function (data) {
                     result = data;
                 });
                 expect($.getJSON).not.toHaveBeenCalled();

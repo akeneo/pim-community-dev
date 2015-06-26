@@ -11,10 +11,10 @@ define([
         'jquery',
         'pim/field',
         'underscore',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'text!pim/template/product/field/price-collection'
     ],
-    function ($, Field, _, EntityManager, fieldTemplate) {
+    function ($, Field, _, FetcherRegistry, fieldTemplate) {
     return Field.extend({
         fieldTemplate: _.template(fieldTemplate),
         events: {
@@ -42,7 +42,7 @@ define([
         getTemplateContext: function () {
             return $.when(
                 Field.prototype.getTemplateContext.apply(this, arguments),
-                EntityManager.getRepository('currency').findAll()
+                FetcherRegistry.getFetcher('currency').fetchAll()
             ).then(function (templateContext, currencies) {
                 templateContext.currencies = currencies;
 

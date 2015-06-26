@@ -12,10 +12,10 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/locale-switcher',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/i18n'
     ],
-    function (_, BaseForm, template, EntityManager, i18n) {
+    function (_, BaseForm, template, FetcherRegistry, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group locale-switcher',
@@ -23,8 +23,8 @@ define(
                 'click li a': 'changeLocale'
             },
             render: function () {
-                EntityManager.getRepository('locale')
-                    .findAll()
+                FetcherRegistry.getFetcher('locale')
+                    .fetchAll()
                     .done(_.bind(function (locales) {
                         this.$el.html(
                             this.template({

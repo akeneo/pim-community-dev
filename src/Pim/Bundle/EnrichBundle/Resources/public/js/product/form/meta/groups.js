@@ -17,7 +17,7 @@ define(
         'text!pim/template/product/meta/groups',
         'text!pim/template/product/meta/group-modal',
         'pim/user-context',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/group-manager',
         'oro/navigation',
         'pim/i18n',
@@ -32,7 +32,7 @@ define(
         formTemplate,
         modalTemplate,
         UserContext,
-        EntityManager,
+        FetcherRegistry,
         GroupManager,
         Navigation,
         i18n
@@ -76,7 +76,7 @@ define(
 
                     $.when(
                         this.getProductList(group.code),
-                        EntityManager.getRepository('attribute').getIdentifier()
+                        FetcherRegistry.getFetcher('attribute').getIdentifierField()
                     ).done(_.bind(function (productList, identifier) {
                         var groupModal = new Backbone.BootstrapModal({
                             allowCancel: true,

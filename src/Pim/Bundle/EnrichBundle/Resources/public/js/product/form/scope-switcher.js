@@ -12,9 +12,9 @@ define(
         'underscore',
         'pim/form',
         'text!pim/template/product/scope-switcher',
-        'pim/entity-manager'
+        'pim/fetcher-registry'
     ],
-    function (_, BaseForm, template, EntityManager) {
+    function (_, BaseForm, template, FetcherRegistry) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'btn-group scope-switcher',
@@ -22,8 +22,8 @@ define(
                 'click li a': 'changeScope'
             },
             render: function () {
-                EntityManager.getRepository('channel')
-                    .findAll()
+                FetcherRegistry.getFetcher('channel')
+                    .fetchAll()
                     .done(_.bind(function (channels) {
                         if (!this.getParent().getScope()) {
                             this.getParent().setScope(channels[0].code, {silent: true});

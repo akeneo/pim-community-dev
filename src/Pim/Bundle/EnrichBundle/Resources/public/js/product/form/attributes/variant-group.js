@@ -13,11 +13,11 @@ define(
         'underscore',
         'pim/form',
         'pim/field-manager',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'oro/mediator',
         'text!pim/template/product/tab/attribute/variant-group'
     ],
-    function ($, _, BaseForm, FieldManager, EntityManager, mediator, variantGroupTemplate) {
+    function ($, _, BaseForm, FieldManager, FetcherRegistry, mediator, variantGroupTemplate) {
         return BaseForm.extend({
             template: _.template(variantGroupTemplate),
             configure: function () {
@@ -37,7 +37,7 @@ define(
                 }
 
                 event.promises.push(
-                    EntityManager.getRepository('variantGroup').find(product.variant_group)
+                    FetcherRegistry.getFetcher('variant-group').fetch(product.variant_group)
                         .done(_.bind(function (variantGroup) {
                             var deferred = $.Deferred();
                             var field = event.field;

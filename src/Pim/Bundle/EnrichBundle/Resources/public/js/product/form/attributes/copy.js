@@ -14,7 +14,7 @@ define(
         'pim/form',
         'text!pim/template/product/tab/attribute/copy',
         'pim/product-edit-form/attributes/copyfield',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/field-manager',
         'pim/attribute-manager',
         'pim/product-manager',
@@ -26,7 +26,7 @@ define(
         BaseForm,
         template,
         CopyField,
-        EntityManager,
+        FetcherRegistry,
         FieldManager,
         AttributeManager,
         ProductManager,
@@ -84,7 +84,7 @@ define(
                 this.copyFields = {};
 
                 $.when(
-                    EntityManager.getRepository('attribute').findAll(),
+                    FetcherRegistry.getFetcher('attribute').fetchAll(),
                     ProductManager.getValues(this.getData())
                 ).done(_.bind(function (attributes, productValues) {
                     _.each(productValues, _.bind(function (values, code) {
