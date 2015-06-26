@@ -111,7 +111,7 @@ define(
                 return this.zones[code];
             },
             triggerExtensions: function () {
-                var options = Array.prototype.slice.call(arguments);
+                var options = _.toArray(arguments);
 
                 _.each(this.extensions, function (extension) {
                     extension.trigger.apply(extension, options);

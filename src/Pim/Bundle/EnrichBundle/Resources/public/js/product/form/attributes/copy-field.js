@@ -34,7 +34,7 @@ define([
                 this.$el.empty();
 
                 var templateContext = {
-                    type: this.field.fieldType,
+                    type: this.field.attribute.field_type,
                     label: this.field.attribute.label[this.field.context.locale],
                     data: this.data,
                     config: this.field.config,

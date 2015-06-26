@@ -16,7 +16,7 @@ define(
         'routing',
         'pim/form',
         'pim/field-manager',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/product-manager',
         'pim/attribute-group-manager',
@@ -34,7 +34,7 @@ define(
         Routing,
         BaseForm,
         FieldManager,
-        EntityManager,
+        FetcherRegistry,
         AttributeManager,
         ProductManager,
         AttributeGroupManager,
@@ -85,7 +85,7 @@ define(
                     this.resize();
                     var product = this.getData();
                     $.when(
-                        EntityManager.getRepository('family').findAll(),
+                        FetcherRegistry.getFetcher('family').fetchAll(),
                         ProductManager.getValues(product)
                     ).done(_.bind(function (families, values) {
                         var productValues = AttributeGroupManager.getAttributeGroupValues(
@@ -154,10 +154,10 @@ define(
                 var attributeCodes = event.codes;
 
                 $.when(
-                    EntityManager.getRepository('attribute').findAll(),
-                    EntityManager.getRepository('locale').findAll(),
-                    EntityManager.getRepository('channel').findAll(),
-                    EntityManager.getRepository('currency').findAll()
+                    FetcherRegistry.getFetcher('attribute').fetchAll(),
+                    FetcherRegistry.getFetcher('locale').fetchAll(),
+                    FetcherRegistry.getFetcher('channel').fetchAll(),
+                    FetcherRegistry.getFetcher('currency').fetchAll()
                 ).then(_.bind(function (attributes, locales, channels, currencies) {
                     var product = this.getData();
 
@@ -205,7 +205,7 @@ define(
                     _.__('pim_enrich.confirmation.delete.product_attribute'),
                     _.__('pim_enrich.confirmation.delete_item'),
                     _.bind(function () {
-                        EntityManager.getRepository('attribute').find(attributeCode).done(_.bind(function (attribute) {
+                        FetcherRegistry.getFetcher('attribute').fetch(attributeCode).done(_.bind(function (attribute) {
                             $.ajax({
                                 type: 'DELETE',
                                 url: Routing.generate(

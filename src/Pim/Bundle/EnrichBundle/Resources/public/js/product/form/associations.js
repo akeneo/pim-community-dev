@@ -15,7 +15,7 @@ define(
         'pim/form',
         'text!pim/template/product/tab/associations',
         'text!pim/template/product/tab/association-panes',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/attribute-manager',
         'pim/user-context',
         'routing',
@@ -29,7 +29,7 @@ define(
         BaseForm,
         formTemplate,
         panesTemplate,
-        EntityManager,
+        FetcherRegistry,
         AttributeManager,
         UserContext,
         Routing,
@@ -135,7 +135,7 @@ define(
 
                 $.when(
                     this.loadAssociationTypes(),
-                    EntityManager.getRepository('attribute').getIdentifier()
+                    FetcherRegistry.getFetcher('attribute').getIdentifierField()
                 ).done(_.bind(function (associationTypes, identifierAttribute) {
                     this.state.set(
                         'currentAssociationType',
@@ -182,7 +182,7 @@ define(
                 }, this));
             },
             loadAssociationTypes: function () {
-                return EntityManager.getRepository('associationType').findAll();
+                return FetcherRegistry.getFetcher('association-type').fetchAll();
             },
             setAssociationCount: function (associationTypes) {
                 var associations = this.getData().associations;
