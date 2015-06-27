@@ -32,7 +32,7 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-variation-files-from-reference');
+        $this->setName('pimee:asset:generate-variation-files-from-reference');
         $this->setDescription('Generate the variation files of a reference.');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('locale', InputArgument::OPTIONAL);

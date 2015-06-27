@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -25,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  * Generate the variation files of a reference.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author JM Leroux <ean-marie.leroux@akeneo.com>
  */
 abstract class AbstractGenerationVariationFileCommand extends ContainerAwareCommand
 {
@@ -52,6 +54,14 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
     }
 
     /**
+     * @return AssetFinderInterface
+     */
+    protected function getAssetFinder()
+    {
+        return $this->getContainer()->get('pimee_product_asset.finder.asset');
+    }
+
+    /**
      * @param string $assetCode
      *
      * @throws \LogicException
@@ -60,11 +70,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function retrieveAsset($assetCode)
     {
-        if (null === $asset = $this->getAssetRepository()->findOneByIdentifier($assetCode)) {
-            throw new \LogicException(sprintf('The asset "%s" does not exist.', $assetCode));
-        }
-
-        return $asset;
+        return $this->getAssetFinder()->retrieveAsset($assetCode);
     }
 
     /**
@@ -93,21 +99,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
     {
-        if (null === $reference = $asset->getReference($locale)) {
-            if (null === $locale) {
-                $msg = sprintf('The asset "%s" has no reference without locale.', $asset->getCode());
-            } else {
-                $msg = sprintf(
-                    'The asset "%s" has no reference for the locale "%s".',
-                    $asset->getCode(),
-                    $locale->getCode()
-                );
-            }
-
-            throw new \LogicException($msg);
-        }
-
-        return $reference;
+        return $this->getAssetFinder()->retrieveReference($asset, $locale);
     }
 
     /**
@@ -120,17 +112,7 @@ abstract class AbstractGenerationVariationFileCommand extends ContainerAwareComm
      */
     protected function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel)
     {
-        if (null === $variation = $reference->getVariation($channel)) {
-            throw new \LogicException(
-                sprintf(
-                    'The reference "%s" has no variation for the channel "%s".',
-                    $reference->getId(),
-                    $channel->getCode()
-                )
-            );
-        }
-
-        return $variation;
+        return $this->getAssetFinder()->retrieveVariation($reference, $channel);
     }
 
     /**

@@ -65,7 +65,7 @@ class EnterpriseCommandContext extends CommandContext
         $application = new Application();
         $application->add(new GenerateMissingVariationFilesCommand());
 
-        $command = $application->find('pim:asset:generate-missing-variation-files');
+        $command = $application->find('pimee:asset:generate-missing-variation-files');
         $command->setContainer($this->getContainer());
         $publishCommandTester = new CommandTester($command);
 

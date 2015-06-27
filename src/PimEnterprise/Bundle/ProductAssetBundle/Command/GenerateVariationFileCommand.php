@@ -28,7 +28,7 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-variation');
+        $this->setName('pimee:asset:generate-variation');
         $this->setDescription('Generate the variation file for a given asset, channel and locale.');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('channel', InputArgument::REQUIRED);

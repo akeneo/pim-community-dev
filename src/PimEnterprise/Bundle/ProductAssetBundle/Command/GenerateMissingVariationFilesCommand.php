@@ -11,7 +11,6 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Command;
 
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProcessedItem;
 use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,7 +31,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-missing-variation-files');
+        $this->setName('pimee:asset:generate-missing-variation-files');
         $this->setDescription('Generate all the missing variation files.');
         $this->addOption(
             'asset',
@@ -50,7 +49,7 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
     {
         try {
             $assetCode         = $input->getOption('asset');
-            $missingVariations = $this->retrieveMissingVariations($assetCode);
+            $missingVariations = $this->getAssetFinder()->retrieveVariationsNotGenerated($assetCode);
         } catch (\LogicException $e) {
             $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
 
@@ -92,30 +91,6 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
         $output->writeln('<info>Done!</info>');
 
         return 0;
-    }
-
-    /**
-     * @param int|null $assetCode
-     *
-     * @return VariationInterface[]
-     */
-    protected function retrieveMissingVariations($assetCode = null)
-    {
-        $missingVariations = [];
-
-        if (null !== $assetCode) {
-            $asset = $this->retrieveAsset($assetCode);
-            foreach ($asset->getVariations() as $variation) {
-                if (null === $variation->getFile() && null !== $variation->getSourceFile()) {
-                    $missingVariations[] = $variation;
-                }
-            }
-        } else {
-            $variationsRepo    = $this->getContainer()->get('pimee_product_asset.repository.variation');
-            $missingVariations = $variationsRepo->findNotGenerated();
-        }
-
-        return $missingVariations;
     }
 
     /**

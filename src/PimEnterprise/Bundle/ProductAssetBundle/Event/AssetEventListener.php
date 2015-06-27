@@ -11,7 +11,8 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
-use Akeneo\Component\Console\CommandLauncher;
+use PimEnterprise\Bundle\ProductAssetBundle\Finder\AssetFinderInterface;
+use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
 
 /**
  * Asset events listenener
@@ -20,15 +21,22 @@ use Akeneo\Component\Console\CommandLauncher;
  */
 class AssetEventListener
 {
-    /** @var CommandLauncher */
-    protected $launcher;
+    /** @var AssetFinderInterface */
+    protected $assetFinder;
+
+    /** @var VariationsCollectionFilesGeneratorInterface */
+    protected $variationsCollectionFilesGenerator;
 
     /**
-     * @param CommandLauncher $launcher
+     * @param AssetFinderInterface                        $assetFinder
+     * @param VariationsCollectionFilesGeneratorInterface $variationsFilesGenerator
      */
-    public function __construct(CommandLauncher $launcher)
-    {
-        $this->launcher = $launcher;
+    public function __construct(
+        AssetFinderInterface $assetFinder,
+        VariationsCollectionFilesGeneratorInterface $variationsFilesGenerator
+    ) {
+        $this->assetFinder                        = $assetFinder;
+        $this->variationsCollectionFilesGenerator = $variationsFilesGenerator;
     }
 
     /**
@@ -41,15 +49,13 @@ class AssetEventListener
      */
     public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $cmd = 'pim:asset:generate-missing-variation-files';
-
         $asset = $event->getSubject();
 
-        if (null !== $asset) {
-            $cmd .= sprintf(' --asset=%s', $asset->getCode());
-        }
+        $assetCode = null !== $asset ? $asset->getCode() : null;
 
-        $this->launcher->execute($cmd);
+        $missingVariations = $this->assetFinder->retrieveVariationsNotGenerated($assetCode);
+
+        $this->variationsCollectionFilesGenerator->generate($missingVariations, true);
 
         return $event;
     }
