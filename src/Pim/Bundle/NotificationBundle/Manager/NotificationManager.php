@@ -5,9 +5,8 @@ namespace Pim\Bundle\NotificationBundle\Manager;
 use Akeneo\Component\StorageUtils\Remover\RemoverInterface;
 use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
-use Doctrine\ORM\EntityRepository;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -25,7 +24,7 @@ class NotificationManager
     /** @var EntityRepository */
     protected $repository;
 
-    /** @var NotificationFactory  */
+    /** @var NotificationFactoryInterface */
     protected $notificationFactory;
 
     /** @var UserNotificationFactory */
@@ -44,17 +43,15 @@ class NotificationManager
     protected $userNotifRemover;
 
     /**
-     * @param EntityRepository        $repository
-     * @param NotificationFactory     $notificationFactory
-     * @param UserNotificationFactory $userNotifFactory
-     * @param UserProviderInterface   $userProvider
-     * @param SaverInterface          $notificationSaver
-     * @param BulkSaverInterface      $userNotifsSaver
-     * @param RemoverInterface        $userNotifRemover
+     * @param UserNotificationRepositoryInterface $userNotifRepository
+     * @param UserNotificationFactory             $userNotifFactory
+     * @param UserProviderInterface               $userProvider
+     * @param SaverInterface                      $notificationSaver
+     * @param BulkSaverInterface                  $userNotifsSaver
+     * @param RemoverInterface                    $userNotifRemover
      */
     public function __construct(
-        EntityRepository $repository,
-        NotificationFactory $notificationFactory,
+        UserNotificationRepositoryInterface $userNotifRepository,
         UserNotificationFactory $userNotifFactory,
         UserProviderInterface $userProvider,
         SaverInterface $notificationSaver,
@@ -73,17 +70,9 @@ class NotificationManager
     /**
      * Send a user notification to given users
      *
-     * @param array  $users   Users which have to be notified
-     *                        [(string) 'userName', ...] or UserInterface[]
-     * @param string $message Message which has to be sent
-     * @param string $type    success (default) | warning | error
-     * @param array  $options [
-     *                        'route'         => ''|null,
-     *                        'routeParams'   => [''],
-     *                        'messageParams' => [''],
-     *                        'context'       => '',
-     *                        'comment'       => ''|null,
-     *                        ]
+     * @param array                 $users Users which have to be notified
+     *                                     [(string) 'userName', ...] or UserInterface[]
+     * @param NotificationInterface $notification
      *
      * @return NotificationManager
      */
@@ -114,7 +103,7 @@ class NotificationManager
      * @param int           $offset
      * @param int           $limit
      *
-     * @return UserNotification[]
+     * @return UserNotificationInterface[]
      */
     public function getUserNotifications(UserInterface $user, $offset, $limit = 10)
     {

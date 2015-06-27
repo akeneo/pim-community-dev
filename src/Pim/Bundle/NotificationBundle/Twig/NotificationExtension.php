@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Twig;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class NotificationExtension extends \Twig_Extension
 {
-    /** @var NotificationManager */
+    /** @var NotificationManagerInterface */
     protected $manager;
 
     /** @var UserContext */
@@ -23,10 +23,10 @@ class NotificationExtension extends \Twig_Extension
     /**
      * Constructor
      *
-     * @param NotificationManager $manager
-     * @param UserContext         $userContext
+     * @param NotificationManagerInterface $manager
+     * @param UserContext                  $userContext
      */
-    public function __construct(NotificationManager $manager, UserContext $userContext)
+    public function __construct(NotificationManagerInterface $manager, UserContext $userContext)
     {
         $this->manager     = $manager;
         $this->userContext = $userContext;

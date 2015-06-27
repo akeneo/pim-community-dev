@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\NotificationBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserNotificationSpec extends ObjectBehavior
@@ -20,7 +20,7 @@ class UserNotificationSpec extends ObjectBehavior
         $this->isViewed()->shouldReturn(true);
     }
 
-    function it_has_a_notification_event(Notification $notification)
+    function it_has_a_notification_event(NotificationInterface $notification)
     {
         $this->getNotification()->shouldReturn(null);
         $this->setNotification($notification)->shouldReturn($this);

@@ -9,14 +9,14 @@ use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
     function let(
-        NotificationManager $manager,
+        NotificationManagerInterface $manager,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
         StepExecution $stepExecution,

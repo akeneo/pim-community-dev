@@ -3,14 +3,14 @@
 namespace spec\Pim\Bundle\NotificationBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class NotificationExtensionSpec extends ObjectBehavior
 {
-    function let(NotificationManager $manager, UserContext $context)
+    function let(NotificationManagerInterface $manager, UserContext $context)
     {
         $this->beConstructedWith($manager, $context);
     }

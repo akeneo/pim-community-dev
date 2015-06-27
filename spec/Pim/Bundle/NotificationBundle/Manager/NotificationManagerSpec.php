@@ -7,10 +7,10 @@ use Akeneo\Component\StorageUtils\Saver\BulkSaverInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
+use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
+use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -19,13 +19,15 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class NotificationManagerSpec extends ObjectBehavior
 {
     function let(
-        UserNotificationRepository $repository,
-        NotificationFactory $notificationFactory,
+        UserNotificationRepositoryInterface $repository,
+        NotificationFactoryInterface $notificationFactory,
+        UserNotificationFactory $userNotificationFactory,
         UserProviderInterface $userProvider,
         UserNotificationFactory $userNotificationFactory,
         SaverInterface $notifSaver,
         BulkSaverInterface $userNotifsSaver,
-        RemoverInterface $userNotifRemover
+        RemoverInterface $userNotifRemover,
+        UserNotificationFactoryInterface $userNotificationFactory
     ) {
         $this->beConstructedWith(
             $repository,
@@ -45,8 +47,8 @@ class NotificationManagerSpec extends ObjectBehavior
 
     function it_can_create_a_notification(
         UserInterface $user,
-        Notification $notification,
-        UserNotification $userNotification,
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification,
         $notificationFactory,
         $userNotificationFactory,
         $notifSaver,
@@ -70,8 +72,8 @@ class NotificationManagerSpec extends ObjectBehavior
     function it_can_create_multiple_notifications(
         UserInterface $user,
         UserInterface $user2,
-        Notification $notification,
-        UserNotification $userNotification,
+        NotificationInterface $notification,
+        UserNotificationInterface $userNotification,
         $notificationFactory,
         $userNotificationFactory,
         $notifSaver,
@@ -94,7 +96,7 @@ class NotificationManagerSpec extends ObjectBehavior
     }
 
     function it_can_return_all_notifications_for_a_user(
-        UserNotification $userNotification,
+        UserNotificationInterface $userNotification,
         UserInterface $user,
         $repository
     ) {
@@ -117,7 +119,7 @@ class NotificationManagerSpec extends ObjectBehavior
     }
 
     function it_can_remove_a_notification(
-        UserNotification $userNotification,
+        UserNotificationInterface $userNotification,
         UserInterface $user,
         $repository,
         $userNotifRemover
