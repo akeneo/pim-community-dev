@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\NotificationBundle\Factory;
 
-use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Pim\Bundle\NotificationBundle\Entity\UserNotification;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNotificationFactory
+class UserNotificationFactory implements UserNotificationFactoryInterface
 {
     /** @var string */
     protected $className;
@@ -27,14 +27,9 @@ class UserNotificationFactory
     }
 
     /**
-     * Creates a user notification
-     *
-     * @param Notification  $notification
-     * @param UserInterface $user
-     *
-     * @return UserNotification
+     * {@inheritdoc}
      */
-    public function createUserNotification(Notification $notification, UserInterface $user)
+    public function createUserNotification(NotificationInterface $notification, UserInterface $user)
     {
         $entity = new $this->className();
 

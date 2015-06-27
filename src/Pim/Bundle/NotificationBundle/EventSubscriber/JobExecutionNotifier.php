@@ -6,7 +6,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,13 +26,13 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @staticvar string */
     const QUICK_EXPORT = 'quick_export';
 
-    /** @var NotificationManager */
+    /** @var NotificationManagerInterface */
     protected $manager;
 
     /**
-     * @param NotificationManager $manager
+     * @param NotificationManagerInterface $manager
      */
-    public function __construct(NotificationManager $manager)
+    public function __construct(NotificationManagerInterface $manager)
     {
         $this->manager = $manager;
     }

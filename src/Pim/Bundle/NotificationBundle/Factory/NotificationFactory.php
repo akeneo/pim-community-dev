@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Factory;
 
-use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 
 /**
  * Notification factory
@@ -11,7 +11,7 @@ use Pim\Bundle\NotificationBundle\Entity\Notification;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotificationFactory
+class NotificationFactory implements NotificationFactoryInterface
 {
     /** @var string */
     protected $className;
@@ -25,13 +25,7 @@ class NotificationFactory
     }
 
     /**
-     * Creates a notification
-     *
-     * @param string $message
-     * @param string $type
-     * @param array  $options
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function createNotification($message, $type, array $options = [])
     {

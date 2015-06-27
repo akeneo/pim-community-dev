@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserNotification
+class UserNotification implements UserNotificationInterface
 {
     /** @var int */
     protected $id;
@@ -19,16 +19,14 @@ class UserNotification
     /** @var bool */
     protected $viewed = false;
 
-    /** @var Notification */
+    /** @var NotificationInterface */
     protected $notification;
 
     /** @var UserInterface */
     protected $user;
 
     /**
-     * Get id
-     *
-     * @return int
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -36,13 +34,9 @@ class UserNotification
     }
 
     /**
-     * Set notification
-     *
-     * @param Notification $notification
-     *
-     * @return UserNotification
+     * {@inheritdoc}
      */
-    public function setNotification(Notification $notification)
+    public function setNotification(NotificationInterface $notification)
     {
         $this->notification = $notification;
 
@@ -50,9 +44,7 @@ class UserNotification
     }
 
     /**
-     * Get notification
-     *
-     * @return Notification
+     * {@inheritdoc}
      */
     public function getNotification()
     {
@@ -60,11 +52,7 @@ class UserNotification
     }
 
     /**
-     * Set user
-     *
-     * @param UserInterface $user
-     *
-     * @return UserNotification
+     * {@inheritdoc}
      */
     public function setUser(UserInterface $user)
     {
@@ -74,9 +62,7 @@ class UserNotification
     }
 
     /**
-     * Get user
-     *
-     * @return UserInterface
+     * {@inheritdoc}
      */
     public function getUser()
     {
@@ -84,11 +70,7 @@ class UserNotification
     }
 
     /**
-     * Set viewed
-     *
-     * @param bool $viewed
-     *
-     * @return UserNotification
+     * {@inheritdoc}
      */
     public function setViewed($viewed)
     {
@@ -98,9 +80,7 @@ class UserNotification
     }
 
     /**
-     * Get viewed
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isViewed()
     {

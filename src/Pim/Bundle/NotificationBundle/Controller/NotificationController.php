@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\Controller;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,20 +20,20 @@ class NotificationController
     /** @var EngineInterface */
     protected $templating;
 
-    /** @var NotificationManager */
+    /** @var NotificationManagerInterface */
     protected $manager;
 
     /** @var UserContext */
     protected $userContext;
 
     /**
-     * @param EngineInterface     $templating
-     * @param NotificationManager $manager
-     * @param UserContext         $userContext
+     * @param EngineInterface              $templating
+     * @param NotificationManagerInterface $manager
+     * @param UserContext                  $userContext
      */
     public function __construct(
         EngineInterface $templating,
-        NotificationManager $manager,
+        NotificationManagerInterface $manager,
         UserContext $userContext
     ) {
         $this->templating  = $templating;
