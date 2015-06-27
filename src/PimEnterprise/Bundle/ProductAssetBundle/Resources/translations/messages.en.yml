@@ -28,6 +28,19 @@ pimee_product_asset:
             update:
                 success: Asset has been updated
                 error: Asset has not been updated. An error occurs.
+    enrich_reference:
+        flash:
+            delete:
+                success: Reference file has been deleted
+                error: Reference file has not been deleted. An error occurs.
+    enrich_variation:
+        flash:
+            update:
+                success: Variation file has been updated
+                error: Variation file has not been updated. An error occurs.
+            delete:
+                success: Variation file has been deleted
+                error: Variation file has not been deleted. An error occurs.
     menu: Assets
     page_tab:
         title:
