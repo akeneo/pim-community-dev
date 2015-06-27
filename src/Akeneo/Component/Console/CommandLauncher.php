@@ -23,11 +23,12 @@ class CommandLauncher
     /** @var string Application root directory */
     protected $rootDir;
 
-    /** @var string Application exceution environment */
+    /** @var string Application execution environment */
     protected $environment;
 
     /**
      * @param string $rootDir
+     * @param        $environment
      */
     public function __construct($rootDir, $environment)
     {

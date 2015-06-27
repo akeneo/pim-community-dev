@@ -9,7 +9,8 @@ class CommandLauncherSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beConstructedWith('');
+        $appRoot = realpath(__DIR__ . '/../../../../app');
+        $this->beConstructedWith($appRoot, 'test');
     }
 
     function it_can_be_initialized()
