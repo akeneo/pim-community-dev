@@ -5,7 +5,6 @@ services:
     pimee_product_asset.event_listener.variation:
         class: %pimee_product_asset.event_listener.variation.class%
         arguments:
-            - '@pimee_product_asset.finder.asset'
-            - '@pimee_product_asset.variations_collection_files_generator'
+            - '@pimee_product_asset.command_launcher'
         tags:
             - { name: kernel.event_listener, event: pimee_product_asset.asset.files_upload.post, method: onAssetFilesUploaded }

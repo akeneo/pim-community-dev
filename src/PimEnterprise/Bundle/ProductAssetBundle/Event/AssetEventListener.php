@@ -11,8 +11,7 @@
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\Event;
 
-use PimEnterprise\Bundle\ProductAssetBundle\Finder\AssetFinderInterface;
-use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInterface;
+use Akeneo\Component\Console\CommandLauncher;
 
 /**
  * Asset events listenener
@@ -21,22 +20,15 @@ use PimEnterprise\Component\ProductAsset\VariationsCollectionFilesGeneratorInter
  */
 class AssetEventListener
 {
-    /** @var AssetFinderInterface */
-    protected $assetFinder;
-
-    /** @var VariationsCollectionFilesGeneratorInterface */
-    protected $variationsCollectionFilesGenerator;
+    /** @var CommandLauncher */
+    protected $commandLauncher;
 
     /**
-     * @param AssetFinderInterface                        $assetFinder
-     * @param VariationsCollectionFilesGeneratorInterface $variationsFilesGenerator
+     * @param CommandLauncher $commandLauncher
      */
-    public function __construct(
-        AssetFinderInterface $assetFinder,
-        VariationsCollectionFilesGeneratorInterface $variationsFilesGenerator
-    ) {
-        $this->assetFinder                        = $assetFinder;
-        $this->variationsCollectionFilesGenerator = $variationsFilesGenerator;
+    public function __construct(CommandLauncher $commandLauncher)
+    {
+        $this->commandLauncher = $commandLauncher;
     }
 
     /**
@@ -49,13 +41,16 @@ class AssetEventListener
      */
     public function onAssetFilesUploaded(AssetEvent $event)
     {
-        $asset = $event->getSubject();
+        $asset      = $event->getSubject();
+        $cmd        = 'pimee:asset:generate-missing-variation-files';
+        $background = true;
 
-        $assetCode = null !== $asset ? $asset->getCode() : null;
+        if (null !== $asset) {
+            $background = false;
+            $cmd .= sprintf(' --asset=%s', $asset->getCode());
+        }
 
-        $missingVariations = $this->assetFinder->retrieveVariationsNotGenerated($assetCode);
-
-        $this->variationsCollectionFilesGenerator->generate($missingVariations, true);
+        $this->commandLauncher->execute($cmd, $background);
 
         return $event;
     }

@@ -50,7 +50,7 @@ class CommandLauncher
      * Launch command
      *
      * @param string $command
-     * @param bool   $background
+     * @param bool   $background Launch in background and do not wait for result
      *
      * @return null
      */
@@ -65,7 +65,7 @@ class CommandLauncher
         );
 
         if (true === $background) {
-            $cmd .= ' &';
+            $cmd .= ' > /dev/null &';
         }
 
         exec($cmd);
