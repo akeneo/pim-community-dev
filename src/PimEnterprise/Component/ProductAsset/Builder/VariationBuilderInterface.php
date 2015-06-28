@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -11,9 +11,9 @@
 
 namespace PimEnterprise\Component\ProductAsset\Builder;
 
+use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 
 /**
  * Builds variations related to an asset reference

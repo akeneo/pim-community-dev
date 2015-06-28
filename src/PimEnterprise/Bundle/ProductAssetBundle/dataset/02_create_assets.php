@@ -32,7 +32,6 @@ foreach (getReferenceFilesConf() as $assetCode => $referenceFiles) {
     $helper->getEm()->flush($asset);
 }
 
-
 function getReferenceFilesConf()
 {
     return [

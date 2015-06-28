@@ -23,7 +23,7 @@ interface VariationsCollectionFilesGeneratorInterface
 {
     /**
      * @param VariationInterface[] $variations
-     * @param bool                 $force Process locked variations
+     * @param bool                 $force      Process locked variations
      *
      * @return ProcessedItemList
      */

@@ -21,8 +21,8 @@ createConfs(getRawConfs());
 function getRawConfs()
 {
     return [
-        'ecommerce' => ['scale' => ['ratio' => 0.5],],
-        'tablet'    => ['scale' => ['ratio' => 0.25],],
+        'ecommerce' => ['scale' => ['ratio' => 0.5]],
+        'tablet'    => ['scale' => ['ratio' => 0.25]],
         'mobile'    => [
             'scale'      => ['width' => 200],
             'colorspace' => ['colorspace' => 'gray'],
@@ -46,6 +46,3 @@ function createConfs(array $rawConfs)
         }
     }
 }
-
-
-

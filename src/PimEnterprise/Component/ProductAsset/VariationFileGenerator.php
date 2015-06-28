@@ -132,9 +132,10 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
     /**
      * @param ChannelInterface $channel
      *
+     * @throws \LogicException
+     *
      * @return array
      *
-     * @throws \LogicException
      */
     protected function retrieveChannelTransformationsConfiguration(ChannelInterface $channel)
     {
@@ -155,9 +156,10 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      *
      * @param VariationInterface $variation
      *
+     * @throws \LogicException
+     *
      * @return FileInterface
      *
-     * @throws \LogicException
      */
     protected function retrieveSourceFile(VariationInterface $variation)
     {
@@ -184,11 +186,11 @@ class VariationFileGenerator implements VariationFileGeneratorInterface
      * With a file called this_is_my_source_file.txt, it will return
      *      this_is_my_source_file-en_US-ecommerce.txt or
      *      this_is_my_source_file-ecommerce.txt
-     * 
-     * @param FileInterface $sourceFile
+     *
+     * @param FileInterface    $sourceFile
      * @param ChannelInterface $channel
      * @param LocaleInterface  $locale
-     * 
+     *
      * @return string
      */
     protected function buildVariationOutputFilename(

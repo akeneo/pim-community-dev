@@ -13,6 +13,7 @@ namespace Akeneo\Component\FileTransformer;
 
 /**
  * Apply a set of transformations on a file
+ *
  * @author Julien Janvier <jjanvier@akeneo.com>
  */
 interface FileTransformerInterface

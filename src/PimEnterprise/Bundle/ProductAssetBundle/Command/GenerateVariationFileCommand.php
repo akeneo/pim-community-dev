@@ -73,7 +73,6 @@ class GenerateVariationFileCommand extends AbstractGenerationVariationFileComman
         return 0;
     }
 
-
     /**
      * @param $channelCode
      *

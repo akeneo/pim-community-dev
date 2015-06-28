@@ -180,6 +180,7 @@ class ProductAssetController extends Controller
      * @param int|string $id
      *
      * @AclAncestor("pimee_product_asset_index")
+     *
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -211,12 +212,12 @@ class ProductAssetController extends Controller
             } catch (\Exception $e) {
                 $this->addFlash($request, 'error', 'pimee_product_asset.enrich_asset.flash.update.error');
             }
+
             return $this->redirectAfterEdit($request, ['id' => $id]);
         } elseif ($assetForm->isSubmitted()) {
             // TODO find a better way
             $this->assetFilesUpdater->resetAllUploadedFiles($productAsset);
         }
-
 
         $metadata = null;
         if (null !== $productAsset) {
@@ -235,7 +236,7 @@ class ProductAssetController extends Controller
      * Delete a variation and redirect
      *
      * @param Request    $request
-     * @param int|string reference $id
+     * @param int|string $id
      *
      * @return RedirectResponse
      */
@@ -265,7 +266,7 @@ class ProductAssetController extends Controller
      * Delete a variation and redirect
      *
      * @param Request    $request
-     * @param int|string variation $id
+     * @param int|string $id
      *
      * @return RedirectResponse
      */
@@ -296,7 +297,7 @@ class ProductAssetController extends Controller
      * Reset a variation file with the reference and redirect
      *
      * @param Request    $request
-     * @param int|string variation $id
+     * @param int|string $id
      *
      * @return RedirectResponse
      */
@@ -331,7 +332,7 @@ class ProductAssetController extends Controller
      * Reset all variation files with the reference file and redirect
      *
      * @param Request    $request
-     * @param int|string variation $id
+     * @param int|string $id
      *
      * @return RedirectResponse
      */
@@ -412,7 +413,7 @@ class ProductAssetController extends Controller
      * Switch case to redirect after saving a product asset from the edit form
      *
      * @param Request $request
-     * @param array   $params Request parameters
+     * @param array   $params  Request parameters
      *
      * @return Response
      */

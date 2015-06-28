@@ -54,7 +54,7 @@ interface FilesUpdaterInterface
      * Reset variations files with the reference
      *
      * @param ReferenceInterface $reference
-     * @param bool               $force Force to process even locked variations
+     * @param bool               $force     Force to process even locked variations
      */
     public function resetAllVariationsFiles(ReferenceInterface $reference, $force = false);
 
