@@ -12,7 +12,7 @@
   width: 80%;
   margin: 0 auto;
   border-top: 2px solid @color;
-  box-shadow: 0px 1px 2px 0px rgba(0,0,0,0.10);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.10);
 
   h4 {
     color: @color;
@@ -36,7 +36,14 @@
         height: 42px;
 
         .language {
-          font-size: 19px;
+          font-size: 15px;
+          vertical-align: baseline;
+        }
+
+        #locale-switcher {
+          span.dropdown-toggle {
+            font-size: 18px;
+          }
         }
       }
 
@@ -55,6 +62,35 @@
         margin: 0 auto;
       }
 
+      .icon {
+        font-size: 20px;
+      }
+
+      .asset-uploader {
+        &.error {
+          border: 2px solid red;
+          background-color: rgba(255, 0, 0, 0.05);
+        }
+
+        .file-uploader input {
+            position: absolute;
+        }
+
+        .uploader {
+          height: 100%;
+          justify-content: center;
+          span .icon {
+            position: relative;
+            z-index: 50;
+          }
+        }
+
+        div.errors {
+          font-style: italic;
+          text-align: center;
+          color: red;
+        }
+      }
       ul {
         list-style-type: none;
 
@@ -88,7 +124,7 @@
 
             table.table {
               float: left;
-              width: 35%;
+              width: 75%;
 
               table.table {
                 thead tr th:first-child {
@@ -103,9 +139,30 @@
           }
 
           div.variation {
+
+            figure.thumbnail {
+              width: 100px;
+              height: 100px;
+              float: left;
+              padding: 2px;
+              overflow: hidden;
+              margin-right: 7%;
+
+              img {
+                max-width: 94px;
+                max-height: 94px;
+                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+              }
+            }
+
             .variation(@color-form-info);
 
             table.table {
+              float: left;
+              width: 75%;
+
               thead tr th:first-child {
                 width: 20%;
               }

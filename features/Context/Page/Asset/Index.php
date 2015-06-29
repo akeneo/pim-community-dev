@@ -1,6 +1,6 @@
 <?php
 
-namespace Context\Page\ProductAsset;
+namespace Context\Page\Asset;
 
 use Context\Page\Base\Grid;
 

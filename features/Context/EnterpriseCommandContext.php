@@ -6,6 +6,7 @@ use Behat\Gherkin\Node\TableNode;
 use Pim\Bundle\CatalogBundle\Command\GetProductCommand;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Command\UpdateProductCommand;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\ApproveProposalCommand;
 use PimEnterprise\Bundle\WorkflowBundle\Command\PublishProductCommand;
 use Symfony\Component\Console\Application;
@@ -49,6 +50,40 @@ class EnterpriseCommandContext extends CommandContext
                 sprintf(
                     'An error occured during the execution of the publish command : %s',
                     $publishCommandTester->getDisplay()
+                )
+            );
+        }
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @Given /^I generate missing variations(?: for asset (\S+))?$/
+     */
+    public function iGenerateMissingVariations($assetCode = null)
+    {
+        $application = new Application();
+        $application->add(new GenerateMissingVariationFilesCommand());
+
+        $command = $application->find('pim:asset:generate-missing-variation-files');
+        $command->setContainer($this->getContainer());
+        $commandTester = new CommandTester($command);
+
+        $commandOptions = ['command' => $command->getName()];
+
+        if (null !== $assetCode) {
+            $commandOptions['-a'] = $assetCode;
+        }
+
+        $commandTester->execute($commandOptions);
+
+        $result = $commandTester->getStatusCode();
+
+        if (0 !== $result) {
+            throw new \Exception(
+                sprintf(
+                    'An error occured during the execution of the publish command : %s',
+                    $commandTester->getDisplay()
                 )
             );
         }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -12,8 +12,13 @@
 namespace PimEnterprise\Bundle\ProductAssetBundle;
 
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateMissingVariationFilesCommand;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFileCommand;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\GenerateVariationFilesFromReferenceCommand;
+use PimEnterprise\Bundle\ProductAssetBundle\Command\StoreFileCommand;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\RegisterMetadataBuildersPass;
 use PimEnterprise\Bundle\ProductAssetBundle\DependencyInjection\Compiler\ResolveDoctrineTargetModelPass;
+use Symfony\Component\Console\Application;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -21,6 +26,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * Product asset management bundle
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class PimEnterpriseProductAssetBundle extends Bundle
 {
@@ -44,5 +50,18 @@ class PimEnterpriseProductAssetBundle extends Bundle
                 false
             )
         );
+    }
+
+    /**
+     * Explicitly register commands
+     *
+     * @param Application $application
+     */
+    public function registerCommands(Application $application)
+    {
+        $application->add(new GenerateMissingVariationFilesCommand());
+        $application->add(new GenerateVariationFileCommand());
+        $application->add(new GenerateVariationFilesFromReferenceCommand());
+        $application->add(new StoreFileCommand());
     }
 }

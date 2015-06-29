@@ -12,9 +12,12 @@
 {% endif %}
 
 {% block content %}
-
+    {% set actionQueryParams = {id: asset.id} %}
+    {% if app.request.get('locale') %}
+        {% set actionQueryParams = actionQueryParams|merge({locale: app.request.get('locale')}) %}
+    {% endif %}
     {{ form_start(form, {
-        'action': path('pimee_product_asset_update', { id: asset.id }),
+        'action': path('pimee_product_asset_edit', actionQueryParams),
         'class': 'product-asset-edit'
     }
     ) }}
@@ -26,7 +29,7 @@
     {% endset %}
 
     {% set subtitle %}
-        {{ asset.code }}
+        <div>{{ asset.code }}</div>
     {% endset %}
 
     {% set left %}
@@ -40,18 +43,25 @@
 
     <div class="form-horizontal product-edit product-view asset">
         <div class="layout-content">
-            {% set form_tabs = ['pimee_product_asset.tabs.global-settings', 'pimee_product_asset.tabs.variations'] %}
+            {% set form_tabs = ['pimee_product_asset.tabs.variations', 'pimee_product_asset.tabs.global-settings'] %}
             {{ elements.form_navbar(form_tabs) }}
 
             <div class="row-fluid tab-content">
-
-                {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_global-settings-tab.html.twig' %}
-
                 {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variations-tab.html.twig' %}
-
+                {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_global-settings-tab.html.twig' %}
             </div>
 
         </div>
     </div>
     {{ form_end(form) }}
+
+    <script>
+        require(
+                ['pimee/productasset/variations'],
+                function (AssetVariationsForm) {
+                    'use strict';
+                    var variations = new AssetVariationsForm();
+                }
+        );
+    </script>
 {% endblock %}

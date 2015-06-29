@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -22,7 +22,7 @@ use Akeneo\Component\FileStorage\Model\FileInterface;
 interface FileMetadataInterface
 {
     /**
-     * @return integer
+     * @return int
      */
     public function getId();
 

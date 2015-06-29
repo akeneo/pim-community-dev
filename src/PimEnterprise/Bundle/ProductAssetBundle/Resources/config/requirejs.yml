@@ -1,0 +1,4 @@
+config:
+    paths:
+        pimee/productasset/variations: pimenterpriseproductasset/js/form/variations
+        pimee/productasset/uploader:   pimenterpriseproductasset/js/form/uploader

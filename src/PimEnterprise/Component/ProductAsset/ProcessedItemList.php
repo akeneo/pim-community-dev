@@ -2,6 +2,9 @@
 
 namespace PimEnterprise\Component\ProductAsset;
 
+/**
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ */
 class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
 {
     /** @var int */
@@ -10,11 +13,19 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
     /** @var ProcessedItem[] */
     protected $items = [];
 
+    /**
+     * @param mixed  $item
+     * @param string $state
+     * @param null   $reason
+     */
     public function addItem($item, $state, $reason = null)
     {
         $this->items[] = new ProcessedItem($item, $state, $reason);
     }
 
+    /**
+     * @return ProcessedItem
+     */
     public function current()
     {
         return $this->items[$this->position];
@@ -25,11 +36,17 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
         ++$this->position;
     }
 
+    /**
+     * @return int
+     */
     public function key()
     {
         return $this->position;
     }
 
+    /**
+     * @return bool
+     */
     public function valid()
     {
         return isset($this->items[$this->position]);
@@ -40,12 +57,20 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
         $this->position = 0;
     }
 
+    /**
+     * @return int
+     */
     public function count()
     {
         return count($this->items);
     }
 
-    public function offsetSet($offset, $value) {
+    /**
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
         if (is_null($offset)) {
             $this->items[] = $value;
         } else {
@@ -53,15 +78,31 @@ class ProcessedItemList implements \Iterator, \Countable, \ArrayAccess
         }
     }
 
-    public function offsetExists($offset) {
+    /**
+     * @param mixed $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
         return isset($this->items[$offset]);
     }
 
-    public function offsetUnset($offset) {
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset)
+    {
         unset($this->items[$offset]);
     }
 
-    public function offsetGet($offset) {
+    /**
+     * @param mixed $offset
+     *
+     * @return null|ProcessedItem
+     */
+    public function offsetGet($offset)
+    {
         return isset($this->items[$offset]) ? $this->items[$offset] : null;
     }
 }

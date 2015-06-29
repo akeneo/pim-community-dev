@@ -16,7 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Asset type
+ * Variation form type
  *
  * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
@@ -27,9 +27,12 @@ class VariationType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('source_file', 'akeneo_file_storage_file');
+        $builder->add('file', 'akeneo_file_storage_file', ['required' => false]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults([

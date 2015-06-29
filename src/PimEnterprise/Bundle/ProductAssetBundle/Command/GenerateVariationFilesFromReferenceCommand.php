@@ -32,7 +32,7 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
      */
     protected function configure()
     {
-        $this->setName('pim:asset:generate-variations-from-reference');
+        $this->setName('pim:asset:generate-variation-files-from-reference');
         $this->setDescription('Generate the variation files of a reference.');
         $this->addArgument('asset', InputArgument::REQUIRED);
         $this->addArgument('locale', InputArgument::OPTIONAL);
@@ -58,7 +58,9 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
             return 1;
         }
 
-        $processedList = $this->getVariationsCollectionFileGenerator()->generate($reference->getVariations()->toArray());
+        $processedList = $this
+            ->getVariationsCollectionFileGenerator()
+            ->generate($reference->getVariations()->toArray());
 
         foreach ($processedList as $item) {
             $msg = $this->getGenerationMessage($asset, $item->getItem()->getChannel(), $reference->getLocale());
@@ -87,8 +89,9 @@ class GenerateVariationFilesFromReferenceCommand extends AbstractGenerationVaria
      * @param AssetInterface  $asset
      * @param LocaleInterface $locale
      *
-     * @return ReferenceInterface
      * @throws \LogicException
+     *
+     * @return ReferenceInterface
      */
     protected function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
     {

@@ -1,0 +1,23 @@
+PimEnterprise\Component\ProductAsset\Model\Asset:
+    properties:
+        description:
+            - NotNull: ~
+        references:
+            - Valid: ~
+
+PimEnterprise\Component\ProductAsset\Model\Reference:
+    properties:
+        file:
+            - Valid: ~
+        variations:
+            - Valid: ~
+
+PimEnterprise\Component\ProductAsset\Model\Variation:
+    properties:
+        file:
+            - Valid: ~
+
+Akeneo\Component\FileStorage\Model\File:
+    properties:
+        uploadedFile:
+            - File: ~

@@ -21,12 +21,12 @@
 
     <div class="form-horizontal product-edit product-view asset">
         <div class="layout-content">
-            {% set form_tabs = ['pimee_product_asset.tabs.global-settings', 'pimee_product_asset.tabs.variations'] %}
+            {% set form_tabs = ['pimee_product_asset.tabs.variations', 'pimee_product_asset.tabs.global-settings'] %}
             {{ elements.form_navbar(form_tabs) }}
 
             <div class="row-fluid tab-content">
                 {# ASSET PANEL #}
-                <div class="tab-pane active" id="pimee_product_asset-tabs-global-settings">
+                <div class="tab-pane" id="pimee_product_asset-tabs-global-settings">
 
                     <h3> </h3>
 
@@ -62,7 +62,7 @@
                 </div>
 
                 {# VARIATIONS PANEL #}
-                <div class="tab-pane" id="pimee_product_asset-tabs-variations">
+                <div class="tab-pane active" id="pimee_product_asset-tabs-variations">
 
                     {% for attachment in attachments %}
 

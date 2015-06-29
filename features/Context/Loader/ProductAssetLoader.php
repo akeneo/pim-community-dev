@@ -3,6 +3,7 @@
 namespace Context\Loader;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Loader for product assets
@@ -20,11 +21,26 @@ class ProductAssetLoader
      */
     public function load(ObjectManager $manager)
     {
-        $query = $manager->createQuery('SELECT COUNT(a) FROM \PimEnterprise\Component\ProductAsset\Model\Asset a');
-        if (0 == $query->getSingleScalarResult()) {
-            $stmt = $manager->getConnection()->prepare($this->getProductAssetSql());
-            $stmt->execute();
-        }
+        $pathFinder = new PhpExecutableFinder();
+
+        exec(
+            sprintf(
+                '%s %s/01_create_channel_configurations.php behat',
+                $pathFinder->find(),
+                __DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'
+            )
+        );
+
+        exec(
+            sprintf(
+                '%s %s/02_create_assets.php behat',
+                $pathFinder->find(),
+                __DIR__ . '/../../../src/PimEnterprise/Bundle/ProductAssetBundle/dataset'
+            )
+        );
+
+        $stmt = $manager->getConnection()->prepare($this->getProductAssetSql());
+        $stmt->execute();
     }
 
     private function getProductAssetSql()
