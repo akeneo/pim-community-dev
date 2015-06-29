@@ -20,6 +20,14 @@ pimee_workflow:
             approve: Approve
             refuse:  Refuse
             remove:  Remove
+        mass_review_action:
+            approve: Approve selected
+            refuse:  Refuse selected
+            error:
+                draft_not_ready: This proposal is not ready to be approved
+                not_product_owner: You don't own the product related to this proposal
+                cannot_edit_attributes: You can't edit the attributes modified by this proposal
+                invalid_draft: This proposal can't be applied due to the following error. %error%
     published_product:
         index: Published Products
         title:  Published product
@@ -37,11 +45,18 @@ pimee_workflow:
             import.title: Product draft import
 btn.publish: Publish
 btn.unpublish: Unpublish
-flash.product.published: The product has been successfully published.
-flash.product.unpublished: The product has been successfully unpublished.
-flash.product_draft.approve.success: The proposal has been applied successfully.
-flash.product_draft.approve.error: The proposal can't be applied due to the following error. %error%
-flash.product_draft.refuse.success: The proposal has been refused.
+
+flash:
+    product:
+        published: The product has been successfully published.
+        unpublished: The product has been successfully unpublished.
+    product_draft:
+        approve:
+            success: The proposal has been applied successfully.
+            error: The proposal can't be applied due to the following error. %error%
+        refuse:
+            success: The proposal has been refused.
+
 pim_menu:
     item:
         published_product: Published products
@@ -67,5 +82,11 @@ proposal.overview: Proposals
 Attributes.title: Attributes
 Completeness.title: Completeness
 
-publish_product.steps.publish_product_handler.title: Publish product
-unpublish_product.steps.unpublish_product_handler.title: Unpublish product
+publish_product.steps.publish_product_tasklet.title: Publish product
+unpublish_product.steps.unpublish_product_tasklet.title: Unpublish product
+approve_product_draft.steps.approve.title: Approve proposal
+approve_product_draft.steps.refuse.title: Refuse proposal
+
+job_execution.summary:
+    approved: approved
+    refused: refused

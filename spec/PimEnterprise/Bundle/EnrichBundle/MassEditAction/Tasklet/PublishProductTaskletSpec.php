@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Handler;
+namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Tasklet;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
@@ -9,25 +9,28 @@ use Akeneo\Component\StorageUtils\Cursor\PaginatorFactoryInterface;
 use Akeneo\Component\StorageUtils\Detacher\ObjectDetacherInterface;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Query\ProductQueryBuilderFactoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
-class UnpublishProductHandlerSpec extends ObjectBehavior
+class PublishProductTaskletSpec extends ObjectBehavior
 {
     function let(
         ProductQueryBuilderFactoryInterface $pqbFactory,
         PublishedProductManager $manager,
         PaginatorFactoryInterface $paginatorFactory,
-        ValidatorInterface $validator,
         ProductQueryBuilder $pqb,
         CursorInterface $cursor,
+        ValidatorInterface $validator,
         ObjectDetacherInterface $objectDetacher,
         UserManager $userManager,
         SecurityContextInterface $securityContext,
@@ -57,18 +60,20 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
     function it_is_a_configurable_step_element()
     {
         $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement');
-        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface');
+        $this->beAnInstanceOf('Akeneo\Bundle\BatchBundle\Item\StepExecutionAwareInterface');
     }
 
     function it_executes_a_mass_publish_operation_with_a_configuration(
         $paginatorFactory,
         $manager,
         $cursor,
+        $validator,
         $securityContext,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        PublishedProductInterface $pubProduct1,
-        PublishedProductInterface $pubProduct2
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ConstraintViolationListInterface $violations
     ) {
         $configuration = [
             'filters' => [
@@ -82,23 +87,86 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         ];
         $productsPage = [
             [
-                $pubProduct1,
-                $pubProduct2
+                $product1,
+                $product2
             ]
         ];
-
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
 
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('julia');
 
-        $securityContext->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $pubProduct2)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(2);
+        $validator->validate($product1)->willReturn($violations);
+        $validator->validate($product2)->willReturn($violations);
 
-        $manager->unpublishAll([$pubProduct1, $pubProduct2])->shouldBeCalled();
+        $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(2);
+
+        $violations->count()->willReturn(0);
+
+        $manager->publishAll([$product1, $product2])->shouldBeCalled();
+
+        $this->setStepExecution($stepExecution);
+        $this->execute($configuration);
+    }
+
+    function it_executes_a_mass_publish_operation_with_a_configuration_with_invalid_items(
+        $paginatorFactory,
+        $manager,
+        $cursor,
+        $validator,
+        $securityContext,
+        StepExecution $stepExecution,
+        JobExecution $jobExecution,
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ObjectDetacherInterface $objectDetacher
+    ) {
+        $configuration = [
+            'filters' => [
+                [
+                    'field'    => 'sku',
+                    'operator' => 'IN',
+                    'value'    => ['1000', '1001']
+                ]
+            ],
+            'actions' => []
+        ];
+        $productsPage = [
+            [
+                $product1,
+                $product2
+            ]
+        ];
+        $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
+
+        $stepExecution->getJobExecution()->willReturn($jobExecution);
+        $jobExecution->getUser()->willReturn('julia');
+
+        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
+        $securityContext->setToken(Argument::any())->shouldBeCalled();
+
+        $violation1 = new ConstraintViolation('error1', 'spec', [], '', '', $product1);
+        $violation2 = new ConstraintViolation('error2', 'spec', [], '', '', $product2);
+
+        $violations = new ConstraintViolationList([$violation1, $violation2]);
+
+        $stepExecution->incrementSummaryInfo('mass_edited')->shouldNotBeCalled(2);
+        $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(2);
+
+        $validator->validate($product1)->willReturn($violations);
+        $validator->validate($product2)->willReturn($violations);
+
+        $objectDetacher->detach(Argument::any())->shouldBeCalledTimes(2);
+
+        $stepExecution->addWarning('publish_product_tasklet', Argument::any(), [], $product1)->shouldBeCalledTimes(2);
+        $stepExecution->addWarning('publish_product_tasklet', Argument::any(), [], $product2)->shouldBeCalledTimes(2);
+
+        $manager->publishAll([])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute($configuration);
@@ -108,11 +176,13 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $paginatorFactory,
         $manager,
         $cursor,
+        $validator,
         $securityContext,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        PublishedProductInterface $pubProduct1,
-        PublishedProductInterface $pubProduct2
+        ProductInterface $product1,
+        ProductInterface $product2,
+        ConstraintViolationListInterface $violations
     ) {
         $configuration = [
             'filters' => [
@@ -126,8 +196,8 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         ];
         $productsPage = [
             [
-                $pubProduct1,
-                $pubProduct2
+                $product1,
+                $product2
             ]
         ];
         $paginatorFactory->createPaginator($cursor)->willReturn($productsPage);
@@ -135,16 +205,21 @@ class UnpublishProductHandlerSpec extends ObjectBehavior
         $stepExecution->getJobExecution()->willReturn($jobExecution);
         $jobExecution->getUser()->willReturn('mary');
 
-        $securityContext->isGranted(Attributes::OWN, $pubProduct1)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWN, $pubProduct2)->willReturn(false);
+        $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(false);
         $securityContext->setToken(Argument::any())->shouldBeCalled();
 
-        $stepExecution->incrementSummaryInfo('mass_unpublished')->shouldBeCalledTimes(1);
+        $validator->validate($product1)->willReturn($violations);
+        $validator->validate($product2)->willReturn($violations);
+
+        $stepExecution->incrementSummaryInfo('mass_published')->shouldBeCalledTimes(1);
         $stepExecution->incrementSummaryInfo('skipped_products')->shouldBeCalledTimes(1);
 
-        $stepExecution->addWarning('unpublish_product_handler', Argument::any(), [], $pubProduct2)->shouldBeCalled();
+        $stepExecution->addWarning('publish_product_tasklet', Argument::any(), [], $product2)->shouldBeCalled();
 
-        $manager->unpublishAll([$pubProduct1])->shouldBeCalled();
+        $violations->count()->willReturn(0);
+
+        $manager->publishAll([$product1])->shouldBeCalled();
 
         $this->setStepExecution($stepExecution);
         $this->execute($configuration);

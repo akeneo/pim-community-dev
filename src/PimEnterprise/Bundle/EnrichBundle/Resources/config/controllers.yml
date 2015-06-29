@@ -25,6 +25,20 @@ services:
             - '@pim_catalog.remover.product'
             - '@pim_catalog.builder.product'
 
+    pim_enrich.controller.rest.product:
+        class: %pim_enrich.controller.rest.product.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.updater.product'
+            - '@pimee_workflow.saver.product_delegating'
+            - '@pim_internal_api_serializer'
+            - '@pim_validator'
+            - '@pim_user.context.user'
+            - '@pim_catalog.filter.chained'
+            - '@pim_enrich.filter.product_edit_data'
+            - '@pim_catalog.builder.product'
+
     pimee_enrich.controller.rule_relation:
         class: %pimee_enrich.controller.rule_relation.class%
         arguments:

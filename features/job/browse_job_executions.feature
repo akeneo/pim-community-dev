@@ -7,15 +7,16 @@ Feature: Browse job executions
   Background:
     Given a "clothing" catalog configuration
     And I am logged in as "Peter"
+
+  Scenario: Successfully view job executions depending on given permissions
+    Given I am on the exports page
     And I launch the "clothing_product_export" export job
     And I launch the "clothing_category_export" export job
     And I launch the "clothing_attribute_export" export job
     And I launch the "clothing_category_export" export job
     And I launch the "clothing_option_export" export job
     And I launch the "clothing_product_import" import job
-
-  Scenario: Successfully view job executions depending on given permissions
-    Given I am on the export executions page
+    When I am on the export executions page
     Then the grid should contain 5 elements
     And I should see export profiles clothing_product_export, clothing_category_export, clothing_attribute_export, clothing_category_export and clothing_option_export
     When I am on the "clothing_category_export" export job edit page
