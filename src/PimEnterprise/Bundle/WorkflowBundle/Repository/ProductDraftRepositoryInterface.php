@@ -13,6 +13,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -44,7 +45,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param UserInterface $user
      * @param int           $limit
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]
+     * @return ProductDraft[]|null
      */
     public function findApprovableByUser(UserInterface $user, $limit = null);
 
@@ -83,7 +84,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
+     * @return ProductDraft|null
      */
     public function findUserProductDraft(ProductInterface $product, $username);
 
@@ -92,9 +93,18 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      *
      * @param ProductInterface $product
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]|null
+     * @return ProductDraft[]|null
      */
     public function findByProduct(ProductInterface $product);
+
+    /**
+     * Find all drafts corresponding to the specified ids
+     *
+     * @param array $ids
+     *
+     * @return ProductDraft[]|null
+     */
+    public function findByIds(array $ids);
 
     /**
      * @return string[]

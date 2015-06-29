@@ -91,7 +91,8 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
         $qb
             ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author')
             ->from($this->_entityName, 'p', 'p.id')
-            ->join('p.product', 'product');
+            ->join('p.product', 'product')
+            ->groupBy('p.id');
 
         if (isset($parameters['currentUser'])) {
             $user = $parameters['currentUser'];
@@ -187,6 +188,17 @@ class ProductDraftRepository extends EntityRepository implements ProductDraftRep
     {
         $fieldName = $this->getRootFieldName($qb, $field);
         $qb->orderBy($fieldName, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByIds(array $ids)
+    {
+        $qb = $this->createQueryBuilder('d');
+        $qb->where($qb->expr()->in('d.id', $ids));
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

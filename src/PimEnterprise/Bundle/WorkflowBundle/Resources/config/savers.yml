@@ -10,7 +10,7 @@ services:
     pimee_workflow.saver.product_draft:
         class: %pim_catalog.saver.base.class%
         arguments:
-            - '@pim_catalog.object_manager.product'
+            - '@pimee_workflow.object_manager.product_draft'
             - '@pim_catalog.saver.product_options_resolver'
             - '%pimee_workflow.model.product_draft.class%'
 

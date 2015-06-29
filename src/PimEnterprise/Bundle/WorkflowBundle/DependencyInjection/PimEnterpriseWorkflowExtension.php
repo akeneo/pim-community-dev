@@ -42,6 +42,8 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('event_subscribers.yml');
         $loader->load('helpers.yml');
         $loader->load('managers.yml');
+        $loader->load('mass_review_actions.yml');
+        $loader->load('normalizers.yml');
         $loader->load('product_draft.yml');
         $loader->load('presenters.yml');
         $loader->load('publishers.yml');
