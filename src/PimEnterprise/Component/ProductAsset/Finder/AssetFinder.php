@@ -9,13 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Finder;
+namespace PimEnterprise\Component\ProductAsset\Finder;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
-use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 
@@ -32,6 +31,9 @@ class AssetFinder implements AssetFinderInterface
     /** @var VariationRepositoryInterface */
     protected $variationsRepository;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         VariationRepositoryInterface $variationsRepository
@@ -41,11 +43,7 @@ class AssetFinder implements AssetFinderInterface
     }
 
     /**
-     * @param string $assetCode
-     *
-     * @throws \LogicException
-     *
-     * @return AssetInterface
+     * {@inheritdoc}
      */
     public function retrieveAsset($assetCode)
     {
@@ -57,12 +55,7 @@ class AssetFinder implements AssetFinderInterface
     }
 
     /**
-     * @param AssetInterface  $asset
-     * @param LocaleInterface $locale
-     *
-     * @throws \LogicException
-     *
-     * @return ReferenceInterface
+     * {@inheritdoc}
      */
     public function retrieveReference(AssetInterface $asset, LocaleInterface $locale = null)
     {
@@ -84,11 +77,7 @@ class AssetFinder implements AssetFinderInterface
     }
 
     /**
-     * Retrieves variations without generated file
-     *
-     * @param int|null $assetCode
-     *
-     * @return VariationInterface[]
+     * {@inheritdoc}
      */
     public function retrieveVariationsNotGenerated($assetCode = null)
     {
@@ -109,12 +98,7 @@ class AssetFinder implements AssetFinderInterface
     }
 
     /**
-     * @param ReferenceInterface $reference
-     * @param ChannelInterface   $channel
-     *
-     * @throws \LogicException
-     *
-     * @return VariationInterface
+     * {@inheritdoc}
      */
     public function retrieveVariation(ReferenceInterface $reference, ChannelInterface $channel)
     {

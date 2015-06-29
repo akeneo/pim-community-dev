@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Finder;
+namespace PimEnterprise\Component\ProductAsset\Finder;
 
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
@@ -19,8 +19,17 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
 
+/**
+ * Finder for assets and asset related entities
+ *
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
+ */
 interface AssetFinderInterface
 {
+    /**
+     * @param AssetRepositoryInterface     $assetRepository
+     * @param VariationRepositoryInterface $variationsRepository
+     */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
         VariationRepositoryInterface $variationsRepository

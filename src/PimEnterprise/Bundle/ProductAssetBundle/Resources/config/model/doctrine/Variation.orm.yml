@@ -32,7 +32,6 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
             joinColumn:
                 name: source_file_id
                 referencedColumnName: id
-                nullable: true
             cascade:
                 - persist
                 - refresh

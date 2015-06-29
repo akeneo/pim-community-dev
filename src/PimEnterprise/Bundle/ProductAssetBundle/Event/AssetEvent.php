@@ -22,7 +22,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 final class AssetEvent extends GenericEvent
 {
     /** @var string Event triggered after upload of assets files */
-    const FILES_UPLOAD_POST = 'pimee_product_asset.asset.files_upload.post';
+    const POST_UPLOAD_FILES = 'pimee_product_asset.asset.files_upload.post';
 
     /**
      * @param AssetInterface $subject

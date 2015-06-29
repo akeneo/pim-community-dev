@@ -4,6 +4,7 @@ namespace Context\Page\Asset;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
+use SensioLabs\Behat\PageObjectExtension\PageObject\Element;
 
 /**
  * Product asset edit page
@@ -63,6 +64,11 @@ class Edit extends Form
         $elt->click();
     }
 
+    /**
+     * @throws ElementNotFoundException
+     *
+     * @return bool
+     */
     public function deleteReferenceFile()
     {
         $deleteButton = $this->find('css', 'div.reference button.delete');
@@ -74,6 +80,13 @@ class Edit extends Form
         return true;
     }
 
+    /**
+     * @param string $channel
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return bool
+     */
     public function generateVariationFile($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
@@ -87,6 +100,13 @@ class Edit extends Form
         return true;
     }
 
+    /**
+     * @param string $channel
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return bool
+     */
     public function deleteVariationFile($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
@@ -100,6 +120,11 @@ class Edit extends Form
         return true;
     }
 
+    /**
+     * @throws ElementNotFoundException
+     *
+     * @return bool
+     */
     public function resetVariationsFiles()
     {
         $resetButton = $this->find('css', 'div.reference button.reset-variations');
@@ -111,6 +136,11 @@ class Edit extends Form
         return true;
     }
 
+    /**
+     * @throws ElementNotFoundException
+     *
+     * @return Element
+     */
     public function findReferenceUploadZone()
     {
         $uploadZone = $this->find('css', 'div.reference .asset-uploader');
@@ -122,6 +152,13 @@ class Edit extends Form
         return $uploadZone;
     }
 
+    /**
+     * @param string $channel
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return Element
+     */
     public function findVariationUploadZone($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
@@ -134,6 +171,13 @@ class Edit extends Form
         return $uploadZone;
     }
 
+    /**
+     * @param string $channel
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return bool
+     */
     public function findVariationGenerateZone($channel)
     {
         $variationContainer = $this->findVariationContainer($channel);
@@ -147,6 +191,13 @@ class Edit extends Form
         return true;
     }
 
+    /**
+     * @param string $channel
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return Element
+     */
     public function findVariationContainer($channel)
     {
         $allVariationsContainer = $this->findAll('css', 'div.variation');

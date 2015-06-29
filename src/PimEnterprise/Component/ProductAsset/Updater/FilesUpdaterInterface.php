@@ -9,25 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Updater;
+namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 interface FilesUpdaterInterface
 {
     /**
-     * @param EventDispatcherInterface $eventDispatcher
      * @param RawFileStorerInterface   $rawFileStorer
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         RawFileStorerInterface $rawFileStorer
     );
 

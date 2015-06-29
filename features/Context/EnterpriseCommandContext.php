@@ -65,9 +65,9 @@ class EnterpriseCommandContext extends CommandContext
         $application = new Application();
         $application->add(new GenerateMissingVariationFilesCommand());
 
-        $command = $application->find('pimee:asset:generate-missing-variation-files');
+        $command = $application->find('pim:asset:generate-missing-variation-files');
         $command->setContainer($this->getContainer());
-        $publishCommandTester = new CommandTester($command);
+        $commandTester = new CommandTester($command);
 
         $commandOptions = ['command' => $command->getName()];
 
@@ -75,15 +75,15 @@ class EnterpriseCommandContext extends CommandContext
             $commandOptions['-a'] = $assetCode;
         }
 
-        $publishCommandTester->execute($commandOptions);
+        $commandTester->execute($commandOptions);
 
-        $result = json_decode($publishCommandTester->getDisplay());
+        $result = $commandTester->getStatusCode();
 
-        if (0 != $result) {
+        if (0 !== $result) {
             throw new \Exception(
                 sprintf(
                     'An error occured during the execution of the publish command : %s',
-                    $publishCommandTester->getDisplay()
+                    $commandTester->getDisplay()
                 )
             );
         }

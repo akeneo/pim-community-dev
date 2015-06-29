@@ -33,7 +33,7 @@ class AssetEventListener
 
     /**
      * Generate missing variations for one asset or for all assets
-     * Triggered by AssetEvent::FILES_UPLOAD_POST
+     * Triggered by AssetEvent::POST_UPLOAD_FILES
      *
      * @param AssetEvent $event
      *
@@ -42,7 +42,7 @@ class AssetEventListener
     public function onAssetFilesUploaded(AssetEvent $event)
     {
         $asset      = $event->getSubject();
-        $cmd        = 'pimee:asset:generate-missing-variation-files';
+        $cmd        = 'pim:asset:generate-missing-variation-files';
         $background = true;
 
         if (null !== $asset) {
@@ -50,7 +50,11 @@ class AssetEventListener
             $cmd .= sprintf(' --asset=%s', $asset->getCode());
         }
 
-        $this->commandLauncher->execute($cmd, $background);
+        if ($background) {
+            $this->commandLauncher->executeBackground($cmd);
+        } else {
+            $this->commandLauncher->executeForeground($cmd);
+        }
 
         return $event;
     }

@@ -1,31 +1,29 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Updater;
+namespace spec\PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class FilesUpdaterSpec extends ObjectBehavior
 {
     function let(
-        EventDispatcherInterface $eventDispatcher,
         RawFileStorerInterface $rawFileStorer
     ) {
-        $this->beConstructedWith($eventDispatcher, $rawFileStorer);
+        $this->beConstructedWith($rawFileStorer);
     }
 
     function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdater');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Updater\FilesUpdater');
     }
 
     function it_can_update_asset_files()
     {
-        $this->shouldImplement('PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdaterInterface');
+        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface');
     }
 
     function it_can_delete_reference_file(ReferenceInterface $reference, FileInterface $file)

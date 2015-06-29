@@ -9,35 +9,28 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\ProductAssetBundle\Updater;
+namespace PimEnterprise\Component\ProductAsset\Updater;
 
 use Akeneo\Component\FileStorage\RawFile\RawFileStorerInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
 use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
 use PimEnterprise\Component\ProductAsset\ProductAssetFileSystems;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 class FilesUpdater implements FilesUpdaterInterface
 {
     /** @var RawFileStorerInterface */
     protected $rawFileStorer;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
-     * @param EventDispatcherInterface $eventDispatcher
      * @param RawFileStorerInterface   $rawFileStorer
      */
     public function __construct(
-        EventDispatcherInterface $eventDispatcher,
         RawFileStorerInterface $rawFileStorer
     ) {
-        $this->eventDispatcher = $eventDispatcher;
         $this->rawFileStorer   = $rawFileStorer;
     }
 
@@ -56,43 +49,6 @@ class FilesUpdater implements FilesUpdaterInterface
         }
     }
 
-    /**
-     * Update a variation file with an uploaded file
-     *
-     * @param VariationInterface $variation
-     */
-    protected function updateVariationFile(VariationInterface $variation)
-    {
-        if (null !== $variation->getFile() && null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
-            $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
-            $variation->setSourceFile($file);
-            $variation->setFile(null);
-            $variation->setLocked(true);
-        }
-        if (null !== $variation->getFile() && null === $variation->getFile()->getId()) {
-            $variation->setFile(null);
-        }
-        if (null !== $variation->getSourceFile() && null === $variation->getSourceFile()->getId()) {
-            $variation->setSourceFile(null);
-        }
-    }
-
-    /**
-     * Update a reference file with an uploaded file
-     *
-     * @param ReferenceInterface $reference
-     */
-    protected function updateReferenceFile(ReferenceInterface $reference)
-    {
-        if (null !== $reference->getFile() && null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
-            $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
-            $reference->setFile($file);
-            $this->resetAllVariationsFiles($reference);
-        }
-        if (null !== $reference->getFile() && null === $reference->getFile()->getId()) {
-            $reference->setFile(null);
-        }
-    }
 
     /**
      * {@inheritdoc}
@@ -138,6 +94,9 @@ class FilesUpdater implements FilesUpdaterInterface
         $variation->setLocked(true);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function resetAllUploadedFiles(AssetInterface $asset)
     {
         foreach ($asset->getReferences() as $reference) {
@@ -159,6 +118,46 @@ class FilesUpdater implements FilesUpdaterInterface
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Update a variation file with an uploaded file
+     *
+     * @param VariationInterface $variation
+     */
+    protected function updateVariationFile(VariationInterface $variation)
+    {
+        if (null !== $variation->getFile() && null !== $uploadedFile = $variation->getFile()->getUploadedFile()) {
+            $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+            $variation->setSourceFile($file);
+            $variation->setFile(null);
+            $variation->setLocked(true);
+        }
+        // TODO required because of sf form collections
+        if (null !== $variation->getFile() && null === $variation->getFile()->getId()) {
+            $variation->setFile(null);
+        }
+        if (null !== $variation->getSourceFile() && null === $variation->getSourceFile()->getId()) {
+            $variation->setSourceFile(null);
+        }
+    }
+
+    /**
+     * Update a reference file with an uploaded file
+     *
+     * @param ReferenceInterface $reference
+     */
+    protected function updateReferenceFile(ReferenceInterface $reference)
+    {
+        if (null !== $reference->getFile() && null !== $uploadedFile = $reference->getFile()->getUploadedFile()) {
+            $file = $this->rawFileStorer->store($uploadedFile, ProductAssetFileSystems::FS_STORAGE);
+            $reference->setFile($file);
+            $this->resetAllVariationsFiles($reference);
+        }
+        // TODO required because of sf form collections
+        if (null !== $reference->getFile() && null === $reference->getFile()->getId()) {
+            $reference->setFile(null);
         }
     }
 }

@@ -20,5 +20,4 @@ PimEnterprise\Component\ProductAsset\Model\Variation:
 Akeneo\Component\FileStorage\Model\File:
     properties:
         uploadedFile:
-            - File:
-                maxSize: 1024k
+            - File: ~

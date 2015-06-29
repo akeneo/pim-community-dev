@@ -35,12 +35,10 @@ Feature: Edit product assets variations
     Given I generate missing variations for asset bridge
     And I am on the "bridge" asset page
     And I visit the "Variations" tab
-
     Given I delete the Tablet variation file
     And I confirm the deletion
     Then I should be able to generate Tablet from reference
     And I should see the Tablet variation upload zone
-
     Given I delete the reference file
     And I confirm the deletion
     Then I should not be able to generate Tablet from reference

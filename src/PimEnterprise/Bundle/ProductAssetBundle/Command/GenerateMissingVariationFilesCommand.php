@@ -30,8 +30,8 @@ class GenerateMissingVariationFilesCommand extends AbstractGenerationVariationFi
      */
     protected function configure()
     {
-        $this->setName('pimee:asset:generate-missing-variation-files');
-        $this->setDescription('Generate all the missing variation files.');
+        $this->setName('pim:asset:generate-missing-variation-files');
+        $this->setDescription('Generate missing variation files for one asset or for all assets.');
         $this->addOption(
             'asset',
             'a',

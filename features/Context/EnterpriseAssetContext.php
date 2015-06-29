@@ -19,6 +19,10 @@ class EnterpriseAssetContext extends RawMinkContext
     /**
      * @Then /^I delete the reference file$/
      * @Then /^I delete the (\S+) variation file$/
+     *
+     * @param null $channel
+     *
+     * @throws ElementNotFoundException
      */
     public function iDeleteTheFile($channel = null)
     {
@@ -39,6 +43,10 @@ class EnterpriseAssetContext extends RawMinkContext
 
     /**
      * @Then /^I generate (\S+) variation from reference$/
+     *
+     * @param $channel
+     *
+     * @throws ElementNotFoundException
      */
     public function iGenerateVariationFile($channel)
     {
@@ -48,6 +56,10 @@ class EnterpriseAssetContext extends RawMinkContext
     /**
      * @Then /^I should see the reference upload zone$/
      * @Then /^I should see the (\S+) variation upload zone$/
+     *
+     * @param null $channel
+     *
+     * @throws ElementNotFoundException
      */
     public function iShouldSeeFileUploadZone($channel = null)
     {
@@ -61,8 +73,8 @@ class EnterpriseAssetContext extends RawMinkContext
     /**
      * @Then /^I should( not)? be able to generate (\S+) from reference$/
      *
-     * @param bool $not
-     * @param      $channel
+     * @param bool   $not
+     * @param string $channel
      *
      * @throws ElementNotFoundException
      */
@@ -71,9 +83,7 @@ class EnterpriseAssetContext extends RawMinkContext
         try {
             $this->getCurrentPage()->findVariationGenerateZone($channel);
         } catch (ElementNotFoundException $e) {
-            if ($not) {
-                // do nothing
-            } else {
+            if (!$not) {
                 throw $e;
             }
         }
@@ -81,6 +91,8 @@ class EnterpriseAssetContext extends RawMinkContext
 
     /**
      * @Given /^I upload the reference file (\S+)$/
+     *
+     * @param $file
      */
     public function iUploadTheReferenceFile($file)
     {
@@ -89,16 +101,26 @@ class EnterpriseAssetContext extends RawMinkContext
 
     /**
      * @Given /^I upload the (\S+) variation file (\S+)$/
+     *
+     * @param string $channel
+     * @param mixed  $file
      */
     public function iUploadTheVariationFile($channel, $file)
     {
         $this->iUploadTheAssetFile($file, $channel);
     }
 
+    /**
+     * @param mixed|null  $file
+     * @param string|null $channel
+     *
+     * @throws ElementNotFoundException
+     */
     protected function iUploadTheAssetFile($file = null, $channel = null)
     {
         if ($this->getMinkParameter('files_path')) {
-            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')), DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
+            $fullPath = rtrim(realpath($this->getMinkParameter('files_path')),
+                    DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR.$file;
             if (is_file($fullPath)) {
                 $file = $fullPath;
             }

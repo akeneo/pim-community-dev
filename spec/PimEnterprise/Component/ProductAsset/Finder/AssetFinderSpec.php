@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace spec\PimEnterprise\Bundle\ProductAssetBundle\Finder;
+namespace spec\PimEnterprise\Component\ProductAsset\Finder;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
@@ -33,8 +33,8 @@ class AssetFinderSpec extends ObjectBehavior
 
     public function it_can_be_initialized()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\ProductAssetBundle\Finder\AssetFinder');
-        $this->shouldImplement('PimEnterprise\Bundle\ProductAssetBundle\Finder\AssetFinderInterface');
+        $this->shouldHaveType('PimEnterprise\Component\ProductAsset\Finder\AssetFinder');
+        $this->shouldImplement('PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface');
     }
 
     public function it_retrieves_an_asset($assetRepository, AssetInterface $asset)

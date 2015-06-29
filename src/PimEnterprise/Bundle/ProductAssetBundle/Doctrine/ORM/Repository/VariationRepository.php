@@ -25,7 +25,7 @@ use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface
 class VariationRepository extends EntityRepository implements VariationRepositoryInterface
 {
     /**
-     * @return VariationInterface[]|ArrayCollection
+     * {@inheritdoc}
      */
     public function findNotGenerated()
     {

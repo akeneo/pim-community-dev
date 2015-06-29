@@ -1,9 +1,8 @@
 parameters:
-    pimee_product_asset.updater.files.class:              PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdater
+    pimee_product_asset.updater.files.class:              PimEnterprise\Component\ProductAsset\Updater\FilesUpdater
 
 services:
     pimee_product_asset.updater.files:
         class: %pimee_product_asset.updater.files.class%
         arguments:
-            - '@event_dispatcher'
             - '@akeneo_file_storage.file_storage.raw_file.storer'

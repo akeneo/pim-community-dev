@@ -17,7 +17,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
-use PimEnterprise\Bundle\ProductAssetBundle\Updater\FilesUpdaterInterface;
+use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -181,7 +181,7 @@ class ProductAssetController extends Controller
      *
      * @AclAncestor("pimee_product_asset_index")
      *
-     * @return array
+     * @return Response
      */
     public function editAction(Request $request, $id)
     {
@@ -205,7 +205,7 @@ class ProductAssetController extends Controller
                 $this->assetFilesUpdater->updateAssetFiles($productAsset);
                 $this->assetSaver->save($productAsset);
                 $this->eventDispatcher->dispatch(
-                    AssetEvent::FILES_UPLOAD_POST,
+                    AssetEvent::POST_UPLOAD_FILES,
                     new AssetEvent($productAsset)
                 );
                 $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
@@ -311,7 +311,7 @@ class ProductAssetController extends Controller
             $this->assetFilesUpdater->resetVariationFile($variation);
             $this->variationSaver->save($variation);
             $this->eventDispatcher->dispatch(
-                AssetEvent::FILES_UPLOAD_POST,
+                AssetEvent::POST_UPLOAD_FILES,
                 new AssetEvent($asset)
             );
             $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');
@@ -345,7 +345,7 @@ class ProductAssetController extends Controller
             $this->assetFilesUpdater->resetAllVariationsFiles($reference, true);
             $this->assetSaver->save($asset);
             $this->eventDispatcher->dispatch(
-                AssetEvent::FILES_UPLOAD_POST,
+                AssetEvent::POST_UPLOAD_FILES,
                 new AssetEvent($asset)
             );
             $this->addFlash($request, 'success', 'pimee_product_asset.enrich_asset.flash.update.success');

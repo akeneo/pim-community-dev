@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ChannelInterface;
 use Pim\Bundle\CatalogBundle\Model\LocaleInterface;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\LocaleRepositoryInterface;
-use PimEnterprise\Bundle\ProductAssetBundle\Finder\AssetFinderInterface;
+use PimEnterprise\Component\ProductAsset\Finder\AssetFinderInterface;
 use PimEnterprise\Component\ProductAsset\Builder\VariationBuilderInterface;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -26,7 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
  * Generate the variation files of a reference.
  *
  * @author Julien Janvier <jjanvier@akeneo.com>
- * @author JM Leroux <ean-marie.leroux@akeneo.com>
+ * @author JM Leroux <jean-marie.leroux@akeneo.com>
  */
 abstract class AbstractGenerationVariationFileCommand extends ContainerAwareCommand
 {

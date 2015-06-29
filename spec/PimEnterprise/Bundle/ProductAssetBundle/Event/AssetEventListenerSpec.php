@@ -24,14 +24,14 @@ class AssetEventListenerSpec extends ObjectBehavior
     {
         $assetEvent = new AssetEvent(null);
 
-        $commandLauncher->execute("pimee:asset:generate-missing-variation-files", true)->shouldBeCalled();
+        $commandLauncher->executeBackground("pim:asset:generate-missing-variation-files")->shouldBeCalled();
 
         $this->onAssetFilesUploaded($assetEvent)->shouldReturn($assetEvent);
 
         $asset->getCode()->willReturn('foo');
         $assetEvent = new AssetEvent($asset->getWrappedObject());
 
-        $commandLauncher->execute("pimee:asset:generate-missing-variation-files --asset=foo", false)->shouldBeCalled();
+        $commandLauncher->executeForeground("pim:asset:generate-missing-variation-files --asset=foo")->shouldBeCalled();
 
         $this->onAssetFilesUploaded($assetEvent)->shouldReturn($assetEvent);
     }
