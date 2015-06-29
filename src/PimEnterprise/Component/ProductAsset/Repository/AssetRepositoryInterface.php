@@ -53,4 +53,13 @@ interface AssetRepositoryInterface extends
      * @return ArrayCollection
      */
     public function findByIdentifiers(array $identifiers = []);
+
+    /**
+     * Find all codes that begin by "$code"
+     *
+     * @param string $code
+     *
+     * @return array
+     */
+    public function findSimilarCodes($code);
 }
