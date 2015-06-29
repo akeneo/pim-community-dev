@@ -26,7 +26,7 @@ abstract class AbstractAttributeAdder implements AttributeAdderInterface
     /** @var ProductBuilderInterface */
     protected $productBuilder;
 
-    /** @var OptionResolver */
+    /** @var OptionsResolver */
     protected $resolver;
 
     /**

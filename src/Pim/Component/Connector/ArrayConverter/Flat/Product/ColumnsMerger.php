@@ -51,8 +51,10 @@ class ColumnsMerger
             $attributeInfos = $this->fieldExtractor->extractColumnInfo($fieldName);
             if (null !== $attributeInfos) {
                 $attribute = $attributeInfos['attribute'];
+                //TODO: use the constant
                 if ('metric' === $attribute->getBackendType()) {
                     $collectedMetrics = $this->collectMetricData($collectedMetrics, $attributeInfos, $fieldValue);
+                //TODO: use the constant
                 } elseif ('prices' === $attribute->getBackendType()) {
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
                 } else {

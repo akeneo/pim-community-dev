@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
 /**
@@ -29,7 +30,7 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductBuilderInterface */
     protected $builder;
 
-    /** @var ProductUpdaterInterface */
+    /** @var ObjectUpdaterInterface */
     protected $updater;
 
     /** @var ValidatorInterface */

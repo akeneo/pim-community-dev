@@ -12,6 +12,8 @@ use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
+//TODO: move this exception in this component
+
 /**
  * Abstract processor to provide a way to denormalize array data to object by,
  * - fetch an existing object or create it
@@ -45,7 +47,7 @@ abstract class AbstractProcessor extends AbstractConfigurableStepElement impleme
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [];
     }
 
     /**

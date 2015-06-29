@@ -112,7 +112,7 @@ class AttributeColumnInfoExtractor
         if ('prices' === $attribute->getBackendType()) {
             $info['price_currency'] = array_shift($explodedFieldName);
         } elseif ('metric' === $attribute->getBackendType()) {
-            // TODO: has been added, useful?
+            // TODO: has been added, useful? add it in the phpdoc if usefull
             $info['metric_unit'] = array_shift($explodedFieldName);
         }
 

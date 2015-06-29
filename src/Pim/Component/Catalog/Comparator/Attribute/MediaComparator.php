@@ -7,15 +7,12 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
 /**
  * Comparator which calculate change set for medias
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class MediaComparator implements ComparatorInterface
 {
-    /** @staticvar string */
-    const SEPATATOR_FILE = '/';
-
     /**
      * {@inheritdoc}
      */
@@ -36,8 +33,8 @@ class MediaComparator implements ComparatorInterface
             return null;
         }
 
-        $filename = strrchr($data['value']['filePath'], self::SEPATATOR_FILE);
-        $data['value']['filename'] = str_replace(self::SEPATATOR_FILE, '', $filename);
+        $filename = strrchr($data['value']['filePath'], DIRECTORY_SEPARATOR);
+        $data['value']['filename'] = str_replace(DIRECTORY_SEPARATOR, '', $filename);
 
         return $data;
     }

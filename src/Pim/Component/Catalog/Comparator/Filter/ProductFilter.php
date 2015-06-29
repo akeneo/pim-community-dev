@@ -164,7 +164,7 @@ class ProductFilter implements ProductFilterInterface
 
     /**
      * Flat product values to have keys formatted like that: $code-$locale-$scope.
-     * That's simplify the search when we compare two arrays
+     * That simplifies the search when we compare two arrays
      *
      * @param array $product
      *

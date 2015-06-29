@@ -4,10 +4,13 @@ namespace Pim\Component\Catalog\Comparator;
 
 /**
  * A comparator that delegates comparison to a chain of comparators
+ * TODO: if it's a chain comparator, it should be named accordingly (ie: it's not a registry)
  *
  * @author    Marie Bochu <marie.bochu@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO: ComparatorRegistryInterface as your object is called ComparatorRegistry
  */
 interface RegistryInterface
 {

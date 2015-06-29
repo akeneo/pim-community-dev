@@ -51,6 +51,8 @@ class FieldSplitter
      * Split a field name:
      * 'description-en_US-mobile' => ['description', 'en_US', 'mobile']
      *
+     * TODO: does that really work ? because we could have an attribute called "this-is-my-attribute" no ?
+     *
      * @param string $field Raw field name
      *
      * @return array
