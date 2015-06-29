@@ -8,6 +8,7 @@ use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AssociationInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Component\Catalog\Comparator\Filter\ProductFilterInterface;
 use Pim\Component\Connector\ArrayConverter\StandardArrayConverterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -22,13 +23,15 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         IdentifiableObjectRepositoryInterface $productRepository,
         ObjectUpdaterInterface $productUpdater,
         ValidatorInterface $productValidator,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        ProductFilterInterface $productAssocFilter
     ) {
         $this->beConstructedWith(
             $arrayConverter,
             $productRepository,
             $productUpdater,
-            $productValidator
+            $productValidator,
+            $productAssocFilter
         );
         $this->setStepExecution($stepExecution);
     }
@@ -50,6 +53,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository,
         $productUpdater,
         $productValidator,
+        $productAssocFilter,
         ProductInterface $product,
         AssociationInterface $association,
         ConstraintViolationListInterface $violationList
@@ -82,7 +86,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->convert($originalData)
             ->willReturn($convertedData);
 
-        $filteredData = [
+        $preFilteredData = $filteredData = [
             'associations' => [
                 'XSELL' => [
                     'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
@@ -90,6 +94,10 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        unset($filteredData['associations']['XSELL']['groups']);
+        $productAssocFilter->filter($product, $preFilteredData)->willReturn($filteredData);
+
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
@@ -108,6 +116,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $arrayConverter,
         $productRepository,
         $productUpdater,
+        $productAssocFilter,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -146,6 +155,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $productAssocFilter->filter($product, $filteredData)->willReturn($filteredData);
+
         $productUpdater
             ->update($product, $filteredData)
             ->willThrow(new \InvalidArgumentException('association does not exists'));
@@ -163,6 +175,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository,
         $productUpdater,
         $productValidator,
+        $productAssocFilter,
         AssociationInterface $association,
         ProductInterface $product
     ) {
@@ -202,6 +215,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 ]
             ]
         ];
+
+        $productAssocFilter->filter($product, $filteredData)->willReturn($filteredData);
+
         $productUpdater
             ->update($product, $filteredData)
             ->shouldBeCalled();
@@ -219,5 +235,59 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
                 'process',
                 [$originalData]
             );
+    }
+
+    function it_skips_a_product_when_there_is_nothing_to_update(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productAssocFilter,
+        ProductInterface $product
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku'           => 'tshirt',
+            'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
+            'XSELL-product' => ['AKN_TS, ORO_TSH']
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TSH']
+                ]
+            ]
+        ];
+        $arrayConverter
+            ->convert($originalData)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TSH']
+                ]
+            ]
+        ];
+
+        $productAssocFilter->filter($product, $filteredData)->willReturn([]);
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldNotBeCalled();
+
+        $this->process($originalData)
+            ->shouldReturn(null);
     }
 }
