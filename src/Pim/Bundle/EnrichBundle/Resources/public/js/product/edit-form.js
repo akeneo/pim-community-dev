@@ -14,7 +14,7 @@ define(
         'text!pim/template/product/form',
         'pim/form',
         'oro/mediator',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/field-manager'
     ],
     function (
@@ -23,7 +23,7 @@ define(
         template,
         BaseForm,
         mediator,
-        EntityManager,
+        FetcherRegistry,
         FieldManager
     ) {
         var FormView = BaseForm.extend({
@@ -50,7 +50,7 @@ define(
                 return this.renderExtensions();
             },
             clearCache: function () {
-                EntityManager.clearAll();
+                FetcherRegistry.clearAll();
                 FieldManager.clearFields();
                 this.render();
             }

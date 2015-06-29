@@ -5,9 +5,9 @@ define(
         'underscore',
         'pim/multi-select-field',
         'routing',
-        'pim/entity-manager'
+        'pim/fetcher-registry'
     ],
-    function (_, MultiselectField, Routing, EntityManager) {
+    function (_, MultiselectField, Routing, FetcherRegistry) {
         return MultiselectField.extend({
             fieldType: 'reference-multi-select',
             getTemplateContext: function () {
@@ -19,7 +19,7 @@ define(
                     });
             },
             getChoiceUrl: function () {
-                return EntityManager.getRepository('referenceDataConfiguration').findAll()
+                return FetcherRegistry.getFetcher('reference-data-configuration').fetchAll()
                     .then(_.bind(function (config) {
                         return Routing.generate(
                             'pim_ui_ajaxentity_list',

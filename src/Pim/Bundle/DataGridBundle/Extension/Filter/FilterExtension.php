@@ -198,7 +198,10 @@ class FilterExtension extends AbstractExtension
             $filters[] = $this->getFilterObject($column, $filter);
         }
 
-        if (!isset($filtersConfig['category'])) {
+        $gridName = $config->offsetGetByPath('[name]');
+        $isProductGrid = preg_match('/product-grid$/', $gridName);
+
+        if (!isset($filtersConfig['category']) && $isProductGrid) {
             $categoryConfig = [
                 'type'      => 'product_category',
                 'data_name' => 'category',
