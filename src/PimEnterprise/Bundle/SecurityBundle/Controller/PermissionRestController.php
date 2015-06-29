@@ -11,9 +11,10 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Controller;
 
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
@@ -29,23 +30,29 @@ class PermissionRestController
     protected $securityContext;
 
     /** @var AttributeGroupRepositoryInterface */
-    protected $attGroupRepository;
+    protected $attributeGroupRepo;
+
+    /** @var CategoryAccessRepository */
+    protected $categoryAccessRepo;
 
     /** @var UserContext */
     protected $userContext;
 
     /**
      * @param SecurityContextInterface          $securityContext
-     * @param AttributeGroupRepositoryInterface $attGroupRepository
+     * @param AttributeGroupRepositoryInterface $attributeGroupRepo
+     * @param CategoryAccessRepository          $categoryAccessRepo
      * @param UserContext                       $userContext
      */
     public function __construct(
         SecurityContextInterface $securityContext,
-        AttributeGroupRepositoryInterface $attGroupRepository,
+        AttributeGroupRepositoryInterface $attributeGroupRepo,
+        CategoryAccessRepository $categoryAccessRepo,
         UserContext $userContext
     ) {
         $this->securityContext    = $securityContext;
-        $this->attGroupRepository = $attGroupRepository;
+        $this->attributeGroupRepo = $attributeGroupRepo;
+        $this->categoryAccessRepo = $categoryAccessRepo;
         $this->userContext        = $userContext;
     }
 
@@ -75,13 +82,26 @@ class PermissionRestController
                     'edit' => $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $group)
                 ];
             },
-            $this->attGroupRepository->findAll()
+            $this->attributeGroupRepo->findAll()
         );
+
+        $user = $this->userContext->getUser();
+
+        $categories = [];
+        $permissions = [
+            Attributes::VIEW_PRODUCTS,
+            Attributes::EDIT_PRODUCTS,
+            Attributes::OWN_PRODUCTS
+        ];
+        foreach ($permissions as $permission) {
+            $categories[$permission] = $this->categoryAccessRepo->getGrantedCategoryCodes($user, $permission);
+        }
 
         return new JsonResponse(
             [
                 'locales'          => $locales,
                 'attribute_groups' => $attributeGroups,
+                'categories'       => $categories,
             ]
         );
     }

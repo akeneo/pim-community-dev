@@ -30,4 +30,17 @@ class EnterpriseDataGridContext extends BaseDataGridContext
             throw $e;
         }
     }
+
+    /**
+     * @param string $elements
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^I should see assets? (.+)$/
+     */
+    public function iShouldSeeAsset($elements)
+    {
+        $this->iChangePageSize(100);
+        parent::iShouldSeeEntities($elements);
+    }
 }

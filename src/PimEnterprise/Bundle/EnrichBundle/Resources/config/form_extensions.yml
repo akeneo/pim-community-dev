@@ -1,4 +1,14 @@
 extensions:
+    save:
+        module: pimee/product-edit-form/save
+
+    draft:
+        module: pimee/product-edit-form/draft
+        parent: product-edit-form
+        targetZone: buttons
+        insertAction: append
+        position: 85
+
     smart-attribute:
         module: pimee/product-edit-form/attributes/smart-attribute
         parent: attributes

@@ -238,6 +238,28 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
+     * Returns granted category codes
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return string[]
+     */
+    public function getGrantedCategoryCodes(User $user, $accessLevel)
+    {
+        $qb = $this->getGrantedCategoryQB($user, $accessLevel)
+            ->resetDQLParts(['select'])
+            ->select('c.code');
+
+        return array_map(
+            function ($row) {
+                return $row['code'];
+            },
+            $qb->getQuery()->getArrayResult()
+        );
+    }
+
+    /**
      * Returns revoked category ids
      *
      * @param User   $user
