@@ -1,2 +1,3 @@
 parameters:
+    pim_base_connector.step.tasklet.class:   Pim\Bundle\BaseConnectorBundle\Step\TaskletStep
     pim_base_connector.step.validator.class: Pim\Bundle\BaseConnectorBundle\Step\ValidatorStep

@@ -16,12 +16,12 @@ define(
         'text!pim/template/product/panel/history',
         'routing',
         'oro/mediator',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/user-context',
         'pim/i18n',
         'backbone/bootstrap-modal'
     ],
-    function ($, _, Backbone, BaseForm, template, Routing, mediator, EntityManager, UserContext, i18n) {
+    function ($, _, Backbone, BaseForm, template, Routing, mediator, FetcherRegistry, UserContext, i18n) {
         return BaseForm.extend({
             template: _.template(template),
             className: 'panel-pane history-panel',
@@ -101,7 +101,7 @@ define(
                 }
             },
             prepareVersions: function (versions) {
-                return EntityManager.getRepository('attribute').findAll().then(_.bind(function (attributes) {
+                return FetcherRegistry.getFetcher('attribute').fetchAll().then(_.bind(function (attributes) {
                     _.each(versions, _.bind(function (version) {
                         _.each(version.changeset, _.bind(function (data, index) {
                             var code = index.split('-').shift();

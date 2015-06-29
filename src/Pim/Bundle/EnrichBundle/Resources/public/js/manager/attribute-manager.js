@@ -3,11 +3,11 @@
 define([
         'jquery',
         'underscore',
-        'pim/entity-manager'
+        'pim/fetcher-registry'
     ], function (
         $,
         _,
-        EntityManager
+        FetcherRegistry
     ) {
         return {
             /**
@@ -20,8 +20,8 @@ define([
                 if (!product.family) {
                     return $.Deferred().resolve(_.keys(product.values));
                 } else {
-                    return EntityManager.getRepository('family')
-                        .find(product.family)
+                    return FetcherRegistry.getFetcher('family')
+                        .fetch(product.family)
                         .then(function (family) {
                             return _.union(_.keys(product.values), family.attributes);
                         });
@@ -36,7 +36,7 @@ define([
              */
             getAvailableOptionalAttributes: function (product) {
                 return $.when(
-                    EntityManager.getRepository('attribute').findAll(),
+                    FetcherRegistry.getFetcher('attribute').fetchAll(),
                     this.getAttributesForProduct(product)
                 ).then(function (attributes, productAttributes) {
                     var optionalAttributes = _.map(

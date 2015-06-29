@@ -1,12 +1,12 @@
 'use strict';
 
 define(
-    ['jquery', 'underscore', 'pim/entity-manager', 'pim/attribute-manager'],
-    function ($, _, EntityManager, AttributeManager) {
+    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/attribute-manager'],
+    function ($, _, FetcherRegistry, AttributeManager) {
     return {
         getAttributeGroupsForProduct: function (product) {
             return $.when(
-                EntityManager.getRepository('attributeGroup').findAll(),
+                FetcherRegistry.getFetcher('attributeGroup').fetchAll(),
                 AttributeManager.getAttributesForProduct(product)
             ).then(function (attributeGroups, productAttributes) {
                 var activeAttributeGroups = {};

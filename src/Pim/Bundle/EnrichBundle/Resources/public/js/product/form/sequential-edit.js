@@ -18,7 +18,7 @@ define(
         'routing',
         'oro/navigation',
         'pim/product-manager',
-        'pim/entity-manager',
+        'pim/fetcher-registry',
         'pim/user-context',
         'bootstrap'
     ],
@@ -32,7 +32,7 @@ define(
         Routing,
         Navigation,
         ProductManager,
-        EntityManager,
+        FetcherRegistry,
         UserContext
     ) {
         return BaseForm.extend({
@@ -49,12 +49,12 @@ define(
             configure: function () {
                 mediator.once('hash_navigation_request:start', function (navigation) {
                     if (navigation.url === Routing.generate('pim_enrich_product_index')) {
-                        EntityManager.clear('sequentialEdit');
+                        FetcherRegistry.clear('sequentialEdit');
                     }
                 });
 
                 return $.when(
-                    EntityManager.getRepository('sequentialEdit').findAll().then(
+                    FetcherRegistry.getFetcher('sequential-edit').fetchAll().then(
                         _.bind(function (sequentialEdit) {
                             this.model.set(sequentialEdit);
                         }, this)

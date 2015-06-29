@@ -720,9 +720,6 @@ h3.tab-header {
 
   .attribute-copy-actions {
     max-width: @max-field-width + 10px;
-  }
-
-  .attribute-copy-actions {
     .flex(1);
     margin-left: 10px;
     border-left: 1px solid #e5e5e5;
@@ -1147,11 +1144,11 @@ h3.tab-header {
     .box-sizing();
   }
 
-  &.text-field > input {
+  &.akeneo-text-field > input {
     width: 100%;
   }
 
-  &.price-collection-field {
+  &.akeneo-price-collection-field {
     input {
       min-width: 80px;
       max-width: 100px;
@@ -1166,7 +1163,7 @@ h3.tab-header {
     }
   }
 
-  &.metric-field {
+  &.akeneo-metric-field {
     .metric-container {
       .flex(1);
       .display-flex();
@@ -1182,7 +1179,7 @@ h3.tab-header {
     }
   }
 
-  &.boolean-field {
+  &.akeneo-boolean-field {
     .switch {
       border-color: #ccc;
       .border-radius(0);
@@ -1204,6 +1201,33 @@ h3.tab-header {
       }
     }
   }
+}
+
+.akeneo-simple-select-field, .akeneo-multi-select-field {
+  .field-input {
+    display: flex;
+
+    .select-field {
+      .flex(1);
+    }
+
+    .add-attribute-option {
+      background: none;
+      border-radius: 2px;
+      height: 30px;
+      line-height: 30px;
+      border-color: #ddd;
+      border-left: none;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+
+.akeneo-multi-select-field .btn.add-attribute-option {
+  height: 34px;
+  width: 34px;
+  line-height: 34px;
 }
 
 .media-uploader {
@@ -1625,33 +1649,6 @@ h3.tab-header {
   .modal-footer .btn-primary {
     background-color: #7dbf16;
   }
-}
-
-.simple-select-field, .multi-select-field {
-  .field-input {
-    display: flex;
-
-    .select-field {
-      .flex(1);
-    }
-
-    .add-attribute-option {
-      background: none;
-      border-radius: 2px;
-      height: 30px;
-      line-height: 30px;
-      border-color: #ddd;
-      border-left: none;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-    }
-  }
-}
-
-.multi-select-field .btn.add-attribute-option {
-  height: 34px;
-  width: 34px;
-  line-height: 34px;
 }
 
 .meta .family {
