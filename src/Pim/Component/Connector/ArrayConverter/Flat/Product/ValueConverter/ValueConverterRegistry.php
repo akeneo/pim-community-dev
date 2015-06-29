@@ -11,7 +11,7 @@ namespace Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
  */
 class ValueConverterRegistry implements ValueConverterRegistryInterface
 {
-    /** @var array */
+    /** @var ValueConverterInterface[] */
     protected $converters = [];
 
     /**

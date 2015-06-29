@@ -46,12 +46,11 @@ class PriceConverter extends AbstractValueConverter
     }
 
     /**
-     * @param array  $attributeFieldInfo
      * @param string $value
      *
      * @return array
      */
-    protected function convertPrice(array $attributeFieldInfo, $value)
+    protected function convertPrice($value)
     {
         if ('' === $value) {
             $priceValue = null;
