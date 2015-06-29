@@ -34,13 +34,13 @@ class AttributeUpdater implements ObjectUpdaterInterface
 
     /**
      * @param AttributeGroupRepositoryInterface $attributeGroupRepository
-     * @param ConfigurationRegistryInterface    $registry
      * @param array                             $referenceDataType
+     * @param ConfigurationRegistryInterface    $registry
      */
     public function __construct(
         AttributeGroupRepositoryInterface $attributeGroupRepository,
-        ConfigurationRegistryInterface $registry = null,
-        array $referenceDataType
+        array $referenceDataType,
+        ConfigurationRegistryInterface $registry = null
     ) {
         $this->attributeGroupRepository = $attributeGroupRepository;
         $this->accessor                 = PropertyAccess::createPropertyAccessor();
@@ -114,6 +114,8 @@ class AttributeUpdater implements ObjectUpdaterInterface
      * @param string $value
      *
      * @throws \InvalidArgumentException
+     *
+     * @return null
      */
     protected function checkIfReferenceDataExists($value)
     {
@@ -122,7 +124,7 @@ class AttributeUpdater implements ObjectUpdaterInterface
                 $references = array_keys($this->registry->all());
                 throw new \InvalidArgumentException(
                     sprintf(
-                        'Reference data "%s" does not exist. Values allowed are: %s',
+                        'Reference data "%s" does not exist. Allowed values are: %s',
                         $value['reference_data_name'],
                         implode(', ', $references)
                     )

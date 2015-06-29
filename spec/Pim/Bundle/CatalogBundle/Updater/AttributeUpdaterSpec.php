@@ -17,8 +17,8 @@ class AttributeUpdaterSpec extends ObjectBehavior
     {
         $this->beConstructedWith(
             $attributeGroupRepository,
-            $registry,
-            ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+            ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect'],
+            $registry
         );
     }
 

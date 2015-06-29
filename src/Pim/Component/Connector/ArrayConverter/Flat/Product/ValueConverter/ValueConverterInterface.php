@@ -1,6 +1,5 @@
 <?php
 
-// TODO: folder ValueConverter
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product\ValueConverter;
 
 /**

@@ -24,7 +24,7 @@ interface GroupTypeRepositoryInterface extends IdentifiableObjectRepositoryInter
      */
     public function createDatagridQueryBuilder();
 
-    /***
+    /**
      * @param string $code
      *
      * @return string

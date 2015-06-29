@@ -58,7 +58,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $variantGroup
+     * @param GroupInterface $group
      * @param string         $field
      * @param mixed          $data
      *
@@ -70,11 +70,9 @@ class GroupUpdater implements ObjectUpdaterInterface
             case 'code':
                 $this->setCode($group, $data);
                 break;
-
             case 'type':
                 $this->setType($group, $data);
                 break;
-
             case 'labels':
                 $this->setLabels($group, $data);
                 break;
@@ -82,7 +80,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $variantGroup
+     * @param GroupInterface $group
      * @param string         $code
      */
     protected function setCode(GroupInterface $group, $code)
@@ -91,7 +89,7 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $variantGroup
+     * @param GroupInterface $group
      * @param string         $type
      *
      * @throws \InvalidArgumentException
@@ -107,16 +105,16 @@ class GroupUpdater implements ObjectUpdaterInterface
     }
 
     /**
-     * @param GroupInterface $variantGroup
+     * @param GroupInterface $group
      * @param array          $labels
      *
      * @throws \InvalidArgumentException
      */
-    protected function setLabels(GroupInterface $variantGroup, array $labels)
+    protected function setLabels(GroupInterface $group, array $labels)
     {
         foreach ($labels as $localeCode => $label) {
-            $variantGroup->setLocale($localeCode);
-            $translation = $variantGroup->getTranslation();
+            $group->setLocale($localeCode);
+            $translation = $group->getTranslation();
             $translation->setLabel($label);
         }
     }

@@ -62,7 +62,7 @@ class CsvProductReader extends CsvReader
         $localeClass,
         $currencyClass
     ) {
-        $this->fieldExtractor    = $fieldExtractor;
+        $this->fieldExtractor      = $fieldExtractor;
         $this->attributeRepository = $entityManager->getRepository($attributeClass);
         $this->channelRepository   = $entityManager->getRepository($channelClass);
         $this->localeRepository    = $entityManager->getRepository($localeClass);

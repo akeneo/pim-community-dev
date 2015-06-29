@@ -2,6 +2,8 @@
 
 namespace Pim\Component\Connector\ArrayConverter\Flat\Product;
 
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+
 /**
  * Merge columns for single value that can be provided in many columns like prices and metric
  *
@@ -51,9 +53,9 @@ class ColumnsMerger
             $attributeInfos = $this->fieldExtractor->extractColumnInfo($fieldName);
             if (null !== $attributeInfos) {
                 $attribute = $attributeInfos['attribute'];
-                if ('metric' === $attribute->getBackendType()) {
+                if (AbstractAttributeType::BACKEND_TYPE_METRIC === $attribute->getBackendType()) {
                     $collectedMetrics = $this->collectMetricData($collectedMetrics, $attributeInfos, $fieldValue);
-                } elseif ('prices' === $attribute->getBackendType()) {
+                } elseif (AbstractAttributeType::BACKEND_TYPE_PRICE === $attribute->getBackendType()) {
                     $collectedPrices = $this->collectPriceData($collectedPrices, $attributeInfos, $fieldValue);
                 } else {
                     $resultRow[$fieldName] = $fieldValue;

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Updater\Adder;
 
 /**
- * Add a data in a product field (complete the current data)
+ * Adds data in a product field (complete the current data)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

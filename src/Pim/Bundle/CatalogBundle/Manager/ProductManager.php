@@ -204,7 +204,7 @@ class ProductManager
     /**
      * Create a product
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return ProductInterface
      *
      * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProduct();
      */
@@ -216,7 +216,7 @@ class ProductManager
     /**
      * Create a product value
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     * @return ProductValueInterface
      *
      * @deprecated will be removed in 1.5, please use ProductBuilderInterface::createProductValue();
      */
@@ -306,11 +306,11 @@ class ProductManager
     /**
      * Check if a product value with a specific value already exists
      *
-     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::valueExists
-     *
      * @param ProductValueInterface $value
      *
      * @return bool
+     *
+     * @deprecated will be removed in 1.5, please use ProductRepositoryInterface::valueExists
      */
     public function valueExists(ProductValueInterface $value)
     {

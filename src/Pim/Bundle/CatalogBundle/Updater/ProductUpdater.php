@@ -196,7 +196,7 @@ class ProductUpdater implements ObjectUpdaterInterface, ProductUpdaterInterface
 
         foreach ($values as $value) {
             $hasValue = $product->getValue($attributeCode, $value['locale'], $value['scope']);
-            $providedData = ($value['data'] === '' || $value['data'] === [] || $value['data'] === null) ? false : true;
+            $providedData = ('' === $value['data'] || [] === $value['data'] || null === $value['data']) ? false : true;
 
             if ($isFamilyAttribute || $providedData || $hasValue) {
                 $options = ['locale' => $value['locale'], 'scope' => $value['scope']];

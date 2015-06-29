@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+
 /**
  * Category factory
  *
@@ -25,7 +27,7 @@ class CategoryFactory
     /**
      * Create a category instance
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\CategoryInterface
+     * @return CategoryInterface
      */
     public function createCategory()
     {

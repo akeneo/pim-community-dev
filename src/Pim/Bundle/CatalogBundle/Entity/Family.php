@@ -202,10 +202,8 @@ class Family implements FamilyInterface
     public function getAttributeCodes()
     {
         $codes = [];
-        if ($this->attributes) {
-            foreach ($this->attributes as $attribute) {
-                $codes[] = $attribute->getCode();
-            }
+        foreach ($this->attributes as $attribute) {
+            $codes[] = $attribute->getCode();
         }
 
         return $codes;
@@ -237,13 +235,7 @@ class Family implements FamilyInterface
      */
     public function hasAttributeCode($attributeCode)
     {
-        foreach ($this->attributes as $attribute) {
-            if ($attributeCode === $attribute->getCode()) {
-                return true;
-            }
-        }
-
-        return false;
+        return in_array($attributeCode, $this->getAttributeCodes());
     }
 
     /**

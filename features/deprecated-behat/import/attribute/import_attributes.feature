@@ -131,10 +131,10 @@ Feature: Import attributes
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    type;code;label-en_US;group
-    ;shortname;Shortname;info
-    """
+      """
+      type;code;label-en_US;group
+      ;shortname;Shortname;info
+      """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_attribute_import" import job page

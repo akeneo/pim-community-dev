@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
+use Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface;
+
 /**
  * Association type factory
  *
@@ -23,9 +25,9 @@ class AssociationTypeFactory
     }
 
     /**
-     * Creates a association type instance
+     * Creates an association type instance
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AssociationTypeInterface
+     * @return AssociationTypeInterface
      */
     public function createAssociationType()
     {

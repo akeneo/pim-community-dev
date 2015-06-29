@@ -6,6 +6,7 @@ use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterfa
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilderInterface;
 use Pim\Bundle\CatalogBundle\Exception\InvalidArgumentException;
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\CatalogBundle\Model\AttributeOptionInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\AttributeValidatorHelper;
 
@@ -137,7 +138,7 @@ class MultiSelectAttributeAdder extends AbstractAttributeAdder
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
     {
-        $identifier = $attribute->getCode().'.'.$optionCode;
+        $identifier = $attribute->getCode() . '.' . $optionCode;
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
         return $option;
