@@ -35,14 +35,16 @@ define([
             model: FieldModel,
             template: _.template(fieldTemplate),
             elements: {},
+            htmlClasses: [],
             editable: true,
             ready: true,
             valid: true,
             initialize: function (attribute) {
-                this.attribute = attribute;
-                this.model     = new FieldModel({values: []});
-                this.elements  = {};
-                this.context   = {};
+                this.attribute   = attribute;
+                this.model       = new FieldModel({values: []});
+                this.elements    = {};
+                this.context     = {};
+                this.htmlClasses = [];
 
                 return this;
             },
@@ -95,6 +97,7 @@ define([
                 var deferred = $.Deferred();
 
                 deferred.resolve({
+                    classAttr: this.renderClassAttr(),
                     type: this.attribute.field_type,
                     label: this.attribute.label[this.context.uiLocale] ?
                         this.attribute.label[this.context.uiLocale] :
@@ -175,6 +178,18 @@ define([
 
                 productValue.data = value;
                 mediator.trigger('entity:form:edit:update_state');
+            },
+            addHtmlClass: function (className) {
+                if (-1 === this.htmlClasses.indexOf(className)) {
+                    this.htmlClasses.push(className);
+                }
+            },
+            renderClassAttr: function () {
+                var classes = this.htmlClasses;
+                classes.push(this.attribute.field_type);
+                classes.push(this.getEditMode());
+
+                return _.uniq(classes).join(' ');
             }
         });
     }
