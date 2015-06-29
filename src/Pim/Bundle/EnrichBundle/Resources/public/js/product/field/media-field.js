@@ -21,7 +21,6 @@ define([
     function ($, Field, _, Routing, AttributeManager, fieldTemplate, Dialog, mediator) {
         return Field.extend({
             fieldTemplate: _.template(fieldTemplate),
-            fieldType: 'media',
             events: {
                 'change .edit .field-input:first input[type="file"]': 'updateModel',
                 'click  .clear-field': 'clearField',

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Normalizer;
 
 use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
+use Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 /**
@@ -20,12 +21,17 @@ class AttributeNormalizer implements NormalizerInterface
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var FieldProviderInterface */
+    protected $fieldProvider;
+
     /**
-     * @param NormalizerInterface $normalizer
+     * @param NormalizerInterface    $normalizer
+     * @param FieldProviderInterface $fieldProvider
      */
-    public function __construct(NormalizerInterface $normalizer)
+    public function __construct(NormalizerInterface $normalizer, FieldProviderInterface $fieldProvider)
     {
-        $this->normalizer = $normalizer;
+        $this->normalizer    = $normalizer;
+        $this->fieldProvider = $fieldProvider;
     }
 
     /**
@@ -36,7 +42,8 @@ class AttributeNormalizer implements NormalizerInterface
         $normalizedAttribute = $this->normalizer->normalize($attribute, 'json', $context) + [
             'id'              => $attribute->getId(),
             'wysiwyg_enabled' => $attribute->isWysiwygEnabled(),
-            'empty_value'     => $this->getEmptyValue($attribute)
+            'empty_value'     => $this->getEmptyValue($attribute),
+            'field_type'      => $this->fieldProvider->getField($attribute)
         ];
 
         return $normalizedAttribute;
@@ -57,7 +64,7 @@ class AttributeNormalizer implements NormalizerInterface
      *
      * @return array|bool|string|null
      */
-    protected function getEmptyValue($attribute)
+    protected function getEmptyValue(AttributeInterface $attribute)
     {
         switch ($attribute->getAttributeType()) {
             case 'pim_catalog_metric':

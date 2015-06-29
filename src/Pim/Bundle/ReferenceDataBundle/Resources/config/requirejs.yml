@@ -1,9 +1,9 @@
 config:
     config:
-        pim/entity-manager:
-            repositories:
-                referenceDataConfiguration:
-                    module: pim/entity-repository
+        pim/fetcher-registry:
+            fetchers:
+                reference-data-configuration:
+                    module: pim/base-fetcher
                     options:
                         urls:
                             list: pim_reference_data_configuration_rest_get

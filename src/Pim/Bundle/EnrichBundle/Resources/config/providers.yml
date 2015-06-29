@@ -1,6 +1,9 @@
 parameters:
     pim_enrich.provider.colors.class: Pim\Bundle\EnrichBundle\Provider\ColorsProvider
     pim_enrich.provider.form_extension.class: Pim\Bundle\EnrichBundle\Provider\FormExtensionProvider
+    pim_enrich.provider.field.registry.class: Pim\Bundle\EnrichBundle\Provider\Field\FieldProviderRegistry
+    pim_enrich.provider.field.base.class: Pim\Bundle\EnrichBundle\Provider\Field\BaseFieldProvider
+    pim_enrich.provider.field.wysiwyg.class: Pim\Bundle\EnrichBundle\Provider\Field\WysiwygFieldProvider
 
 services:
     # Color management
@@ -13,3 +16,16 @@ services:
         class: %pim_enrich.provider.form_extension.class%
         arguments:
             - '@oro_security.security_facade'
+
+    pim_enrich.provider.field.registry:
+        class: %pim_enrich.provider.field.registry.class%
+
+    pim_enrich.provider.field.base:
+        class: %pim_enrich.provider.field.base.class%
+        tags:
+            - { name: pim_enrich.provider.field, priority: 100 }
+
+    pim_enrich.provider.field.wysiwyg:
+        class: %pim_enrich.provider.field.wysiwyg.class%
+        tags:
+            - { name: pim_enrich.provider.field, priority: 90 }

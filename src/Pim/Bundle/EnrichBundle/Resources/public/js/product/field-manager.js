@@ -8,29 +8,29 @@
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 define(
-    ['jquery', 'underscore', 'pim/entity-manager', 'pim/form-config-provider'],
-    function ($, _, EntityManager, ConfigProvider) {
+    ['jquery', 'underscore', 'pim/fetcher-registry', 'pim/form-config-provider'],
+    function ($, _, FetcherRegistry, ConfigProvider) {
         var fields = {};
         var visibleFields = {};
         var loadedModules = {};
         var getFieldForAttribute = function (attribute) {
             var deferred = $.Deferred();
 
-            if (loadedModules[attribute.type]) {
-                deferred.resolve(loadedModules[attribute.type]);
+            if (loadedModules[attribute.field_type]) {
+                deferred.resolve(loadedModules[attribute.field_type]);
 
                 return deferred.promise();
             }
 
             ConfigProvider.getAttributeFields().done(function (attributeFields) {
-                var fieldModule = attributeFields[attribute.type];
+                var fieldModule = attributeFields[attribute.field_type];
 
                 if (!fieldModule) {
-                    throw new Error('No field defined for attribute type "' + attribute.type + '"');
+                    throw new Error('No field defined for attribute type "' + attribute.field_type + '"');
                 }
 
                 require([fieldModule], function (Field) {
-                    loadedModules[attribute.type] = Field;
+                    loadedModules[attribute.field_type] = Field;
                     deferred.resolve(Field);
                 });
             });
@@ -48,7 +48,7 @@ define(
                     return deferred.promise();
                 }
 
-                EntityManager.getRepository('attribute').find(attributeCode).done(function (attribute) {
+                FetcherRegistry.getFetcher('attribute').fetch(attributeCode).done(function (attribute) {
                     getFieldForAttribute(attribute).done(function (Field) {
                         fields[attributeCode] = new Field(attribute);
                         deferred.resolve(fields[attributeCode]);
