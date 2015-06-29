@@ -33,7 +33,7 @@ class ImagePresenterSpec extends ObjectBehavior
         Model\ProductValueInterface $value,
         Model\ProductMedia $media
     ) {
-        $file2 = new\SplFileInfo(__FILE__);
+        $file2 = new \SplFileInfo(__FILE__);
 
         $value->getMedia()->willReturn($media);
         $media->getFilename()->willReturn(__FILE__);
