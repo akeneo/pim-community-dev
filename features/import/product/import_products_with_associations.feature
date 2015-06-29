@@ -83,3 +83,26 @@ Feature: Execute a job
     And I visit the "Cross sell" group
     Then I should see "2 products and 1 groups"
     And the english name of "SKU-001" should be "Before"
+
+  Scenario: Successfully skip associations without modification
+    Given the following product:
+      | sku     | name-en_US |
+      | SKU-001 | sku-001    |
+      | SKU-002 | sku-002    |
+    When I edit the "SKU-001" product
+    And I visit the "Associations" tab
+    And I visit the "Cross sell" group
+    Then I check the rows "SKU-002"
+    And I save the product
+    When the following CSV file to import:
+      """
+      sku;X_SELL-products
+      SKU-001;SKU-002
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 2 products
+    And I should see "skipped 1"

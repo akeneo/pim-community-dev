@@ -158,3 +158,20 @@ Feature: Execute a job
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | length | 4000.0000 CENTIMETER |
+
+  Scenario: Successfully skip a product without modification
+    Given the following product:
+      | sku     | name-en_US | description-en_US-tablet                                          | family | categories   |
+      | SKU-001 | FooBar     | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est | boots  | winter_boots |
+    And the following CSV file to import:
+      """
+      sku;family;categories;name-en_US;description-en_US-tablet
+      SKU-001;boots;winter_boots;FooBar;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      """
+    And the following job "footwear_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "footwear_product_import" import job page
+    And I launch the import job
+    And I wait for the "footwear_product_import" job to finish
+    Then there should be 1 product
+    And I should see "skipped 1"
