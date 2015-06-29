@@ -1,6 +1,7 @@
 pimee_product_asset:
     acl:
         asset.index: Enrich asset
+        asset.create: Create an asset
     acl_group:
         asset: Product assets
     enrich_asset:

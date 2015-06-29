@@ -185,6 +185,7 @@ class ProductAssetController extends Controller
      * Create an asset
      *
      * @Template
+     * @AclAncestor("pimee_product_asset_create")
      *
      * @param Request $request
      *
