@@ -9,6 +9,9 @@ use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
+use Pim\Bundle\NotificationBundle\Factory\JobNotificationFactoryInterface;
+use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistryInterface;
 use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,6 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
     function let(
+        NotificationFactoryRegistryInterface $factoryRegistry,
         NotificationManagerInterface $manager,
         JobExecutionEvent $event,
         JobExecution $jobExecution,
@@ -23,9 +27,10 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         ArrayCollection $warnings,
         JobInstance $jobInstance,
         UserInterface $user,
-        BatchStatus $status
+        BatchStatus $status,
+        JobNotificationFactoryInterface $notificationFactory
     ) {
-        $this->beConstructedWith($manager);
+        $this->beConstructedWith($factoryRegistry, $manager);
 
         $jobExecution->getUser()->willReturn($user);
         $jobExecution->getStepExecutions()->willReturn([$stepExecution]);
@@ -36,6 +41,7 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $jobInstance->getType()->willReturn('export');
         $jobInstance->getLabel()->willReturn('Product export');
         $event->getJobExecution()->willReturn($jobExecution);
+        $factoryRegistry->getJobNotificationFactory(Argument::any())->willReturn($notificationFactory);
     }
 
     function it_is_initializable()
@@ -62,37 +68,46 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_job_execution($event, $user, $manager)
-    {
+    function it_notifies_a_user_of_the_completion_of_job_execution(
+        $event,
+        $user,
+        $manager,
+        $notificationFactory,
+        $jobExecution,
+        NotificationInterface $notification
+    ) {
+        $notificationFactory->createNotification($jobExecution)->willReturn($notification);
+        $notification->getMessage()->willReturn('pim_import_export.notification.export.success');
+        $notification->getType()->willReturn('success');
+        $notification->getRoute()->willReturn('pim_importexport_export_execution_show');
+        $notification->getRouteParams()->willReturn(['id' => 5]);
+        $notification->getMessageParams()->willReturn(['%label%' => 'Product export']);
+
         $manager
-            ->notify(
-                [$user],
-                'pim_import_export.notification.export.success',
-                'success',
-                [
-                    'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product export']
-                ]
-            )
+            ->notify([$user], $notification)
             ->shouldBeCalled();
 
         $this->afterJobExecution($event);
     }
 
-    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution($event, $user, $manager, $jobInstance, $jobExecution)
-    {
+    function it_notifies_a_user_of_the_completion_of_a_mass_edit_job_execution(
+        $event,
+        $user,
+        $manager,
+        $notificationFactory,
+        $jobInstance,
+        $jobExecution,
+        NotificationInterface $notification
+    ) {
+        $notificationFactory->createNotification($jobExecution)->willReturn($notification);
+        $notification->getMessage()->willReturn('pim_mass_edit.notification.mass_edit.success');
+        $notification->getType()->willReturn('success');
+        $notification->getRoute()->willReturn('pim_enrich_job_tracker_show');
+        $notification->getRouteParams()->willReturn(['id' => 5]);
+        $notification->getMessageParams()->willReturn(['%label%' => 'Product mass edit']);
+
         $manager
-            ->notify(
-                [$user],
-                'pim_mass_edit.notification.mass_edit.success',
-                'success',
-                [
-                    'route' => 'pim_enrich_job_tracker_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product mass edit']
-                ]
-            )
+            ->notify([$user], $notification)
             ->shouldBeCalled();
 
         $jobInstance->getType()->willReturn('mass_edit');
@@ -106,21 +121,22 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $event,
         $warnings,
         $user,
-        $manager
+        $manager,
+        $notificationFactory,
+        $jobExecution,
+        NotificationInterface $notification
     ) {
+        $notificationFactory->createNotification($jobExecution)->willReturn($notification);
+        $notification->getMessage()->willReturn('pim_import_export.notification.export.warning');
+        $notification->getType()->willReturn('warning');
+        $notification->getRoute()->willReturn('pim_importexport_export_execution_show');
+        $notification->getRouteParams()->willReturn(['id' => 5]);
+        $notification->getMessageParams()->willReturn(['%label%' => 'Product export']);
+
         $warnings->count()->willReturn(2);
 
         $manager
-            ->notify(
-                [$user],
-                'pim_import_export.notification.export.warning',
-                'warning',
-                [
-                    'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product export']
-                ]
-            )
+            ->notify([$user], $notification)
             ->shouldBeCalled();
 
         $this->afterJobExecution($event);
@@ -130,21 +146,22 @@ class JobExecutionNotifierSpec extends ObjectBehavior
         $event,
         $user,
         $status,
-        $manager
+        $manager,
+        $notificationFactory,
+        $jobExecution,
+        NotificationInterface $notification
     ) {
+        $notificationFactory->createNotification($jobExecution)->willReturn($notification);
+        $notification->getMessage()->willReturn('pim_import_export.notification.export.error');
+        $notification->getType()->willReturn('error');
+        $notification->getRoute()->willReturn('pim_importexport_export_execution_show');
+        $notification->getRouteParams()->willReturn(['id' => 5]);
+        $notification->getMessageParams()->willReturn(['%label%' => 'Product export']);
+
         $status->isUnsuccessful()->willReturn(true);
 
         $manager
-            ->notify(
-                [$user],
-                'pim_import_export.notification.export.error',
-                'error',
-                [
-                    'route' => 'pim_importexport_export_execution_show',
-                    'routeParams' => ['id' => 5],
-                    'messageParams' => ['%label%' => 'Product export']
-                ]
-            )
+            ->notify([$user], $notification)
             ->shouldBeCalled();
 
         $this->afterJobExecution($event);

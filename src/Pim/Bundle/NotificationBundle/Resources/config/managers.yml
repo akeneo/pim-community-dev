@@ -7,6 +7,5 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_notification.repository.user_notification'
-            - '@pim_notification.factory.notification'
             - '@pim_notification.factory.user_notification'
             - '@oro_user.manager'

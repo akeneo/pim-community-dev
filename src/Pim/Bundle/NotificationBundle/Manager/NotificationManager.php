@@ -3,9 +3,8 @@
 namespace Pim\Bundle\NotificationBundle\Manager;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepositoryInterface;
-use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
-use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryInterface;
 use Pim\Bundle\NotificationBundle\Factory\UserNotificationFactoryInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,9 +25,6 @@ class NotificationManager implements NotificationManagerInterface
     /** @var UserNotificationRepositoryInterface */
     protected $repository;
 
-    /** @var NotificationFactoryInterface */
-    protected $notificationFactory;
-
     /** @var UserNotificationFactoryInterface */
     protected $userNotifFactory;
 
@@ -40,31 +36,26 @@ class NotificationManager implements NotificationManagerInterface
      *
      * @param EntityManager                       $em
      * @param UserNotificationRepositoryInterface $repository
-     * @param NotificationFactoryInterface        $notificationFactory
      * @param UserNotificationFactoryInterface    $userNotifFactory
      * @param UserProviderInterface               $userProvider
      */
     public function __construct(
         EntityManager $em,
         UserNotificationRepositoryInterface $repository,
-        NotificationFactoryInterface $notificationFactory,
         UserNotificationFactoryInterface $userNotifFactory,
         UserProviderInterface $userProvider
     ) {
-        $this->em                  = $em;
-        $this->repository          = $repository;
-        $this->notificationFactory = $notificationFactory;
-        $this->userNotifFactory    = $userNotifFactory;
-        $this->userProvider        = $userProvider;
+        $this->em               = $em;
+        $this->repository       = $repository;
+        $this->userNotifFactory = $userNotifFactory;
+        $this->userProvider     = $userProvider;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function notify(array $users, $message, $type = 'success', array $options = [])
+    public function notify(array $users, NotificationInterface $notification)
     {
-        $notification = $this->notificationFactory->createNotification($message, $type, $options);
-
         $userNotifications = [];
 
         foreach ($users as $user) {

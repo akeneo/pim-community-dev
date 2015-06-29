@@ -8,6 +8,7 @@
  */
 namespace Pim\Bundle\NotificationBundle\Manager;
 
+use Pim\Bundle\NotificationBundle\Entity\NotificationInterface;
 use Pim\Bundle\NotificationBundle\Entity\UserNotificationInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -24,15 +25,12 @@ interface NotificationManagerInterface
     /**
      * Send a user notification to given users
      *
-     * @param array  $users   Users which have to be notified
-     *                        ['userName', ...] or [UserInterface, ...]
-     * @param string $message Message which has to be sent
-     * @param string $type    success (default) | warning | error
-     * @param array  $options ['route' => '', 'routeParams' => [], 'messageParams' => [], 'context => '']
+     * @param array                 $users        Users which have to be notified
+     * @param NotificationInterface $notification The notification to be sent
      *
      * @return NotificationManagerInterface
      */
-    public function notify(array $users, $message, $type = 'success', array $options = []);
+    public function notify(array $users, NotificationInterface $notification);
 
     /**
      * Returns user notifications for the given user
