@@ -35,6 +35,22 @@ interface NotificationInterface
     public function getMessage();
 
     /**
+     * Set comment
+     *
+     * @param string $comment
+     *
+     * @return NotificationInterface
+     */
+    public function setComment($comment);
+
+    /**
+     * Get comment
+     *
+     * @return string
+     */
+    public function getComment();
+
+    /**
      * Set type
      *
      * @param string $type

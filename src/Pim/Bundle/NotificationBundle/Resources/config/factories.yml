@@ -1,12 +1,10 @@
 parameters:
-    pim_notification.factory.notification.class: Pim\Bundle\NotificationBundle\Factory\NotificationFactory
+    pim_notification.registry.factory.notification.class: Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry
     pim_notification.factory.user_notification.class: Pim\Bundle\NotificationBundle\Factory\UserNotificationFactory
 
 services:
-    pim_notification.factory.notification:
-        class: %pim_notification.factory.notification.class%
-        arguments:
-            - %pim_notification.entity.notification.class%
+    pim_notification.registry.factory.notification:
+        class: %pim_notification.registry.factory.notification.class%
 
     pim_notification.factory.user_notification:
         class: %pim_notification.factory.user_notification.class%

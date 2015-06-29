@@ -21,11 +21,8 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
  */
 class NotificationManager
 {
-    /** @var EntityRepository */
-    protected $repository;
-
-    /** @var NotificationFactoryInterface */
-    protected $notificationFactory;
+    /** @var UserNotificationRepositoryInterface */
+    protected $userNotifRepository;
 
     /** @var UserNotificationFactory */
     protected $userNotifFactory;
@@ -58,8 +55,7 @@ class NotificationManager
         BulkSaverInterface $userNotifsSaver,
         RemoverInterface $userNotifRemover
     ) {
-        $this->repository          = $repository;
-        $this->notificationFactory = $notificationFactory;
+        $this->userNotifRepository = $userNotifRepository;
         $this->userNotifFactory    = $userNotifFactory;
         $this->userProvider        = $userProvider;
         $this->notificationSaver   = $notificationSaver;
@@ -76,10 +72,8 @@ class NotificationManager
      *
      * @return NotificationManager
      */
-    public function notify(array $users, $message, $type = 'success', array $options = [])
+    public function notify(array $users, NotificationInterface $notification)
     {
-        $notification = $this->notificationFactory->createNotification($message, $type, $options);
-
         $userNotifications = [];
         foreach ($users as $user) {
             try {
@@ -107,7 +101,7 @@ class NotificationManager
      */
     public function getUserNotifications(UserInterface $user, $offset, $limit = 10)
     {
-        return $this->repository->findBy(['user' => $user], ['id' => 'DESC'], $limit, $offset);
+        return $this->userNotifRepository->findBy(['user' => $user], ['id' => 'DESC'], $limit, $offset);
     }
 
     /**
@@ -118,7 +112,7 @@ class NotificationManager
      */
     public function markAsViewed(UserInterface $user, $id)
     {
-        $this->repository->markAsViewed($user, $id);
+        $this->userNotifRepository->markAsViewed($user, $id);
     }
 
     /**
@@ -130,7 +124,7 @@ class NotificationManager
      */
     public function countUnreadForUser(UserInterface $user)
     {
-        return $this->repository->countUnreadForUser($user);
+        return $this->userNotifRepository->countUnreadForUser($user);
     }
 
     /**
@@ -141,7 +135,7 @@ class NotificationManager
      */
     public function remove(UserInterface $user, $id)
     {
-        $notification = $this->repository->findOneBy(
+        $notification = $this->userNotifRepository->findOneBy(
             [
                 'id'   => $id,
                 'user' => $user

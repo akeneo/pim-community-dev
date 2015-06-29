@@ -6,7 +6,8 @@ use Akeneo\Component\Batch\Event\EventInterface;
 use Akeneo\Component\Batch\Event\JobExecutionEvent;
 use Akeneo\Component\Batch\Model\JobExecution;
 use Akeneo\Component\Batch\Model\JobInstance;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManagerInterface;
+use Pim\Bundle\NotificationBundle\Factory\NotificationFactoryRegistry;
+use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Intl\Exception\NotImplementedException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -26,15 +27,22 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @staticvar string */
     const QUICK_EXPORT = 'quick_export';
 
-    /** @var NotificationManagerInterface */
+    /** @var NotificationFactoryRegistry */
+    protected $factoryRegistry;
+
+    /** @var NotificationManager */
     protected $manager;
 
     /**
-     * @param NotificationManagerInterface $manager
+     * @param NotificationFactoryRegistry $factoryRegistry
+     * @param NotificationManager         $manager
      */
-    public function __construct(NotificationManagerInterface $manager)
-    {
-        $this->manager = $manager;
+    public function __construct(
+        NotificationFactoryRegistry $factoryRegistry,
+        NotificationManager $manager
+    ) {
+        $this->factoryRegistry = $factoryRegistry;
+        $this->manager         = $manager;
     }
 
     /**
@@ -55,29 +63,35 @@ class JobExecutionNotifier implements EventSubscriberInterface
     public function afterJobExecution(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
-        $user = $jobExecution->getUser();
+        $user         = $jobExecution->getUser();
 
         if (null === $user) {
             return;
         }
 
-        if ($jobExecution->getStatus()->isUnsuccessful()) {
-            $status = 'error';
-        } else {
-            $status = 'success';
-            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
-                if ($stepExecution->getWarnings()->count()) {
-                    $status = 'warning';
-                    break;
-                }
-            }
+        $notification = $this->createNotification($jobExecution);
+        $this->manager->notify([$user], $notification);
+    }
+
+    /**
+     * Retrieve the matching factory and create the notification
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return NotificationInterface
+     */
+    protected function createNotification(JobExecution $jobExecution)
+    {
+        $type    = $jobExecution->getJobInstance()->getType();
+        $factory = $this->factoryRegistry->get($type);
+
+        if (null === $factory) {
+            throw new \LogicException(sprintf('No notification factory found for the "%s" job type', $type));
         }
 
-        $jobInstance = $jobExecution->getJobInstance();
-        $type        = $jobInstance->getType();
+        $notification = $factory->create($jobExecution);
 
-        // TODO: maybe create a registry or something similar to load routes ?
-        $this->generateNotification($jobExecution, $user, $type, $status);
+        return $notification;
     }
 
     /**
