@@ -31,13 +31,16 @@ class ProductAssociationProcessor extends AbstractProcessor
     protected $validator;
 
     /** @var ProductFilterInterface */
-    private $productAssocFilter;
+    protected $productAssocFilter;
+
+    /** @var bool */
+    protected $enabledComparison = true;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter    array converter
-     * @param IdentifiableObjectRepositoryInterface $repository        product repository
-     * @param ObjectUpdaterInterface                $updater           product updater
-     * @param ValidatorInterface                    $validator         validator of the object
+     * @param StandardArrayConverterInterface       $arrayConverter     array converter
+     * @param IdentifiableObjectRepositoryInterface $repository         product repository
+     * @param ObjectUpdaterInterface                $updater            product updater
+     * @param ValidatorInterface                    $validator          validator of the object
      * @param ProductFilterInterface                $productAssocFilter product association filter
      */
     public function __construct(
@@ -68,12 +71,15 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         $convertedItem = $this->convertItemData($item);
-        $convertedItem = $this->filterIdenticalData($product, $convertedItem);
+        if ($this->getConfiguration()['enabledComparison']) {
+            $convertedItem = $this->filterIdenticalData($product, $convertedItem);
+            if (empty($convertedItem)) {
+                if ($this->stepExecution) {
+                    $this->stepExecution->incrementSummaryInfo('skip');
+                }
 
-        if (empty($convertedItem)) {
-            $this->stepExecution->incrementSummaryInfo('skip');
-
-            return null;
+                return null;
+            }
         }
 
         try {
@@ -88,6 +94,42 @@ class ProductAssociationProcessor extends AbstractProcessor
         }
 
         return $product;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return [
+            'enabledComparison' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.enabledComparison.label',
+                    'help'  => 'pim_connector.import.enabledComparison.help'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * Set whether or not the comparison between original values and imported values should be activated
+     *
+     * @param bool $enabledComparison
+     */
+    public function setEnabledComparison($enabledComparison)
+    {
+        $this->enabledComparison = $enabledComparison;
+    }
+
+    /**
+     * Whether or not the comparison between original values and imported values is activated
+     *
+     * @return bool
+     */
+    public function isEnabledComparison()
+    {
+        return $this->enabledComparison;
     }
 
     /**

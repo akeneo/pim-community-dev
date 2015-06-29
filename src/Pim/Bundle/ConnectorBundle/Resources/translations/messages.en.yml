@@ -142,3 +142,6 @@ pim_connector:
         copyValuesToProducts:
             label: Copy variant group values to products
             help: Means that the products are automatically updated with variant group values, can be switched off to only update variant group
+        enabledComparison:
+            label: Compare values
+            help: Enable the comparison between original values and imported values. Can speed up import if imported values are very similar to original values

@@ -50,7 +50,7 @@ class ProductProcessorSpec extends ObjectBehavior
 
     function it_has_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldHaveCount(4);
+        $this->getConfigurationFields()->shouldHaveCount(5);
     }
 
     function it_updates_an_existing_product(
@@ -241,6 +241,102 @@ class ProductProcessorSpec extends ObjectBehavior
             ->validate($product)
             ->willReturn($violationList);
 
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
+    function it_updates_an_existing_product_without_filtered_values(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productValidator,
+        $productFilter,
+        ProductInterface $product,
+        ConstraintViolationListInterface $violationList
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku' => 'tshirt',
+            'family' => 'TShirt',
+            'description-en_US-mobile' => 'My description',
+            'name-fr_FR' => 'T-shirt super beau',
+            'name-en_US' => 'My awesome T-shirt'
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'family' => 'Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+        $converterOptions = [
+            "mapping" => ["family" => "family", "categories" => "categories", "groups" => "groups"],
+            "default_values" => ["enabled" => true]
+        ];
+        $arrayConverter
+            ->convert($originalData, $converterOptions)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'family' => 'Tshirt',
+            'name' => [
+                [
+                    'locale' => 'fr_FR',
+                    'scope' =>  null,
+                    'data' => 'Mon super beau t-shirt'
+                ],
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  null,
+                    'data' => 'My awesome T-shirt'
+                ]
+            ],
+            'description' => [
+                [
+                    'locale' => 'en_US',
+                    'scope' =>  'mobile',
+                    'data' => 'My awesome description'
+                ]
+            ]
+        ];
+
+        $productFilter->filter($product, [])->shouldNotBeCalled();
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $productValidator
+            ->validate($product)
+            ->willReturn($violationList);
+
+        $this->setEnabledComparison(false);
         $this
             ->process($originalData)
             ->shouldReturn($product);

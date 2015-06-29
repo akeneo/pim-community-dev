@@ -51,17 +51,20 @@ class ProductProcessor extends AbstractProcessor
     /** @var string */
     protected $groupsColumn  = 'groups';
 
+    /** @var bool */
+    protected $enabledComparison = true;
+
     /** @var ProductFilterInterface */
     protected $productFilter;
 
     /**
-     * @param StandardArrayConverterInterface       $arrayConverter     array converter
-     * @param IdentifiableObjectRepositoryInterface $repository         product repository
-     * @param ProductBuilderInterface               $builder            product builder
-     * @param ObjectUpdaterInterface                $updater            product updater
-     * @param ValidatorInterface                    $validator          product validator
-     * @param ObjectDetacherInterface               $detacher           detacher to remove it from UOW when skip
-     * @param ProductFilterInterface                $productFilter      product filter
+     * @param StandardArrayConverterInterface       $arrayConverter array converter
+     * @param IdentifiableObjectRepositoryInterface $repository     product repository
+     * @param ProductBuilderInterface               $builder        product builder
+     * @param ObjectUpdaterInterface                $updater        product updater
+     * @param ValidatorInterface                    $validator      product validator
+     * @param ObjectDetacherInterface               $detacher       detacher to remove it from UOW when skip
+     * @param ProductFilterInterface                $productFilter  product filter
      */
     public function __construct(
         StandardArrayConverterInterface $arrayConverter,
@@ -93,12 +96,17 @@ class ProductProcessor extends AbstractProcessor
         $filteredItem  = $this->filterItemData($convertedItem);
 
         $product = $this->findOrCreateProduct($identifier, $familyCode);
-        $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
-        if (empty($filteredItem)) {
-            $this->stepExecution->incrementSummaryInfo('skip');
+        if ($this->enabledComparison) {
+            $filteredItem = $this->filterIdenticalData($product, $filteredItem);
 
-            return null;
+            if (empty($filteredItem)) {
+                if ($this->stepExecution) {
+                    $this->stepExecution->incrementSummaryInfo('skip');
+                }
+
+                return null;
+            }
         }
 
         try {
@@ -211,6 +219,26 @@ class ProductProcessor extends AbstractProcessor
     }
 
     /**
+     * Set whether or not the comparison between original values and imported values should be activated
+     *
+     * @param bool $enabledComparison
+     */
+    public function setEnabledComparison($enabledComparison)
+    {
+        $this->enabledComparison = $enabledComparison;
+    }
+
+    /**
+     * Whether or not the comparison between original values and imported values is activated
+     *
+     * @return bool
+     */
+    public function isEnabledComparison()
+    {
+        return $this->enabledComparison;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
@@ -239,6 +267,13 @@ class ProductProcessor extends AbstractProcessor
                 'options' => [
                     'label' => 'pim_connector.import.groupsColumn.label',
                     'help'  => 'pim_connector.import.groupsColumn.help'
+                ]
+            ],
+            'enabledComparison' => [
+                'type'    => 'switch',
+                'options' => [
+                    'label' => 'pim_connector.import.enabledComparison.label',
+                    'help'  => 'pim_connector.import.enabledComparison.help'
                 ]
             ],
         ];

@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Component\Connector\Processor\Denormalization;
 
+use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -33,6 +35,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             $productValidator,
             $productAssocFilter
         );
+
         $this->setStepExecution($stepExecution);
     }
 
@@ -45,7 +48,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
     function it_has_no_extra_configuration()
     {
-        $this->getConfigurationFields()->shouldReturn([]);
+        $this->getConfigurationFields()->shouldHaveCount(1);
     }
 
     function it_updates_an_existing_product(
@@ -96,7 +99,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         ];
 
         unset($filteredData['associations']['XSELL']['groups']);
-        $productAssocFilter->filter($product, $preFilteredData)->willReturn($filteredData);
+        $productAssocFilter->filter($product, $preFilteredData)
+            ->shouldBeCalled()
+            ->willReturn($filteredData);
 
         $productUpdater
             ->update($product, $filteredData)
@@ -112,12 +117,16 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->shouldReturn($product);
     }
 
-    function it_skips_a_product_when_update_fails(
+    function it_updates_an_existing_product_without_filter_values(
         $arrayConverter,
         $productRepository,
         $productUpdater,
+        $productValidator,
         $productAssocFilter,
-        ProductInterface $product
+        StepExecution $stepExecution,
+        ProductInterface $product,
+        AssociationInterface $association,
+        ConstraintViolationListInterface $violationList
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
         $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
@@ -125,6 +134,69 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
 
         $originalData = [
             'sku'           => 'tshirt',
+            'XSELL-groups'  => ['akeneo_tshirt, oro_tshirt'],
+            'XSELL-product' => ['AKN_TS, ORO_TSH']
+        ];
+        $convertedData =                 [
+            'sku' => [
+                [
+                    'locale' => null,
+                    'scope' =>  null,
+                    'data' => 'tshirt'
+                ],
+            ],
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TS']
+                ]
+            ]
+        ];
+        $arrayConverter
+            ->convert($originalData)
+            ->willReturn($convertedData);
+
+        $filteredData = [
+            'associations' => [
+                'XSELL' => [
+                    'groups'  => ['akeneo_tshirt', 'oro_tshirt'],
+                    'product' => ['AKN_TS', 'ORO_TS']
+                ]
+            ]
+        ];
+
+        $productAssocFilter->filter($product, [])
+            ->shouldNotBeCalled();
+
+        $productUpdater
+            ->update($product, $filteredData)
+            ->shouldBeCalled();
+
+        $product->getAssociations()->willReturn([$association]);
+        $productValidator
+            ->validate($association)
+            ->willReturn($violationList);
+
+        $this->setEnabledComparison(false);
+        $this
+            ->process($originalData)
+            ->shouldReturn($product);
+    }
+
+    function it_skips_a_product_when_update_fails(
+        $arrayConverter,
+        $productRepository,
+        $productUpdater,
+        $productAssocFilter,
+        $stepExecution,
+        ProductInterface $product
+    ) {
+        $productRepository->getIdentifierProperties()->willReturn(['sku']);
+        $productRepository->findOneByIdentifier(Argument::any())->willReturn($product);
+        $product->getId()->willReturn(42);
+
+        $originalData = [
+            'sku'               => 'tshirt',
             'NOT_FOUND-groups'  => ['akeneo_tshirt, oro_tshirt'],
             'NOT_FOUND-product' => ['AKN_TS, ORO_TSH']
         ];
@@ -162,6 +234,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->update($product, $filteredData)
             ->willThrow(new \InvalidArgumentException('association does not exists'));
 
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $this->setStepExecution($stepExecution);
+
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
             ->during(
@@ -176,6 +251,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productUpdater,
         $productValidator,
         $productAssocFilter,
+        $stepExecution,
         AssociationInterface $association,
         ProductInterface $product
     ) {
@@ -229,6 +305,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
             ->validate($association)
             ->willReturn($violations);
 
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $this->setStepExecution($stepExecution);
+
         $this
             ->shouldThrow('Akeneo\Bundle\BatchBundle\Item\InvalidItemException')
             ->during(
@@ -242,6 +321,7 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productRepository,
         $productUpdater,
         $productAssocFilter,
+        $stepExecution,
         ProductInterface $product
     ) {
         $productRepository->getIdentifierProperties()->willReturn(['sku']);
@@ -286,6 +366,9 @@ class ProductAssociationProcessorSpec extends ObjectBehavior
         $productUpdater
             ->update($product, $filteredData)
             ->shouldNotBeCalled();
+
+        $stepExecution->incrementSummaryInfo('skip')->shouldBeCalled();
+        $this->setStepExecution($stepExecution);
 
         $this->process($originalData)
             ->shouldReturn(null);
