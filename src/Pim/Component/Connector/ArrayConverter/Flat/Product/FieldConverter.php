@@ -98,10 +98,18 @@ class FieldConverter
         foreach ($groups as $group) {
             $isVariant = $this->groupTypeRepository->getTypeByGroup($group);
             if ('1' === $isVariant) {
-                $data['variant_group'] = $group;
+                $data['variant_group'][] = $group;
             } else {
                 $data['groups'][] = $group;
             }
+        }
+
+        if (isset($data['variant_group']) && 1 < count($data['variant_group'])) {
+            throw new \InvalidArgumentException(
+                sprintf('The product cannot belong to many variant groups: %s', implode(', ', $data['variant_group']))
+            );
+        } elseif (isset($data['variant_group'])) {
+            $data['variant_group'] = current($data['variant_group']);
         }
 
         return $data;
