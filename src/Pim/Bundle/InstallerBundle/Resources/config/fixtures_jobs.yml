@@ -74,14 +74,14 @@ jobs:
             filePath: attribute_options.csv
             multiple: false
 
-    fixtures_family_yml:
+    fixtures_family_csv:
         order: 60
         connector: Data fixtures
-        alias:     fixtures_family_yml
+        alias:     fixtures_family_csv
         label:     Families data fixtures
         type:      fixtures
         configuration:
-            filePath: families.yml
+            filePath: families.csv
             multiple: false
 
     fixtures_variant_group_csv:

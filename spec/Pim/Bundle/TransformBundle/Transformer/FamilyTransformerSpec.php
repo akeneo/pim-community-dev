@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Builder\FamilyBuilderInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
@@ -18,7 +18,7 @@ class FamilyTransformerSpec extends ObjectBehavior
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
-        FamilyFactory $factory
+        FamilyBuilderInterface $familyBuilder
     ) {
         $requirementClass = 'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement';
         $this->beConstructedWith(
@@ -27,7 +27,7 @@ class FamilyTransformerSpec extends ObjectBehavior
             $guesser,
             $columnInfoTransformer,
             $transformerRegistry,
-            $factory,
+            $familyBuilder,
             $requirementClass
         );
     }

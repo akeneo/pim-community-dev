@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Transformer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Builder\FamilyBuilderInterface;
 use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
@@ -19,14 +19,10 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 class FamilyTransformer extends NestedEntityTransformer
 {
-    /**
-     * @var FamilyFactory
-     */
-    protected $factory;
+    /** @var FamilyBuilderInterface */
+    protected $familyBuilder;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $requirementClass;
 
     /**
@@ -37,7 +33,7 @@ class FamilyTransformer extends NestedEntityTransformer
      * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
-     * @param FamilyFactory                  $factory
+     * @param FamilyBuilderInterface         $familyBuilder
      * @param string                         $requirementClass
      */
     public function __construct(
@@ -46,11 +42,11 @@ class FamilyTransformer extends NestedEntityTransformer
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
-        FamilyFactory $factory,
+        FamilyBuilderInterface $familyBuilder,
         $requirementClass
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer, $transformerRegistry);
-        $this->factory = $factory;
+        $this->familyBuilder = $familyBuilder;
         $this->requirementClass = $requirementClass;
     }
 
@@ -59,7 +55,7 @@ class FamilyTransformer extends NestedEntityTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return $this->factory->createFamily();
+        return $this->familyBuilder->createFamily();
     }
 
     /**

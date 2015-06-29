@@ -4,9 +4,7 @@ namespace spec\Pim\Component\Catalog\Updater;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\CategoryRepositoryInterface;
 use Prophecy\Argument;
 

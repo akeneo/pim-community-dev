@@ -7,8 +7,8 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Builder\FamilyBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\FamilyManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
@@ -42,8 +42,8 @@ class FamilyController extends AbstractDoctrineController
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var FamilyFactory */
-    protected $factory;
+    /** @var FamilyBuilderInterface */
+    protected $familyBuilder;
 
     /** @var HandlerInterface */
     protected $familyHandler;
@@ -74,7 +74,7 @@ class FamilyController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param FamilyManager            $familyManager
      * @param ChannelManager           $channelManager
-     * @param FamilyFactory            $factory
+     * @param FamilyBuilderInterface   $familyBuilder
      * @param HandlerInterface         $familyHandler
      * @param Form                     $familyForm
      * @param SaverInterface           $familySaver
@@ -93,7 +93,7 @@ class FamilyController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         FamilyManager $familyManager,
         ChannelManager $channelManager,
-        FamilyFactory $factory,
+        FamilyBuilderInterface $familyBuilder,
         HandlerInterface $familyHandler,
         Form $familyForm,
         SaverInterface $familySaver,
@@ -114,7 +114,7 @@ class FamilyController extends AbstractDoctrineController
 
         $this->familyManager  = $familyManager;
         $this->channelManager = $channelManager;
-        $this->factory        = $factory;
+        $this->familyBuilder  = $familyBuilder;
         $this->familyHandler  = $familyHandler;
         $this->familyForm     = $familyForm;
         $this->attributeClass = $attributeClass;
@@ -149,7 +149,7 @@ class FamilyController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_family_index');
         }
 
-        $family = $this->factory->createFamily();
+        $family = $this->familyBuilder->createFamily();
 
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.created');
