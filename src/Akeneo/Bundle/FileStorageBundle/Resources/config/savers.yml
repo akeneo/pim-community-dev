@@ -6,5 +6,5 @@ services:
         class: %akeneo_file_storage.saver.file.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.saver.base_options_resolver'
+            - '@akeneo_storage_utils.saver.base_options_resolver'
             - %akeneo_file_storage.model.file.interface%
