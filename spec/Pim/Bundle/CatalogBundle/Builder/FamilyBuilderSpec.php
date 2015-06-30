@@ -51,7 +51,7 @@ class FamilyBuilderSpec extends ObjectBehavior
         $ecommerceRequirement->getChannelCode()
             ->willReturn('ecommerce');
 
-        $channelRepository->findBy([])
+        $channelRepository->findAll()
             ->willReturn([$printChannel, $ecommerceChannel])
             ->shouldBeCalled();
 
@@ -69,7 +69,7 @@ class FamilyBuilderSpec extends ObjectBehavior
         $family->getAttributes()->first()->shouldBeEqualTo($identifierAttribute);
         $family->getAttributeRequirements()->shouldHaveCount(2);
         $family->getAttributeRequirements()->shouldBeEqualTo([
-            'anyCode_print' => $printRequirement,
+            'anyCode_print'     => $printRequirement,
             'anyCode_ecommerce' => $ecommerceRequirement
         ]);
     }

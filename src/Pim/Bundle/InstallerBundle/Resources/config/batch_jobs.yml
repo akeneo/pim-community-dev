@@ -121,7 +121,7 @@ connector:
             type:  fixtures
             steps:
                 validation:
-                    title: pim_base_connector.jobs.fixtures_family_csv.validation.title
+                    title: pim_connector.jobs.fixtures_family_csv.validation.title
                     class: %pim_base_connector.step.validator.class%
                     services:
                         charsetValidator: pim_base_connector.validator.step.charset_validator

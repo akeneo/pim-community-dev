@@ -55,7 +55,7 @@ class FamilyTransformer extends NestedEntityTransformer
      */
     protected function createEntity($class, array $data)
     {
-        return $this->familyBuilder->createFamily();
+        return $this->familyBuilder->createFamily(true);
     }
 
     /**

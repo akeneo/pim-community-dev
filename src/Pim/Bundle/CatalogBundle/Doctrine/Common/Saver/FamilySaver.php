@@ -76,7 +76,6 @@ class FamilySaver implements SaverInterface, BulkSaverInterface
             return;
         }
 
-
         $allOptions = $this->optionsResolver->resolveSaveAllOptions($options);
         $itemOptions = $allOptions;
         $itemOptions['flush'] = false;

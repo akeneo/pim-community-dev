@@ -18,14 +18,14 @@ use Symfony\Component\Validator\ValidatorInterface;
 class FamilyProcessorSpec extends ObjectBehavior
 {
     function let(
-        StandardArrayConverterInterface $familyConverter,
         IdentifiableObjectRepositoryInterface $repository,
+        StandardArrayConverterInterface $familyConverter,
         FamilyBuilder $familyBuilder,
         ObjectUpdaterInterface $familyUpdater,
         ValidatorInterface $validator,
         StepExecution $stepExecution
     ) {
-        $this->beConstructedWith($familyConverter, $repository, $familyBuilder, $familyUpdater, $validator);
+        $this->beConstructedWith($repository, $familyConverter, $familyBuilder, $familyUpdater, $validator);
         $this->setStepExecution($stepExecution);
     }
 

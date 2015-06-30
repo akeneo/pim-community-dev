@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\FamilyInterface;
  * Product builder interface
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface FamilyBuilderInterface
@@ -27,6 +27,8 @@ interface FamilyBuilderInterface
      * @param FamilyInterface $family
      * @param array           $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return null
      */
     public function setAttributeRequirements(FamilyInterface $family, array $data);
@@ -43,7 +45,19 @@ interface FamilyBuilderInterface
      * @param FamilyInterface $family
      * @param array           $data
      *
+     * @throws \InvalidArgumentException
+     *
      * @return null
      */
     public function addAttributes(FamilyInterface $family, array $data);
+
+    /**
+     * @param FamilyInterface $family
+     * @param string          $data
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return null
+     */
+    public function setAttributeAsLabel(FamilyInterface $family, $data);
 }

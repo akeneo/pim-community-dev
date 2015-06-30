@@ -39,8 +39,8 @@ class FamilyProcessor extends AbstractProcessor
      * @param ValidatorInterface                    $validator
      */
     public function __construct(
-        StandardArrayConverterInterface $familyConverter,
         IdentifiableObjectRepositoryInterface $repository,
+        StandardArrayConverterInterface $familyConverter,
         FamilyBuilderInterface $familyBuilder,
         ObjectUpdaterInterface $updater,
         ValidatorInterface $validator
@@ -101,7 +101,7 @@ class FamilyProcessor extends AbstractProcessor
 
     /**
      * @param FamilyInterface $family
-     * @param array                    $convertedItem
+     * @param array           $convertedItem
      *
      * @throws \InvalidArgumentException
      */

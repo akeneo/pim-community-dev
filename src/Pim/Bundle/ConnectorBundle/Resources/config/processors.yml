@@ -95,8 +95,8 @@ services:
     pim_connector.processor.denormalization.family.flat:
         class: %pim_connector.processor.denormalization.family.class%
         arguments:
-            - '@pim_connector.array_converter.flat.family'
             - '@pim_catalog.repository.family'
+            - '@pim_connector.array_converter.flat.family'
             - '@pim_catalog.builder.family'
             - '@pim_catalog.updater.family'
             - '@pim_catalog.validator.product'

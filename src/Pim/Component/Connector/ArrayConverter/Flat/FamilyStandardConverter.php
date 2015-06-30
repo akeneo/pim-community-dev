@@ -60,15 +60,13 @@ class FamilyStandardConverter implements StandardArrayConverterInterface
     }
 
     /**
-     * TODO: to improve to make it more understandable
-     *
      * @param array  $convertedItem
      * @param string $field
      * @param mixed  $data
      *
      * @return array
      */
-    protected function convertField($convertedItem, $field, $data)
+    protected function convertField(array $convertedItem, $field, $data)
     {
         if (false !== strpos($field, 'label-', 0)) {
             $labelTokens = explode('-', $field);
@@ -85,6 +83,9 @@ class FamilyStandardConverter implements StandardArrayConverterInterface
                     break;
                 case 'attributes':
                     $convertedItem[$field] = explode(',', $data);
+                    break;
+                case 'attribute_as_label':
+                    $convertedItem[$field] = (string) $data;
                     break;
             }
         }

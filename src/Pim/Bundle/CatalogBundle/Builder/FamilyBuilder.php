@@ -122,10 +122,24 @@ class FamilyBuilder implements FamilyBuilderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setAttributeAsLabel(FamilyInterface $family, $data)
+    {
+        if (null !== $attribute = $this->attributeRepository->findOneByIdentifier($data)) {
+            $family->setAttributeAsLabel($attribute);
+        } else {
+            throw new \InvalidArgumentException(
+                sprintf('Attribute with "%s" code does not exist', $data)
+            );
+        }
+    }
+
+    /**
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel[]
      */
     protected function getChannels()
     {
-        return $this->channelRepository->findBy([]);
+        return $this->channelRepository->findAll();
     }
 }

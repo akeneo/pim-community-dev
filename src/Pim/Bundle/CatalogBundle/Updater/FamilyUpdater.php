@@ -30,7 +30,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * @param IdentifiableObjectRepositoryInterface $familyRepository
-     * @param FamilyBuilderInterface $familyBuilder
+     * @param FamilyBuilderInterface                $familyBuilder
      */
     public function __construct(
         IdentifiableObjectRepositoryInterface $familyRepository,
@@ -75,6 +75,8 @@ class FamilyUpdater implements ObjectUpdaterInterface
             $this->familyBuilder->setAttributeRequirements($family, $data);
         } elseif ('attributes' === $field) {
             $this->familyBuilder->addAttributes($family, $data);
+        } elseif ('attribute_as_label' === $field) {
+            $this->familyBuilder->setAttributeAsLabel($family, $data);
         } else {
             $this->accessor->setValue($family, $field, $data);
         }
