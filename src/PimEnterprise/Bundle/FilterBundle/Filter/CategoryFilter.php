@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
+namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
+use Pim\Bundle\FilterBundle\Filter\CategoryFilter as BaseCategoryFilter;
+use Pim\Component\Classification\Model\CategoryInterface;
+use Pim\Component\Classification\Repository\CategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -35,22 +35,20 @@ class CategoryFilter extends BaseCategoryFilter
     protected $accessRepository;
 
     /**
-     * Constructor
-     *
-     * @param FormFactoryInterface     $factory         Form factory
-     * @param FilterUtility            $util            Filter utility
-     * @param ProductCategoryManager   $manager         Product category manager
-     * @param SecurityContextInterface $securityContext Security context
-     * @param CategoryAccessRepository $accessRepo      Category access repository
+     * @param FormFactoryInterface        $factory         Form factory
+     * @param FilterUtility               $util            Filter utility
+     * @param CategoryRepositoryInterface $categoryRepo
+     * @param SecurityContextInterface    $securityContext Security context
+     * @param CategoryAccessRepository    $accessRepo      Category access repository
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
-        ProductCategoryManager $manager,
+        CategoryRepositoryInterface $categoryRepo,
         SecurityContextInterface $securityContext,
         CategoryAccessRepository $accessRepo
     ) {
-        parent::__construct($factory, $util, $manager);
+        BaseCategoryFilter::__construct($factory, $util, $categoryRepo);
 
         $this->securityContext = $securityContext;
         $this->accessRepository = $accessRepo;
@@ -81,12 +79,10 @@ class CategoryFilter extends BaseCategoryFilter
      */
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $categoryRepository = $this->manager->getCategoryRepository();
-
-        $tree = $categoryRepository->find($data['treeId']);
+        $tree = $this->categoryRepo->find($data['treeId']);
         if ($tree) {
             // all categories of this tree (without permissions)
-            $currentTreeIds = $categoryRepository->getAllChildrenIds($tree);
+            $currentTreeIds = $this->categoryRepo->getAllChildrenIds($tree);
             $this->util->applyFilter($ds, 'categories.id', 'NOT IN', $currentTreeIds);
 
             // we add a filter on granted categories
@@ -111,7 +107,7 @@ class CategoryFilter extends BaseCategoryFilter
             return [];
         }
 
-        $childrenIds = parent::getAllChildrenIds($category);
+        $childrenIds = BaseCategoryFilter::getAllChildrenIds($category);
 
         $user = $this->securityContext->getToken()->getUser();
         $grantedIds = $this->accessRepository->getCategoryIdsWithExistingAccess(

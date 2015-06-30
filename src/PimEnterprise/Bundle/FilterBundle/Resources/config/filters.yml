@@ -1,7 +1,7 @@
 parameters:
     pimee_filter.product_draft_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
     pimee_filter.product_draft_date_filter.class:   Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
-    pim_filter.product_category_filter.class:       PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
+    pim_filter.product_category_filter.class:       PimEnterprise\Bundle\FilterBundle\Filter\CategoryFilter
     pimee_filter.product_permission_filter.class:   PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
 
 services:
@@ -37,7 +37,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pim_catalog.manager.product_category'
+            - '@pim_catalog.repository.category'
             - '@security.context'
             - '@pimee_security.repository.category_access'
         tags:
@@ -48,7 +48,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@pimee_workflow.manager.published_product_category'
+            - '@pim_catalog.repository.category'
             - '@security.context'
             - '@pimee_security.repository.category_access'
         tags:

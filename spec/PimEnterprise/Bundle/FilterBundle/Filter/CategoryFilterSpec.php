@@ -22,7 +22,7 @@ class CategoryFilterSpec extends ObjectBehavior
     function let(
         FormFactoryInterface $factory,
         ProductFilterUtility $utility,
-        ProductCategoryManager $manager,
+        CategoryRepositoryInterface $categoryRepo,
         SecurityContextInterface $securityContext,
         CategoryAccessRepository $accessRepository,
         TokenInterface $token,
@@ -36,12 +36,12 @@ class CategoryFilterSpec extends ObjectBehavior
 
         $datasource->getQueryBuilder()->willReturn($qb);
 
-        $this->beConstructedWith($factory, $utility, $manager, $securityContext, $accessRepository);
+        $this->beConstructedWith($factory, $utility, $categoryRepo, $securityContext, $accessRepository);
     }
 
     function it_extends_the_ce_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\FilterBundle\Filter\CategoryFilter');
     }
 
     function it_applies_a_filter_on_products_by_all_with_granted_categories(
