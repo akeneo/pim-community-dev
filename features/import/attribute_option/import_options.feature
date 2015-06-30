@@ -11,13 +11,13 @@ Feature: Import options
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;label-en_US
-    brand;Converse;Converse
-    brand;TimberLand;TimberLand
-    brand;Nike;Nike
-    brand;Caterpillar;Caterpillar
-    """
+      """
+      attribute;code;label-en_US
+      brand;Converse;Converse
+      brand;TimberLand;TimberLand
+      brand;Nike;Nike
+      brand;Caterpillar;Caterpillar
+      """
     And the following job "footwear_option_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_option_import" import job page
@@ -38,10 +38,10 @@ Feature: Import options
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;label-en_US
-    brand;;Converse
-    """
+      """
+      attribute;code;label-en_US
+      brand;;Converse
+      """
     And the following job "footwear_option_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_option_import" import job page
@@ -57,10 +57,10 @@ Feature: Import options
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;label-en_US
-    unknown;option_code;Converse
-    """
+      """
+      attribute;code;label-en_US
+      unknown;option_code;Converse
+      """
     And the following job "footwear_option_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_option_import" import job page
@@ -77,11 +77,11 @@ Feature: Import options
       | test | Test  | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;sort_order;label-fr_FR;label-en_US;label-de_DE;label-en_GB
-    test;test_A04;3;04FR;04US;04DE;04GB
-    test;test_A05;2;05FR;05US;05DE;05GB
-    """
+      """
+      attribute;code;sort_order;label-fr_FR;label-en_US;label-de_DE;label-en_GB
+      test;test_A04;3;04FR;04US;04DE;04GB
+      test;test_A05;2;05FR;05US;05DE;05GB
+      """
     And the following job "option_import" configuration:
       | filePath | %file to import% |
     When I am on the "option_import" import job page
@@ -107,11 +107,11 @@ Feature: Import options
       | test | Test  | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;sort_order;label-fr_FR;label-fr_CA;label-en_US;label-de_DE
-    test;test_A04;3;04FR;04CA;04US;04DE
-    test;test_A05;2;05FR;05CA;05US;05DE
-    """
+      """
+      attribute;code;sort_order;label-fr_FR;label-fr_CA;label-en_US;label-de_DE
+      test;test_A04;3;04FR;04CA;04US;04DE
+      test;test_A05;2;05FR;05CA;05US;05DE
+      """
     And the following job "option_import" configuration:
       | filePath | %file to import% |
     When I am on the "option_import" import job page

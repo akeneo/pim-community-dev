@@ -11,7 +11,7 @@ Feature: Execute a job
   @jira https://akeneo.atlassian.net/browse/PIM-3369
   Scenario: Skip import with a not available locale for channel of a localizable attribute
     Given the following CSV file to import:
-    """
+      """
       sku;description-fr_FR-print
       SKU-001;"my name"
       """

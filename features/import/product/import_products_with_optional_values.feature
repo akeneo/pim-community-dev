@@ -18,13 +18,13 @@ Feature: Import product information with optional values
       | caterpillar-poum |        | Poum           |
       | caterpillar-pum  |        | Pum            |
     And the following CSV file to import:
-    """
-    sku;opt_att_global;opt_att_local-en_US;opt_att_scope-tablet
-    caterpillar-pim;"Pim";"PimUS";"PimTablet"
-    caterpillar-pam;"Pam";;"PamTablet"
-    caterpillar-poum;;;
-    caterpillar-pum;PimPamPoum;;
-    """
+      """
+      sku;opt_att_global;opt_att_local-en_US;opt_att_scope-tablet
+      caterpillar-pim;"Pim";"PimUS";"PimTablet"
+      caterpillar-pam;"Pam";;"PamTablet"
+      caterpillar-poum;;;
+      caterpillar-pum;PimPamPoum;;
+      """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
     And I am logged in as "Julia"

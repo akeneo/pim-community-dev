@@ -8,14 +8,14 @@ Feature: Import categories
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    code;parent;label-en_US
-    default;;
-    computers;;Computers
-    laptops;computers;Laptops
-    hard_drives;laptops;Hard drives
-    pc;computers;PC
-    """
+      """
+      code;parent;label-en_US
+      default;;
+      computers;;Computers
+      laptops;computers;Laptops
+      hard_drives;laptops;Hard drives
+      pc;computers;PC
+      """
     And the following job "footwear_category_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_category_import" import job page
@@ -32,16 +32,16 @@ Feature: Import categories
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    code;parent;label-en_US
-    default;;
-    computers;;Computers
-    laptops;computers;Laptops
-    hard_drives;laptops;Hard drives
-    tshirts;clothes;T-shirts
-    printed_tshirts;tshirts;Printed T-shirts
-    pc;computers;PC
-    """
+      """
+      code;parent;label-en_US
+      default;;
+      computers;;Computers
+      laptops;computers;Laptops
+      hard_drives;laptops;Hard drives
+      tshirts;clothes;T-shirts
+      printed_tshirts;tshirts;Printed T-shirts
+      pc;computers;PC
+      """
     And the following job "footwear_category_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_category_import" import job page
@@ -63,10 +63,10 @@ Feature: Import categories
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    code;parent;label-en_US
-    ;;label US
-    """
+      """
+      code;parent;label-en_US
+      ;;label US
+      """
     And the following job "footwear_category_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_category_import" import job page

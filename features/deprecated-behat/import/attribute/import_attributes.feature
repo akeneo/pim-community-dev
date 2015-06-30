@@ -8,22 +8,22 @@ Feature: Import attributes
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
-    pim_catalog_text;shortname;Shortname;info;0;1;1;0;;;
-    pim_catalog_simpleselect;provider;Provider;info;0;1;0;0;;;
-    pim_catalog_multiselect;season;"Season";info;0;1;0;0;;;
-    pim_catalog_textarea;commentary;Commentary;info;0;1;1;1;;;
-    pim_catalog_price_collection;public_price;"Public price";marketing;0;1;0;0;;;
-    pim_catalog_simpleselect;grade;Grade;marketing;0;1;0;0;;;
-    pim_catalog_simpleselect;width;Width;sizes;0;1;0;0;;;
-    pim_catalog_simpleselect;hue;Hue;colors;0;1;0;0;;;
-    pim_catalog_simpleselect;buckle_color;"Buckle color";colors;0;1;0;0;;;
-    pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;gif,png;;
-    pim_catalog_date;release;"Release date";info;0;1;0;0;;;
-    pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER
+      """
+      type;code;label-en_US;group;unique;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
+      pim_catalog_text;shortname;Shortname;info;0;1;1;0;;;
+      pim_catalog_simpleselect;provider;Provider;info;0;1;0;0;;;
+      pim_catalog_multiselect;season;"Season";info;0;1;0;0;;;
+      pim_catalog_textarea;commentary;Commentary;info;0;1;1;1;;;
+      pim_catalog_price_collection;public_price;"Public price";marketing;0;1;0;0;;;
+      pim_catalog_simpleselect;grade;Grade;marketing;0;1;0;0;;;
+      pim_catalog_simpleselect;width;Width;sizes;0;1;0;0;;;
+      pim_catalog_simpleselect;hue;Hue;colors;0;1;0;0;;;
+      pim_catalog_simpleselect;buckle_color;"Buckle color";colors;0;1;0;0;;;
+      pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;gif,png;;
+      pim_catalog_date;release;"Release date";info;0;1;0;0;;;
+      pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;;Length;CENTIMETER
 
-    """
+      """
     And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_attribute_import" import job page
