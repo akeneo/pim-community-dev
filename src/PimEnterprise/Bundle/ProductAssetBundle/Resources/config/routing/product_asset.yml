@@ -10,11 +10,11 @@ pimee_product_asset_view:
 
 pimee_product_asset_create:
     path: /create
-    defaults: { _controller: pimee_product_asset.controller.produt_asset:createAction }
+    defaults: { _controller: pimee_product_asset.controller.product_asset:createAction }
 
 pimee_product_asset_next_code:
     path: /nextCode/{code}
-    defaults: { _controller: pimee_product_asset.controller.produt_asset:getNextAvailableCodeAction }
+    defaults: { _controller: pimee_product_asset.controller.product_asset:getNextAvailableCodeAction }
     requirements:
         code: '^[a-zA-Z0-9_]+$'
 

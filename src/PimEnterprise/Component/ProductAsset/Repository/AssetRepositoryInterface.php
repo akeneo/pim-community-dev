@@ -59,7 +59,7 @@ interface AssetRepositoryInterface extends
      *
      * @param string $code
      *
-     * @return array
+     * @return string[] Array with codes inside
      */
     public function findSimilarCodes($code);
 }

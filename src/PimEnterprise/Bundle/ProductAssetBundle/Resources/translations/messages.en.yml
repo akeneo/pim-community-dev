@@ -30,20 +30,23 @@ pimee_product_asset:
         flash:
             update:
                 success: Asset has been updated
-                error: Asset has not been updated. An error occurs.
+                error: Asset has not been updated. An error occured.
+            create:
+                success: Asset has been created.
+                error: Asset has not been created. An error occured.
     enrich_reference:
         flash:
             delete:
                 success: Reference file has been deleted
-                error: Reference file has not been deleted. An error occurs.
+                error: Reference file has not been deleted. An error occured.
     enrich_variation:
         flash:
             update:
                 success: Variation file has been updated
-                error: Variation file has not been updated. An error occurs.
+                error: Variation file has not been updated. An error occured.
             delete:
                 success: Variation file has been deleted
-                error: Variation file has not been deleted. An error occurs.
+                error: Variation file has not been deleted. An error occured.
     popin.create:
         title: Create a new asset
         is_localized: Localizable

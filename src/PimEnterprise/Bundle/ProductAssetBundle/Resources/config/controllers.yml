@@ -18,6 +18,7 @@ services:
             - '@pimee_product_asset.saver.variation'
             - '@event_dispatcher'
             - '@pimee_product_asset.factory.asset'
+            - '@akeneo_file_storage.file_storage.raw_file.storer'
         calls:
             - [ setContainer, [ @service_container ] ]
 
