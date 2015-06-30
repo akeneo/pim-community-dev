@@ -24,13 +24,13 @@ define([
                         .then(_.bind(function (product) {
                             return this.generateMissing(product);
                         }, this))
-                        .then(function(product) {
+                        .then(function (product) {
                             var promises = [];
                             mediator.trigger('product:action:post_fetch', {promises: promises, product: product});
 
                             return $.when.apply($, promises).then(function () {
                                 return product;
-                            })
+                            });
                         })
                         .promise();
                 }
