@@ -20,7 +20,7 @@ class CommandLauncherSpec extends ObjectBehavior
 
     public function it_can_execute_in_background()
     {
-        $command = 'pim:foobar';
+        $command = 'router:debug';
 
         $this->executeBackground($command)->shouldReturn(null);
     }
