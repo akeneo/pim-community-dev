@@ -79,9 +79,9 @@ define(
                         })
                     );
                     this.delegateEvents();
-                    this.$el.show();
+                    this.$el.removeClass('hidden');
                 } else {
-                    this.$el.hide();
+                    this.$el.addClass('hidden');
                 }
 
                 return this;
