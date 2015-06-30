@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -23,8 +23,9 @@ interface VariationsCollectionFilesGeneratorInterface
 {
     /**
      * @param VariationInterface[] $variations
+     * @param bool                 $force      Process locked variations
      *
      * @return ProcessedItemList
      */
-    public function generate(array $variations);
+    public function generate(array $variations, $force = false);
 }

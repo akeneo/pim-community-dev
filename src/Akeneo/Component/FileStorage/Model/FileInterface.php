@@ -117,7 +117,7 @@ interface FileInterface
     /**
      * @param UploadedFile $uploadedFile
      *
-     * @return FileInterface
+     * @return FileInterface|null
      */
-    public function setUploadedFile(UploadedFile $uploadedFile);
+    public function setUploadedFile(UploadedFile $uploadedFile = null);
 }

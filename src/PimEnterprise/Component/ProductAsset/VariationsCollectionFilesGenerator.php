@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -21,6 +21,7 @@ use PimEnterprise\Component\ProductAsset\Model\VariationInterface;
  */
 class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGeneratorInterface
 {
+    /** @var VariationFileGeneratorInterface */
     protected $variationFileGenerator;
 
     /**
@@ -32,18 +33,18 @@ class VariationsCollectionFilesGenerator implements VariationsCollectionFilesGen
     }
 
     /**
-     * @param VariationInterface[] $variations
-     *
-     * @return ProcessedItemList
+     * {@inheritdoc}
      */
-    public function generate(array $variations)
+    public function generate(array $variations, $force = false)
     {
         $processedVariations = new ProcessedItemList();
 
         foreach ($variations as $variation) {
-            // TODO check instance of VariationInterface
-//            if (!$variation->isLocked()) {
-            if (true) {
+            if (!$variation instanceof VariationInterface) {
+                throw new \InvalidArgumentException('The collection should contains only VariationInterfaces');
+            }
+
+            if ($force || !$variation->isLocked()) {
                 try {
                     $this->variationFileGenerator->generate($variation);
                     $processedVariations->addItem($variation, ProcessedItem::STATE_SUCCESS);

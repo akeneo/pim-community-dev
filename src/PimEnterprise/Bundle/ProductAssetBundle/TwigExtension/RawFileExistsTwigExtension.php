@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * This file is part of the Akeneo PIM Enterprise Edition.
  *
  * (c) 2015 Akeneo SAS (http://www.akeneo.com)
@@ -10,7 +10,6 @@
  */
 
 namespace PimEnterprise\Bundle\ProductAssetBundle\TwigExtension;
-
 
 /**
  * Verify if file exists in web/

@@ -1,50 +1,72 @@
-<div class="row-fluid reference">
+{% import '@PimEnterpriseProductAsset/ProductAsset/macros.html.twig' as pamMacros %}
 
-    <h4>{{'pimee_product_asset.enrich_asset.view.reference'|trans}}</h4>
-
-    <div class="row-fluid">
-        {% if attachment.reference.file %}
-            <div class="data">
-                <figure class="thumbnail">
-                    <img src="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key, 'filter': 'thumbnail' }) }}">
-                </figure>
-
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>{{'pimee_product_asset.enrich_asset.view.filename'|trans}}</th>
-                        <th>{{'pimee_product_asset.enrich_asset.view.actions'|trans}}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>{{ attachment.reference.file.originalFilename }}</td>
-                        <td>
-                            <a class="btn btn-info btn-mini no-hash" download="{{ attachment.reference.file.originalFilename }}" href="{{ path('pim_enrich_media_show', { 'filename': attachment.reference.file.key }) }}">
-                                {{'pimee_product_asset.enrich_asset.view.download'|trans}}
+<div class="row-fluid variations">
+    <h3>
+        {% if currentLocale is not null %}
+            <div id="locale-switcher" class="btn-group">
+                    <span class="dropdown-toggle" data-toggle="dropdown">
+                        {{ currentLocale.code|flag }}
+                        <i class="icon-caret-down"></i>
+                    </span>
+                <ul class="dropdown-menu">
+                    {% for locale in asset.locales %}
+                        <li>
+                            <a href="{{ path('pimee_product_asset_edit', { 'id': asset.id, 'locale': locale.code }) }}"
+                               title="{{ locale_label(locale.code) }}">
+                                    <span class="indicator">
+                                        {% if locale.code == currentLocale.code %}
+                                            <i class="icon-circle"></i>
+                                        {% endif %}
+                                    </span>
+                                {{ locale.code|flag }}
                             </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
         {% endif %}
-        <div class="upload{% if not attachment.reference.file %}-center{% endif %}">
-            {% if attachment.uploadForm is defined and attachment.uploadForm is not empty %}
-                {{ form_start(attachment.uploadForm, {
-                    'action': path('pimee_product_asset_upload_reference', {'assetId': asset.id, 'id': attachment.reference.id}),
-                    'attr': {
-                        'class': 'form-upload'
-                    }
-                }) }}
-                {{ elements.form_errors(attachment.uploadForm) }}
-                <div class="row-fluid">
-                    {{ form_row(attachment.uploadForm.file) }}
-                    {{ elements.submitBtn('Upload') }}
-                </div>
-                {{ form_end(attachment.uploadForm) }}
-            {% endif %}
-        </div>
-    </div>
+    </h3>
 
+    <ul>
+        <li>
+            <div class="row-fluid reference">
+                <h4>{{ 'pimee_product_asset.enrich_asset.view.reference'|trans }}</h4>
+
+                <div class="row-fluid">
+                    {% if referenceModel.file %}
+                        <figure class="thumbnail">{% include '@PimEnterpriseProductAsset/Property/thumbnail.html.twig'
+                            with {'path': referenceModel.file.key, 'filter': 'thumbnail'} only %}</figure>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>{{ 'pimee_product_asset.enrich_asset.view.filename'|trans }}</th>
+                                <th>{{ 'pimee_product_asset.enrich_asset.view.actions'|trans }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>{{ referenceModel.file.originalFilename }}</td>
+                                <td>
+                                    <button class="btn delete"
+                                       data-href="{{ path('pimee_product_asset_reference_delete', {'id': referenceModel.id}) }}"
+                                            >{{ 'btn.delete'|trans }}</button>
+                                    <button class="btn reset-variations"
+                                       data-href="{{ path('pimee_product_asset_variations_reset', {'id': referenceModel.id}) }}"
+                                            >{{ 'pimee_product_asset.enrich_asset.button.reset_variations'|trans }}</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    {% else %}
+                        {{ pamMacros.renderUploadZone(reference.file, 'span12') }}
+                    {% endif %}
+                </div>
+            </div>
+        </li>
+
+        {% for variation in reference.variations %}
+            {% include 'PimEnterpriseProductAssetBundle:ProductAsset:_variation.html.twig' %}
+        {% endfor %}
+
+    </ul>
 </div>

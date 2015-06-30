@@ -8,28 +8,42 @@ pimee_product_asset_view:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_create:
+    path: /create
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:createAction }
+
+pimee_product_asset_next_code:
+    path: /nextCode/{code}
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:getNextAvailableCodeAction }
+    requirements:
+        code: '^[a-zA-Z0-9_]+$'
+
 pimee_product_asset_edit:
     path: /{id}/edit
     defaults: { _controller: pimee_product_asset.controller.product_asset:editAction }
     requirements:
         id: '[0-9]+'
 
-pimee_product_asset_update:
-    path: /{id}/update
-    defaults: { _controller: pimee_product_asset.controller.produt_asset:updateAction }
+pimee_product_asset_reference_delete:
+    path: /reference/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteReferenceFileAction }
     requirements:
         id: '[0-9]+'
 
-pimee_product_asset_upload_reference:
-    path: /{assetId}/uploadReference/{id}
-    defaults: { _controller: pimee_product_asset.controller.product_asset:uploadReferenceAction }
+pimee_product_asset_variation_delete:
+    path: /variation/{id}/update
+    defaults: { _controller: pimee_product_asset.controller.product_asset:deleteVariationFileAction }
     requirements:
-        assetId: '[0-9]+'
         id: '[0-9]+'
 
-pimee_product_asset_upload_variation:
-    path: /{assetId}/uploadVariation/{id}
-    defaults: { _controller: pimee_product_asset.controller.product_asset:uploadVariationAction }
+pimee_product_asset_variation_reset:
+    path: /variation/{id}/reset
+    defaults: { _controller: pimee_product_asset.controller.product_asset:resetVariationFileAction }
     requirements:
-        assetId: '[0-9]+'
+        id: '[0-9]+'
+
+pimee_product_asset_variations_reset:
+    path: /variations/{id}/reset
+    defaults: { _controller: pimee_product_asset.controller.product_asset:resetVariationsFilesAction }
+    requirements:
         id: '[0-9]+'

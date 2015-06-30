@@ -90,7 +90,7 @@ datagrid:
         actions:
             edit:
                 type:      tab-redirect
-                label:     Edit properties of the asset
+                label:     pimee_product_asset.enrich_asset.grid.edit
                 tab:       pim_product_asset_global-settings
                 icon:      edit
                 link:      edit_link

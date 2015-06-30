@@ -57,4 +57,16 @@ class Helper
     {
         return $this->container->get('akeneo_file_storage.file_storage.raw_file.storer');
     }
+
+    /**
+     * Delete all files from storage
+     */
+    public function cleanFilesystem()
+    {
+        $mountManager = $this->container->get('oneup_flysystem.mount_manager');
+        $fs = $mountManager->getFilesystem('storage');
+        foreach ($fs->listContents() as $directory) {
+            $fs->deleteDir($directory['path']);
+        }
+    }
 }
