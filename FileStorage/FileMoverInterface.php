@@ -2,8 +2,8 @@
 
 namespace Akeneo\Component\FileStorage;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 
 /**
  * Move a file from a virtual filesystem to another

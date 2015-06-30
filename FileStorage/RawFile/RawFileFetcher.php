@@ -2,9 +2,9 @@
 
 namespace Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 use League\Flysystem\FilesystemInterface;
-use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 
 /**
  * Fetch the raw file of a file stored in a virtual filesystem

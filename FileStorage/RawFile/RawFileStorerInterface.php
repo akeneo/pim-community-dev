@@ -2,9 +2,9 @@
 
 namespace Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInterface;
-use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
-use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 
 /**
  * Move a raw file to the storage destination filesystem

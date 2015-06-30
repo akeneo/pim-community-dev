@@ -2,13 +2,13 @@
 
 namespace Akeneo\Component\FileStorage\RawFile;
 
+use Akeneo\Component\FileStorage\Exception\FileRemovalException;
+use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\FileFactoryInterface;
 use Akeneo\Component\FileStorage\PathGeneratorInterface;
 use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\MountManager;
-use PimEnterprise\Component\ProductAsset\Exception\FileRemovalException;
-use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 
