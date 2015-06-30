@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @deprecated, please use ObjectUpdaterInterface we keep this one for BC reasons
+ * @deprecated please use ObjectUpdaterInterface we keep this one for BC reasons, we'll remove it in 1.5
  */
 interface ProductUpdaterInterface
 {

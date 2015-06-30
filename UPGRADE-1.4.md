@@ -92,4 +92,5 @@ Based on a PIM standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\Copier\\MultiSelectValueCopier/Pim\\Component\\Catalog\\Updater\\Copier\\MultiSelectAttributeCopier/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\Copier\\PriceCollectionValueCopier/Pim\\Component\\Catalog\\Updater\\Copier\\PriceCollectionAttributeCopier/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\Copier\\SimpleSelectValueCopier/Pim\\Component\\Catalog\\Updater\\Copier\\SimpleSelectAttributeCopier/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Pim\\Bundle\\CatalogBundle\\Updater\\ProductTemplateUpdaterInterface/Pim\\Component\\Catalog\\Updater\\ProductTemplateUpdaterInterface/g'
 ```
