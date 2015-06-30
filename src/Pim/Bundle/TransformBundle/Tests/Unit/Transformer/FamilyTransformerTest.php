@@ -14,14 +14,14 @@ use Pim\Bundle\TransformBundle\Transformer\FamilyTransformer;
 class FamilyTransformerTest extends EntityTransformerTestCase
 {
     protected $transformerRegistry;
-    protected $familyFactory;
+    protected $familyBuilder;
     protected $transformer;
     protected $family;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->familyFactory = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Factory\FamilyFactory')
+        $this->familyBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Builder\FamilyBuilder')
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformerRegistry = $this
@@ -51,14 +51,14 @@ class FamilyTransformerTest extends EntityTransformerTestCase
             $this->guesser,
             $this->columnInfoTransformer,
             $this->transformerRegistry,
-            $this->familyFactory,
+            $this->familyBuilder,
             'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement'
         );
         $this->addColumn('code');
         $this->setupRepositories();
 
         $this->family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
-        $this->familyFactory
+        $this->familyBuilder
             ->expects($this->any())
             ->method('createFamily')
             ->will($this->returnValue($this->family));

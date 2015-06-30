@@ -93,7 +93,7 @@ class FamilyProcessor extends AbstractProcessor
     {
         $family = $this->findObject($this->repository, $convertedItem);
         if (null === $family) {
-            return $this->familyBuilder->createFamily();
+            return $this->familyBuilder->createFamily(true);
         }
 
         return $family;
