@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Exception;
 
+use Pim\Component\Connector\Exception\MissingIdentifierException as NewMissingIdentifierException;
+
 /**
  * Exception thrown when the identifier column is unknown
  *
@@ -9,16 +11,6 @@ namespace Pim\Bundle\TransformBundle\Exception;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MissingIdentifierException extends \Exception
+class MissingIdentifierException extends NewMissingIdentifierException
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($message = null, $code = null, $previous = null)
-    {
-        if (null === $message) {
-            $message = 'No identifier column.';
-        }
-        parent::__construct($message, $code, $previous);
-    }
 }
