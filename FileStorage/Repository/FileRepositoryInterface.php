@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Component\FileStorage\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -16,7 +7,9 @@ use Doctrine\Common\Persistence\ObjectRepository;
 /**
  * File repository interface
  *
- * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 interface FileRepositoryInterface extends ObjectRepository
 {

@@ -1,14 +1,5 @@
 <?php
 
-/**
- * This file is part of the Akeneo PIM Enterprise Edition.
- *
- * (c) 2015 Akeneo SAS (http://www.akeneo.com)
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Akeneo\Component\FileStorage\RawFile;
 
 use Akeneo\Component\FileStorage\Model\FileInterface;
@@ -19,7 +10,9 @@ use PimEnterprise\Component\ProductAsset\Exception\FileTransferException;
  * Fetch the raw file of a file stored in a virtual filesystem
  * into the temporary directory of the local filesystem.
  *
- * @author Julien Janvier <jjanvier@akeneo.com>
+ * @author    Julien Janvier <jjanvier@akeneo.com>
+ * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RawFileFetcher implements RawFileFetcherInterface
 {
