@@ -46,6 +46,7 @@ class FamilyProcessor extends AbstractProcessor
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
+
         $this->arrayConverter = $familyConverter;
         $this->familyFactory  = $familyFactory;
         $this->updater        = $updater;

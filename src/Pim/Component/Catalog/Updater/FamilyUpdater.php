@@ -90,16 +90,21 @@ class FamilyUpdater implements ObjectUpdaterInterface
      */
     protected function setData(FamilyInterface $family, $field, $data)
     {
-        if ('labels' === $field) {
-            $this->setLabels($family, $data);
-        } elseif ('requirements' === $field) {
-            $this->setAttributeRequirements($family, $data);
-        } elseif ('attributes' === $field) {
-            $this->addAttributes($family, $data);
-        } elseif ('attribute_as_label' === $field) {
-            $this->setAttributeAsLabel($family, $data);
-        } else {
-            $this->accessor->setValue($family, $field, $data);
+        switch ($field) {
+            case 'labels':
+                $this->setLabels($family, $data);
+                break;
+            case 'requirements':
+                $this->setAttributeRequirements($family, $data);
+                break;
+            case 'attributes':
+                $this->addAttributes($family, $data);
+                break;
+            case 'attribute_as_label':
+                $this->setAttributeAsLabel($family, $data);
+                break;
+            default:
+                $this->accessor->setValue($family, $field, $data);
         }
     }
 

@@ -79,13 +79,11 @@ class FamilyStandardConverter implements StandardArrayConverterInterface
         } else {
             switch ($field) {
                 case 'code':
+                case 'attribute_as_label':
                     $convertedItem[$field] = (string) $data;
                     break;
                 case 'attributes':
                     $convertedItem[$field] = explode(',', $data);
-                    break;
-                case 'attribute_as_label':
-                    $convertedItem[$field] = (string) $data;
                     break;
             }
         }
