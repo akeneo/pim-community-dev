@@ -12,15 +12,15 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 
 /**
- * Category Access entity
+ * Product Category Access entity
  *
  * @author Julien Janvier <julien.janvier@akeneo.com>
  */
-class CategoryAccess implements CategoryAccessInterface
+class ProductCategoryAccess implements CategoryAccessInterface
 {
     /** @var int */
     protected $id;
@@ -87,9 +87,9 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setEditProducts($editProducts)
+    public function setEditItems($editItems)
     {
-        $this->editProducts = $editProducts;
+        $this->editProducts = $editItems;
 
         return $this;
     }
@@ -97,7 +97,7 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function isEditProducts()
+    public function isEditItems()
     {
         return $this->editProducts;
     }
@@ -105,9 +105,9 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setViewProducts($viewProducts)
+    public function setViewItems($viewItems)
     {
-        $this->viewProducts = $viewProducts;
+        $this->viewProducts = $viewItems;
 
         return $this;
     }
@@ -115,7 +115,7 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function isViewProducts()
+    public function isViewItems()
     {
         return $this->viewProducts;
     }
@@ -123,9 +123,9 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setOwnProducts($ownProducts)
+    public function setOwnItems($ownItems)
     {
-        $this->ownProducts = $ownProducts;
+        $this->ownProducts = $ownItems;
 
         return $this;
     }
@@ -133,7 +133,7 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function isOwnProducts()
+    public function isOwnItems()
     {
         return $this->ownProducts;
     }

@@ -1,7 +1,7 @@
-PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess:
+PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess:
     type: entity
-    table: pimee_security_category_access
-    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
+    table: pimee_security_product_category_access
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository # TODO: rename this repo?
     uniqueConstraints:
         category_user_group_idx:
             columns:

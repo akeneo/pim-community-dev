@@ -177,7 +177,7 @@ class CategoryAccessRepository extends EntityRepository
         );
 
         $categoryTable = $this->getTableName('pim_catalog.entity.category.class');
-        $categoryAccessTable = $this->getTableName('pimee_security.entity.category_access.class');
+        $categoryAccessTable = $this->getTableName('pimee_security.entity.product_category_access.class');
 
         $conn = $this->_em->getConnection();
         $qb = $conn->createQueryBuilder();

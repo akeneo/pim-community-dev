@@ -1,5 +1,5 @@
 parameters:
-    pimee_security.entity.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess
-    pimee_security.entity.category_access.class:        PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess
-    pimee_security.entity.job_profile_access.class:     PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess
-    pimee_security.entity.locale_access.class:          PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess
+    pimee_security.entity.attribute_group_access.class:  PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess
+    pimee_security.entity.product_category_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\ProductCategoryAccess
+    pimee_security.entity.job_profile_access.class:      PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess
+    pimee_security.entity.locale_access.class:           PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess

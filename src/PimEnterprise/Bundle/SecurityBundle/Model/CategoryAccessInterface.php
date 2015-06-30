@@ -11,7 +11,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Component\Classification\Model\CategoryInterface;
 
 /**
  * Category access interface
@@ -33,38 +33,38 @@ interface CategoryAccessInterface extends AccessInterface
     public function getCategory();
 
     /**
-     * @param bool $editProducts
+     * @param bool $editItems
      *
      * @return CategoryAccessInterface
      */
-    public function setEditProducts($editProducts);
+    public function setEditItems($editItems);
 
     /**
      * @return bool
      */
-    public function isEditProducts();
+    public function isEditItems();
 
     /**
-     * @param bool $viewProducts
+     * @param bool $viewItems
      *
      * @return CategoryAccessInterface
      */
-    public function setViewProducts($viewProducts);
+    public function setViewItems($viewItems);
 
     /**
      * @return bool
      */
-    public function isViewProducts();
+    public function isViewItems();
 
     /**
-     * @param bool $ownProducts
+     * @param bool $ownItems
      *
      * @return CategoryAccessInterface
      */
-    public function setOwnProducts($ownProducts);
+    public function setOwnItems($ownItems);
 
     /**
      * @return bool
      */
-    public function isOwnProducts();
+    public function isOwnItems();
 }

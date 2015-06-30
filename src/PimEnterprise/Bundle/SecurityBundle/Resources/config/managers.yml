@@ -16,7 +16,7 @@ services:
         class: %pimee_security.manager.category_access.class%
         arguments:
             - '@akeneo_storage_utils.doctrine.smart_manager_registry'
-            - %pimee_security.entity.category_access.class%
+            - %pimee_security.entity.product_category_access.class%
             - %pim_catalog.entity.category.class%
             - %pim_user.entity.group.class%
 
