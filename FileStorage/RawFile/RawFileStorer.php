@@ -47,9 +47,9 @@ class RawFileStorer implements RawFileStorerInterface
         FileFactoryInterface $factory
     ) {
         $this->pathGenerator = $pathGenerator;
-        $this->mountManager  = $mountManager;
-        $this->saver         = $saver;
-        $this->factory       = $factory;
+        $this->mountManager = $mountManager;
+        $this->saver = $saver;
+        $this->factory = $factory;
     }
 
     /**
@@ -57,9 +57,9 @@ class RawFileStorer implements RawFileStorerInterface
      */
     public function store(\SplFileInfo $localFile, $destFsAlias)
     {
-        $filesystem  = $this->mountManager->getFilesystem($destFsAlias);
+        $filesystem = $this->mountManager->getFilesystem($destFsAlias);
         $storageData = $this->pathGenerator->generate($localFile);
-        $file        = $this->factory->create($localFile, $storageData, $destFsAlias);
+        $file = $this->factory->create($localFile, $storageData, $destFsAlias);
 
         $error = sprintf(
             'Unable to move the file "%s" to the "%s" filesystem.',

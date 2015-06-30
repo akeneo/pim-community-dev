@@ -6,7 +6,7 @@ use Akeneo\Component\FileStorage\Exception\FileTransferException;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 
 /**
- * Move a file from a virtual filesystem to another
+ * Move a file from a virtual filesystem to another.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

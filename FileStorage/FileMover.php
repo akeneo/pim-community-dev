@@ -8,7 +8,7 @@ use Akeneo\Component\StorageUtils\Saver\SaverInterface;
 use League\Flysystem\MountManager;
 
 /**
- * Move a file from a virtual filesystem to another
+ * Move a file from a virtual filesystem to another.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -29,7 +29,7 @@ class FileMover implements FileMoverInterface
     public function __construct(MountManager $mountManager, SaverInterface $saver)
     {
         $this->mountManager = $mountManager;
-        $this->saver        = $saver;
+        $this->saver = $saver;
     }
 
     /**

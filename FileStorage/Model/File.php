@@ -5,7 +5,7 @@ namespace Akeneo\Component\FileStorage\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * File
+ * File.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

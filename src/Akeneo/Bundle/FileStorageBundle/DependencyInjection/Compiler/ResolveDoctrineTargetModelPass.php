@@ -5,7 +5,7 @@ namespace Akeneo\Bundle\FileStorageBundle\DependencyInjection\Compiler;
 use Akeneo\Bundle\StorageUtilsBundle\DependencyInjection\Compiler\AbstractResolveDoctrineTargetModelPass;
 
 /**
- * Resolves doctrine ORM Target entities
+ * Resolves doctrine ORM Target entities.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

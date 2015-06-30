@@ -5,7 +5,7 @@ namespace Akeneo\Component\FileStorage\Model;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * File interface
+ * File interface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -105,14 +105,14 @@ interface FileInterface
     public function setStorage($storage);
 
     /**
-     * TODO: drop it asap
+     * TODO: drop it asap.
      *
      * @return UploadedFile
      */
     public function getUploadedFile();
 
     /**
-     * TODO: drop it asap
+     * TODO: drop it asap.
      *
      * @param UploadedFile $uploadedFile
      *

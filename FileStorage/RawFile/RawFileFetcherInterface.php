@@ -24,7 +24,6 @@ interface RawFileFetcherInterface
      * @throws \LogicException
      *
      * @return \SplFileInfo
-     *
      */
     public function fetch(FileInterface $file, FilesystemInterface $filesystem);
 }

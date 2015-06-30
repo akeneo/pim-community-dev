@@ -5,7 +5,7 @@ namespace Akeneo\Component\FileStorage;
 use Akeneo\Component\FileStorage\Model\FileInterface;
 
 /**
- * File factory, create a \Akeneo\Component\FileStorage\Model\FileInterface
+ * File factory, create a \Akeneo\Component\FileStorage\Model\FileInterface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

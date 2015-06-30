@@ -3,7 +3,7 @@
 namespace Akeneo\Component\FileStorage;
 
 /**
- * Generates all the path data (sanitized and unique filename, path, pathname and guid) of a file
+ * Generates all the path data (sanitized and unique filename, path, pathname and guid) of a file.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

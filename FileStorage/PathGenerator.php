@@ -5,7 +5,7 @@ namespace Akeneo\Component\FileStorage;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
- * Generates all the path data (sanitized and unique filename, path, pathname and guid) of a file
+ * Generates all the path data (sanitized and unique filename, path, pathname and guid) of a file.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -32,21 +32,21 @@ class PathGenerator implements PathGeneratorInterface
     public function generate(\SplFileInfo $file)
     {
         $originalFileName = ($file instanceof UploadedFile) ? $file->getClientOriginalName() : $file->getFilename();
-        $guid             = $this->generateId($originalFileName);
-        $sanitized        = preg_replace('#[^A-Za-z0-9\.]#', '_', $originalFileName);
+        $guid = $this->generateId($originalFileName);
+        $sanitized = preg_replace('#[^A-Za-z0-9\.]#', '_', $originalFileName);
 
         if (strlen($sanitized) > 100) {
             $sanitized = sprintf('%s.%s', substr($sanitized, 0, 95), $file->getExtension());
         }
 
-        $fileName = $guid . '_' . $sanitized;
-        $path     = sprintf('%s/%s/%s/%s/', $guid[0], $guid[1], $guid[2], $guid[3]);
-        $pathName = $path . $fileName;
+        $fileName = $guid.'_'.$sanitized;
+        $path = sprintf('%s/%s/%s/%s/', $guid[0], $guid[1], $guid[2], $guid[3]);
+        $pathName = $path.$fileName;
 
         return [
-            'guid'      => $guid,
+            'guid' => $guid,
             'file_name' => $fileName,
-            'path'      => $path,
+            'path' => $path,
             'path_name' => $pathName,
         ];
     }
@@ -58,6 +58,6 @@ class PathGenerator implements PathGeneratorInterface
      */
     protected function generateId($fileName)
     {
-        return sha1($fileName . microtime());
+        return sha1($fileName.microtime());
     }
 }

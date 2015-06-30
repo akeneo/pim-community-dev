@@ -5,7 +5,7 @@ namespace Akeneo\Component\FileStorage\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
- * File repository interface
+ * File repository interface.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)

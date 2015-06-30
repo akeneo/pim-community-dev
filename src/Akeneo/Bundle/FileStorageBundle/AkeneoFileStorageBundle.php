@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Akeneo File Storage Bundle
+ * Akeneo File Storage Bundle.
  *
  * @author    Julien Janvier <jjanvier@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -25,7 +25,7 @@ class AkeneoFileStorageBundle extends Bundle
             ->addCompilerPass(new ResolveDoctrineTargetModelPass());
 
         $mappings = [
-            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Akeneo\Component\FileStorage\Model'
+            realpath(__DIR__.'/Resources/config/model/doctrine') => 'Akeneo\Component\FileStorage\Model',
         ];
 
         $container->addCompilerPass(
