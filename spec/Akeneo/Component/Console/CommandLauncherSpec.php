@@ -27,7 +27,7 @@ class CommandLauncherSpec extends ObjectBehavior
 
     public function it_can_execute_in_foreground()
     {
-        $command = 'pim:foobar';
+        $command = 'router:debug';
 
         $result = $this->executeForeground($command);
 
