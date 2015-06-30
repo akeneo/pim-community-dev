@@ -17,6 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
  * A context for creating entities
@@ -268,7 +269,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
+     * @return ProductDraft
      */
     public function getProductDraft(ProductInterface $product, $username)
     {
@@ -734,7 +735,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface
+     * @return ProductDraftRepositoryInterface
      */
     protected function getProposalRepository()
     {
