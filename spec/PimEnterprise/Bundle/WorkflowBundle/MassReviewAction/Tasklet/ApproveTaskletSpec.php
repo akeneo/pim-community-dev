@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -39,8 +39,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -52,12 +52,12 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
         $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
         $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
@@ -75,8 +75,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -88,12 +88,12 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraft::IN_PROGRESS);
+        $productDraft1->getStatus()->willReturn(ProductDraftInterface::IN_PROGRESS);
         $productDraft1->getProduct()->willReturn($product1);
         $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
         $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
@@ -113,8 +113,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -126,12 +126,12 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
         $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(false);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
         $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
@@ -151,8 +151,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -164,12 +164,12 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
         $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(false);
 
-        $productDraft2->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
         $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);
@@ -190,8 +190,8 @@ class ApproveTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -203,12 +203,12 @@ class ApproveTaskletSpec extends ObjectBehavior
 
         $productDraftRepository->findByIds(Argument::any())->willReturn([$productDraft1, $productDraft2]);
 
-        $productDraft1->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft1->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft1->getProduct()->willReturn($product1);
         $securityContext->isGranted(Attributes::OWN, $product1)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft1)->willReturn(true);
 
-        $productDraft2->getStatus()->willReturn(ProductDraft::READY);
+        $productDraft2->getStatus()->willReturn(ProductDraftInterface::READY);
         $productDraft2->getProduct()->willReturn($product2);
         $securityContext->isGranted(Attributes::OWN, $product2)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $productDraft2)->willReturn(true);

@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AttributeRepositoryInterface;
 use Pim\Component\Catalog\Comparator\ComparatorRegistry;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\PimEnterpriseWorkflowBundle;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -113,7 +114,7 @@ class ProductDraftBuilder implements ProductDraftBuilderInterface
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft
+     * @return ProductDraftInterface
      */
     protected function getProductDraft(ProductInterface $product, $username)
     {

@@ -11,7 +11,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Applier\ProductDraftApplierInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -47,7 +47,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $workingCopySaver,
         $applier,
         $dispatcher,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         ProductInterface $product,
         $mediaManager,
         $remover
@@ -79,7 +79,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
 
     function it_marks_as_in_progress_product_draft_which_is_ready_when_refusing_it(
         $dispatcher,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         $saver
     ) {
         $productDraft->isInProgress()->willReturn(false);
@@ -89,7 +89,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
-        $productDraft->setStatus(ProductDraft::IN_PROGRESS)->shouldBeCalled();
+        $productDraft->setStatus(ProductDraftInterface::IN_PROGRESS)->shouldBeCalled();
         $saver->save($productDraft)->shouldBeCalled();
         $dispatcher
             ->dispatch(
@@ -101,7 +101,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->refuse($productDraft);
     }
 
-    function it_removes_in_progress_product_draft_when_refusing_it(ProductDraft $productDraft, $saver)
+    function it_removes_in_progress_product_draft_when_refusing_it(ProductDraftInterface $productDraft, $saver)
     {
         $productDraft->isInProgress()->willReturn(true);
         $saver->save($productDraft);
@@ -114,7 +114,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $repository,
         UserInterface $user,
         ProductInterface $product,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
@@ -129,7 +129,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         UserInterface $user,
         ProductInterface $product,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
@@ -150,7 +150,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
             ->duringFindOrCreate($product, 'fr_FR');
     }
 
-    function it_marks_product_draft_as_ready($dispatcher, ProductDraft $productDraft, $saver)
+    function it_marks_product_draft_as_ready($dispatcher, ProductDraftInterface $productDraft, $saver)
     {
         $dispatcher
             ->dispatch(
@@ -158,7 +158,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
                 Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
             )
             ->shouldBeCalled();
-        $productDraft->setStatus(ProductDraft::READY)->shouldBeCalled();
+        $productDraft->setStatus(ProductDraftInterface::READY)->shouldBeCalled();
         $saver->save($productDraft);
 
         $dispatcher

@@ -5,12 +5,11 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Validator\Exception\ValidatorException;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -39,8 +38,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -73,8 +72,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {
@@ -109,8 +108,8 @@ class RefuseTaskletSpec extends ObjectBehavior
         UserInterface $userJulia,
         StepExecution $stepExecution,
         JobExecution $jobExecution,
-        ProductDraft $productDraft1,
-        ProductDraft $productDraft2,
+        ProductDraftInterface $productDraft1,
+        ProductDraftInterface $productDraft2,
         ProductInterface $product1,
         ProductInterface $product2
     ) {

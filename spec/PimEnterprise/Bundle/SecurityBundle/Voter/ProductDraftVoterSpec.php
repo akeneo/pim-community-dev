@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Repository\AttributeGroupRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
@@ -54,7 +55,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
         $attrGroupAccessManager,
         UserInterface $user,
         TokenInterface $token,
-        ProductDraft $draft,
+        ProductDraftInterface $draft,
         AttributeGroupInterface $group
     ) {
         $token->getUser()->willReturn($user);
@@ -74,7 +75,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
         $attrGroupAccessManager,
         UserInterface $user,
         TokenInterface $token,
-        ProductDraft $draft,
+        ProductDraftInterface $draft,
         AttributeGroupInterface $groupGranted,
         AttributeGroupInterface $groupDenied
     ) {
@@ -98,7 +99,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_abstains_if_attribute_is_not_supported(TokenInterface $token, ProductDraft $draft)
+    function it_abstains_if_attribute_is_not_supported(TokenInterface $token, ProductDraftInterface $draft)
     {
         $this->vote($token, $draft, ['foo'])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
@@ -106,7 +107,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_grants_own_access_to_user_that_has_created_the_proposal(
         TokenInterface $token,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -118,7 +119,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_product_draft(
         TokenInterface $token,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -130,7 +131,7 @@ class ProductDraftVoterSpec extends ObjectBehavior
 
     function it_does_not_vote_if_the_attribute_own_is_not_being_checked(
         TokenInterface $token,
-        ProductDraft $productDraft
+        ProductDraftInterface $productDraft
     ) {
         $this->vote($token, $productDraft, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }

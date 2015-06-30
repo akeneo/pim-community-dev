@@ -6,7 +6,7 @@ use Akeneo\Component\StorageUtils\Updater\PropertySetterInterface;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -24,7 +24,7 @@ class ProductDraftApplierSpec extends ObjectBehavior
 
     function it_does_not_apply_a_draft_without_values(
         ProductInterface $product,
-        ProductDraft $productDraft,
+        ProductDraftInterface $productDraft,
         $dispatcher
     ) {
         $dispatcher
@@ -44,9 +44,14 @@ class ProductDraftApplierSpec extends ObjectBehavior
         $this->apply($product, $productDraft);
     }
 
-    function it_applies_a_draft(ProductInterface $product, ProductDraft $productDraft, $dispatcher, $propertySetter)
-    {
-        $productDraft->getChanges()->willReturn(['values' => [
+    function it_applies_a_draft(
+        ProductInterface $product,
+        ProductDraftInterface $productDraft,
+        $dispatcher,
+        $propertySetter
+    ) {
+        $productDraft->getChanges()->willReturn(['values' =>
+            [
                 'name' => [
                     ['value' => 'Test', 'locale' => null, 'scope' => null]
                 ],

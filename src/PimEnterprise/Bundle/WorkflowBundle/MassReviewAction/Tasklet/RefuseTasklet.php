@@ -12,9 +12,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\MassReviewAction\Tasklet;
 
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraftInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\DraftNotReviewableException;
-use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Tasklet for product drafts mass refusal.
@@ -53,11 +52,11 @@ class RefuseTasklet extends AbstractReviewTasklet
     /**
      * Refuse a draft
      *
-     * @param ProductDraft $productDraft
+     * @param ProductDraftInterface $productDraft
      *
      * @throws DraftNotReviewableException If draft cannot be refused
      */
-    protected function refuseDraft(ProductDraft $productDraft)
+    protected function refuseDraft(ProductDraftInterface $productDraft)
     {
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new DraftNotReviewableException(self::ERROR_NOT_PRODUCT_OWNER);
