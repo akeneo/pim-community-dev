@@ -60,8 +60,13 @@ define(
                     }, this));
             },
             reloadProductDraft: function (productData) {
-                FetcherRegistry.getFetcher('product-draft').clear(productData.meta.id);
-                this.loadProductDraft(this.getData());
+                var fetcher = FetcherRegistry.getFetcher('product-draft');
+                fetcher.clear(productData.meta.id);
+                fetcher
+                    .fetchForProduct(productData.meta.id)
+                    .then(_.bind(function (daftData) {
+                        this.updateProductDraft(daftData);
+                    }, this));
             },
             updateProductDraft: function (daftData) {
                 this.draft.set(daftData);
