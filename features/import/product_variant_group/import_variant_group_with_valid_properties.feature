@@ -14,11 +14,11 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group to create a new one
     Given the following CSV file to import:
-    """
-    code;type;axis;label-en_US
-    NEW_ONE;VARIANT;size,color;"My new VG 1"
-    NEW_TWO;VARIANT;color;"My new VG 2"
-    """
+      """
+      code;type;axis;label-en_US
+      NEW_ONE;VARIANT;size,color;"My new VG 1"
+      NEW_TWO;VARIANT;color;"My new VG 2"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -35,10 +35,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group to update an existing one
     Given the following CSV file to import:
-    """
-    code;type;axis;label-en_US
-    SANDAL;VARIANT;color,size;"My new label"
-    """
+      """
+      code;type;axis;label-en_US
+      SANDAL;VARIANT;color,size;"My new label"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page

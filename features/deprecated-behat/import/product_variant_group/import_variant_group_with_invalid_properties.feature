@@ -28,10 +28,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    SANDAL;manufacturer,size;"Sandal"
-    """
+      """
+      code;axis;label-en_US
+      SANDAL;manufacturer,size;"Sandal"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -47,10 +47,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to remove the axis size)
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    SANDAL;color;"Sandal"
-    """
+      """
+      code;axis;label-en_US
+      SANDAL;color;"Sandal"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -66,10 +66,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a new variant group with no axis
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    NO_AXIS;;"My VG with no axis"
-    """
+      """
+      code;axis;label-en_US
+      NO_AXIS;;"My VG with no axis"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -85,10 +85,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter an existing group which is not a variant group
     Given the following CSV file to import:
-    """
-    code;axis;label-en_US
-    NOT_VG;;"My standard not updatable group"
-    """
+      """
+      code;axis;label-en_US
+      NOT_VG;;"My standard not updatable group"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page

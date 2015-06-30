@@ -31,10 +31,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to replace the axis color by manufacturer)
     Given the following CSV file to import:
-    """
-    code;type;axis;label-en_US
-    SANDAL;VARIANT;manufacturer,size;"Sandal"
-    """
+      """
+      code;type;axis;label-en_US
+      SANDAL;VARIANT;manufacturer,size;"Sandal"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -50,10 +50,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a line with updated axis (here we try to remove the axis size)
     Given the following CSV file to import:
-    """
-    code;type;axis;label-en_US
-    SANDAL;VARIANT;color;"Sandal"
-    """
+      """
+      code;type;axis;label-en_US
+      SANDAL;VARIANT;color;"Sandal"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -69,10 +69,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter a new variant group with no axis
     Given the following CSV file to import:
-    """
-    code;type;axis;label-en_US
-    NO_AXIS;VARIANT;;"My VG with no axis"
-    """
+      """
+      code;type;axis;label-en_US
+      NO_AXIS;VARIANT;;"My VG with no axis"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -88,10 +88,10 @@ Feature: Execute an import
 
   Scenario: Skip the line when encounter an existing group which is not a variant group
     Given the following CSV file to import:
-    """
-    code;type;axis;label-en_US
-    NOT_VG;VARIANT;;"My standard not updatable group"
-    """
+      """
+      code;type;axis;label-en_US
+      NOT_VG;VARIANT;;"My standard not updatable group"
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page

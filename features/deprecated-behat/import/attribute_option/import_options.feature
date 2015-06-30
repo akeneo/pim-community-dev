@@ -11,13 +11,13 @@ Feature: Import options
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;label-en_US
-    brand;Converse;Converse
-    brand;TimberLand;TimberLand
-    brand;Nike;Nike
-    brand;Caterpillar;Caterpillar
-    """
+      """
+      attribute;code;label-en_US
+      brand;Converse;Converse
+      brand;TimberLand;TimberLand
+      brand;Nike;Nike
+      brand;Caterpillar;Caterpillar
+      """
     And the following job "footwear_option_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_option_import" import job page
@@ -38,10 +38,10 @@ Feature: Import options
       | brand | Brand | simpleselect |
     And I am logged in as "Julia"
     And the following CSV file to import:
-    """
-    attribute;code;label-en_US
-    brand;;Converse
-    """
+      """
+      attribute;code;label-en_US
+      brand;;Converse
+      """
     And the following job "footwear_option_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_option_import" import job page

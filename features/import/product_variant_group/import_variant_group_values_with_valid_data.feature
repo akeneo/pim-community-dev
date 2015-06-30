@@ -58,10 +58,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with numbers
     Given the following CSV file to import:
-    """
-    code;type;number_in_stock
-    SANDAL;VARIANT;44
-    """
+      """
+      code;type;number_in_stock
+      SANDAL;VARIANT;44
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -78,10 +78,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with simple select
     Given the following CSV file to import:
-    """
-    code;type;manufacturer
-    SANDAL;VARIANT;Converse
-    """
+      """
+      code;type;manufacturer
+      SANDAL;VARIANT;Converse
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -98,10 +98,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with multi select
     Given the following CSV file to import:
-    """
-    code;type;weather_conditions
-    SANDAL;VARIANT;dry,wet
-    """
+      """
+      code;type;weather_conditions
+      SANDAL;VARIANT;dry,wet
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -118,10 +118,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with dates
     Given the following CSV file to import:
-    """
-    code;type;destocking_date
-    SANDAL;VARIANT;2015-12-14
-    """
+      """
+      code;type;destocking_date
+      SANDAL;VARIANT;2015-12-14
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -138,10 +138,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with booleans (to true)
     Given the following CSV file to import:
-    """
-    code;type;handmade
-    SANDAL;VARIANT;1
-    """
+      """
+      code;type;handmade
+      SANDAL;VARIANT;1
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -158,10 +158,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with booleans (to false)
     Given the following CSV file to import:
-    """
-    code;type;handmade
-    SANDAL;VARIANT;0
-    """
+      """
+      code;type;handmade
+      SANDAL;VARIANT;0
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -178,10 +178,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with prices as many fields
     Given the following CSV file to import:
-    """
-    code;type;price-EUR;price-USD
-    SANDAL;VARIANT;100;90
-    """
+      """
+      code;type;price-EUR;price-USD
+      SANDAL;VARIANT;100;90
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -198,10 +198,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with prices as one field
     Given the following CSV file to import:
-    """
-    code;type;price
-    SANDAL;VARIANT;100 EUR, 90 USD
-    """
+      """
+      code;type;price
+      SANDAL;VARIANT;100 EUR, 90 USD
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -218,10 +218,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with metrics in many fields
     Given the following CSV file to import:
-    """
-    code;type;length;length-unit
-    SANDAL;VARIANT;4000;CENTIMETER
-    """
+      """
+      code;type;length;length-unit
+      SANDAL;VARIANT;4000;CENTIMETER
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -238,10 +238,10 @@ Feature: Execute an import
 
   Scenario: Successfully import a csv file of variant group values with metrics in a single field
     Given the following CSV file to import:
-    """
-    code;type;length
-    SANDAL;VARIANT;4000 CENTIMETER
-    """
+      """
+      code;type;length
+      SANDAL;VARIANT;4000 CENTIMETER
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     When I am on the "footwear_variant_group_import" import job page
@@ -262,10 +262,10 @@ Feature: Execute an import
       | Front view  | image | gif, jpg           |
       | User manual | file  | txt, pdf           |
     And the following CSV file to import:
-    """
-    code;type;frontView;name-en_US;userManual
-    SANDAL;VARIANT;bic-core-148.gif;"Bic Core 148";bic-core-148.txt
-    """
+      """
+      code;type;frontView;name-en_US;userManual
+      SANDAL;VARIANT;bic-core-148.gif;"Bic Core 148";bic-core-148.txt
+      """
     And the following job "footwear_variant_group_import" configuration:
       | filePath | %file to import% |
     And import directory of "footwear_variant_group_import" contains the following media:
