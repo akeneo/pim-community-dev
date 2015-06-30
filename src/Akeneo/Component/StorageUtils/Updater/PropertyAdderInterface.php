@@ -3,7 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Updater;
 
 /**
- * Adds a data in the property of an object
+ * Adds data in the property of an object
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ namespace Akeneo\Component\StorageUtils\Updater;
 interface PropertyAdderInterface
 {
     /**
-     * Adds a data in a object property (complete the current data)
+     * Adds data in a object property (complete the current data)
      *
      * @param object $object   The object to update
      * @param string $property The property to update

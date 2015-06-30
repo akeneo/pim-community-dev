@@ -29,7 +29,7 @@ class ProductProcessor extends AbstractProcessor
     /** @var ProductBuilderInterface */
     protected $builder;
 
-    /** @var ProductUpdaterInterface */
+    /** @var ObjectUpdaterInterface */
     protected $updater;
 
     /** @var ValidatorInterface */

@@ -3,7 +3,7 @@
 namespace Akeneo\Component\StorageUtils\Updater;
 
 /**
- * Removes a data in the property of an object
+ * Removes data in the property of an object
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -12,7 +12,7 @@ namespace Akeneo\Component\StorageUtils\Updater;
 interface PropertyRemoverInterface
 {
     /**
-     * Removes a data in an object property (only provided data will be removed)
+     * Removes data in an object property (only provided data will be removed)
      *
      * @param object $object   The object to update
      * @param string $property The property to update

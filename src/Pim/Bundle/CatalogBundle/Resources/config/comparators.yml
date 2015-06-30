@@ -55,7 +55,7 @@ services:
             - { name: pim_catalog.attribute.comparator, priority: -128 }
 
     ##
-    # Comparators of product's field
+    # Comparators of product fields
     ##
     pim_catalog.comparator.field.boolean:
         class: %pim_catalog.comparator.field.boolean.class%

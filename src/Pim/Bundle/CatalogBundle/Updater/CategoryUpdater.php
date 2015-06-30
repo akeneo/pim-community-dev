@@ -86,8 +86,6 @@ class CategoryUpdater implements ObjectUpdaterInterface
      */
     protected function findParent($code)
     {
-        $attributeGroup = $this->categoryRepository->findOneByIdentifier($code);
-
-        return $attributeGroup;
+        return $this->categoryRepository->findOneByIdentifier($code);
     }
 }

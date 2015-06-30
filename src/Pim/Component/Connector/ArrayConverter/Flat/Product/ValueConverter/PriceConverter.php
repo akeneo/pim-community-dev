@@ -34,8 +34,8 @@ class PriceConverter extends AbstractValueConverter
             $data = [];
         }
 
-        $data = array_map(function ($priceValue) use ($attributeFieldInfo) {
-            return $this->convertPrice($attributeFieldInfo, $priceValue);
+        $data = array_map(function ($priceValue) {
+            return $this->convertPrice($priceValue);
         }, $data);
 
         return [$attributeFieldInfo['attribute']->getCode() => [[
@@ -46,12 +46,11 @@ class PriceConverter extends AbstractValueConverter
     }
 
     /**
-     * @param array  $attributeFieldInfo
      * @param string $value
      *
      * @return array
      */
-    protected function convertPrice(array $attributeFieldInfo, $value)
+    protected function convertPrice($value)
     {
         if ('' === $value) {
             $priceValue = null;

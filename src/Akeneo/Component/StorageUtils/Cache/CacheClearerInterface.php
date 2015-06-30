@@ -14,7 +14,7 @@ interface CacheClearerInterface
     /**
      * Clears the internal cache
      *
-     * @return $this
+     * @return CacheClearerInterface
      */
     public function clear();
 }

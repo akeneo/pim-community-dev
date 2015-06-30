@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeRegistry;
+use Pim\Bundle\CatalogBundle\Model\AttributeInterface;
 
 /**
  * Attribute factory
@@ -39,7 +40,7 @@ class AttributeFactory
      *
      * @param string|null $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return AttributeInterface
      */
     public function createAttribute($type = null)
     {

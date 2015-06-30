@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
+use Pim\Bundle\CatalogBundle\Model\GroupInterface;
 use Pim\Bundle\CatalogBundle\Repository\GroupTypeRepositoryInterface;
 
 /**
@@ -32,9 +33,9 @@ class GroupFactory
     /**
      * Create and configure a group instance
      *
-     * @param string $groupType
+     * @param string $groupTypeCode
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\GroupInterface
+     * @return GroupInterface
      */
     public function createGroup($groupTypeCode = null)
     {

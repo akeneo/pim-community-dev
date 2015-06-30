@@ -10,7 +10,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 /**
- * Updates a associationType.
+ * Updates an association type.
  *
  * @author    Olivier Soulet <olivier.soulet@akeneo.com>
  * @copyright 2015 Akeneo SAS (http://www.akeneo.com)
@@ -29,7 +29,7 @@ class AssociationTypeUpdater implements ObjectUpdaterInterface
      */
     public function __construct(IdentifiableObjectRepositoryInterface $associationTypeRepository)
     {
-        $this->accessor           = PropertyAccess::createPropertyAccessor();
+        $this->accessor                  = PropertyAccess::createPropertyAccessor();
         $this->associationTypeRepository = $associationTypeRepository;
     }
 

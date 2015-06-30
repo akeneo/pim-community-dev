@@ -34,7 +34,6 @@ class ProductPropertySetter implements PropertySetterInterface
     ) {
         $this->attributeRepository = $repository;
         $this->setterRegistry      = $setterRegistry;
-        $this->attributesCache     = [];
     }
 
     /**

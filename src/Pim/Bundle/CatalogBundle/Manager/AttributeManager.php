@@ -61,7 +61,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Model\AttributeInterface
+     * @return AttributeInterface
      *
      * @deprecated will be removed in 1.5, please use AttributeFactory::createAttribute
      */
@@ -73,9 +73,9 @@ class AttributeManager
     /**
      * Get the attribute FQCN
      *
-     * @deprecated will be removed in 1.5 please use %pim_catalog.entity.attribute.class%
-     *
      * @return string
+     *
+     * @deprecated will be removed in 1.5 please use %pim_catalog.entity.attribute.class%
      */
     public function getAttributeClass()
     {
@@ -124,9 +124,9 @@ class AttributeManager
      *
      * @throws EntityNotFoundException
      *
-     * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
-     *
      * @return AttributeInterface
+     *
+     * @deprecated will be removed in 1.5 please use AttributeRepositoryInterface->find()
      */
     public function getAttribute($id)
     {

@@ -106,8 +106,8 @@ services:
         class: %pim_catalog.updater.attribute.class%
         arguments:
             - @pim_catalog.repository.attribute_group
-            - '@?pim_reference_data.registry'
             - ['pim_reference_data_multiselect', 'pim_reference_data_simpleselect']
+            - '@?pim_reference_data.registry'
 
     pim_catalog.updater.category:
         class: %pim_catalog.updater.category.class%
