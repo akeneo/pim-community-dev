@@ -57,8 +57,8 @@ class ProductWriterSpec extends ObjectBehavior
             'realTimeVersioning' => [
                 'type'    => 'switch',
                 'options' => [
-                    'label' => 'pim_base_connector.import.realTimeVersioning.label',
-                    'help'  => 'pim_base_connector.import.realTimeVersioning.help'
+                    'label' => 'pim_connector.import.realTimeVersioning.label',
+                    'help'  => 'pim_connector.import.realTimeVersioning.help'
                 ]
             ]
         ]);
