@@ -7,6 +7,7 @@ parameters:
     pim_connector.processor.denormalization.category.class:            Pim\Component\Connector\Processor\Denormalization\CategoryProcessor
     pim_connector.processor.denormalization.group.class:               Pim\Component\Connector\Processor\Denormalization\GroupProcessor
     pim_connector.processor.denormalization.association_type.class:    Pim\Component\Connector\Processor\Denormalization\AssociationTypeProcessor
+    pim_connector.processor.denormalization.family.class:              Pim\Component\Connector\Processor\Denormalization\FamilyProcessor
 
 services:
     pim_connector.processor.denormalization.attribute_option.flat:
@@ -91,4 +92,13 @@ services:
             - '@pim_catalog.repository.category'
             - '@pim_catalog.updater.category'
             - '@pim_catalog.factory.category'
+            - '@pim_catalog.validator.product'
+
+    pim_connector.processor.denormalization.family.flat:
+        class: %pim_connector.processor.denormalization.family.class%
+        arguments:
+            - '@pim_catalog.repository.family'
+            - '@pim_connector.array_converter.flat.family'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.updater.family'
             - '@pim_catalog.validator.product'
