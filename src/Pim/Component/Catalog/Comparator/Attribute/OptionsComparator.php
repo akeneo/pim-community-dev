@@ -32,21 +32,10 @@ class OptionsComparator implements ComparatorInterface
         sort($data['value']);
         sort($originals['value']);
 
-        $codes = [];
-        foreach ($data['value'] as $index => $attribute) {
-            if (!isset($originals['value'][$index]) || $attribute !== $originals['value'][$index]) {
-                $codes[] = $attribute;
-            }
-        }
-
-        if (empty($codes)) {
+        if ($data['value'] === $originals['value']) {
             return null;
         }
 
-        return [
-            'locale' => $data['locale'],
-            'scope'  => $data['scope'],
-            'value'  => $codes,
-        ];
+        return $data;
     }
 }

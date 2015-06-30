@@ -34,20 +34,13 @@ class PricesComparator implements ComparatorInterface
             $originalPrices[$price['currency']] = $price['data'];
         }
 
-        $prices = [];
+        $dataPrices = [];
         foreach ($data['value'] as $price) {
-            $currency = $price['currency'];
-            if (!array_key_exists($currency, $originalPrices) || (float) $originalPrices[$currency] !== (float) $price['data']) {
-                $prices[] = $price;
-            }
+            $dataPrices[$price['currency']] = $price['data'];
         }
 
-        if (!empty($prices)) {
-            return [
-                'locale' => $data['locale'],
-                'scope'  => $data['scope'],
-                'value'  => $prices
-            ];
+        if ($dataPrices !== $originalPrices) {
+            return $data;
         }
 
         return null;

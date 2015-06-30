@@ -33,10 +33,6 @@ class OptionComparator implements ComparatorInterface
             return null;
         }
 
-        return [
-            'locale' => $data['locale'],
-            'scope'  => $data['scope'],
-            'value'  => $data['value'],
-        ];
+        return $data;
     }
 }
