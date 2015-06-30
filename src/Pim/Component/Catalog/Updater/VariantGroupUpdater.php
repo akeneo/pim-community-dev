@@ -291,12 +291,12 @@ class VariantGroupUpdater implements ObjectUpdaterInterface
             } else {
                 foreach ($values as $newValue) {
                     $newKey = $code;
-                    $newKey .= isset($value['locale']) ? '-'.$value['locale'] : '';
-                    $newKey .= isset($value['scope']) ? '-'.$value['scope'] : '';
+                    $newKey .= isset($value['locale']) ? '-' . $value['locale'] : '';
+                    $newKey .= isset($value['scope']) ? '-' . $value['scope'] : '';
                     foreach ($originalValues[$code] as $currentIndex => $currentValue) {
                         $currentKey = $code;
-                        $currentKey .= isset($value['locale']) ? '-'.$value['locale'] : '';
-                        $currentKey .= isset($value['scope']) ? '-'.$value['scope'] : '';
+                        $currentKey .= isset($value['locale']) ? '-' . $value['locale'] : '';
+                        $currentKey .= isset($value['scope']) ? '-' . $value['scope'] : '';
                         if ($newKey === $currentKey) {
                             unset($originalValues[$code][$currentIndex]);
                         }

@@ -31,7 +31,7 @@ class FieldNameBuilder
         AttributeColumnInfoExtractor $attributeFieldExtractor
     ) {
         $this->associationColumnsResolver = $associationColumnsResolver;
-        $this->attributeFieldExtractor = $attributeFieldExtractor;
+        $this->attributeFieldExtractor    = $attributeFieldExtractor;
     }
 
     /**

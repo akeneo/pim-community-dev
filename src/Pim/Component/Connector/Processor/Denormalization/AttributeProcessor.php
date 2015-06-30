@@ -46,6 +46,7 @@ class AttributeProcessor extends AbstractProcessor
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
+
         $this->arrayConverter    = $arrayConverter;
         $this->attributeFactory  = $attributeFactory;
         $this->updater           = $updater;

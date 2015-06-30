@@ -20,6 +20,7 @@ class PriceConverter extends AbstractValueConverter
     public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
     {
         parent::__construct($fieldSplitter);
+
         $this->supportedFieldType = $supportedFieldType;
     }
 

@@ -64,13 +64,13 @@ class ProductStandardConverter implements StandardArrayConverterInterface
         ColumnsMerger $columnsMerger,
         ColumnsMapper $columnsMapper
     ) {
-        $this->attrFieldExtractor = $attrFieldExtractor;
-        $this->converterRegistry = $converterRegistry;
+        $this->attrFieldExtractor   = $attrFieldExtractor;
+        $this->converterRegistry    = $converterRegistry;
         $this->assocColumnsResolver = $assocColumnsResolver;
-        $this->attrColumnsResolver = $attrColumnsResolver;
-        $this->fieldConverter = $fieldConverter;
-        $this->columnsMerger = $columnsMerger;
-        $this->columnsMapper = $columnsMapper;
+        $this->attrColumnsResolver  = $attrColumnsResolver;
+        $this->fieldConverter       = $fieldConverter;
+        $this->columnsMerger        = $columnsMerger;
+        $this->columnsMapper        = $columnsMapper;
         $this->optionalAssociationFields = [];
     }
 

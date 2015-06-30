@@ -126,7 +126,7 @@ class SimpleSelectAttributeSetter extends AbstractAttributeSetter
      */
     protected function getOption(AttributeInterface $attribute, $optionCode)
     {
-        $identifier = $attribute->getCode().'.'.$optionCode;
+        $identifier = $attribute->getCode() . '.' . $optionCode;
         $option = $this->attrOptionRepository->findOneByIdentifier($identifier);
 
         return $option;
