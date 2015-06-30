@@ -116,7 +116,7 @@ class ProductDraftProcessorSpec extends ObjectBehavior
             ->willReturn($values['converted_values']);
 
         $this
-            ->shouldThrow(new \RuntimeException('Identifier property "sku" is expected'))
+            ->shouldThrow(new \InvalidArgumentException('Identifier property "sku" is expected'))
             ->during(
                 'process',
                 [$values['original_values']]
