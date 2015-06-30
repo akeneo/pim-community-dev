@@ -58,26 +58,26 @@
 - Remove ProductManager and add AttributeRepositoryInterface in arguments of the constructor of Pim/Bundle/CatalogBundle/Factory/FamilyFactory
 - Remove ProductManager, add ProductBuilderInterface, ProductRepositoryInterface, $productClass and $productValueClass in arguments of the constructor of Pim/Bundle/TransformBundle/Transformer/ProductTransformer
 - Remove ProductManager, add AttributeRepositoryInterface in arguments of the constructor of Pim/Bundle/CatalogBundle/Validator/Constraints/SingleIdentifierAttributeValidator
-- Move Pim/Bundle/CatalogBundle/Updater/Setter/AbstractValueSetter.php → Pim/Bundle/CatalogBundle/Updater/Setter/AbstractAttributeSetter
-- Remove AttributeRepositoryInterface argument from constructor of Pim/Bundle/CatalogBundle/Updater/Setter/SetterRegistryInterface, remove method get(
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/BooleanValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/BooleanAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/DateValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/DateAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MediaValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MediaAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MetricValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MetricAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/NumberValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/NumberAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectAttributeSetter
-- Rename Pim/Bundle/CatalogBundle/Updater/Setter/TextValueSetter -> Pim/Bundle/CatalogBundle/Updater/Setter/TextAttributeSetter
-- Remove setValue and supports from Pim/Bundle/CatalogBundle/Updater/Setter/SetterInterface
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/CopierInterface -> Pim/Bundle/CatalogBundle/Updater/Copier/AttributeCopierInterface
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/AbstractValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/AbstractAttributeCopier
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/BaseValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/BaseAttributeCopier
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MediaValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MediaAttributeCopier
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MetricValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MetricAttributeCopier
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectAttributeCopier
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionAttributeCopier
-- Rename Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectValueCopier -> src/Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectAttributeCopier
+- Move Pim/Bundle/CatalogBundle/Updater/Setter/AbstractValueSetter.php → Pim/Component/Catalog/Updater/Setter/AbstractAttributeSetter
+- Remove AttributeRepositoryInterface argument from constructor of Pim/Component/Catalog/Updater/Setter/SetterRegistryInterface, remove method get(
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/BooleanValueSetter -> Pim/Component/Catalog/Updater/Setter/BooleanAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/DateValueSetter -> Pim/Component/Catalog/Updater/Setter/DateAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MediaValueSetter -> Pim/Component/Catalog/Updater/Setter/MediaAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MetricValueSetter -> Pim/Component/Catalog/Updater/Setter/MetricAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/MultiSelectValueSetter -> Pim/Component/Catalog/Updater/Setter/MultiSelectAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/NumberValueSetter -> Pim/Component/Catalog/Updater/Setter/NumberAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/PriceCollectionValueSetter -> Pim/Component/Catalog/Updater/Setter/PriceCollectionAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/SimpleSelectValueSetter -> Pim/Component/Catalog/Updater/Setter/SimpleSelectAttributeSetter
+- Rename Pim/Bundle/CatalogBundle/Updater/Setter/TextValueSetter -> Pim/Component/Catalog/Updater/Setter/TextAttributeSetter
+- Remove setValue and supports from Pim/Component/Catalog/Updater/Setter/SetterInterface
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/CopierInterface -> Pim/Component/Catalog/Updater/Copier/AttributeCopierInterface
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/AbstractValueCopier -> src/Pim/Component/Catalog/Updater/Copier/AbstractAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/BaseValueCopier -> src/Pim/Component/Catalog/Updater/Copier/BaseAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MediaValueCopier -> src/Pim/Component/Catalog/Updater/Copier/MediaAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MetricValueCopier -> src/Pim/Component/Catalog/Updater/Copier/MetricAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/MultiSelectValueCopier -> src/Pim/Component/Catalog/Updater/Copier/MultiSelectAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/PriceCollectionValueCopier -> src/Pim/Component/Catalog/Updater/Copier/PriceCollectionAttributeCopier
+- Rename Pim/Bundle/CatalogBundle/Updater/Copier/SimpleSelectValueCopier -> src/Pim/Component/Catalog/Updater/Copier/SimpleSelectAttributeCopier
 - Remove MediaManager from constructor of Pim\Bundle\CatalogBundle\Manager\ProductManager
 - Remove deprecated handleMedia() and handleAllMedia() from Pim\Bundle\CatalogBundle\Manager\ProductManager
 - Replace argument ProductManager by MediaManager in constructor of Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter

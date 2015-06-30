@@ -46,6 +46,7 @@ class AssociationTypeProcessor extends AbstractProcessor
         ValidatorInterface $validator
     ) {
         parent::__construct($repository);
+
         $this->arrayConverter          = $arrayConverter;
         $this->associationTypeFactory  = $associationTypeFactory;
         $this->updater                 = $updater;

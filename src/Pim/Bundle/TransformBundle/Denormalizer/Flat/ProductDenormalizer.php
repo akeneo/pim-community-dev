@@ -79,14 +79,14 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
-        $this->productBuilder    = $productBuilder;
+        $this->productBuilder     = $productBuilder;
         $this->attFieldExtractor  = $attFieldExtractor;
         $this->assocFieldResolver = $assocFieldResolver;
-        $this->associationClass  = $associationClass;
-        $this->categoryClass     = $categoryClass;
-        $this->familyClass       = $familyClass;
-        $this->groupClass        = $groupClass;
-        $this->productValueClass = $productValueClass;
+        $this->associationClass   = $associationClass;
+        $this->categoryClass      = $categoryClass;
+        $this->familyClass        = $familyClass;
+        $this->groupClass         = $groupClass;
+        $this->productValueClass  = $productValueClass;
     }
 
     /**

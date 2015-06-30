@@ -27,7 +27,7 @@ class ReferenceDataCollectionAttributeCopierSpec extends ObjectBehavior
 
     function it_is_a_copier()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Updater\Copier\CopierInterface');
+        $this->shouldImplement('Pim\Component\Catalog\Updater\Copier\CopierInterface');
     }
 
     function it_supports_same_reference_data_attributes(

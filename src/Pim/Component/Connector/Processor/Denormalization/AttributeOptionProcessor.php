@@ -49,6 +49,7 @@ class AttributeOptionProcessor extends AbstractProcessor
         $class
     ) {
         parent::__construct($repository);
+
         $this->arrayConverter = $arrayConverter;
         $this->updater = $updater;
         $this->validator = $validator;

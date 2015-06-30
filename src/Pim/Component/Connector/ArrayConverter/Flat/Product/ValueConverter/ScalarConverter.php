@@ -20,6 +20,7 @@ class ScalarConverter extends AbstractValueConverter
     public function __construct(FieldSplitter $fieldSplitter, array $supportedFieldType)
     {
         parent::__construct($fieldSplitter);
+
         $this->supportedFieldType = $supportedFieldType;
     }
 
