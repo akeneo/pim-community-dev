@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Updater;
+namespace Pim\Component\Catalog\Updater;
 
 use Akeneo\Component\StorageUtils\Repository\IdentifiableObjectRepositoryInterface;
 use Akeneo\Component\StorageUtils\Updater\ObjectUpdaterInterface;
@@ -164,7 +164,7 @@ class FamilyUpdater implements ObjectUpdaterInterface
 
     /**
      * @param FamilyInterface $family
-     * @param $data
+     * @param string          $data
      */
     protected function setAttributeAsLabel(FamilyInterface $family, $data)
     {

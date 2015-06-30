@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Updater;
+namespace spec\Pim\Component\Catalog\Updater;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
@@ -36,7 +36,7 @@ class FamilyUpdaterSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\CatalogBundle\Updater\FamilyUpdater');
+        $this->shouldHaveType('Pim\Component\Catalog\Updater\FamilyUpdater');
     }
 
     function it_is_a_updater()
