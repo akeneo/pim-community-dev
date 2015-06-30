@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class PricesComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['pim_catalog_price_collection']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');
@@ -26,12 +31,12 @@ class PricesComparatorSpec extends ObjectBehavior
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn([
-            'locale' => null,
-            'scope'  => null,
             'value' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],
+            'locale' => null,
+            'scope'  => null,
         ]);
     }
 
@@ -47,12 +52,12 @@ class PricesComparatorSpec extends ObjectBehavior
         ], 'locale' => null, 'scope' => null];
 
         $this->compare($changes, $originals)->shouldReturn([
-            'locale' => null,
-            'scope'  => null,
             'value' => [
                 ['data' => '100', 'currency' => 'EUR'],
                 ['data' => '120', 'currency' => 'USD']
             ],
+            'locale' => null,
+            'scope'  => null,
         ]);
     }
 

@@ -13,12 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class ScalarComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $columns;
+
+    /**
+     * @param array $columns
+     */
+    public function __construct(array $columns)
+    {
+        $this->columns = $columns;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($column)
     {
-        return in_array($column, ['family', 'variant_group']);
+        return in_array($column, $this->columns);
     }
 
     /**

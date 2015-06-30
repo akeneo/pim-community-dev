@@ -13,12 +13,26 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class MediaComparator implements ComparatorInterface
 {
+    /** @staticvar string */
+    const SEPATATOR_FILE = '/';
+
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($type)
     {
-        return in_array($type, ['pim_catalog_file', 'pim_catalog_image']);
+        return in_array($type, $this->types);
     }
 
     /**

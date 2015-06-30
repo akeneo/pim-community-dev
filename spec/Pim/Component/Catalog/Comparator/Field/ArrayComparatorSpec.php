@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class ArrayComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['groups', 'categories', 'associations']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');
@@ -15,6 +20,7 @@ class ArrayComparatorSpec extends ObjectBehavior
     {
         $this->supports('groups')->shouldBe(true);
         $this->supports('categories')->shouldBe(true);
+        $this->supports('associations')->shouldBe(true);
         $this->supports('other')->shouldBe(false);
     }
 

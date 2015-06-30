@@ -13,12 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class BooleanComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $columns;
+
+    /**
+     * @param array $columns
+     */
+    public function __construct(array $columns)
+    {
+        $this->columns = $columns;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($column)
     {
-        return in_array($column, ['enabled']);
+        return in_array($column, $this->columns);
     }
 
     /**

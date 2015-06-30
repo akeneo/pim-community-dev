@@ -13,12 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class PricesComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($type)
     {
-        return 'pim_catalog_price_collection' === $type;
+        return in_array($type, $this->types);
     }
 
     /**

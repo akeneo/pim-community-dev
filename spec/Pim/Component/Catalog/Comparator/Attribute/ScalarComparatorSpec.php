@@ -6,6 +6,17 @@ use PhpSpec\ObjectBehavior;
 
 class ScalarComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith([
+            'pim_catalog_date',
+            'pim_catalog_identifier',
+            'pim_catalog_number',
+            'pim_catalog_text',
+            'pim_catalog_textarea'
+        ]);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');
@@ -17,7 +28,6 @@ class ScalarComparatorSpec extends ObjectBehavior
         $this->supports('pim_catalog_identifier')->shouldBe(true);
         $this->supports('pim_catalog_number')->shouldBe(true);
         $this->supports('pim_catalog_text')->shouldBe(true);
-        $this->supports('pim_catalog_textarea')->shouldBe(true);
         $this->supports('pim_catalog_textarea')->shouldBe(true);
         $this->supports('other')->shouldBe(false);
     }

@@ -6,6 +6,11 @@ use PhpSpec\ObjectBehavior;
 
 class OptionsComparatorSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(['pim_catalog_multiselect', 'pim_reference_data_multiselect']);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('Pim\Component\Catalog\Comparator\ComparatorInterface');
@@ -24,9 +29,9 @@ class OptionsComparatorSpec extends ObjectBehavior
         $originals = [];
 
         $this->compare($changes, $originals)->shouldReturn([
+            'value' => ['42', '43'],
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
-            'value' => ['42', '43'],
         ]);
     }
 
@@ -36,9 +41,9 @@ class OptionsComparatorSpec extends ObjectBehavior
         $originals = ['value' => ['42', '44']];
 
         $this->compare($changes, $originals)->shouldReturn([
+            'value'  => ['42', '43', '45'],
             'locale' => 'en_US',
             'scope'  => 'ecommerce',
-            'value' => ['43', '45'],
         ]);
     }
 

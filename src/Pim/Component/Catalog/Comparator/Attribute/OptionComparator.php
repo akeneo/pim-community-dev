@@ -13,12 +13,23 @@ use Pim\Component\Catalog\Comparator\ComparatorInterface;
  */
 class OptionComparator implements ComparatorInterface
 {
+    /** @var array */
+    protected $types;
+
+    /**
+     * @param array $types
+     */
+    public function __construct(array $types)
+    {
+        $this->types = $types;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function supports($type)
     {
-        return in_array($type, ['pim_catalog_simpleselect', 'pim_reference_data_simpleselect']);
+        return in_array($type, $this->types);
     }
 
     /**
