@@ -8,6 +8,16 @@ pimee_product_asset_view:
     requirements:
         id: '[0-9]+'
 
+pimee_product_asset_create:
+    path: /create
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:createAction }
+
+pimee_product_asset_next_code:
+    path: /nextCode/{code}
+    defaults: { _controller: pimee_product_asset.controller.produt_asset:getNextAvailableCodeAction }
+    requirements:
+        code: '^[a-zA-Z0-9_]+$'
+
 pimee_product_asset_edit:
     path: /{id}/edit
     defaults: { _controller: pimee_product_asset.controller.product_asset:editAction }

@@ -16,5 +16,6 @@ services:
             - '@pimee_product_asset.saver.reference'
             - '@pimee_product_asset.saver.variation'
             - '@event_dispatcher'
+            - '@pimee_product_asset.factory.asset'
         calls:
             - [ setContainer, [ @service_container ] ]

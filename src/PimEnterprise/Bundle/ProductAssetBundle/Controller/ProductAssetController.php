@@ -17,7 +17,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Repository\ChannelRepositoryInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use PimEnterprise\Bundle\ProductAssetBundle\Event\AssetEvent;
-use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
+use PimEnterprise\Bundle\ProductAssetBundle\Factory\AssetFactory;
 use PimEnterprise\Component\ProductAsset\Model\AssetInterface;
 use PimEnterprise\Component\ProductAsset\Model\FileMetadataInterface;
 use PimEnterprise\Component\ProductAsset\Model\ReferenceInterface;
@@ -26,10 +26,12 @@ use PimEnterprise\Component\ProductAsset\Repository\AssetRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\FileMetadataRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\ReferenceRepositoryInterface;
 use PimEnterprise\Component\ProductAsset\Repository\VariationRepositoryInterface;
+use PimEnterprise\Component\ProductAsset\Updater\FilesUpdaterInterface;
 use PimEnterprise\Component\ProductAsset\VariationFileGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,6 +81,9 @@ class ProductAssetController extends Controller
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
 
+    /** @var AssetFactory */
+    protected $assetFactory;
+
     /**
      * @param AssetRepositoryInterface        $assetRepository
      * @param ReferenceRepositoryInterface    $referenceRepository
@@ -91,6 +96,7 @@ class ProductAssetController extends Controller
      * @param SaverInterface                  $referenceSaver
      * @param SaverInterface                  $variationSaver
      * @param EventDispatcherInterface        $eventDispatcher
+     * @param AssetFactory                    $assetFactory
      */
     public function __construct(
         AssetRepositoryInterface $assetRepository,
@@ -103,7 +109,8 @@ class ProductAssetController extends Controller
         SaverInterface $assetSaver,
         SaverInterface $referenceSaver,
         SaverInterface $variationSaver,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AssetFactory $assetFactory
     ) {
         $this->assetRepository        = $assetRepository;
         $this->referenceRepository    = $referenceRepository;
@@ -116,6 +123,7 @@ class ProductAssetController extends Controller
         $this->referenceSaver         = $referenceSaver;
         $this->variationSaver         = $variationSaver;
         $this->eventDispatcher        = $eventDispatcher;
+        $this->assetFactory           = $assetFactory;
     }
 
     /**
@@ -171,6 +179,57 @@ class ProductAssetController extends Controller
             'asset'       => $productAsset,
             'attachments' => $attachments
         ];
+    }
+
+    /**
+     * Create an asset
+     *
+     * @Template
+     *
+     * @param Request $request
+     *
+     * @return array
+     */
+    public function createAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirect($this->generateUrl('pimee_product_asset_index'));
+        }
+
+        $asset = $this->assetFactory->create();
+        $form  = $this->createForm('pimee_product_asset_create', $asset);
+
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            // TODO PIM-4060
+        }
+
+        return [
+            'form' => $form->createView()
+        ];
+    }
+
+    /**
+     * @param Request $request
+     * @param string  $code
+     *
+     * @return JsonResponse
+     */
+    public function getNextAvailableCodeAction(Request $request, $code)
+    {
+        $codes = $this->assetRepository->findSimilarCodes($code);
+
+        if (!empty($codes)) {
+            $nextId = 1;
+            while (in_array(sprintf('%s_%d', $code, $nextId), $codes)) {
+                $nextId++;
+            }
+
+            return new JsonResponse(['nextCode' => sprintf('%s_%d', $code, $nextId)]);
+        }
+
+        return new JsonResponse();
     }
 
     /**
